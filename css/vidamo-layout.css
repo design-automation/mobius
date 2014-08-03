@@ -1,0 +1,62 @@
+﻿/* resizable layout */
+.graph-area{
+  background : #ffffff;
+
+}
+.view-area {
+  background : #ffffff;
+
+}
+.code-area{
+  background : #ffffff;
+
+}
+
+/* code editor*/
+.codeEditor {
+    height:595px;
+    width:500px;
+}
+
+/*procedure tab*/
+.tabArea{
+    position: relative;
+    left: 10px;
+    max-width: 600px;
+    height:100%;
+    width: 100%;
+    overflow: auto;
+}
+
+/* bootstrap hack*/
+.panelHack {
+    margin-bottom: -20px
+}
+
+/* procedure tree structure*/
+.angular-ui-tree-handle {
+    background: #f8faff;
+    border: 0px solid #dae2ea;
+    color: #7c9eb2;
+    padding: 0px 0px;
+}
+
+.angular-ui-tree-handle:hover {
+    color: #438eb9;
+    background: #f4f6f7;
+    border-color: #dce2e8;
+}
+
+.angular-ui-tree-placeholder {
+    background: #f0f9ff;
+    border: 2px dashed #bed2db;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+
+.group-title {
+    background-color: #687074 !important;
+    color: #FFF !important;
+}

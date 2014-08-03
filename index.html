@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html ng-app="vidamo" >
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width">
+  <title>UI.Layout : angular UI version</title>
+
+  <!-- stylesheet -->
+  <link rel="stylesheet" href="css/vidamo-layout.css">
+  <link rel="stylesheet" href="css/ui-layout.css">
+  <link rel="stylesheet" href="css/bootstrap/bootstrap.css">
+  <link rel="stylesheet" href="css/select2.css">
+  <link rel="stylesheet" href="css/ui-tree.css">
+  <link href="js/threejs/editor/css/types.css" rel="stylesheet">
+  <link id="theme" href="css/light.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/graph.css">
+  <link href="js/angular-ui/ui-panzoom/panzoomwidget.css" rel="stylesheet" type="text/css">
+  <style type="text/css">
+  .pan-zoom-frame {
+      border: 1px solid #aaaaaa;
+  }
+  </style>
+
+  <!--three.js-->
+    <script src="js/threejs/build/three.min.js"></script>
+    <script src="js/threejs/examples/js/libs/system.min.js"></script>
+    <script src="js/threejs/examples/js/controls/EditorControls.js"></script>
+    <script src="js/threejs/examples/js/controls/TransformControls.js"></script>
+    <script src="js/threejs/examples/js/loaders/BabylonLoader.js"></script>
+    <script src="js/threejs/examples/js/loaders/ColladaLoader.js"></script>
+    <script src="js/threejs/examples/js/loaders/OBJLoader.js"></script>
+    <script src="js/threejs/examples/js/loaders/PLYLoader.js"></script>
+    <script src="js/threejs/examples/js/loaders/STLLoader.js"></script>
+    <script src="js/threejs/examples/js/loaders/UTF8Loader.js"></script>
+    <script src="js/threejs/examples/js/loaders/VRMLLoader.js"></script>
+    <script src="js/threejs/examples/js/loaders/VTKLoader.js"></script>
+    <script src="js/threejs/examples/js/loaders/ctm/lzma.js"></script>
+    <script src="js/threejs/examples/js/loaders/ctm/ctm.js"></script>
+    <script src="js/threejs/examples/js/loaders/ctm/CTMLoader.js"></script>
+    <script src="js/threejs/examples/js/exporters/SceneExporter.js"></script>
+    <script src="js/threejs/examples/js/exporters/OBJExporter.js"></script>
+    <script src="js/threejs/examples/js/exporters/STLExporter.js"></script>
+    <script src="js/threejs/examples/js/renderers/RaytracingRenderer.js"></script>
+    <script src="js/threejs/examples/js/renderers/SoftwareRenderer.js"></script>
+    <script src="js/threejs/examples/js/renderers/SVGRenderer.js"></script>
+    <script src="js/threejs/examples/js/BufferGeometryUtils.js"></script>
+    <script src="js/threejs/examples/js/exporters/BufferGeometryExporter.js"></script>
+    <script src="js/threejs/examples/js/exporters/TypedGeometryExporter.js"></script>
+    <script src="js/threejs/examples/js/exporters/GeometryExporter.js"></script>
+    <script src="js/threejs/examples/js/exporters/MaterialExporter.js"></script>
+    <script src="js/threejs/examples/js/exporters/ObjectExporter.js"></script>
+    <script src="js/threejs/examples/js/renderers/WebGLRenderer3.js"></script>
+
+    <script src="js/threejs/editor/js/libs/signals.min.js"></script>
+    <script src="js/threejs/editor/js/libs/ui.js"></script>
+    <script src="js/threejs/editor/js/libs/ui.editor.js"></script>
+    <script src="js/threejs/editor/js/libs/ui.three.js"></script>
+
+    <script src="js/threejs/editor/js/Storage.js"></script>
+    <script src="js/threejs/editor/js/Editor.js"></script>
+    <script src="js/threejs/editor/js/Config.js"></script>
+    <script src="js/threejs/editor/js/Loader.js"></script>
+    <script src="js/threejs/editor/js/Viewport.js"></script>
+
+</head>
+
+<body>
+          <!--dropdown Menu-->
+        <div>
+            <span class="dropdown" on-toggle="toggled(open)">
+              <a href class="dropdown-toggle">  File |</a>
+              <ul class="dropdown-menu">
+              <li><a href="#"> New </a></li>
+                <li><a href="#"> Open</a></li>
+                <li><a href="#"> Save </a></li>
+                <li class="divider"></li>
+                <li><a href="#"> Exit </a></li>
+              </ul>
+            </span>
+
+            <span class="dropdown" on-toggle="toggled(open)" >
+              <a href class="dropdown-toggle">  Edit |</a>
+            </span>
+
+            <span class="dropdown" on-toggle="toggled(open)" >
+              <a href class="dropdown-toggle">  View |</a>
+            </span>
+
+            <span class="dropdown" on-toggle="toggled(open)" >
+              <a href class="dropdown-toggle">  Libraries |</a>
+            </span>
+
+            <span class="dropdown" on-toggle="toggled(open)" >
+              <a href class="dropdown-toggle">  Setting |</a>
+            </span>
+
+            <span class="dropdown" on-toggle="toggled(open)" >
+              <a href class="dropdown-toggle">  Help |</a>
+            </span>
+
+        </div>
+
+         <!--resizable layout-->
+            <div ui-layout>
+              <div ui-layout="{flow : 'column'}" >
+                <div class=" graph-area"
+                     ng-controller="graphCtrl"
+                     mouse-capture
+                     ng-keydown="keyDown($event)"
+                     ng-keyup="keyUp($event)"
+                        >
+
+                    <div ng-controller="TestController" style="width:100%; height: 95%">
+                    <div style="position:relative">
+                        <!--<panzoomwidget config="panzoomConfig" model="panzoomModel" style="position:absolute;top:10px;left:10px;z-index:1"></panzoomwidget>-->
+                        <panzoom config="panzoomConfig" model="panzoomModel" style="width:100%; height:900px">
+                            <div>
+                                <flow-chart
+                                           chart="chartViewModel" style="width:4000px; height: 4000px"
+                                        >
+                                </flow-chart>
+                            </div>
+                        </panzoom>
+                    </div>
+                    </div>
+                    <div style="padding-top: 3px;">
+                    <button class="btn btn-xs"
+                            ng-click="addNewNode()"
+                            title="Add a new node to the chart"
+                            >
+                        Add Node
+                    </button> &nbsp;&nbsp;
+                    <button class="btn btn-xs"
+                            ng-click="addNewInputConnector()"
+                            ng-disabled="chartViewModel.getSelectedNodes().length == 0"
+                            title="Add a new input connector to the selected node"
+                            >
+                        Add Input
+                    </button> &nbsp;&nbsp;
+                    <button class="btn btn-xs"
+                            ng-click="addNewOutputConnector()"
+                            ng-disabled="chartViewModel.getSelectedNodes().length == 0"
+                            title="Add a new output connector to the selected node"
+                            >
+                        Add Output
+                    </button> &nbsp;&nbsp;
+                    <button class="btn btn-xs"
+                            ng-click="deleteSelected()"
+                            ng-disabled="chartViewModel.getSelectedNodes().length == 0 && chartViewModel.getSelectedConnections().length == 0"
+                            title="Delete selected nodes and connections"
+                            >
+                        Delete
+                    </button>
+                    </div>
+
+                </div>
+
+                <div class=" view-area" >
+                    <div class="Panel" id="viewport" >
+
+                        <script>
+                            var editor = new Editor();
+                            var viewport = new Viewport( editor ).setId( 'viewport' );
+                            document.getElementById("viewport").appendChild(viewport.dom);
+                            editor.setTheme( editor.config.getKey( 'theme' ) );
+
+                            var onWindowResize = function ( event ) {
+                                editor.signals.windowResize.dispatch();
+                            };
+
+                            window.addEventListener('resize', onWindowResize, false );
+                            onWindowResize();
+                        </script>
+
+                    </div>
+                </div>
+
+
+                <div class=" code-area" >
+                    <tabset class="tabArea">
+                        <tab heading="Procedure" >
+                                <div  ng-controller="treeCtrl">
+                                    <div  >
+                                        <script type="text/ng-template" id="nodes_renderer.html">
+                                            <div ui-tree-handle class="tree-node tree-node-content">
+                                                <accordion close-others= "false" >
+                                                    <div class="panelHack">
+                                                        <accordion-group is-open="true">
+                                                            <accordion-heading>
+                                                                <a ng-if="node.nodes && node.nodes.length > 0" data-nodrag ng-click="toggle(this)">
+                                                                      <span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}">
+                                                                      </span>
+                                                                </a>{{node.title}}
+                                                                <a class="pull-right btn btn-xs" data-nodrag ng-click="remove(this)">
+                                                                    <span class="glyphicon glyphicon-remove">
+                                                                    </span>
+                                                                </a>
+                                                                <!--<a class="pull-right btn btn-xs" data-nodrag ng-click="newSubItem(this)">-->
+                                                                    <!--<span class="glyphicon glyphicon-plus">-->
+                                                                    <!--</span>-->
+                                                                <!--</a>-->
+                                                            </accordion-heading>
+
+                                                            <div ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}">
+                                                                <div ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer.html'">
+                                                                </div>
+                                                            </div>
+                                                        </accordion-group>
+                                                    </div>
+                                                </accordion>
+                                            </div>
+                                        </script>
+
+                                        <div ui-tree id="tree-root">
+                                            <div ui-tree-nodes="" ng-model="data">
+                                                <div ng-repeat="node in data" ui-tree-node ng-include="'nodes_renderer.html'">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+
+                                    <div style="padding-top: 3px;">
+                                        <br>
+                                        <button class="btn btn-xs" ng-click="newItem('Data')">Add Data</button> &nbsp;&nbsp;&nbsp;
+                                        <button class="btn btn-xs" ng-click="newItem('Action')">Add Action</button> &nbsp;&nbsp;&nbsp;
+                                        <button class="btn btn-xs" ng-click="newItem('Control')">Add Control</button>
+                                    </div>
+                                </div>
+
+                        </tab>
+
+                        <tab heading="Interface"></tab>
+                        <!--ace text editor-->
+                        <tab heading="Code">
+                            <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'monokai' }" ng-model="javascriptCode"></div>
+                        </tab>
+
+                    </tabset>
+                </div>
+
+              </div>
+            </div>
+    
+         <!--  javascript -->
+         <!--jquery-->
+         <script type="text/javascript" src="js/jquery/jquery-1.11.1.js"></script>
+         <script type="text/javascript" src="js/jquery/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.min.js"></script>
+         <!--angular modules -->
+         <script type="application/javascript" src="js/angular/angular.min.js"></script>
+         <script type="text/javascript" src="js/angular/angular-sanitize.js"></script>
+         <!--angular-ui packages-->
+         <script type="text/javascript" src="js/angular-ui/ui-ace/ui-ace.js"></script>
+         <script type="application/javascript" src="js/angular-ui/ui-layout/ui-layout.js"></script>
+         <script src="js/angular-ui/ui-bootstrap/ui-bootstrap-tpls-0.11.0.min.js"></script>
+         <script type="text/javascript" src="js/angular-ui/ui-sortable/sortable.js"></script>
+         <script type="text/javascript" src="js/angular-ui/ui-select2/select2.js"></script>
+         <script type="text/javascript" src="js/angular-ui/ui-tree/angular-ui-tree.js"></script>
+         <!--supporting packages-->
+         <script type="text/javascript" src="js/packages/select2-3.5.0/select2.js"></script>
+         <script type="text/javascript" src="js/packages/ace-builds/src-min-noconflict/ace.js"></script>
+         <!--flowchart system-->
+         <script src="js/angular-ui/ui-flowchart/debug.js" type="text/javascript"></script>
+         <script src="js/angular-ui/ui-flowchart/svg_class.js" type="text/javascript"></script>
+         <script src="js/angular-ui/ui-flowchart/mouse_capture_service.js" type="text/javascript"></script>
+         <script src="js/angular-ui/ui-flowchart/dragging_service.js" type="text/javascript"></script>
+         <script src="js/angular-ui/ui-flowchart/flowchart_viewmodel.js" type="text/javascript"></script>
+         <script src="js/angular-ui/ui-flowchart/flowchart_directive.js" type="text/javascript"></script>
+          <!-- zoom and pan-->
+         <script src="js/packages/hamsterjs/hamster.js"></script>
+         <script src="js/angular/angular-mousewheel/mousewheel.js"></script>
+         <script src="js/angular-ui/ui-panzoom/panzoom.0.1-snapshot.js"></script>
+         <!--vidamo angular app-->
+         <script src="js/client/vidamo.js"></script>
+
+</body>
+
+</html>

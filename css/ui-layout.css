@@ -1,0 +1,25 @@
+.stretch {
+  position: absolute;
+  top: 9px;
+  left: 2px;
+  right: 2px;
+  bottom: 0px;
+  overflow: visible;
+}
+
+.ui-splitbar{
+  display: block;
+  background-color: #dddddd;
+  right: auto;
+  position: absolute;
+  z-index: 99999;
+}
+
+.ui-layout-row > .ui-splitbar{
+  height: 8px; width: 100%;
+  cursor: row-resize;
+}
+.ui-layout-column > .ui-splitbar{
+  width: 8px; height: 100%;
+  cursor: col-resize;
+}
