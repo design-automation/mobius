@@ -241,6 +241,7 @@ angular.module('flowChart', ['dragging'] )
 		var chart = $scope.chart;
 		var lastMouseCoords;
 
+
 		dragging.startDrag(evt, {
 
 			//
@@ -249,7 +250,6 @@ angular.module('flowChart', ['dragging'] )
 			dragStarted: function (x, y) {
 
 				lastMouseCoords = controller.translateCoordinates(x, y);
-
 				//
 				// If nothing is selected when dragging starts, 
 				// at least select the node we are dragging.
@@ -271,7 +271,6 @@ angular.module('flowChart', ['dragging'] )
                 });
 				var deltaX = curCoords.x*(1/$scope.scaleFactor )- lastMouseCoords.x*(1/$scope.scaleFactor);
 				var deltaY = curCoords.y*(1/$scope.scaleFactor)- lastMouseCoords.y*(1/$scope.scaleFactor);
-
 				chart.updateSelectedNodesLocation(deltaX, deltaY);
 
 				lastMouseCoords = curCoords;
@@ -281,7 +280,9 @@ angular.module('flowChart', ['dragging'] )
 			// The node wasn't dragged... it was clicked.
 			//
 			clicked: function () {
-				chart.handleNodeClicked(node, evt.ctrlKey);
+				var nodeIndex = chart.handleNodeClicked(node, evt.ctrlKey);
+                $rootScope.$broadcast("nodeIndex", nodeIndex);
+                console.log("index from flowchart",nodeIndex);
 			},
 
 		});

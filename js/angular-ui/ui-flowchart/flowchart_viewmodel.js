@@ -595,11 +595,14 @@ var flowchart = {
 			// This is the way Z-order is done in SVG.
 
 			var nodeIndex = this.nodes.indexOf(node);
-			if (nodeIndex == -1) {
-				throw new Error("Failed to find node in view model!");
-			}
-			this.nodes.splice(nodeIndex, 1);
-			this.nodes.push(node);			
+            return nodeIndex;
+
+//			if (nodeIndex == -1) {
+//				throw new Error("Failed to find node in view model!");
+//			}
+//			this.nodes.splice(nodeIndex, 1);
+//			this.nodes.push(node);
+
 		};
 
 		//
