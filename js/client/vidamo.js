@@ -1,4 +1,4 @@
-var vidamo = angular.module('vidamo', ['ui.layout','ui.ace','ui.bootstrap','ngSanitize','ui.tree','flowChart','panzoom'])
+var vidamo = angular.module('vidamo', ['ui.layout','ui.ace','ui.bootstrap','ngSanitize','ui.select2','ui.tree','flowChart','panzoom'])
 
 /////////////////////////////////////////////////////////////////////////////////
 // graph controller
@@ -107,9 +107,9 @@ vidamo.controller('graphCtrl', ['$scope', 'prompt', function AppCtrl ($scope, pr
     // Create the view-model for the chart and attach to the scope.
 
     $scope.chartViewModel = new flowchart.ChartViewModel(chartDataModel);
-}])
-;
+}]);
 
+//////////////////////////////////////////////////////////////////////////////////////
 // procedure tab (nested and dnd accordion) controller
 vidamo.controller('treeCtrl', function($scope,$rootScope) {
     $scope.remove = function(scope) {
@@ -134,44 +134,28 @@ vidamo.controller('treeCtrl', function($scope,$rootScope) {
             $scope.data.push({
                 id: $scope.data.length  + 1,
                 title:  'Data',
-                nodes: []
+                nodes: [],
+                cmd:[]
             });
         } else if(cate == 'Action'){
             $scope.data.push({
                 id: $scope.data.length  + 1,
                 title:  'Action',
-                nodes: []
+                nodes: [],
+                cmd:[]
             });
         } else if(cate == 'Control'){
             $scope.data.push({
                 id: $scope.data.length  + 1,
                 title:  'Control',
-                nodes: []
+                nodes: [],
+                cmd:[]
             });
         }
 
     };
 //dummy list for now
-    $scope.dataList = [[{
-        "id": 1,
-        "title": "Control",
-        "nodes": [
-            {
-                "id": 11,
-                "title": "Control",
-                "nodes": []
-            },
-            {
-                "id": 12,
-                "title": "Data",
-                "nodes": []
-            }
-        ]
-    }, {
-        "id": 2,
-        "title": "Control",
-        "nodes": []
-    }],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
+    $scope.dataList = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
 
     $rootScope.$on("nodeIndex", function(event, message) {
         $scope.index = message;

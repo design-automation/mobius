@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="vidamo" >
+<html ng-app="vidamo" xmlns="http://www.w3.org/1999/html">
 
 <head>
   <meta charset="utf-8" />
@@ -44,6 +44,7 @@
     <script src="js/threejs/examples/js/renderers/RaytracingRenderer.js"></script>
     <script src="js/threejs/examples/js/renderers/SoftwareRenderer.js"></script>
     <script src="js/threejs/examples/js/renderers/SVGRenderer.js"></script>
+
     <script src="js/threejs/examples/js/BufferGeometryUtils.js"></script>
     <script src="js/threejs/examples/js/exporters/BufferGeometryExporter.js"></script>
     <script src="js/threejs/examples/js/exporters/TypedGeometryExporter.js"></script>
@@ -63,15 +64,17 @@
     <script src="js/threejs/editor/js/Loader.js"></script>
     <script src="js/threejs/editor/js/Viewport.js"></script>
 
+    <script src="js/threejs/add.js"></script>
+
 </head>
 
 <body>
-          <!--dropdown Menu-->
+        <!--dropdown Menu-->
         <div>
             <span class="dropdown" on-toggle="toggled(open)">
               <a href class="dropdown-toggle">  File |</a>
               <ul class="dropdown-menu">
-              <li><a href="#"> New </a></li>
+              <li><a onclick="onNewOptionClick ()"> New </a></li>
                 <li><a href="#"> Open</a></li>
                 <li><a href="#"> Save </a></li>
                 <li class="divider"></li>
@@ -104,21 +107,18 @@
          <!--resizable layout-->
             <div ui-layout>
               <div ui-layout="{flow : 'column'}" >
+                <!--graph area-->
                 <div class=" graph-area"
                      ng-controller="graphCtrl"
                      mouse-capture
                      ng-keydown="keyDown($event)"
-                     ng-keyup="keyUp($event)"
-                        >
+                     ng-keyup="keyUp($event)">
 
                     <div ng-controller="TestController" style="width:100%; height: 95%">
                     <div style="position:relative">
-                        <!--<panzoomwidget config="panzoomConfig" model="panzoomModel" style="position:absolute;top:10px;left:10px;z-index:1"></panzoomwidget>-->
                         <panzoom config="panzoomConfig" model="panzoomModel" style="width:100%; height:900px">
                             <div>
-                                <flow-chart
-                                           chart="chartViewModel" style="width:4000px; height: 4000px"
-                                        >
+                                <flow-chart chart="chartViewModel" style="width:4000px; height: 4000px" >
                                 </flow-chart>
                             </div>
                         </panzoom>
@@ -127,56 +127,116 @@
                     <div style="padding-top: 3px;">
                     <button class="btn btn-xs"
                             ng-click="addNewNode()"
-                            title="Add a new node to the chart"
-                            >
+                            title="Add a new node to the chart">
                         Add Node
                     </button> &nbsp;&nbsp;
                     <button class="btn btn-xs"
                             ng-click="addNewInputConnector()"
                             ng-disabled="chartViewModel.getSelectedNodes().length == 0"
-                            title="Add a new input connector to the selected node"
-                            >
+                            title="Add a new input connector to the selected node">
                         Add Input
                     </button> &nbsp;&nbsp;
                     <button class="btn btn-xs"
                             ng-click="addNewOutputConnector()"
                             ng-disabled="chartViewModel.getSelectedNodes().length == 0"
-                            title="Add a new output connector to the selected node"
-                            >
+                            title="Add a new output connector to the selected node">
                         Add Output
                     </button> &nbsp;&nbsp;
                     <button class="btn btn-xs"
                             ng-click="deleteSelected()"
                             ng-disabled="chartViewModel.getSelectedNodes().length == 0 && chartViewModel.getSelectedConnections().length == 0"
-                            title="Delete selected nodes and connections"
-                            >
+                            title="Delete selected nodes and connections">
                         Delete
                     </button>
                     </div>
 
                 </div>
 
+                <!--3D view area  -->
                 <div class=" view-area" >
                     <div class="Panel" id="viewport" >
 
                         <script>
                             var editor = new Editor();
+
                             var viewport = new Viewport( editor ).setId( 'viewport' );
                             document.getElementById("viewport").appendChild(viewport.dom);
+
                             editor.setTheme( editor.config.getKey( 'theme' ) );
+
+                            editor.storage.init( function () {
+
+                                editor.storage.get( function ( state ) {
+
+                                    if ( state !== undefined ) {
+                                        var loader = new THREE.ObjectLoader();
+                                        var scene = loader.parse( state );
+                                        editor.setScene( scene );
+                                    }
+
+                                    var selected = editor.config.getKey( 'selected' );
+
+                                    if ( selected !== undefined ) {
+                                        editor.selectByUuid( selected );
+                                    }
+                                } );
+
+                                //
+
+                                var timeout;
+                                var exporter = new THREE.ObjectExporter();
+                                var saveState = function ( scene ) {
+                                    clearTimeout( timeout );
+                                    timeout = setTimeout( function () {
+                                        editor.storage.set( exporter.parse( editor.scene ) );
+                                    }, 1000 );
+
+                                };
+
+                                var signals = editor.signals;
+
+                                signals.objectAdded.add( saveState );
+                                signals.objectChanged.add( saveState );
+                                signals.objectRemoved.add( saveState );
+                                signals.materialChanged.add( saveState );
+                                signals.sceneGraphChanged.add( saveState );
+                            } );
+
+                            document.addEventListener( 'dragover', function ( event ) {
+                                event.preventDefault();
+                                event.dataTransfer.dropEffect = 'copy';
+                            }, false );
+
+                            document.addEventListener( 'drop', function ( event ) {
+                                event.preventDefault();
+                                editor.loader.loadFile( event.dataTransfer.files[ 0 ] );
+                            }, false );
+
+                            document.addEventListener( 'keydown', function ( event ) {
+                                switch ( event.keyCode ) {
+                                    case 8: // prevent browser back
+                                        event.preventDefault();
+                                        break;
+                                    case 46: // delete
+                                        var parent = editor.selected.parent;
+                                        editor.removeObject( editor.selected );
+                                        editor.select( parent );
+                                        break;
+                                }
+                            }, false );
 
                             var onWindowResize = function ( event ) {
                                 editor.signals.windowResize.dispatch();
                             };
-
-                            window.addEventListener('resize', onWindowResize, false );
+                            window.addEventListener( 'resize', onWindowResize, false );
                             onWindowResize();
+
                         </script>
 
                     </div>
                 </div>
 
-
+                <!--code area-->
                 <div class=" code-area" >
                     <tabset class="tabArea">
                         <tab heading="Procedure" >
@@ -196,11 +256,60 @@
                                                                     <span class="glyphicon glyphicon-remove">
                                                                     </span>
                                                                 </a>
+                                                                <!-- code to add new sub-item-->
                                                                 <!--<a class="pull-right btn btn-xs" data-nodrag ng-click="newSubItem(this)">-->
                                                                     <!--<span class="glyphicon glyphicon-plus">-->
                                                                     <!--</span>-->
                                                                 <!--</a>-->
                                                             </accordion-heading>
+                                                            <!--dropdown menu for Action-->
+                                                            <div ng-if="node.title == 'Action'">
+                                                                <select ui-select2 ng-model="select2" data-placeholder="Add Geometry" onchange="addGeo(this.value)">
+                                                                    <option value=""></option>
+                                                                    <option value="plane">plane</option>
+                                                                    <option value="box">box</option>
+                                                                    <option value="circle">circle</option>
+                                                                    <option value="cylinder">cylinder</option>
+                                                                    <option value="sphere">sphere</option>
+                                                                    <option value="icosahedron">icosahedron</option>
+                                                                    <option value="torus">torus</option>
+                                                                    <option value="torusknot">torusknot</option>
+                                                                </select></br></br>
+                                                                <div>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon">x</span>
+                                                                        <input type="number" class="form-control" placeholder="x coord">
+                                                                    </div>
+                                                                    </br>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon">y</span>
+                                                                        <input type="number" class="form-control" placeholder="y coord">
+                                                                    </div>
+                                                                    </br>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon">z</span>
+                                                                        <input type="number" class="form-control" placeholder="z coord">
+                                                                    </div>
+                                                                    </br>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon">width</span>
+                                                                        <input type="number" class="form-control" placeholder="">
+                                                                    </div>
+                                                                    </br>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon">height</span>
+                                                                        <input type="number" class="form-control" placeholder="">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- looping for Control-->
+                                                            <div ng-if="node.title == 'Control'">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon">Looping</span>
+                                                                    <input type="number" class="form-control" placeholder="num of loops">
+                                                                </div>
+                                                                </br>
+                                                            </div>
 
                                                             <div ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}">
                                                                 <div ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer.html'">
@@ -241,7 +350,7 @@
 
               </div>
             </div>
-    
+
          <!--  javascript -->
          <!--jquery-->
          <script type="text/javascript" src="js/jquery/jquery-1.11.1.js"></script>
