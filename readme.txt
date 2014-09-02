@@ -28,3 +28,10 @@ the vidamo css files
 the vidamo code in angular ui
 the vidamo code in threejs/editor
 add.js
+
+
+Things still to do
+- Refactor code to move it to vidamo folder
+- Topological sort in left pane
+- Code generation in right pane
+- For loop in right pane
