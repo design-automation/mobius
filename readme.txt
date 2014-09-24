@@ -1,4 +1,4 @@
-Part 1: JS Dependency
+﻿Part 1: JS Dependency
 
 Angular and Angular UI
 / AngularJS 
@@ -104,7 +104,9 @@ code-are calls Angular UI ACE-IDE to generate code IDE in the code tab
  
 Part 4: Future Development
 
+/ Some testing and bug fixes
+/ Some styling
+/ Code generation in right pane (see Blockly)
 / Topological sort in left pane
-/ Code generation in right pane
 / Modeling core logic (loop logic for example) in right pane
 / Refactor code to move it to vidamo folder
