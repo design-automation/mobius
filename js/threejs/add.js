@@ -1,6 +1,5 @@
+//keep track of the total number of meshes
 var meshCount = 0;
-var lightCount = 0;
-
 
 // refresh view port
 function onNewOptionClick () {
@@ -14,12 +13,12 @@ function onNewOptionClick () {
 }
 
 // event handlers for adding geometry
-function addGeo(geo_type){
+function addGeo(geo_type,x,y,z,w,h,d){
     if(geo_type == "plane"){
         onPlaneOptionClick ();
     }
     if(geo_type == "box"){
-        onBoxOptionClick ();
+        onBoxOptionClick (x,y,z,w,h,d);
     }
     if(geo_type == "circle"){
         onCircleOptionClick ();
@@ -59,25 +58,6 @@ function onPlaneOptionClick () {
 
 }
 
-function onBoxOptionClick () {
-
-    var width = 100;
-    var height = 100;
-    var depth = 100;
-
-    var widthSegments = 1;
-    var heightSegments = 1;
-    var depthSegments = 1;
-
-    var geometry = new THREE.BoxGeometry( width, height, depth, widthSegments, heightSegments, depthSegments );
-    var mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial() );
-    mesh.name = 'Box ' + ( ++ meshCount );
-
-    editor.addObject( mesh );
-    editor.select( mesh );
-//    mesh.position = new THREE.Vector3(100, 100, 100)
-
-}
 
 function onCircleOptionClick () {
 

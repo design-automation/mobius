@@ -112,6 +112,8 @@ vidamo.controller('graphCtrl', ['$scope', 'prompt', function AppCtrl ($scope, pr
 //////////////////////////////////////////////////////////////////////////////////////
 // procedure tab (nested and dnd accordion) controller
 vidamo.controller('treeCtrl', function($scope,$rootScope) {
+    $scope.procedureList = [];
+
     $scope.remove = function(scope) {
         scope.remove();
     };
@@ -120,40 +122,79 @@ vidamo.controller('treeCtrl', function($scope,$rootScope) {
         scope.toggle();
     };
 
-//    $scope.newSubItem = function(scope) {
-//        var nodeData = scope.$modelValue;
-//        nodeData.nodes.push({
-//            id: nodeData.id * 10 + nodeData.nodes.length,
-//            title: nodeData.title + '.' + (nodeData.nodes.length + 1),
-//            nodes: []
-//        });
-//    };
-
     $scope.newItem = function(cate) {
         if(cate == 'Data'){
             $scope.data.push({
                 id: $scope.data.length  + 1,
                 title:  'Data',
-                nodes: [],
-                cmd:[]
+                nodes: []
             });
         } else if(cate == 'Action'){
             $scope.data.push({
                 id: $scope.data.length  + 1,
                 title:  'Action',
                 nodes: [],
-                cmd:[]
+                geo:[],
+                x:[],
+                y:[],
+                z:[],
+                width:[],
+                height:[],
+                depth:[]
             });
         } else if(cate == 'Control'){
             $scope.data.push({
                 id: $scope.data.length  + 1,
                 title:  'Control',
-                nodes: [],
-                cmd:[]
+                nodes: []
             });
         }
 
+    //onchange write the input value
+    $scope.applyValue = function (cate, value,location){
+        switch (cate){
+            case 'looping': location.looping = value; break;
+            case 'step': location.step = value; break;
+            case 'geo': location.geo = value; break;
+            case 'x': location.x = value; break;
+            case 'y': location.y = value; break;
+            case 'z':location.z = value; break;
+            case 'width': location.width = value; break;
+            case 'height': location.height = value; break;
+            case 'depth': location.depth = value; break;
+        }
+        // check if the node is in the procedure list, if not add it
+        var flag = false;
+        for(var i = 0;i < $scope.procedureList.length; i++){
+            if($scope.procedureList[i] == location){
+                flag = true;
+            }
+        }
+        if (flag == false){
+            $scope.procedureList.push(location);
+            console.log(location,"added!");
+        }
+    }
+
+    $scope.run = function(){
+        for (var i = 0;i < $scope.procedureList.length; i++){
+            if($scope.procedureList[i].geo == 'box'){
+                var widthSegments = 1;
+                var heightSegments = 1;
+                var depthSegments = 1;
+
+                var geometry = new THREE.BoxGeometry( $scope.procedureList[i].width, $scope.procedureList[i].height, $scope.procedureList[i].depth, widthSegments, heightSegments, depthSegments );
+                var mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial() );
+                mesh.name = 'Box ' + ( ++ meshCount );
+
+                editor.addObject( mesh );
+                editor.select( mesh );
+                mesh.position = new THREE.Vector3($scope.procedureList[i].x, $scope.procedureList[i].y, $scope.procedureList[i].z)
+            }
+        }
+    }
     };
+
 //dummy list for now
     $scope.dataList = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
 

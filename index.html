@@ -12,14 +12,12 @@
   <link rel="stylesheet" href="css/bootstrap/bootstrap.css">
   <link rel="stylesheet" href="css/select2.css">
   <link rel="stylesheet" href="css/ui-tree.css">
-  <link href="js/threejs/editor/css/types.css" rel="stylesheet">
-  <link id="theme" href="css/light.css" rel="stylesheet">
+  <link rel="stylesheet" href="js/threejs/editor/css/types.css" >
+  <link rel="stylesheet" href="css/light.css" id="theme">
   <link rel="stylesheet" href="css/graph.css">
-  <link href="js/angular-ui/ui-panzoom/panzoomwidget.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="css/panzoomwidget.css">
   <style type="text/css">
-  .pan-zoom-frame {
-      border: 1px solid #aaaaaa;
-  }
+
   </style>
 
   <!--three.js-->
@@ -70,6 +68,7 @@
 
 <body>
         <!--dropdown Menu-->
+
         <div>
             <span class="dropdown" on-toggle="toggled(open)">
               <a href class="dropdown-toggle">  File |</a>
@@ -114,17 +113,18 @@
                      ng-keydown="keyDown($event)"
                      ng-keyup="keyUp($event)">
 
-                    <div ng-controller="TestController" style="width:100%; height: 95%">
-                    <div style="position:relative">
-                        <panzoom config="panzoomConfig" model="panzoomModel" style="width:100%; height:900px">
-                            <div>
-                                <flow-chart chart="chartViewModel" style="width:4000px; height: 4000px" >
-                                </flow-chart>
-                            </div>
-                        </panzoom>
+                    <div ng-controller="TestController" class="TestController">
+                        <div>
+                            <panzoom config="panzoomConfig" model="panzoomModel" class="panzoom">
+                                <div>
+                                    <flow-chart chart="chartViewModel" class = "flow-chart" >
+                                    </flow-chart>
+                                </div>
+                            </panzoom>
+                        </div>
                     </div>
-                    </div>
-                    <div style="padding-top: 3px;">
+
+                    <div class = "buttons">
                     <button class="btn btn-xs"
                             ng-click="addNewNode()"
                             title="Add a new node to the chart">
@@ -244,74 +244,82 @@
                                     <div  >
                                         <script type="text/ng-template" id="nodes_renderer.html">
                                             <div ui-tree-handle class="tree-node tree-node-content">
-                                                <accordion close-others= "false" >
+                                                <accordion close-others= "true" >
                                                     <div class="panelHack">
                                                         <accordion-group is-open="true">
                                                             <accordion-heading>
-                                                                <a ng-if="node.nodes && node.nodes.length > 0" data-nodrag ng-click="toggle(this)">
+                                                                <a ng-if="node.nodes && node.nodes.length > 0 || node.nodes && node.nodes.length == 0" data-nodrag ng-click="toggle(this)">
                                                                       <span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}">
                                                                       </span>
-                                                                </a>{{node.title}}
+                                                                </a>
+                                                                {{node.title}}
                                                                 <a class="pull-right btn btn-xs" data-nodrag ng-click="remove(this)">
                                                                     <span class="glyphicon glyphicon-remove">
                                                                     </span>
                                                                 </a>
-                                                                <!-- code to add new sub-item-->
-                                                                <!--<a class="pull-right btn btn-xs" data-nodrag ng-click="newSubItem(this)">-->
-                                                                    <!--<span class="glyphicon glyphicon-plus">-->
-                                                                    <!--</span>-->
-                                                                <!--</a>-->
                                                             </accordion-heading>
-                                                            <!--dropdown menu for Action-->
-                                                            <div ng-if="node.title == 'Action'">
-                                                                <select ui-select2 ng-model="select2" data-placeholder="Add Geometry" onchange="addGeo(this.value)">
-                                                                    <option value=""></option>
-                                                                    <option value="plane">plane</option>
-                                                                    <option value="box">box</option>
-                                                                    <option value="circle">circle</option>
-                                                                    <option value="cylinder">cylinder</option>
-                                                                    <option value="sphere">sphere</option>
-                                                                    <option value="icosahedron">icosahedron</option>
-                                                                    <option value="torus">torus</option>
-                                                                    <option value="torusknot">torusknot</option>
-                                                                </select></br></br>
-                                                                <div>
-                                                                    <div class="input-group">
-                                                                        <span class="input-group-addon">x</span>
-                                                                        <input type="number" class="form-control" placeholder="x coord">
-                                                                    </div>
-                                                                    </br>
-                                                                    <div class="input-group">
-                                                                        <span class="input-group-addon">y</span>
-                                                                        <input type="number" class="form-control" placeholder="y coord">
-                                                                    </div>
-                                                                    </br>
-                                                                    <div class="input-group">
-                                                                        <span class="input-group-addon">z</span>
-                                                                        <input type="number" class="form-control" placeholder="z coord">
-                                                                    </div>
-                                                                    </br>
-                                                                    <div class="input-group">
-                                                                        <span class="input-group-addon">width</span>
-                                                                        <input type="number" class="form-control" placeholder="">
-                                                                    </div>
-                                                                    </br>
-                                                                    <div class="input-group">
-                                                                        <span class="input-group-addon">height</span>
-                                                                        <input type="number" class="form-control" placeholder="">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!-- looping for Control-->
-                                                            <div ng-if="node.title == 'Control'">
-                                                                <div class="input-group">
-                                                                    <span class="input-group-addon">Looping</span>
-                                                                    <input type="number" class="form-control" placeholder="num of loops">
-                                                                </div>
-                                                                </br>
-                                                            </div>
 
                                                             <div ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}">
+                                                                <!-- looping for Control-->
+                                                                <div ng-if="node.title == 'Control'">
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon">Looping</span>
+                                                                        <input type="number" class="form-control" placeholder="num of loops" name ="looping" ng-model="looping"ng-change="applyValue('looping',this.looping)">
+                                                                    </div>
+                                                                    </br>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon">Step</span>
+                                                                        <input type="number" class="form-control" placeholder="step" name ="step" ng-model="step"ng-change="applyValue('step',this.step)">
+                                                                    </div>
+                                                                    </br>
+                                                                </div>
+                                                                <!--dropdown menu for Action-->
+                                                                <div ng-if="node.title == 'Action'">
+                                                                    <select ui-select2 ng-model="geo" data-placeholder="{{node.geo}}" name ="geo" ng-model="geo"ng-change="applyValue('geo',this.geo,node)">
+                                                                        <option value=""></option>
+                                                                        <option value="plane">plane</option>
+                                                                        <option value="box">box</option>
+                                                                        <option value="circle">circle</option>
+                                                                        <option value="cylinder">cylinder</option>
+                                                                        <option value="sphere">sphere</option>
+                                                                        <option value="icosahedron">icosahedron</option>
+                                                                        <option value="torus">torus</option>
+                                                                        <option value="torusknot">torusknot</option>
+                                                                    </select></br></br>
+                                                                    <div>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon">x</span>
+                                                                            <input type="number" class="form-control" placeholder="{{node.x}}" name ="x" ng-model="x" ng-change="applyValue('x',this.x,node)">
+                                                                        </div>
+                                                                        </br>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon">y</span>
+                                                                            <input type="number" class="form-control" placeholder="{{node.y}}" name ="y" ng-model="y"ng-change="applyValue('y',this.y,node)">
+                                                                        </div>
+                                                                        </br>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon">z</span>
+                                                                            <input type="number" class="form-control" placeholder="{{node.z}}" name ="z" ng-model="z"ng-change="applyValue('z',this.z,node)">
+                                                                        </div>
+                                                                        </br>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon">width</span>
+                                                                            <input type="number" class="form-control" placeholder="{{node.width}}" name ="width" ng-model="width" ng-change="applyValue('width',this.width,node)">
+                                                                        </div>
+                                                                        </br>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon">height</span>
+                                                                            <input type="number" class="form-control" placeholder="{{node.height}}" name ="height" ng-model="height" ng-change="applyValue('height',this.height,node)">
+                                                                        </div>
+                                                                        </br>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon">depth</span>
+                                                                            <input type="number" class="form-control" placeholder="{{node.depth}}" name ="depth" ng-model="depth" ng-change="applyValue('depth',this.depth,node)">
+                                                                        </div>
+                                                                    </div></br>
+                                                                    <!--<button class="btn btn-xs" ng-click="run(node)">Run</button>-->
+                                                                </div>
+
                                                                 <div ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer.html'">
                                                                 </div>
                                                             </div>
@@ -329,11 +337,12 @@
                                         </div>
                                         </div>
 
-                                    <div style="padding-top: 3px;">
+                                    <div class = "buttons">
                                         <br>
                                         <button class="btn btn-xs" ng-click="newItem('Data')">Add Data</button> &nbsp;&nbsp;&nbsp;
                                         <button class="btn btn-xs" ng-click="newItem('Action')">Add Action</button> &nbsp;&nbsp;&nbsp;
-                                        <button class="btn btn-xs" ng-click="newItem('Control')">Add Control</button>
+                                        <button class="btn btn-xs" ng-click="newItem('Control')">Add Control</button> &nbsp;&nbsp;&nbsp;
+                                        <button class="btn btn-xs" ng-click="run()">run</button>
                                     </div>
                                 </div>
 

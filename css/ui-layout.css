@@ -1,3 +1,9 @@
+/***************************************************************
+
+CSS For ui-layout [three-tier General resizable layout]
+
+***************************************************************/
+
 .stretch {
   position: absolute;
   top: 9px;
@@ -23,3 +29,5 @@
   width: 8px; height: 100%;
   cursor: col-resize;
 }
+
+

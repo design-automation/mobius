@@ -26,14 +26,17 @@ angular.module('ui.layout', []).controller('uiLayoutCtrl', [
         if (_child_len > 1) {
           var flowProperty = isUsingColumnFlow ? 'left' : 'top';
           var oppositeFlowProperty = isUsingColumnFlow ? 'right' : 'bottom';
-//          var step = 100 / _child_len;
-//          for (_i = 0; _i < _child_len; ++_i) {
-//                  var area = angular.element(_childens[_i]).css(flowProperty, step * _i + '%').css(oppositeFlowProperty, 100 - step * (_i + 1) + '%');
-//                  if (_i < _child_len - 1) {
-//                      var bar = angular.element(splitBarElem_htmlTemplate).css(flowProperty, step * (_i + 1) + '%');
-//                      area.after(bar);
-//                  }
-//          }
+
+            // original algorithm to divide the layout 33.3/33.3/33.3
+
+            //          var step = 100 / _child_len;
+            //          for (_i = 0; _i < _child_len; ++_i) {
+            //                  var area = angular.element(_childens[_i]).css(flowProperty, step * _i + '%').css(oppositeFlowProperty, 100 - step * (_i + 1) + '%');
+            //                  if (_i < _child_len - 1) {
+            //                      var bar = angular.element(splitBarElem_htmlTemplate).css(flowProperty, step * (_i + 1) + '%');
+            //                      area.after(bar);
+            //                  }
+            //          }
 
             // customized column width 25/50/25
             var step = 25;
