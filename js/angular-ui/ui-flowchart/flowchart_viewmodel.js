@@ -319,23 +319,23 @@ var flowchart = {
 	//
 	var computeConnectionTangentOffset = function (pt1, pt2) {
 
-		return (pt2.x - pt1.x) / 2;	
+		return (pt2.y - pt1.y) / 2;
 	}
-
-	//
-	// Compute the tangent for the bezier curve.
-	//
-	flowchart.computeConnectionSourceTangentX = function (pt1, pt2) {
-
-		return pt1.x + computeConnectionTangentOffset(pt1, pt2);
-	};
 
 	//
 	// Compute the tangent for the bezier curve.
 	//
 	flowchart.computeConnectionSourceTangentY = function (pt1, pt2) {
 
-		return pt1.y;
+		return pt1.y + computeConnectionTangentOffset(pt1, pt2);
+	};
+
+	//
+	// Compute the tangent for the bezier curve.
+	//
+	flowchart.computeConnectionSourceTangentX = function (pt1, pt2) {
+
+		return pt1.x;
 	};
 
 	//
@@ -351,17 +351,17 @@ var flowchart = {
 	//
 	// Compute the tangent for the bezier curve.
 	//
-	flowchart.computeConnectionDestTangentX = function (pt1, pt2) {
+	flowchart.computeConnectionDestTangentY = function (pt1, pt2) {
 
-		return pt2.x - computeConnectionTangentOffset(pt1, pt2);
+		return pt2.y - computeConnectionTangentOffset(pt1, pt2);
 	};
 
 	//
 	// Compute the tangent for the bezier curve.
 	//
-	flowchart.computeConnectionDestTangentY = function (pt1, pt2) {
+	flowchart.computeConnectionDestTangentX = function (pt1, pt2) {
 
-		return pt2.y;
+		return pt2.x;
 	};
 
 	//
@@ -379,10 +379,15 @@ var flowchart = {
 	//
 	flowchart.ChartViewModel = function (chartDataModel) {
 
+        // variable for topological sort
+        var edgeList = [];
+        var unsortedNodes = [];
+
 		//
 		// Find a specific node within the chart.
 		//
-		this.findNode = function (nodeID) {
+
+        this.findNode = function (nodeID) {
 
 			for (var i = 0; i < this.nodes.length; ++i) {
 				var node = this.nodes[i];
@@ -465,6 +470,7 @@ var flowchart = {
 			debug.assertObjectValid(sourceConnector);
 			debug.assertObjectValid(destConnector);
 
+
 			var connectionsDataModel = this.data.connections;
 			if (!connectionsDataModel) {
 				connectionsDataModel = this.data.connections = [];
@@ -477,7 +483,9 @@ var flowchart = {
 
 			var sourceNode = sourceConnector.parentNode();
 			var sourceConnectorIndex = sourceNode.outputConnectors.indexOf(sourceConnector);
+            var sourceFlag = true;
 			if (sourceConnectorIndex == -1) {
+                sourceFlag = false;
 				sourceConnectorIndex = sourceNode.inputConnectors.indexOf(sourceConnector);
 				if (sourceConnectorIndex == -1) {
 					throw new Error("Failed to find source connector within either inputConnectors or outputConnectors of source node.");
@@ -486,28 +494,59 @@ var flowchart = {
 
 			var destNode = destConnector.parentNode();
 			var destConnectorIndex = destNode.inputConnectors.indexOf(destConnector);
+            var destFlag = true;
 			if (destConnectorIndex == -1) {
-				destConnectorIndex = destNode.outputConnectors.indexOf(destConnector);
+                destFlag = false;
+                destConnectorIndex = destNode.outputConnectors.indexOf(destConnector);
 				if (destConnectorIndex == -1) {
 					throw new Error("Failed to find dest connector within inputConnectors or ouputConnectors of dest node.");
 				}
 			}
 
-			var connectionDataModel = {
-				source: {
-					nodeID: sourceNode.data.id,
-					connectorIndex: sourceConnectorIndex,
-				},
-				dest: {
-					nodeID: destNode.data.id,
-					connectorIndex: destConnectorIndex,
-				},
-			};
-			connectionsDataModel.push(connectionDataModel);
+            if (sourceFlag == true ){
+                if(destFlag == true){
+                    var connectionDataModel = {
+                        source: {
+                            nodeID: sourceNode.data.id,
+                            connectorIndex: sourceConnectorIndex
+                        },
+                        dest: {
+                            nodeID: destNode.data.id,
+                            connectorIndex: destConnectorIndex
+                        }
+                    }
+                    connectionsDataModel.push(connectionDataModel);
+                    var connectionViewModel = new flowchart.ConnectionViewModel(connectionDataModel, sourceConnector, destConnector);
+                    connectionsViewModel.push(connectionViewModel);
+                }
+            }
+            else if( destFlag == false) {
+                var connectionDataModel = {
+                    source: {
+                        nodeID: destNode.data.id,
+                        connectorIndex: destConnectorIndex
+                    },
+                    dest: {
+                        nodeID: sourceNode.data.id,
+                        connectorIndex: sourceConnectorIndex
+                    }
+                }
+                connectionsDataModel.push(connectionDataModel);
+                var connectionViewModel = new flowchart.ConnectionViewModel(connectionDataModel, destConnector, sourceConnector);
+                connectionsViewModel.push(connectionViewModel);
+            }
 
-			var connectionViewModel = new flowchart.ConnectionViewModel(connectionDataModel, sourceConnector, destConnector);
-			connectionsViewModel.push(connectionViewModel);
-		};		
+
+
+            // store and print out all the connection edges for topological sort
+            edgeList = [];
+            for(var i=0;i<this.data.connections.length;i++){
+                edgeList.push([this.data.connections[i].source.nodeID, this.data.connections[i].dest.nodeID]);
+            }
+            console.log('=====================================================================');
+            console.log('New edge created:', [sourceNode.data.id,  destNode.data.id]);
+            console.log(this.topoSort());
+        };
 
 		//
 		// Add a node to the view model.
@@ -525,8 +564,66 @@ var flowchart = {
 			// 
 			// Update the view model.
 			//
-			this.nodes.push(new flowchart.NodeViewModel(nodeDataModel));		
+			this.nodes.push(new flowchart.NodeViewModel(nodeDataModel));
+            unsortedNodes.push(this.data.nodes.length-1);
+
+            // print out the new node index in console
+            console.log('======================================================================');
+            console.log(nodeDataModel.name + " created; node id:" + (this.data.nodes.length-1));
 		}
+
+        //
+        //  topological sort when new node added or new edge added
+        //
+
+        this.topoSort = function topoSort (){
+
+            console.log('----------------------------------------------------------------------');
+            console.log('sorted!');
+            console.log('total number of nodes: ',unsortedNodes.length);
+            console.log('current edges: ', edgeList);
+            console.log('before sorting: ', unsortedNodes );
+
+            // copy the node and edge lists
+            var edges = edgeList.slice();
+            var nodes = unsortedNodes.slice();
+
+            // topological sort
+            var cursor = nodes.length
+                , sorted = new Array(cursor)
+                , visited = {}
+                , i = cursor
+
+            while (i--) {
+                if (!visited[i]) visit(nodes[i], i, [])
+            }
+
+            return sorted;
+
+            function visit(node, i, predecessors) {
+                if(predecessors.indexOf(node) >= 0) {
+                    throw new Error('Error: Cyclic dependency')
+                }
+
+                if (visited[i]) return;
+                visited[i] = true
+
+                // outgoing edges
+                var outgoing = edges.filter(function(edge){
+                    return edge[0] === node
+                })
+                if (i = outgoing.length) {
+                    var preds = predecessors.concat(node)
+                    do {
+                        var child = outgoing[--i][1]
+                        visit(child, nodes.indexOf(child), preds)
+                    } while (i)
+                }
+
+                sorted[--cursor] = node
+
+            }
+        }
 
 		//
 		// Select all nodes and connections in the chart.

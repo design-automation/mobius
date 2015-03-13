@@ -10,11 +10,11 @@ vidamo.factory('prompt', function () {
     return prompt;
 })
 
-// Application controller.
-vidamo.controller('graphCtrl', ['$scope', 'prompt', function AppCtrl ($scope, prompt) {
+// Application controller
+vidamo.controller('graphCtrl', ['$scope', 'prompt', function ($scope,prompt,$rootScope) {
 
     // Selects the next node id.
-    var nextNodeID = 10;
+    var nextNodeID = 0;
 
     // Setup the data-model for the chart.
     var chartDataModel = {
@@ -23,7 +23,6 @@ vidamo.controller('graphCtrl', ['$scope', 'prompt', function AppCtrl ($scope, pr
     };
 
     // Add a new node to the chart.
-
     $scope.addNewNode = function () {
 
         var nodeName = prompt("Enter a node name:", "New node");
@@ -58,10 +57,19 @@ vidamo.controller('graphCtrl', ['$scope', 'prompt', function AppCtrl ($scope, pr
                 {
                     name: "Output3"
                 }
-            ],
+            ]
         };
 
+        // add node and emit the result to procedure part
         $scope.chartViewModel.addNode(newNodeDataModel);
+        var newNodeAdded =true;
+        $scope.$emit('newNodeAdded',newNodeAdded);
+
+        // sort nodes topologically and emit the result to procedure part
+        var sortedOrder = $scope.chartViewModel.topoSort().slice();
+        console.log("after sorting: ", sortedOrder);
+        $scope.$emit("sortedOrder", sortedOrder);
+
     };
 
     // Add an input connector to selected nodes.
@@ -76,7 +84,7 @@ vidamo.controller('graphCtrl', ['$scope', 'prompt', function AppCtrl ($scope, pr
         for (var i = 0; i < selectedNodes.length; ++i) {
             var node = selectedNodes[i];
             node.addInputConnector({
-                name: connectorName,
+                name: connectorName
             });
         }
     };
@@ -93,7 +101,7 @@ vidamo.controller('graphCtrl', ['$scope', 'prompt', function AppCtrl ($scope, pr
         for (var i = 0; i < selectedNodes.length; ++i) {
             var node = selectedNodes[i];
             node.addOutputConnector({
-                name: connectorName,
+                name: connectorName
             });
         }
     };
@@ -107,11 +115,50 @@ vidamo.controller('graphCtrl', ['$scope', 'prompt', function AppCtrl ($scope, pr
     // Create the view-model for the chart and attach to the scope.
 
     $scope.chartViewModel = new flowchart.ChartViewModel(chartDataModel);
+
 }]);
 
 //////////////////////////////////////////////////////////////////////////////////////
 // procedure tab (nested and dnd accordion) controller
-vidamo.controller('treeCtrl', function($scope,$rootScope) {
+vidamo.controller('procedureCtrl', function($scope,$rootScope) {
+    // link graph nodes with procedures
+    // link procedure with nodes from graph controller
+
+
+    $scope.dataList = [];
+
+    // listen to the graph, when a new new node added, update the dataList[]
+    $rootScope.$on("newNodeAdded",
+        function(event, message) {
+            if(message == true) {
+                $scope.dataList.push([]);
+            }
+        }
+    );
+
+    // listen to the graph, when a new the node list is sorted, pass it to the procedure list
+    $rootScope.$on("sortedOrder",
+        function(event,message){
+            var order = message;
+            console.log("------------------------------------------------");
+            console.log("dummy code:");
+            for(var i = 0; i< order.length;i++){
+                console.log("   Node: ", message[i]);
+                for(var j = 0; j < $scope.dataList[order[i]].length; j++){
+                    console.log("        P. ", $scope.dataList[order[i]][j]);
+                }
+            }
+    });
+
+    $rootScope.$on("nodeIndex", function(event, message) {
+        $scope.index = message;
+        console.log("nodeIndex passed to procedure:",$scope.index);
+        $scope.data  = $scope.dataList[$scope.index];
+        console.log('===================================================');
+        console.log('selected node procedures: ', $scope.data);
+        console.log('procedures overall: ',$scope.dataList);
+    });
+
     $scope.procedureList = [];
 
     $scope.remove = function(scope) {
@@ -192,17 +239,10 @@ vidamo.controller('treeCtrl', function($scope,$rootScope) {
                 mesh.position = new THREE.Vector3($scope.procedureList[i].x, $scope.procedureList[i].y, $scope.procedureList[i].z)
             }
         }
+        console.log("test running");
     }
     };
 
-//dummy list for now
-    $scope.dataList = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
-
-    $rootScope.$on("nodeIndex", function(event, message) {
-        $scope.index = message;
-        console.log("nodeIndex passed to tree:",$scope.index);
-        $scope.data = $scope.dataList[$scope.index];
-    });
 
 });
 
@@ -210,7 +250,7 @@ vidamo.controller('treeCtrl', function($scope,$rootScope) {
 
 //////////////////////////////////////////////////////////////////////////////////////
 // zoom and pan controller
-vidamo.controller('TestController', ['$scope',
+vidamo.controller('znpController', ['$scope',
     function($scope) {
         var rect = { x : 2000, y: 2400, width: 500 , height:500};
         // Instantiate models which will be passed to <panzoom> and <panzoomwidget>

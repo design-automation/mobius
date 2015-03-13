@@ -113,7 +113,7 @@
                      ng-keydown="keyDown($event)"
                      ng-keyup="keyUp($event)">
 
-                    <div ng-controller="TestController" class="TestController">
+                    <div ng-controller="znpController" class="znpController">
                         <div>
                             <panzoom config="panzoomConfig" model="panzoomModel" class="panzoom">
                                 <div>
@@ -240,7 +240,7 @@
                 <div class=" code-area" >
                     <tabset class="tabArea">
                         <tab heading="Procedure" >
-                                <div  ng-controller="treeCtrl">
+                                <div  ng-controller="procedureCtrl">
                                     <div  >
                                         <script type="text/ng-template" id="nodes_renderer.html">
                                             <div ui-tree-handle class="tree-node tree-node-content">
@@ -351,7 +351,7 @@
                         <tab heading="Interface"></tab>
                         <!--ace text editor-->
                         <tab heading="Code">
-                            <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'monokai' }" ng-model="javascriptCode"></div>
+                            <div id="codeEditor" ui-ace="{ mode: 'javascript', theme: 'monokai'}" readonly="true" ng-controller="graphCtrl"></div>
                         </tab>
 
                     </tabset>
