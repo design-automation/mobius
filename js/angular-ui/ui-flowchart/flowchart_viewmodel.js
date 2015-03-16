@@ -545,7 +545,11 @@ var flowchart = {
             }
             console.log('=====================================================================');
             console.log('New edge created:', [sourceNode.data.id,  destNode.data.id]);
+<<<<<<< HEAD
             console.log('After sorting: ', this.topoSort());
+=======
+            console.log(this.topoSort());
+>>>>>>> origin/master
         };
 
 		//
@@ -597,7 +601,11 @@ var flowchart = {
             while (i--) {
                 if (!visited[i]) visit(nodes[i], i, [])
             }
+<<<<<<< HEAD
             //this.$emit("sortedOrder", sorted);
+=======
+
+>>>>>>> origin/master
             return sorted;
 
             function visit(node, i, predecessors) {
