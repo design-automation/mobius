@@ -46,7 +46,7 @@ angular.module('flowChart', ['dragging'] )
 				}
 			};
 
-			//
+			//x
 			// First up, set the initial value of the textarea.
 			//
 			updateJson();
@@ -282,7 +282,7 @@ angular.module('flowChart', ['dragging'] )
 			clicked: function () {
 				var nodeIndex = chart.handleNodeClicked(node, evt.ctrlKey);
                 $rootScope.$broadcast("nodeIndex", nodeIndex);
-                console.log("index from flowchart",nodeIndex);
+                console.log("node ",nodeIndex," selected");
 			},
 
 		});

@@ -113,7 +113,7 @@
                      ng-keydown="keyDown($event)"
                      ng-keyup="keyUp($event)">
 
-                    <div ng-controller="TestController" class="TestController">
+                    <div ng-controller="znpController" class="znpController">
                         <div>
                             <panzoom config="panzoomConfig" model="panzoomModel" class="panzoom">
                                 <div>
@@ -147,6 +147,11 @@
                             ng-disabled="chartViewModel.getSelectedNodes().length == 0 && chartViewModel.getSelectedConnections().length == 0"
                             title="Delete selected nodes and connections">
                         Delete
+                    </button> &nbsp;&nbsp;
+                    <button class="btn btn-xs"
+                            ng-click="run()"
+                            title="Run program">
+                        Run
                     </button>
                     </div>
 
@@ -240,7 +245,7 @@
                 <div class=" code-area" >
                     <tabset class="tabArea">
                         <tab heading="Procedure" >
-                                <div  ng-controller="treeCtrl">
+                                <div  ng-controller="procedureCtrl">
                                     <div  >
                                         <script type="text/ng-template" id="nodes_renderer.html">
                                             <div ui-tree-handle class="tree-node tree-node-content">
@@ -342,7 +347,7 @@
                                         <button class="btn btn-xs" ng-click="newItem('Data')">Add Data</button> &nbsp;&nbsp;&nbsp;
                                         <button class="btn btn-xs" ng-click="newItem('Action')">Add Action</button> &nbsp;&nbsp;&nbsp;
                                         <button class="btn btn-xs" ng-click="newItem('Control')">Add Control</button> &nbsp;&nbsp;&nbsp;
-                                        <button class="btn btn-xs" ng-click="run()">run</button>
+                                            <!--<button class="btn btn-xs" ng-click="run()">run</button>-->
                                     </div>
                                 </div>
 
@@ -351,7 +356,7 @@
                         <tab heading="Interface"></tab>
                         <!--ace text editor-->
                         <tab heading="Code">
-                            <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'monokai' }" ng-model="javascriptCode"></div>
+                            <div id="codeEditor" ui-ace="{ mode: 'javascript', theme: 'monokai'}" readonly="true" ng-controller="graphCtrl"></div>
                         </tab>
 
                     </tabset>
