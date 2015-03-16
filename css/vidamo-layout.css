@@ -53,7 +53,8 @@ right pane code area
 }
 
 .code-area .buttons{
-    padding-top: 3px;
+    position: absolute;
+    bottom: 10px;
 }
 
 .code-area .codeEditor {

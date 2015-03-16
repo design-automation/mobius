@@ -58,6 +58,13 @@ var flowchart = {
 			return this.data.name;
 		}
 
+        //
+        // the value of the connector
+        //
+        this.value = function () {
+            return this.data.value;
+        }
+
 		//
 		// X coordinate of the connector.
 		//
@@ -238,6 +245,11 @@ var flowchart = {
 
 		// Set to true when the connection is selected.
 		this._selected = false;
+
+        // return the source output value
+        this.value = function (){
+            return this.source.data.value
+        }
 
 		this.sourceCoordX = function () { 
 			return this.source.parentNode().x() + this.source.x();
@@ -506,6 +518,8 @@ var flowchart = {
             if (sourceFlag == true ){
                 if(destFlag == true){
                     var connectionDataModel = {
+                        // apply the output connector value to the connection
+                        value: sourceConnector.data.value,
                         source: {
                             nodeID: sourceNode.data.id,
                             connectorIndex: sourceConnectorIndex
@@ -518,10 +532,15 @@ var flowchart = {
                     connectionsDataModel.push(connectionDataModel);
                     var connectionViewModel = new flowchart.ConnectionViewModel(connectionDataModel, sourceConnector, destConnector);
                     connectionsViewModel.push(connectionViewModel);
+                    // assign the input connector value to the output connector value
+                    destConnector.data.value = sourceConnector.data.value;
+                    console.log("assigned value!",destConnector.data.value);
                 }
             }
             else if( destFlag == false) {
                 var connectionDataModel = {
+                    // apply the output connector value to the connection
+                    value: destConnector.data.value,
                     source: {
                         nodeID: destNode.data.id,
                         connectorIndex: destConnectorIndex
@@ -531,11 +550,15 @@ var flowchart = {
                         connectorIndex: sourceConnectorIndex
                     }
                 }
+
                 connectionsDataModel.push(connectionDataModel);
                 var connectionViewModel = new flowchart.ConnectionViewModel(connectionDataModel, destConnector, sourceConnector);
                 connectionsViewModel.push(connectionViewModel);
-            }
 
+                //assign the input connector value to the output connector value
+                sourceConnector.data.value = destConnector.data.value
+                console.log("assigned value!", sourceConnector.data.value);
+            }
 
 
             // store and print out all the connection edges for topological sort
@@ -544,7 +567,8 @@ var flowchart = {
                 edgeList.push([this.data.connections[i].source.nodeID, this.data.connections[i].dest.nodeID]);
             }
             console.log('=====================================================================');
-            console.log('New edge created:', [sourceNode.data.id,  destNode.data.id]);
+            console.log('New edge created: ', [sourceNode.data.id,  destNode.data.id]);
+            console.log('New edge value: ',connectionDataModel.value);
             console.log('After sorting: ', this.topoSort());
         };
 

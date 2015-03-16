@@ -38,24 +38,30 @@ vidamo.controller('graphCtrl', ['$scope', 'prompt', function ($scope,prompt,$roo
             y: 2000,
             inputConnectors: [
                 {
-                    name: "Input1"
+                    name: "Input1",
+                    value:'initial'
                 },
                 {
-                    name: "Input2"
+                    name: "Input2",
+                    value:'initial'
                 },
                 {
-                    name: "Input3"
+                    name: "Input3",
+                    value:'initial'
                 }
             ],
             outputConnectors: [
                 {
-                    name: "Output1"
+                    name: "Output1",
+                    value: "value"
                 },
                 {
-                    name: "Output2"
+                    name: "Output2",
+                    value: "value"
                 },
                 {
-                    name: "Output3"
+                    name: "Output3",
+                    value: "value"
                 }
             ]
         };
@@ -84,7 +90,8 @@ vidamo.controller('graphCtrl', ['$scope', 'prompt', function ($scope,prompt,$roo
         for (var i = 0; i < selectedNodes.length; ++i) {
             var node = selectedNodes[i];
             node.addInputConnector({
-                name: connectorName
+                name: connectorName,
+                value: "initial"
             });
         }
     };
@@ -101,7 +108,8 @@ vidamo.controller('graphCtrl', ['$scope', 'prompt', function ($scope,prompt,$roo
         for (var i = 0; i < selectedNodes.length; ++i) {
             var node = selectedNodes[i];
             node.addOutputConnector({
-                name: connectorName
+                name: connectorName,
+                value: "initial"
             });
         }
     };
