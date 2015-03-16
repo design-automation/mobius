@@ -149,7 +149,7 @@ vidamo.controller('procedureCtrl', function($scope,$rootScope) {
         }
     );
 
-
+    // listen to the graph, when a node is clicked, update the visual procedure accordions
     $rootScope.$on("nodeIndex", function(event, message) {
         $scope.index = message;
         console.log('===================================================');
@@ -227,8 +227,11 @@ vidamo.controller('procedureCtrl', function($scope,$rootScope) {
     $rootScope.$on("topoSort",
         function(event,message){
             var sortedOrder = message.slice();
+
             // dummy code generation for functions based on procedures
             console.log("=================== dummy code generation ===================");
+
+            // print out the list of function definitions
             console.log("Function definitions:");
             for(var i = 0; i < $scope.dataList.length; i++){
                 console.log("Function: ", i);
@@ -237,7 +240,7 @@ vidamo.controller('procedureCtrl', function($scope,$rootScope) {
                 }
             }
 
-            // execution orders based on topological sort todo input and output as parameters and return value under development
+            // execution orders based on topological sort
             console.log("");
             console.log("Execution: ");
             for(var i = 0; i < sortedOrder.length; i++){
