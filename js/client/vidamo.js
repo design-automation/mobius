@@ -68,11 +68,7 @@ vidamo.controller('graphCtrl', ['$scope', 'prompt', function ($scope,prompt,$roo
         // sort nodes topologically and emit the result to procedure part
         var sortedOrder = $scope.chartViewModel.topoSort().slice();
         console.log("after sorting: ", sortedOrder);
-<<<<<<< HEAD
         //$scope.$emit("sortedOrder", sortedOrder);
-=======
-        $scope.$emit("sortedOrder", sortedOrder);
->>>>>>> origin/master
 
     };
 
@@ -134,11 +130,6 @@ vidamo.controller('graphCtrl', ['$scope', 'prompt', function ($scope,prompt,$roo
 vidamo.controller('procedureCtrl', function($scope,$rootScope) {
     // link graph nodes with procedures
     // link procedure with nodes from graph controller
-<<<<<<< HEAD
-=======
-
-
->>>>>>> origin/master
     $scope.dataList = [];
 
     // listen to the graph, when a new new node added, update the dataList[]
@@ -150,34 +141,12 @@ vidamo.controller('procedureCtrl', function($scope,$rootScope) {
         }
     );
 
-<<<<<<< HEAD
 
     $rootScope.$on("nodeIndex", function(event, message) {
         $scope.index = message;
         console.log('===================================================');
         console.log("nodeIndex passed to procedure:",$scope.index);
         $scope.data  = $scope.dataList[$scope.index];
-=======
-    // listen to the graph, when a new the node list is sorted, pass it to the procedure list
-    $rootScope.$on("sortedOrder",
-        function(event,message){
-            var order = message;
-            console.log("------------------------------------------------");
-            console.log("dummy code:");
-            for(var i = 0; i< order.length;i++){
-                console.log("   Node: ", message[i]);
-                for(var j = 0; j < $scope.dataList[order[i]].length; j++){
-                    console.log("        P. ", $scope.dataList[order[i]][j]);
-                }
-            }
-    });
-
-    $rootScope.$on("nodeIndex", function(event, message) {
-        $scope.index = message;
-        console.log("nodeIndex passed to procedure:",$scope.index);
-        $scope.data  = $scope.dataList[$scope.index];
-        console.log('===================================================');
->>>>>>> origin/master
         console.log('selected node procedures: ', $scope.data);
         console.log('procedures overall: ',$scope.dataList);
     });
@@ -286,11 +255,7 @@ vidamo.controller('procedureCtrl', function($scope,$rootScope) {
                 mesh.position = new THREE.Vector3($scope.procedureList[i].x, $scope.procedureList[i].y, $scope.procedureList[i].z)
             }
         }
-<<<<<<< HEAD
 
-=======
-        console.log("test running");
->>>>>>> origin/master
     }
     };
 
