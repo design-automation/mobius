@@ -150,21 +150,25 @@ vidamo.controller('graphCtrl', function($scope,prompt,$rootScope) {
 
         // print out the list of function definitions
         console.log("Function definitions:");
+        $scope.javascriptCode = "Function definitions:" + "\n";
         for(var i = 0; i < $scope.dataList.length; i++){
 
             var inputs = [];
             var outputs = [];
             console.log("Function: ", i);
+            $scope.javascriptCode = $scope.javascriptCode + "Function: " + i + "\n";
 
             // print out values of inputs
                 for(var n = 0; n < $scope.chartViewModel.nodes[i].inputConnectors.length; n++){
                     inputs.push($scope.chartViewModel.nodes[i].inputConnectors[n].data.value);
                 }
             console.log("inputs: ", inputs);
+            $scope.javascriptCode = $scope.javascriptCode + "inputs: " + inputs + "\n";
 
             // print out content of procedures
             for(var j = 0; j < $scope.dataList[i].length; j++){
                 console.log("   ", $scope.dataList[i][j]);
+                $scope.javascriptCode = $scope.javascriptCode  + "    " +  $scope.dataList[i][j] + "\n";
             }
 
             // print out values of outputs
@@ -172,14 +176,21 @@ vidamo.controller('graphCtrl', function($scope,prompt,$rootScope) {
                     outputs.push($scope.chartViewModel.nodes[i].outputConnectors[y].data.value);
                 }
             console.log("outputs: ",outputs);
+            $scope.javascriptCode = $scope.javascriptCode + "outputs: " + outputs + "\n";
             console.log("");
+            $scope.javascriptCode = $scope.javascriptCode  + "\n";
         }
 
         // execution orders based on topological sort
         console.log("Execution: ");
+        $scope.javascriptCode = $scope.javascriptCode  + "Execution: " + "\n";
+
         for(var i = 0; i < sortedOrder.length; i++){
             console.log("Function: ",sortedOrder[i]);
+            $scope.javascriptCode = $scope.javascriptCode  + "Function: " + sortedOrder[i] + "\n";
         }
+
+
 
     };
 
