@@ -557,7 +557,7 @@ var flowchart = {
 
                 //assign the input connector value to the output connector value
                 sourceConnector.data.value = destConnector.data.value
-                console.log("assigned value!", sourceConnector.data.value);
+                console.log("assigned value! value is: ", sourceConnector.data.value);
             }
 
 

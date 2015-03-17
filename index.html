@@ -102,13 +102,13 @@
             </span>
 
         </div>
-
+<div  ng-controller="graphCtrl">
          <!--resizable layout-->
             <div ui-layout>
               <div ui-layout="{flow : 'column'}" >
                 <!--graph area-->
                 <div class=" graph-area"
-                     ng-controller="graphCtrl"
+
                      mouse-capture
                      ng-keydown="keyDown($event)"
                      ng-keyup="keyUp($event)">
@@ -245,8 +245,9 @@
                 <div class=" code-area" >
                     <tabset class="tabArea">
                         <tab heading="Procedure" >
-                                <div  ng-controller="procedureCtrl">
-                                    <div  >
+                                <!--<div  ng-controller="graphCtrl">-->
+                            <div>
+                            <div  >
                                         <script type="text/ng-template" id="nodes_renderer.html">
                                             <div ui-tree-handle class="tree-node tree-node-content">
                                                 <accordion close-others= "true" >
@@ -364,6 +365,7 @@
 
               </div>
             </div>
+    </div>
 
          <!--  javascript -->
          <!--jquery-->

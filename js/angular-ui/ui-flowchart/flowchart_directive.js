@@ -280,10 +280,11 @@ angular.module('flowChart', ['dragging'] )
 			// The node wasn't dragged... it was clicked.
 			//
 			clicked: function () {
-				var nodeIndex = chart.handleNodeClicked(node, evt.ctrlKey);
-                $rootScope.$broadcast("nodeIndex", nodeIndex);
+                var nodeIndex = chart.handleNodeClicked(node, evt.ctrlKey);
                 console.log("node ",nodeIndex," selected");
-			},
+                $scope.$emit("nodeIndex", nodeIndex);
+
+			}
 
 		});
 	};

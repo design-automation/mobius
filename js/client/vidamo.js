@@ -5,16 +5,20 @@ var vidamo = angular.module('vidamo', ['ui.layout','ui.ace','ui.bootstrap','ngSa
 
 // Simple service to create a prompt.
 vidamo.factory('prompt', function () {
-
     // Return the browsers prompt function.
     return prompt;
 })
 
 // Application controller
-vidamo.controller('graphCtrl', ['$scope', 'prompt', function ($scope,prompt,$rootScope) {
+vidamo.controller('graphCtrl', function($scope,prompt,$rootScope) {
+
+    // data structure of procedure list
+    $scope.dataList = [];
+    $scope.procedureList = [];
 
     // Selects the next node id.
     var nextNodeID = 0;
+
 
     // Setup the data-model for the chart.
     var chartDataModel = {
@@ -22,15 +26,26 @@ vidamo.controller('graphCtrl', ['$scope', 'prompt', function ($scope,prompt,$roo
         connections: []
     };
 
+    // listen to the graph, when a node is clicked, update the visual procedure accordions
+    // use $scope since $rootScope cause duplication from the undestroyed listener
+     $scope.$on("nodeIndex", function(event, message) {
+        $scope.index = message;
+        console.log('===================================================');
+        console.log("nodeIndex passed to procedure:",$scope.index);
+        $scope.data  = $scope.dataList[$scope.index];
+        console.log('selected node procedures: ', $scope.data);
+        console.log('procedures overall: ',$scope.dataList);
+    });
+
     // Add a new node to the chart.
     $scope.addNewNode = function () {
-
+        // promote for name of new node
         var nodeName = prompt("Enter a node name:", "New node");
         if (!nodeName) {
             return;
         }
-        // Template for a new node.
 
+        // Template for a new node
         var newNodeDataModel = {
             name: nodeName,
             id: nextNodeID++,
@@ -39,15 +54,15 @@ vidamo.controller('graphCtrl', ['$scope', 'prompt', function ($scope,prompt,$roo
             inputConnectors: [
                 {
                     name: "Input1",
-                    value:'initial'
+                    value:''
                 },
                 {
                     name: "Input2",
-                    value:'initial'
+                    value:''
                 },
                 {
                     name: "Input3",
-                    value:'initial'
+                    value:''
                 }
             ],
             outputConnectors: [
@@ -66,16 +81,14 @@ vidamo.controller('graphCtrl', ['$scope', 'prompt', function ($scope,prompt,$roo
             ]
         };
 
-        // add node and emit the result to procedure part
+        // when new node added, increase the number of procedure list by one
+        $scope.dataList.push([]);
+
         $scope.chartViewModel.addNode(newNodeDataModel);
-        var newNodeAdded =true;
-        $scope.$emit('newNodeAdded',newNodeAdded);
 
         // sort nodes topologically and emit the result to procedure part
         var sortedOrder = $scope.chartViewModel.topoSort().slice();
         console.log("after sorting: ", sortedOrder);
-        //$scope.$emit("sortedOrder", sortedOrder);
-
     };
 
     // Add an input connector to selected nodes.
@@ -115,51 +128,60 @@ vidamo.controller('graphCtrl', ['$scope', 'prompt', function ($scope,prompt,$roo
     };
 
     // Delete selected nodes and connections.
+
     $scope.deleteSelected = function () {
         $scope.chartViewModel.deleteSelected();
     };
+
+
+    // Create the view-model for the chart and attach to the scope.
+
+    $scope.chartViewModel = new flowchart.ChartViewModel(chartDataModel);
 
     // run function
     // first execute the topological sort
     // then call the run function in procedural controller
     $scope.run = function(){
+        // copy the sorted order
         var sortedOrder = $scope.chartViewModel.topoSort().slice();
-        $scope.$emit("topoSort",sortedOrder);
-    };
 
+        // dummy code generation for functions based on procedures
+        console.log("=================== dummy code generation ===================");
 
-    // Create the view-model for the chart and attach to the scope.
-    $scope.chartViewModel = new flowchart.ChartViewModel(chartDataModel);
+        // print out the list of function definitions
+        console.log("Function definitions:");
+        for(var i = 0; i < $scope.dataList.length; i++){
 
-}]);
+            var inputs = [];
+            var outputs = [];
+            console.log("Function: ", i);
 
-//////////////////////////////////////////////////////////////////////////////////////
-// procedure tab (nested and dnd accordion) controller
-vidamo.controller('procedureCtrl', function($scope,$rootScope) {
-    // link graph nodes with procedures
-    // link procedure with nodes from graph controller
-    $scope.dataList = [];
+            // print out values of inputs
+                for(var n = 0; n < $scope.chartViewModel.nodes[i].inputConnectors.length; n++){
+                    inputs.push($scope.chartViewModel.nodes[i].inputConnectors[n].data.value);
+                }
+            console.log("inputs: ", inputs);
 
-    // listen to the graph, when a new new node added, update the dataList[]
-    $rootScope.$on("newNodeAdded",
-        function(event, message) {
-            if(message == true) {
-                $scope.dataList.push([]);
+            // print out content of procedures
+            for(var j = 0; j < $scope.dataList[i].length; j++){
+                console.log("   ", $scope.dataList[i][j]);
             }
+
+            // print out values of outputs
+                for(var y = 0; y < $scope.chartViewModel.nodes[i].outputConnectors.length; y++){
+                    outputs.push($scope.chartViewModel.nodes[i].outputConnectors[y].data.value);
+                }
+            console.log("outputs: ",outputs);
+            console.log("");
         }
-    );
 
-    // listen to the graph, when a node is clicked, update the visual procedure accordions
-    $rootScope.$on("nodeIndex", function(event, message) {
-        $scope.index = message;
-        console.log('===================================================');
-        console.log("nodeIndex passed to procedure:",$scope.index);
-        $scope.data  = $scope.dataList[$scope.index];
-        console.log('selected node procedures: ', $scope.data);
-        console.log('procedures overall: ',$scope.dataList);
-    });
+        // execution orders based on topological sort
+        console.log("Execution: ");
+        for(var i = 0; i < sortedOrder.length; i++){
+            console.log("Function: ",sortedOrder[i]);
+        }
 
-    $scope.procedureList = [];
+    };
 
     $scope.remove = function(scope) {
         scope.remove();
@@ -197,83 +219,35 @@ vidamo.controller('procedureCtrl', function($scope,$rootScope) {
             });
         }
 
-    //onchange write the input value
-    $scope.applyValue = function (cate, value,location){
-        switch (cate){
-            case 'looping': location.looping = value; break;
-            case 'step': location.step = value; break;
-            case 'geo': location.geo = value; break;
-            case 'x': location.x = value; break;
-            case 'y': location.y = value; break;
-            case 'z':location.z = value; break;
-            case 'width': location.width = value; break;
-            case 'height': location.height = value; break;
-            case 'depth': location.depth = value; break;
-        }
-        // check if the node is in the procedure list, if not add it
-        var flag = false;
-        for(var i = 0;i < $scope.procedureList.length; i++){
-            if($scope.procedureList[i] == location){
-                flag = true;
+        //onchange write the input value
+        $scope.applyValue = function (cate, value,location){
+            switch (cate){
+                case 'looping': location.looping = value; break;
+                case 'step': location.step = value; break;
+                case 'geo': location.geo = value; break;
+                case 'x': location.x = value; break;
+                case 'y': location.y = value; break;
+                case 'z':location.z = value; break;
+                case 'width': location.width = value; break;
+                case 'height': location.height = value; break;
+                case 'depth': location.depth = value; break;
             }
-        }
-        if (flag == false){
-            $scope.procedureList.push(location);
-            console.log(location,"added!");
-        }
-    }
-
-    // listen to the graph, when RUN in graph controlled is called, get the topological sort order and execute procedure "functions"
-    $rootScope.$on("topoSort",
-        function(event,message){
-            var sortedOrder = message.slice();
-
-            // dummy code generation for functions based on procedures
-            console.log("=================== dummy code generation ===================");
-
-            // print out the list of function definitions
-            console.log("Function definitions:");
-            for(var i = 0; i < $scope.dataList.length; i++){
-                console.log("Function: ", i);
-                for(var j = 0; j < $scope.dataList[i].length; j++){
-                    console.log("   ", $scope.dataList[i][j]);
+            // check if the node is in the procedure list, if not add it
+            var flag = false;
+            for(var i = 0;i < $scope.procedureList.length; i++){
+                if($scope.procedureList[i] == location){
+                    flag = true;
                 }
             }
-
-            // execution orders based on topological sort
-            console.log("");
-            console.log("Execution: ");
-            for(var i = 0; i < sortedOrder.length; i++){
-                console.log("Function: ",sortedOrder[i]);
-            }
-        });
-
-    $scope.run = function(){
-
-        // actual execution
-        for (var i = 0;i < $scope.procedureList.length; i++){
-            if($scope.procedureList[i].geo == 'box'){
-                var widthSegments = 1;
-                var heightSegments = 1;
-                var depthSegments = 1;
-
-                var geometry = new THREE.BoxGeometry( $scope.procedureList[i].width, $scope.procedureList[i].height, $scope.procedureList[i].depth, widthSegments, heightSegments, depthSegments );
-                var mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial() );
-                mesh.name = 'Box ' + ( ++ meshCount );
-
-                editor.addObject( mesh );
-                editor.select( mesh );
-                mesh.position = new THREE.Vector3($scope.procedureList[i].x, $scope.procedureList[i].y, $scope.procedureList[i].z)
+            if (flag == false){
+                $scope.procedureList.push(location);
+                console.log(location,"added!");
             }
         }
 
-    }
     };
 
-
 });
-
-
 
 //////////////////////////////////////////////////////////////////////////////////////
 // zoom and pan controller
