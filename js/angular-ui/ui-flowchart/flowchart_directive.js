@@ -366,6 +366,9 @@ angular.module('flowChart', ['dragging'] )
 					// Create a new connection.
 					//
 					$scope.chart.createNewConnection(connector, $scope.mouseOverConnector);
+
+                    // when new connection create, emit for the update in vidamo.js
+                    $scope.$emit("newEdge",connector.parentNode());
 				}
 
 				$scope.draggingConnection = false;

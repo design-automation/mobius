@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="vidamo" xmlns="http://www.w3.org/1999/html">
+<html ng-app="vidamo" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 
 <head>
   <meta charset="utf-8" />
@@ -16,6 +16,8 @@
   <link rel="stylesheet" href="css/light.css" id="theme">
   <link rel="stylesheet" href="css/graph.css">
   <link rel="stylesheet" href="css/panzoomwidget.css">
+    <link rel="stylesheet" href="js/angular-ui/ui-select/select.css">
+
   <style type="text/css">
 
   </style>
@@ -102,152 +104,160 @@
             </span>
 
         </div>
-<div  ng-controller="graphCtrl">
+        <div  ng-controller="graphCtrl">
          <!--resizable layout-->
             <div ui-layout>
               <div ui-layout="{flow : 'column'}" >
                 <!--graph area-->
-                <div class=" graph-area"
+                  <tabset justified="true" class=" graph-area">
+                      <tab heading="nodes">
+                        <div
+                             mouse-capture
+                             ng-keydown="keyDown($event)"
+                             ng-keyup="keyUp($event)">
 
-                     mouse-capture
-                     ng-keydown="keyDown($event)"
-                     ng-keyup="keyUp($event)">
-
-                    <div ng-controller="znpController" class="znpController">
-                        <div>
-                            <panzoom config="panzoomConfig" model="panzoomModel" class="panzoom">
+                            <div ng-controller="znpController" class="znpController">
                                 <div>
-                                    <flow-chart chart="chartViewModel" class = "flow-chart" >
-                                    </flow-chart>
+                                    <panzoom config="panzoomConfig" model="panzoomModel" class="panzoom">
+                                        <div>
+                                            <flow-chart chart="chartViewModel" class = "flow-chart" >
+                                            </flow-chart>
+                                        </div>
+                                    </panzoom>
                                 </div>
-                            </panzoom>
+                            </div>
+
+                            <div class = "buttons">
+                            <button class="btn btn-xs"
+                                    ng-click="addNewNode()"
+                                    title="Add a new node to the chart">
+                                Add Node
+                            </button> &nbsp;&nbsp;
+                            <button class="btn btn-xs"
+                                    ng-click="addNewInputConnector()"
+                                    ng-disabled="chartViewModel.getSelectedNodes().length == 0"
+                                    title="Add a new input connector to the selected node">
+                                Add Input
+                            </button> &nbsp;&nbsp;
+                            <button class="btn btn-xs"
+                                    ng-click="addNewOutputConnector()"
+                                    ng-disabled="chartViewModel.getSelectedNodes().length == 0"
+                                    title="Add a new output connector to the selected node">
+                                Add Output
+                            </button> &nbsp;&nbsp;
+                            <button class="btn btn-xs"
+                                    ng-click="deleteSelected()"
+                                    ng-disabled="chartViewModel.getSelectedNodes().length == 0 && chartViewModel.getSelectedConnections().length == 0"
+                                    title="Delete selected nodes and connections">
+                                Delete
+                            </button> &nbsp;&nbsp;
+                            <button class="btn btn-xs"
+                                    ng-click="run()"
+                                    title="Run program">
+                                Run
+                            </button>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class = "buttons">
-                    <button class="btn btn-xs"
-                            ng-click="addNewNode()"
-                            title="Add a new node to the chart">
-                        Add Node
-                    </button> &nbsp;&nbsp;
-                    <button class="btn btn-xs"
-                            ng-click="addNewInputConnector()"
-                            ng-disabled="chartViewModel.getSelectedNodes().length == 0"
-                            title="Add a new input connector to the selected node">
-                        Add Input
-                    </button> &nbsp;&nbsp;
-                    <button class="btn btn-xs"
-                            ng-click="addNewOutputConnector()"
-                            ng-disabled="chartViewModel.getSelectedNodes().length == 0"
-                            title="Add a new output connector to the selected node">
-                        Add Output
-                    </button> &nbsp;&nbsp;
-                    <button class="btn btn-xs"
-                            ng-click="deleteSelected()"
-                            ng-disabled="chartViewModel.getSelectedNodes().length == 0 && chartViewModel.getSelectedConnections().length == 0"
-                            title="Delete selected nodes and connections">
-                        Delete
-                    </button> &nbsp;&nbsp;
-                    <button class="btn btn-xs"
-                            ng-click="run()"
-                            title="Run program">
-                        Run
-                    </button>
-                    </div>
-
-                </div>
+                      </tab>
+                      <tab heading = "Node Code">
+                          <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'monokai' }" ng-model="javascriptCode"></div>
+                      </tab>
+                  </tabset>
 
                 <!--3D view area  -->
-                <div class=" view-area" >
-                    <div class="Panel" id="viewport" >
 
-                        <script>
-                            var editor = new Editor();
 
-                            var viewport = new Viewport( editor ).setId( 'viewport' );
-                            document.getElementById("viewport").appendChild(viewport.dom);
+                  <div class=" view-area" >
+                      <tabset justified ="true">
+                          <tab heading="3D View">
+                              <div class="Panel" id ="viewport" >
+                                <script>
+                                    var editor = new Editor();
 
-                            editor.setTheme( editor.config.getKey( 'theme' ) );
+                                    var viewport = new Viewport( editor ).setId( 'viewport' );
+                                    document.getElementById("viewport").appendChild(viewport.dom);
 
-                            editor.storage.init( function () {
+                                    editor.setTheme( editor.config.getKey( 'theme' ) );
 
-                                editor.storage.get( function ( state ) {
+                                    editor.storage.init( function () {
 
-                                    if ( state !== undefined ) {
-                                        var loader = new THREE.ObjectLoader();
-                                        var scene = loader.parse( state );
-                                        editor.setScene( scene );
-                                    }
+//                                                editor.storage.get( function ( state ) {
+//
+//                                                    if ( state !== undefined ) {
+//                                                        var loader = new THREE.ObjectLoader();
+//                                                        var scene = loader.parse( state );
+//                                                        editor.setScene( scene );
+//                                                    }
+//
+//                                                    var selected = editor.config.getKey( 'selected' );
+//
+//                                                    if ( selected !== undefined ) {
+//                                                        editor.selectByUuid( selected );
+//                                                    }
+//                                                } );
+//
 
-                                    var selected = editor.config.getKey( 'selected' );
+                                        var timeout;
+                                        var exporter = new THREE.ObjectExporter();
+                                        var saveState = function ( scene ) {
+                                            clearTimeout( timeout );
+                                            timeout = setTimeout( function () {
+                                                editor.storage.set( exporter.parse( editor.scene ) );
+                                            }, 1000 );
 
-                                    if ( selected !== undefined ) {
-                                        editor.selectByUuid( selected );
-                                    }
-                                } );
+                                        };
 
-                                //
+                                        var signals = editor.signals;
 
-                                var timeout;
-                                var exporter = new THREE.ObjectExporter();
-                                var saveState = function ( scene ) {
-                                    clearTimeout( timeout );
-                                    timeout = setTimeout( function () {
-                                        editor.storage.set( exporter.parse( editor.scene ) );
-                                    }, 1000 );
+                                        signals.objectAdded.add( saveState );
+                                        signals.objectChanged.add( saveState );
+                                        signals.objectRemoved.add( saveState );
+                                        signals.materialChanged.add( saveState );
+                                        signals.sceneGraphChanged.add( saveState );
+                                    } );
 
-                                };
-
-                                var signals = editor.signals;
-
-                                signals.objectAdded.add( saveState );
-                                signals.objectChanged.add( saveState );
-                                signals.objectRemoved.add( saveState );
-                                signals.materialChanged.add( saveState );
-                                signals.sceneGraphChanged.add( saveState );
-                            } );
-
-                            document.addEventListener( 'dragover', function ( event ) {
-                                event.preventDefault();
-                                event.dataTransfer.dropEffect = 'copy';
-                            }, false );
-
-                            document.addEventListener( 'drop', function ( event ) {
-                                event.preventDefault();
-                                editor.loader.loadFile( event.dataTransfer.files[ 0 ] );
-                            }, false );
-
-                            document.addEventListener( 'keydown', function ( event ) {
-                                switch ( event.keyCode ) {
-                                    case 8: // prevent browser back
+                                    document.addEventListener( 'dragover', function ( event ) {
                                         event.preventDefault();
-                                        break;
-                                    case 46: // delete
-                                        var parent = editor.selected.parent;
-                                        editor.removeObject( editor.selected );
-                                        editor.select( parent );
-                                        break;
-                                }
-                            }, false );
+                                        event.dataTransfer.dropEffect = 'copy';
+                                    }, false );
 
-                            var onWindowResize = function ( event ) {
-                                editor.signals.windowResize.dispatch();
-                            };
-                            window.addEventListener( 'resize', onWindowResize, false );
-                            onWindowResize();
+                                    document.addEventListener( 'drop', function ( event ) {
+                                        event.preventDefault();
+                                        editor.loader.loadFile( event.dataTransfer.files[ 0 ] );
+                                    }, false );
 
-                        </script>
+                                    document.addEventListener( 'keydown', function ( event ) {
+                                        switch ( event.keyCode ) {
+                                            case 8: // prevent browser back
+                                                event.preventDefault();
+                                                break;
+                                            case 46: // delete
+                                                var parent = editor.selected.parent;
+                                                editor.removeObject( editor.selected );
+                                                editor.select( parent );
+                                                break;
+                                        }
+                                    }, false );
 
-                    </div>
-                </div>
+                                    var onWindowResize = function ( event ) {
+                                        editor.signals.windowResize.dispatch();
+                                    };
+                                    window.addEventListener( 'resize', onWindowResize, false );
+                                    onWindowResize();
+                                </script>
+                              </div>
+                          </tab>
+                          <tab heading = "Console"></tab>
+                      </tabset>
+                  </div>
+
 
                 <!--code area-->
                 <div class=" code-area" >
                     <tabset class="tabArea">
                         <tab heading="Procedure" >
-                                <!--<div  ng-controller="graphCtrl">-->
                             <div>
-                            <div  >
+                                <div>
                                         <script type="text/ng-template" id="nodes_renderer.html">
                                             <div ui-tree-handle class="tree-node tree-node-content">
                                                 <accordion close-others= "true" >
@@ -266,6 +276,19 @@
                                                             </accordion-heading>
 
                                                             <div ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}">
+                                                                <!--data name and value for data -->
+                                                                <div ng-if="node.title == 'Data'">
+                                                                    <div class="input-group input-group-sm">
+                                                                        <span class="input-group-addon">data name</span>
+                                                                        <input class="form-control" name="dataName" data-placeholder="{{node.dataName}}" ng-model="dataName" ng-change="applyValue('dataName',this.dataName,node)">
+                                                                    </div>
+                                                                    </br>
+                                                                    <div class="input-group input-group-sm">
+                                                                        <span class="input-group-addon" >data value</span>
+                                                                        <input class="form-control" name="dataValue" data-placeholder="{{node.dataValue}}" ng-model="dataValue" ng-change="applyValue('dataValue',this.dataValue,node)">
+                                                                    </div>
+                                                                </div>
+
                                                                 <!-- looping for Control-->
                                                                 <div ng-if="node.title == 'Control'">
                                                                     <div class="input-group">
@@ -278,52 +301,49 @@
                                                                         <input type="number" class="form-control" placeholder="step" name ="step" ng-model="step"ng-change="applyValue('step',this.step)">
                                                                     </div>
                                                                     </br>
+
+                                                                    <div>
+                                                                        <ui-select  theme="bootstrap" ng-disabled="disabled" style="min-width: 200px;" placeholder = "looping num..." >
+                                                                        </ui-select>
+                                                                    </div>
                                                                 </div>
                                                                 <!--dropdown menu for Action-->
                                                                 <div ng-if="node.title == 'Action'">
-                                                                    <select ui-select2 ng-model="geo" data-placeholder="{{node.geo}}" name ="geo" ng-model="geo"ng-change="applyValue('geo',this.geo,node)">
+                                                                    <span> method: </span>
+                                                                    <select ng-model="method" data-placeholder="{{node.method}}" name ="method" ng-change="applyValue('method',this.method,node)" style="width: 200px;">
                                                                         <option value=""></option>
-                                                                        <option value="plane">plane</option>
-                                                                        <option value="box">box</option>
-                                                                        <option value="circle">circle</option>
-                                                                        <option value="cylinder">cylinder</option>
-                                                                        <option value="sphere">sphere</option>
-                                                                        <option value="icosahedron">icosahedron</option>
-                                                                        <option value="torus">torus</option>
-                                                                        <option value="torusknot">torusknot</option>
+                                                                        <option value="print data">print data</option>
+                                                                        <option value="get input">get input </option>
+                                                                        <option value="append output">append output</option>
                                                                     </select></br></br>
-                                                                    <div>
-                                                                        <div class="input-group">
-                                                                            <span class="input-group-addon">x</span>
-                                                                            <input type="number" class="form-control" placeholder="{{node.x}}" name ="x" ng-model="x" ng-change="applyValue('x',this.x,node)">
-                                                                        </div>
-                                                                        </br>
-                                                                        <div class="input-group">
-                                                                            <span class="input-group-addon">y</span>
-                                                                            <input type="number" class="form-control" placeholder="{{node.y}}" name ="y" ng-model="y"ng-change="applyValue('y',this.y,node)">
-                                                                        </div>
-                                                                        </br>
-                                                                        <div class="input-group">
-                                                                            <span class="input-group-addon">z</span>
-                                                                            <input type="number" class="form-control" placeholder="{{node.z}}" name ="z" ng-model="z"ng-change="applyValue('z',this.z,node)">
-                                                                        </div>
-                                                                        </br>
-                                                                        <div class="input-group">
-                                                                            <span class="input-group-addon">width</span>
-                                                                            <input type="number" class="form-control" placeholder="{{node.width}}" name ="width" ng-model="width" ng-change="applyValue('width',this.width,node)">
-                                                                        </div>
-                                                                        </br>
-                                                                        <div class="input-group">
-                                                                            <span class="input-group-addon">height</span>
-                                                                            <input type="number" class="form-control" placeholder="{{node.height}}" name ="height" ng-model="height" ng-change="applyValue('height',this.height,node)">
-                                                                        </div>
-                                                                        </br>
-                                                                        <div class="input-group">
-                                                                            <span class="input-group-addon">depth</span>
-                                                                            <input type="number" class="form-control" placeholder="{{node.depth}}" name ="depth" ng-model="depth" ng-change="applyValue('depth',this.depth,node)">
-                                                                        </div>
-                                                                    </div></br>
-                                                                    <!--<button class="btn btn-xs" ng-click="run(node)">Run</button>-->
+                                                                </div>
+
+                                                                <!--method for append data to output port-->
+                                                                <div ng-if="node.method == 'append output'">
+                                                                    <span> output port: </span>
+                                                                    <select ng-model="outputPort" ng-change = "applyValue('outputPort', this.outputPort,node)" style="width: 200px;">
+                                                                        <option value=""></option>
+                                                                        <option  ng-repeat="outputPort in node.parentNode.data.outputConnectors" value="{{outputPort.name}}">{{outputPort.name}}</option>
+                                                                    </select></br></br>
+
+                                                                    <span> data name: </span>
+                                                                    <select ng-model="outputDataName" style="width: 200px;" ng-change = "applyValue('outputDataName', this.outputDataName,node)" style="width: 200px;">
+                                                                            <option ng-repeat="node in data" value="{{node.dataValue}}">{{node.dataName}}</option>
+                                                                    </select></br></br>
+                                                                </div>
+
+                                                                <!--method for get data from input port-->
+                                                                <div ng-if="node.method == 'get input'">
+                                                                    <span> output port: </span>
+                                                                    <select ng-model="inputPort" ng-change = "applyValue('inputPort', this.inputPort,node)" style="width: 200px;">
+                                                                        <option value=""></option>
+                                                                        <option  ng-repeat="inputPort in node.parentNode.data.inputConnectors" value="{{inputPort.name}}">{{inputPort.name}}</option>
+                                                                    </select></br></br>
+
+                                                                    <div class="input-group input-group-sm">
+                                                                        <span class="input-group-addon">data name</span>
+                                                                        <input class="form-control" name="dataName" ng-model="dataName" ng-change="applyValue('dataName',this.dataName,node)">
+                                                                    </div>
                                                                 </div>
 
                                                                 <div ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer.html'">
@@ -348,7 +368,6 @@
                                         <button class="btn btn-xs" ng-click="newItem('Data')">Add Data</button> &nbsp;&nbsp;&nbsp;
                                         <button class="btn btn-xs" ng-click="newItem('Action')">Add Action</button> &nbsp;&nbsp;&nbsp;
                                         <button class="btn btn-xs" ng-click="newItem('Control')">Add Control</button> &nbsp;&nbsp;&nbsp;
-                                            <!--<button class="btn btn-xs" ng-click="run()">run</button>-->
                                     </div>
                                 </div>
 
@@ -356,8 +375,8 @@
 
                         <tab heading="Interface"></tab>
                         <!--ace text editor-->
-                        <tab heading="Code">
-                            <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'monokai' }" ng-model="javascriptCode"></div>
+                        <tab heading="Procedure Code">
+                            <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'monokai' }" ng-model="functionCode"></div>
                         </tab>
 
                     </tabset>
@@ -379,6 +398,7 @@
          <script type="application/javascript" src="js/angular-ui/ui-layout/ui-layout.js"></script>
          <script src="js/angular-ui/ui-bootstrap/ui-bootstrap-tpls-0.11.0.min.js"></script>
          <script type="text/javascript" src="js/angular-ui/ui-select2/select2.js"></script>
+        <script type="text/javascript" src="js/angular-ui/ui-select/select.js"></script>
          <script type="text/javascript" src="js/angular-ui/ui-tree/angular-ui-tree.js"></script>
          <!--supporting packages-->
          <script type="text/javascript" src="js/packages/select2-3.5.0/select2.js"></script>

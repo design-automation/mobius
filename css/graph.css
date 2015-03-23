@@ -11,8 +11,8 @@ CSS For ui-flowchart [left pane graph area]
 
 .test {
 	border: 3px red     solid;
-	padding: 10;
-	margin: 10;
+	padding: 10px;
+	margin: 10px;
 	font-family: "Times New Roman";
 	font-style: italic;
 }

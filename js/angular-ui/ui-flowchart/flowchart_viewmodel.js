@@ -533,8 +533,8 @@ var flowchart = {
                     var connectionViewModel = new flowchart.ConnectionViewModel(connectionDataModel, sourceConnector, destConnector);
                     connectionsViewModel.push(connectionViewModel);
                     // assign the input connector value to the output connector value
-                    destConnector.data.value = sourceConnector.data.value;
-                    console.log("assigned value!",destConnector.data.value);
+                    //destConnector.data.value = sourceConnector.data.value;
+                    //console.log("assigned value!",destConnector.data.value);
                 }
             }
             else if( destFlag == false) {
@@ -556,8 +556,8 @@ var flowchart = {
                 connectionsViewModel.push(connectionViewModel);
 
                 //assign the input connector value to the output connector value
-                sourceConnector.data.value = destConnector.data.value
-                console.log("assigned value! value is: ", sourceConnector.data.value);
+                //sourceConnector.data.value = destConnector.data.value
+                //console.log("assigned value! value is: ", sourceConnector.data.value);
             }
 
 
