@@ -328,7 +328,7 @@
 
                                                                     <span> data name: </span>
                                                                     <select ng-model="outputDataName" style="width: 200px;" ng-change = "applyValue('outputDataName', this.outputDataName,node)" style="width: 200px;">
-                                                                            <option ng-repeat="node in data" value="{{node.dataValue}}">{{node.dataName}}</option>
+                                                                            <option ng-repeat="node in data" value="{{node.dataValue}},{{node.dataName}}">{{node.dataName}}</option>
                                                                     </select></br></br>
                                                                 </div>
 
