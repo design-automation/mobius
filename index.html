@@ -275,17 +275,17 @@
                                                                 </a>
                                                             </accordion-heading>
 
-                                                            <div ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}">
+                                                            <div ui-tree-nodes="" ng-model="node.nodes">
                                                                 <!--data name and value for data -->
                                                                 <div ng-if="node.title == 'Data'">
                                                                     <div class="input-group input-group-sm">
                                                                         <span class="input-group-addon">data name</span>
-                                                                        <input class="form-control" name="dataName" data-placeholder="{{node.dataName}}" ng-model="dataName" ng-change="applyValue('dataName',this.dataName,node)">
+                                                                        <input class="form-control" name="dataName" placeholder="{{node.dataName}}" ng-model="dataName" ng-change="applyValue('dataName',this.dataName,node)">
                                                                     </div>
                                                                     </br>
                                                                     <div class="input-group input-group-sm">
                                                                         <span class="input-group-addon" >data value</span>
-                                                                        <input class="form-control" name="dataValue" data-placeholder="{{node.dataValue}}" ng-model="dataValue" ng-change="applyValue('dataValue',this.dataValue,node)">
+                                                                        <input class="form-control" name="dataValue" placeholder="{{node.dataValue}}" ng-model="dataValue" ng-change="applyValue('dataValue',this.dataValue,node)">
                                                                     </div>
                                                                 </div>
 
@@ -310,8 +310,8 @@
                                                                 <!--dropdown menu for Action-->
                                                                 <div ng-if="node.title == 'Action'">
                                                                     <span> method: </span>
-                                                                    <select ng-model="method" data-placeholder="{{node.method}}" name ="method" ng-change="applyValue('method',this.method,node)" style="width: 200px;">
-                                                                        <option value=""></option>
+                                                                    <select ng-model="method"  name ="method" ng-change="applyValue('method',this.method,node)" style="width: 200px;">
+                                                                        <option value="" selected disabled> {{node.method}}</option>
                                                                         <option value="print data">print data</option>
                                                                         <option value="get input">get input </option>
                                                                         <option value="append output">append output</option>
@@ -322,13 +322,14 @@
                                                                 <div ng-if="node.method == 'append output'">
                                                                     <span> output port: </span>
                                                                     <select ng-model="outputPort" ng-change = "applyValue('outputPort', this.outputPort,node)" style="width: 200px;">
-                                                                        <option value=""></option>
+                                                                        <option value="" selected disabled> {{node.parameters[0]}}</option>
                                                                         <option  ng-repeat="outputPort in node.parentNode.data.outputConnectors" value="{{outputPort.name}}">{{outputPort.name}}</option>
                                                                     </select></br></br>
 
                                                                     <span> data name: </span>
                                                                     <select ng-model="outputDataName" style="width: 200px;" ng-change = "applyValue('outputDataName', this.outputDataName,node)" style="width: 200px;">
-                                                                            <option ng-repeat="node in data" value="{{node.dataValue}},{{node.dataName}}">{{node.dataName}}</option>
+                                                                        <option value="" selected disabled> {{node.parameters[2]}}</option>
+                                                                        <option ng-repeat="node in data" value="{{node.dataValue}},{{node.dataName}}">{{node.dataName}}</option>
                                                                     </select></br></br>
                                                                 </div>
 
@@ -336,13 +337,13 @@
                                                                 <div ng-if="node.method == 'get input'">
                                                                     <span> output port: </span>
                                                                     <select ng-model="inputPort" ng-change = "applyValue('inputPort', this.inputPort,node)" style="width: 200px;">
-                                                                        <option value=""></option>
+                                                                        <option value="" selected disabled> {{node.parameters[0]}}</option>
                                                                         <option  ng-repeat="inputPort in node.parentNode.data.inputConnectors" value="{{inputPort.name}}">{{inputPort.name}}</option>
                                                                     </select></br></br>
 
                                                                     <div class="input-group input-group-sm">
                                                                         <span class="input-group-addon">data name</span>
-                                                                        <input class="form-control" name="dataName" ng-model="dataName" ng-change="applyValue('dataName',this.dataName,node)">
+                                                                        <input class="form-control" name="dataName" placeholder="{{node.dataName}}" ng-model="dataName" ng-change="applyValue('dataName',this.dataName,node)">
                                                                     </div>
                                                                 </div>
 
