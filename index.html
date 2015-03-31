@@ -69,328 +69,385 @@
 </head>
 
 <body>
-        <!--dropdown Menu-->
+    <!--dropdown Menu-->
+    <div>
+        <span class="dropdown" on-toggle="toggled(open)">
+          <a href class="dropdown-toggle">  File |</a>
+          <ul class="dropdown-menu">
+          <li><a onclick="onNewOptionClick ()"> New </a></li>
+            <li><a href="#"> Open</a></li>
+            <li><a href="#"> Save </a></li>
+            <li class="divider"></li>
+            <li><a href="#"> Exit </a></li>
+          </ul>
+        </span>
 
-        <div>
-            <span class="dropdown" on-toggle="toggled(open)">
-              <a href class="dropdown-toggle">  File |</a>
-              <ul class="dropdown-menu">
-              <li><a onclick="onNewOptionClick ()"> New </a></li>
-                <li><a href="#"> Open</a></li>
-                <li><a href="#"> Save </a></li>
-                <li class="divider"></li>
-                <li><a href="#"> Exit </a></li>
-              </ul>
-            </span>
+        <span class="dropdown" on-toggle="toggled(open)" >
+          <a href class="dropdown-toggle">  Edit |</a>
+        </span>
 
-            <span class="dropdown" on-toggle="toggled(open)" >
-              <a href class="dropdown-toggle">  Edit |</a>
-            </span>
+        <span class="dropdown" on-toggle="toggled(open)" >
+          <a href class="dropdown-toggle">  View |</a>
+        </span>
 
-            <span class="dropdown" on-toggle="toggled(open)" >
-              <a href class="dropdown-toggle">  View |</a>
-            </span>
+        <span class="dropdown" on-toggle="toggled(open)" >
+          <a href class="dropdown-toggle">  Libraries |</a>
+        </span>
 
-            <span class="dropdown" on-toggle="toggled(open)" >
-              <a href class="dropdown-toggle">  Libraries |</a>
-            </span>
+        <span class="dropdown" on-toggle="toggled(open)" >
+          <a href class="dropdown-toggle">  Setting |</a>
+        </span>
 
-            <span class="dropdown" on-toggle="toggled(open)" >
-              <a href class="dropdown-toggle">  Setting |</a>
-            </span>
+        <span class="dropdown" on-toggle="toggled(open)" >
+          <a href class="dropdown-toggle">  Help |</a>
+        </span>
 
-            <span class="dropdown" on-toggle="toggled(open)" >
-              <a href class="dropdown-toggle">  Help |</a>
-            </span>
+    </div>
 
-        </div>
-        <div  ng-controller="graphCtrl">
-         <!--resizable layout-->
-            <div ui-layout>
-              <div ui-layout="{flow : 'column'}" >
-                <!--graph area-->
-                  <tabset justified="true" class=" graph-area">
-                      <tab heading="nodes">
-                        <div
-                             mouse-capture
-                             ng-keydown="keyDown($event)"
-                             ng-keyup="keyUp($event)">
+    <div  ng-controller="graphCtrl">
+     <!--resizable layout-->
+        <div ui-layout>
+          <div ui-layout="{flow : 'column'}" >
+            <!--graph area-->
+              <tabset justified="true" class=" graph-area">
+                  <tab heading="nodes">
+                      <!--pan zoom area -->
+                      <div mouse-capture
+                         ng-keydown="keyDown($event)"
+                         ng-keyup="keyUp($event)">
 
-                            <div ng-controller="znpController" class="znpController">
-                                <div>
-                                    <panzoom config="panzoomConfig" model="panzoomModel" class="panzoom">
-                                        <div>
-                                            <flow-chart chart="chartViewModel" class = "flow-chart" >
-                                            </flow-chart>
-                                        </div>
-                                    </panzoom>
-                                </div>
-                            </div>
-
-                            <div class = "buttons">
-                            <button class="btn btn-xs"
-                                    ng-click="addNewNode()"
-                                    title="Add a new node to the chart">
-                                Add Node
-                            </button> &nbsp;&nbsp;
-                            <button class="btn btn-xs"
-                                    ng-click="addNewInputConnector()"
-                                    ng-disabled="chartViewModel.getSelectedNodes().length == 0"
-                                    title="Add a new input connector to the selected node">
-                                Add Input
-                            </button> &nbsp;&nbsp;
-                            <button class="btn btn-xs"
-                                    ng-click="addNewOutputConnector()"
-                                    ng-disabled="chartViewModel.getSelectedNodes().length == 0"
-                                    title="Add a new output connector to the selected node">
-                                Add Output
-                            </button> &nbsp;&nbsp;
-                            <button class="btn btn-xs"
-                                    ng-click="deleteSelected()"
-                                    ng-disabled="chartViewModel.getSelectedNodes().length == 0 && chartViewModel.getSelectedConnections().length == 0"
-                                    title="Delete selected nodes and connections">
-                                Delete
-                            </button> &nbsp;&nbsp;
-                            <button class="btn btn-xs"
-                                    ng-click="run()"
-                                    title="Run program">
-                                Run
-                            </button>
+                        <div ng-controller="znpController" class="znpController">
+                            <div>
+                                <panzoom config="panzoomConfig" model="panzoomModel" class="panzoom">
+                                    <div>
+                                        <flow-chart chart="chartViewModel" class = "flow-chart" >
+                                        </flow-chart>
+                                    </div>
+                                </panzoom>
                             </div>
                         </div>
-                      </tab>
-                      <tab heading = "Node Code">
-                          <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'monokai' }" ng-model="javascriptCode"></div>
-                      </tab>
-                  </tabset>
 
-                <!--3D view area  -->
+                        <div class = "buttons">
+                        <button class="btn btn-xs"
+                                ng-click="addNewNode()"
+                                title="Add a new node to the chart">
+                            Add Node
+                        </button> &nbsp;&nbsp;
+                        <button class="btn btn-xs"
+                                ng-click="addNewInputConnector()"
+                                ng-disabled="chartViewModel.getSelectedNodes().length == 0"
+                                title="Add a new input connector to the selected node">
+                            Add Input
+                        </button> &nbsp;&nbsp;
+                        <button class="btn btn-xs"
+                                ng-click="addNewOutputConnector()"
+                                ng-disabled="chartViewModel.getSelectedNodes().length == 0"
+                                title="Add a new output connector to the selected node">
+                            Add Output
+                        </button> &nbsp;&nbsp;
+                        <button class="btn btn-xs"
+                                ng-click="deleteSelected()"
+                                ng-disabled="chartViewModel.getSelectedNodes().length == 0
+                                    && chartViewModel.getSelectedConnections().length == 0"
+                                title="Delete selected nodes and connections">
+                            Delete
+                        </button> &nbsp;&nbsp;
+                        <button class="btn btn-xs"
+                                ng-click="run()"
+                                title="Run program">
+                            Run
+                        </button>
+                        </div>
+                    </div>
+                  </tab>
 
+                  <!--generated code demonstration area-->
+                  <tab heading = "Node Code">
+                      <div class="codeEditor"
+                           ui-ace="{ mode: 'javascript', theme: 'monokai' }"
+                           ng-model="javascriptCode">
+                      </div>
+                  </tab>
+              </tabset>
 
-                  <div class=" view-area" >
-                      <tabset justified ="true">
-                          <tab heading="3D View">
-                              <div class="Panel" id ="viewport" >
-                                <script>
-                                    var editor = new Editor();
+            <!--3D view area  -->
+              <div class=" view-area" >
+                  <tabset justified ="true">
+                      <tab heading="3D View">
+                          <div class="Panel" id ="viewport" >
+                            <script>
+                                var editor = new Editor();
 
-                                    var viewport = new Viewport( editor ).setId( 'viewport' );
-                                    document.getElementById("viewport").appendChild(viewport.dom);
+                                var viewport = new Viewport( editor ).setId( 'viewport' );
+                                document.getElementById("viewport").appendChild(viewport.dom);
 
-                                    editor.setTheme( editor.config.getKey( 'theme' ) );
+                                editor.setTheme( editor.config.getKey( 'theme' ) );
 
-                                    editor.storage.init( function () {
+                                editor.storage.init( function () {
 
-//                                                editor.storage.get( function ( state ) {
-//
-//                                                    if ( state !== undefined ) {
-//                                                        var loader = new THREE.ObjectLoader();
-//                                                        var scene = loader.parse( state );
-//                                                        editor.setScene( scene );
-//                                                    }
-//
-//                                                    var selected = editor.config.getKey( 'selected' );
-//
-//                                                    if ( selected !== undefined ) {
-//                                                        editor.selectByUuid( selected );
-//                                                    }
-//                                                } );
-//
+                                    var timeout;
+                                    var exporter = new THREE.ObjectExporter();
+                                    var saveState = function ( scene ) {
+                                        clearTimeout( timeout );
+                                        timeout = setTimeout( function () {
+                                            editor.storage.set( exporter.parse( editor.scene ) );
+                                        }, 1000 );
 
-                                        var timeout;
-                                        var exporter = new THREE.ObjectExporter();
-                                        var saveState = function ( scene ) {
-                                            clearTimeout( timeout );
-                                            timeout = setTimeout( function () {
-                                                editor.storage.set( exporter.parse( editor.scene ) );
-                                            }, 1000 );
-
-                                        };
-
-                                        var signals = editor.signals;
-
-                                        signals.objectAdded.add( saveState );
-                                        signals.objectChanged.add( saveState );
-                                        signals.objectRemoved.add( saveState );
-                                        signals.materialChanged.add( saveState );
-                                        signals.sceneGraphChanged.add( saveState );
-                                    } );
-
-                                    document.addEventListener( 'dragover', function ( event ) {
-                                        event.preventDefault();
-                                        event.dataTransfer.dropEffect = 'copy';
-                                    }, false );
-
-                                    document.addEventListener( 'drop', function ( event ) {
-                                        event.preventDefault();
-                                        editor.loader.loadFile( event.dataTransfer.files[ 0 ] );
-                                    }, false );
-
-                                    document.addEventListener( 'keydown', function ( event ) {
-                                        switch ( event.keyCode ) {
-                                            case 8: // prevent browser back
-                                                event.preventDefault();
-                                                break;
-                                            case 46: // delete
-                                                var parent = editor.selected.parent;
-                                                editor.removeObject( editor.selected );
-                                                editor.select( parent );
-                                                break;
-                                        }
-                                    }, false );
-
-                                    var onWindowResize = function ( event ) {
-                                        editor.signals.windowResize.dispatch();
                                     };
-                                    window.addEventListener( 'resize', onWindowResize, false );
-                                    onWindowResize();
-                                </script>
-                              </div>
-                          </tab>
-                          <tab heading = "Console"></tab>
-                      </tabset>
-                  </div>
 
+                                    var signals = editor.signals;
 
-                <!--code area-->
-                <div class=" code-area" >
-                    <tabset class="tabArea">
-                        <tab heading="Procedure" >
-                            <div>
-                                <div>
-                                        <script type="text/ng-template" id="nodes_renderer.html">
-                                            <div ui-tree-handle class="tree-node tree-node-content">
-                                                <accordion close-others= "true" >
-                                                    <div class="panelHack">
-                                                        <accordion-group is-open="true">
-                                                            <accordion-heading>
-                                                                <a ng-if="node.nodes && node.nodes.length > 0 || node.nodes && node.nodes.length == 0" data-nodrag ng-click="toggle(this)">
-                                                                      <span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}">
-                                                                      </span>
-                                                                </a>
-                                                                {{node.title}}
-                                                                <a class="pull-right btn btn-xs" data-nodrag ng-click="remove(this)">
-                                                                    <span class="glyphicon glyphicon-remove">
-                                                                    </span>
-                                                                </a>
-                                                            </accordion-heading>
+                                    signals.objectAdded.add( saveState );
+                                    signals.objectChanged.add( saveState );
+                                    signals.objectRemoved.add( saveState );
+                                    signals.materialChanged.add( saveState );
+                                    signals.sceneGraphChanged.add( saveState );
+                                } );
 
-                                                            <div ui-tree-nodes="" ng-model="node.nodes">
-                                                                <!--data name and value for data -->
-                                                                <div ng-if="node.title == 'Data'">
-                                                                    <div class="input-group input-group-sm">
-                                                                        <span class="input-group-addon">data name</span>
-                                                                        <input class="form-control" name="dataName" placeholder="{{node.dataName}}" ng-model="dataName" ng-change="applyValue('dataName',this.dataName,node)">
-                                                                    </div>
-                                                                    </br>
-                                                                    <div class="input-group input-group-sm">
-                                                                        <span class="input-group-addon" >data value</span>
-                                                                        <input class="form-control" name="dataValue" placeholder="{{node.dataValue}}" ng-model="dataValue" ng-change="applyValue('dataValue',this.dataValue,node)">
-                                                                    </div>
-                                                                </div>
+                                document.addEventListener( 'dragover', function ( event ) {
+                                    event.preventDefault();
+                                    event.dataTransfer.dropEffect = 'copy';
+                                }, false );
 
-                                                                <!-- looping for Control-->
-                                                                <div ng-if="node.title == 'Control'">
-                                                                    <div class="input-group">
-                                                                        <span class="input-group-addon">Looping</span>
-                                                                        <input type="number" class="form-control" placeholder="num of loops" name ="looping" ng-model="looping"ng-change="applyValue('looping',this.looping)">
-                                                                    </div>
-                                                                    </br>
-                                                                    <div class="input-group">
-                                                                        <span class="input-group-addon">Step</span>
-                                                                        <input type="number" class="form-control" placeholder="step" name ="step" ng-model="step"ng-change="applyValue('step',this.step)">
-                                                                    </div>
-                                                                    </br>
+                                document.addEventListener( 'drop', function ( event ) {
+                                    event.preventDefault();
+                                    editor.loader.loadFile( event.dataTransfer.files[ 0 ] );
+                                }, false );
 
-                                                                    <div>
-                                                                        <ui-select  theme="bootstrap" ng-disabled="disabled" style="min-width: 200px;" placeholder = "looping num..." >
-                                                                        </ui-select>
-                                                                    </div>
-                                                                </div>
-                                                                <!--dropdown menu for Action-->
-                                                                <div ng-if="node.title == 'Action'">
-                                                                    <span> method: </span>
-                                                                    <select ng-model="method"  name ="method" ng-change="applyValue('method',this.method,node)" style="width: 200px;">
-                                                                        <option value="" selected disabled> {{node.method}}</option>
-                                                                        <option value="print data">print data</option>
-                                                                        <option value="get input">get input </option>
-                                                                        <option value="append output">append output</option>
-                                                                    </select></br></br>
-                                                                </div>
+                                document.addEventListener( 'keydown', function ( event ) {
+                                    switch ( event.keyCode ) {
+                                        case 8: // prevent browser back
+                                            event.preventDefault();
+                                            break;
+                                        case 46: // delete
+                                            var parent = editor.selected.parent;
+                                            editor.removeObject( editor.selected );
+                                            editor.select( parent );
+                                            break;
+                                    }
+                                }, false );
 
-                                                                <!--method for append data to output port-->
-                                                                <div ng-if="node.method == 'append output'">
-                                                                    <span> output port: </span>
-                                                                    <select ng-model="outputPort" ng-change = "applyValue('outputPort', this.outputPort,node)" style="width: 200px;">
-                                                                        <option value="" selected disabled> {{node.parameters[0]}}</option>
-                                                                        <option  ng-repeat="outputPort in node.parentNode.data.outputConnectors" value="{{outputPort.name}}">{{outputPort.name}}</option>
-                                                                    </select></br></br>
-
-                                                                    <span> data name: </span>
-                                                                    <select ng-model="outputDataName" style="width: 200px;" ng-change = "applyValue('outputDataName', this.outputDataName,node)" style="width: 200px;">
-                                                                        <option value="" selected disabled> {{node.parameters[2]}}</option>
-                                                                        <option ng-repeat="node in data" value="{{node.dataValue}},{{node.dataName}}">{{node.dataName}}</option>
-                                                                    </select></br></br>
-                                                                </div>
-
-                                                                <!--method for get data from input port-->
-                                                                <div ng-if="node.method == 'get input'">
-                                                                    <span> output port: </span>
-                                                                    <select ng-model="inputPort" ng-change = "applyValue('inputPort', this.inputPort,node)" style="width: 200px;">
-                                                                        <option value="" selected disabled> {{node.parameters[0]}}</option>
-                                                                        <option  ng-repeat="inputPort in node.parentNode.data.inputConnectors" value="{{inputPort.name}}">{{inputPort.name}}</option>
-                                                                    </select></br></br>
-
-                                                                    <div class="input-group input-group-sm">
-                                                                        <span class="input-group-addon">data name</span>
-                                                                        <input class="form-control" name="dataName" placeholder="{{node.dataName}}" ng-model="dataName" ng-change="applyValue('dataName',this.dataName,node)">
-                                                                    </div>
-                                                                </div>
-
-                                                                <div ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer.html'">
-                                                                </div>
-                                                            </div>
-                                                        </accordion-group>
-                                                    </div>
-                                                </accordion>
-                                            </div>
-                                        </script>
-
-                                        <div ui-tree id="tree-root">
-                                            <div ui-tree-nodes="" ng-model="data">
-                                                <div ng-repeat="node in data" ui-tree-node ng-include="'nodes_renderer.html'">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        </div>
-
-                                    <div class = "buttons">
-                                        <br>
-                                        <button class="btn btn-xs" ng-click="newItem('Data')">Add Data</button> &nbsp;&nbsp;&nbsp;
-                                        <button class="btn btn-xs" ng-click="newItem('Action')">Add Action</button> &nbsp;&nbsp;&nbsp;
-                                        <button class="btn btn-xs" ng-click="newItem('Control')">Add Control</button> &nbsp;&nbsp;&nbsp;
-                                    </div>
-                                </div>
-
-                        </tab>
-
-                        <tab heading="Interface"></tab>
-                        <!--ace text editor-->
-                        <tab heading="Procedure Code">
-                            <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'monokai' }" ng-model="functionCode"></div>
-                        </tab>
-
-                    </tabset>
-                </div>
-
+                                var onWindowResize = function ( event ) {
+                                    editor.signals.windowResize.dispatch();
+                                };
+                                window.addEventListener( 'resize', onWindowResize, false );
+                                onWindowResize();
+                            </script>
+                          </div>
+                      </tab>
+                      <tab heading = "Console"></tab>
+                  </tabset>
               </div>
+
+            <!--procedure area-->
+            <div class=" code-area" >
+                <tabset class="tabArea">
+                    <tab heading="Procedure" >
+                        <div  ng-controller="graphCtrl">
+                            <div>
+                                <script type="text/ng-template" id="nodes_renderer.html">
+                                    <div ui-tree-handle class="tree-node tree-node-content">
+                                        <accordion  close-others= "true">
+                                            <div class="panelHack">
+                                                <accordion-group is-open="true">
+                                                    <accordion-heading>
+
+                                                        <!--procedure collapse control-->
+
+                                                        <a ng-if="node.nodes && node.nodes.length > 0
+                                                            || node.nodes && node.nodes.length == 0"
+                                                           data-nodrag ng-click="toggle(this)">
+                                                              <span class="glyphicon"
+                                                                    ng-class=
+                                                                        "{'glyphicon-chevron-right': collapsed,
+                                                                        'glyphicon-chevron-down': !collapsed}">
+                                                              </span>
+                                                        </a>
+
+                                                        {{node.title}}
+
+                                                        <!--procedure delete control-->
+
+                                                        <a class="pull-right btn btn-xs" data-nodrag
+                                                           ng-click="remove(this)">
+                                                            <span class="glyphicon glyphicon-remove">
+                                                            </span>
+                                                        </a>
+                                                    </accordion-heading>
+
+                                                    <div ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}">
+                                                        <!--data name and value for data -->
+                                                        <div ng-if="node.title == 'Data'">
+                                                            <div class="input-group input-group-sm">
+                                                                <span class="input-group-addon">data name</span>
+                                                                <input class="form-control" name="dataName"
+                                                                       placeholder="{{node.dataName}}"
+                                                                       ng-model="dataName"
+                                                                       ng-change=
+                                                                           "applyValue('dataName',this.dataName,node)">
+                                                            </div>
+                                                            </br>
+                                                            <div class="input-group input-group-sm">
+                                                                <span class="input-group-addon" >data value</span>
+                                                                <input class="form-control" name="dataValue"
+                                                                       placeholder="{{node.dataValue}}"
+                                                                       ng-model="dataValue"
+                                                                       ng-change=
+                                                                           "applyValue('dataValue',this.dataValue,node)">
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- looping for Control-->
+                                                        <div ng-if="node.title == 'Control'">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">Looping</span>
+                                                                <input type="number"
+                                                                       class="form-control"
+                                                                       placeholder="num of loops"
+                                                                       name ="looping" ng-model="looping"
+                                                                       ng-change="applyValue('looping',this.looping)">
+                                                            </div>
+                                                            </br>
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">Step</span>
+                                                                <input type="number"
+                                                                       class="form-control"
+                                                                       placeholder="step"
+                                                                       name ="step"
+                                                                       ng-model="step"
+                                                                       ng-change="applyValue('step',this.step)">
+                                                            </div>
+                                                            </br>
+                                                        </div>
+                                                        <!--dropdown menu for Action-->
+                                                        <div ng-if="node.title == 'Action'">
+                                                            <span> method: </span>
+                                                            <select ng-model="method"
+                                                                    name ="method"
+                                                                    ng-change="applyValue('method',this.method,node)"
+                                                                    style="width: 200px;">
+                                                                <option value="" selected disabled>
+                                                                    {{node.method}}
+                                                                </option>
+                                                                <option value="print data">
+                                                                    print data
+                                                                </option>
+                                                                <option value="get input">
+                                                                    get input
+                                                                </option>
+                                                                <option value="append output">
+                                                                    append output
+                                                                </option>
+                                                            </select></br></br>
+                                                        </div>
+
+                                                        <!--method for append data to output port-->
+                                                        <div ng-if="node.method == 'append output'">
+                                                            <span> output port: </span>
+                                                            <select ng-model="outputPort"
+                                                                    ng-change = "applyValue('outputPort', this.outputPort,node)"
+                                                                    style="width: 200px;">
+                                                                <option value="" selected disabled>
+                                                                    {{node.parameters[0]}}
+                                                                </option>
+                                                                <option
+                                                                        ng-repeat="outputPort in node.parentNode.data.outputConnectors"
+                                                                        value="{{outputPort.name}}">
+                                                                    {{outputPort.name}}
+                                                                </option>
+                                                            </select></br></br>
+
+                                                            <span> data name: </span>
+                                                            <select ng-model="outputDataName"
+                                                                    style="width: 200px;"
+                                                                    ng-change = "applyValue('outputDataName', this.outputDataName,node)"
+                                                                    style="width: 200px;">
+                                                                <option value="" selected disabled> {{node.parameters[2]}}</option>
+                                                                <option ng-repeat="node in data"
+                                                                        value="{{node.dataValue}},{{node.dataName}}">
+                                                                    {{node.dataName}}
+                                                                </option>
+                                                            </select></br></br>
+                                                        </div>
+
+                                                        <!--method for get data from input port-->
+                                                        <div ng-if="node.method == 'get input'">
+                                                            <span> output port: </span>
+                                                            <select ng-model="inputPort"
+                                                                    ng-change = "applyValue('inputPort', this.inputPort,node)"
+                                                                    style="width: 200px;">
+                                                                <option value="" selected disabled>
+                                                                    {{node.parameters[0]}}
+                                                                </option>
+                                                                <option  ng-repeat="inputPort in node.parentNode.data.inputConnectors"
+                                                                         value="{{inputPort.name}}">
+                                                                    {{inputPort.name}}
+                                                                </option>
+                                                            </select></br></br>
+
+                                                            <div class="input-group input-group-sm">
+                                                                <span class="input-group-addon">data name</span>
+                                                                <input class="form-control"
+                                                                       name="dataName"
+                                                                       placeholder="{{node.dataName}}"
+                                                                       ng-model="dataName"
+                                                                       ng-change="applyValue('dataName',this.dataName,node)">
+                                                            </div>
+                                                        </div>
+
+                                                        <div ng-repeat="node in node.nodes"
+                                                             ui-tree-node
+                                                             ng-include="'nodes_renderer.html'">
+                                                        </div>
+                                                    </div>
+                                                </accordion-group>
+                                            </div>
+                                        </accordion>
+                                    </div>
+                                </script>
+
+                                    <div ui-tree id="tree-root">
+                                        <div ui-tree-nodes="" ng-model="data">
+                                            <div ng-repeat="node in data"
+                                                 ui-tree-node ng-include="'nodes_renderer.html'">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+
+                                <div class = "buttons">
+                                    <br>
+                                    <button class="btn btn-xs" ng-click="newItem('Data')">Add Data</button>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <button class="btn btn-xs" ng-click="newItem('Action')">Add Action</button>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <button class="btn btn-xs" ng-click="newItem('Control')">Add Control</button>
+                                    &nbsp;&nbsp;&nbsp;
+                                </div>
+                            </div>
+
+                    </tab>
+
+                    <tab heading="Interface"></tab>
+                    <!--ace text editor-->
+                    <tab heading="Procedure Code">
+                        <div class="codeEditor"
+                             ui-ace="{ mode: 'javascript', theme: 'monokai' }"
+                             ng-model="functionCode">
+                        </div>
+                    </tab>
+
+                </tabset>
             </div>
+
+          </div>
+        </div>
     </div>
 
          <!--  javascript -->
          <!--jquery-->
          <script type="text/javascript" src="js/jquery/jquery-1.11.1.js"></script>
-         <script type="text/javascript" src="js/jquery/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.min.js"></script>
+         <!--<script type="text/javascript" src="js/jquery/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.min.js"></script>-->
          <!--angular modules -->
          <script type="application/javascript" src="js/angular/angular.min.js"></script>
          <script type="text/javascript" src="js/angular/angular-sanitize.js"></script>

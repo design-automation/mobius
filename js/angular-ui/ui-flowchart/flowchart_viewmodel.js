@@ -532,9 +532,6 @@ var flowchart = {
                     connectionsDataModel.push(connectionDataModel);
                     var connectionViewModel = new flowchart.ConnectionViewModel(connectionDataModel, sourceConnector, destConnector);
                     connectionsViewModel.push(connectionViewModel);
-                    // assign the input connector value to the output connector value
-                    //destConnector.data.value = sourceConnector.data.value;
-                    //console.log("assigned value!",destConnector.data.value);
                 }
             }
             else if( destFlag == false) {
@@ -555,9 +552,6 @@ var flowchart = {
                 var connectionViewModel = new flowchart.ConnectionViewModel(connectionDataModel, destConnector, sourceConnector);
                 connectionsViewModel.push(connectionViewModel);
 
-                //assign the input connector value to the output connector value
-                //sourceConnector.data.value = destConnector.data.value
-                //console.log("assigned value! value is: ", sourceConnector.data.value);
             }
 
 
@@ -566,7 +560,7 @@ var flowchart = {
             for(var i=0;i<this.data.connections.length;i++){
                 edgeList.push([this.data.connections[i].source.nodeID, this.data.connections[i].dest.nodeID]);
             }
-            console.log('=====================================================================');
+            console.log("---------------------------------------");
             console.log('New edge created: ', [sourceNode.data.id,  destNode.data.id]);
             console.log('New edge value: ',connectionDataModel.value);
             console.log('After sorting: ', this.topoSort());
@@ -592,22 +586,8 @@ var flowchart = {
             unsortedNodes.push(this.data.nodes.length-1);
 
             // print out the new node index in console
-            console.log('======================================================================');
+            console.log("---------------------------------------");
             console.log(nodeDataModel.name + " created; node id:" + (this.data.nodes.length-1));
-
-            //
-            // iterate through the nodes and print out the input and output of each node
-            //
-            console.log("========================== test msg ===========================");
-            for(var i=0; i < this.nodes.length; i++){
-                console.log("node id: ", this.nodes[i].data.id);
-                for(var input=0; input < this.nodes[i].data.inputConnectors.length;input++){
-                    console.log("inputs: ", this.nodes[i].data.inputConnectors[input].value)
-                }
-                for(var output=0; output < this.nodes[i].data.outputConnectors.length;output++){
-                    console.log("outputs: ", this.nodes[i].data.outputConnectors[output].value)
-                }
-            }
 		}
 
         //
@@ -616,15 +596,20 @@ var flowchart = {
 
         this.topoSort = function topoSort (){
 
-            console.log('----------------------------------------------------------------------');
+            console.log("---------------------------------------");
             console.log('sorted!');
-            console.log('total number of nodes: ',unsortedNodes.length);
             console.log('current edges: ', edgeList);
-            console.log('before sorting: ', unsortedNodes );
 
             // copy the node and edge lists
             var edges = edgeList.slice();
-            var nodes = unsortedNodes.slice();
+            //var nodes = unsortedNodes.slice();
+            var nodes = [];
+            for(var i = 0; i < this.nodes.length; i++){
+                nodes.push(this.nodes[i].data.id);
+            }
+
+            console.log('total number of nodes: ',nodes.length);
+            console.log('before sorting: ', nodes);
 
             // topological sort
             var cursor = nodes.length
@@ -636,6 +621,7 @@ var flowchart = {
                 if (!visited[i]) visit(nodes[i], i, [])
             }
             //this.$emit("sortedOrder", sorted);
+            console.log("after sorting:", sorted);
             return sorted;
 
             function visit(node, i, predecessors) {
@@ -808,6 +794,17 @@ var flowchart = {
 				}
 			}
 
+            //
+            // Update the node index
+            // todo currently only support deletion for one item
+            //
+
+            for(var i = 0; i < this.nodes.length ;i++){
+                if(this.nodes[i].data.id > deletedNodeIds[0]){
+                    this.nodes[i].data.id--;
+                }
+            }
+
 			//
 			// Update nodes and connections.
 			//
@@ -815,6 +812,12 @@ var flowchart = {
 			this.data.nodes = newNodeDataModels;
 			this.connections = newConnectionViewModels;
 			this.data.connections = newConnectionDataModels;
+            console.log("----- notice ------");
+            console.log(this.nodes);
+            console.log(this.data.nodes);
+
+
+            return deletedNodeIds;
 		};
 
 		//
@@ -879,8 +882,6 @@ var flowchart = {
 
 			return selectedConnections;
 		};
-		
-
 	};
 
 })();
