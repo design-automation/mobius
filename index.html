@@ -299,10 +299,10 @@
                                                                     <span class="input-group-addon">Looping</span>
                                                                     <input type="number"
                                                                            class="form-control"
-                                                                           placeholder="num of loops"
+                                                                           placeholder="{{node.looping}}"
                                                                            name ="looping"
                                                                            ng-model="looping"
-                                                                           ng-change="applyValue('looping',this.looping)">
+                                                                           ng-change="applyValue('looping',this.looping,node)">
                                                                 </div>
                                                                 </br>
                                                             </div>

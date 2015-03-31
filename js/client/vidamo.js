@@ -106,7 +106,6 @@ vidamo.controller('graphCtrl', function($scope,prompt,$rootScope) {
     };
 
     // Delete selected nodes and connections in data&view model
-    // Update the controller dataList
     $scope.deleteSelected = function () {
         var deletedNodeIds = $scope.chartViewModel.deleteSelected();
         console.log(deletedNodeIds);
@@ -122,203 +121,6 @@ vidamo.controller('graphCtrl', function($scope,prompt,$rootScope) {
     // Create the view-model for the chart and attach to the scope.
 
     $scope.chartViewModel = new flowchart.ChartViewModel(chartDataModel);
-
-    // run function
-    // first execute the topological sort
-    // then call the run function in procedural controller
-    $scope.run = function(){
-        // copy the sorted order
-        var sortedOrder = $scope.chartViewModel.topoSort().slice();
-
-        // execute procedures should follows the topological sort order
-        // iterate through all nodes and their procedures to find methods and execute it
-        for(var i = 0; i < sortedOrder.length; i++) {
-            for (var j = 0; j < $scope.dataList[sortedOrder[i]].length; j++) {
-                //find action procedure
-
-
-                if ($scope.dataList[sortedOrder[i]][j].title == 'Action') {
-
-                    // implementation of all the execution methods
-
-                    // get input method
-                    // search the input connector in this node with the selected name
-                    // and apply its value to the procedure node's data value
-                    if ($scope.dataList[sortedOrder[i]][j].method == 'get input') {
-                        for (var n = 0; n < $scope.dataList[sortedOrder[i]][j].parentNode.data.inputConnectors.length; n++) {
-                            if ($scope.dataList[sortedOrder[i]][j].parentNode.data.inputConnectors[n].name
-                                == $scope.dataList[sortedOrder[i]][j].parameters[0]) {
-                                $scope.dataList[sortedOrder[i]][j].dataValue = $scope.dataList[sortedOrder[i]][j].parentNode.data.inputConnectors[n].value;
-                                console.log("get input:", $scope.dataList[sortedOrder[i]][j].dataName, " ", $scope.dataList[sortedOrder[i]][j].dataValue);
-                            }
-                        }
-                    }
-
-                    // append output method
-                    else if ($scope.dataList[sortedOrder[i]][j].method == 'append output') {
-                        // search the output connector in this node that match the selected name
-                        // and replace the value of the output
-                        for (var m = 0; m < $scope.dataList[sortedOrder[i]][j].parentNode.data.outputConnectors.length; m++) {
-                            if ($scope.dataList[sortedOrder[i]][j].parentNode.data.outputConnectors[m].name
-                                == $scope.dataList[sortedOrder[i]][j].parameters[0]) {
-                                // update the output port data value
-                                for (var n = 0; n < $scope.dataList[sortedOrder[i]].length; n++) {
-                                    if ($scope.dataList[sortedOrder[i]][n].dataName == $scope.dataList[sortedOrder[i]][j].parameters[2]) {
-                                        $scope.dataList[sortedOrder[i]][j].parentNode.data.outputConnectors[m].value = $scope.dataList[sortedOrder[i]][n].dataValue;
-
-                                        console.log($scope.dataList[sortedOrder[i]][j].parentNode.data.outputConnectors[m].name,
-                                            $scope.dataList[sortedOrder[i]][j].parentNode.data.outputConnectors[m].value);
-                                    }
-                                }
-
-                                // if this outport is connected
-                                // update the connection value
-                                // todo use id instead of name
-                                for (var k = 0; k < $scope.chartViewModel.connections.length; k++) {
-                                    if ($scope.dataList[sortedOrder[i]][j].parentNode.data.outputConnectors[m].name == $scope.chartViewModel.connections[k].source.name()) {
-                                        $scope.chartViewModel.connections[k].dest.data.value = $scope.dataList[sortedOrder[i]][j].parentNode.data.outputConnectors[m].value;
-                                        $scope.chartViewModel.connections[k].data.value = $scope.dataList[sortedOrder[i]][j].parentNode.data.outputConnectors[m].value;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        // dummy code generation PART I
-        // functions based on procedures
-        // print out the list of function definitions
-        $scope.javascriptCode = "//Function definitions:" + "\n";
-
-        // use flag to check whether it is the first argument
-        var flag= false;
-        for(var i = 0; i < $scope.dataList.length; i++){
-
-            $scope.javascriptCode = $scope.javascriptCode + "function node" + i +" (";
-
-            // print out values of inputs (parameters)
-            // check the input is empty by checking its value entity
-            for(var n =0; n < $scope.chartViewModel.nodes[i].inputConnectors.length; n++){
-                if($scope.chartViewModel.nodes[i].inputConnectors[n].data.value != ""){
-                    if(flag == false){
-                        $scope.javascriptCode = $scope.javascriptCode  + "input" + n;
-                        flag =true;
-                    }else{
-                        $scope.javascriptCode = $scope.javascriptCode  + ", input" + n;
-                    }
-                }
-            }
-            flag = false;
-            $scope.javascriptCode = $scope.javascriptCode  + "){" + "\n";
-
-            // print out content of procedures
-            // data procedure
-            // print out code for single variable
-            for(var j = 0; j < $scope.dataList[i].length; j++){
-                if($scope.dataList[i][j].title == "Data"){
-                    $scope.javascriptCode = $scope.javascriptCode  + "    " + "var "
-                                                + $scope.dataList[i][j].dataName
-                                                + " = "
-                                                + $scope.dataList[i][j].dataValue + ";\n";
-
-                }
-            }
-
-            // print out code for procedure functions
-
-            // get inpput procedure
-            for(var j = 0; j < $scope.dataList[i].length; j++){
-                if($scope.dataList[i][j].title == "Action"){
-                    if($scope.dataList[i][j].method == "get input"){
-                        $scope.javascriptCode = $scope.javascriptCode  + "    " + "var "
-                        + $scope.dataList[i][j].dataName + " = getInput("
-                        + $scope.dataList[i][j].parameters[0] + ");\n"
-                    }
-                }
-            }
-            
-            // append output procedure
-            for(var j = 0; j < $scope.dataList[i].length; j++){
-                if($scope.dataList[i][j].title == "Action"){
-                    if($scope.dataList[i][j].method == "append output"){
-                        $scope.javascriptCode = $scope.javascriptCode  + "    " + "appendOutput("
-                                                        + $scope.dataList[i][j].parameters[0] + ", "
-                                                        + $scope.dataList[i][j].parameters[2] + ");\n"
-                    }
-                }
-            }
-
-            // print return value
-            // check the output port is empty by checking its value entity
-            if($scope.chartViewModel.nodes[i].outputConnectors.length != 0) {
-                $scope.javascriptCode = $scope.javascriptCode + "    " + "return ";
-            }
-            for(var n =0; n < $scope.chartViewModel.nodes[i].outputConnectors.length; n++){
-                if($scope.chartViewModel.nodes[i].outputConnectors[n].data.value != ""){
-                    if(n !=  $scope.chartViewModel.nodes[i].outputConnectors.length-1){
-                        $scope.javascriptCode = $scope.javascriptCode  + $scope.chartViewModel.nodes[i].outputConnectors[n].data.name + ", ";
-                    }else{
-                        $scope.javascriptCode = $scope.javascriptCode  + $scope.chartViewModel.nodes[i].outputConnectors[n].data.name + ";\n";
-                    }
-                }else{console.log($scope.chartViewModel.nodes[i].outputConnectors[n])}
-            }
-            $scope.javascriptCode = $scope.javascriptCode  + "}\n\n";
-        }
-
-        // dummy code generation PART II
-        // execution orders based on topological sort
-
-        $scope.javascriptCode = $scope.javascriptCode + "// execution \n";
-        for(var n = 0; n < sortedOrder.length; n++) {
-            // case where the node has output
-            if ($scope.chartViewModel.nodes[sortedOrder[n]].outputConnectors.length != 0) {
-                $scope.javascriptCode = $scope.javascriptCode + "var result" + n + " = ";
-                $scope.javascriptCode = $scope.javascriptCode + "node" + sortedOrder[n] + "(";
-                // print all the parameters/inputs
-                for (var m = 0; m < $scope.chartViewModel.nodes[sortedOrder[n]].inputConnectors.length; m++) {
-                    if (m != $scope.chartViewModel.nodes[sortedOrder[n]].inputConnectors.length - 1) {
-                        $scope.javascriptCode = $scope.javascriptCode + $scope.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.name + ", "
-                    } else {
-                        // find the connected output port of this input port
-                        for (var k = 0; k < $scope.chartViewModel.connections.length; k++) {
-                            // todo check id instead of name
-                            // todo when one node return multiple outputs, should be an array
-                            if ($scope.chartViewModel.connections[k].dest.data.name == $scope.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.name) {
-                                var inputIndex = sortedOrder.indexOf(($scope.chartViewModel.connections[k].source.parentNode().data.id));
-                                console.log($scope.chartViewModel.connections[k].source.parentNode().data.id);
-                                $scope.javascriptCode = $scope.javascriptCode + "result" + inputIndex;
-                            }
-                        }
-                    }
-                }
-                $scope.javascriptCode = $scope.javascriptCode + ");\n"
-            }
-            // case where the node has no output
-            else {
-                $scope.javascriptCode = $scope.javascriptCode + "node" + sortedOrder[n] + "(";
-                // print all the parameters/inputs
-                for (var m = 0; m < $scope.chartViewModel.nodes[sortedOrder[n]].inputConnectors.length; m++) {
-                    for (var k = 0; k < $scope.chartViewModel.connections.length; k++) {
-                        // todo check id instead of name
-                        // todo when one node return multiple outputs, should be an array
-                        // todo check the input connectors empty, exclude empty ones
-                        if ($scope.chartViewModel.connections[k].dest.data.name == $scope.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.name) {
-                            var inputIndex = sortedOrder.indexOf(($scope.chartViewModel.connections[k].source.parentNode().data.id));
-                            if (flag == false) {
-                                $scope.javascriptCode = $scope.javascriptCode + "result" + inputIndex;
-                                flag == true;
-                            } else {
-                                $scope.javascriptCode = $scope.javascriptCode + ", result" + inputIndex;
-                            }
-                        }
-                    }
-                }
-                $scope.javascriptCode = $scope.javascriptCode + ");\n"
-            }
-        }
-    };
 
     // procedure manipulation
     $scope.remove = function(scope) {
@@ -361,10 +163,12 @@ vidamo.controller('graphCtrl', function($scope,prompt,$rootScope) {
                 id: $scope.data.length  + 1,
                 title:  'Control',
                 nodes: [],
+                looping: '',
                 parentNode: $scope.chartViewModel.nodes[$scope.nodeIndex]
             });
         }
     };
+
     //onchange write the input value
     $scope.applyValue = function (cate, value,location){
         switch (cate){
@@ -396,10 +200,256 @@ vidamo.controller('graphCtrl', function($scope,prompt,$rootScope) {
                 location.parameters[2] = split[1]; break;
 
             // get input method, parameters: 1. input port name
-             case 'inputPort':
-                 location.parameters[0] = value;
-                 console.log("input port name:",value);
-                 break;
+            case 'inputPort':
+                location.parameters[0] = value;
+                console.log("input port name:",value);
+                break;
+
+            // control procedure
+            case 'looping':
+                location.looping = value;
+                break;
+        }
+    };
+
+    // supporting functions for procedures
+    function runGetInput(procedure){
+        for (var n = 0; n < procedure.parentNode.data.inputConnectors.length; n++) {
+            if (procedure.parentNode.data.inputConnectors[n].name
+                == procedure.parameters[0]) {
+                procedure.dataValue = procedure.parentNode.data.inputConnectors[n].value;
+                console.log("get input:", procedure.dataName, " ", procedure.dataValue);
+            }
+        }
+    }
+
+    function runAppendOutput(procedure, procedureSet){
+        // search the output connector in this node that match the selected name
+        // and replace the value of the output
+        for (var m = 0; m < procedure.parentNode.data.outputConnectors.length; m++) {
+            if (procedure.parentNode.data.outputConnectors[m].name
+                == procedure.parameters[0]) {
+                // update the output port data value
+                for (var n = 0; n < procedureSet.length; n++) {
+                    if (procedureSet[n].dataName == procedure.parameters[2]) {
+                        procedure.parentNode.data.outputConnectors[m].value = procedureSet[n].dataValue;
+
+                        console.log(procedure.parentNode.data.outputConnectors[m].name,
+                            procedure.parentNode.data.outputConnectors[m].value);
+                    }
+                }
+
+                // if this outport is connected: update the connection value
+                // todo use id instead of name
+                for (var k = 0; k < $scope.chartViewModel.connections.length; k++) {
+                    if (procedure.parentNode.data.outputConnectors[m].name
+                        == $scope.chartViewModel.connections[k].source.name()) {
+                        $scope.chartViewModel.connections[k].dest.data.value
+                            = procedure.parentNode.data.outputConnectors[m].value;
+                        $scope.chartViewModel.connections[k].data.value
+                            = procedure.parentNode.data.outputConnectors[m].value;
+                    }
+                }
+            }
+        }
+    }
+
+    // supporting function for control procedure
+    function runControl(procedure){
+        for(var n = 0; n < procedure.looping; n++ ){
+            for(var m = 0; m < procedure.nodes.length; m ++){
+                if(procedure.nodes[m].title =='Action'){
+                    if(procedure.nodes[m].method =='print data'){
+                        runPrintData();
+                    }
+                }
+            }
+        }
+    }
+
+    function runPrintData(){
+        console.log('test msg!');
+    }
+
+
+    // run function
+    // first execute the topological sort
+    // then call the run function in procedural controller
+    $scope.run = function(){
+        // copy the sorted order
+        var sortedOrder = $scope.chartViewModel.topoSort().slice();
+
+        // execute procedures should follows the topological sort order
+        // iterate through all nodes and their procedures to find methods and execute it
+        for(var i = 0; i < sortedOrder.length; i++) {
+
+            var currentNode = $scope.dataList[sortedOrder[i]];
+
+            for (var j = 0; j < currentNode.length; j++) {
+
+                // find control procedure
+                if(currentNode[j].title == 'Control'){
+                    runControl(currentNode[j]);
+                }
+
+                // find action procedures
+                else if (currentNode[j].title == 'Action') {
+
+                    // testing print method
+                    if(currentNode[j].method == 'print data'){
+                        runPrintData();
+                    }
+
+                    // get input method
+                    else if (currentNode[j].method == 'get input') {
+                        runGetInput(currentNode[j]);
+                    }
+
+                    // append output method
+                    else if (currentNode[j].method == 'append output') {
+                        runAppendOutput(currentNode[j], currentNode);
+                    }
+
+                }
+            }
+        }
+
+        // dummy code generation PART I
+        // functions based on procedures
+        // print out the list of function definitions
+        $scope.javascriptCode ='//Function definitions:' + '\n';
+
+        // use flag to check whether it is the first argument
+        var flag= false;
+        for(var i = 0; i < $scope.dataList.length; i++){
+
+            $scope.javascriptCode = $scope.javascriptCode + 'function node' + i +' (';
+
+            // print out values of inputs (parameters)
+            // check the input is empty by checking its value entity
+            for(var n =0; n < $scope.chartViewModel.nodes[i].inputConnectors.length; n++){
+                if($scope.chartViewModel.nodes[i].inputConnectors[n].data.value != ""){
+                    if(flag == false){
+                        $scope.javascriptCode = $scope.javascriptCode  + "input" + n;
+                        flag =true;
+                    }else{
+                        $scope.javascriptCode = $scope.javascriptCode  + ", input" + n;
+                    }
+                }
+            }
+            flag = false;
+            $scope.javascriptCode = $scope.javascriptCode  + "){" + "\n";
+
+            // print out content of procedures
+            // data procedure
+            // print out code for single variable
+            for(var j = 0; j < $scope.dataList[i].length; j++){
+                if($scope.dataList[i][j].title == "Data"){
+                    $scope.javascriptCode = $scope.javascriptCode  + "    " + "var "
+                                                + $scope.dataList[i][j].dataName
+                                                + " = "
+                                                + $scope.dataList[i][j].dataValue + ";\n";
+
+                }
+            }
+
+            // print out code for procedure functions
+
+            // get inpput procedure
+            for(var j = 0; j < $scope.dataList[i].length; j++){
+                if($scope.dataList[i][j].title == "Action"){
+                    if($scope.dataList[i][j].method == "get input"){
+                        $scope.javascriptCode = $scope.javascriptCode  + "    " + "var "
+                        + $scope.dataList[i][j].dataName + " = getInput("
+                        + $scope.dataList[i][j].parameters[0] + ");\n"
+                    }
+                }
+            }
+
+            // append output procedure
+            for(var j = 0; j < $scope.dataList[i].length; j++){
+                if($scope.dataList[i][j].title == "Action"){
+                    if($scope.dataList[i][j].method == "append output"){
+                        $scope.javascriptCode = $scope.javascriptCode  + "    " + "appendOutput("
+                                                        + $scope.dataList[i][j].parameters[0] + ", "
+                                                        + $scope.dataList[i][j].parameters[2] + ");\n"
+                    }
+                }
+            }
+
+            // print return value
+            // check the output port is empty by checking its value entity
+            if($scope.chartViewModel.nodes[i].outputConnectors.length != 0) {
+                $scope.javascriptCode = $scope.javascriptCode + "    " + "return ";
+            }
+            for(var n =0; n < $scope.chartViewModel.nodes[i].outputConnectors.length; n++){
+                if($scope.chartViewModel.nodes[i].outputConnectors[n].data.value != ""){
+                    if(n !=  $scope.chartViewModel.nodes[i].outputConnectors.length-1){
+                        $scope.javascriptCode = $scope.javascriptCode
+                            + $scope.chartViewModel.nodes[i].outputConnectors[n].data.name + ", ";
+                    }else{
+                        $scope.javascriptCode = $scope.javascriptCode
+                            + $scope.chartViewModel.nodes[i].outputConnectors[n].data.name + ";\n";
+                    }
+                }else{console.log($scope.chartViewModel.nodes[i].outputConnectors[n])}
+            }
+            $scope.javascriptCode = $scope.javascriptCode  + "}\n\n";
+        }
+
+        // dummy code generation PART II
+        // execution orders based on topological sort
+
+        $scope.javascriptCode = $scope.javascriptCode + "// execution \n";
+        for(var n = 0; n < sortedOrder.length; n++) {
+            // case where the node has output
+            if ($scope.chartViewModel.nodes[sortedOrder[n]].outputConnectors.length != 0) {
+                $scope.javascriptCode = $scope.javascriptCode + "var result" + n + " = ";
+                $scope.javascriptCode = $scope.javascriptCode + "node" + sortedOrder[n] + "(";
+                // print all the parameters/inputs
+                for (var m = 0; m < $scope.chartViewModel.nodes[sortedOrder[n]].inputConnectors.length; m++) {
+                    if (m != $scope.chartViewModel.nodes[sortedOrder[n]].inputConnectors.length - 1) {
+                        $scope.javascriptCode = $scope.javascriptCode
+                        + $scope.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.name + ", "
+                    } else {
+                        // find the connected output port of this input port
+                        for (var k = 0; k < $scope.chartViewModel.connections.length; k++) {
+                            // todo check id instead of name
+                            // todo when one node return multiple outputs, should be an array
+                            if ($scope.chartViewModel.connections[k].dest.data.name
+                                == $scope.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.name) {
+                                var inputIndex
+                                    = sortedOrder.indexOf(($scope.chartViewModel.connections[k].source.parentNode().data.id));
+                                $scope.javascriptCode = $scope.javascriptCode + "result" + inputIndex;
+                            }
+                        }
+                    }
+                }
+                $scope.javascriptCode = $scope.javascriptCode + ");\n"
+            }
+            // case where the node has no output
+            else {
+                $scope.javascriptCode = $scope.javascriptCode + "node" + sortedOrder[n] + "(";
+                // print all the parameters/inputs
+                for (var m = 0; m < $scope.chartViewModel.nodes[sortedOrder[n]].inputConnectors.length; m++) {
+                    for (var k = 0; k < $scope.chartViewModel.connections.length; k++) {
+                        // todo check id instead of name
+                        // todo when one node return multiple outputs, should be an array
+                        // todo check the input connectors empty, exclude empty ones
+                        if ($scope.chartViewModel.connections[k].dest.data.name
+                            == $scope.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.name) {
+                            var inputIndex
+                                = sortedOrder.indexOf(($scope.chartViewModel.connections[k].source.parentNode().data.id));
+                            if (flag == false) {
+                                $scope.javascriptCode = $scope.javascriptCode + "result" + inputIndex;
+                                flag == true;
+                            } else {
+                                $scope.javascriptCode = $scope.javascriptCode + ", result" + inputIndex;
+                            }
+                        }
+                    }
+                }
+                $scope.javascriptCode = $scope.javascriptCode + ");\n"
+            }
         }
     };
 });
