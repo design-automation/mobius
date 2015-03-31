@@ -356,7 +356,7 @@ var flowchart = {
 	flowchart.computeConnectionSourceTangent = function(pt1, pt2) {
 		return {
 			x: flowchart.computeConnectionSourceTangentX(pt1, pt2),
-			y: flowchart.computeConnectionSourceTangentY(pt1, pt2),
+			y: flowchart.computeConnectionSourceTangentY(pt1, pt2)
 		};
 	};
 
@@ -382,7 +382,7 @@ var flowchart = {
 	flowchart.computeConnectionDestTangent = function(pt1, pt2) {
 		return {
 			x: flowchart.computeConnectionDestTangentX(pt1, pt2),
-			y: flowchart.computeConnectionDestTangentY(pt1, pt2),
+			y: flowchart.computeConnectionDestTangentY(pt1, pt2)
 		};
 	};
 
@@ -560,10 +560,6 @@ var flowchart = {
             for(var i=0;i<this.data.connections.length;i++){
                 edgeList.push([this.data.connections[i].source.nodeID, this.data.connections[i].dest.nodeID]);
             }
-            console.log("---------------------------------------");
-            console.log('New edge created: ', [sourceNode.data.id,  destNode.data.id]);
-            console.log('New edge value: ',connectionDataModel.value);
-            console.log('After sorting: ', this.topoSort());
         };
 
 		//
@@ -586,8 +582,22 @@ var flowchart = {
             unsortedNodes.push(this.data.nodes.length-1);
 
             // print out the new node index in console
-            console.log("---------------------------------------");
+            console.log('======================================================================');
             console.log(nodeDataModel.name + " created; node id:" + (this.data.nodes.length-1));
+
+            //
+            // iterate through the nodes and print out the input and output of each node
+            //
+            console.log("========================== test msg ===========================");
+            for(var i=0; i < this.nodes.length; i++){
+                console.log("node id: ", this.nodes[i].data.id);
+                for(var input=0; input < this.nodes[i].data.inputConnectors.length;input++){
+                    console.log("inputs: ", this.nodes[i].data.inputConnectors[input].value)
+                }
+                for(var output=0; output < this.nodes[i].data.outputConnectors.length;output++){
+                    console.log("outputs: ", this.nodes[i].data.outputConnectors[output].value)
+                }
+            }
 		}
 
         //
@@ -596,20 +606,18 @@ var flowchart = {
 
         this.topoSort = function topoSort (){
 
-            console.log("---------------------------------------");
+            console.log('----------------------------------------------------------------------');
             console.log('sorted!');
+            console.log('total number of nodes: ',unsortedNodes.length);
             console.log('current edges: ', edgeList);
 
             // copy the node and edge lists
             var edges = edgeList.slice();
-            //var nodes = unsortedNodes.slice();
+            // var nodes = unsortedNodes.slice();
             var nodes = [];
             for(var i = 0; i < this.nodes.length; i++){
                 nodes.push(this.nodes[i].data.id);
             }
-
-            console.log('total number of nodes: ',nodes.length);
-            console.log('before sorting: ', nodes);
 
             // topological sort
             var cursor = nodes.length
@@ -620,8 +628,9 @@ var flowchart = {
             while (i--) {
                 if (!visited[i]) visit(nodes[i], i, [])
             }
-            //this.$emit("sortedOrder", sorted);
-            console.log("after sorting:", sorted);
+
+            console.log("after sorting:", nodes);
+
             return sorted;
 
             function visit(node, i, predecessors) {
@@ -794,6 +803,7 @@ var flowchart = {
 				}
 			}
 
+
             //
             // Update the node index
             // todo currently only support deletion for one item
@@ -812,10 +822,10 @@ var flowchart = {
 			this.data.nodes = newNodeDataModels;
 			this.connections = newConnectionViewModels;
 			this.data.connections = newConnectionDataModels;
+
             console.log("----- notice ------");
             console.log(this.nodes);
             console.log(this.data.nodes);
-
 
             return deletedNodeIds;
 		};
@@ -882,6 +892,8 @@ var flowchart = {
 
 			return selectedConnections;
 		};
+		
+
 	};
 
 })();

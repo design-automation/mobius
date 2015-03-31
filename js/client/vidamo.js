@@ -1,5 +1,4 @@
-var vidamo = angular.module('vidamo', ['ui.layout',
-    'ui.ace','ui.bootstrap','ngSanitize','ui.tree','flowChart','panzoom'])
+var vidamo = angular.module('vidamo', ['ui.layout','ui.ace','ui.bootstrap','ngSanitize','ui.tree','flowChart','panzoom'])
 
 /////////////////////////////////////////////////////////////////////////////////
 // graph controller
@@ -11,7 +10,7 @@ vidamo.factory('prompt', function () {
 })
 
 // Application controller
-vidamo.controller('graphCtrl', function($scope,prompt) {
+vidamo.controller('graphCtrl', function($scope,prompt,$rootScope) {
 
     // data structure of procedure list
     $scope.dataList = [];
@@ -28,13 +27,13 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
         connections: []
     };
 
-
     // listen to the graph, when a node is clicked, update the visual procedure accordions
     // use $scope since $rootScope cause duplication from the undestroyed listener
      $scope.$on("nodeIndex", function(event, message) {
         $scope.nodeIndex = message;
         $scope.data  = $scope.dataList[$scope.nodeIndex];
     });
+
 
     // Add a new node to the chart.
     $scope.addNewNode = function () {
@@ -54,7 +53,7 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
                 //{
                 //    name: "Input1",
                 //    value:''
-                //},
+                //}//,
             ],
             outputConnectors: [
             ]
@@ -63,9 +62,11 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
         // when new node added, increase the number of procedure list by one
         $scope.dataList.push([]);
 
-        // call viewmodel function to add node
         $scope.chartViewModel.addNode(newNodeDataModel);
 
+        // sort nodes topologically and emit the result to procedure part
+        //var sortedOrder = $scope.chartViewModel.topoSort().slice();
+        //console.log("after sorting: ", sortedOrder);
     };
 
     // Add an input connector to selected nodes.
@@ -104,13 +105,17 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
         }
     };
 
-    // Delete selected nodes and connections.
-    // todo currently only support deletion of one item
+    // Delete selected nodes and connections in data&view model
+    // Update the controller dataList
     $scope.deleteSelected = function () {
         var deletedNodeIds = $scope.chartViewModel.deleteSelected();
         console.log(deletedNodeIds);
         $scope.dataList.splice(deletedNodeIds[0],1);
-        console.log($scope.dataList);
+        if(deletedNodeIds[0] != ''){
+            nextNodeID --;
+            console.log($scope.dataList);
+        }
+
     };
 
 
@@ -122,20 +127,17 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
     // first execute the topological sort
     // then call the run function in procedural controller
     $scope.run = function(){
-        // apply the topological sort
+        // copy the sorted order
         var sortedOrder = $scope.chartViewModel.topoSort().slice();
 
         // execute procedures should follows the topological sort order
         // iterate through all nodes and their procedures to find methods and execute it
-        // todo bug fix when node deleted, id of left nodes wont updated
-        console.log($scope.dataList);
-        console.log(sortedOrder);
-
-        for(var i = 0; i < sortedOrder.length; i++){
-            for(var j = 0; j < $scope.dataList[sortedOrder[i]].length; j++){
-
+        for(var i = 0; i < sortedOrder.length; i++) {
+            for (var j = 0; j < $scope.dataList[sortedOrder[i]].length; j++) {
                 //find action procedure
-                if($scope.dataList[sortedOrder[i]][j].title == 'Action'){
+
+
+                if ($scope.dataList[sortedOrder[i]][j].title == 'Action') {
 
                     // implementation of all the execution methods
 
@@ -146,46 +148,36 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
                         for (var n = 0; n < $scope.dataList[sortedOrder[i]][j].parentNode.data.inputConnectors.length; n++) {
                             if ($scope.dataList[sortedOrder[i]][j].parentNode.data.inputConnectors[n].name
                                 == $scope.dataList[sortedOrder[i]][j].parameters[0]) {
-                                $scope.dataList[sortedOrder[i]][j].dataValue
-                                    = $scope.dataList[sortedOrder[i]][j].parentNode.data.inputConnectors[n].value;
-                                console.log("get input:",$scope.dataList[sortedOrder[i]][j].dataName,
-                                    " ", $scope.dataList[sortedOrder[i]][j].dataValue
-                                );
+                                $scope.dataList[sortedOrder[i]][j].dataValue = $scope.dataList[sortedOrder[i]][j].parentNode.data.inputConnectors[n].value;
+                                console.log("get input:", $scope.dataList[sortedOrder[i]][j].dataName, " ", $scope.dataList[sortedOrder[i]][j].dataValue);
                             }
                         }
                     }
 
                     // append output method
-                    else  if ($scope.dataList[sortedOrder[i]][j].method == 'append output') {
+                    else if ($scope.dataList[sortedOrder[i]][j].method == 'append output') {
                         // search the output connector in this node that match the selected name
                         // and replace the value of the output
                         for (var m = 0; m < $scope.dataList[sortedOrder[i]][j].parentNode.data.outputConnectors.length; m++) {
                             if ($scope.dataList[sortedOrder[i]][j].parentNode.data.outputConnectors[m].name
-                                ==  $scope.dataList[sortedOrder[i]][j].parameters[0]) {
+                                == $scope.dataList[sortedOrder[i]][j].parameters[0]) {
                                 // update the output port data value
-                               for(var n = 0; n < $scope.dataList[sortedOrder[i]].length; n++){
-                                   if($scope.dataList[sortedOrder[i]][n].dataName
-                                       == $scope.dataList[sortedOrder[i]][j].parameters[2]){
-                                       $scope.dataList[sortedOrder[i]][j].parentNode.data.outputConnectors[m].value
-                                           = $scope.dataList[sortedOrder[i]][n].dataValue;
+                                for (var n = 0; n < $scope.dataList[sortedOrder[i]].length; n++) {
+                                    if ($scope.dataList[sortedOrder[i]][n].dataName == $scope.dataList[sortedOrder[i]][j].parameters[2]) {
+                                        $scope.dataList[sortedOrder[i]][j].parentNode.data.outputConnectors[m].value = $scope.dataList[sortedOrder[i]][n].dataValue;
 
-                                       console.log(
-                                           $scope.dataList[sortedOrder[i]][j].parentNode.data.outputConnectors[m].name,
-                                           $scope.dataList[sortedOrder[i]][j].parentNode.data.outputConnectors[m].value
-                                       );
-                                   }
-                               }
+                                        console.log($scope.dataList[sortedOrder[i]][j].parentNode.data.outputConnectors[m].name,
+                                            $scope.dataList[sortedOrder[i]][j].parentNode.data.outputConnectors[m].value);
+                                    }
+                                }
 
                                 // if this outport is connected
                                 // update the connection value
                                 // todo use id instead of name
-                                for(var k = 0; k < $scope.chartViewModel.connections.length; k++){
-                                    if($scope.dataList[sortedOrder[i]][j].parentNode.data.outputConnectors[m].name
-                                        == $scope.chartViewModel.connections[k].source.name()){
-                                        $scope.chartViewModel.connections[k].dest.data.value =
-                                            $scope.dataList[sortedOrder[i]][j].parentNode.data.outputConnectors[m].value;
-                                        $scope.chartViewModel.connections[k].data.value =
-                                            $scope.dataList[sortedOrder[i]][j].parentNode.data.outputConnectors[m].value;
+                                for (var k = 0; k < $scope.chartViewModel.connections.length; k++) {
+                                    if ($scope.dataList[sortedOrder[i]][j].parentNode.data.outputConnectors[m].name == $scope.chartViewModel.connections[k].source.name()) {
+                                        $scope.chartViewModel.connections[k].dest.data.value = $scope.dataList[sortedOrder[i]][j].parentNode.data.outputConnectors[m].value;
+                                        $scope.chartViewModel.connections[k].data.value = $scope.dataList[sortedOrder[i]][j].parentNode.data.outputConnectors[m].value;
                                     }
                                 }
                             }
@@ -195,11 +187,10 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
             }
         }
 
-
         // dummy code generation PART I
         // functions based on procedures
         // print out the list of function definitions
-        $scope.javascriptCode = "//Function definitions:" + "\n"
+        $scope.javascriptCode = "//Function definitions:" + "\n";
 
         // use flag to check whether it is the first argument
         var flag= false;
@@ -236,6 +227,18 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
             }
 
             // print out code for procedure functions
+
+            // get inpput procedure
+            for(var j = 0; j < $scope.dataList[i].length; j++){
+                if($scope.dataList[i][j].title == "Action"){
+                    if($scope.dataList[i][j].method == "get input"){
+                        $scope.javascriptCode = $scope.javascriptCode  + "    " + "var "
+                        + $scope.dataList[i][j].dataName + " = getInput("
+                        + $scope.dataList[i][j].parameters[0] + ");\n"
+                    }
+                }
+            }
+            
             // append output procedure
             for(var j = 0; j < $scope.dataList[i].length; j++){
                 if($scope.dataList[i][j].title == "Action"){
@@ -243,17 +246,6 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
                         $scope.javascriptCode = $scope.javascriptCode  + "    " + "appendOutput("
                                                         + $scope.dataList[i][j].parameters[0] + ", "
                                                         + $scope.dataList[i][j].parameters[2] + ");\n"
-                    }
-                }
-            }
-
-            // get inpput procedure
-            for(var j = 0; j < $scope.dataList[i].length; j++){
-                if($scope.dataList[i][j].title == "Action"){
-                    if($scope.dataList[i][j].method == "get input"){
-                        $scope.javascriptCode = $scope.javascriptCode  + "    " + "var "
-                                                        + $scope.dataList[i][j].dataName + " = getInput("
-                                                        + $scope.dataList[i][j].parameters[0] + ");\n"
                     }
                 }
             }
@@ -266,11 +258,9 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
             for(var n =0; n < $scope.chartViewModel.nodes[i].outputConnectors.length; n++){
                 if($scope.chartViewModel.nodes[i].outputConnectors[n].data.value != ""){
                     if(n !=  $scope.chartViewModel.nodes[i].outputConnectors.length-1){
-                        $scope.javascriptCode =
-                            $scope.javascriptCode +$scope.chartViewModel.nodes[i].outputConnectors[n].data.name + ", ";
+                        $scope.javascriptCode = $scope.javascriptCode  + $scope.chartViewModel.nodes[i].outputConnectors[n].data.name + ", ";
                     }else{
-                        $scope.javascriptCode =
-                            $scope.javascriptCode +$scope.chartViewModel.nodes[i].outputConnectors[n].data.name + ";\n";
+                        $scope.javascriptCode = $scope.javascriptCode  + $scope.chartViewModel.nodes[i].outputConnectors[n].data.name + ";\n";
                     }
                 }else{console.log($scope.chartViewModel.nodes[i].outputConnectors[n])}
             }
@@ -280,30 +270,24 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
         // dummy code generation PART II
         // execution orders based on topological sort
 
-        $scope.javascriptCode = $scope.javascriptCode + "// execution \n"
+        $scope.javascriptCode = $scope.javascriptCode + "// execution \n";
         for(var n = 0; n < sortedOrder.length; n++) {
             // case where the node has output
             if ($scope.chartViewModel.nodes[sortedOrder[n]].outputConnectors.length != 0) {
-
                 $scope.javascriptCode = $scope.javascriptCode + "var result" + n + " = ";
                 $scope.javascriptCode = $scope.javascriptCode + "node" + sortedOrder[n] + "(";
-
                 // print all the parameters/inputs
                 for (var m = 0; m < $scope.chartViewModel.nodes[sortedOrder[n]].inputConnectors.length; m++) {
                     if (m != $scope.chartViewModel.nodes[sortedOrder[n]].inputConnectors.length - 1) {
-                        $scope.javascriptCode = $scope.javascriptCode +
-                        $scope.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.name + ", "
+                        $scope.javascriptCode = $scope.javascriptCode + $scope.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.name + ", "
                     } else {
-
                         // find the connected output port of this input port
                         for (var k = 0; k < $scope.chartViewModel.connections.length; k++) {
-
                             // todo check id instead of name
                             // todo when one node return multiple outputs, should be an array
-                            if ($scope.chartViewModel.connections[k].dest.data.name
-                                == $scope.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.name) {
-                                var inputIndex =
-                                    sortedOrder.indexOf(($scope.chartViewModel.connections[k].source.parentNode().data.id));
+                            if ($scope.chartViewModel.connections[k].dest.data.name == $scope.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.name) {
+                                var inputIndex = sortedOrder.indexOf(($scope.chartViewModel.connections[k].source.parentNode().data.id));
+                                console.log($scope.chartViewModel.connections[k].source.parentNode().data.id);
                                 $scope.javascriptCode = $scope.javascriptCode + "result" + inputIndex;
                             }
                         }
@@ -320,10 +304,8 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
                         // todo check id instead of name
                         // todo when one node return multiple outputs, should be an array
                         // todo check the input connectors empty, exclude empty ones
-                        if ($scope.chartViewModel.connections[k].dest.data.name
-                            == $scope.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.name) {
-                            var inputIndex =
-                                sortedOrder.indexOf(($scope.chartViewModel.connections[k].source.parentNode().data.id));
+                        if ($scope.chartViewModel.connections[k].dest.data.name == $scope.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.name) {
+                            var inputIndex = sortedOrder.indexOf(($scope.chartViewModel.connections[k].source.parentNode().data.id));
                             if (flag == false) {
                                 $scope.javascriptCode = $scope.javascriptCode + "result" + inputIndex;
                                 flag == true;
@@ -383,9 +365,6 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
             });
         }
     };
-
-
-
     //onchange write the input value
     $scope.applyValue = function (cate, value,location){
         switch (cate){
@@ -395,20 +374,18 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
                 console.log("dataName:",value);
                 break
             case 'dataValue':
-                location.dataValue = value;
-                break;
+                location.dataValue = value;break;
+                console.log("dataValue:",value);
 
             // cases for action procedure
             case 'method':
-                location.method = value;
-                break;
+                location.method = value; break;
 
             // cases for specific method in an action procedure
 
             // append output method, parameters: 1. output port, 2. dataValue 3. dataName
             case 'outputPort':
-                location.parameters[0] = value;
-                break;
+                location.parameters[0] = value; break;
 
             case 'outputDataName':
                 console.log(value);
@@ -427,7 +404,6 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
     };
 });
 
-
 //////////////////////////////////////////////////////////////////////////////////////
 // zoom and pan controller
 vidamo.controller('znpController', ['$scope',
@@ -436,15 +412,13 @@ vidamo.controller('znpController', ['$scope',
         // Instantiate models which will be passed to <panzoom> and <panzoomwidget>
 
         // The panzoom config model can be used to override default configuration values
-
         $scope.panzoomConfig = {
             initialZoomToFit: rect
         };
 
-        // The panzoom model should initialized to be empty; it is initialized by the <panzoom>
+        // The panzoom model should initialle be empty; it is initialized by the <panzoom>
         // directive. It can be used to read the current state of pan and zoom. Also, it will
         // contain methods for manipulating this state.
-
         $scope.panzoomModel = {};
 
     }
