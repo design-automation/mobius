@@ -232,14 +232,20 @@
                                     </script>
                               </div>
                             </tab>
-                            <tab heading = "Console"></tab>
+                            <tab heading = "Console">
+                                <p> &nbsp;&nbsp;&nbsp; VIDAMO Console:</p>
+                                <div ng-repeat="msg in consoleMsg track by $index">
+                                    &nbsp;&nbsp;&nbsp; {{msg}}
+                                </div>
+
+                            </tab>
                         </tabset>
                     </div>
 
 
                 <!--code area-->
                 <div class=" code-area" >
-                    <tabset class="tabArea">
+                    <tabset justified="true" class="tabArea">
                         <tab heading="Procedure" >
                             <div>
                                 <div>
@@ -384,6 +390,25 @@
                                                                 </div>
                                                             </div>
 
+                                                            <!--method for print data-->
+                                                            <div ng-if="node.method == 'print data'">
+                                                                <span> data name: </span>
+                                                                <select ng-model="printDataName"
+                                                                        style="width: 200px;"
+                                                                        ng-change =
+                                                                                "applyValue('printDataName', this.printDataName,node)"
+                                                                        style="width: 200px;">
+                                                                    <option value=""
+                                                                            selected disabled>
+                                                                        {{node.parameters[1]}}
+                                                                    </option>
+                                                                    <option ng-repeat="node in data"
+                                                                            value="{{node.dataValue}},{{node.dataName}}">
+                                                                        {{node.dataName}}
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+
                                                             <div ng-repeat="node in node.nodes"
                                                                  ui-tree-node ng-include="'nodes_renderer.html'">
                                                             </div>
@@ -418,7 +443,7 @@
 
                         <tab heading="Interface"></tab>
                         <!--ace text editor-->
-                        <tab heading="Procedure Code">
+                        <tab heading="Code">
                             <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'monokai' }"
                                  ng-model="functionCode">
                             </div>

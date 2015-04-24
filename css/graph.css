@@ -32,6 +32,7 @@ Styles for nodes and connectors.
 }
 
 .selected-node-rect {
+    fill:white;
 	stroke: #555555;
 	stroke-width: 3;
 }
