@@ -67,3 +67,7 @@ CSS For ui-three layout [right pane three-tab system]
     z-index: 999;
     opacity: .8;    
 }
+
+.panel-body {
+    padding:5px
+}

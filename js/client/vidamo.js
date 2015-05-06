@@ -9,8 +9,20 @@ vidamo.factory('prompt', function () {
     return prompt;
 })
 
+// config to add blob as safe prefix in the white list
+vidamo.config( [
+    '$compileProvider',
+    function( $compileProvider )
+    {
+        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|blob|data):/);
+    }
+]);
+
 // Application controller
 vidamo.controller('graphCtrl', function($scope,prompt,$rootScope) {
+
+    //temp
+    $scope.isCollapsed = false;
 
     // data structure of procedure list
     $scope.dataList = [];
@@ -23,6 +35,7 @@ vidamo.controller('graphCtrl', function($scope,prompt,$rootScope) {
 
     // currently selected node ID
     $scope.nodeIndex = '';
+    $scope.currentNodeName = '';
 
     // Selects the next node id.
     var nextNodeID = 0;
@@ -34,6 +47,69 @@ vidamo.controller('graphCtrl', function($scope,prompt,$rootScope) {
     };
 
     //
+    // save and open json file
+    //
+
+    // store json url
+    $scope.json = '';
+
+    // procedure json
+    $scope.procedureJson = '';
+
+    // check for the various File API support.
+    if (window.File && window.FileReader && window.FileList && window.Blob) {
+        console.log('The File APIs are supported in this browser');
+    } else {
+        alert('The File APIs are not fully supported in this browser.');
+    }
+
+    // open and read json file
+    $scope.readJson = function(){
+
+        document.getElementById('upload').click();
+
+        JsonObj = null;
+
+        function handleFileSelect(evt) {
+            var files = evt.target.files;
+            var f = files[0];
+
+            // todo file type match to json
+            var reader = new FileReader();
+
+            reader.onload = (function (theFile) {
+                return function (e) {
+                    JsonObj = JSON.parse(e.target.result);
+
+                    // update the chart data and view model
+                    chartDataModel = JsonObj;
+                    $scope.chartViewModel = new flowchart.ChartViewModel(chartDataModel);
+                };
+            })(f);
+
+            reader.readAsText(f);
+        }
+
+        document.getElementById('upload').addEventListener('change', handleFileSelect, false);
+    }
+
+    // save json file
+    // todo note it is for the graph only for now
+    $scope.jsonURL = function(){
+        var graphJson = JSON.stringify($scope.chartViewModel.data, null, 4);
+        var procedureJson = JSON.stringify($scope.dataList, null, 4);
+        var fullJson = graphJson.concat('\n');
+        var fullJson = fullJson.concat(procedureJson);
+
+        var blob = new Blob([fullJson], {type: "application/json"});
+        var url = URL.createObjectURL(blob);
+
+        $scope.json = url;
+    }
+
+
+
+    //
     // ------------------------------------- NODE GRAPH -------------------------------------
     //
 
@@ -41,6 +117,7 @@ vidamo.controller('graphCtrl', function($scope,prompt,$rootScope) {
     // listen to the graph, when a node is clicked, update the visual procedure/ code/ interface accordions
      $scope.$on("nodeIndex", function(event, message) {
          $scope.nodeIndex = message;
+         $scope.currentNodeName = $scope.chartViewModel.nodes[$scope.nodeIndex].data.name;
          // update the procedure tab
          $scope.data  = $scope.dataList[$scope.nodeIndex];
 
@@ -80,8 +157,11 @@ vidamo.controller('graphCtrl', function($scope,prompt,$rootScope) {
 
         // when new node added, increase the number of procedure list by one
         $scope.dataList.push([]);
+
+        // when new node added, add new code block
         $scope.codeList.push('');
 
+        // when new node added, increase the number of interface list by one
         $scope.interfaceList.push([]);
 
         $scope.chartViewModel.addNode(newNodeDataModel);
@@ -199,6 +279,7 @@ vidamo.controller('graphCtrl', function($scope,prompt,$rootScope) {
         }
     };
 
+
     //onchange write the input value
     $scope.applyValue = function (cate, value,location){
         switch (cate){
@@ -248,9 +329,8 @@ vidamo.controller('graphCtrl', function($scope,prompt,$rootScope) {
                 var split = value.split(",");
                 console.log("SPLIT1:",split[0]);
                 console.log("SPLIT2:",split[1]);
-                location.parameters[0] = split[0];
+                //location.parameters[0] = split[0];
                 location.parameters[1] = split[1];
-
                 break;
 
             //
@@ -259,11 +339,43 @@ vidamo.controller('graphCtrl', function($scope,prompt,$rootScope) {
             case 'looping':
                 location.looping = value;
                 break;
+
+            // ----------- add data to interface ------------
+            // parameter0: dataValue parameter1: dataName parameter2: node id
+            case 'addToInterface':
+                var split = value.split(",");
+                console.log("SPLIT1:",split[0]);
+                console.log("SPLIT2:",split[1]);
+                console.log("SPLIT3:",split[2]);
+                location.parameters[0] = split[0];
+                location.parameters[1] = split[1];
+                location.parameters[2] = split[2]-1;
+                break;
+
+            // change data in interface and synchronize with procedure
+            // todo when change i won't update directly
+            case 'interfaceValue':
+                location.parameters[0] = value;
+                $scope.data[location.parameters[2]].dataValue = location.parameters[0];
+                break;
         }
     };
 
+    // interface manipulation
 
-
+    // add new item in interface
+    $scope.newInterface = function(cate) {
+        if(cate == 'Data'){
+            $scope.interface.push({
+                id: $scope.data.length  + 1,
+                title:  'Data',
+                dataName:'',
+                parameters:[],
+                dataValue:'',
+                parentNode: $scope.chartViewModel.nodes[$scope.nodeIndex]
+            });
+        }
+    };
 
     //
     // ------------------------------------- RUN-TIME EXECUTIONS -------------------------------------
@@ -297,19 +409,18 @@ vidamo.controller('graphCtrl', function($scope,prompt,$rootScope) {
                 // find action procedures
                 else if (currentNode[j].title == 'Action') {
 
-                    // testing print method
-                    if(currentNode[j].method == 'print data'){
-                        runPrintData(currentNode[j]);
-                    }
-
                     // get input method
-                    else if (currentNode[j].method == 'get input') {
+                    if (currentNode[j].method == 'get input') {
                         runGetInput(currentNode[j]);
                     }
 
                     // append output method
                     else if (currentNode[j].method == 'append output') {
                         runAppendOutput(currentNode[j], currentNode);
+                    }
+                    // testing print method
+                    else if(currentNode[j].method == 'print data'){
+                        runPrintData(currentNode[j]);
                     }
 
                 }
@@ -375,6 +486,12 @@ vidamo.controller('graphCtrl', function($scope,prompt,$rootScope) {
         }
 
         function runPrintData(procedure){
+            for (var n = 0; n < $scope.dataList[procedure.parentNode.data.id].length; n++) {
+                if ($scope.dataList[procedure.parentNode.data.id][n].dataName
+                    == procedure.parameters[1]) {
+                    procedure.parameters[0] = $scope.dataList[procedure.parentNode.data.id][n].dataValue;
+                }
+            }
             $scope.consoleMsg.push(procedure.parameters[0]);
         }
 
@@ -570,3 +687,19 @@ vidamo.controller('znpController', ['$scope',
 
     }
 ]);
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+// todo temporary directive, pls refactor
+// simple directive to display the json for procedures
+//vidamo.directive('procedureJson', function () {
+//    return {
+//        link: function(scope, elem, attrs) {
+//
+//            scope.$watch('dataList', function() {
+//                var json = JSON.stringify(scope.dataList, null, 4);
+//                scope.procedureJson = json;
+//                $(elem).val(scope.procedureJson);
+//            }, true);
+//
+//}}})

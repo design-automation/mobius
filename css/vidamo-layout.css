@@ -27,6 +27,7 @@ CSS For index.html
 
 /* exact tab */
 .graph-area .flow-chart{
+    position: relative;
     width:4000px;
     height: 4000px
 }
@@ -67,11 +68,11 @@ right pane code area
 
 .code-area .buttons{
     position: absolute;
-    bottom: 10px;
+    bottom: 50px;
 }
 
-.code-area .codeEditor {
-    height:650px;
+.codeEditor {
+    height:700px;
     width:100%;
 }
 

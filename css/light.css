@@ -11,7 +11,7 @@ CSS For threeJS editor theme
 
 .view-area #viewport {
     position: absolute;
-    top: 21px;
+    top: 50px;
     left: 0;
     right: 0;
     bottom: 0;
