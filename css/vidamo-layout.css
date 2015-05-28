@@ -9,20 +9,18 @@ CSS For index.html
  left pane graph area
  **************************/
 
-.graph-area{
-  background : #ffffff;
-}
+
 /* exact tab */
 .graph-area .znpController{
    width:100%;
-   height: 95%;
+   height:95%;
    position:relative;
 }
 
 /* exact tab */
 .graph-area .panzoom{
     width:100%;
-    height:900px;
+    height:1100px;
 }
 
 /* exact tab */
@@ -37,19 +35,9 @@ CSS For index.html
     bottom: 10px;
 }
 
-.graph-area .codeEditor {
-    height:650px;
-    width: 100%;
-
-}
-
 /**************************
  middle pane 3D area
  **************************/
-
-.view-area {
-  background : #ffffff;
-}
 
 /*.view-area #viewport {*/
     /*position:relative;*/
@@ -58,37 +46,54 @@ CSS For index.html
     /*bottom: 10px;*/
 /*}*/
 
-/*************************
-right pane code area
-*************************/
-
-.code-area{
-  background : #ffffff;
+.view-area .tabArea{
+    position: relative;
+    left: 9px;
+    height:100%;
+    width: 98%;
 }
 
-.code-area .buttons{
+.view-area .codeEditor {
     position: absolute;
-    bottom: 50px;
-}
-
-.codeEditor {
-    height:700px;
+    height:100%;
     width:100%;
 }
 
 
+/*************************
+right pane code area
+*************************/
 
+.code-area .nodeName{
+    position: relative;
+    left: 9px;
+}
+
+/* todo how come it is 40 while graph one is 10*/
+.code-area .buttons{
+    position: fixed;
+    bottom: 10px;
+}
+
+.code-area .codeEditor {
+    position: absolute;
+    height:100%;
+    width:98%;
+    /*overflow: auto;*/
+}
+
+/* todo when overflow the buttons will be floating*/
 .code-area .tabArea{
     position: relative;
-    left: 13px;
-    max-width: 600px;
+    left: 9px;
     height:100%;
     width: 100%;
     overflow: auto;
 }
 
+/* should clarify this*/
 .code-area .panelHack {
-    margin-bottom: -20px;
+    /*margin-bottom: -20px;*/
 }
 
 /* hack for ui-tree procedure tree structure*/

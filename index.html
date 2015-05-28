@@ -80,13 +80,27 @@
                       </li>
 
                       <li>
-                          <input type="file" id="upload" name="upload[]"
+                          <input type="file" id="importGraphJson" name="importGraphJson[]"
                                  style="visibility: hidden; width: 1px; height: 1px" multiple />
-                          <a href="" ng-click="readJson()">Open</a>
+                          <a href="" ng-click="importGraphJson()">Import Graph</a>
+                      </li>
+
+                      <li>
+                          <input type="file" id="importProcedureJson" name="importProcedureJson[]"
+                                 style="visibility: hidden; width: 1px; height: 1px" multiple />
+                          <a href="" ng-click="importProcedureJson()">Import Procedure</a>
                       </li>
 
                       <li id = "jsonurl">
-                          <a ng-href="{{json}}" download="data.json" ng-click = "jsonURL()"> Save </a>
+                          <a ng-href="{{graphUrl}}" download="graph.json" ng-click = "exportGraphJson()"> Export Graph </a>
+                      </li>
+
+                      <li id = "jsonurl1">
+                          <a ng-href="{{procedureUrl}}" download="procedure.json" ng-click = "exportProcedureJson()"> Export Procedure </a>
+                      </li>
+
+                      <li id = "jsonurl2">
+                          <a ng-href="{{jsUrl}}" download="project.js" ng-click = "downloadJs()"> download JS file </a>
                       </li>
 
                   </ul>
@@ -137,41 +151,42 @@
                             </div>
 
                             <div class = "buttons">
-                            <button class="btn btn-xs"
-                                    ng-click="addNewNode()"
-                                    title="Add a new node to the chart">
-                                Add Node
-                            </button> &nbsp;&nbsp;
-                            <button class="btn btn-xs"
-                                    ng-click="addNewInputConnector()"
-                                    ng-disabled="chartViewModel.getSelectedNodes().length == 0"
-                                    title="Add a new input connector to the selected node">
-                                Add Input
-                            </button> &nbsp;&nbsp;
-                            <button class="btn btn-xs"
-                                    ng-click="addNewOutputConnector()"
-                                    ng-disabled="chartViewModel.getSelectedNodes().length == 0"
-                                    title="Add a new output connector to the selected node">
-                                Add Output
-                            </button> &nbsp;&nbsp;
-                            <button class="btn btn-xs"
-                                    ng-click="deleteSelected()"
-                                    ng-disabled="chartViewModel.getSelectedNodes().length
-                                        == 0 && chartViewModel.getSelectedConnections().length == 0"
-                                    title="Delete selected nodes and connections">
-                                Delete
-                            </button> &nbsp;&nbsp;
-                            <button class="btn btn-xs"
-                                    ng-click="run()"
-                                    title="Run program">
-                                Run
-                            </button>
+                                <button class="btn btn-xs"
+                                        ng-click="addNewNode()"
+                                        title="Add a new node to the chart">
+                                    Add Node
+                                </button> &nbsp;&nbsp;
+                                <button class="btn btn-xs"
+                                        ng-click="addNewInputConnector()"
+                                        ng-disabled="chartViewModel.getSelectedNodes().length == 0"
+                                        title="Add a new input connector to the selected node">
+                                    Add Input
+                                </button> &nbsp;&nbsp;
+                                <button class="btn btn-xs"
+                                        ng-click="addNewOutputConnector()"
+                                        ng-disabled="chartViewModel.getSelectedNodes().length == 0"
+                                        title="Add a new output connector to the selected node">
+                                    Add Output
+                                </button> &nbsp;&nbsp;
+                                <button class="btn btn-xs"
+                                        ng-click="deleteSelected()"
+                                        ng-disabled="chartViewModel.getSelectedNodes().length
+                                            == 0 && chartViewModel.getSelectedConnections().length == 0"
+                                        title="Delete selected nodes and connections">
+                                    Delete
+                                </button> &nbsp;&nbsp;
+                                <button class="btn btn-xs"
+                                        ng-click="run()"
+                                        title="Run program">
+                                    Run
+                                </button>
                             </div>
                         </div>
                     </div>
+
                 <!--3D view area  -->
                     <div class=" view-area" >
-                        <tabset justified ="true">
+                        <tabset justified ="true" class="tabArea">
                             <tab heading="3D View">
                                 <!--<div class="Panel" id ="viewport" >-->
                                     <!--<script>-->
@@ -247,13 +262,6 @@
                                 <!--</div>-->
                                 <!--chart-json-edit-->
                                 <!--view-model="chartViewModel"-->
-                                <div  id ="viewport">
-                                    <textarea
-                                            style="width: 100%; height: 100%";
-                                            procedure-json
-                                    >
-                                    </textarea>
-                                </div>
                             </tab>
 
                             <tab heading = "Execution Code">
@@ -267,8 +275,8 @@
 
 
                 <!--code area-->
-                <div class=" code-area" >
-                    <pre style="margin-left: 10px">{{currentNodeName}}</pre>
+                <div class="code-area" >
+                    <pre class="nodeName">{{currentNodeName}}</pre>
                     <tabset justified="true" class="tabArea">
                         <tab heading="Procedure" >
                             <div>
@@ -363,7 +371,7 @@
                                                                         {{node.parameters[0]}}
                                                                     </option>
                                                                     <option  ng-repeat=
-                                                                             "outputPort in node.parentNode.data.outputConnectors"
+                                                                             "outputPort in node.parentNode.outputConnectors"
                                                                              value="{{outputPort.name}}">
                                                                         {{outputPort.name}}
                                                                     </option>
@@ -396,7 +404,7 @@
                                                                     <option value="" selected disabled>
                                                                         {{node.parameters[0]}}
                                                                     </option>
-                                                                    <option  ng-repeat="inputPort in node.parentNode.data.inputConnectors"
+                                                                    <option  ng-repeat="inputPort in node.parentNode.inputConnectors"
                                                                              value="{{inputPort.name}}">
                                                                         {{inputPort.name}}
                                                                     </option>
@@ -537,7 +545,9 @@
                                     </div>
                                 </div>
 
-                            <button class="btn btn-xs" ng-click="newInterface('Data')">Add Data</button>
+                            <div class="buttons">
+                                <button class="btn btn-xs" ng-click="newInterface('Data')">Add Data</button>
+                            </div>
                         </tab>
 
                         <!--ace text editor-->
@@ -581,6 +591,7 @@
          <script src="js/angular-ui/ui-panzoom/panzoom.0.1-snapshot.js"></script>
          <!--vidamo angular app-->
          <script src="js/client/vidamo.js"></script>
+        <script src="js/client/module.js"></script>
 
 </body>
 
