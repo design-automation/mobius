@@ -21,9 +21,6 @@ vidamo.config( [
 // Application controller
 vidamo.controller('graphCtrl', function($scope,prompt) {
 
-    //temp
-    $scope.isCollapsed = false;
-
     // data structure of procedure list
     $scope.dataList = [];
 
@@ -46,15 +43,12 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
         connections: []
     };
 
-
     // store json url
-
     $scope.graphUrl = '';
     $scope.procedureUrl = '';
     $scope.jsUrl = '';
 
     // procedure json
-
     $scope.procedureJson = '';
 
     // check for the various File API support.
@@ -204,14 +198,30 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
      });
 
 
-    // Add a new node to the chart.
 
+
+    // verify the function name
+    function isValidName(inputName) {
+        var testString =  'function ' + inputName  + '(){};';
+
+        try{
+            eval(testString);
+        }
+        catch(err){
+            document.getElementById('log').innerHTML += "<div style='color: red'>Error: invalid name!</div>";
+            return false;
+        }
+            return true;
+    };
+
+    // Add a new node to the chart.
     $scope.addNewNode = function () {
 
         // promote for name of new node
 
         var nodeName = prompt("Enter a node name:", "New node");
-        if (!nodeName) {
+
+        if (!isValidName(nodeName)) {
             return;
         }
 
@@ -224,10 +234,6 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
             x: 2200,
             y: 2000,
             inputConnectors: [
-                //{
-                //    name: "Input1",
-                //    value:''
-                //}//,
             ],
             outputConnectors: [
             ]
@@ -254,7 +260,7 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
     $scope.addNewInputConnector = function () {
         var connectorName = prompt("Enter a connector name:", "New connector");
 
-        if (!connectorName) {
+        if (!isValidName(connectorName)) {
             return;
         }
 
@@ -275,7 +281,7 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
     $scope.addNewOutputConnector = function () {
         var connectorName = prompt("Enter a connector name:", "New connector");
 
-        if (!connectorName) {
+        if (!isValidName(connectorName)) {
             return;
         }
 
@@ -325,45 +331,54 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
     };
 
     $scope.newItem = function(cate) {
-        if(cate == 'Data'){
-            $scope.data.push({
-                id: $scope.data.length  + 1,
-                title:  'Data',
-                nodes: [],
-                dataName:'',
-                dataValue:'',
-                parentNode: $scope.chartViewModel.nodes[$scope.nodeIndex].data
-            });
-        } else if(cate == 'Action'){
-            $scope.data.push({
-                id: $scope.data.length  + 1,
-                title:  'Action',
-                nodes: [],
+        try{
+            if(cate == 'Data'){
+                $scope.data.push({
+                    id: $scope.data.length  + 1,
+                    title:  'Data',
+                    nodes: [],
+                    dataName:'',
+                    dataValue:'',
+                    parentNode: $scope.chartViewModel.nodes[$scope.nodeIndex].data
+                });
+            } else if(cate == 'Action'){
+                $scope.data.push({
+                    id: $scope.data.length  + 1,
+                    title:  'Action',
+                    nodes: [],
 
-                // for method name
+                    // for method name
 
-                method:'',
+                    method:'',
 
-                // for method's arguments
+                    // for method's arguments
 
-                parameters:[],
+                    parameters:[],
 
-                // if the method is get data from input port, use following two as holder
+                    // if the method is get data from input port, use following two as holder
 
-                dataName:'',
-                dataValue:'',
-                parentNode: $scope.chartViewModel.nodes[$scope.nodeIndex].data
+                    dataType:'',
+                    dataName:'',
+                    dataValue:'',
+                    parentNode: $scope.chartViewModel.nodes[$scope.nodeIndex].data
 
-            });
-        } else if(cate == 'Control'){
-            $scope.data.push({
-                id: $scope.data.length  + 1,
-                title:  'Control',
-                nodes: [],
-                looping: '',
-                parentNode: $scope.chartViewModel.nodes[$scope.nodeIndex].data
-            });
+                });
+            } else if(cate == 'Control'){
+                $scope.data.push({
+                    id: $scope.data.length  + 1,
+                    title:  'Control',
+                    nodes: [],
+                    controlType: '',
+                    forItemName:'',
+                    forList:'',
+                    parentNode: $scope.chartViewModel.nodes[$scope.nodeIndex].data
+                });
+            }
         }
+        catch(err){
+            document.getElementById('log').innerHTML += "<div style='color: red'>Error: no node selected!</div>";
+        }
+
     };
 
 
@@ -377,13 +392,15 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
             //
 
             case 'dataName':
-                location.dataName = value;
-                console.log("dataName:",value);
+                location.dataName = value;;
                 break;
 
             case 'dataValue':
                 location.dataValue = value;
-                console.log("dataValue:",value);
+                break;
+
+            case 'dataType':
+                location.dataType = value;
                 break;
 
             //
@@ -401,12 +418,7 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
                 break;
 
             case 'outputDataName':
-
-                var split = value.split(",");
-                console.log("SPLIT1:",split[0]);
-                console.log("SPLIT2:",split[1]);
-                location.parameters[1] = split[0];
-                location.parameters[2] = split[1];
+                location.parameters[2] = value;
                 break;
 
             // get input method, parameters: 1. input port index
@@ -419,19 +431,23 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
             // print data method, parameter: 1. data value 2. data name
 
             case 'printDataName':
-                var split = value.split(",");
-                console.log("SPLIT1:",split[0]);
-                console.log("SPLIT2:",split[1]);
-                //location.parameters[0] = split[0];
-                location.parameters[1] = split[1];
+                location.parameters[0] = value;
                 break;
 
             //
             // ----------- control procedure -----------
             //
 
-            case 'looping':
-                location.looping = value;
+            case 'controlType':
+                location.controlType = value;
+                break;
+
+            case 'forItemName':
+                location.forItemName  = value;
+                break;
+
+            case 'forList':
+                location.forList  = value;
                 break;
 
             // ----------- add data to interface ------------
@@ -457,20 +473,24 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
         }
     };
 
-    // interface manipulation
-
     // add new item in interface
 
     $scope.newInterface = function(cate) {
-        if(cate == 'Data'){
-            $scope.interface.push({
-                id: $scope.data.length  + 1,
-                title:  'Data',
-                dataName:'',
-                parameters:[],
-                dataValue:'',
-                parentNode: $scope.chartViewModel.nodes[$scope.nodeIndex].data
-            });
+
+        try{
+            if(cate == 'Data'){
+                $scope.interface.push({
+                    id: $scope.data.length  + 1,
+                    title:  'Data',
+                    dataName:'',
+                    parameters:[],
+                    dataValue:'',
+                    parentNode: $scope.chartViewModel.nodes[$scope.nodeIndex].data
+                });
+            }
+        }
+        catch(err){
+            document.getElementById('log').innerHTML += "<div style='color: red'>Error: no node selected!</div>";
         }
     };
 
@@ -482,146 +502,23 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
 
     // execute the topological sort, then call procedure functions in sorted order
 
-    $scope.run = function(){
+    $scope.run = function() {
 
         // declare start running in console
         // todo future throw errors/ warning in console
 
-        $scope.consoleMsg = [];
-        $scope.consoleMsg.push('   Start Running:');
+        document.getElementById('log').innerHTML += "<div>Generating code:</br>...</div>";
 
         // copy the sorted order
 
         var sortedOrder = $scope.chartViewModel.topoSort().slice();
 
-        // execute procedures should follows the topological sort order
-        // iterate through all nodes and their procedures to find methods and execute it
-        // todo here get-data and append-data should be implemented here
-        // todo other methods/ controls /data should be run as a javascript file/code block
-
-        for(var i = 0; i < sortedOrder.length; i++) {
-
-            var currentNode = $scope.dataList[sortedOrder[i]];
-
-            for (var j = 0; j < currentNode.length; j++) {
-
-                // find control procedure
-                // todo it should not be here
-                //if(currentNode[j].title == 'Control'){
-                //    runControl(currentNode[j]);
-                //}
-
-
-                // find action procedures
-                if (currentNode[j].title == 'Action') {
-
-                    // get input method
-
-                    if (currentNode[j].method == 'get input') {
-                        runGetInput(currentNode[j]);
-                    }
-
-                    // append output method
-
-                    else if (currentNode[j].method == 'append output') {
-                        runAppendOutput(currentNode[j], currentNode);
-                    }
-
-                    // testing print method
-                    // todo it should not be here
-
-                    else if(currentNode[j].method == 'print data'){
-                        runPrintData(currentNode[j]);
-                    }
-
-                }
-            }
-        }
-
-        //
-        // ------------------------------------- SUPPORTING RUN-TIME FUNCTIONS -------------------------------------
-        //
-
-        function runGetInput(procedure){
-            for (var n = 0; n < procedure.parentNode.inputConnectors.length; n++) {
-                if (procedure.parentNode.inputConnectors[n].name
-                    == procedure.parameters[0]) {
-                    procedure.dataValue = procedure.parentNode.inputConnectors[n].value;
-                    console.log("get input:", procedure.dataName, " ", procedure.dataValue);
-                }
-            }
-        }
-
-        function runAppendOutput(procedure, procedureSet){
-
-            // search the output connector in this node that match the selected name
-            // and replace the value of the output
-
-            for (var m = 0; m < procedure.parentNode.outputConnectors.length; m++) {
-                if (procedure.parentNode.outputConnectors[m].name
-                    == procedure.parameters[0]) {
-
-                    // update the output port data value
-
-                    for (var n = 0; n < procedureSet.length; n++) {
-                        if (procedureSet[n].dataName == procedure.parameters[2]) {
-                            procedure.parentNode.outputConnectors[m].value = procedureSet[n].dataValue;
-
-                            console.log(procedure.parentNode.outputConnectors[m].name,
-                                procedure.parentNode.outputConnectors[m].value);
-                        }
-                    }
-
-                    // if this outport is connected: update the connection value
-
-                    // todo use id instead of name
-                    for (var k = 0; k < $scope.chartViewModel.connections.length; k++) {
-                        if (procedure.parentNode.outputConnectors[m].name
-                            == $scope.chartViewModel.connections[k].source.name()) {
-                            $scope.chartViewModel.connections[k].dest.data.value
-                                = procedure.parentNode.outputConnectors[m].value;
-                            $scope.chartViewModel.connections[k].data.value
-                                = procedure.parentNode.outputConnectors[m].value;
-                        }
-                    }
-                }
-            }
-        }
-
-        // supporting function for control procedure
-
-        function runControl(procedure){
-            for(var n = 0; n < procedure.looping; n++ ){
-                for(var m = 0; m < procedure.nodes.length; m ++){
-                    if(procedure.nodes[m].title =='Action'){
-                        if(procedure.nodes[m].method =='print data'){
-                            runPrintData(procedure.nodes[m]);
-                        }
-                    }
-                }
-            }
-        }
-
-        function runPrintData(procedure){
-            for (var n = 0; n < $scope.dataList[procedure.parentNode.id].length; n++) {
-                if ($scope.dataList[procedure.parentNode.id][n].dataName
-                    == procedure.parameters[1]) {
-                    procedure.parameters[0] = $scope.dataList[procedure.parentNode.id][n].dataValue;
-                }
-            }
-            $scope.consoleMsg.push(procedure.parameters[0]);
-
-        }
-
-        //
-        // ------------------------------------- CODE GENERATIONS-------------------------------------
-        //
 
         //
         // function definitions
         //
 
-        $scope.javascriptCode ='//Function definitions:' + '\n';
+        $scope.javascriptCode ='// Function definitions:' + '\n';
 
         // use flag to check whether it is the first argument
 
@@ -630,6 +527,10 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
             // function name
 
             $scope.javascriptCode = $scope.javascriptCode + 'function ' + $scope.chartViewModel.nodes[i].data.name +' (';
+
+            $scope.codeList[i]='// Function definitions:' + '\n' + '// This is definition for function '
+                                + $scope.chartViewModel.nodes[i].data.name + '\n'
+            $scope.codeList[i] = $scope.codeList[i] + 'function ' + $scope.chartViewModel.nodes[i].data.name +' (';
 
             // function arguments
 
@@ -643,18 +544,27 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
                         $scope.javascriptCode = $scope.javascriptCode
                         + $scope.chartViewModel.nodes[i].inputConnectors[k].data.name
                         + ',';
+
+                        $scope.codeList[i] = $scope.codeList[i]
+                        + $scope.chartViewModel.nodes[i].inputConnectors[k].data.name
+                        + ',';
                     }
                     else{
                         $scope.javascriptCode = $scope.javascriptCode
+                        + $scope.chartViewModel.nodes[i].inputConnectors[k].data.name;
+
+                        $scope.codeList[i] = $scope.codeList[i]
                         + $scope.chartViewModel.nodes[i].inputConnectors[k].data.name;
                     }
                 }
 
                 $scope.javascriptCode = $scope.javascriptCode + '){\n'
+                $scope.codeList[i] = $scope.codeList[i]+ '){\n'
 
             }else{
 
                 $scope.javascriptCode = $scope.javascriptCode  + '){\n';
+                $scope.codeList[i] = $scope.codeList[i]  + '){\n';
             }
 
 
@@ -670,9 +580,15 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
                                                 + '    var '
                                                 + $scope.chartViewModel.nodes[i].outputConnectors[k].data.name
                                                 + ';\n'
+
+                    $scope.codeList[i] = $scope.codeList[i]
+                    + '    var '
+                    + $scope.chartViewModel.nodes[i].outputConnectors[k].data.name
+                    + ';\n'
                 }
 
                 $scope.javascriptCode = $scope.javascriptCode + '\n'
+                $scope.codeList[i] = $scope.codeList[i] + '\n'
 
             }
 
@@ -682,56 +598,34 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
                 // data procedure
 
                 if($scope.dataList[i][j].title == "Data"){
-                    $scope.javascriptCode = $scope.javascriptCode  + "    " + "var "
-                    + $scope.dataList[i][j].dataName
-                    + " = '"
-                    + $scope.dataList[i][j].dataValue + "';\n";
+                    $scope.procedure_data($scope.dataList[i][j]);
                 }
-
 
                 // action procedure
 
                 if($scope.dataList[i][j].title == 'Action'){
-
-                    // action: get data from input port
-
-                    if($scope.dataList[i][j].method == 'get input'){
-
-                        $scope.javascriptCode = $scope.javascriptCode  + '    ' + 'var '
-                                                + $scope.dataList[i][j].dataName
-                                                + $scope.dataList[i][j].parameters[0] + ';\n'
-                    }
-
-                    // action: print data
-
-                    if($scope.dataList[i][j].method == 'print data'){
-                        $scope.javascriptCode = $scope.javascriptCode + '    ' + 'VIDAMO.pirnt_data('
-                                                + $scope.dataList[i][j].parameters[1] + ');\n'
-
-                    }
-
-                    // action: append data to output port
-
-                    if($scope.dataList[i][j].method == 'append output'){
-
-                        $scope.javascriptCode = $scope.javascriptCode  + '    '
-                                                + $scope.dataList[i][j].parameters[0]
-                                                + ' = '
-                                                + $scope.dataList[i][j].parameters[2] + ';\n';
-
-                    }
-
+                    $scope.procedure_action($scope.dataList[i][j]);
                 }
+
+
+                // control procedure
+
+                if($scope.dataList[i][j].title == 'Control'){
+                    $scope.procedure_control($scope.dataList[i][j]);
+                }
+
             }
 
 
             // return value
 
-
             if(num_output_ports){
 
                 $scope.javascriptCode = $scope.javascriptCode
-                                         + '\n    return {\n'
+                                         + '\n    return {\n';
+
+                $scope.codeList[i] = $scope.codeList[i]
+                + '\n    return {\n';
 
                 for(var k = 0; k < num_output_ports; k++){
 
@@ -742,18 +636,20 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
                         + $scope.chartViewModel.nodes[i].outputConnectors[k].data.name
                         + ',\n'
 
+                    $scope.codeList[i] = $scope.codeList[i]
+
+                    + '        ' + $scope.chartViewModel.nodes[i].outputConnectors[k].data.name
+                    + ':'
+                    + $scope.chartViewModel.nodes[i].outputConnectors[k].data.name
+                    + ',\n'
                 }
-
                 $scope.javascriptCode = $scope.javascriptCode + '    };\n' + '}\n\n'
-
+                $scope.codeList[i] = $scope.codeList[i] + '    };\n' + '}\n\n'
             }
             else{
-
-                $scope.javascriptCode = $scope.javascriptCode + '\n}\n\n';
-
+                $scope.javascriptCode = $scope.javascriptCode + '}\n\n';
+                $scope.codeList[i] = $scope.codeList[i] + '}\n\n';
             }
-
-
         }
 
         //
@@ -819,8 +715,83 @@ vidamo.controller('graphCtrl', function($scope,prompt) {
             }
         }
 
-        $scope.consoleMsg.push('Running Finished.');
+        document.getElementById('log').innerHTML += "<div> Code generation is done.</div>";
+        document.getElementById('log').innerHTML += "<div></br> Execute generated code</div>";
+        eval($scope.javascriptCode);
+        document.getElementById('log').innerHTML += "<div> Execution done</div>";
     };
+
+    // data procedure
+    $scope.procedure_data = function(procedure){
+        if(procedure.title == "Data"){
+            if(procedure.dataType == 'var'){
+                $scope.javascriptCode = $scope.javascriptCode  + "    " + "var "
+                + procedure.dataName
+                + " = '"
+                + procedure.dataValue + "';\n";
+            }
+            else if(procedure.dataType == 'list'){
+                $scope.javascriptCode = $scope.javascriptCode  + "    " + "var "
+                + procedure.dataName
+                + ' = '
+                + '[' ;
+
+                for(var i = 0; i < procedure.dataValue.split(',').length; i++){
+                    if(i != procedure.dataValue.split(',').length -1){
+                        $scope.javascriptCode = $scope.javascriptCode
+                        + "'" + procedure.dataValue.split(',')[i]  + "',";
+                    }else if(i == procedure.dataValue.split(',').length-1)
+                        $scope.javascriptCode = $scope.javascriptCode
+                        + "'" + procedure.dataValue.split(',')[i]  + "'";
+                }
+                $scope.javascriptCode = $scope.javascriptCode + '];\n';
+            }
+
+        }
+    }
+
+    // action procedure
+    $scope.procedure_action = function(procedure){
+        // action: get data from input port
+        if(procedure.method == 'get input'){
+
+            $scope.javascriptCode = $scope.javascriptCode  + '    ' + 'var '
+            + procedure.dataName + ' = '
+            + procedure.parameters[0] + ';\n'
+        }
+
+        // action: print data
+        if(procedure.method == 'print data'){
+            $scope.javascriptCode = $scope.javascriptCode + '    ' + 'VIDAMO.print_data('
+            + procedure.parameters[0] + ');\n'
+
+        }
+
+        // action: append data to output port
+        if(procedure.method == 'append output'){
+
+            $scope.javascriptCode = $scope.javascriptCode  + '    '
+            + procedure.parameters[0]
+            + ' = '
+            + procedure.parameters[2] + ';\n';
+        }
+    }
+
+    // control procedure
+    $scope.procedure_control = function(procedure){
+        $scope.javascriptCode = $scope.javascriptCode + '    ' + 'for( var ' +
+        procedure.forItemName + ' of '
+        + procedure.forList + '){\n'
+
+        if(procedure.nodes.length > 0){
+            for(var m = 0; m < procedure.nodes.length; m++){
+                if(procedure.nodes[m].title == 'Action'){$scope.procedure_action(procedure.nodes[m])}
+                if(procedure.nodes[m].title == 'Data'){$scope.procedure_data(procedure.nodes[m])}
+                if(procedure.nodes[m].title == 'Control'){$scope.procedure_control(procedure.nodes[m])}
+            }
+        }
+        $scope.javascriptCode = $scope.javascriptCode + '    }\n'
+    }
 
 });
 
@@ -830,8 +801,8 @@ vidamo.controller('znpController', ['$scope',
     function($scope) {
         var rect = { x : 2000, y: 2400, width: 500 , height:500};
         // Instantiate models which will be passed to <panzoom> and <panzoomwidget>
-
         // The panzoom config model can be used to override default configuration values
+
         $scope.panzoomConfig = {
             initialZoomToFit: rect
         };
@@ -839,23 +810,9 @@ vidamo.controller('znpController', ['$scope',
         // The panzoom model should initialle be empty; it is initialized by the <panzoom>
         // directive. It can be used to read the current state of pan and zoom. Also, it will
         // contain methods for manipulating this state.
+
         $scope.panzoomModel = {};
 
     }
 ]);
 
-
-////////////////////////////////////////////////////////////////////////////////////////
-// todo temporary directive, pls refactor
-// simple directive to display the json for procedures
-//vidamo.directive('procedureJson', function () {
-//    return {
-//        link: function(scope, elem, attrs) {
-//
-//            scope.$watch('dataList', function() {
-//                var json = JSON.stringify(scope.dataList, null, 4);
-//                scope.procedureJson = json;
-//                $(elem).val(scope.procedureJson);
-//            }, true);
-//
-//}}})

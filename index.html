@@ -71,7 +71,7 @@
         <div  ng-controller="graphCtrl">
 
             <!--dropdown Menu-->
-            <div>
+            <div class = "menubar">
                 <span class="dropdown" on-toggle="toggled(open)">
                   <a href class="dropdown-toggle">  File |</a>
                   <ul class="dropdown-menu">
@@ -151,31 +151,31 @@
                             </div>
 
                             <div class = "buttons">
-                                <button class="btn btn-xs"
+                                <button class="btn btn-default btn-xs"
                                         ng-click="addNewNode()"
                                         title="Add a new node to the chart">
                                     Add Node
                                 </button> &nbsp;&nbsp;
-                                <button class="btn btn-xs"
+                                <button class="btn btn-default btn-xs"
                                         ng-click="addNewInputConnector()"
                                         ng-disabled="chartViewModel.getSelectedNodes().length == 0"
                                         title="Add a new input connector to the selected node">
                                     Add Input
                                 </button> &nbsp;&nbsp;
-                                <button class="btn btn-xs"
+                                <button class="btn btn-default btn-xs"
                                         ng-click="addNewOutputConnector()"
                                         ng-disabled="chartViewModel.getSelectedNodes().length == 0"
                                         title="Add a new output connector to the selected node">
                                     Add Output
                                 </button> &nbsp;&nbsp;
-                                <button class="btn btn-xs"
+                                <button class="btn btn-default btn-xs"
                                         ng-click="deleteSelected()"
                                         ng-disabled="chartViewModel.getSelectedNodes().length
                                             == 0 && chartViewModel.getSelectedConnections().length == 0"
                                         title="Delete selected nodes and connections">
                                     Delete
                                 </button> &nbsp;&nbsp;
-                                <button class="btn btn-xs"
+                                <button class="btn btn-default btn-xs"
                                         ng-click="run()"
                                         title="Run program">
                                     Run
@@ -248,20 +248,21 @@
                                         <!--onWindowResize();-->
                                     <!--</script>-->
                               <!--</div>-->
-                                <!--<div>-->
-                                    <!--<button class="btn btn-default" ng-click="isCollapsed = !isCollapsed">Toggle collapse</button>-->
-                                    <!--<hr>-->
-                                    <!--<div collapse="isCollapsed">-->
-                                        <!--<div class="well well-lg">-->
-                                            <!--<p> &nbsp;&nbsp;&nbsp; VIDAMO Console:</p>-->
-                                            <!--<div ng-repeat="msg in consoleMsg track by $index">-->
-                                                <!--&nbsp;&nbsp;&nbsp; {{msg}}-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                                <!--chart-json-edit-->
-                                <!--view-model="chartViewModel"-->
+
+                                    <div class = "console">
+                                        <button class="btn btn-default btn-xs" ng-click="isCollapsed = !isCollapsed" >Console</button>
+
+                                        <div collapse="isCollapsed">
+                                            <div class="well well-lg">
+                                                <p>VIDAMO Console:</p>
+                                                <div id = 'log'>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
                             </tab>
 
                             <tab heading = "Execution Code">
@@ -270,13 +271,17 @@
                                      ng-model="javascriptCode">
                                 </div>
                             </tab>
+
                         </tabset>
                     </div>
 
 
                 <!--code area-->
                 <div class="code-area" >
-                    <pre class="nodeName">{{currentNodeName}}</pre>
+                    <div ng-if = "currentNodeName != ''">
+                        <pre class="nodeName">{{currentNodeName}}</pre>
+                    </div>
+
                     <tabset justified="true" class="tabArea">
                         <tab heading="Procedure" >
                             <div>
@@ -309,37 +314,106 @@
 
                                                             <!--data name and value for data -->
                                                             <div ng-if="node.title == 'Data'">
-                                                                <div class="input-group input-group-sm">
-                                                                    <span class="input-group-addon">data name</span>
-                                                                    <input class="form-control"
-                                                                           name="dataName"
-                                                                           placeholder="{{node.dataName}}"
-                                                                           ng-model="dataName"
-                                                                           ng-change=
-                                                                               "applyValue('dataName',this.dataName,node)">
+
+                                                                <span> Data Type: </span>
+                                                                <select ng-model="dataType"
+                                                                        name ="dataType"
+                                                                        ng-change="applyValue('dataType',this.dataType,node)"
+                                                                        style="width: 200px;">
+                                                                    <option value="" selected disabled>
+                                                                        {{node.dataType}}
+                                                                    </option>
+                                                                    <option value="var">var</option>
+                                                                    <option value="list">list</option>
+                                                                </select></br></br>
+
+                                                                <div ng-if="node.dataType == 'var'">
+                                                                    <div class="input-group input-group-sm">
+                                                                        <span class="input-group-addon">var name</span>
+                                                                        <input class="form-control"
+                                                                               name="dataName"
+                                                                               placeholder="{{node.dataName}}"
+                                                                               ng-model="dataName"
+                                                                               ng-change=
+                                                                                   "applyValue('dataName',this.dataName,node)">
+                                                                    </div>
+                                                                    </br>
+                                                                    <div class="input-group input-group-sm">
+                                                                        <span class="input-group-addon" >var value</span>
+                                                                        <input class="form-control"
+                                                                               name="dataValue"
+                                                                               placeholder="{{node.dataValue}}"
+                                                                               ng-model="dataValue"
+                                                                               ng-change=
+                                                                                   "applyValue('dataValue',this.dataValue,node)">
+                                                                    </div>
                                                                 </div>
-                                                                </br>
-                                                                <div class="input-group input-group-sm">
-                                                                    <span class="input-group-addon" >data value</span>
-                                                                    <input class="form-control"
-                                                                           name="dataValue"
-                                                                           placeholder="{{node.dataValue}}"
-                                                                           ng-model="dataValue"
-                                                                           ng-change=
-                                                                               "applyValue('dataValue',this.dataValue,node)">
+
+                                                                <div ng-if="node.dataType == 'list'">
+                                                                    <div class="input-group input-group-sm">
+                                                                        <span class="input-group-addon">list name</span>
+                                                                        <input class="form-control"
+                                                                               name="dataName"
+                                                                               placeholder="{{node.dataName}}"
+                                                                               ng-model="dataName"
+                                                                               ng-change=
+                                                                                       "applyValue('dataName',this.dataName,node)">
+                                                                    </div>
+                                                                    </br>
+                                                                    <div class="input-group input-group-sm">
+                                                                        <span class="input-group-addon" >list value</span>
+                                                                        <input class="form-control"
+                                                                               name="dataValue"
+                                                                               placeholder="{{node.dataValue}}"
+                                                                               ng-model="dataValue"
+                                                                               ng-change=
+                                                                                       "applyValue('dataValue',this.dataValue,node)">
+                                                                    </div>
                                                                 </div>
                                                             </div>
 
                                                             <!-- looping for Control-->
                                                             <div ng-if="node.title == 'Control'">
-                                                                <div class="input-group">
-                                                                    <span class="input-group-addon">Looping</span>
-                                                                    <input type="number"
-                                                                           class="form-control"
-                                                                           placeholder="{{node.looping}}"
-                                                                           name ="looping"
-                                                                           ng-model="looping"
-                                                                           ng-change="applyValue('looping',this.looping,node)">
+                                                                <span> Control Type: </span>
+                                                                <select ng-model="controlType"
+                                                                        name ="controlType"
+                                                                        ng-change="applyValue('controlType',this.controlType,node)"
+                                                                        style="width: 200px;">
+                                                                    <option value="" selected disabled>
+                                                                        {{node.controlType}}
+                                                                    </option>
+                                                                    <option value="for item in list">For item in list</option>
+                                                                    <option value="while condition">while condition</option>
+                                                                </select></br></br>
+
+                                                                <div ng-if="node.controlType == 'for item in list'">
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon">item name</span>
+                                                                        <input
+                                                                            class="form-control"
+                                                                            placeholder="{{node.itemName}}"
+                                                                        name ="forItemName"
+                                                                        ng-model="forItemName"
+                                                                        ng-change="applyValue('forItemName',this.forItemName,node)">
+                                                                    </div></br></br>
+
+                                                                    <span> List: </span>
+                                                                    <select ng-model="forList"
+                                                                            style="width: 200px;"
+                                                                            ng-change =
+                                                                                    "applyValue('forList', this.forList,node)"
+                                                                            style="width: 200px;">
+                                                                        <option value=""
+                                                                                selected disabled>
+                                                                            {{node.forList}}
+                                                                        </option>
+                                                                        <option ng-repeat="node in data"
+                                                                                value="{{node.dataName}}">
+                                                                            {{node.dataName}}
+                                                                        </option>
+                                                                    </select></br></br>
+
+
                                                                 </div>
                                                                 </br>
                                                             </div>
@@ -388,7 +462,7 @@
                                                                         {{node.parameters[2]}}
                                                                     </option>
                                                                     <option ng-repeat="node in data"
-                                                                            value="{{node.dataValue}},{{node.dataName}}">
+                                                                            value="{{node.dataName}}">
                                                                         {{node.dataName}}
                                                                     </option>
                                                                 </select></br></br>
@@ -434,8 +508,12 @@
                                                                         {{node.parameters[1]}}
                                                                     </option>
                                                                     <option ng-repeat="node in data"
-                                                                            value="{{node.dataValue}},{{node.dataName}}">
+                                                                            value="{{node.dataName}}">
                                                                         {{node.dataName}}
+                                                                    </option>
+                                                                    <option ng-repeat="node in data"
+                                                                            value="{{node.forItemName}}">
+                                                                        {{node.forItemName}}
                                                                     </option>
                                                                 </select>
                                                             </div>
@@ -456,19 +534,22 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class = "buttons">
-                                        <br>
-                                        <button class="btn btn-xs" ng-click="newItem('Data')">Add Data</button>
-                                        &nbsp;&nbsp;&nbsp;
-                                        <button class="btn btn-xs" ng-click="newItem('Action')">Add Action</button>
-                                        &nbsp;&nbsp;&nbsp;
-                                        <button class="btn btn-xs" ng-click="newItem('Control')">Add Control</button>
-                                        &nbsp;&nbsp;&nbsp;
-                                    </div>
+
                                     </div>
                                 </div>
 
+                                <div class = "buttons">
+                                    <br>
+                                    <button class="btn btn-default btn-xs" ng-click="newItem('Data')">Add Data</button>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <button class="btn btn-default btn-xs" ng-click="newItem('Action')">Add Action</button>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <button class="btn btn-default btn-xs" ng-click="newItem('Control')">Add Control</button>
+                                    &nbsp;&nbsp;&nbsp;
+                                </div>
                         </tab>
+
+
 
                         <!--add to interface -->
                         <tab heading="Interface">
@@ -546,7 +627,7 @@
                                 </div>
 
                             <div class="buttons">
-                                <button class="btn btn-xs" ng-click="newInterface('Data')">Add Data</button>
+                                <button class="btn btn-default btn-xs" ng-click="newInterface('Data')">Add Data</button>
                             </div>
                         </tab>
 

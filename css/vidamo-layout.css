@@ -4,26 +4,38 @@ CSS For index.html
 
 ***************************************************************/
 
+@media (min-width: 768px) {
+    .nav-tabs.nav-justified > li > a{
+        padding: 5px;
+    }
+}
+
+/**************************
+ menu bar
+ **************************/
+
+.dropdown{
+    padding-left: 10px;
+    padding-top: 3px;
+}
 
 /**************************
  left pane graph area
  **************************/
 
 
-/* exact tab */
+
 .graph-area .znpController{
    width:100%;
    height:95%;
    position:relative;
 }
 
-/* exact tab */
 .graph-area .panzoom{
     width:100%;
     height:1100px;
 }
 
-/* exact tab */
 .graph-area .flow-chart{
     position: relative;
     width:4000px;
@@ -33,6 +45,7 @@ CSS For index.html
 .graph-area .buttons{
     position: absolute;
     bottom: 10px;
+    margin-left: 2px;
 }
 
 /**************************
@@ -49,22 +62,41 @@ CSS For index.html
 .view-area .tabArea{
     position: relative;
     left: 9px;
-    height:100%;
-    width: 98%;
+    height: 100%;
+    width: 100%;
 }
 
 .view-area .codeEditor {
     position: absolute;
     height:100%;
-    width:100%;
+    width:99%;
 }
 
+.view-area .console{
+    font-size: 12px;
+    position: absolute;
+    bottom: 10px;
+    margin-left: 2px;
+    width: 98%;
+}
+
+
+.view-area  .well-lg {
+    height: 250px;
+    width: 100%;
+    overflow: auto;
+    margin-top: 1px;
+    padding: 6px;
+    border-radius: 2px;
+}
 
 /*************************
 right pane code area
 *************************/
 
 .code-area .nodeName{
+    padding: 6px;
+    margin: 0;
     position: relative;
     left: 9px;
 }
@@ -73,6 +105,7 @@ right pane code area
 .code-area .buttons{
     position: fixed;
     bottom: 10px;
+    margin-left: 2px;
 }
 
 .code-area .codeEditor {
@@ -86,8 +119,8 @@ right pane code area
 .code-area .tabArea{
     position: relative;
     left: 9px;
-    height:100%;
     width: 100%;
+    height: 92%;
     overflow: auto;
 }
 
@@ -124,4 +157,18 @@ right pane code area
 /* black thin frame for pan-zoom area [left pane graph area] */
 .pan-zoom-frame {
     border: 1px solid #aaaaaa;
+}
+
+.panel-default > .panel-heading {
+    padding: 5px;
+}
+
+.input-group-addon {
+    padding: 5px 10px !important;
+    font-size: 12px !important;
+}
+
+.panel-group {
+    margin-top: 4px;
+    margin-bottom: 4px !important;
 }
