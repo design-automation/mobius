@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html ng-app="vidamo" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<html ng-app="vidamo" xmlns="http://www.w3.org/1999/html">
 
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width">
-  <title>UI.Layout : angular UI version</title>
+    <!--<meta name="viewport" content="width=device-width">-->
+  <title>Vidamo</title>
 
   <!-- stylesheet -->
   <link rel="stylesheet" href="css/vidamo-layout.css">
@@ -12,16 +12,13 @@
   <link rel="stylesheet" href="css/bootstrap/bootstrap.css">
   <link rel="stylesheet" href="css/select2.css">
   <link rel="stylesheet" href="css/ui-tree.css">
-  <link rel="stylesheet" href="js/threejs/editor/css/types.css" >
-  <link rel="stylesheet" href="css/light.css" id="theme">
   <link rel="stylesheet" href="css/graph.css">
   <link rel="stylesheet" href="css/panzoomwidget.css">
 
-  <style type="text/css">
-
-  </style>
-
   <!--three.js-->
+    <link id="theme" href="css/light.css" rel="stylesheet" />
+    <link href="js/threejs/editor/css/types.css" rel="stylesheet">
+
     <script src="js/threejs/build/three.min.js"></script>
     <script src="js/threejs/examples/js/libs/system.min.js"></script>
     <script src="js/threejs/examples/js/controls/EditorControls.js"></script>
@@ -62,6 +59,8 @@
     <script src="js/threejs/editor/js/Config.js"></script>
     <script src="js/threejs/editor/js/Loader.js"></script>
     <script src="js/threejs/editor/js/Viewport.js"></script>
+
+    <script src="js/threejs/add.js"></script>
 
     <script src="js/threejs/add.js"></script>
 
@@ -186,93 +185,50 @@
 
                 <!--3D view area  -->
                     <div class=" view-area" >
-                        <tabset justified ="true" class="tabArea">
-                            <tab heading="3D View">
-                                <!--<div class="Panel" id ="viewport" >-->
-                                    <!--<script>-->
-                                        <!--var editor = new Editor();-->
+                        <!--threejs editor view port-->
+                        <div id="3dviewport" >
+                        </div>
 
-                                        <!--var viewport = new Viewport( editor ).setId( 'viewport' );-->
-                                        <!--document.getElementById("viewport").appendChild(viewport.dom);-->
+                        <!--console-->
+                        <div class = "console" style="left:9px">
+                            <button class="btn btn-default btn-xs" ng-click="isCollapsed = !isCollapsed" >
+                                Console
+                            </button>
 
-                                        <!--editor.setTheme( editor.config.getKey( 'theme' ) );-->
+                            <button class="btn btn-default btn-xs" ng-click="codeToggle = !codeToggle" >
+                                Execution Code
+                            </button>
 
-                                        <!--editor.storage.init( function () {-->
-
-                                            <!--var timeout;-->
-                                            <!--var exporter = new THREE.ObjectExporter();-->
-                                            <!--var saveState = function ( scene ) {-->
-                                                <!--clearTimeout( timeout );-->
-                                                <!--timeout = setTimeout( function () {-->
-                                                    <!--editor.storage.set( exporter.parse( editor.scene ) );-->
-                                                <!--}, 1000 );-->
-
-                                            <!--};-->
-
-                                            <!--var signals = editor.signals;-->
-
-                                            <!--signals.objectAdded.add( saveState );-->
-                                            <!--signals.objectChanged.add( saveState );-->
-                                            <!--signals.objectRemoved.add( saveState );-->
-                                            <!--signals.materialChanged.add( saveState );-->
-                                            <!--signals.sceneGraphChanged.add( saveState );-->
-                                        <!--} );-->
-
-                                        <!--document.addEventListener( 'dragover', function ( event ) {-->
-                                            <!--event.preventDefault();-->
-                                            <!--event.dataTransfer.dropEffect = 'copy';-->
-                                        <!--}, false );-->
-
-                                        <!--document.addEventListener( 'drop', function ( event ) {-->
-                                            <!--event.preventDefault();-->
-                                            <!--editor.loader.loadFile( event.dataTransfer.files[ 0 ] );-->
-                                        <!--}, false );-->
-
-                                        <!--document.addEventListener( 'keydown', function ( event ) {-->
-                                            <!--switch ( event.keyCode ) {-->
-                                                <!--case 8: // prevent browser back-->
-                                                    <!--event.preventDefault();-->
-                                                    <!--break;-->
-                                                <!--case 46: // delete-->
-                                                    <!--var parent = editor.selected.parent;-->
-                                                    <!--editor.removeObject( editor.selected );-->
-                                                    <!--editor.select( parent );-->
-                                                    <!--break;-->
-                                            <!--}-->
-                                        <!--}, false );-->
-
-                                        <!--var onWindowResize = function ( event ) {-->
-                                            <!--editor.signals.windowResize.dispatch();-->
-                                        <!--};-->
-                                        <!--window.addEventListener( 'resize', onWindowResize, false );-->
-                                        <!--onWindowResize();-->
-                                    <!--</script>-->
-                              <!--</div>-->
-
-                                    <div class = "console">
-                                        <button class="btn btn-default btn-xs" ng-click="isCollapsed = !isCollapsed" >Console</button>
-
-                                        <div collapse="isCollapsed">
-                                            <div class="well well-lg">
-                                                <p>VIDAMO Console:</p>
-                                                <div id = 'log'>
-
-                                                </div>
-
-                                            </div>
-                                        </div>
+                            <div collapse="!isCollapsed">
+                                <div class="well well-lg">
+                                    <p>VIDAMO Console:</p>
+                                    <div id = 'log'>
                                     </div>
-
-                            </tab>
-
-                            <tab heading = "Execution Code">
-                                <div class="codeEditor"
-                                     ui-ace="{ mode: 'javascript', theme: 'monokai' }"
-                                     ng-model="javascriptCode">
                                 </div>
-                            </tab>
+                            </div>
+                        </div>
 
-                        </tabset>
+                        <div ng-show="codeToggle">
+                            <div class="codeEditor"
+                                    ui-ace="{ mode: 'javascript', theme: 'monokai' }"
+                                    ng-model="javascriptCode">
+                            </div>
+
+                            <svg width="32" height="32"
+                                 style="position: absolute;
+                                        top: 3px;
+                                        right: 1px;
+                                        cursor: pointer;">
+
+                                <path d="M 12,12 L 22,22 M 22,12 12,22"
+                                      stroke="#fff"
+                                      stroke-width = '2'
+                                      ng-click="codeToggle = !codeToggle">
+                                </path>
+
+                            </svg>
+                        </div>
+
                     </div>
 
 
@@ -644,6 +600,82 @@
               </div>
             </div>
     </div>
+
+        <script>
+            var editor = new Editor();
+
+            var viewport = new Viewport(editor).setId('viewport');
+            document.getElementById("3dviewport").appendChild(viewport.dom);
+
+            editor.setTheme( editor.config.getKey( 'theme' ) );
+
+            editor.storage.init( function () {
+
+                editor.storage.get( function ( state ) {
+
+                    if ( state !== undefined ) {
+                        var loader = new THREE.ObjectLoader();
+                        var scene = loader.parse( state );
+                        editor.setScene( scene );
+                    }
+
+                    var selected = editor.config.getKey( 'selected' );
+
+                    if ( selected !== undefined ) {
+                        editor.selectByUuid( selected );
+                    }
+                } );
+
+
+                var timeout;
+                var exporter = new THREE.ObjectExporter();
+                var saveState = function ( scene ) {
+                    clearTimeout( timeout );
+                    timeout = setTimeout( function () {
+                        editor.storage.set( exporter.parse( editor.scene ) );
+                    }, 1000 );
+
+                };
+
+                var signals = editor.signals;
+
+                signals.objectAdded.add( saveState );
+                signals.objectChanged.add( saveState );
+                signals.objectRemoved.add( saveState );
+                signals.materialChanged.add( saveState );
+                signals.sceneGraphChanged.add( saveState );
+            } );
+
+            document.addEventListener( 'dragover', function ( event ) {
+                event.preventDefault();
+                event.dataTransfer.dropEffect = 'copy';
+            }, false );
+
+            document.addEventListener( 'drop', function ( event ) {
+                event.preventDefault();
+                editor.loader.loadFile( event.dataTransfer.files[ 0 ] );
+            }, false );
+
+            document.addEventListener( 'keydown', function ( event ) {
+                switch ( event.keyCode ) {
+                    case 8: // prevent browser back
+                        event.preventDefault();
+                        break;
+                    case 46: // delete
+                        var parent = editor.selected.parent;
+                        editor.removeObject( editor.selected );
+                        editor.select( parent );
+                        break;
+                }
+            }, false );
+
+            var onWindowResize = function ( event ) {
+                editor.signals.windowResize.dispatch();
+            };
+            window.addEventListener( 'resize', onWindowResize, false );
+            onWindowResize();
+
+        </script>
 
          <!--  javascript -->
          <!--jquery-->

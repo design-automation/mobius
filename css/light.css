@@ -1,20 +1,5 @@
-﻿/***************************************************************
-
-CSS For threeJS editor theme
-
-***************************************************************/
-
-
-* {
+﻿* {
 	vertical-align: middle;
-}
-
-.view-area #viewport {
-    position: absolute;
-    top: 50px;
-    left: 0;
-    right: 0;
-    bottom: 0;
 }
 
 body {
@@ -38,7 +23,7 @@ button {
 	-webkit-user-select: none;
 	-ms-user-select: none;
 
-	 /*No support for these yet */
+	/* No support for these yet */
 	-o-user-select: none;
 	user-select: none;
 }
@@ -93,7 +78,14 @@ input.Number {
 	cursor: col-resize;
 }
 
-
+#viewport {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+    overflow: hidden;
+}
 
 #menubar {
 	position: absolute;
@@ -197,5 +189,4 @@ input.Number {
 	#toolbar button {
 		margin-right: 6px;
 	}
-
 

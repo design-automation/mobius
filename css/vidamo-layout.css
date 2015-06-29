@@ -52,12 +52,13 @@ CSS For index.html
  middle pane 3D area
  **************************/
 
-/*.view-area #viewport {*/
-    /*position:relative;*/
-    /*width:100%;*/
-    /*height: 50%;*/
-    /*bottom: 10px;*/
-/*}*/
+.view-area #3dviewport {
+    position:relative;
+    width:100%;
+    height: 100%;
+    /*overflow: hidden;*/
+}
+
 
 .view-area .tabArea{
     position: relative;
@@ -68,8 +69,13 @@ CSS For index.html
 
 .view-area .codeEditor {
     position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
     height:100%;
-    width:99%;
+    width:100%;
+    opacity: 0.8;
 }
 
 .view-area .console{

@@ -23,7 +23,7 @@ button {
 	-webkit-user-select: none;
 	-ms-user-select: none;
 
-	 /*No support for these yet*/
+	/* No support for these yet */
 	-o-user-select: none;
 	user-select: none;
 }
@@ -76,6 +76,14 @@ input.Number {
 	border: 1px solid transparent;
 	padding: 2px;
 	cursor: col-resize;
+}
+
+#viewport {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
 }
 
 #menubar {
@@ -180,5 +188,4 @@ input.Number {
 	#toolbar button {
 		margin-right: 6px;
 	}
-
 

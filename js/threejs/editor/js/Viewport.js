@@ -3,16 +3,16 @@ var Viewport = function ( editor ) {
 	var signals = editor.signals;
 
 	var container = new UI.Panel();
-	container.setPosition( 'absolute' );
 
 	var info = new UI.Text();
 	info.setPosition( 'absolute' );
 	info.setRight( '5px' );
 	info.setBottom( '5px' );
 	info.setFontSize( '12px' );
-	info.setColor( '#ffffff' );
+	info.setColor( '#000000' );
 	info.setValue( 'objects: 0, vertices: 0, faces: 0' );
 	container.add( info );
+
 
 	var scene = editor.scene;
 	var sceneHelpers = editor.sceneHelpers;
