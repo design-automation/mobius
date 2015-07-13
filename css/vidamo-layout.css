@@ -4,27 +4,60 @@ CSS For index.html
 
 ***************************************************************/
 
+body {
+    font-family: Arial, sans-serif;
+    font-size: 14px !important;
+}
+
+a{
+    color: #000000 !important;
+}
+
+
 @media (min-width: 768px) {
     .nav-tabs.nav-justified > li > a{
-        padding: 5px;
+        padding: 3px;
     }
+}
+
+.btn-xs, .btn-group-xs {
+    font-size: 12px !important;
 }
 
 /**************************
  menu bar
  **************************/
 
+.menubar{
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
 .dropdown{
     padding-left: 10px;
     padding-top: 3px;
+    z-index: 100000;
+}
+
+.dropdown-menu {
+    font-size: 13px !important;
 }
 
 /**************************
  left pane graph area
  **************************/
 
+.graph-area{
+    border-top: 1px solid #aaaaaa;
+    /*border-right: 1px solid #aaaaaa;*/
+    border-bottom: 1px solid #aaaaaa;
+    border-left: 1px solid #aaaaaa;
 
-
+    border-radius: 3px;
+    margin-bottom: 2px;
+    margin-left: 2px;
+    margin-right:30px;
+}
 .graph-area .znpController{
    width:100%;
    height:95%;
@@ -37,7 +70,7 @@ CSS For index.html
 }
 
 .graph-area .flow-chart{
-    position: relative;
+    position: absolute;
     width:4000px;
     height: 4000px
 }
@@ -45,18 +78,22 @@ CSS For index.html
 .graph-area .buttons{
     position: absolute;
     bottom: 10px;
-    margin-left: 2px;
+    padding-left: 4px;
 }
 
 /**************************
  middle pane 3D area
  **************************/
 
+.view-area{
+    border-top: 1px solid #aaaaaa;
+    border-bottom: 1px solid #aaaaaa;
+
+    margin-bottom: 2px;
+}
 .view-area #3dviewport {
-    position:relative;
     width:100%;
     height: 100%;
-    /*overflow: hidden;*/
 }
 
 
@@ -67,84 +104,110 @@ CSS For index.html
     width: 100%;
 }
 
-.view-area .codeEditor {
-    position: absolute;
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
-    height:100%;
-    width:100%;
-    opacity: 0.8;
+/*todo temp fix */
+.view-area  .monitor .stretch{
+    top: 0px;
 }
 
-.view-area .console{
+
+.view-area .monitor .ui-layout-column .ui-splitbar{
+    border:0px;
+}
+
+.view-area .monitor .console{
+    padding-top: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-bottom: 0px;
     font-size: 12px;
+    height: 100%;
+    width:100%;
+    overflow: auto;
     position: absolute;
-    bottom: 10px;
-    margin-left: 2px;
-    width: 98%;
 }
 
-
-.view-area  .well-lg {
-    height: 250px;
+.view-area .codeEditor{
+    position: absolute;
+    height: 100%;
     width: 100%;
-    overflow: auto;
-    margin-top: 1px;
-    padding: 6px;
-    border-radius: 2px;
+    overflow: scroll;
+}
+
+.view-area .info-title {
+    font-size: 13px;
+    padding-top: 0px;
+    padding-bottom: 3px;
+    padding-right: 3px;
+    padding-left: 3px;
+    background-color: #eee;
+    width: 100%;
 }
 
 /*************************
 right pane code area
 *************************/
+.code-area{
+    position: absolute;
+    border-top: 1px solid #aaaaaa;
+    border-right: 1px solid #aaaaaa;
+    border-bottom: 1px solid #aaaaaa;
+    /*border-left: 1px solid #aaaaaa;*/
 
+    border-top-left-radius: 0;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 0px;
+
+    overflow: auto;
+    width:100%;
+    right: 50px !important;
+    margin-bottom: 2px;
+}
 .code-area .nodeName{
-    padding: 6px;
+    padding: 4px;
     margin: 0;
     position: relative;
-    left: 9px;
+    border-radius: 3px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    background-color: #fafafa;
 }
 
-/* todo how come it is 40 while graph one is 10*/
 .code-area .buttons{
     position: fixed;
-    bottom: 10px;
-    margin-left: 2px;
+    bottom: 15px;
+    margin-left: 5px;
 }
 
 .code-area .codeEditor {
     position: absolute;
-    height:100%;
-    width:98%;
-    /*overflow: auto;*/
-}
-
-/* todo when overflow the buttons will be floating*/
-.code-area .tabArea{
-    position: relative;
-    left: 9px;
-    width: 100%;
-    height: 92%;
+    height:97%;
+    width:100%;
     overflow: auto;
 }
 
-/* should clarify this*/
-.code-area .panelHack {
-    /*margin-bottom: -20px;*/
+.code-area .tabArea{
+    position: absolute;
+    right: 0px;
+    width: 100%;
+    height: 88%;
+    overflow: auto;
+}
+
+.code-area .nodeName{
+    border:0px;
 }
 
 /* hack for ui-tree procedure tree structure*/
 .angular-ui-tree-handle {
-    background: #f8faff;
-    border: 0px solid #dae2ea;
-    color: #7c9eb2;
+    background: #ffffff;
+    border: 0px solid #ffffff;
+    color: #ffffff;
     padding: 0px 0px;
 }
 
 .angular-ui-tree-handle:hover {
-    color: #438eb9;
+    color: #ffffff;
     background: #f4f6f7;
     border-color: #dce2e8;
 }
@@ -160,21 +223,44 @@ right pane code area
     color: #FFF !important;
 }
 
-/* black thin frame for pan-zoom area [left pane graph area] */
-.pan-zoom-frame {
-    border: 1px solid #aaaaaa;
-}
 
 .panel-default > .panel-heading {
-    padding: 5px;
+    padding: 6px;
 }
 
-.input-group-addon {
-    padding: 5px 10px !important;
-    font-size: 12px !important;
+.panel-title{
+    font-size: 13px !important;
 }
 
 .panel-group {
-    margin-top: 4px;
-    margin-bottom: 4px !important;
+    margin-top: 1px;
+    margin-bottom: 0px !important;
+    padding-left: 10px;
+    padding-right: 1px;
+}
+
+.panel{
+    border-left: 2px solid #aaaaaa !important;
+}
+
+.input-group-sm > .input-group-addon {
+    padding: 5px 10px !important;
+    font-size: 12px !important;
+    height: 22px !important;
+    line-height: 1 !important;
+    background-color: #ffffff;
+}
+
+.input-group-sm >.form-control{
+    padding: 2px 6px !important;
+    font-size: 12px !important;
+    height: 24px !important;
+    line-height: 1 !important;
+}
+
+.input-group-sm {
+    padding: 5px 10px !important;
+    font-size: 12px !important;
+    height: 24px !important;
+    line-height: 1 !important;
 }

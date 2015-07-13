@@ -32,8 +32,8 @@
     >
     <rect 
       ng-attr-class="{{node.selected() && 'selected-node-rect' || (node == mouseOverNode && 'mouseover-node-rect' || 'node-rect')}}"
-      ry="10" 
-      rx="10" 
+      ry="7"
+      rx="7"
       x="0" 
       y="0" 
       ng-attr-width="{{node.width()}}" 
@@ -45,7 +45,7 @@
 
     <text
       ng-attr-x="{{node.width()/2}}"
-      y="55"
+      y="40"
       text-anchor="middle"
       alignment-baseline="middle"
       >
