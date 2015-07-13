@@ -12,7 +12,7 @@ var flowchart = {
 	//
 	// Width of a node.
 	//
-	flowchart.nodeHeight = 120;
+	flowchart.nodeHeight =80;
 
 	//
 	// Amount of space reserved for displaying the node's name.

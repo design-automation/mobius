@@ -1,4 +1,7 @@
-Error Table:
+#####  Error Table:
+
+Import:
+Import graph/procedure file with non-json extension
 
 
 Graph:
@@ -8,3 +11,12 @@ error: node name / input connector / output connector
 Procedure:
 error: add procedure / interface when no node is selected
 
+Generated code:
+error: throw when error occurs in eval('generated code')
+
+
+
+
+##### Warning Table:
+
+Warning: When import graph/procedure without procedure/graph

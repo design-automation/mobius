@@ -315,6 +315,8 @@ angular.module('flowChart', ['dragging'] )
 			// Called when the mouse has moved greater than the threshold distance
 			// and dragging has commenced.
 			//
+
+
 			dragStarted: function (x, y) {
 
 				var curCoords = controller.translateCoordinates(x, y);
@@ -336,7 +338,7 @@ angular.module('flowChart', ['dragging'] )
 			//
 			// Called on mousemove while dragging out a connection.
 			//
-			dragging: function (x, y, evt) {
+			dragging: function (x, y) {
 				var startCoords = controller.translateCoordinates(x, y);
 
                 $rootScope.$on("Update", function(event, message) {

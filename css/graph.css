@@ -4,31 +4,19 @@ CSS For ui-flowchart [left pane graph area]
 
 ***************************************************************/
 
-/** {*/
-    /*padding: 0;*/
-    /*margin: 0;*/
-/*}*/
-
-/*.test {*/
-	/*border: 3px red     solid;*/
-	/*padding: 10px;*/
-	/*margin: 10px;*/
-	/*font-family: "Times New Roman";*/
-	/*font-style: italic;*/
-/*}*/
-
 /*
 Styles for nodes and connectors.
 */
 
 .node-rect {
 	stroke: #aaaaaa;
-	stroke-width: 2;
+	border-radius: 0px;
+	stroke-width: 1;
 }
 
 .mouseover-node-rect {
 	stroke: #777777;
-	stroke-width: 4;
+	stroke-width: 2;
 }
 
 .selected-node-rect {
@@ -57,8 +45,8 @@ Style for connections.
 }
 
 .connection-line {
-	stroke: gray;
-	stroke-width: 4;
+	stroke: #555555;
+	stroke-width: 3;
 	fill: transparent;
 }	
 
@@ -75,7 +63,7 @@ Style for connections.
 }	
 
 .connection-endpoint {
-	fill: gray;
+	fill: #555555;
 }
 
 .selected-connection-endpoint {

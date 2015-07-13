@@ -17,7 +17,7 @@
       placeHolderClass: 'angular-ui-tree-placeholder',
       dragClass: 'angular-ui-tree-drag',
       dragThreshold: 3,
-      levelThreshold: 30
+      levelThreshold: 20
     });
 
 })();
@@ -1001,11 +1001,12 @@
                 }
 
                 // move horizontal
-                if (pos.dirAx && pos.distAxX >= config.levelThreshold) {
-                  pos.distAxX = 0;
+                // fixme changed to adapt vidamo nesting accordion
+                if (pos.distAxY >= 5) {
+                    pos.distAxX = 0;
 
                   // increase horizontal level if previous sibling exists and is not collapsed
-                  if (pos.distX > 0) {
+                  if (pos.distY < 0) {
                     prev = dragInfo.prev();
                     if (prev && !prev.collapsed
                       && prev.accept(scope, prev.childNodesCount())) {
@@ -1015,7 +1016,7 @@
                   }
 
                   // decrease horizontal level
-                  if (pos.distX < 0) {
+                  if (pos.distY > 0) {
                     // we can't decrease a level if an item preceeds the current one
                     var next = dragInfo.next();
                     if (!next) {
