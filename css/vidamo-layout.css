@@ -77,7 +77,7 @@ a{
 
 .graph-area .buttons{
     position: absolute;
-    bottom: 10px;
+    bottom: 8px;
     padding-left: 4px;
 }
 
@@ -126,32 +126,30 @@ a{
     position: absolute;
 }
 
-.view-area .codeEditor{
+.graph-area .codeEditor{
     position: absolute;
     height: 100%;
     width: 100%;
-    overflow: scroll;
+    overflow: auto;
 }
 
-.view-area .info-title {
+.info-title {
     font-size: 13px;
     padding-top: 0px;
     padding-bottom: 3px;
     padding-right: 3px;
     padding-left: 3px;
-    background-color: #eee;
     width: 100%;
+    background-color: #eee ;
 }
 
 /*************************
 right pane code area
 *************************/
 .code-area{
-    position: absolute;
     border-top: 1px solid #aaaaaa;
     border-right: 1px solid #aaaaaa;
     border-bottom: 1px solid #aaaaaa;
-    /*border-left: 1px solid #aaaaaa;*/
 
     border-top-left-radius: 0;
     border-top-right-radius: 3px;
@@ -160,7 +158,6 @@ right pane code area
 
     overflow: auto;
     width:100%;
-    right: 50px !important;
     margin-bottom: 2px;
 }
 .code-area .nodeName{
@@ -174,8 +171,8 @@ right pane code area
 }
 
 .code-area .buttons{
-    position: fixed;
-    bottom: 15px;
+    position: absolute;
+    bottom: 8px;
     margin-left: 5px;
 }
 
