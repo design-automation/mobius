@@ -122,7 +122,7 @@
                   <a href class="dropdown-toggle">  About </a>
                   <ul class="dropdown-menu">
                       <li>
-                          <a href="https://github.com/chepilot/chepilot.github.io" target="_blank"> Github Repo </a>
+                          <a href="https://github.com/phtj/vidamo" target="_blank"> Github Repo </a>
                       </li>
                   </ul>
                 </span>
@@ -159,26 +159,26 @@
                                             ng-click="addNewNode()"
                                             title="Add a new node to the chart">
                                         Add Node
-                                    </button> &nbsp;
+                                    </button>
                                     <button class="btn btn-default btn-xs"
                                             ng-click="addNewInputConnector()"
                                             ng-disabled="chartViewModel.getSelectedNodes().length == 0"
                                             title="Add a new input connector to the selected node">
                                         Add Input
-                                    </button> &nbsp;
+                                    </button>
                                     <button class="btn btn-default btn-xs"
                                             ng-click="addNewOutputConnector()"
                                             ng-disabled="chartViewModel.getSelectedNodes().length == 0"
                                             title="Add a new output connector to the selected node">
                                         Add Output
-                                    </button> &nbsp;
+                                    </button>
                                     <button class="btn btn-default btn-xs"
                                             ng-click="deleteSelected()"
                                             ng-disabled="chartViewModel.getSelectedNodes().length
                                                 == 0 && chartViewModel.getSelectedConnections().length == 0"
                                             title="Delete selected nodes and connections">
                                         Delete
-                                    </button> &nbsp;
+                                    </button>
                                     <button class="btn btn-default btn-xs"
                                             ng-click="run()"
                                             title="Run program">
@@ -808,14 +808,11 @@
                                             </div>
                                         </div>
 
-                                        <div class = "buttons">
+                                        <div class = "buttons" >
                                             <br>
                                             <button class="btn btn-default btn-xs" ng-click="newItem('Data')">Add Data</button>
-                                            &nbsp;&nbsp;
                                             <button class="btn btn-default btn-xs" ng-click="newItem('Action')">Add Action</button>
-                                            &nbsp;&nbsp;
                                             <button class="btn btn-default btn-xs" ng-click="newItem('Control')">Add Control</button>
-                                            &nbsp;&nbsp;
                                         </div>
                                 </tab>
 

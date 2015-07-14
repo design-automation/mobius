@@ -22,6 +22,7 @@ a{
 
 .btn-xs, .btn-group-xs {
     font-size: 12px !important;
+    margin: 3px;
 }
 
 /**************************
@@ -78,7 +79,8 @@ a{
 .graph-area .buttons{
     position: absolute;
     bottom: 8px;
-    padding-left: 4px;
+    width: 100%;
+    text-align: center;
 }
 
 /**************************
@@ -173,7 +175,8 @@ right pane code area
 .code-area .buttons{
     position: absolute;
     bottom: 8px;
-    margin-left: 5px;
+    width: 100%;
+    text-align: center;
 }
 
 .code-area .codeEditor {
