@@ -47,7 +47,6 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
     //
 
     // open and read json file for scene
-
     $scope.openSceneJson = function(){
 
         document.getElementById('openSceneJson').click();
@@ -98,7 +97,6 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
 
 
     // save json file for scene
-
     $scope.saveSceneJson = function(){
 
         var graphJson = JSON.stringify($scope.chartViewModel.data, null, 4);
@@ -111,18 +109,20 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
     };
 
     // import pre-defined node
+    // todo
 
     $scope.importNode = function () {
 
     };
 
     // export selected node
+    // todo
     $scope.exportNode = function (){
 
     };
 
 
-    // save js file
+    // save generated js file
     $scope.downloadJs = function(){
 
         var jsBlob = new Blob([$scope.javascriptCode], {type: "application/javascript"});
@@ -162,9 +162,11 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
          // update the interface tab
 
          $scope.interface = $scope.interfaceList[$scope.nodeIndex];
+
+         // update generated code
+
+         $scope.generateCode();
      });
-
-
 
 
     // verify the function name
@@ -219,6 +221,9 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
 
         $scope.chartViewModel.addNode(newNodeDataModel);
 
+        // update generated code
+
+        $scope.generateCode();
     };
 
     // Add an input connector to selected nodes.
@@ -240,6 +245,10 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
                 value:''
             });
         }
+
+        // update generated code
+
+        $scope.generateCode();
     };
 
     // Add an output connector to selected nodes.
@@ -259,6 +268,10 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
                 value: ""
             });
         }
+
+        // update generated code
+
+        $scope.generateCode();
     };
 
     // Delete selected nodes and connections in data&view model
@@ -275,6 +288,10 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
             nextNodeID --;
             console.log($scope.dataList);
         }
+
+        // update generated code
+
+        $scope.generateCode();
     };
 
 
@@ -335,10 +352,15 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
         }
 
         // object of flatten procedure data tree
+
         $scope.flattenData = nodes;
+
+
+        // update generated code
+
+        $scope.generateCode();
+
     }, true);
-
-
 
 
     // procedure manipulation
@@ -558,28 +580,84 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
     };
 
     //
-    // ------------------------------------- RUN-TIME EXECUTIONS -------------------------------------
+    // ------------------------------------- CODE GENERATION -------------------------------------
     //
 
-
-    // execute the topological sort, then call procedure functions in sorted order
-
-    $scope.run = function() {
-
-        // declare start running in console
-
-        document.getElementById('log').innerHTML += "<div>Generating code:</br>...</div>";
+    $scope.generateCode = function() {
 
         // copy the sorted order
-
         var sortedOrder = $scope.chartViewModel.topoSort().slice();
+
+        //
+        // execution based topological sort
+        //
+
+        $scope.javascriptCode = '// execution: \n';
+
+        for(var n = 0; n < sortedOrder.length; n++) {
+
+            // case where the node has output
+            var output_port_num = $scope.chartViewModel.nodes[sortedOrder[n]].outputConnectors.length;
+            var return_obj_name = 'ouput_' + $scope.chartViewModel.nodes[sortedOrder[n]].data.name;
+
+            if (output_port_num != 0) {
+
+                // first get the return object
+
+                $scope.javascriptCode += 'var ' + return_obj_name + ' = ';
+
+            }
+
+            // case where the node has no output
+            $scope.javascriptCode += $scope.chartViewModel.nodes[sortedOrder[n]].data.name + "(";
+
+            // print all the parameters/inputs
+
+            var input_port_num = $scope.chartViewModel.nodes[sortedOrder[n]].inputConnectors.length;
+
+            for (var m = 0; m < input_port_num; m++) {
+
+                var input_port_name = $scope.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.name;
+                if(m != input_port_num-1){
+                    $scope.javascriptCode += input_port_name + ',';
+                }
+                else{
+                    $scope.javascriptCode += input_port_name;
+                }
+
+            }
+
+            $scope.javascriptCode +=  ");\n";
+
+            // extract items from return through label
+            for(var m =0; m < output_port_num; m++){
+
+                var output_port_name = $scope.chartViewModel.nodes[sortedOrder[n]].outputConnectors[m].data.name;
+
+                for (var l = 0; l < $scope.chartViewModel.connections.length; l++) {
+
+                    if (output_port_name == $scope.chartViewModel.connections[l].source.name()) {
+
+                        var connected_input_name = $scope.chartViewModel.connections[l].dest.data.name;
+
+                        $scope.javascriptCode +=  'var '
+                            + connected_input_name +' = '
+                            + return_obj_name
+                            + '.'
+                            + output_port_name + ';\n';
+                    }
+                }
+            }
+        }
+
+        $scope.javascriptCode += '\n';
 
 
         //
         // function definitions
         //
 
-        $scope.javascriptCode ='// Function definitions:' + '\n\n';
+        $scope.javascriptCode +='// Function definitions:' + '\n';
 
         // use flag to check whether it is the first argument
 
@@ -590,7 +668,8 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
             $scope.javascriptCode += 'function ' + $scope.chartViewModel.nodes[i].data.name +' (';
 
             $scope.codeList[i]='// Function definitions:' + '\n' + '// This is definition for function '
-                                + $scope.chartViewModel.nodes[i].data.name + '\n\n'
+                                + $scope.chartViewModel.nodes[i].data.name + '\n\n';
+
             $scope.codeList[i] = $scope.codeList[i] + 'function ' + $scope.chartViewModel.nodes[i].data.name +' (';
 
             // function arguments
@@ -707,79 +786,6 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
             }
         }
 
-        //
-        // execution based topological sort
-        //
-
-        $scope.javascriptCode += '// execution: \n';
-
-        for(var n = 0; n < sortedOrder.length; n++) {
-
-            // case where the node has output
-            var output_port_num = $scope.chartViewModel.nodes[sortedOrder[n]].outputConnectors.length;
-            var return_obj_name = 'ouput_' + $scope.chartViewModel.nodes[sortedOrder[n]].data.name;
-
-            if (output_port_num != 0) {
-
-                // first get the return object
-
-                $scope.javascriptCode += 'var ' + return_obj_name + ' = ';
-
-            }
-
-            // case where the node has no output
-            $scope.javascriptCode += $scope.chartViewModel.nodes[sortedOrder[n]].data.name + "(";
-
-            // print all the parameters/inputs
-
-            var input_port_num = $scope.chartViewModel.nodes[sortedOrder[n]].inputConnectors.length;
-
-            for (var m = 0; m < input_port_num; m++) {
-
-                var input_port_name = $scope.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.name;
-                if(m != input_port_num-1){
-                    $scope.javascriptCode += input_port_name + ',';
-                }
-                else{
-                    $scope.javascriptCode += input_port_name;
-                }
-
-            }
-
-            $scope.javascriptCode +=  ");\n";
-
-            // extract items from return through label
-            for(var m =0; m < output_port_num; m++){
-
-                var output_port_name = $scope.chartViewModel.nodes[sortedOrder[n]].outputConnectors[m].data.name;
-
-                for (var l = 0; l < $scope.chartViewModel.connections.length; l++) {
-
-                    if (output_port_name == $scope.chartViewModel.connections[l].source.name()) {
-
-                        var connected_input_name = $scope.chartViewModel.connections[l].dest.data.name;
-
-                        $scope.javascriptCode +=  'var '
-                        + connected_input_name +' = '
-                        + return_obj_name
-                        + '.'
-                        + output_port_name + ';\n';
-                    }
-                }
-            }
-        }
-
-        document.getElementById('log').innerHTML += "<div> Code generation is done.</div>";
-        document.getElementById('log').innerHTML += "<div></br> Execute generated code</div>";
-
-        try{
-            eval($scope.javascriptCode);
-        }catch (e) {
-            document.getElementById('log').innerHTML +=     "<div style='color:red'>" +  e.message + "</div>";
-            alert(e.stack);
-        }
-
-        document.getElementById('log').innerHTML += "<div> Execution done</div>";
     };
 
     //
@@ -816,19 +822,6 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
                     + procedure.dataName
                     + ' = '
                     + '[' + procedure.dataValue + "];\n";
-
-                //for(var i = 0; i < procedure.dataValue.split(',').length; i++){
-                //    if(i != procedure.dataValue.split(',').length -1){
-                //        $scope.javascriptCode += "'" + procedure.dataValue.split(',')[i]  + "',";
-                //        $scope.codeList[nodeIndex] += "'" + procedure.dataValue.split(',')[i]  + "',";
-                //    }else if(i == procedure.dataValue.split(',').length-1){
-                //        $scope.javascriptCode += "'" + procedure.dataValue.split(',')[i]  + "'";
-                //        $scope.codeList[nodeIndex] += "'" + procedure.dataValue.split(',')[i]  + "'";
-                //    }
-                //}
-                //
-                //$scope.javascriptCode +=  '];\n';
-                //$scope.codeList[nodeIndex] +=  '];\n';
             }
 
         }
@@ -984,6 +977,26 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
         }
         $scope.javascriptCode += intentation + '    }\n'
         $scope.codeList[nodeIndex] += intentation + '    }\n'
+    }
+
+    //
+    // ------------------------------------- RUN-TIME EXECUTIONS -----------------------------------
+    //
+
+    $scope.run = function(){
+
+        // declare start running in console
+
+        document.getElementById('log').innerHTML += "<div></br> Executing generated code ... </div>";
+
+        try{
+            eval($scope.javascriptCode);
+        }catch (e) {
+            document.getElementById('log').innerHTML +=     "<div style='color:red'>" +  e.message + "</div>";
+            alert(e.stack);
+        }
+
+        document.getElementById('log').innerHTML += "<div> Execution done </div>";
     }
 
 });

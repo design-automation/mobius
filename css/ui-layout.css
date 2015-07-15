@@ -49,11 +49,16 @@
 
 }
 
-.ui-layout-column > .ui-splitbar > a,
-.ui-layout-row > .ui-splitbar > a {
-    /*display: none;*/
+.ui-layout-column > .ui-splitbar > a{
     cursor: pointer;
     font-size: 9px;
+    margin-top: 10px;
+}
+
+.ui-layout-row > .ui-splitbar > a {
+    cursor: pointer;
+    font-size: 9px;
+    margin: 10px;
 }
 
 /*todo temp fix*/
