@@ -188,7 +188,7 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
 
         // promote for name of new node
 
-        var nodeName = prompt("Enter a node name:", "NewNode");
+        var nodeName = prompt('Enter a node name:', 'node' + chartDataModel.nodes.length);
 
         if (!isValidName(nodeName)) {
             return;
@@ -221,6 +221,7 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
 
         $scope.chartViewModel.addNode(newNodeDataModel);
 
+
         // update generated code
 
         $scope.generateCode();
@@ -229,7 +230,7 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
     // Add an input connector to selected nodes.
 
     $scope.addNewInputConnector = function () {
-        var connectorName = prompt("Enter a connector name:", "NewInput");
+        var connectorName = prompt("Enter a connector name:", "in"+ $scope.chartViewModel.nodes[$scope.nodeIndex].inputConnectors.length);
 
         if (!isValidName(connectorName)) {
             return;
@@ -254,7 +255,7 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
     // Add an output connector to selected nodes.
 
     $scope.addNewOutputConnector = function () {
-        var connectorName = prompt("Enter a connector name:", "NewOutput");
+        var connectorName = prompt("Enter a connector name:", "out"+ $scope.chartViewModel.nodes[$scope.nodeIndex].outputConnectors.length);
 
         if (!isValidName(connectorName)) {
             return;
@@ -345,6 +346,7 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
                 }
             }
         }
+
         if($scope.data){
             for (i = 0, l = $scope.data.length; i < l; i++) {
                 helper($scope.data[i]);

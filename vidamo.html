@@ -251,6 +251,19 @@
 
                                                                 <span style="width: 100%;color: black;">
                                                                         {{node.title}}
+                                                                        <span class="subheading">
+                                                                            <span ng-if="node.dataName&&(!node.method)&&(!node.controlType)">
+                                                                                :&nbsp;{{node.dataName}}
+                                                                            </span>
+
+                                                                            <span ng-if="node.method">
+                                                                                :&nbsp;{{node.method}}
+                                                                            </span>
+
+                                                                            <span ng-if="node.controlType">
+                                                                                :&nbsp;{{node.controlType}}
+                                                                            </span>
+                                                                        </span>
                                                                 </span>
 
                                                                     <span class="pull-right btn btn-xs"
