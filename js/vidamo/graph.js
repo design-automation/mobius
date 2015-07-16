@@ -34,6 +34,32 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
     $scope.jsUrl = '';
     $scope.libUrl = '';
 
+
+
+    // new node type
+    $scope.nodeTypes = ['emtpy'];
+
+
+
+    // procedure select types
+
+    // data types
+    $scope.dataTypes = ['var','list'];
+
+    // control types
+    $scope.controlTypes = ['for item in list'];
+
+    // methods
+    $scope.methods = [  {name:'get input', usage:'I/O'},
+                        {name:'set output', usage:'I/O'},
+                        {name: 'print data', usage:'General'},
+                        {name: 'list length', usage:'List'},
+                        {name: 'list item', usage:'List'},
+                        {name: 'sort list', usage:'List'},
+                        {name: 'reverse list', usage:'List'},
+                        {name: 'combine lists', usage:'List'},
+                    ];
+
     // check for the various File API support.
 
     if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -321,13 +347,13 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
                 var props=['id','title','dataName','dataValue','parentNode','dataType','method','parameters']
             }
             else if(n['title'] == 'Control'){
-                var props=['id','title','controlType','forItemName','parentNode','forList']
+                var props=['id','title','controlType','dataName','parentNode','forList']
             }
 
             var i,l,
                 result={};
             for (i = 0, l = props.length; i < l; i++) {
-                if (n[props[i]]) {
+                if (n[props[i]] || n[props[i]]  === undefined) {
                     result[props[i]]= n[props[i]];
                 }
             }
@@ -361,7 +387,8 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
         // update generated code
 
         $scope.generateCode();
-
+        console.log($scope.data);
+        console.log($scope.flattenData);
     }, true);
 
 
@@ -382,8 +409,8 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
                     id: $scope.data.length  + 1,
                     title:  'Data',
                     nodes: [],
-                    dataName:'',
-                    dataValue:'',
+                    dataName:undefined,
+                    dataValue:undefined,
                     parentNode: $scope.chartViewModel.nodes[$scope.nodeIndex].data
                 });
             } else if(cate == 'Action'){
@@ -402,9 +429,9 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
 
                     // if the method is get data from input port, use following two as holder
 
-                    dataType:'',
-                    dataName:'',
-                    dataValue:'',
+                    dataType:undefined,
+                    dataName:undefined,
+                    dataValue:undefined,
                     parentNode: $scope.chartViewModel.nodes[$scope.nodeIndex].data
 
                 });
@@ -413,9 +440,9 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
                     id: $scope.data.length  + 1,
                     title:  'Control',
                     nodes: [],
-                    controlType: '',
-                    forItemName:'',
-                    forList:'',
+                    controlType: undefined,
+                    dataName:undefined,
+                    forList:undefined,
                     parentNode: $scope.chartViewModel.nodes[$scope.nodeIndex].data
                 });
             }
@@ -455,7 +482,7 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
                 location.method = value;
                 break;
 
-            // append output method
+            // set output method
             // parameters[0]:  output port
             // parameters[2]:  dataName
 
@@ -527,10 +554,6 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
 
             case 'controlType':
                 location.controlType = value;
-                break;
-
-            case 'forItemName':
-                location.forItemName  = value;
                 break;
 
             case 'forList':
@@ -860,8 +883,8 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
             $scope.codeList[nodeIndex] += codeBlock;
         }
 
-        // action: append data to output port
-        if(procedure.method == 'append output'){
+        // action: set data to output port
+        if(procedure.method == 'set output'){
 
             codeBlock = intentation + '    '
             + procedure.parameters[0]
@@ -963,11 +986,11 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
             var intentation = '';
         }
         $scope.javascriptCode +=  intentation + '    ' + 'for( var ' +
-        procedure.forItemName + ' of '
+        procedure.dataName + ' of '
         + procedure.forList + '){\n';
 
         $scope.codeList[nodeIndex] +=  intentation + '    ' + 'for( var ' +
-        procedure.forItemName + ' of '
+        procedure.dataName + ' of '
         + procedure.forList + '){\n';
 
         if(procedure.nodes.length > 0){

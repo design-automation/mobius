@@ -2,7 +2,7 @@
 // VIDAMO App
 //
 
-var vidamo = angular.module('vidamo', ['ui.layout','ui.ace','ui.bootstrap','ngSanitize','ui.tree','flowChart','panzoom'])
+var vidamo = angular.module('vidamo', ['ui.layout','ui.ace','ui.bootstrap','ui.select','ngSanitize','ui.tree','flowChart','panzoom'])
 
 // Utilities
 
@@ -21,3 +21,19 @@ vidamo.config( [
     }
 ]);
 
+vidamo.config(function(uiSelectConfig) {
+    uiSelectConfig.theme = 'select2';
+    uiSelectConfig.appendToBody = true;
+});
+
+vidamo.filter('dataNameFilter', function() {
+    return function( items) {
+        var filtered = [];
+        angular.forEach(items, function(item) {
+            if( item.dataName){
+                filtered.push(item);
+            }
+        });
+        return filtered;
+    };
+});

@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="css/bootstrap/bootstrap.css">
     <link rel="stylesheet" href="css/ui-tree.css">
     <link rel="stylesheet" href="css/graph.css">
+    <link rel="stylesheet" href="css/select.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">
 
 
     <!--three.js-->
@@ -155,11 +158,25 @@
                                 </div>
 
                                 <div class = "buttons">
+
+                                    <ui-select ng-model="type.selected"
+                                               append-to-body = "true"
+                                               style="width: 100px;">
+                                        <ui-select-match placeholder="Select new node">{{$select.selected}}</ui-select-match>
+                                        <ui-select-choices repeat="type in nodeTypes| filter: $select.search">
+                                            <span ng-bind-html="type| highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+
+
+
                                     <button class="btn btn-default btn-xs"
                                             ng-click="addNewNode()"
                                             title="Add a new node to the chart">
                                         Add Node
                                     </button>
+
+
                                     <button class="btn btn-default btn-xs"
                                             ng-click="addNewInputConnector()"
                                             ng-disabled="chartViewModel.getSelectedNodes().length == 0"
@@ -282,18 +299,16 @@
                                                                     <div ng-if="node.title == 'Data'">
                                                                         <div class="input-group input-group-sm">
                                                                             <span class="input-group-addon"> Data Type: </span>
-                                                                            <select ng-model="dataType"
-                                                                                    name ="dataType"
-                                                                                    class="form-control"
-                                                                                    ng-change="applyValue('dataType',this.dataType,node)">
-                                                                                <option value="" selected >
-                                                                                    {{node.dataType}}
-                                                                                </option>
-                                                                                <option value="var">var</option>
-                                                                                <option value="list">list</option>
-                                                                            </select>
+                                                                            <ui-select ng-model="dataType"
+                                                                                       append-to-body = "true"
+                                                                                       class = "procedure-select"
+                                                                                       ng-change="applyValue('dataType',this.dataType,node)">
+                                                                                <ui-select-match placeholder="{{node.dataType}}">{{$select.selected}}</ui-select-match>
+                                                                                <ui-select-choices repeat="dataType in dataTypes| filter: $select.search">
+                                                                                    <span ng-bind-html="dataType| highlight: $select.search"></span>
+                                                                                </ui-select-choices>
+                                                                            </ui-select>
                                                                         </div>
-
 
                                                                         <div ng-if="node.dataType == 'var'">
                                                                             <div class="input-group input-group-sm">
@@ -345,17 +360,15 @@
                                                                     <div ng-if="node.title == 'Control'">
                                                                         <div class="input-group input-group-sm">
                                                                             <span class="input-group-addon"> Control Type: </span>
-                                                                            <select ng-model="controlType"
-                                                                                    class="form-control"
-                                                                                    name ="controlType"
-                                                                                    ng-change="applyValue('controlType',this.controlType,node)"
-                                                                                    >
-                                                                                <option value="" selected >
-                                                                                    {{node.controlType}}
-                                                                                </option>
-                                                                                <option value="for item in list">For item in list</option>
-                                                                                <!--<option value="while condition">while condition</option>-->
-                                                                            </select>
+                                                                            <ui-select ng-model="controlType"
+                                                                                       append-to-body = "true"
+                                                                                       class = "procedure-select"
+                                                                                       ng-change="applyValue('controlType',this.controlType,node)">
+                                                                                <ui-select-match placeholder="{{node.controlType}}">{{$select.selected}}</ui-select-match>
+                                                                                <ui-select-choices repeat="controlType in controlTypes| filter: $select.search">
+                                                                                    <span ng-bind-html="controlType| highlight: $select.search"></span>
+                                                                                </ui-select-choices>
+                                                                            </ui-select>
                                                                         </div>
 
                                                                         <div ng-if="node.controlType == 'for item in list'">
@@ -363,28 +376,28 @@
                                                                                 <span class="input-group-addon">item name</span>
                                                                                 <input
                                                                                     class="form-control"
-                                                                                    placeholder="{{node.itemName}}"
-                                                                                name ="forItemName"
-                                                                                ng-model="forItemName"
-                                                                                ng-change="applyValue('forItemName',this.forItemName,node)">
+                                                                                    placeholder="{{node.dataName}}"
+                                                                                name ="dataName"
+                                                                                ng-model="dataName"
+                                                                                ng-change="applyValue('dataName',this.dataName,node)">
                                                                             </div>
 
                                                                             <div class="input-group input-group-sm">
                                                                                 <span class="input-group-addon"> List: </span>
-                                                                                <select ng-model="forList"
-                                                                                        class="form-control"
-                                                                                        ng-change =
-                                                                                                "applyValue('forList', this.forList,node)">
-                                                                                    <option value=""
-                                                                                            selected >
-                                                                                        {{node.forList}}
-                                                                                    </option>
-                                                                                            <option ng-repeat="node in flattenData"
-                                                                                                    ng-if="node.dataName"
-                                                                                                    value="{{node.dataName}}">
-                                                                                                    {{node.dataName}}
-                                                                                            </option>
-                                                                                </select>
+
+                                                                                <ui-select ng-model="forList"
+                                                                                           append-to-body = "true"
+                                                                                           class = "procedure-select"
+                                                                                           ng-change="applyValue('forList',this.forList,node)">
+                                                                                    <ui-select-match placeholder="{{node.dataName}}">{{$select.selected.dataName}}</ui-select-match>
+                                                                                    <ui-select-choices
+                                                                                            repeat="node.dataName as node in flattenData | dataNameFilter| filter: $select.search">
+                                                                                        <div>
+                                                                                            <span ng-bind-html="node.dataName| highlight: $select.search"></span>
+                                                                                        </div>
+                                                                                    </ui-select-choices>
+                                                                                </ui-select>
+
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -393,31 +406,19 @@
                                                                     <div ng-if="node.title == 'Action'">
                                                                         <div class="input-group input-group-sm">
                                                                             <span class="input-group-addon"> Method: </span>
-                                                                                <select ng-model="method"
-                                                                                   name ="method"
-                                                                                   class="form-control"
-                                                                                   ng-change="applyValue('method',this.method,node)">
-                                                                                    <option value="" selected >
-                                                                                        {{node.method}}
-                                                                                    </option>
 
-                                                                                    <!--basic-->
-                                                                                    <option value="" disabled> -- basic </option>
-                                                                                    <option value="get input">Get input </option>
-                                                                                    <option value="append output">Set output</option>
-                                                                                    <option value="print data">Print data</option>
+                                                                            <ui-select ng-model="method"
+                                                                                       append-to-body = "true"
+                                                                                       class = "procedure-select"
+                                                                                       ng-change="applyValue('method',this.method,node)">
+                                                                                <ui-select-match placeholder="{{node.method}}">{{$select.selected.name}}</ui-select-match>
+                                                                                <ui-select-choices
+                                                                                        group-by="'usage'"
+                                                                                        repeat="method.name as method in methods| filter: $select.search" >
+                                                                                    <span ng-bind-html="method.name| highlight: $select.search"></span>
+                                                                                </ui-select-choices>
+                                                                            </ui-select>
 
-
-                                                                                    <!--list manipulation-->
-                                                                                    <option value=""  disabled> -- List manipulation </option>
-                                                                                    <option value="list length">List length</option>
-                                                                                    <option value="list item">List item</option>
-                                                                                    <option value="sort list">Sort list</option>
-                                                                                    <option value="reverse list">Reverse list</option>
-                                                                                    <option value="combine lists">Combine lists</option>
-                                                                                    <!--<option value="insert item to list">todo/ insert item to list</option>-->
-
-                                                                            </select>
                                                                         </div>
                                                                     </div>
 
@@ -425,25 +426,19 @@
                                                                     <div ng-if="node.method == 'list length'">
                                                                         <div class="input-group input-group-sm">
                                                                             <span class="input-group-addon"> List: </span>
-                                                                            <select ng-model="targetList"
-                                                                                    class="form-control"
-                                                                                    ng-change =
-                                                                                            "applyValue('targetList', this.targetList,node)">
-                                                                                <option value=""
-                                                                                        selected="selected">
-                                                                                    {{node.parameters[0]}}
-                                                                                </option>
-                                                                                <option ng-repeat="node in flattenData"
-                                                                                        ng-if="node.dataName"
-                                                                                        value="{{node.dataName}}">
-                                                                                    {{node.dataName}}
-                                                                                </option>
-                                                                                <option ng-repeat="node in flattenData"
-                                                                                        ng-if="node.forItemName"
-                                                                                        value="{{node.forItemName}}">
-                                                                                    {{node.forItemName}}
-                                                                                </option>
-                                                                            </select>
+
+                                                                            <ui-select ng-model="targetList"
+                                                                                       append-to-body = "true"
+                                                                                       class = "procedure-select"
+                                                                                       ng-change="applyValue('targetList',this.targetList,node)">
+                                                                                <ui-select-match placeholder="{{node.parameters[0]}}">{{$select.selected.dataName}}</ui-select-match>
+                                                                                <ui-select-choices repeat="node.dataName as node in flattenData | dataNameFilter| filter: $select.search">
+                                                                                    <div>
+                                                                                        <span ng-bind-html="node.dataName| highlight: $select.search"></span>
+                                                                                    </div>
+                                                                                </ui-select-choices>
+                                                                            </ui-select>
+
                                                                         </div>
 
                                                                         <div class="input-group input-group-sm">
@@ -461,32 +456,24 @@
                                                                     <div ng-if="node.method == 'list item'">
                                                                         <div class="input-group input-group-sm">
                                                                             <span class="input-group-addon"> List: </span>
-                                                                            <select ng-model="targetList"
-                                                                                    class="form-control"
-                                                                                    ng-change =
-                                                                                            "applyValue('targetList', this.targetList,node)">
-                                                                                <option value=""
-                                                                                        selected="selected">
-                                                                                    {{node.parameters[0]}}
-                                                                                </option>
-                                                                                <option ng-repeat="node in flattenData"
-                                                                                        ng-if="node.dataName"
-                                                                                        value="{{node.dataName}}">
-                                                                                    {{node.dataName}}
-                                                                                </option>
-                                                                                <option ng-repeat="node in flattenData"
-                                                                                        ng-if="node.forItemName"
-                                                                                        value="{{node.forItemName}}">
-                                                                                    {{node.forItemName}}
-                                                                                </option>
-                                                                            </select>
+                                                                            <ui-select ng-model="targetList"
+                                                                                       append-to-body = "true"
+                                                                                       class = "procedure-select"
+                                                                                       ng-change="applyValue('targetList',this.targetList,node)">
+                                                                                <ui-select-match placeholder="{{node.parameters[0]}}">{{$select.selected.dataName}}</ui-select-match>
+                                                                                <ui-select-choices repeat="node.dataName as node in flattenData | dataNameFilter| filter: $select.search">
+                                                                                    <div>
+                                                                                        <span ng-bind-html="node.dataName| highlight: $select.search"></span>
+                                                                                    </div>
+                                                                                </ui-select-choices>
+                                                                            </ui-select>
                                                                         </div>
 
                                                                         <div class="input-group input-group-sm">
                                                                             <span class="input-group-addon">Item index:</span>
                                                                             <input class="form-control"
                                                                                    name="itemIndex"
-                                                                                   placeholder="{{node.itemIndex}}"
+                                                                                   placeholder="{{node.parameters[1]}}"
                                                                                    ng-model="itemIndex"
                                                                                    ng-change=
                                                                                            "applyValue('itemIndex',this.itemIndex,node)">
@@ -507,25 +494,17 @@
                                                                     <div ng-if="node.method == 'sort list'">
                                                                         <div class="input-group input-group-sm">
                                                                             <span class="input-group-addon"> List: </span>
-                                                                            <select ng-model="targetList"
-                                                                                    class="form-control"
-                                                                                    ng-change =
-                                                                                            "applyValue('targetList', this.targetList,node)">
-                                                                                <option value=""
-                                                                                        selected="selected">
-                                                                                    {{node.parameters[0]}}
-                                                                                </option>
-                                                                                <option ng-repeat="node in flattenData"
-                                                                                        ng-if="node.dataName"
-                                                                                        value="{{node.dataName}}">
-                                                                                    {{node.dataName}}
-                                                                                </option>
-                                                                                <option ng-repeat="node in flattenData"
-                                                                                        ng-if="node.forItemName"
-                                                                                        value="{{node.forItemName}}">
-                                                                                    {{node.forItemName}}
-                                                                                </option>
-                                                                            </select>
+                                                                            <ui-select ng-model="targetList"
+                                                                                       append-to-body = "true"
+                                                                                       class = "procedure-select"
+                                                                                       ng-change="applyValue('targetList',this.targetList,node)">
+                                                                                <ui-select-match placeholder=" {{node.parameters[0]}}">{{$select.selected.dataName}}</ui-select-match>
+                                                                                <ui-select-choices repeat="node.dataName as node in flattenData | dataNameFilter| filter: $select.search">
+                                                                                    <div>
+                                                                                        <span ng-bind-html="node.dataName| highlight: $select.search"></span>
+                                                                                    </div>
+                                                                                </ui-select-choices>
+                                                                            </ui-select>
                                                                         </div>
 
                                                                         <div class="input-group input-group-sm">
@@ -563,25 +542,17 @@
                                                                     <div ng-if="node.method == 'reverse list'">
                                                                         <div class="input-group input-group-sm">
                                                                             <span class="input-group-addon"> List: </span>
-                                                                            <select ng-model="targetList"
-                                                                                    class="form-control"
-                                                                                    ng-change =
-                                                                                            "applyValue('targetList', this.targetList,node)">
-                                                                                <option value=""
-                                                                                        selected="selected">
-                                                                                    {{node.parameters[0]}}
-                                                                                </option>
-                                                                                <option ng-repeat="node in flattenData"
-                                                                                        ng-if="node.dataName"
-                                                                                        value="{{node.dataName}}">
-                                                                                    {{node.dataName}}
-                                                                                </option>
-                                                                                <option ng-repeat="node in flattenData"
-                                                                                        ng-if="node.forItemName"
-                                                                                        value="{{node.forItemName}}">
-                                                                                    {{node.forItemName}}
-                                                                                </option>
-                                                                            </select>
+                                                                            <ui-select ng-model="targetList"
+                                                                                       append-to-body = "true"
+                                                                                       class = "procedure-select"
+                                                                                       ng-change="applyValue('targetList',this.targetList,node)">
+                                                                                <ui-select-match placeholder="{{node.parameters[0]}}">{{$select.selected.dataName}}</ui-select-match>
+                                                                                <ui-select-choices repeat="node.dataName as node in flattenData | dataNameFilter| filter: $select.search">
+                                                                                    <div>
+                                                                                        <span ng-bind-html="node.dataName| highlight: $select.search"></span>
+                                                                                    </div>
+                                                                                </ui-select-choices>
+                                                                            </ui-select>
                                                                         </div>
 
                                                                         <div class="input-group input-group-sm">
@@ -599,48 +570,32 @@
                                                                     <div ng-if="node.method == 'combine lists'">
                                                                         <div class="input-group input-group-sm">
                                                                             <span class="input-group-addon"> List1: </span>
-                                                                            <select ng-model="targetList1"
-                                                                                    class="form-control"
-                                                                                    ng-change =
-                                                                                            "applyValue('targetList1', this.targetList1,node)">
-                                                                                <option value=""
-                                                                                        selected="selected">
-                                                                                    {{node.parameters[0]}}
-                                                                                </option>
-                                                                                <option ng-repeat="node in flattenData"
-                                                                                        ng-if="node.dataName"
-                                                                                        value="{{node.dataName}}">
-                                                                                    {{node.dataName}}
-                                                                                </option>
-                                                                                <option ng-repeat="node in flattenData"
-                                                                                        ng-if="node.forItemName"
-                                                                                        value="{{node.forItemName}}">
-                                                                                    {{node.forItemName}}
-                                                                                </option>
-                                                                            </select>
+                                                                            <ui-select ng-model="targetList1"
+                                                                                       append-to-body = "true"
+                                                                                       class = "procedure-select"
+                                                                                       ng-change="applyValue('targetList1',this.targetList1,node)">
+                                                                                <ui-select-match placeholder="{{node.parameters[0]}}">{{$select.selected.dataName}}</ui-select-match>
+                                                                                <ui-select-choices repeat="node.dataName as node in flattenData | dataNameFilter| filter: $select.search">
+                                                                                    <div>
+                                                                                        <span ng-bind-html="node.dataName| highlight: $select.search"></span>
+                                                                                    </div>
+                                                                                </ui-select-choices>
+                                                                            </ui-select>
                                                                         </div>
 
                                                                         <div class="input-group input-group-sm">
                                                                             <span class="input-group-addon"> List2: </span>
-                                                                            <select ng-model="targetList2"
-                                                                                    class="form-control"
-                                                                                    ng-change =
-                                                                                            "applyValue('targetList2', this.targetList2,node)">
-                                                                                <option value=""
-                                                                                        selected="selected">
-                                                                                    {{node.parameters[0]}}
-                                                                                </option>
-                                                                                <option ng-repeat="node in flattenData"
-                                                                                        ng-if="node.dataName"
-                                                                                        value="{{node.dataName}}">
-                                                                                    {{node.dataName}}
-                                                                                </option>
-                                                                                <option ng-repeat="node in flattenData"
-                                                                                        ng-if="node.forItemName"
-                                                                                        value="{{node.forItemName}}">
-                                                                                    {{node.forItemName}}
-                                                                                </option>
-                                                                            </select>
+                                                                            <ui-select ng-model="targetList2"
+                                                                                       append-to-body = "true"
+                                                                                       class = "procedure-select"
+                                                                                       ng-change="applyValue('targetList2',this.targetList2,node)">
+                                                                                <ui-select-match placeholder="{{node.parameters[1]}}">{{$select.selected.dataName}}</ui-select-match>
+                                                                                <ui-select-choices repeat="node.dataName as node in flattenData | dataNameFilter| filter: $select.search">
+                                                                                    <div>
+                                                                                        <span ng-bind-html="node.dataName| highlight: $select.search"></span>
+                                                                                    </div>
+                                                                                </ui-select-choices>
+                                                                            </ui-select>
                                                                         </div>
 
                                                                         <div class="input-group input-group-sm">
@@ -658,25 +613,17 @@
                                                                     <div ng-if="node.method == 'insert items to list'">
                                                                         <div class="input-group input-group-sm">
                                                                             <span class="input-group-addon"> List: </span>
-                                                                            <select ng-model="targetList"
-                                                                                    class="form-control"
-                                                                                    ng-change =
-                                                                                            "applyValue('targetList', this.targetList,node)">
-                                                                                <option value=""
-                                                                                        selected="selected">
-                                                                                    {{node.parameters[0]}}
-                                                                                </option>
-                                                                                <option ng-repeat="node in flattenData"
-                                                                                        ng-if="node.dataName"
-                                                                                        value="{{node.dataName}}">
-                                                                                    {{node.dataName}}
-                                                                                </option>
-                                                                                <option ng-repeat="node in flattenData"
-                                                                                        ng-if="node.forItemName"
-                                                                                        value="{{node.forItemName}}">
-                                                                                    {{node.forItemName}}
-                                                                                </option>
-                                                                            </select>
+                                                                            <ui-select ng-model="targetList"
+                                                                                       append-to-body = "true"
+                                                                                       class = "procedure-select"
+                                                                                       ng-change="applyValue('targetList',this.targetList,node)">
+                                                                                <ui-select-match placeholder=" {{node.parameters[0]}}">{{$select.selected.dataName}}</ui-select-match>
+                                                                                <ui-select-choices repeat="node.dataName as node in flattenData | dataNameFilter| filter: $select.search">
+                                                                                    <div>
+                                                                                        <span ng-bind-html="node.dataName| highlight: $select.search"></span>
+                                                                                    </div>
+                                                                                </ui-select-choices>
+                                                                            </ui-select>
                                                                         </div>
 
                                                                         <div class="input-group input-group-sm">
@@ -712,41 +659,37 @@
                                                                     </div>
 
 
-                                                                    <!--method for append data to output port-->
-                                                                    <div ng-if="node.method == 'append output'">
+                                                                    <!--method for set data to output port-->
+                                                                    <div ng-if="node.method == 'set output'">
                                                                         <div class="input-group input-group-sm">
                                                                             <span class="input-group-addon"> Output port: </span>
-                                                                            <select ng-model="outputPort"
-                                                                                    class="form-control"
-                                                                                    ng-change =
-                                                                                        "applyValue('outputPort', this.outputPort,node)">
-                                                                                <option value="" selected >
-                                                                                    {{node.parameters[0]}}
-                                                                                </option>
-                                                                                <option  ng-repeat=
-                                                                                         "outputPort in node.parentNode.outputConnectors"
-                                                                                         ng-if="outputPort.name"
-                                                                                         value="{{outputPort.name}}">
-                                                                                    {{outputPort.name}}
-                                                                                </option>
-                                                                            </select>
+
+                                                                            <ui-select ng-model="outputPort"
+                                                                                       append-to-body = "true"
+                                                                                       class = "procedure-select"
+                                                                                       ng-change="applyValue('outputPort',this.outputPort.name,node)">
+                                                                                <ui-select-match placeholder="{{node.parameters[0]}}">{{$select.selected.name}}</ui-select-match>
+                                                                                <ui-select-choices repeat="outputPort in node.parentNode.outputConnectors | filter: $select.search">
+                                                                                    <div>
+                                                                                        <span ng-bind-html="outputPort.name| highlight: $select.search"></span>
+                                                                                    </div>
+                                                                                </ui-select-choices>
+                                                                            </ui-select>
+
                                                                         </div>
                                                                         <div class="input-group input-group-sm">
                                                                         <span class="input-group-addon"> Data name: </span>
-                                                                            <select ng-model="outputDataName"
-                                                                                    class="form-control"
-                                                                                    ng-change =
-                                                                                        "applyValue('outputDataName', this.outputDataName,node)">
-                                                                                <option value=""
-                                                                                        selected >
-                                                                                    {{node.parameters[2]}}
-                                                                                </option>
-                                                                                <option ng-repeat="node in flattenData"
-                                                                                        ng-if="node.dataName"
-                                                                                        value="{{node.dataName}}">
-                                                                                    {{node.dataName}}
-                                                                                </option>
-                                                                            </select>
+                                                                            <ui-select ng-model="outputDataName"
+                                                                                       append-to-body = "true"
+                                                                                       class = "procedure-select"
+                                                                                       ng-change="applyValue('outputDataName',this.outputDataName,node)">
+                                                                                <ui-select-match placeholder=" {{node.parameters[2]}}">{{$select.selected.dataName}}</ui-select-match>
+                                                                                <ui-select-choices repeat="node.dataName as node in flattenData | dataNameFilter| filter: $select.search">
+                                                                                    <div>
+                                                                                        <span ng-bind-html="node.dataName| highlight: $select.search"></span>
+                                                                                    </div>
+                                                                                </ui-select-choices>
+                                                                            </ui-select>
                                                                         </div>
                                                                     </div>
 
@@ -754,19 +697,17 @@
                                                                     <div ng-if="node.method == 'get input'">
                                                                         <div class="input-group input-group-sm">
                                                                         <span class="input-group-addon"> Input port: </span>
-                                                                            <select ng-model="inputPort"
-                                                                                    class="form-control"
-                                                                                    ng-change =
-                                                                                            "applyValue('inputPort', this.inputPort,node)">
-                                                                                <option value="" selected >
-                                                                                    {{node.parameters[0]}}
-                                                                                </option>
-                                                                                <option  ng-repeat="inputPort in node.parentNode.inputConnectors"
-                                                                                         ng-if="inputPort.name"
-                                                                                         value="{{inputPort.name}}">
-                                                                                    {{inputPort.name}}
-                                                                                </option>
-                                                                            </select>
+                                                                            <ui-select ng-model="inputPort"
+                                                                                       append-to-body = "true"
+                                                                                       class = "procedure-select"
+                                                                                       ng-change="applyValue('inputPort',this.inputPort.name,node)">
+                                                                                <ui-select-match placeholder="{{node.parameters[0]}}">{{$select.selected.name}}</ui-select-match>
+                                                                                <ui-select-choices repeat="inputPort in node.parentNode.inputConnectors | filter: $select.search">
+                                                                                    <div>
+                                                                                        <span ng-bind-html="inputPort.name| highlight: $select.search"></span>
+                                                                                    </div>
+                                                                                </ui-select-choices>
+                                                                            </ui-select>
                                                                         </div>
 
                                                                         <div class="input-group input-group-sm">
@@ -784,25 +725,17 @@
                                                                     <div ng-if="node.method == 'print data'">
                                                                         <div class="input-group input-group-sm">
                                                                             <span class="input-group-addon"> Data name: </span>
-                                                                            <select ng-model="printDataName"
-                                                                                    class="form-control"
-                                                                                    ng-change =
-                                                                                            "applyValue('printDataName', this.printDataName,node)">
-                                                                                <option value=""
-                                                                                        selected >
-                                                                                    {{node.parameters[0]}}
-                                                                                </option>
-                                                                                <option ng-repeat="node in flattenData"
-                                                                                        ng-if="node.dataName"
-                                                                                        value="{{node.dataName}}">
-                                                                                    {{node.dataName}}
-                                                                                </option>
-                                                                                <option ng-repeat="node in flattenData"
-                                                                                        ng-if="node.forItemName"
-                                                                                        value="{{node.forItemName}}">
-                                                                                    {{node.forItemName}}
-                                                                                </option>
-                                                                            </select>
+                                                                            <ui-select ng-model="printDataName"
+                                                                                       append-to-body = "true"
+                                                                                       class = "procedure-select"
+                                                                                       ng-change="applyValue('printDataName',this.printDataName,node)">
+                                                                                <ui-select-match placeholder=" {{node.parameters[0]}}">{{$select.selected.dataName}}</ui-select-match>
+                                                                                <ui-select-choices repeat="node.dataName as node in flattenData | dataNameFilter| filter: $select.search">
+                                                                                    <div>
+                                                                                        <span ng-bind-html="node.dataName| highlight: $select.search"></span>
+                                                                                    </div>
+                                                                                </ui-select-choices>
+                                                                            </ui-select>
                                                                         </div>
                                                                     </div>
 
@@ -955,6 +888,7 @@
      <script type="application/javascript" src="js/angular-ui/ui-layout/ui-layout.js"></script>
      <script src="js/angular-ui/ui-bootstrap/ui-bootstrap-tpls-0.11.0.min.js"></script>
      <script type="text/javascript" src="js/angular-ui/ui-tree/angular-ui-tree.js"></script>
+        <script type="text/javascript" src="js/angular-ui/ui-select/select.js"></script>
 
      <!--supporting packages-->
      <script type="text/javascript" src="js/packages/ace-builds/src-min-noconflict/ace.js"></script>

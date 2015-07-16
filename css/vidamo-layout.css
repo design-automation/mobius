@@ -203,6 +203,10 @@ right pane code area
     font-weight: 400;
 }
 
+.code-area .procedure-select{
+    width: 100%;
+}
+
 /* hack for ui-tree procedure tree structure*/
 .angular-ui-tree-handle {
     background: #ffffff;
@@ -262,6 +266,8 @@ right pane code area
     height: 24px !important;
     line-height: 1 !important;
 }
+
+
 
 .input-group-sm {
     padding: 5px 10px !important;
