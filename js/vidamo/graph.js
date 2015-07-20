@@ -37,7 +37,7 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
 
 
     // new node type
-    $scope.nodeTypes = ['emtpy'];
+    $scope.nodeTypes = ['empty','empty2','empty3','empty4','empty5'];
 
 
 
@@ -210,7 +210,7 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
     };
 
     // Add a new node to the chart.
-    $scope.addNewNode = function () {
+    $scope.addNewNode = function (type) {
 
         // promote for name of new node
 
@@ -221,17 +221,18 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
         }
 
         // Template for a new node
-
-        var newNodeDataModel = {
-            name: nodeName,
-            id: nextNodeID++,
-            x: 1900,
-            y: 2100,
-            inputConnectors: [
-            ],
-            outputConnectors: [
-            ]
-        };
+        if(type == "empty"){
+            var newNodeDataModel = {
+                name: nodeName,
+                id: nextNodeID++,
+                x: 1900,
+                y: 2100,
+                inputConnectors: [
+                ],
+                outputConnectors: [
+                ]
+            };
+        }
 
         // when new node added, increase the number of procedure list by one
 
@@ -472,6 +473,8 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
 
             case 'dataType':
                 location.dataType = value;
+                location.dataName = undefined;
+                location.dataValue = undefined;
                 break;
 
             //
@@ -480,6 +483,10 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
 
             case 'method':
                 location.method = value;
+                location.dataName = undefined;
+                location.parameters[0] = undefined;
+                location.parameters[1] = undefined;
+                location.parameters[2] = undefined;
                 break;
 
             // set output method

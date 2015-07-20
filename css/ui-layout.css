@@ -23,7 +23,7 @@
     background-color: #eee;
     right: auto;
     position: absolute;
-    z-index: 1010;
+    z-index: 99;
 }
 
 .ui-layout-row > .ui-splitbar{

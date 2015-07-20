@@ -21,11 +21,13 @@ vidamo.config( [
     }
 ]);
 
+// config for ui-select
 vidamo.config(function(uiSelectConfig) {
-    uiSelectConfig.theme = 'select2';
+    uiSelectConfig.theme = 'bootstrap';
     uiSelectConfig.appendToBody = true;
 });
 
+// filter for procedure dataName
 vidamo.filter('dataNameFilter', function() {
     return function( items) {
         var filtered = [];
@@ -34,6 +36,38 @@ vidamo.filter('dataNameFilter', function() {
                 filtered.push(item);
             }
         });
+        return filtered;
+    };
+});
+
+// filter for procedure position
+vidamo.filter('positionFilter', function() {
+    return function( items, currentId, scope) {
+        var filtered = [];
+        var index = -1;
+
+        for(var i = 0, len = scope.flattenData.length; i < len; i++) {
+            if (scope.flattenData[i].id === currentId) {
+                index = i;
+                break;
+            }
+        }
+
+        angular.forEach(items, function(item) {
+            var tempIndex = -1;
+
+            for(var i = 0, len = scope.flattenData.length; i < len; i++) {
+                if (scope.flattenData[i].id === item.id) {
+                    tempIndex = i;
+                    break;
+                }
+            }
+
+            if(tempIndex <= index){
+                filtered.push(item);
+            }
+        });
+
         return filtered;
     };
 });
