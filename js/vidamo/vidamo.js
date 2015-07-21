@@ -27,6 +27,9 @@ vidamo.config(function(uiSelectConfig) {
     uiSelectConfig.appendToBody = true;
 });
 
+
+//************************ Filters ************************
+
 // filter for procedure dataName
 vidamo.filter('dataNameFilter', function() {
     return function( items) {
@@ -71,3 +74,35 @@ vidamo.filter('positionFilter', function() {
         return filtered;
     };
 });
+
+// filter to check if the procedure is a data procedure
+vidamo.filter('dataFilter', function() {
+    return function( items) {
+        var filtered = [];
+        angular.forEach(items, function(item) {
+            if( item.title == 'Data'){
+                filtered.push(item);
+            }
+        });
+        return filtered;
+    };
+});
+
+// todo such function in better angular structure
+// recursively searching by id
+// return target object
+function updateById(id, data, cate, value){
+    for (var p in data) {
+        if (data[p].id === id ) {
+            if(data[p].hasOwnProperty(cate)){
+                data[p][cate] = value;
+                console.log(data[p]);
+            }
+        }
+        if (data[p].nodes.length > 0) {
+            console.log('there are nodes!');
+            updateById(id, data[p].nodes,cate,value);
+        }
+    }
+    return null;
+};

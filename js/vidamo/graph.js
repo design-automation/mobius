@@ -37,12 +37,10 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
 
 
     // new node type
-    $scope.nodeTypes = ['empty','empty2','empty3','empty4','empty5'];
-
+    $scope.nodeTypes = ['empty'];
 
 
     // procedure select types
-
     // data types
     $scope.dataTypes = ['var','list'];
 
@@ -333,9 +331,7 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
 
     // watch change of procedure data tree, if change update the flattenData
     $scope.$watch('data', function(){
-
         // flatten the procedure three for data searching
-
         var i, l,
             nodes=[],
             visited=[];
@@ -381,16 +377,12 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
         }
 
         // object of flatten procedure data tree
-
         $scope.flattenData = nodes;
 
-
         // update generated code
-
         $scope.generateCode();
-        console.log($scope.data);
-        console.log($scope.flattenData);
     }, true);
+
 
 
     // procedure manipulation
@@ -571,21 +563,17 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
             // parameter0: dataValue parameter1: dataName parameter2: node id
 
             case 'addToInterface':
-                var split = value.split(",");
-                console.log("SPLIT1:",split[0]);
-                console.log("SPLIT2:",split[1]);
-                console.log("SPLIT3:",split[2]);
-                location.parameters[0] = split[0];
-                location.parameters[1] = split[1];
-                location.parameters[2] = split[2]-1;
+                location.dataName = value.dataName;
+                location.dataValue = value.dataValue;
+                location.id = value.id;
                 break;
 
             // change data in interface and synchronize with procedure
-            // todo when change i won't update directly
 
             case 'interfaceValue':
-                location.parameters[0] = value;
-                $scope.data[location.parameters[2]].dataValue = location.parameters[0];
+                location.dataValue = value;
+                updateById(location.id, $scope.data,'dataValue',value);
+                //$scope.data[location.parameters[2]].dataValue = location.parameters[0];
                 break;
         }
     };

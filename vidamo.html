@@ -162,8 +162,8 @@
                                     <ui-select ng-model="type.selected"
                                                append-to-body = "true"
                                                on-select="addNewNode(this.type.selected)"
-                                            style="width:150px; display: inline-block">
-                                        <ui-select-match placeholder="Select new node">{{$select.selected}}</ui-select-match>
+                                            class="new-node">
+                                        <ui-select-match placeholder="New node">{{$select.selected}}</ui-select-match>
                                         <ui-select-choices repeat="type in nodeTypes| filter: $select.search">
                                             <span ng-bind-html="type| highlight: $select.search"></span>
                                         </ui-select-choices>
@@ -272,26 +272,26 @@
                                                             <div ng-if="node.title == 'Data'">
                                                                 <div class="input-group input-group-sm">
                                                                     <span class="input-group-addon"> data name: </span>
-                                                                    <select ng-model="addToInterface"
-                                                                            class="form-control"
-                                                                            ng-change =
-                                                                                    "applyValue('addToInterface', this.addToInterface,node)">
-                                                                        <option value=""
-                                                                                selected >
-                                                                            {{node.parameters[1]}}
-                                                                        </option>
-                                                                        <option ng-repeat="dataNode in data"
-                                                                                value="{{dataNode.dataValue}},{{dataNode.dataName}},{{dataNode.id}}">
-                                                                            {{dataNode.dataName}}
-                                                                        </option>
-                                                                    </select>
+
+                                                                    <ui-select ng-model="addToInterface"
+                                                                               append-to-body = "true"
+                                                                               class = "procedure-select"
+                                                                               on-select="applyValue('addToInterface', this.addToInterface,node)">
+                                                                        <ui-select-match placeholder="{{node.parameters[1]}}">{{$select.selected.dataName}}</ui-select-match>
+                                                                        <ui-select-choices
+                                                                                repeat="node in flattenData | dataFilter | dataNameFilter| filter: $select.search">
+                                                                            <div>
+                                                                                <span ng-bind-html="node.dataName| highlight: $select.search"></span>
+                                                                            </div>
+                                                                        </ui-select-choices>
+                                                                    </ui-select>
                                                                 </div>
 
                                                                 <div class="input-group input-group-sm">
                                                                     <span class="input-group-addon" >data value</span>
                                                                     <input class="form-control"
                                                                            name="interfaceValue"
-                                                                           placeholder="{{node.parameters[0]}}"
+                                                                           placeholder="{{node.dataValue}}"
                                                                            ng-model="interfaceValue"
                                                                            ng-change=
                                                                                    "applyValue('interfaceValue',this.interfaceValue,node)">
@@ -317,7 +317,7 @@
                                     </div>
 
                                     <div class="buttons">
-                                        <button class="btn btn-default btn-xs" ng-click="newInterface('Data')">Add Data</button>
+                                        <button class="btn btn-default btn-xs" ng-click="newInterface('Data')">New Parameter</button>
                                     </div>
                                 </tab>
                                 <tab heading="Procedure" style="height:100%">
