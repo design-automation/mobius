@@ -22,6 +22,7 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
 
     // Selects the next node id.
     var nextNodeID = 0;
+    var numOfDeletedTopNode =0;
 
     // Setup the data-model for the chart.
     var chartDataModel = {
@@ -35,10 +36,8 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
     $scope.libUrl = '';
 
 
-
     // new node type
     $scope.nodeTypes = ['empty'];
-
 
     // procedure select types
     // data types
@@ -212,7 +211,7 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
 
         // promote for name of new node
 
-        var nodeName = prompt('Enter a node name:', 'node' + chartDataModel.nodes.length);
+        var nodeName = prompt('Enter a node name:', 'node' + (chartDataModel.nodes.length + numOfDeletedTopNode));
 
         if (!isValidName(nodeName)) {
             return;
@@ -248,75 +247,92 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
 
 
         // update generated code
-
         $scope.generateCode();
     };
 
     // Add an input connector to selected nodes.
 
     $scope.addNewInputConnector = function () {
-        var connectorName = prompt("Enter a connector name:", "in"+ $scope.chartViewModel.nodes[$scope.nodeIndex].inputConnectors.length);
+        try{
+            var connectorName = prompt("Enter a connector name:", "in"
+                + $scope.chartViewModel.nodes[$scope.nodeIndex].inputConnectors.length
+                + '_'
+                + $scope.chartViewModel.nodes[$scope.nodeIndex].data.name);
 
-        if (!isValidName(connectorName)) {
-            return;
+            if (!isValidName(connectorName)) {
+                return;
+            }
+
+            var selectedNodes = $scope.chartViewModel.getSelectedNodes();
+
+            for (var i = 0; i < selectedNodes.length; ++i) {
+                var node = selectedNodes[i];
+
+                node.addInputConnector({
+                    name: connectorName,
+                    value:''
+                });
+            }
         }
-
-        var selectedNodes = $scope.chartViewModel.getSelectedNodes();
-
-        for (var i = 0; i < selectedNodes.length; ++i) {
-            var node = selectedNodes[i];
-
-            node.addInputConnector({
-                name: connectorName,
-                value:''
-            });
+        catch(err){
+            document.getElementById('log').innerHTML += "<div style='color: red'>Error: no node selected!</div>";
         }
 
         // update generated code
-
         $scope.generateCode();
     };
 
     // Add an output connector to selected nodes.
 
     $scope.addNewOutputConnector = function () {
-        var connectorName = prompt("Enter a connector name:", "out"+ $scope.chartViewModel.nodes[$scope.nodeIndex].outputConnectors.length);
 
-        if (!isValidName(connectorName)) {
-            return;
+        try{
+            var connectorName = prompt("Enter a connector name:", "out"
+                + $scope.chartViewModel.nodes[$scope.nodeIndex].outputConnectors.length);
+
+
+            if (!isValidName(connectorName)) {
+                return;
+            }
+
+            var selectedNodes = $scope.chartViewModel.getSelectedNodes();
+            for (var i = 0; i < selectedNodes.length; ++i) {
+                var node = selectedNodes[i];
+                node.addOutputConnector({
+                    name: connectorName,
+                    value: ""
+                });
+            }
+        }
+        catch(err){
+            document.getElementById('log').innerHTML += "<div style='color: red'>Error: no node selected!</div>";
         }
 
-        var selectedNodes = $scope.chartViewModel.getSelectedNodes();
-        for (var i = 0; i < selectedNodes.length; ++i) {
-            var node = selectedNodes[i];
-            node.addOutputConnector({
-                name: connectorName,
-                value: ""
-            });
-        }
 
         // update generated code
-
         $scope.generateCode();
     };
 
     // Delete selected nodes and connections in data&view model
-    // todo code and interface deletion
 
     $scope.deleteSelected = function () {
         var deletedNodeIds = $scope.chartViewModel.deleteSelected();
 
-        console.log(deletedNodeIds);
-
-        $scope.dataList.splice(deletedNodeIds[0],1);
-
-        if(deletedNodeIds[0] != ''){
+        // update only if selected is a node
+        if(deletedNodeIds[0]){
+            // update scene data structure
             nextNodeID --;
-            console.log($scope.dataList);
+            $scope.dataList.splice(deletedNodeIds[0],1);
+            $scope.interfaceList.splice(deletedNodeIds[0],1);
+
+            // using this variable for auto fill node name correction
+            if(deletedNodeIds[0] != chartDataModel.nodes.length){
+                numOfDeletedTopNode++;
+            }
         }
 
-        // update generated code
 
+        // update generated code
         $scope.generateCode();
     };
 
@@ -668,6 +684,7 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
                     }
                 }
             }
+            $scope.javascriptCode +=  "\n";
         }
 
         $scope.javascriptCode += '\n';

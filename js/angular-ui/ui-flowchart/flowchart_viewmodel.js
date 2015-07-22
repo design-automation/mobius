@@ -391,9 +391,11 @@ var flowchart = {
 	//
 	flowchart.ChartViewModel = function (chartDataModel) {
 
+		//
+		// @ vidamo
+
         // variable for topological sort
         var edgeList = [];
-        var unsortedNodes = [];
 
 		//
 		// Find a specific node within the chart.
@@ -554,8 +556,9 @@ var flowchart = {
 
             }
 
-
-            // store and print out all the connection edges for topological sort
+			//
+			// @ vidamo
+            // store and all the connection edges for topological sort
             edgeList = [];
             for(var i=0;i<this.data.connections.length;i++){
                 edgeList.push([this.data.connections[i].source.nodeID, this.data.connections[i].dest.nodeID]);
@@ -575,12 +578,13 @@ var flowchart = {
 			//
 			this.data.nodes.push(nodeDataModel);
 
-			// 
+			//
 			// Update the view model.
 			//
 			this.nodes.push(new flowchart.NodeViewModel(nodeDataModel));
-            unsortedNodes.push(this.data.nodes.length-1);
 
+			//
+			// @vidamo
             // print out the new node index in console
             console.log('======================================================================');
             console.log(nodeDataModel.name + " created; node id:" + (this.data.nodes.length-1));
@@ -600,20 +604,26 @@ var flowchart = {
             }
 		}
 
-        //
+		//
+        //	@ vidamo
         //  topological sort when new node added or new edge added
         //
 
         this.topoSort = function topoSort (){
 
-            console.log('----------------------------------------------------------------------');
-            console.log('sorted!');
-            console.log('total number of nodes: ',unsortedNodes.length);
+            console.log('-------------------- msg from topoSort() ----------------------');
             console.log('current edges: ', edgeList);
+
+			//
+			// @ vidamo
+			// Update the edgeList
+			edgeList = [];
+			for(var j=0;j<this.data.connections.length;j++){
+				edgeList.push([this.data.connections[j].source.nodeID, this.data.connections[j].dest.nodeID]);
+			}
 
             // copy the node and edge lists
             var edges = edgeList.slice();
-            // var nodes = unsortedNodes.slice();
             var nodes = [];
             for(var i = 0; i < this.nodes.length; i++){
                 nodes.push(this.nodes[i].data.id);
@@ -629,7 +639,7 @@ var flowchart = {
                 if (!visited[i]) visit(nodes[i], i, [])
             }
 
-            console.log("after sorting:", nodes);
+            console.log("after sorting:", sorted);
 
             return sorted;
 
@@ -803,29 +813,28 @@ var flowchart = {
 				}
 			}
 
-
-            //
+			//
+            // @ vidamo
             // Update the node index
-            // todo currently only support deletion for one item
-            //
-
             for(var i = 0; i < this.nodes.length ;i++){
                 if(this.nodes[i].data.id > deletedNodeIds[0]){
                     this.nodes[i].data.id--;
                 }
             }
 
-			//
 			// Update nodes and connections.
-			//
 			this.nodes = newNodeViewModels;
 			this.data.nodes = newNodeDataModels;
 			this.connections = newConnectionViewModels;
 			this.data.connections = newConnectionDataModels;
 
-            console.log("----- notice ------");
-            console.log(this.nodes);
-            console.log(this.data.nodes);
+			//
+			// @ vidamo
+			// update edgeList for topological sort
+			edgeList = [];
+			for(var j=0;j<this.data.connections.length;j++){
+				edgeList.push([this.data.connections[j].source.nodeID, this.data.connections[j].dest.nodeID]);
+			}
 
             return deletedNodeIds;
 		};

@@ -277,7 +277,7 @@
                                                                                append-to-body = "true"
                                                                                class = "procedure-select"
                                                                                on-select="applyValue('addToInterface', this.addToInterface,node)">
-                                                                        <ui-select-match placeholder="{{node.parameters[1]}}">{{$select.selected.dataName}}</ui-select-match>
+                                                                        <ui-select-match placeholder="{{node.dataName}}">{{$select.selected.dataName}}</ui-select-match>
                                                                         <ui-select-choices
                                                                                 repeat="node in flattenData | dataFilter | dataNameFilter| filter: $select.search">
                                                                             <div>
