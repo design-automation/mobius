@@ -194,16 +194,19 @@ vidamo.controller('graphCtrl', function($scope,prompt,$http) {
 
     // verify the function name
     function isValidName(inputName) {
-        var testString =  'function ' + inputName  + '(){};';
+        if(inputName){
+            var testString =  'function ' + inputName  + '(){};';
 
-        try{
-            eval(testString);
-        }
-        catch(err){
-            document.getElementById('log').innerHTML += "<div style='color: red'>Error: invalid name!</div>";
-            return false;
-        }
+            try{
+                eval(testString);
+            }
+            catch(err){
+                document.getElementById('log').innerHTML += "<div style='color: red'>Error: invalid name!</div>";
+                return false;
+            }
             return true;
+        }
+        return false;
     };
 
     // Add a new node to the chart.

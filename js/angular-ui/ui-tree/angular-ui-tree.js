@@ -668,7 +668,8 @@
           // and the 'max-depth' attribute in `ui-tree` or `ui-tree-nodes`.
           // the method can be overrided
           callbacks.accept = function(sourceNodeScope, destNodesScope, destIndex) {
-            if (destNodesScope.nodrop || destNodesScope.outOfDepth(sourceNodeScope)) {
+            if (destNodesScope.nodrop
+                || destNodesScope.outOfDepth(sourceNodeScope)){
               return false;
             }
             return true;
@@ -695,8 +696,14 @@
 
           };
 
+          // @ vidamo prevent items go into data or action
           callbacks.beforeDrop = function(event) {
-
+            if(event.dest.nodesScope.$parent.$modelValue){
+              if(event.dest.nodesScope.$parent.$modelValue.title == "Data"
+                  || event.dest.nodesScope.$parent.$modelValue.title == "Action"){
+                event.source.nodeScope.$$apply = false;
+              }
+            }
           };
 
           scope.$watch(attrs.uiTree, function(newVal, oldVal){
@@ -1001,6 +1008,7 @@
                 }
 
                 // move horizontal
+                // @ vidamo
                 // fixme changed to adapt vidamo nesting accordion
                 if (pos.distAxY >= 5) {
                     pos.distAxX = 0;

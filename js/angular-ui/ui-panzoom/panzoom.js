@@ -56,7 +56,8 @@ function ($document, PanZoomService) {
                         $scope.config.zoomOnMouseWheel = $scope.config.zoomOnMouseWheel !== undefined ? $scope.config.zoomOnMouseWheel : true;
                         $scope.config.panOnClickDrag = $scope.config.panOnClickDrag !== undefined ? $scope.config.panOnClickDrag : true;
 
-                        $scope.config.invertMouseWheel = $scope.config.invertMouseWheel || false;
+                        // @ vidamo
+                        $scope.config.invertMouseWheel = $scope.config.invertMouseWheel || true;
 
                         var calcZoomToFit = function (rect) {
                             // let (W, H) denote the size of the viewport

@@ -274,6 +274,11 @@ angular.module('flowChart', ['dragging'] )
 				chart.updateSelectedNodesLocation(deltaX, deltaY);
 
 				lastMouseCoords = curCoords;
+
+				// @vidamo dragging is considered as clicked (selected)
+				var nodeIndex = chart.handleNodeClicked(node, evt.ctrlKey);
+				console.log("node ",nodeIndex," selected");
+				$scope.$emit("nodeIndex", nodeIndex);
 			},
 
 			//
@@ -281,9 +286,10 @@ angular.module('flowChart', ['dragging'] )
 			//
 			clicked: function () {
                 var nodeIndex = chart.handleNodeClicked(node, evt.ctrlKey);
+
+				// @ vidamo let controller know the current node
                 console.log("node ",nodeIndex," selected");
                 $scope.$emit("nodeIndex", nodeIndex);
-
 			}
 
 		});
