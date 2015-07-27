@@ -189,11 +189,15 @@
                                                         title="Delete selected nodes and connections">
                                                     Delete
                                                 </button>
-                                                <button class="btn btn-default btn-xs"
-                                                        ng-click="run()"
-                                                        title="Run program">
-                                                    Run
-                                                </button>
+                                                <span ng-controller="executeCtrl">
+                                                    <button class="btn btn-default btn-xs"
+                                                            ng-click="run()"
+                                                            title="Run program">
+                                                        Run
+                                                    </button>
+                                                </span>
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -947,6 +951,7 @@
      <script src="vidamo/controller/menu.js"></script>
      <script src="vidamo/controller/procedure.js"></script>
      <script src="vidamo/controller/panzoom.js"></script>
+        <script src="vidamo/controller/execute.js"></script>
 
      <!-- services -->
      <script src="vidamo/service/model.js"></script>

@@ -228,20 +228,6 @@ vidamo.controller('graphCtrl',[
         // ------------------------------------- RUN-TIME EXECUTIONS -----------------------------------
         //
 
-        $scope.run = function(){
 
-            // declare start running in console
-
-            document.getElementById('log').innerHTML += "<div></br> Executing generated code ... </div>";
-
-            try{
-                eval( $scope.javascriptCode);
-            }catch (e) {
-                document.getElementById('log').innerHTML +=     "<div style='color:red'>" +  e.message + "</div>";
-                alert(e.stack);
-            }
-
-            document.getElementById('log').innerHTML += "<div> Execution done </div>";
-        }
 
     }]);
