@@ -67,7 +67,6 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','generateCode',
 
         // listen to the graph, when a node is clicked, update the procedure/ interface tabs
         $rootScope.$on("nodeIndex", function(event, message) {
-            console.log('here it is selected');
             $scope.nodeIndex = message;
 
             $scope.currentNodeName = $scope.chartViewModel.nodes[$scope.nodeIndex].data.name;

@@ -97,11 +97,13 @@
                           <a href class="dropdown-toggle">  Node |</a>
                           <ul class="dropdown-menu">
                               <li>
-                                  <a ng-href="{{sceneUrl}}" download="node.json" ng-click = "importNode()">todo Import Node </a>
+                                  <input type="file" id="importNode" name="importNode[]"
+                                         style="visibility: hidden; width: 1px; height: 1px" multiple />
+                                  <a href="" ng-click="importNode()"> Import Node </a>
                               </li>
 
                               <li>
-                                  <a ng-href="{{sceneUrl}}" download="node.json" ng-click = "exportNode()"> todo Export Node </a>
+                                  <a ng-href="{{nodeUrl}}" download="node.json" ng-click = "exportNode()"> Export Node </a>
                               </li>
                           </ul>
 
@@ -219,7 +221,6 @@
                                 </div>
                             </div>
                         </div>
-
 
                 <!--3D view area  -->
                     <div class=" view-area" ui-layout-container size="50%">
@@ -955,6 +956,7 @@
 
      <!-- services -->
      <script src="vidamo/service/model.js"></script>
+     <script src="vidamo/service/nodeCollection.js"></script>
 
      <!-- filters -->
      <script src="vidamo/filter/filters.js"></script>

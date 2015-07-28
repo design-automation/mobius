@@ -5,8 +5,9 @@
 vidamo.controller('graphCtrl',[
                     '$scope',
                     'generateCode',
+                    'nodeCollection',
                     'prompt',
-    function($scope,generateCode,prompt) {
+    function($scope,generateCode,nodeCollection,prompt) {
 
         // synchronization with vidamo application data pool
 
@@ -59,6 +60,7 @@ vidamo.controller('graphCtrl',[
         // currently selected node ID
         $scope.nodeIndex = '';
 
+        // todo should these variables under controller scope?
         // currently selected node name
         $scope.currentNodeName = '';
 
@@ -79,7 +81,7 @@ vidamo.controller('graphCtrl',[
         $scope.chartViewModel = new flowchart.ChartViewModel(chartDataModel);
 
         // new node type
-        $scope.nodeTypes = ['empty'];
+        $scope.nodeTypes = nodeCollection.getNodeTypes();
 
         // listen to the graph, when a node is clicked, update the visual procedure/ code/ interface accordions
          $scope.$on("nodeIndex", function(event, message) {
@@ -105,32 +107,26 @@ vidamo.controller('graphCtrl',[
                 return;
             }
 
-            // Template for a new node
-            if(type == "empty"){
-                var newNodeDataModel = {
-                    name: nodeName,
-                    id: nextNodeID++,
-                    x: 1900,
-                    y: 2100,
-                    inputConnectors: [
-                    ],
-                    outputConnectors: [
-                    ]
-                };
-            }
+
+            // get pre-defined node data model
+            var newNodeDataModel = nodeCollection.getNodeDataModel(type);
+
+            // update node name, node id and location
+            newNodeDataModel.id = nextNodeID++;
+            newNodeDataModel.name = nodeName;
+            newNodeDataModel.x = 1900;
+            newNodeDataModel.y = 2100;
 
             // when new node added, increase the number of procedure list by one
-
-            $scope.dataList.push([]);
+            $scope.dataList.push(nodeCollection.getProcedureDataModel(type));
 
             // when new node added, add new code block
-
             $scope.codeList.push('//\n' + '// To generate code, create nodes & procedures and run!\n' + '//\n');
 
             // when new node added, increase the number of interface list by one
+            $scope.interfaceList.push(nodeCollection.getInterfaceDataModel(type));
 
-            $scope.interfaceList.push([]);
-
+            // add new node data model to view model
             $scope.chartViewModel.addNode(newNodeDataModel);
 
             // update generated code
@@ -222,12 +218,5 @@ vidamo.controller('graphCtrl',[
             // update generated code
             generateCode.generateCode();
         };
-
-
-        //
-        // ------------------------------------- RUN-TIME EXECUTIONS -----------------------------------
-        //
-
-
 
     }]);

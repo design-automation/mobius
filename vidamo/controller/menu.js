@@ -1,10 +1,17 @@
-vidamo.controller('menuCtrl',['$scope','generateCode','$http',
-    function($scope,generateCode,$http){
+vidamo.controller('menuCtrl',['$scope','$rootScope','generateCode','$http',
+    function($scope,$rootScope,generateCode,$http){
 
         // store json url
         $scope.sceneUrl= '';
         $scope.jsUrl = '';
         $scope.libUrl = '';
+        $scope.nodeUrl = '';
+
+        // listen to graph to get current selected node
+        // for export selected node
+        $rootScope.$on("nodeIndex", function(event, message) {
+            $scope.nodeIndex = message;
+        });
 
         // open and read json file for scene
         $scope.openSceneJson = function(){
@@ -54,7 +61,6 @@ vidamo.controller('menuCtrl',['$scope','generateCode','$http',
             document.getElementById('openSceneJson').addEventListener('change', handleFileSelect, false);
         };
 
-
         // save json file for scene
         $scope.saveSceneJson = function(){
 
@@ -68,18 +74,75 @@ vidamo.controller('menuCtrl',['$scope','generateCode','$http',
         };
 
         // import pre-defined node
-        // todo
-
         $scope.importNode = function () {
+            document.getElementById('importNode').click();
 
+            function handleFileSelect(evt) {
+                var files = evt.target.files;
+                var f = files[0];
+
+                var jsonString;
+
+                var nodeJsonString;
+                var procedureJsonString;
+                var interfaceJsonString;
+
+                var nodeJsonObj;
+                var procedureJsonObj;
+                var interfaceJsonObj;
+
+                var reader = new FileReader();
+
+                reader.onload = (function () {
+
+                    return function (e) {
+                        if(f.name.split('.').pop() == 'json') {
+
+                            jsonString = e.target.result;
+
+                            nodeJsonString = jsonString.split("//procedure json")[0];
+
+
+                            var temp = jsonString.split("//procedure json")[1];
+                            procedureJsonString = temp.split("//interface json")[0];
+                            interfaceJsonString = temp.split("//interface json")[1];
+                            console.log(nodeJsonString);
+                            console.log(procedureJsonString);
+                            console.log(interfaceJsonString);
+
+                            nodeJsonObj = JSON.parse(nodeJsonString);
+                            procedureJsonObj = JSON.parse(procedureJsonString);
+                            interfaceJsonObj = JSON.parse(interfaceJsonString);
+
+
+                            document.getElementById('log').innerHTML += "<div style='color: green'> node imported!</div>";
+                        }else{
+                            document.getElementById('log').innerHTML += "<div style='color: red'>Error: File type is not Json!</div>";
+                        }
+                    };
+                })(f);
+
+                reader.readAsText(f);
+            }
+
+            document.getElementById('importNode').addEventListener('change', handleFileSelect, false);
         };
 
         // export selected node
-        // todo
         $scope.exportNode = function (){
+            var nodeJson = JSON.stringify(generateCode.getChartViewModel().nodes[$scope.nodeIndex].data, null, 4);
 
+            var procedureJson = JSON.stringify(generateCode.getDataList()[$scope.nodeIndex], null, 4);
+
+            var interfaceJson = JSON.stringify(generateCode.getInterfaceList()[$scope.nodeIndex], null, 4)
+
+            var nodeBlob = new Blob([nodeJson + '\n\n' +
+                                    '//procedure json\n' + procedureJson + '\n\n' +
+                                    '//interface json\n' + interfaceJson],
+                                    {type: "application/json"});
+
+            $scope.nodeUrl = URL.createObjectURL(nodeBlob);
         };
-
 
         // save generated js file
         $scope.downloadJs = function(){
@@ -91,7 +154,7 @@ vidamo.controller('menuCtrl',['$scope','generateCode','$http',
 
         // save vidamo library file
         $scope.downloadLib = function(){
-            $http.get("js/vidamo/module.js")
+            $http.get("vidamo/module.js")
                 .success(
                 function(response) {
                     var libBlob = new Blob([response], {type: "application/javascript"});
