@@ -2,8 +2,6 @@
 // data pool for different type of nodes
 //
 
-// todo what to do with the #hashkey : hashkey and hashtable is defined in local scope
-// todo can be used directly
 
 vidamo.factory('nodeCollection', function () {
     var nodes = [{
@@ -31,8 +29,6 @@ vidamo.factory('nodeCollection', function () {
 
     return{
 
-        // fixme codeList  ???????
-
         // return node types for graph
         getNodeTypes: function(){
             var nodeTypes = [];
@@ -59,7 +55,6 @@ vidamo.factory('nodeCollection', function () {
                 if(nodes[i].nodeType == type){
                     var obj = [];
                     angular.copy(nodes[i].procedureDataModel,obj);
-                    console.log(obj);
                     return obj;
                 }
             }
@@ -71,15 +66,25 @@ vidamo.factory('nodeCollection', function () {
                 if(nodes[i].nodeType == type){
                     var obj = [];
                     angular.copy(nodes[i].interfaceDataModel,obj);
-                    console.log(obj);
                     return obj;
                 }
             }
         },
 
         // install node for import node
-        installNewNode: function(node, procedure){
+        installNewNode: function(name, nodeObj, procedureList, interfaceList){
+            var newNode = {
+                nodeType: name,
 
+                nodeDataModel: nodeObj,
+
+                procedureDataModel: procedureList,
+
+                interfaceDataModel: interfaceList
+            };
+
+            nodes.push(newNode);
+            console.log(nodes);
         }
     }
 });

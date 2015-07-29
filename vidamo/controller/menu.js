@@ -1,5 +1,5 @@
-vidamo.controller('menuCtrl',['$scope','$rootScope','generateCode','$http',
-    function($scope,$rootScope,generateCode,$http){
+vidamo.controller('menuCtrl',['$scope','$rootScope','generateCode','nodeCollection','$http',
+    function($scope,$rootScope,generateCode,nodeCollection,$http){
 
         // store json url
         $scope.sceneUrl= '';
@@ -15,10 +15,10 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','generateCode','$http',
 
         // open and read json file for scene
         $scope.openSceneJson = function(){
+            // todo $apply conflict
 
-            document.getElementById('openSceneJson').click();
-
-            procedureJsonObj = null;
+            angular.element(document.getElementById('openSceneJson')).trigger('click');
+            document.getElementById('openSceneJson').addEventListener('change', handleFileSelect, false);
 
             function handleFileSelect(evt) {
                 var files = evt.target.files;
@@ -58,7 +58,6 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','generateCode','$http',
                 reader.readAsText(f);
             }
 
-            document.getElementById('openSceneJson').addEventListener('change', handleFileSelect, false);
         };
 
         // save json file for scene
@@ -75,7 +74,9 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','generateCode','$http',
 
         // import pre-defined node
         $scope.importNode = function () {
+            // todo $apply conflict
             document.getElementById('importNode').click();
+            document.getElementById('importNode').addEventListener('change', handleFileSelect, false);
 
             function handleFileSelect(evt) {
                 var files = evt.target.files;
@@ -106,14 +107,18 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','generateCode','$http',
                             var temp = jsonString.split("//procedure json")[1];
                             procedureJsonString = temp.split("//interface json")[0];
                             interfaceJsonString = temp.split("//interface json")[1];
-                            console.log(nodeJsonString);
-                            console.log(procedureJsonString);
-                            console.log(interfaceJsonString);
 
+                            var newNodeName = f.name.split('.')[0];
                             nodeJsonObj = JSON.parse(nodeJsonString);
                             procedureJsonObj = JSON.parse(procedureJsonString);
                             interfaceJsonObj = JSON.parse(interfaceJsonString);
 
+                            console.log(newNodeName);
+                            console.log(nodeJsonObj);
+                            console.log(procedureJsonObj);
+                            console.log(interfaceJsonObj);
+
+                            nodeCollection.installNewNode(newNodeName, nodeJsonObj,procedureJsonObj,interfaceJsonObj);
 
                             document.getElementById('log').innerHTML += "<div style='color: green'> node imported!</div>";
                         }else{
@@ -125,7 +130,6 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','generateCode','$http',
                 reader.readAsText(f);
             }
 
-            document.getElementById('importNode').addEventListener('change', handleFileSelect, false);
         };
 
         // export selected node

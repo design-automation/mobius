@@ -1,5 +1,6 @@
 //
 // VIDAMO middle panel 3js viewport
+// For temporary usage
 //
 
 var editor = new Editor();

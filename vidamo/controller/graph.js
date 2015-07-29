@@ -14,47 +14,73 @@ vidamo.controller('graphCtrl',[
         // generated javascript code
         $scope.javascriptCode = generateCode.getJavascriptCode();
         $scope.$watch('javascriptCode', function () {
-            generateCode.setJavascriptCode($scope.javascriptCode);
+            if( generateCode.getJavascriptCode()!= $scope.javascriptCode){
+                generateCode.setJavascriptCode($scope.javascriptCode);
+            }
         });
         $scope.$watch(function () { return generateCode.getJavascriptCode(); }, function () {
-            $scope.javascriptCode = generateCode.getJavascriptCode();
+            if( $scope.javascriptCode != generateCode.getJavascriptCode()){
+                $scope.javascriptCode = generateCode.getJavascriptCode();
+            }
         });
 
         // function code for procedures
         $scope.codeList = generateCode.getCodeList();
         $scope.$watch('codeList', function () {
-            generateCode.setCodeList($scope.codeList);
+            if( $scope.codeList != generateCode.getCodeList()){
+                generateCode.setCodeList($scope.codeList);
+            }
         });
         $scope.$watch(function () { return generateCode.getCodeList(); }, function () {
-            $scope.codeList = generateCode.getCodeList();
+            if( $scope.codeList != generateCode.getCodeList()){
+                $scope.codeList = generateCode.getCodeList();
+            }
         });
 
         // procedure data list
         $scope.dataList = generateCode.getDataList();
         $scope.$watch('dataList', function () {
-            generateCode.setDataList($scope.dataList);
+            if($scope.dataList != generateCode.getDataList()){
+                generateCode.setDataList($scope.dataList);
+            }
         });
         $scope.$watch(function () { return generateCode.getDataList(); }, function () {
-            $scope.dataList = generateCode.getDataList();
+            if(generateCode.setDataList($scope.dataList)){
+                $scope.dataList != generateCode.getDataList();
+            }
         });
 
         // interface data list
         $scope.interfaceList= generateCode.getInterfaceList();
         $scope.$watch('interfaceList', function () {
-            generateCode.setInterfaceList($scope.interfaceList);
+            if($scope.interfaceList != generateCode.getInterfaceList()){
+                generateCode.setInterfaceList($scope.interfaceList);
+            }
         });
         $scope.$watch(function () { return generateCode.getInterfaceList(); }, function () {
-            $scope.interfaceList = generateCode.getInterfaceList();
+            if($scope.interfaceList != generateCode.getInterfaceList()){
+                $scope.interfaceList = generateCode.getInterfaceList();
+            }
         });
 
         // graph flowchart view model
         $scope.chartViewModel= generateCode.getChartViewModel();
         $scope.$watch('chartViewModel', function () {
+            if($scope.chartViewModel != generateCode.getChartViewModel()){
                 generateCode.setChartViewModel($scope.chartViewModel);
+            }
         });
         $scope.$watch(function () { return generateCode.getChartViewModel(); }, function () {
-            $scope.chartViewModel = generateCode.getChartViewModel();
+            if($scope.chartViewModel != generateCode.getChartViewModel()){
+                $scope.chartViewModel = generateCode.getChartViewModel();
+            }
         });
+
+        // synchronization with node collection
+        // new node type
+        $scope.nodeTypes = function(){
+            return nodeCollection.getNodeTypes();
+        };
 
 
         // currently selected node ID
@@ -80,9 +106,6 @@ vidamo.controller('graphCtrl',[
         // Create the view-model for the chart and attach to the scope.
         $scope.chartViewModel = new flowchart.ChartViewModel(chartDataModel);
 
-        // new node type
-        $scope.nodeTypes = nodeCollection.getNodeTypes();
-
         // listen to the graph, when a node is clicked, update the visual procedure/ code/ interface accordions
          $scope.$on("nodeIndex", function(event, message) {
 
@@ -106,7 +129,6 @@ vidamo.controller('graphCtrl',[
             if (!isValidName(nodeName)) {
                 return;
             }
-
 
             // get pre-defined node data model
             var newNodeDataModel = nodeCollection.getNodeDataModel(type);

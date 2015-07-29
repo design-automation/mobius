@@ -2,6 +2,8 @@
 // vidamo procedure controller
 //
 
+// todo value of in/out connector is not used
+
 vidamo.controller('procedureCtrl',['$scope','$rootScope','generateCode',
     function($scope,$rootScope,generateCode) {
 
@@ -82,6 +84,9 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','generateCode',
 
         // watch change of procedure data tree, if change update the flattenData
         $scope.$watch('data', function(){
+            //update generatedCodd
+            generateCode.generateCode();
+
             // flatten the procedure three for data searching
             var i, l,
                 nodes=[],
@@ -89,13 +94,32 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','generateCode',
 
             function clone(n) {
                 if(n['title'] == 'Data'){
-                    var props=['id','title','dataName','dataValue','parentNode']
+                    var props=['id',
+                                'title',
+                                'dataName',
+                                'dataValue',
+                                'inputConnectors',
+                                'outputConnectors']
                 }
                 else if(n['title'] == 'Action'){
-                    var props=['id','title','dataName','dataValue','parentNode','dataType','method','parameters']
+                    var props=['id',
+                                'title',
+                                'dataName',
+                                'dataValue',
+                                'dataType',
+                                'method',
+                                'parameters',
+                                'inputConnectors',
+                                'outputConnectors']
                 }
                 else if(n['title'] == 'Control'){
-                    var props=['id','title','controlType','dataName','parentNode','forList']
+                    var props=['id',
+                                'title',
+                                'controlType',
+                                'dataName',
+                                'forList',
+                                'inputConnectors',
+                                'outputConnectors']
                 }
 
                 var i,l,
@@ -130,8 +154,6 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','generateCode',
             // object of flatten procedure data tree
             $scope.flattenData = nodes;
 
-            // update generated code
-            generateCode.generateCode();
         }, true);
 
         //
@@ -156,7 +178,8 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','generateCode',
                         nodes: [],
                         dataName:undefined,
                         dataValue:undefined,
-                        parentNode: $scope.chartViewModel.nodes[$scope.nodeIndex].data
+                        inputConnectors: $scope.chartViewModel.nodes[$scope.nodeIndex].data.inputConnectors,
+                        outputConnectors:$scope.chartViewModel.nodes[$scope.nodeIndex].data.outputConnectors,
                     });
                 } else if(cate == 'Action'){
                     $scope.data.push({
@@ -177,7 +200,8 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','generateCode',
                         dataType:undefined,
                         dataName:undefined,
                         dataValue:undefined,
-                        parentNode: $scope.chartViewModel.nodes[$scope.nodeIndex].data
+                        inputConnectors: $scope.chartViewModel.nodes[$scope.nodeIndex].data.inputConnectors,
+                        outputConnectors:$scope.chartViewModel.nodes[$scope.nodeIndex].data.outputConnectors,
 
                     });
                 } else if(cate == 'Control'){
@@ -188,7 +212,8 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','generateCode',
                         controlType: undefined,
                         dataName:undefined,
                         forList:undefined,
-                        parentNode: $scope.chartViewModel.nodes[$scope.nodeIndex].data
+                        inputConnectors: $scope.chartViewModel.nodes[$scope.nodeIndex].data.inputConnectors,
+                        outputConnectors:$scope.chartViewModel.nodes[$scope.nodeIndex].data.outputConnectors,
                     });
                 }
             }
@@ -341,7 +366,8 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','generateCode',
                         dataName:'',
                         parameters:[],
                         dataValue:'',
-                        parentNode: $scope.chartViewModel.nodes[$scope.nodeIndex].data
+                        inputConnectors: $scope.chartViewModel.nodes[$scope.nodeIndex].data.inputConnectors,
+                        outputConnectors:$scope.chartViewModel.nodes[$scope.nodeIndex].data.outputConnectors,
                     });
                 }
             }

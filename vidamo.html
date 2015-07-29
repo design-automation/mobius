@@ -79,7 +79,7 @@
                           </li>
 
                           <li>
-                              <input type="file" id="openSceneJson" name="importGraphJson[]"
+                              <input type="file" id="openSceneJson"
                                      style="visibility: hidden; width: 1px; height: 1px" multiple />
                               <a href="" ng-click="openSceneJson()">Open Scene</a>
                           </li>
@@ -167,7 +167,7 @@
                                                            on-select="addNewNode(this.type.selected)"
                                                         class="new-node">
                                                     <ui-select-match placeholder="New node">{{$select.selected}}</ui-select-match>
-                                                    <ui-select-choices repeat="type in nodeTypes| filter: $select.search">
+                                                    <ui-select-choices repeat="type in nodeTypes()| filter: $select.search">
                                                         <span ng-bind-html="type| highlight: $select.search"></span>
                                                     </ui-select-choices>
                                                 </ui-select>
@@ -786,7 +786,7 @@
                                                                                class = "procedure-select"
                                                                                on-select="applyValue('outputPort',this.outputPort.name,node)">
                                                                         <ui-select-match placeholder="{{node.parameters[0]}}">{{$select.selected.name}}</ui-select-match>
-                                                                        <ui-select-choices repeat="outputPort in node.parentNode.outputConnectors | filter: $select.search">
+                                                                        <ui-select-choices repeat="outputPort in node.outputConnectors | filter: $select.search">
                                                                             <div>
                                                                                 <span ng-bind-html="outputPort.name| highlight: $select.search"></span>
                                                                             </div>
@@ -819,7 +819,7 @@
                                                                                class = "procedure-select"
                                                                                on-select="applyValue('inputPort',this.inputPort.name,node)">
                                                                         <ui-select-match placeholder="{{node.parameters[0]}}">{{$select.selected.name}}</ui-select-match>
-                                                                        <ui-select-choices repeat="inputPort in node.parentNode.inputConnectors | filter: $select.search">
+                                                                        <ui-select-choices repeat="inputPort in node.inputConnectors | filter: $select.search">
                                                                             <div>
                                                                                 <span ng-bind-html="inputPort.name| highlight: $select.search"></span>
                                                                             </div>
