@@ -86,9 +86,9 @@ vidamo.controller('graphCtrl',[
         // currently selected node ID
         $scope.nodeIndex = '';
 
-        // todo should these variables under controller scope?
         // currently selected node name
         $scope.currentNodeName = '';
+
 
         // Selects the next node id.
         var nextNodeID = 0;

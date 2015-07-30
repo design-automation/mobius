@@ -13,9 +13,10 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','generateCode','nodeCollecti
             $scope.nodeIndex = message;
         });
 
+
         // open and read json file for scene
+        // todo $apply conflict
         $scope.openSceneJson = function(){
-            // todo $apply conflict
 
             angular.element(document.getElementById('openSceneJson')).trigger('click');
             document.getElementById('openSceneJson').addEventListener('change', handleFileSelect, false);
@@ -80,10 +81,8 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','generateCode','nodeCollecti
 
             function handleFileSelect(evt) {
                 var files = evt.target.files;
-                var f = files[0];
 
                 var jsonString;
-
                 var nodeJsonString;
                 var procedureJsonString;
                 var interfaceJsonString;
@@ -92,48 +91,49 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','generateCode','nodeCollecti
                 var procedureJsonObj;
                 var interfaceJsonObj;
 
-                var reader = new FileReader();
+                for(var i = 0; i < files.length ; i ++ ){
+                    var f = files[i];
 
-                reader.onload = (function () {
+                    var reader = new FileReader();
 
-                    return function (e) {
-                        if(f.name.split('.').pop() == 'json') {
+                    reader.onload = (function () {
 
-                            jsonString = e.target.result;
+                        return function (e) {
+                            if(f.name.split('.').pop() == 'json') {
 
-                            nodeJsonString = jsonString.split("//procedure json")[0];
+                                jsonString = e.target.result;
 
+                                nodeJsonString = jsonString.split("//procedure json")[0];
 
-                            var temp = jsonString.split("//procedure json")[1];
-                            procedureJsonString = temp.split("//interface json")[0];
-                            interfaceJsonString = temp.split("//interface json")[1];
+                                var temp = jsonString.split("//procedure json")[1];
+                                procedureJsonString = temp.split("//interface json")[0];
+                                interfaceJsonString = temp.split("//interface json")[1];
 
-                            var newNodeName = f.name.split('.')[0];
-                            nodeJsonObj = JSON.parse(nodeJsonString);
-                            procedureJsonObj = JSON.parse(procedureJsonString);
-                            interfaceJsonObj = JSON.parse(interfaceJsonString);
+                                nodeJsonObj = JSON.parse(nodeJsonString);
+                                procedureJsonObj = JSON.parse(procedureJsonString);
+                                interfaceJsonObj = JSON.parse(interfaceJsonString);
+                                var newNodeName = nodeJsonObj.name;
 
-                            console.log(newNodeName);
-                            console.log(nodeJsonObj);
-                            console.log(procedureJsonObj);
-                            console.log(interfaceJsonObj);
+                                // install new imported node into nodeCollection
+                                nodeCollection.installNewNode(newNodeName, nodeJsonObj,procedureJsonObj,interfaceJsonObj);
 
-                            nodeCollection.installNewNode(newNodeName, nodeJsonObj,procedureJsonObj,interfaceJsonObj);
+                                document.getElementById('log').innerHTML += "<div style='color: green'> node imported!</div>";
+                            }else{
+                                document.getElementById('log').innerHTML += "<div style='color: red'>Error: File type is not Json!</div>";
+                            }
+                        };
+                    })(f);
 
-                            document.getElementById('log').innerHTML += "<div style='color: green'> node imported!</div>";
-                        }else{
-                            document.getElementById('log').innerHTML += "<div style='color: red'>Error: File type is not Json!</div>";
-                        }
-                    };
-                })(f);
-
-                reader.readAsText(f);
+                    reader.readAsText(f);
+                }
             }
 
         };
 
         // export selected node
+        // nodeType follows the original node name
         $scope.exportNode = function (){
+
             var nodeJson = JSON.stringify(generateCode.getChartViewModel().nodes[$scope.nodeIndex].data, null, 4);
 
             var procedureJson = JSON.stringify(generateCode.getDataList()[$scope.nodeIndex], null, 4);
@@ -142,7 +142,7 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','generateCode','nodeCollecti
 
             var nodeBlob = new Blob([nodeJson + '\n\n' +
                                     '//procedure json\n' + procedureJson + '\n\n' +
-                                    '//interface json\n' + interfaceJson],
+                                    '//interface json\n' + interfaceJson +'\n\n\n\n'],
                                     {type: "application/json"});
 
             $scope.nodeUrl = URL.createObjectURL(nodeBlob);
