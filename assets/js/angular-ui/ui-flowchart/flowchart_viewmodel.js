@@ -13,7 +13,7 @@ var flowchart = {
 	//
 	// Width of a node.
 	//
-	flowchart.nodeHeight =80;
+	flowchart.nodeHeight =60;
 
 	//
 	// Amount of space reserved for displaying the node's name.
@@ -44,6 +44,7 @@ var flowchart = {
 
 	//
 	// View model for a connector.
+	// @ vidamo add selection for connector deletion
 	//
 	flowchart.ConnectorViewModel = function (connectorDataModel, x, y, parentNode) {
 
@@ -57,14 +58,14 @@ var flowchart = {
 		//
 		this.name = function () {
 			return this.data.name;
-		}
+		};
 
         //
         // the value of the connector
         //
         this.value = function () {
             return this.data.value;
-        }
+        };
 
 		//
 		// X coordinate of the connector.
@@ -85,6 +86,37 @@ var flowchart = {
 		//
 		this.parentNode = function () {
 			return this._parentNode;
+		};
+
+		// Set to true when the connector is selected.
+		this._selected = false;
+
+		//
+		// Select the connector
+		//
+		this.select = function () {
+			this._selected = true;
+		};
+
+		//
+		// Deselect the connector
+		//
+		this.deselect = function () {
+			this._selected = false;
+		};
+
+		//
+		// Toggle the selection state of the connector
+		//
+		this.toggleSelected = function () {
+			this._selected = !this._selected;
+		};
+
+		//
+		// Returns true if the connector is selected.
+		//
+		this.selected = function () {
+			return this._selected;
 		};
 	};
 
@@ -270,7 +302,7 @@ var flowchart = {
 				x: this.sourceCoordX(),
 				y: this.sourceCoordY()
 			};
-		}
+		};
 
 		this.sourceTangentX = function () { 
 			return flowchart.computeConnectionSourceTangentX(this.sourceCoord(), this.destCoord());
@@ -338,7 +370,7 @@ var flowchart = {
 	var computeConnectionTangentOffset = function (pt1, pt2) {
 
 		return (pt2.y - pt1.y) / 2;
-	}
+	};
 
 	//
 	// Compute the tangent for the bezier curve.
@@ -699,7 +731,8 @@ var flowchart = {
 		}
 
 		//
-		// Deselect all nodes and connections in the chart.
+		// @ vidamo
+		// Deselect all nodes connections, connectors in the chart.
 		//
 		this.deselectAll = function () {
 
@@ -707,6 +740,16 @@ var flowchart = {
 			for (var i = 0; i < nodes.length; ++i) {
 				var node = nodes[i];
 				node.deselect();
+
+				for(var j = 0; j < node.inputConnectors.length; j ++){
+					var input = node.inputConnectors[j];
+					input.deselect();
+				}
+
+				for(var k = 0; k < node.outputConnectors.length; k++){
+					var output = node.outputConnectors[k];
+					output.deselect();
+				}
 			}
 
 			var connections = this.connections;
@@ -772,6 +815,21 @@ var flowchart = {
 		};
 
 		//
+		// @ vidamo
+		// Handle mouse down on a connector
+		//
+		this.handleConnectorClicked = function (connector, ctrlKey) {
+			if (ctrlKey) {
+				connector.toggleSelected();
+			}
+			else {
+				this.deselectAll();
+				connector.select();
+			}
+			console.log(connector);
+		};
+
+		//
 		// Delete all nodes and connections that are selected.
 		//
 		this.deleteSelected = function () {
@@ -783,13 +841,22 @@ var flowchart = {
 
 			//
 			// Sort nodes into:
-			//		nodes to keep and 
+			//		nodes to keep and
 			//		nodes to delete.
+			//
+
+			//
+			// @ vidamo
+			// Remove connectors that are selected.
+			// todo also remove connections that are linking to the selected connector
 			//
 
 			for (var nodeIndex = 0; nodeIndex < this.nodes.length; ++nodeIndex) {
 
 				var node = this.nodes[nodeIndex];
+				var newInputConnector = [];
+				var newOutputConnector = [];
+
 				if (!node.selected()) {
 					// Only retain non-selected nodes.
 					newNodeViewModels.push(node);
@@ -799,6 +866,10 @@ var flowchart = {
 					// Keep track of nodes that were deleted, so their connections can also
 					// be deleted.
 					deletedNodeIds.push(node.data.id);
+				}
+
+				for(var inputIndex = 0; inputIndex < node.inputConnectors.length; inputIndex ++){
+
 				}
 			}
 
@@ -811,7 +882,7 @@ var flowchart = {
 			//
 			for (var connectionIndex = 0; connectionIndex < this.connections.length; ++connectionIndex) {
 
-				var connection = this.connections[connectionIndex];				
+				var connection = this.connections[connectionIndex];
 				if (!connection.selected() &&
 					deletedNodeIds.indexOf(connection.data.source.nodeID) === -1 &&
 					deletedNodeIds.indexOf(connection.data.dest.nodeID) === -1)
@@ -824,6 +895,9 @@ var flowchart = {
 					newConnectionDataModels.push(connection.data);
 				}
 			}
+
+
+
 
 			//
             // @ vidamo

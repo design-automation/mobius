@@ -14,66 +14,46 @@ vidamo.controller('graphCtrl',[
         // generated javascript code
         $scope.javascriptCode = generateCode.getJavascriptCode();
         $scope.$watch('javascriptCode', function () {
-            if( generateCode.getJavascriptCode()!= $scope.javascriptCode){
                 generateCode.setJavascriptCode($scope.javascriptCode);
-            }
         });
         $scope.$watch(function () { return generateCode.getJavascriptCode(); }, function () {
-            if( $scope.javascriptCode != generateCode.getJavascriptCode()){
                 $scope.javascriptCode = generateCode.getJavascriptCode();
-            }
         });
 
         // function code for procedures
         $scope.codeList = generateCode.getCodeList();
         $scope.$watch('codeList', function () {
-            if( $scope.codeList != generateCode.getCodeList()){
                 generateCode.setCodeList($scope.codeList);
-            }
         });
         $scope.$watch(function () { return generateCode.getCodeList(); }, function () {
-            if( $scope.codeList != generateCode.getCodeList()){
                 $scope.codeList = generateCode.getCodeList();
-            }
         });
 
         // procedure data list
         $scope.dataList = generateCode.getDataList();
         $scope.$watch('dataList', function () {
-            if($scope.dataList != generateCode.getDataList()){
                 generateCode.setDataList($scope.dataList);
-            }
         });
         $scope.$watch(function () { return generateCode.getDataList(); }, function () {
-            if(generateCode.setDataList($scope.dataList)){
-                $scope.dataList != generateCode.getDataList();
-            }
+                $scope.dataList = generateCode.getDataList();
         });
 
         // interface data list
         $scope.interfaceList= generateCode.getInterfaceList();
         $scope.$watch('interfaceList', function () {
-            if($scope.interfaceList != generateCode.getInterfaceList()){
                 generateCode.setInterfaceList($scope.interfaceList);
-            }
         });
         $scope.$watch(function () { return generateCode.getInterfaceList(); }, function () {
-            if($scope.interfaceList != generateCode.getInterfaceList()){
-                $scope.interfaceList = generateCode.getInterfaceList();
-            }
+                $scope.interfaceList= generateCode.getInterfaceList();
         });
 
         // graph flowchart view model
         $scope.chartViewModel= generateCode.getChartViewModel();
         $scope.$watch('chartViewModel', function () {
-            if($scope.chartViewModel != generateCode.getChartViewModel()){
                 generateCode.setChartViewModel($scope.chartViewModel);
-            }
         });
         $scope.$watch(function () { return generateCode.getChartViewModel(); }, function () {
-            if($scope.chartViewModel != generateCode.getChartViewModel()){
-                $scope.chartViewModel = generateCode.getChartViewModel();
-            }
+                $scope.chartViewModel= generateCode.getChartViewModel();
         });
 
         // synchronization with node collection
@@ -221,13 +201,15 @@ vidamo.controller('graphCtrl',[
         // Delete selected nodes and connections in data&view model
 
         $scope.deleteSelected = function () {
-            var deletedNodeIds = $scope.deleteSelected();
+            var deletedNodeIds = $scope.chartViewModel.deleteSelected();
 
             // update only if selected is a node
-            if(deletedNodeIds[0]){
+            if(deletedNodeIds.length > 0){
+
                 // update scene data structure
                 nextNodeID --;
                 $scope.dataList.splice(deletedNodeIds[0],1);
+                $scope.codeList.splice(deletedNodeIds[0],1);
                 $scope.interfaceList.splice(deletedNodeIds[0],1);
 
                 // using this variable for auto fill node name correction
@@ -236,9 +218,8 @@ vidamo.controller('graphCtrl',[
                 }
             }
 
-
             // update generated code
-            generateCode.generateCode();
+           generateCode.generateCode();
         };
 
     }]);

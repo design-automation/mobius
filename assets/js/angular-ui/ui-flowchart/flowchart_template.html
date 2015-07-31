@@ -40,17 +40,17 @@
       ng-attr-height="{{node.height()}}" 
       fill="url(#nodeBackgroundGradient)"
       >
-
     </rect>
 
-    <text
-      ng-attr-x="{{node.width()/2}}"
-      y="40"
-      text-anchor="middle"
-      alignment-baseline="middle"
-      >
-      {{node.name()}}
-    </text>
+
+        <text
+          ng-attr-x="{{node.width()+25}}"
+          y="32"
+          text-anchor="middle"
+          alignment-baseline="middle"
+          >
+          {{node.name()}}
+        </text>
 
     <g
       ng-repeat="connector in node.inputConnectors"
@@ -67,7 +67,8 @@
       </text>
       
       <circle       
-        ng-attr-class="{{connector == mouseOverConnector && 'mouseover-connector-circle' || 'connector-circle'}}"
+        ng-attr-class="{{connector.selected() && 'selected-connector-circle' ||
+                        (connector == mouseOverConnector && 'mouseover-connector-circle' || 'connector-circle')}}"
         ng-attr-r="{{connectorSize}}" 
         ng-attr-cx="{{connector.x()}}"
         ng-attr-cy="{{connector.y()}}"
@@ -88,8 +89,9 @@
         {{connector.name()}}
       </text>
 
-      <circle             
-        ng-attr-class="{{connector == mouseOverConnector && 'mouseover-connector-circle' || 'connector-circle'}}"
+      <circle
+              ng-attr-class="{{connector.selected() && 'selected-connector-circle' ||
+                        (connector == mouseOverConnector && 'mouseover-connector-circle' || 'connector-circle')}}"
         ng-attr-r="{{connectorSize}}" 
         ng-attr-cx="{{connector.x()}}"
         ng-attr-cy="{{connector.y()}}"

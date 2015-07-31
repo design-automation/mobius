@@ -37,6 +37,13 @@ Styles for nodes and connectors.
     stroke-width: 3;
 }
 
+.selected-connector-circle {
+	fill: white;
+	stroke: red;
+	stroke-width: 3;
+}
+
+
 /*
 Style for connections.
 */

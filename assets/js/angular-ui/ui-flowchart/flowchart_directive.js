@@ -100,7 +100,10 @@ angular.module('flowChart', ['dragging'] )
 	$scope.draggingConnection = false;
 	$scope.connectorSize = 10;
 	$scope.dragSelecting = false;
+
+	// @ vidamo for zoom and pan
     $scope.scaleFactor = 2;
+
 	/* Can use this to test the drag selection rect.
 	$scope.dragSelectionRect = {
 		x: 0,
@@ -117,12 +120,18 @@ angular.module('flowChart', ['dragging'] )
 	$scope.mouseOverConnection = null;
 	$scope.mouseOverNode = null;
 
+	// @ vidamo for edit node name
+	$scope.mouseOverName = null;
+
 	//
 	// The class for connections and connectors.
 	//
 	this.connectionClass = 'connection';
 	this.connectorClass = 'connector';
 	this.nodeClass = 'node';
+
+	// @ vidamo for ng-attr-class
+	this.nameClass = 'name';
 
 	//
 	// Search up the HTML element tree for an element the requested class.
@@ -203,6 +212,9 @@ angular.module('flowChart', ['dragging'] )
 		$scope.mouseOverConnector = null;
 		$scope.mouseOverNode = null;
 
+		// @ vidamo
+		$scope.mouseOverName = null;
+
 		var mouseOverElement = controller.hitTest(evt.clientX, evt.clientY);
 		if (mouseOverElement == null) {
 			// Mouse isn't over anything, just clear all.
@@ -228,9 +240,22 @@ angular.module('flowChart', ['dragging'] )
 			return;
 		}
 
+		// @ vidamo
+		// Figure out if the mouse is over a nodeName
+		//var scope = controller.checkForHit(mouseOverElement, controller.nameClass);
+		//$scope.mouseOverName = (scope && scope.node.name) ? scope.node.name : null;
+		//if ($scope.mouseOverName) {
+		//	// Don't attempt to mouse over anything else.
+		//	return;
+		//}
+
 		// Figure out if the mouse is over a node.
 		var scope = controller.checkForHit(mouseOverElement, controller.nodeClass);
 		$scope.mouseOverNode = (scope && scope.node) ? scope.node : null;
+		if ($scope.mouseOverName) {
+			// Don't attempt to mouse over anything else.
+			return;
+		}
 	};
 
 	//
@@ -305,6 +330,11 @@ angular.module('flowChart', ['dragging'] )
 		// Don't let the chart handle the mouse down.
 		evt.stopPropagation();
 		evt.preventDefault();
+	};
+
+	// @ vidamo handle mousedown on a node name
+	$scope.nameMouseDown = function (evt, node) {
+		console.log('node name clicked!');
 	};
 
 	//
@@ -389,6 +419,18 @@ angular.module('flowChart', ['dragging'] )
 				delete $scope.dragTangent2;
 			},
 
+			//
+			// The connector wasn't dragged... it was clicked.
+			//
+			// @ vidamo add click event to connectors
+			clicked: function () {
+				var chart = $scope.chart;
+				chart.handleConnectorClicked(connector,evt.ctrlKey);
+
+				// don't let the chart handle the mouse down click
+				evt.stopPropagation();
+				evt.preventDefault();
+			}
 		});
 	};
 }])
