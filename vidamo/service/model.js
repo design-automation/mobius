@@ -300,7 +300,6 @@ vidamo.factory('generateCode', function () {
 
             // action procedure
              function procedure_action(procedure,nodeIndex,fromLoop){
-                 console.log('dataList: ', data.dataList)
                 // todo this is only a dummy intentation
                 if(fromLoop){
                     var intentation = '    ';

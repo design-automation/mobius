@@ -60,12 +60,12 @@ var flowchart = {
 			return this.data.name;
 		};
 
-        //
+        // @ vidamo
         // the value of the connector
         //
-        this.value = function () {
-            return this.data.value;
-        };
+        //this.value = function () {
+        //    return this.data.value;
+        //};
 
 		//
 		// X coordinate of the connector.
@@ -292,11 +292,11 @@ var flowchart = {
 		// Set to true when the connection is selected.
 		this._selected = false;
 
+		// @ vidamo
         // return the source output value
-		// todo value attribute no longer used
-        this.value = function (){
-            return this.source.data.value
-        }
+        //this.value = function (){
+        //    //return this.source.data.value
+        //}
 
 		this.sourceCoordX = function () { 
 			return this.source.parentNode().x() + this.source.x();
@@ -567,13 +567,12 @@ var flowchart = {
 
 			//
 			// @ vidamo transfer data value through conenctions
-			// todo connection value is no longer used
 			//
             if (sourceFlag == true ){
                 if(destFlag == true){
                     var connectionDataModel = {
                         // apply the output connector value to the connection
-                        value: sourceConnector.data.value,
+                        //value: sourceConnector.data.value,
                         source: {
                             nodeID: sourceNode.data.id,
                             connectorIndex: sourceConnectorIndex
@@ -591,7 +590,7 @@ var flowchart = {
             else if( destFlag == false) {
                 var connectionDataModel = {
                     // apply the output connector value to the connection
-                    value: destConnector.data.value,
+                    //value: destConnector.data.value,
                     source: {
                         nodeID: destNode.data.id,
                         connectorIndex: destConnectorIndex
@@ -649,12 +648,12 @@ var flowchart = {
             console.log("========================== test msg ===========================");
             for(var i=0; i < this.nodes.length; i++){
                 console.log("node id: ", this.nodes[i].data.id);
-                for(var input=0; input < this.nodes[i].data.inputConnectors.length;input++){
-                    console.log("inputs: ", this.nodes[i].data.inputConnectors[input].value)
-                }
-                for(var output=0; output < this.nodes[i].data.outputConnectors.length;output++){
-                    console.log("outputs: ", this.nodes[i].data.outputConnectors[output].value)
-                }
+                //for(var input=0; input < this.nodes[i].data.inputConnectors.length;input++){
+                //    //console.log("inputs: ", this.nodes[i].data.inputConnectors[input].value)
+                //}
+                //for(var output=0; output < this.nodes[i].data.outputConnectors.length;output++){
+                //    //console.log("outputs: ", this.nodes[i].data.outputConnectors[output].value)
+                //}
             }
 		}
 
@@ -665,7 +664,7 @@ var flowchart = {
 
         this.topoSort = function topoSort (){
 
-            //console.log('-------------------- msg from topoSort() ----------------------');
+            // console.log('-------------------- msg from topoSort() ----------------------');
             //console.log('current edges: ', edgeList);
 
 			//
@@ -718,7 +717,6 @@ var flowchart = {
                 }
 
                 sorted[--cursor] = node
-
             }
         };
 
@@ -843,7 +841,6 @@ var flowchart = {
 		// Delete all nodes and connections that are selected.
 		//
 		this.deleteSelected = function () {
-			console.log(this);
 
 			var newNodeViewModels = [];
 			var newNodeDataModels = [];
@@ -975,13 +972,27 @@ var flowchart = {
 
 			//
             // @ vidamo
-			//
-            // Update the node index
+			// todo rethink of the id/ sort/ update implementation
+			//Update the node index
             for(var i = 0; i < this.nodes.length ;i++){
                 if(this.nodes[i].data.id > deletedNodeIds[0]){
                     this.nodes[i].data.id--;
                 }
             }
+
+			//
+			// @ vidamo update the connection id
+			//
+
+			for(var i = 0; i < this.connections.length; i++){
+				if(this.connections[i].data.source.nodeID > deletedNodeIds[0]){
+					this.connections[i].data.source.nodeID --;
+				}
+
+				if(this.connections[i].data.dest.nodeID > deletedNodeIds[0]){
+					this.connections[i].data.dest.nodeID --;
+				}
+			}
 
 			// Update nodes and connections.
 			this.nodes = newNodeViewModels;
