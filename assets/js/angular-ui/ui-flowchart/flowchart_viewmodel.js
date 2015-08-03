@@ -227,8 +227,16 @@ var flowchart = {
 
 			// Add to node's view model.
 			connectorsViewModel.push(connectorViewModel);
-		}
+		};
 
+
+		//
+		// @ vidamo internal function to delete a connector
+		//
+
+		this._deleteConnector = function (){
+
+		};
 		//
 		// Add an input connector to the node.
 		//
@@ -285,6 +293,7 @@ var flowchart = {
 		this._selected = false;
 
         // return the source output value
+		// todo value attribute no longer used
         this.value = function (){
             return this.source.data.value
         }
@@ -558,6 +567,7 @@ var flowchart = {
 
 			//
 			// @ vidamo transfer data value through conenctions
+			// todo connection value is no longer used
 			//
             if (sourceFlag == true ){
                 if(destFlag == true){
@@ -655,8 +665,8 @@ var flowchart = {
 
         this.topoSort = function topoSort (){
 
-            console.log('-------------------- msg from topoSort() ----------------------');
-            console.log('current edges: ', edgeList);
+            //console.log('-------------------- msg from topoSort() ----------------------');
+            //console.log('current edges: ', edgeList);
 
 			//
 			// @ vidamo
@@ -683,7 +693,7 @@ var flowchart = {
                 if (!visited[i]) visit(nodes[i], i, [])
             }
 
-            console.log("after sorting:", sorted);
+            //console.log("after sorting:", sorted);
 
             return sorted;
 
@@ -710,7 +720,7 @@ var flowchart = {
                 sorted[--cursor] = node
 
             }
-        }
+        };
 
 		//
 		// Select all nodes and connections in the chart.
@@ -823,21 +833,24 @@ var flowchart = {
 				connector.toggleSelected();
 			}
 			else {
+
 				this.deselectAll();
 				connector.select();
 			}
-			console.log(connector);
 		};
 
 		//
 		// Delete all nodes and connections that are selected.
 		//
 		this.deleteSelected = function () {
+			console.log(this);
 
 			var newNodeViewModels = [];
 			var newNodeDataModels = [];
 
 			var deletedNodeIds = [];
+			var deletedInputConnectors = [];
+			var deletedOutputConnectors = [];
 
 			//
 			// Sort nodes into:
@@ -846,16 +859,15 @@ var flowchart = {
 			//
 
 			//
-			// @ vidamo
-			// Remove connectors that are selected.
-			// todo also remove connections that are linking to the selected connector
+			// @ vidamo Remove connectors that are selected.
 			//
 
 			for (var nodeIndex = 0; nodeIndex < this.nodes.length; ++nodeIndex) {
 
 				var node = this.nodes[nodeIndex];
-				var newInputConnector = [];
-				var newOutputConnector = [];
+
+				var newInputConnectorDataModels = [];
+				var newOutputConnectorDataModels = [];
 
 				if (!node.selected()) {
 					// Only retain non-selected nodes.
@@ -869,34 +881,96 @@ var flowchart = {
 				}
 
 				for(var inputIndex = 0; inputIndex < node.inputConnectors.length; inputIndex ++){
+					var inputConnector = node.inputConnectors[inputIndex];
+					if (!inputConnector.selected()) {
+						newInputConnectorDataModels.push(inputConnector.data);
+					}
+					// keep track of connector that were deleted, so their connection can also be deleted
+					else{
+						deletedInputConnectors.push({
+												nodeId:node.data.id,
+												inputConnectorIndex:node.inputConnectors.indexOf(inputConnector)
+												});
+						console.log(deletedInputConnectors);
+					}
+				}
 
+				for(var outputIndex = 0; outputIndex < node.outputConnectors.length; outputIndex ++){
+					var outputConnector = node.outputConnectors[outputIndex];
+					if (!outputConnector.selected()) {
+						newOutputConnectorDataModels.push(outputConnector.data);
+					}
+					// keep track of connector that were deleted, so their connection can also be deleted
+					else{
+						deletedOutputConnectors.push({
+							nodeId:node.data.id,
+							outputConnectorIndex:node.outputConnectors.indexOf(outputConnector)
+						});
+						console.log(deletedOutputConnectors);
+					}
+				}
+
+				// empty the original connector data and view model
+				node.data.inputConnectors = [];
+				node.data.outputConnectors = [];
+				node.inputConnectors = [];
+				node.outputConnectors = [];
+
+
+				// generate connector view model using new connector data model
+				for(var newInputIndex = 0; newInputIndex < newInputConnectorDataModels.length; newInputIndex++){
+					node.addInputConnector(newInputConnectorDataModels[newInputIndex]);
+				}
+
+				for(var newOutputIndex = 0; newOutputIndex < newOutputConnectorDataModels.length; newOutputIndex++){
+					node.addOutputConnector(newOutputConnectorDataModels[newOutputIndex]);
 				}
 			}
-
-			var newConnectionViewModels = [];
-			var newConnectionDataModels = [];
 
 			//
 			// Remove connections that are selected.
 			// Also remove connections for nodes that have been deleted.
 			//
+
+			var newConnectionViewModels = [];
+			var newConnectionDataModels = [];
+
 			for (var connectionIndex = 0; connectionIndex < this.connections.length; ++connectionIndex) {
 
 				var connection = this.connections[connectionIndex];
-				if (!connection.selected() &&
+
+				if (// connection is not selected
+					!connection.selected() &&
+					// connected node is not deleted
 					deletedNodeIds.indexOf(connection.data.source.nodeID) === -1 &&
-					deletedNodeIds.indexOf(connection.data.dest.nodeID) === -1)
-				{
-					//
+					deletedNodeIds.indexOf(connection.data.dest.nodeID) === -1
+				){
 					// The nodes this connection is attached to, where not deleted,
 					// so keep the connection.
-					//
-					newConnectionViewModels.push(connection);
-					newConnectionDataModels.push(connection.data);
+
+					var flag = true;
+
+					// connected node is not deleted
+					for(var i = 0; i < deletedInputConnectors.length; i ++){
+						if(deletedInputConnectors[i].nodeId === connection.data.dest.nodeID &&
+							deletedInputConnectors[i].inputConnectorIndex === connection.data.dest.connectorIndex){
+							flag = false;
+						}
+					}
+
+					for(var j = 0; j < deletedOutputConnectors.length; j++){
+						if(deletedOutputConnectors[i].nodeId === connection.data.source.nodeID &&
+							deletedOutputConnectors[i].outputConnectorIndex === connection.data.source.connectorIndex){
+							flag = false;
+						}
+					}
+
+					if(flag){
+						newConnectionViewModels.push(connection);
+						newConnectionDataModels.push(connection.data);
+					}
 				}
 			}
-
-
 
 
 			//
@@ -989,7 +1063,44 @@ var flowchart = {
 
 			return selectedConnections;
 		};
-		
+
+		//
+		// @ vidamo get the array of input connectors that currently selected.
+		//
+		this.getSelectedInputConnectors = function () {
+			var selectedInputConnector = [];
+
+			for (var i = 0; i < this.nodes.length; ++i) {
+				var node = this.nodes[i];
+
+				for(var inputIndex = 0; inputIndex < node.inputConnectors.length; inputIndex ++){
+					if(node.inputConnectors[inputIndex].selected()){
+						selectedInputConnector.push(node.inputConnectors[inputIndex]);
+					}
+				}
+			}
+
+			return selectedInputConnector;
+		};
+
+		//
+		// @ vidamo get the array of output connectors that currently selected.
+		//
+		this.getSelectedOutputConnectors = function () {
+			var selectedOutputConnector = [];
+
+			for (var i = 0; i < this.nodes.length; ++i) {
+				var node = this.nodes[i];
+
+				for(var outputIndex = 0; outputIndex < node.outputConnectors.length; outputIndex ++){
+					if(node.outputConnectors[outputIndex].selected()){
+						selectedOutputConnector.push(node.outputConnectors[outputIndex]);
+					}
+				}
+			}
+
+			return selectedOutputConnector;
+		};
 
 	};
 
