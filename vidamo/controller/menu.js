@@ -1,5 +1,5 @@
-vidamo.controller('menuCtrl',['$scope','$rootScope','generateCode','nodeCollection','$http',
-    function($scope,$rootScope,generateCode,nodeCollection,$http){
+vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','generateCode','nodeCollection','$http',
+    function($scope,$rootScope,$timeout,generateCode,nodeCollection,$http){
 
         // store json url
         $scope.sceneUrl= '';
@@ -15,50 +15,41 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','generateCode','nodeCollecti
 
 
         // open and read json file for scene
-        // todo $apply conflict
-        $scope.openSceneJson = function(){
+        $scope.openSceneJson = function(files){
+            var f = files[0];
+            var jsonString;
+            var graphJsonString;
+            var procedureJsonString;
+            var graphJsonObj;
+            var procedureJsonObj;
 
-            angular.element(document.getElementById('openSceneJson')).trigger('click');
-            document.getElementById('openSceneJson').addEventListener('change', handleFileSelect, false);
+            var reader = new FileReader();
 
-            function handleFileSelect(evt) {
-                var files = evt.target.files;
-                var f = files[0];
-                var jsonString;
-                var graphJsonString;
-                var procedureJsonString;
-                var graphJsonObj;
-                var procedureJsonObj;
+            reader.onload = (function () {
+                return function (e) {
+                    if(f.name.split('.').pop() == 'json') {
+                        jsonString = e.target.result;
 
-                var reader = new FileReader();
+                        graphJsonString = jsonString.split("//procedure json")[0];
+                        procedureJsonString = jsonString.split("//procedure json")[1];
 
-                reader.onload = (function () {
-                    return function (e) {
-                        if(f.name.split('.').pop() == 'json') {
-                            jsonString = e.target.result;
+                        graphJsonObj = JSON.parse(graphJsonString);
+                        procedureJsonObj = JSON.parse(procedureJsonString);
 
-                            graphJsonString = jsonString.split("//procedure json")[0];
-                            procedureJsonString = jsonString.split("//procedure json")[1];
+                        // update the graph
+                        generateCode.setChartViewModel(new flowchart.ChartViewModel(graphJsonObj));
 
-                            graphJsonObj = JSON.parse(graphJsonString);
-                            procedureJsonObj = JSON.parse(procedureJsonString);
+                        // update the procedure
+                        generateCode.setDataList(procedureJsonObj);
 
-                            // update the graph
-                            generateCode.setChartViewModel(new flowchart.ChartViewModel(graphJsonObj));
+                        document.getElementById('log').innerHTML += "<div style='color: green'>Scene imported!</div>";
+                    }else{
+                        document.getElementById('log').innerHTML += "<div style='color: red'>Error: File type is not Json!</div>";
+                    }
+                };
+            })(f);
 
-                            // update the procedure
-                            generateCode.setDataList(procedureJsonObj);
-
-                            document.getElementById('log').innerHTML += "<div style='color: green'>Scene imported!</div>";
-                        }else{
-                            document.getElementById('log').innerHTML += "<div style='color: red'>Error: File type is not Json!</div>";
-                        }
-                    };
-                })(f);
-
-                reader.readAsText(f);
-            }
-
+            reader.readAsText(f);
         };
 
         // save json file for scene
