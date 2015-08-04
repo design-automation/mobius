@@ -99,9 +99,10 @@
                           <a href class="dropdown-toggle">  Node |</a>
                           <ul class="dropdown-menu">
                               <li>
-                                  <input type="file" id="importNode" name="importNode[]"
-                                         style="visibility: hidden; width: 1px; height: 1px" multiple />
-                                  <a href="" ng-click="importNode()"> Import Node </a>
+                                  <input type="file" id="importNode"
+                                         style="visibility: hidden; width: 1px; height: 1px" multiple
+                                         onchange="angular.element(this).scope().importNode(this.files)"/>
+                                  <a href="" onclick="document.getElementById('importNode').click()"> Import Node </a>
                               </li>
 
                               <li>

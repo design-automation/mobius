@@ -15,6 +15,7 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','generateCode','n
 
 
         // open and read json file for scene
+        // todo interface
         $scope.openSceneJson = function(files){
             var f = files[0];
             var jsonString;
@@ -46,10 +47,12 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','generateCode','n
                     }else{
                         document.getElementById('log').innerHTML += "<div style='color: red'>Error: File type is not Json!</div>";
                     }
+                    generateCode.generateCode();
                 };
             })(f);
 
             reader.readAsText(f);
+
         };
 
         // save json file for scene
@@ -65,60 +68,52 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','generateCode','n
         };
 
         // import pre-defined node
-        $scope.importNode = function () {
-            // todo $apply conflict
-            document.getElementById('importNode').click();
-            document.getElementById('importNode').addEventListener('change', handleFileSelect, false);
+        $scope.importNode = function (files) {
 
-            function handleFileSelect(evt) {
-                var files = evt.target.files;
+            var jsonString;
+            var nodeJsonString;
+            var procedureJsonString;
+            var interfaceJsonString;
 
-                var jsonString;
-                var nodeJsonString;
-                var procedureJsonString;
-                var interfaceJsonString;
+            var nodeJsonObj;
+            var procedureJsonObj;
+            var interfaceJsonObj;
 
-                var nodeJsonObj;
-                var procedureJsonObj;
-                var interfaceJsonObj;
+            for(var i = 0; i < files.length ; i ++ ){
+                var f = files[i];
 
-                for(var i = 0; i < files.length ; i ++ ){
-                    var f = files[i];
+                var reader = new FileReader();
 
-                    var reader = new FileReader();
+                reader.onload = (function () {
 
-                    reader.onload = (function () {
+                    return function (e) {
+                        if(f.name.split('.').pop() == 'json') {
 
-                        return function (e) {
-                            if(f.name.split('.').pop() == 'json') {
+                            jsonString = e.target.result;
 
-                                jsonString = e.target.result;
+                            nodeJsonString = jsonString.split("//procedure json")[0];
 
-                                nodeJsonString = jsonString.split("//procedure json")[0];
+                            var temp = jsonString.split("//procedure json")[1];
+                            procedureJsonString = temp.split("//interface json")[0];
+                            interfaceJsonString = temp.split("//interface json")[1];
 
-                                var temp = jsonString.split("//procedure json")[1];
-                                procedureJsonString = temp.split("//interface json")[0];
-                                interfaceJsonString = temp.split("//interface json")[1];
+                            nodeJsonObj = JSON.parse(nodeJsonString);
+                            procedureJsonObj = JSON.parse(procedureJsonString);
+                            interfaceJsonObj = JSON.parse(interfaceJsonString);
+                            var newNodeName = nodeJsonObj.name;
 
-                                nodeJsonObj = JSON.parse(nodeJsonString);
-                                procedureJsonObj = JSON.parse(procedureJsonString);
-                                interfaceJsonObj = JSON.parse(interfaceJsonString);
-                                var newNodeName = nodeJsonObj.name;
+                            // install new imported node into nodeCollection
+                            nodeCollection.installNewNode(newNodeName, nodeJsonObj,procedureJsonObj,interfaceJsonObj);
 
-                                // install new imported node into nodeCollection
-                                nodeCollection.installNewNode(newNodeName, nodeJsonObj,procedureJsonObj,interfaceJsonObj);
+                            document.getElementById('log').innerHTML += "<div style='color: green'> node imported!</div>";
+                        }else{
+                            document.getElementById('log').innerHTML += "<div style='color: red'>Error: File type is not Json!</div>";
+                        }
+                    };
+                })(f);
 
-                                document.getElementById('log').innerHTML += "<div style='color: green'> node imported!</div>";
-                            }else{
-                                document.getElementById('log').innerHTML += "<div style='color: red'>Error: File type is not Json!</div>";
-                            }
-                        };
-                    })(f);
-
-                    reader.readAsText(f);
-                }
+                reader.readAsText(f);
             }
-
         };
 
         // export selected node
