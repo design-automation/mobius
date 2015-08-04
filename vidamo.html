@@ -266,10 +266,9 @@
                         <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
                     <div ui-layout-container size = "85%">
                         <div ng-controller="procedureCtrl">
-                            <div ng-if = "currentNodeName != ''">
+                            <div ng-if = "currentNodeName">
                                 <pre class="nodeName">&nbsp Node: &nbsp {{currentNodeName}}</pre>
                             </div>
-
                             <tabset justified="true" >
                                 <!--add to interface -->
                                 <tab heading="Parameters">
