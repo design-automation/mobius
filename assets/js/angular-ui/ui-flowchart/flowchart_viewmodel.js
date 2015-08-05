@@ -13,23 +13,24 @@ var flowchart = {
 	//
 	// Width of a node.
 	//
-	flowchart.nodeHeight =60;
+	flowchart.nodeHeight =40;
 
 	//
 	// Amount of space reserved for displaying the node's name.
 	//
-	flowchart.nodeNameWidth = 50;
+	flowchart.nodeNameWidth = 55;
 
 	//
 	// Height of a connector in a node.
 	//
-	flowchart.connectorWidth = 60;
+	flowchart.connectorWidth = 35;
 
 	//
 	// Compute the Y coordinate of a connector, given its index.
 	//
 	flowchart.computeConnectorX = function (connectorIndex) {
-		return flowchart.nodeNameWidth + (connectorIndex * flowchart.connectorWidth);
+		// return flowchart.nodeNameWidth + (connectorIndex * flowchart.connectorWidth);
+		return 35 + (connectorIndex * flowchart.connectorWidth);
 	}
 
 	//

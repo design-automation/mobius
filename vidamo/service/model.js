@@ -17,7 +17,7 @@ vidamo.factory('generateCode', function () {
         codeList:[],
         dataList:[],
         interfaceList:[],
-        chartViewModel:new flowchart.ChartViewModel(chartDataModel)
+        chartViewModel: new flowchart.ChartViewModel(chartDataModel)
     };
 
     return {

@@ -140,6 +140,12 @@ a{
     position: absolute;
 }
 
+.view-area #clear{
+    position: absolute;
+    right: 5px;
+    cursor: pointer;
+}
+
 .graph-area .codeEditor{
     position: absolute;
     height: 100%;

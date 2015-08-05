@@ -44,10 +44,8 @@
 
 
         <text
-          ng-attr-x="{{node.width()+25}}"
-          y="32"
-          text-anchor="middle"
-          alignment-baseline="middle"
+          ng-attr-x="{{node.width()+3}}"
+          y="23"
           >
           {{node.name()}}
         </text>
@@ -55,47 +53,49 @@
     <g
       ng-repeat="connector in node.inputConnectors"
       ng-mousedown="connectorMouseDown($event, node, connector, $index, true)"
-      class="connector input-connector"
+      class="connector"
       >
-      <text
-        ng-attr-x="{{connector.x()}}"
-        ng-attr-y="{{connector.y() + 20}}"
-        text-anchor="middle"
-        alignment-baseline="middle"
-        >
-        {{connector.name()}}
-      </text>
-      
-      <circle       
-        ng-attr-class="{{connector.selected() && 'selected-connector-circle' ||
-                        (connector == mouseOverConnector && 'mouseover-connector-circle' || 'connector-circle')}}"
-        ng-attr-r="{{connectorSize}}" 
-        ng-attr-cx="{{connector.x()}}"
-        ng-attr-cy="{{connector.y()}}"
+
+        <circle
+            ng-attr-class="{{connector.selected() && 'selected-connector-circle' ||
+                    (connector == mouseOverConnector && 'mouseover-connector-circle' || 'connector-circle')}}"
+            ng-attr-r="{{connectorSize}}"
+            ng-attr-cx="{{connector.x()}}"
+            ng-attr-cy="{{connector.y()}}"
         />
+
+        <text
+                ng-attr-x="{{connector.x()}}"
+                ng-attr-y="{{connector.y() + 20}}"
+                text-anchor="middle"
+                alignment-baseline="middle"
+                class = "connector-text">
+            {{connector.name()}}
+        </text>
+
     </g>
 
     <g
       ng-repeat="connector in node.outputConnectors"
       ng-mousedown="connectorMouseDown($event, node, connector, $index, false)"
-      class="connector output-connector"
+      class="connector"
       >
+    <circle
+            ng-attr-class="{{connector.selected() && 'selected-connector-circle' ||
+                    (connector == mouseOverConnector && 'mouseover-connector-circle' || 'connector-circle')}}"
+            ng-attr-r="{{connectorSize}}"
+            ng-attr-cx="{{connector.x()}}"
+            ng-attr-cy="{{connector.y()}}"
+            />
       <text
         ng-attr-x="{{connector.x()}}"
         ng-attr-y="{{connector.y() - 20}}"
         text-anchor="middle"
         alignment-baseline="middle"
+        class = "connector-text"
         >
         {{connector.name()}}
       </text>
-
-      <circle
-              ng-attr-class="{{connector.selected() && 'selected-connector-circle' ||
-                        (connector == mouseOverConnector && 'mouseover-connector-circle' || 'connector-circle')}}"
-        ng-attr-r="{{connectorSize}}" 
-        ng-attr-cx="{{connector.x()}}"
-        ng-attr-cy="{{connector.y()}}"
-        />
     </g>
   </g>
 

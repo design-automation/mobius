@@ -32,10 +32,17 @@ Styles for nodes and connectors.
 }
 
 .mouseover-connector-circle {
-    fill: white;
-    stroke: #777777;
-    stroke-width: 3;
+	 fill: white;
+	 stroke: #777777;
+	 stroke-width: 3;
+ }
+.connector-text{
+	visibility: hidden;
 }
+.connector:hover > .connector-text {
+	visibility: visible;
+}
+
 
 .selected-connector-circle {
 	fill: white;
