@@ -111,6 +111,7 @@ vidamo.controller('graphCtrl',[
 
 
         // Add a new node to the chart.
+        // todo double click to trigger
         $scope.addNewNode = function (type) {
 
             // promote for name of new node
@@ -148,8 +149,10 @@ vidamo.controller('graphCtrl',[
 
         // Add an input connector to selected nodes.
 
-        $scope.addNewInputConnector = function () {
+        $scope.$on("newInputConnector",function () {
             try{
+                // todo set time out
+
                 var connectorName = prompt("Enter a connector name:", "in"
                     + $scope.chartViewModel.nodes[$scope.nodeIndex].inputConnectors.length
                     + '_'
@@ -176,29 +179,32 @@ vidamo.controller('graphCtrl',[
 
             // update generated code
             generateCode.generateCode();
-        };
+        });
 
         // Add an output connector to selected nodes.
 
-        $scope.addNewOutputConnector = function () {
+        $scope.$on("newOutputConnector",function () {
 
             try{
-                var connectorName = prompt("Enter a connector name:", "out"
-                    + $scope.chartViewModel.nodes[$scope.nodeIndex].outputConnectors.length);
+                     // todo set time out
+                    var connectorName = prompt("Enter a connector name:", "out"
+                        + $scope.chartViewModel.nodes[$scope.nodeIndex].outputConnectors.length);
 
+                    console.log(connectorName);
 
-                if (!isValidName(connectorName)) {
-                    return;
-                }
+                    if (!isValidName(connectorName)) {
+                        return;
+                    }
 
-                var selectedNodes = $scope.chartViewModel.getSelectedNodes();
-                for (var i = 0; i < selectedNodes.length; ++i) {
-                    var node = selectedNodes[i];
-                    node.addOutputConnector({
-                        name: connectorName,
-                        value: ""
-                    });
-                }
+                    var selectedNodes = $scope.chartViewModel.getSelectedNodes();
+
+                    for (var i = 0; i < selectedNodes.length; ++i) {
+                        var node = selectedNodes[i];
+                        node.addOutputConnector({
+                            name: connectorName,
+                            value: ""
+                        });
+                    }
             }
             catch(err){
                 document.getElementById('log').innerHTML += "<div style='color: red'>Error: no node selected!</div>";
@@ -207,11 +213,11 @@ vidamo.controller('graphCtrl',[
 
             // update generated code
             generateCode.generateCode();
-        };
+        });
 
         // Delete selected nodes and connections in data&view model
 
-        $scope.deleteSelected = function () {
+        $scope.$on("deleteSelected", function () {
             var deletedNodeIds = $scope.chartViewModel.deleteSelected();
 
             // update only if selected is a node
@@ -231,6 +237,13 @@ vidamo.controller('graphCtrl',[
 
             // update generated code
            generateCode.generateCode();
-        };
+        });
+
+        $scope.$on("renameSelected",function(){
+            // todo set time out
+
+            var newName = prompt('Enter a new name:');
+            $scope.chartViewModel.renameSelected(newName);
+        });
 
     }]);

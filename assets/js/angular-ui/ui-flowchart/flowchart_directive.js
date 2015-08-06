@@ -74,11 +74,47 @@ angular.module('flowChart', ['dragging'] )
 
 //
 // Controller for the flowchart directive.
-// Having a separate controller is better for unit testing, otherwise
-// it is painful to unit test a directive without instantiating the DOM 
-// (which is possible, just not ideal).
 //
 .controller('FlowChartController', ['$scope', 'dragging', '$element','$rootScope', function FlowChartController ($scope, dragging, $element,$rootScope) {
+
+    //
+	// @ vidamo for context menu
+	//
+    // todo shall integrate into one module? Or communicate between controllers
+
+    // menu for right click on node
+	$scope.nodeMenuOptions = [
+		['Add input connector', function () {
+            $scope.$emit("newInputConnector");
+		}],
+		['Add output connector', function () {
+            $scope.$emit("newOutputConnector");
+		}],
+        ['Delete', function () {
+            $scope.$emit("deleteSelected");
+        }],
+        // todo
+        ['Rename', function () {
+            $scope.$emit("renameSelected");
+        }]
+	];
+
+    // menu for right click on connector
+    $scope.connectorMenuOptions = [
+        ['Delete', function () {
+            $scope.$emit("deleteSelected");
+        }],
+        ['Rename', function () {
+            $scope.$emit("renameSelected");
+        }]
+    ];
+
+    // test menu for right clicj on canvas
+    $scope.canvasMenuOptions = [
+        ['no operation', function () {
+
+        }]
+    ];
 
 	var controller = this;
 

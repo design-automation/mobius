@@ -1,6 +1,6 @@
 
 //
-// Global accessor.
+// view model Global accessor for graph
 //
 
 var flowchart = {
@@ -30,7 +30,7 @@ var flowchart = {
 	//
 	flowchart.computeConnectorX = function (connectorIndex) {
 		// return flowchart.nodeNameWidth + (connectorIndex * flowchart.connectorWidth);
-		return 35 + (connectorIndex * flowchart.connectorWidth);
+		return 25 + (connectorIndex * 25);
 	}
 
 	//
@@ -839,6 +839,39 @@ var flowchart = {
 		};
 
 		//
+		// @vidamo rename selected element (node/connector)
+		//
+		this.renameSelected = function(newName){
+			for (var nodeIndex = 0; nodeIndex < this.nodes.length; ++nodeIndex) {
+
+				var node = this.nodes[nodeIndex];
+
+				// update selected node name
+				if (this.nodes[nodeIndex].selected()) {
+					this.data.nodes[nodeIndex].name = newName;
+					this.nodes[nodeIndex].data = this.data.nodes[nodeIndex];
+				}
+
+				// update selected input connector name
+				for(var inputIndex = 0; inputIndex < node.inputConnectors.length; inputIndex ++){
+					if (node.inputConnectors[inputIndex].selected()) {
+                        this.data.nodes[nodeIndex].inputConnectors[inputIndex].name = newName;
+                        this.nodes[nodeIndex].data = this.data.nodes[nodeIndex];
+					}
+				}
+
+				// update selected output connector name
+				for(var outputIndex = 0; outputIndex < node.outputConnectors.length; outputIndex ++){
+					if (node.outputConnectors[outputIndex].selected()) {
+						this.data.nodes[nodeIndex].outputConnectors[outputIndex].name = newName;
+                        this.nodes[nodeIndex].data = this.data.nodes[nodeIndex];
+					}
+				}
+			}
+		};
+
+
+		//
 		// Delete all nodes and connections that are selected.
 		//
 		this.deleteSelected = function () {
@@ -851,9 +884,7 @@ var flowchart = {
 			var deletedOutputConnectors = [];
 
 			//
-			// Sort nodes into:
-			//		nodes to keep and
-			//		nodes to delete.
+			// Sort nodes into: nodes to keep and nodes to delete.
 			//
 
 			//

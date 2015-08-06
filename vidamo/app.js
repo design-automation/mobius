@@ -1,6 +1,7 @@
 //
 // VIDAMO App
 //
+
 var vidamo = angular.module('vidamo',
                             ['ui.layout',
                             'ui.ace',
@@ -9,7 +10,8 @@ var vidamo = angular.module('vidamo',
                             'ngSanitize',
                             'ui.tree',
                             'flowChart',
-                            'panzoom']);
+                            'panzoom',
+                            'ui.bootstrap.contextMenu']);
 
     // Simple service to create a prompt.
     vidamo.service('prompt', function () {

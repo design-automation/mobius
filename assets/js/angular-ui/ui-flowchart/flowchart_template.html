@@ -2,8 +2,8 @@
   class="draggable-container"
   xmlns="http://www.w3.org/2000/svg"
   ng-mousedown="mouseDown($event)"
-  ng-mousemove="mouseMove($event)"  
-  >
+  ng-mousemove="mouseMove($event)"
+  context-menu="canvasMenuOptions">
   <defs>
     <linearGradient 
       spreadMethod="pad" 
@@ -39,6 +39,7 @@
       ng-attr-width="{{node.width()}}" 
       ng-attr-height="{{node.height()}}" 
       fill="url(#nodeBackgroundGradient)"
+      context-menu="nodeMenuOptions"
       >
     </rect>
 
@@ -46,6 +47,7 @@
         <text
           ng-attr-x="{{node.width()+3}}"
           y="23"
+          context-menu="nodeMenuOptions"
           >
           {{node.name()}}
         </text>
@@ -62,11 +64,12 @@
             ng-attr-r="{{connectorSize}}"
             ng-attr-cx="{{connector.x()}}"
             ng-attr-cy="{{connector.y()}}"
+            context-menu="connectorMenuOptions"
         />
 
         <text
-                ng-attr-x="{{connector.x()}}"
-                ng-attr-y="{{connector.y() + 20}}"
+                ng-attr-x="{{node.width()/2}}"
+                ng-attr-y="{{node.height()/2}}"
                 text-anchor="middle"
                 alignment-baseline="middle"
                 class = "connector-text">
@@ -86,10 +89,11 @@
             ng-attr-r="{{connectorSize}}"
             ng-attr-cx="{{connector.x()}}"
             ng-attr-cy="{{connector.y()}}"
+            context-menu="connectorMenuOptions"
             />
       <text
-        ng-attr-x="{{connector.x()}}"
-        ng-attr-y="{{connector.y() - 20}}"
+        ng-attr-x="{{node.width()/2}}"
+        ng-attr-y="{{node.height()/2}}"
         text-anchor="middle"
         alignment-baseline="middle"
         class = "connector-text"

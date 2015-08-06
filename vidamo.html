@@ -175,27 +175,27 @@
                                                     </ui-select-choices>
                                                 </ui-select>
 
-                                                <button class="btn btn-default btn-xs"
-                                                        ng-click="addNewInputConnector()"
-                                                        ng-disabled="chartViewModel.getSelectedNodes().length == 0"
-                                                        title="Add a new input connector to the selected node">
-                                                    Add Input
-                                                </button>
-                                                <button class="btn btn-default btn-xs"
-                                                        ng-click="addNewOutputConnector()"
-                                                        ng-disabled="chartViewModel.getSelectedNodes().length == 0"
-                                                        title="Add a new output connector to the selected node">
-                                                    Add Output
-                                                </button>
-                                                <button class="btn btn-default btn-xs"
-                                                        ng-click="deleteSelected()"
-                                                        ng-disabled="chartViewModel.getSelectedNodes().length == 0 &&
-                                                                     chartViewModel.getSelectedConnections().length == 0 &&
-                                                                     chartViewModel.getSelectedInputConnectors().length == 0 &&
-                                                                     chartViewModel.getSelectedOutputConnectors().length == 0"
-                                                        title="Delete selected nodes and connections">
-                                                    Delete
-                                                </button>
+                                                <!--<button class="btn btn-default btn-xs"-->
+                                                        <!--ng-click="addNewInputConnector()"-->
+                                                        <!--ng-disabled="chartViewModel.getSelectedNodes().length == 0"-->
+                                                        <!--title="Add a new input connector to the selected node">-->
+                                                    <!--Add Input-->
+                                                <!--</button>-->
+                                                <!--<button class="btn btn-default btn-xs"-->
+                                                        <!--ng-click="addNewOutputConnector()"-->
+                                                        <!--ng-disabled="chartViewModel.getSelectedNodes().length == 0"-->
+                                                        <!--title="Add a new output connector to the selected node">-->
+                                                    <!--Add Output-->
+                                                <!--</button>-->
+                                                <!--<button class="btn btn-default btn-xs"-->
+                                                        <!--ng-click="deleteSelected()"-->
+                                                        <!--ng-disabled="chartViewModel.getSelectedNodes().length == 0 &&-->
+                                                                     <!--chartViewModel.getSelectedConnections().length == 0 &&-->
+                                                                     <!--chartViewModel.getSelectedInputConnectors().length == 0 &&-->
+                                                                     <!--chartViewModel.getSelectedOutputConnectors().length == 0"-->
+                                                        <!--title="Delete selected nodes and connections">-->
+                                                    <!--Delete-->
+                                                <!--</button>-->
                                                 <span ng-controller="executeCtrl">
                                                     <button class="btn btn-default btn-xs"
                                                             ng-click="run()"
@@ -979,6 +979,8 @@
      <script src="vidamo/controller/panzoom.js"></script>
      <script src="vidamo/controller/execute.js"></script>
      <script src="vidamo/controller/console.js"></script>
+    <!-- directives -->
+    <script src="vidamo/directive/contextMenu.js"></script>
 
      <!-- services -->
      <script src="vidamo/service/model.js"></script>
