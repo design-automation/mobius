@@ -785,7 +785,7 @@ var flowchart = {
 		//
 		// Handle mouse click on a particular node.
 		//
-		this.handleNodeClicked = function (node, ctrlKey) {
+		this.handleNodeLeftClicked = function (node, ctrlKey) {
 
 			if (ctrlKey) {
 				node.toggleSelected();
@@ -807,6 +807,39 @@ var flowchart = {
 //			this.nodes.splice(nodeIndex, 1);
 //			this.nodes.push(node);
 
+		};
+
+		//
+		// @ vidamo handle right click, prevent deselection
+		//
+		this.handleNodeRightClicked = function (node, ctrlKey) {
+
+			if (ctrlKey) {
+				node.toggleSelected();
+			}
+			else {
+				node.select();
+			}
+
+			var nodeIndex = this.nodes.indexOf(node);
+			return nodeIndex;
+		};
+
+
+		//
+		// @ vidamo : Handle mouse drag on a particular node/ prevent deselection
+		//
+		this.handleNodeDragged = function (node, ctrlKey) {
+
+			if (ctrlKey) {
+				node.toggleSelected();
+			}
+			else {
+				node.select();
+			}
+
+			var nodeIndex = this.nodes.indexOf(node);
+			return nodeIndex;
 		};
 
 		//
@@ -880,15 +913,13 @@ var flowchart = {
 			var newNodeDataModels = [];
 
 			var deletedNodeIds = [];
+
 			var deletedInputConnectors = [];
 			var deletedOutputConnectors = [];
 
 			//
-			// Sort nodes into: nodes to keep and nodes to delete.
-			//
-
-			//
-			// @ vidamo Remove connectors that are selected.
+			// remove node that are selected, retain deleted node id for connections
+			// @ vidamo Remove connectors that are selected, retain deleted connector id for connections
 			//
 
 			for (var nodeIndex = 0; nodeIndex < this.nodes.length; ++nodeIndex) {
@@ -898,44 +929,45 @@ var flowchart = {
 				var newInputConnectorDataModels = [];
 				var newOutputConnectorDataModels = [];
 
+				// node deletion
 				if (!node.selected()) {
-					// Only retain non-selected nodes.
 					newNodeViewModels.push(node);
 					newNodeDataModels.push(node.data);
 				}
 				else {
-					// Keep track of nodes that were deleted, so their connections can also
-					// be deleted.
 					deletedNodeIds.push(node.data.id);
 				}
 
+				// connector deletion
 				for(var inputIndex = 0; inputIndex < node.inputConnectors.length; inputIndex ++){
+
 					var inputConnector = node.inputConnectors[inputIndex];
+
 					if (!inputConnector.selected()) {
 						newInputConnectorDataModels.push(inputConnector.data);
 					}
-					// keep track of connector that were deleted, so their connection can also be deleted
+
 					else{
 						deletedInputConnectors.push({
 												nodeId:node.data.id,
 												inputConnectorIndex:node.inputConnectors.indexOf(inputConnector)
 												});
-						console.log(deletedInputConnectors);
 					}
 				}
 
 				for(var outputIndex = 0; outputIndex < node.outputConnectors.length; outputIndex ++){
+
 					var outputConnector = node.outputConnectors[outputIndex];
+
 					if (!outputConnector.selected()) {
 						newOutputConnectorDataModels.push(outputConnector.data);
 					}
-					// keep track of connector that were deleted, so their connection can also be deleted
+
 					else{
 						deletedOutputConnectors.push({
 							nodeId:node.data.id,
 							outputConnectorIndex:node.outputConnectors.indexOf(outputConnector)
 						});
-						console.log(deletedOutputConnectors);
 					}
 				}
 
@@ -975,7 +1007,7 @@ var flowchart = {
 					deletedNodeIds.indexOf(connection.data.dest.nodeID) === -1
 				){
 					// The nodes this connection is attached to, where not deleted,
-					// so keep the connection.
+					// so keep the connection for now then check the connectors
 
 					var flag = true;
 
@@ -1005,11 +1037,20 @@ var flowchart = {
 			//
             // @ vidamo
 			// todo rethink of the id/ sort/ update implementation
-			//Update the node index
+			//
+
+			// Update the node index
             for(var i = 0; i < this.nodes.length ;i++){
-                if(this.nodes[i].data.id > deletedNodeIds[0]){
-                    this.nodes[i].data.id--;
-                }
+
+				var decreaseIn = 0;
+
+				for(j = 0; j <deletedNodeIds.length; j++){
+					if(this.nodes[i].data.id > deletedNodeIds[j]){
+						decreaseIn ++;
+					}
+				}
+
+				this.nodes[i].data.id = this.nodes[i].data.id - decreaseIn;
             }
 
 			//
@@ -1017,13 +1058,27 @@ var flowchart = {
 			//
 
 			for(var i = 0; i < this.connections.length; i++){
-				if(this.connections[i].data.source.nodeID > deletedNodeIds[0]){
-					this.connections[i].data.source.nodeID --;
+
+				var sourceDecreaseIn = 0;
+
+				for(j = 0; j <deletedNodeIds.length; j++){
+					if(this.connections[i].data.source.nodeID > deletedNodeIds[j]){
+						sourceDecreaseIn ++;
+					}
 				}
 
-				if(this.connections[i].data.dest.nodeID > deletedNodeIds[0]){
-					this.connections[i].data.dest.nodeID --;
+				this.connections[i].data.source.nodeID = this.connections[i].data.source.nodeID - sourceDecreaseIn;
+
+
+				var destDecreaseIn = 0;
+
+				for(var k = 0; k < deletedNodeIds.length; k++ ){
+					if(this.connections[i].data.dest.nodeID > deletedNodeIds[0]){
+						destDecreaseIn ++;
+					}
 				}
+
+				this.connections[i].data.dest.nodeID = this.connections[i].data.dest.nodeID - destDecreaseIn;
 			}
 
 			// Update nodes and connections.
@@ -1061,6 +1116,31 @@ var flowchart = {
 					// Select nodes that are within the selection rect.
 					node.select();
 				}
+
+				// @ vidamo select connectors within the selection rect.
+				for(var inputIndex = 0; inputIndex < node.inputConnectors.length; inputIndex++){
+
+					var inputConnector = node.inputConnectors[inputIndex];
+
+					if (node.x() + inputConnector.x() >= selectionRect.x &&
+						node.y() + inputConnector.y() >= selectionRect.y &&
+						node.x() + inputConnector.x() + 8 <= selectionRect.x + selectionRect.width &&
+						node.y() +inputConnector.y() + 8 <= selectionRect.y + selectionRect.height){
+						inputConnector.select();
+					}
+				}
+
+				for(var outputIndex = 0; outputIndex < node.outputConnectors.length; outputIndex++){
+					var outputConnector = node.outputConnectors[outputIndex];
+
+					if (node.x() + outputConnector.x() >= selectionRect.x &&
+						node.y() + outputConnector.y() >= selectionRect.y &&
+						node.x() + outputConnector.x() + 8 <= selectionRect.x + selectionRect.width &&
+						node.y() +outputConnector.y() + 8 <= selectionRect.y + selectionRect.height){
+						outputConnector.select();
+					}
+				}
+
 			}
 
 			for (var i = 0; i < this.connections.length; ++i) {

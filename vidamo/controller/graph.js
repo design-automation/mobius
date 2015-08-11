@@ -190,8 +190,6 @@ vidamo.controller('graphCtrl',[
                     var connectorName = prompt("Enter a connector name:", "out"
                         + $scope.chartViewModel.nodes[$scope.nodeIndex].outputConnectors.length);
 
-                    console.log(connectorName);
-
                     if (!isValidName(connectorName)) {
                         return;
                     }
@@ -220,17 +218,22 @@ vidamo.controller('graphCtrl',[
         $scope.$on("deleteSelected", function () {
             var deletedNodeIds = $scope.chartViewModel.deleteSelected();
 
-            // update only if selected is a node
-            if(deletedNodeIds.length > 0){
+            // ensure the deleted ids are sorted in ascend order
+            // todo actually not necessary, why
+            // deletedNodeIds.sort(function(a,b){return b-a;});
 
+            // update only if selected is a node
+            // reverse order, otherwise mess up
+
+            for(var i = deletedNodeIds.length -1; i >= 0 ; i--){
                 // update scene data structure
                 nextNodeID --;
-                $scope.dataList.splice(deletedNodeIds[0],1);
-                $scope.codeList.splice(deletedNodeIds[0],1);
-                $scope.interfaceList.splice(deletedNodeIds[0],1);
+                $scope.dataList.splice(deletedNodeIds[i],1);
+                $scope.codeList.splice(deletedNodeIds[i],1);
+                $scope.interfaceList.splice(deletedNodeIds[i],1);
 
                 // using this variable for auto fill node name correction
-                if(deletedNodeIds[0] != chartDataModel.nodes.length){
+                if(deletedNodeIds[i] != chartDataModel.nodes.length){
                     numOfDeletedTopNode++;
                 }
             }

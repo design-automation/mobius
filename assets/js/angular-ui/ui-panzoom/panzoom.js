@@ -21,7 +21,7 @@ function ($document, PanZoomService) {
                         var frameElement = $element;
                         //var panElement = $element.find('.pan-element');
                         //var zoomElement = $element.find('.zoom-element');
-                        // vidamo change
+                        // @ vidamo
                         var contentElement = $element.find('.pan-zoom-contents');
 
                         var getCssScale = function (zoomLevel) {
@@ -123,7 +123,7 @@ function ($document, PanZoomService) {
                                 $scope.model.pan.y = $scope.base.pan.y;
                             }
 
-                            // vidamo change
+                            // @ vidamo
                             //var scale = getCssScale($scope.model.zoomLevel);
                             //if (navigator.userAgent.indexOf('Chrome') !== -1) {
                             //    // For Chrome, use the zoom style as it doesn't handle nested SVG very well
@@ -151,7 +151,7 @@ function ($document, PanZoomService) {
                             //
                             //panElement.css('left', $scope.model.pan.x);
                             //panElement.css('top', $scope.model.pan.y);
-                            // vidamo change
+
                             var scaleString = 'scale(' + getCssScale($scope.model.zoomLevel) + ')';
 
                             contentElement.css('transform-origin', '0 0');
@@ -398,7 +398,9 @@ function ($document, PanZoomService) {
                         var previousPosition;
 
                         $scope.onMousedown = function ($event) {
-                            if ($scope.config.panOnClickDrag) {
+                            // @ vidamo
+                            // disable left mouse down
+                            if ($scope.config.panOnClickDrag && $event.which == 3) {
                                 previousPosition = {
                                     x: $event.pageX,
                                     y: $event.pageY

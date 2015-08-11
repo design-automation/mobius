@@ -3,7 +3,8 @@
   xmlns="http://www.w3.org/2000/svg"
   ng-mousedown="mouseDown($event)"
   ng-mousemove="mouseMove($event)"
-  context-menu="canvasMenuOptions">
+  oncontextmenu="return false;"
+>
   <defs>
     <linearGradient 
       spreadMethod="pad" 
@@ -119,7 +120,7 @@
         </path>
         <circle
             ng-attr-class="{{connection.selected() && 'selected-connection-endpoint' || (connection == mouseOverConnection && 'mouseover-connection-endpoint' || 'connection-endpoint')}}"
-            r="5" 
+            r="3"
             ng-attr-cx="{{connection.sourceCoordX()}}" 
             ng-attr-cy="{{connection.sourceCoordY()}}" 
             >
@@ -127,7 +128,7 @@
 
         <circle
             ng-attr-class="{{connection.selected() && 'selected-connection-endpoint' || (connection == mouseOverConnection && 'mouseover-connection-endpoint' || 'connection-endpoint')}}"
-            r="5" 
+            r="3"
             ng-attr-cx="{{connection.destCoordX()}}" 
             ng-attr-cy="{{connection.destCoordY()}}" 
             >

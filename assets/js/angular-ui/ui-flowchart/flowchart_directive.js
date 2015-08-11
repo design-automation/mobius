@@ -93,7 +93,6 @@ angular.module('flowChart', ['dragging'] )
         ['Delete', function () {
             $scope.$emit("deleteSelected");
         }],
-        // todo
         ['Rename', function () {
             $scope.$emit("renameSelected");
         }]
@@ -166,9 +165,6 @@ angular.module('flowChart', ['dragging'] )
 	this.connectorClass = 'connector';
 	this.nodeClass = 'node';
 
-	// @ vidamo for ng-attr-class
-	this.nameClass = 'name';
-
 	//
 	// Search up the HTML element tree for an element the requested class.
 	//
@@ -237,8 +233,68 @@ angular.module('flowChart', ['dragging'] )
 	};
 
 
-//	Called for each mouse move on the svg element.
+	// Called on mouse down in the chart.
+	// @ vidamo scale factor
 
+	$scope.mouseDown = function (evt) {
+
+		if(evt.which == 1){
+			$scope.chart.deselectAll();
+
+			dragging.startDrag(evt, {
+
+				//
+				// Commence dragging... setup variables to display the drag selection rect.
+				//
+				dragStarted: function (x, y) {
+
+					// msg from pan and zoom
+					$rootScope.$on("Update", function(event, message) {
+						$scope.scaleFactor = message;
+					});
+
+					$scope.dragSelecting = true;
+					var startPoint = controller.translateCoordinates(x, y, evt);
+					$scope.dragSelectionStartPoint = startPoint;
+					$scope.dragSelectionRect = {
+						x: startPoint.x*(1/$scope.scaleFactor ),
+						y: startPoint.y*(1/$scope.scaleFactor ),
+						width: 0,
+						height: 0,
+					};
+				},
+
+				//
+				// Update the drag selection rect while dragging continues.
+				//
+				dragging: function (x, y) {
+					var startPoint = $scope.dragSelectionStartPoint;
+					var curPoint = controller.translateCoordinates(x, y, evt);
+
+					$scope.dragSelectionRect = {
+						x: curPoint.x > startPoint.x ? startPoint.x*(1/$scope.scaleFactor ) : curPoint.x*(1/$scope.scaleFactor ),
+						y: curPoint.y > startPoint.y ? startPoint.y*(1/$scope.scaleFactor ) : curPoint.y*(1/$scope.scaleFactor ),
+						width: curPoint.x > startPoint.x ? curPoint.x*(1/$scope.scaleFactor ) - startPoint.x*(1/$scope.scaleFactor ) : startPoint.x - curPoint.x,
+						height: curPoint.y > startPoint.y ? curPoint.y*(1/$scope.scaleFactor ) - startPoint.y*(1/$scope.scaleFactor ) : startPoint.y*(1/$scope.scaleFactor ) - curPoint.y*(1/$scope.scaleFactor ),
+					};
+				},
+
+				//
+				// Dragging has ended... select all that are within the drag selection rect.
+				//
+				dragEnded: function () {
+					$scope.dragSelecting = false;
+					$scope.chart.applySelectionRect($scope.dragSelectionRect);
+					delete $scope.dragSelectionStartPoint;
+					delete $scope.dragSelectionRect;
+				},
+			});
+		}
+
+	};
+
+	//	Called for each mouse move on the svg element.
+	// @ vidamo scale factor
 	$scope.mouseMove = function (evt) {
 
 		//
@@ -248,8 +304,6 @@ angular.module('flowChart', ['dragging'] )
 		$scope.mouseOverConnector = null;
 		$scope.mouseOverNode = null;
 
-		// @ vidamo
-		$scope.mouseOverName = null;
 
 		var mouseOverElement = controller.hitTest(evt.clientX, evt.clientY);
 		if (mouseOverElement == null) {
@@ -276,14 +330,6 @@ angular.module('flowChart', ['dragging'] )
 			return;
 		}
 
-		// @ vidamo
-		// Figure out if the mouse is over a nodeName
-		//var scope = controller.checkForHit(mouseOverElement, controller.nameClass);
-		//$scope.mouseOverName = (scope && scope.node.name) ? scope.node.name : null;
-		//if ($scope.mouseOverName) {
-		//	// Don't attempt to mouse over anything else.
-		//	return;
-		//}
 
 		// Figure out if the mouse is over a node.
 		var scope = controller.checkForHit(mouseOverElement, controller.nodeClass);
@@ -337,7 +383,7 @@ angular.module('flowChart', ['dragging'] )
 				lastMouseCoords = curCoords;
 
 				// @vidamo dragging is considered as clicked (selected)
-				var nodeIndex = chart.handleNodeClicked(node, evt.ctrlKey);
+				var nodeIndex = chart.handleNodeDragged(node, evt.ctrlKey);
 				console.log("node ",nodeIndex," selected");
 				$scope.$emit("nodeIndex", nodeIndex);
 			},
@@ -346,11 +392,17 @@ angular.module('flowChart', ['dragging'] )
 			// The node wasn't dragged... it was clicked.
 			//
 			clicked: function () {
-                var nodeIndex = chart.handleNodeClicked(node, evt.ctrlKey);
+				if(evt.which === 1){
+					var nodeIndex = chart.handleNodeLeftClicked(node, evt.ctrlKey);
+				}
 
+				if(evt.which === 3){
+					var nodeIndex = chart.handleNodeRightClicked(node, evt.ctrlKey);
+				}
 				// @ vidamo let controller know the current node
-                console.log("node ",nodeIndex," selected");
-                $scope.$emit("nodeIndex", nodeIndex);
+				console.log("node ",nodeIndex," selected");
+				$scope.$emit("nodeIndex", nodeIndex);
+
 			}
 
 		});
@@ -368,60 +420,56 @@ angular.module('flowChart', ['dragging'] )
 		evt.preventDefault();
 	};
 
-	// @ vidamo handle mousedown on a node name
-	$scope.nameMouseDown = function (evt, node) {
-		console.log('node name clicked!');
-	};
 
 	//
 	// Handle mousedown on an input connector.
-	//
+	// @ vidamo scale factor
 	$scope.connectorMouseDown = function (evt, node, connector, connectorIndex, isInputConnector) {
 
-		//
-		// Initiate dragging out of a connection.
-		//
-		dragging.startDrag(evt, {
+					//
+					// Initiate dragging out of a connection.
+					//
+					dragging.startDrag(evt, {
 
-			//
-			// Called when the mouse has moved greater than the threshold distance
-			// and dragging has commenced.
-			//
+						//
+						// Called when the mouse has moved greater than the threshold distance
+						// and dragging has commenced.
+						//
 
 
-			dragStarted: function (x, y) {
+						dragStarted: function (x, y) {
 
-				var curCoords = controller.translateCoordinates(x, y);
+							var curCoords = controller.translateCoordinates(x, y);
 
-                $rootScope.$on("Update", function(event, message) {
-                    $scope.scaleFactor = message;
-                });
+							$rootScope.$on("Update", function(event, message) {
+								$scope.scaleFactor = message;
+							});
 
-				$scope.draggingConnection = true;
-				$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector);
-				$scope.dragPoint2 = {
-					x: curCoords.x*(1/$scope.scaleFactor ),
-					y: curCoords.y*(1/$scope.scaleFactor )
-				};
-				$scope.dragTangent1 = flowchart.computeConnectionSourceTangent($scope.dragPoint1, $scope.dragPoint2);
-				$scope.dragTangent2 = flowchart.computeConnectionDestTangent($scope.dragPoint1, $scope.dragPoint2);
-			},
+							$scope.draggingConnection = true;
+							$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector);
+							$scope.dragPoint2 = {
+								x: curCoords.x*(1/$scope.scaleFactor ),
+								y: curCoords.y*(1/$scope.scaleFactor )
+							};
+							$scope.dragTangent1 = flowchart.computeConnectionSourceTangent($scope.dragPoint1, $scope.dragPoint2);
+							$scope.dragTangent2 = flowchart.computeConnectionDestTangent($scope.dragPoint1, $scope.dragPoint2);
+						},
 
-			//
-			// Called on mousemove while dragging out a connection.
-			//
-			dragging: function (x, y) {
-				var startCoords = controller.translateCoordinates(x, y);
+						//
+						// Called on mousemove while dragging out a connection.
+						//
+						dragging: function (x, y) {
+							var startCoords = controller.translateCoordinates(x, y);
 
-				//
-				// @ vidamo communicate with pan&zoom controller to correct scale
-                //
-				$rootScope.$on("Update", function(event, message) {
-                    $scope.scaleFactor = message;
-                });
+							//
+							// @ vidamo communicate with pan&zoom controller to correct scale
+							//
+							$rootScope.$on("Update", function(event, message) {
+								$scope.scaleFactor = message;
+							});
 
-				$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector);
-				$scope.dragPoint2 = {
+							$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector);
+							$scope.dragPoint2 = {
 					x: startCoords.x*(1/$scope.scaleFactor ),
 					y: startCoords.y*(1/$scope.scaleFactor )
 				};
