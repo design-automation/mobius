@@ -1105,6 +1105,7 @@ var flowchart = {
 		this.applySelectionRect = function (selectionRect) {
 
 			this.deselectAll();
+			var index = 0;
 
 			for (var i = 0; i < this.nodes.length; ++i) {
 				var node = this.nodes[i];
@@ -1115,6 +1116,7 @@ var flowchart = {
 				{
 					// Select nodes that are within the selection rect.
 					node.select();
+					index = node.data.id;
 				}
 
 				// @ vidamo select connectors within the selection rect.
@@ -1153,6 +1155,7 @@ var flowchart = {
 				}
 			}
 
+			return index;
 		};
 
 		//

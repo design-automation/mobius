@@ -284,7 +284,8 @@ angular.module('flowChart', ['dragging'] )
 				//
 				dragEnded: function () {
 					$scope.dragSelecting = false;
-					$scope.chart.applySelectionRect($scope.dragSelectionRect);
+					var index = $scope.chart.applySelectionRect($scope.dragSelectionRect);
+					$scope.$emit("nodeIndex", index);
 					delete $scope.dragSelectionStartPoint;
 					delete $scope.dragSelectionRect;
 				},
@@ -384,7 +385,6 @@ angular.module('flowChart', ['dragging'] )
 
 				// @vidamo dragging is considered as clicked (selected)
 				var nodeIndex = chart.handleNodeDragged(node, evt.ctrlKey);
-				console.log("node ",nodeIndex," selected");
 				$scope.$emit("nodeIndex", nodeIndex);
 			},
 

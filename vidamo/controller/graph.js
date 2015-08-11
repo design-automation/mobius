@@ -239,7 +239,7 @@ vidamo.controller('graphCtrl',[
             }
 
             // update generated code
-           generateCode.generateCode();
+            generateCode.generateCode();
         });
 
         $scope.$on("renameSelected",function(){
