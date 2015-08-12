@@ -1,10 +1,10 @@
 //
-// data pool for different type of nodes
+// data pool for default types of nodes
 //
-
 
 vidamo.factory('nodeCollection', function () {
     var nodes = [{
+
         // node type
         nodeType: 'empty',
 

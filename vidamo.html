@@ -165,15 +165,15 @@
 
                                             <div class = "buttons">
 
-                                                <ui-select ng-model="type.selected"
-                                                           append-to-body = "true"
-                                                           on-select="addNewNode(this.type.selected)"
-                                                        class="new-node">
-                                                    <ui-select-match placeholder="New node">{{$select.selected}}</ui-select-match>
-                                                    <ui-select-choices repeat="type in nodeTypes()| filter: $select.search">
-                                                        <span ng-bind-html="type| highlight: $select.search"></span>
-                                                    </ui-select-choices>
-                                                </ui-select>
+                                                <!--<ui-select ng-model="type.selected"-->
+                                                           <!--append-to-body = "true"-->
+                                                           <!--on-select="addNewNode(this.type.selected)"-->
+                                                        <!--class="new-node">-->
+                                                    <!--<ui-select-match placeholder="New node">{{$select.selected}}</ui-select-match>-->
+                                                    <!--<ui-select-choices repeat="type in nodeTypes()| filter: $select.search">-->
+                                                        <!--<span ng-bind-html="type| highlight: $select.search"></span>-->
+                                                    <!--</ui-select-choices>-->
+                                                <!--</ui-select>-->
 
                                                 <!--<button class="btn btn-default btn-xs"-->
                                                         <!--ng-click="addNewInputConnector()"-->
@@ -196,6 +196,7 @@
                                                         <!--title="Delete selected nodes and connections">-->
                                                     <!--Delete-->
                                                 <!--</button>-->
+
                                                 <span ng-controller="executeCtrl">
                                                     <button class="btn btn-default btn-xs"
                                                             ng-click="run()"
@@ -234,21 +235,21 @@
                             <div ui-layout-container size = "85%">
                                 <div id="3dviewport" >
                                 </div>
-                                <!--<div ng-controller="graphCtrl">-->
-                                    <!--<textarea-->
-                                            <!--style="width: 100%; height: 100%;-->
-                                            <!--padding-top: 8px;-->
-                                            <!--padding-left: 8px;-->
-                                            <!--padding-right: 8px;-->
-                                            <!--padding-bottom: 20px;-->
-                                            <!--font-size: 12px;-->
-                                            <!--overflow: auto;-->
-                                            <!--position: absolute;"-->
-                                            <!--chart-json-edit-->
-                                            <!--view-model="chartViewModel"-->
-                                            <!-->-->
-                                    <!--</textarea>-->
-                                <!--</div>-->
+<!--                                 <div ng-controller="graphCtrl">
+                                    <textarea
+                                            style="width: 100%; height: 100%;
+                                            padding-top: 8px;
+                                            padding-left: 8px;
+                                            padding-right: 8px;
+                                            padding-bottom: 20px;
+                                            font-size: 12px;
+                                            overflow: auto;
+                                            position: absolute;"
+                                            chart-json-edit
+                                            view-model="chartViewModel"
+                                            >
+                                    </textarea>
+                                </div> -->
                             </div>
 
                             <div ui-layout-container size = "15%" class="monitor">
@@ -292,7 +293,7 @@
                                                                                              'glyphicon-chevron-down': !collapsed}">
                                                                 </i>
                                                             </a>
-                                                            {{node.title}}
+                                                           {{node.title}}
                                                             <a class="pull-right btn btn-xs"
                                                                data-nodrag ng-click="remove(this)">
                                                                             <span class="glyphicon glyphicon-remove">

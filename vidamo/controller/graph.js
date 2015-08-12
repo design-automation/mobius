@@ -112,6 +112,7 @@ vidamo.controller('graphCtrl',[
 
         // Add a new node to the chart.
         // todo double click to trigger
+
         $scope.addNewNode = function (type) {
 
             // promote for name of new node
@@ -142,6 +143,9 @@ vidamo.controller('graphCtrl',[
 
             // add new node data model to view model
             $scope.chartViewModel.addNode(newNodeDataModel);
+
+            // clean dropdown menu
+            $scope.$emit('cleanGraph');
 
             // update generated code
             generateCode.generateCode();
@@ -186,7 +190,7 @@ vidamo.controller('graphCtrl',[
         $scope.$on("newOutputConnector",function () {
 
             try{
-                     // todo set time out
+                    // todo set time out
                     var connectorName = prompt("Enter a connector name:", "out"
                         + $scope.chartViewModel.nodes[$scope.nodeIndex].outputConnectors.length);
 

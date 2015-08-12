@@ -137,7 +137,16 @@ angular.module('flowChart', ['dragging'] )
 	$scope.dragSelecting = false;
 
 	// @ vidamo for zoom and pan
-    $scope.scaleFactor = 2;
+    $rootScope.$on("Update", function(event, message) {
+        $scope.scaleFactor = message;
+
+        //
+        // @ vidamo scale the new node dropdown
+        // fixme
+
+        // todo shall hide dropdown when zoom?
+        document.getElementById("node-creator").style.transform = 'scale(' + (1/$scope.scaleFactor)+')';
+    });
 
 	/* Can use this to test the drag selection rect.
 	$scope.dragSelectionRect = {
@@ -149,14 +158,30 @@ angular.module('flowChart', ['dragging'] )
 	*/
 
 	//
+	// @ vidamo test for double click menu
+	//
+	$scope.dbClickMenu = {
+		x:0,
+		y:0,
+		width:0,
+		height:0
+	};
+
+	//
+	// @ vidamo clean dropdown menu after node added or cancelled
+	//
+	$scope.$on('cleanGraph',function(){
+        document.getElementById("node-creator").style.display = "none";
+	});
+
+	//
 	// Reference to the connection, connector or node that the mouse is currently over.
 	//
 	$scope.mouseOverConnector = null;
 	$scope.mouseOverConnection = null;
 	$scope.mouseOverNode = null;
 
-	// @ vidamo for edit node name
-	$scope.mouseOverName = null;
+
 
 	//
 	// The class for connections and connectors.
@@ -232,6 +257,32 @@ angular.module('flowChart', ['dragging'] )
 		return point.matrixTransform(matrix.inverse());
 	};
 
+	//
+	// @ vidamo double click to toggle dropdown for new node
+	//
+	$scope.doubleClick = function(evt){
+
+        // make sure double click not on node/connection
+        // todo
+
+        // update zoom factor
+        $rootScope.$on("Update", function(event, message) {
+            $scope.scaleFactor = message;
+        });
+
+        // enable dropdown
+        document.getElementById("node-creator").style.display = "inline-block";
+
+
+        // update dropdown location
+		var dBclickPoint = controller.translateCoordinates(evt.clientX, evt.clientY);
+		$scope.dbClickMenu.x = dBclickPoint.x * (1/$scope.scaleFactor );
+		$scope.dbClickMenu.y = dBclickPoint.y *(1/$scope.scaleFactor );
+
+        // todo node location
+        $scope.chart.newPos.x = $scope.dbClickMenu.x;
+        $scope.chart.newPos.y = $scope.dbClickMenu.y;
+	};
 
 	// Called on mouse down in the chart.
 	// @ vidamo scale factor
@@ -240,6 +291,15 @@ angular.module('flowChart', ['dragging'] )
 
 		if(evt.which == 1){
 			$scope.chart.deselectAll();
+
+            //
+            // @ vidamo toggle new node dropdown
+            // fixme
+
+            var mouseOverElement = controller.hitTest(evt.clientX, evt.clientY);
+            if(mouseOverElement instanceof SVGElement){
+                document.getElementById("node-creator").style.display = "none";
+            }
 
 			dragging.startDrag(evt, {
 
@@ -285,7 +345,9 @@ angular.module('flowChart', ['dragging'] )
 				dragEnded: function () {
 					$scope.dragSelecting = false;
 					var index = $scope.chart.applySelectionRect($scope.dragSelectionRect);
-					$scope.$emit("nodeIndex", index);
+					if(index){
+						$scope.$emit("nodeIndex", index);
+					}
 					delete $scope.dragSelectionStartPoint;
 					delete $scope.dragSelectionRect;
 				},
@@ -345,6 +407,11 @@ angular.module('flowChart', ['dragging'] )
 	// Handle mousedown on a node.
 	//
 	$scope.nodeMouseDown = function (evt, node) {
+        //
+        // @ vidamo toggle new node dropdown
+        // fixme control
+        document.getElementById("node-creator").style.display = "none";
+
 
 		var chart = $scope.chart;
 		var lastMouseCoords;
@@ -412,6 +479,11 @@ angular.module('flowChart', ['dragging'] )
 	// Handle mousedown on a connection.
 	//
 	$scope.connectionMouseDown = function (evt, connection) {
+        //
+        // @ vidamo toggle new node dropdown
+        // fixme control
+        document.getElementById("node-creator").style.display = "none";
+
 		var chart = $scope.chart;
 		chart.handleConnectionMouseDown(connection, evt.ctrlKey);
 
@@ -425,6 +497,10 @@ angular.module('flowChart', ['dragging'] )
 	// Handle mousedown on an input connector.
 	// @ vidamo scale factor
 	$scope.connectorMouseDown = function (evt, node, connector, connectorIndex, isInputConnector) {
+        //
+        // @ vidamo toggle new node dropdown
+        // fixme control
+        document.getElementById("node-creator").style.display = "none";
 
 					//
 					// Initiate dragging out of a connection.

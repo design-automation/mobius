@@ -89,10 +89,9 @@ a{
     width: 22px;
 }
 
-.graph-area .buttons .new-node{
+.new-node{
     width:90px;
     display: inline-block;
-    bottom:0
 }
 
 /**************************

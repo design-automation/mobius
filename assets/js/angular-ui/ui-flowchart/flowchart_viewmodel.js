@@ -43,6 +43,7 @@ var flowchart = {
 		};
 	};
 
+
 	//
 	// View model for a connector.
 	// @ vidamo add selection for connector deletion
@@ -231,13 +232,7 @@ var flowchart = {
 		};
 
 
-		//
-		// @ vidamo internal function to delete a connector
-		//
 
-		this._deleteConnector = function (){
-
-		};
 		//
 		// Add an input connector to the node.
 		//
@@ -446,6 +441,10 @@ var flowchart = {
         // variable for topological sort
         var edgeList = [];
 
+
+		// @ vidamo new node position
+		this.newPos = {x:1900,y:2100};
+
 		//
 		// Find a specific node within the chart.
 		//
@@ -626,7 +625,13 @@ var flowchart = {
 				this.data.nodes = [];
 			}
 
-			// 
+			console.log(			this.newPos.x,
+			this.newPos.y);
+
+			nodeDataModel.x = this.newPos.x;
+			nodeDataModel.y = this.newPos.y;
+
+			//
 			// Update the data model.
 			//
 			this.data.nodes.push(nodeDataModel);

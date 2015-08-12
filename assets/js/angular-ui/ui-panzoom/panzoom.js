@@ -390,7 +390,9 @@ function ($document, PanZoomService) {
                                     x: $event.pageX - frameElement.offset().left,
                                     y: $event.pageY - frameElement.offset().top
                                 };
-                                zoomIn(clickPoint);
+                                // @ vidamo
+                                // disable double click to zoom
+                                //zoomIn(clickPoint);
                             }
                         };
 

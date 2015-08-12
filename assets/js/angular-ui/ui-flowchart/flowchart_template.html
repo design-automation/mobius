@@ -3,6 +3,7 @@
   xmlns="http://www.w3.org/2000/svg"
   ng-mousedown="mouseDown($event)"
   ng-mousemove="mouseMove($event)"
+  ng-dblclick ="doubleClick($event)"
   oncontextmenu="return false;"
 >
   <defs>
@@ -174,5 +175,26 @@
       ng-attr-height="{{dragSelectionRect.height}}"
     >
   </rect>
-  
+
+    <foreignObject
+        ng-attr-x="{{dbClickMenu.x}}"
+        ng-attr-y="{{dbClickMenu.y}}"
+        ng-attr-width="{{dbClickMenu.width}}"
+        ng-attr-height="{{dbClickMenu.height}}"
+    >
+        <body xmlns="http://www.w3.org/1999/xhtml">
+            <div ng-controller="graphCtrl" id = "node-creator" style="width:100px; ">
+                <ui-select ng-model="type.selected"
+                           append-to-body = "true"
+                           on-select="addNewNode(this.type.selected)"
+                        >
+                    <ui-select-match placeholder="New node" >{{$select.selected}}</ui-select-match>
+                    <ui-select-choices repeat="type in nodeTypes()| filter: $select.search">
+                        <span ng-bind-html="type| highlight: $select.search"></span>
+                    </ui-select-choices>
+
+                </ui-select>
+            </div>
+        </body>
+    </foreignObject>
 </svg>
