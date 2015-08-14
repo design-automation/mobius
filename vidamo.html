@@ -92,7 +92,7 @@
             <div ui-layout>
                 <div class="layout-area" ui-layout="{flow : 'column'}">
                     <!--graph area-->
-                        <div class="graph-area" ui-layout-container size="25%" >
+                        <div class="graph-area" ui-layout-container size="25%">
                             <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
                                 <!--pan & zoom field-->
                                     <div
@@ -156,8 +156,6 @@
                                                         Run
                                                     </button>
                                                 </span>
-
-
                                             </div>
                                         </div>
                                     </div>
@@ -184,11 +182,10 @@
                     <div class=" view-area" ui-layout-container size="50%">
                         <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
                         <!--threejs editor view port-->
-                            <div ui-layout-container size = "85%">
-                                <div viewport id="threeViewport">
+                            <div ui-layout-container size = "85%" id="xxx">
+
+                                <div viewport id="threeViewport" ng-controller="viewportCtrl">
                                 </div>
-                                <!--<div id="3dviewport" >-->
-                                <!--</div>-->
 
                                 <!--<div ng-controller="graphCtrl">-->
                                     <!--<textarea-->
@@ -930,7 +927,6 @@
     <script src="assets/js/threejs/build/three.js"></script>
     <script src="assets/js/threejs/examples/js/controls/TransformControls.js"></script>
     <script src="assets/js/threejs/examples/js/controls/OrbitControls.js"></script>
-    <script src="assets/js/threejs/windowresize.js"></script>
 
      <!-- app -->
      <script src="vidamo/app.js"></script>
@@ -942,6 +938,7 @@
      <script src="vidamo/controller/panzoom.js"></script>
      <script src="vidamo/controller/execute.js"></script>
      <script src="vidamo/controller/console.js"></script>
+
     <!-- directives -->
     <script src="vidamo/directive/contextMenu.js"></script>
     <script src="vidamo/directive/viewPort.js"></script>

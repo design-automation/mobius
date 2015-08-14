@@ -105,6 +105,8 @@ a{
     margin-bottom: 2px;
 }
 .view-area #threeViewport {
+    padding: 0;
+    margin: 0;
     position: absolute;
     background-color: black;
     top: 0;
