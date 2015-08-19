@@ -567,6 +567,7 @@ var flowchart = {
 
 			//
 			// @ vidamo transfer data value through conenctions
+			// fixme no longer in use
 			//
             if (sourceFlag == true ){
                 if(destFlag == true){
@@ -625,9 +626,6 @@ var flowchart = {
 				this.data.nodes = [];
 			}
 
-			console.log(			this.newPos.x,
-			this.newPos.y);
-
 			nodeDataModel.x = this.newPos.x;
 			nodeDataModel.y = this.newPos.y;
 
@@ -641,12 +639,6 @@ var flowchart = {
 			//
 			this.nodes.push(new flowchart.NodeViewModel(nodeDataModel));
 
-			//
-			// @vidamo
-			//
-            // print out the new node index in console
-            console.log('======================================================================');
-            console.log(nodeDataModel.name + " created; node id:" + (this.data.nodes.length-1));
 
             //
             // iterate through the nodes and print out the input and output of each node
@@ -677,6 +669,7 @@ var flowchart = {
 			// @ vidamo
 			// Update the edgeList
 			edgeList = [];
+
 			for(var j=0;j<this.data.connections.length;j++){
 				edgeList.push([this.data.connections[j].source.nodeID, this.data.connections[j].dest.nodeID]);
 			}

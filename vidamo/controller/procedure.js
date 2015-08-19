@@ -54,7 +54,10 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','generateCode',
         $scope.dataTypes = ['var','list'];
 
         // control types
-        $scope.controlTypes = ['for item in list'];
+        $scope.controlTypes = ['for item in list',
+                                'for loop',
+                                'while loop',
+                                'if else'];
 
         // methods types
         $scope.methods = [  {name:'get input', usage:'I/O'},
@@ -208,6 +211,8 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','generateCode',
                     $scope.data.push({
                         id: $scope.data.length  + 1,
                         title:  'Control',
+                        nodesIf:[],
+                        nodesElse:[],
                         nodes: [],
                         controlType: undefined,
                         dataName:undefined,

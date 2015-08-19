@@ -1,0 +1,62 @@
+<div ui-tree-handle class="tree-node tree-node-content">
+    <accordion>
+        <accordion-group is-open="true">
+            <accordion-heading>
+                <a ng-if="node.nodes && node.nodes.length > 0
+                          || node.nodes && node.nodes.length == 0"
+                   data-nodrag ng-click="toggle(this)">
+                    <i class="glyphicon"
+                       ng-class=
+                               "{'glyphicon-chevron-right': collapsed,
+                                'glyphicon-chevron-down': !collapsed}">
+                    </i>
+                </a>
+                {{node.title}}
+                <a class="pull-right btn btn-xs"
+                   data-nodrag ng-click="remove(this)">
+                    <span class="glyphicon glyphicon-remove">
+                    </span>
+                </a>
+            </accordion-heading>
+
+            <div ui-tree-nodes=""
+                 ng-model="node.nodes"
+                 ng-class="{hidden: collapsed}">
+
+                <!--data name and value for interface data -->
+                <div ng-if="node.title == 'Data'">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-addon"> data name: </span>
+
+                        <ui-select ng-model="addToInterface"
+                                   append-to-body = "true"
+                                   class = "procedure-select"
+                                   on-select="applyValue('addToInterface', this.addToInterface,node)">
+                            <ui-select-match placeholder="{{node.dataName}}">{{$select.selected.dataName}}</ui-select-match>
+                            <ui-select-choices
+                                    repeat="node in flattenData | dataFilter | dataNameFilter| filter: $select.search">
+                                <div>
+                                    <span ng-bind-html="node.dataName| highlight: $select.search"></span>
+                                </div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-addon" >data value</span>
+                        <input class="form-control"
+                               name="interfaceValue"
+                               placeholder="{{node.dataValue}}"
+                               ng-model="interfaceValue"
+                               ng-change=
+                                       "applyValue('interfaceValue',this.interfaceValue,node)">
+                    </div>
+                </div>
+
+                <div ng-repeat="node in node.nodes"
+                     ui-tree-node ng-include="'vidamo/template/interface.html'">
+                </div>
+            </div>
+        </accordion-group>
+    </accordion>
+</div>

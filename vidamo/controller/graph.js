@@ -74,6 +74,9 @@ vidamo.controller('graphCtrl',[
         };
 
 
+        // fixme for node name
+        $scope.nextNodeId = 0;
+
         // currently selected node ID
         $scope.nodeIndex = '';
 
@@ -81,12 +84,8 @@ vidamo.controller('graphCtrl',[
         $scope.currentNodeName = '';
 
 
-        // Selects the next node id.
-        var nextNodeID = 0;
-
         // number of deleted nodes which have the largest node id
         // in order to correct the new node id
-        var numOfDeletedTopNode =0;
 
         // Setup the data-model for the chart.
         var chartDataModel = {
@@ -111,12 +110,10 @@ vidamo.controller('graphCtrl',[
 
 
         // Add a new node to the chart.
-        // todo double click to trigger
 
         $scope.addNewNode = function (type) {
-
             // promote for name of new node
-            var nodeName = prompt('Enter a node name:', 'node' + ($scope.chartViewModel.nodes.length + numOfDeletedTopNode));
+            var nodeName = prompt('Enter a node name:', 'node' + $scope.nextNodeId);
 
             // validate input name
             if (!isValidName(nodeName)) {
@@ -127,7 +124,7 @@ vidamo.controller('graphCtrl',[
             var newNodeDataModel = nodeCollection.getNodeDataModel(type);
 
             // update node name, node id and location
-            newNodeDataModel.id = nextNodeID++;
+            newNodeDataModel.id = $scope.chartViewModel.nodes.length;
             newNodeDataModel.name = nodeName;
             newNodeDataModel.x = 1900;
             newNodeDataModel.y = 2100;
@@ -147,6 +144,7 @@ vidamo.controller('graphCtrl',[
             // clean dropdown menu
             $scope.$emit('cleanGraph');
 
+            $scope.nextNodeId++;
             // update generated code
             generateCode.generateCode();
         };
@@ -212,18 +210,16 @@ vidamo.controller('graphCtrl',[
                 document.getElementById('log').innerHTML += "<div style='color: red'>Error: no node selected!</div>";
             }
 
-
             // update generated code
             generateCode.generateCode();
         });
 
         // Delete selected nodes and connections in data&view model
 
-        $scope.$on("deleteSelected", function () {
+        $scope.$on("deleteSelected", function (){
             var deletedNodeIds = $scope.chartViewModel.deleteSelected();
 
             // ensure the deleted ids are sorted in ascend order
-            // todo actually not necessary, why
             // deletedNodeIds.sort(function(a,b){return b-a;});
 
             // update only if selected is a node
@@ -231,24 +227,18 @@ vidamo.controller('graphCtrl',[
 
             for(var i = deletedNodeIds.length -1; i >= 0 ; i--){
                 // update scene data structure
-                nextNodeID --;
                 $scope.dataList.splice(deletedNodeIds[i],1);
                 $scope.codeList.splice(deletedNodeIds[i],1);
                 $scope.interfaceList.splice(deletedNodeIds[i],1);
-
-                // using this variable for auto fill node name correction
-                if(deletedNodeIds[i] != chartDataModel.nodes.length){
-                    numOfDeletedTopNode++;
-                }
             }
 
             // update generated code
             generateCode.generateCode();
         });
 
+
         $scope.$on("renameSelected",function(){
             // todo set time out
-
             var newName = prompt('Enter a new name:');
             $scope.chartViewModel.renameSelected(newName);
         });
