@@ -211,9 +211,9 @@ right pane code area
 }
 
 .code-area .tabArea{
-    position: absolute;
-    right: 0;
-    width: 100%;
+    /*position: absolute;*/
+    /*right: 0;*/
+    /*width: 100%;*/
     /*fixme css3*/
     height:  calc(100% - 100px);
     overflow: auto;
@@ -227,37 +227,15 @@ right pane code area
     font-weight: 400;
 }
 
-.code-area .procedure-select{
-    width: 100%;
-}
-
-/* hack for ui-tree procedure tree structure*/
-.angular-ui-tree-handle {
-    background: #ffffff;
-    border: 0px solid #ffffff;
-    color: #ffffff;
-    padding: 0px 0px;
-}
-
-.angular-ui-tree-handle:hover {
-    color: #ffffff;
-    background: #f4f6f7;
-    border-color: #dce2e8;
-}
-
 .angular-ui-tree-placeholder {
-    background: #f0f9ff;
-    border: 2px dashed #bed2db;
-    box-sizing: border-box;
-}
 
+}
 
 /*hack for bootstrap*/
 .group-title {
     background-color: #687074 !important;
     color: #FFF !important;
 }
-
 
 .panel-default > .panel-heading {
     padding: 6px;
@@ -278,39 +256,13 @@ right pane code area
     border-left: 2px solid #aaaaaa !important;
 }
 
-.input-group-sm > .input-group-addon {
-    padding: 5px 10px !important;
-    font-size: 12px !important;
-    height: 22px !important;
-    line-height: 1 !important;
-    background-color: #ffffff;
-}
 
-.input-group-sm >.form-control{
-    padding: 2px 6px !important;
-    font-size: 12px !important;
-    height: 24px !important;
-    line-height: 1 !important;
-}
 
-.btn {
-    padding: 0 4px 0 4px!important;
-    margin: 0px;
-    font-size: 12px !important;
-    height: 24px !important;
-    line-height: 1 !important;
-}
+/*.btn {*/
+    /*padding: 0 4px 0 4px!important;*/
+    /*margin: 0px;*/
+    /*font-size: 12px !important;*/
+    /*height: 24px !important;*/
+    /*line-height: 1 !important;*/
+/*}*/
 
-.form-control{
-    padding: 6px !important;
-    font-size: 12px !important;
-    height: 24px !important;
-    line-height: 1 !important;
-}
-
-.input-group-sm {
-    padding: 5px 10px !important;
-    font-size: 12px !important;
-    height: 24px !important;
-    line-height: 1 !important;
-}

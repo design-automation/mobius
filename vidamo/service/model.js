@@ -274,7 +274,6 @@ vidamo.factory('generateCode', function () {
                 var codeBlock = '';
 
                 if(procedure.title == "Data"){
-                    if(procedure.dataType == 'var'){
                         codeBlock = intentation + "    " + "var "
                             + procedure.dataName
                             + " = "
@@ -282,19 +281,6 @@ vidamo.factory('generateCode', function () {
 
                         data.javascriptCode += codeBlock;
                         data.codeList[nodeIndex] += codeBlock;
-                    }
-                    else if(procedure.dataType == 'list'){
-                        data.javascriptCode += intentation + "    " + "var "
-                            + procedure.dataName
-                            + ' = '
-                            + '[' + procedure.dataValue + "];\n";
-
-                        data.codeList[nodeIndex] += intentation + "    " + "var "
-                            + procedure.dataName
-                            + ' = '
-                            + '[' + procedure.dataValue + "];\n";
-                    }
-
                 }
             }
 

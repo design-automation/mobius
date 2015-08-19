@@ -11,11 +11,17 @@ var vidamo = angular.module('vidamo',
                             'ui.tree',
                             'flowChart',
                             'panzoom',
+                            'xeditable',
                             'ui.bootstrap.contextMenu']);
 
     // Simple service to create a prompt.
     vidamo.service('prompt', function () {
         return prompt;
+    });
+
+    // bootstrap3 theme. Can be also 'bs2', 'default'
+    vidamo.run(function(editableOptions) {
+        editableOptions.theme = 'bs3';
     });
 
     // config to add blob as safe prefix in the white list

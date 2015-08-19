@@ -51,7 +51,6 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','generateCode',
 
         // procedure select dropdown types
         // data types
-        $scope.dataTypes = ['var','list'];
 
         // control types
         $scope.controlTypes = ['for item in list',
@@ -84,6 +83,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','generateCode',
 
             $scope.interface = $scope.interfaceList[$scope.nodeIndex];
         });
+
 
         // watch change of procedure data tree, if change update the flattenData
         $scope.$watch('data', function(){
@@ -184,6 +184,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','generateCode',
                         inputConnectors: $scope.chartViewModel.nodes[$scope.nodeIndex].data.inputConnectors,
                         outputConnectors:$scope.chartViewModel.nodes[$scope.nodeIndex].data.outputConnectors,
                     });
+                    console.log($scope.data);
                 } else if(cate == 'Action'){
                     $scope.data.push({
                         id: $scope.data.length  + 1,
@@ -243,12 +244,6 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','generateCode',
 
                 case 'dataValue':
                     location.dataValue = value;
-                    break;
-
-                case 'dataType':
-                    location.dataType = value;
-                    location.dataName = undefined;
-                    location.dataValue = undefined;
                     break;
 
                 //
