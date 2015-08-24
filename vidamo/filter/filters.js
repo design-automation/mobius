@@ -51,7 +51,7 @@ vidamo.filter('positionFilter', function() {
                 }
             }
 
-            if(tempIndex <= index){
+            if(tempIndex < index){
                 filtered.push(item);
             }
         });

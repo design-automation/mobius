@@ -4,8 +4,8 @@
 
 // todo value of in/out connector is not used
 
-vidamo.controller('procedureCtrl',['$scope','$rootScope','generateCode',
-    function($scope,$rootScope,generateCode) {
+vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode',
+    function($scope,$rootScope,$filter,generateCode) {
 
         // synchronization with vidamo application data pool
 
@@ -53,20 +53,19 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','generateCode',
         // data types
 
         // control types
-        $scope.controlTypes = ['for item in list',
-                                'for loop',
-                                'while loop',
+        $scope.controlTypes = ['for each',
                                 'if else'];
 
         // methods types
-        $scope.methods = [  {name:'get input', usage:'I/O'},
+        $scope.methods = [
+            //{name:'get input', usage:'I/O'},
             {name:'set output', usage:'I/O'},
-            {name: 'print data', usage:'General'},
-            {name: 'list length', usage:'List'},
-            {name: 'list item', usage:'List'},
-            {name: 'sort list', usage:'List'},
-            {name: 'reverse list', usage:'List'},
-            {name: 'combine lists', usage:'List'}
+            {name: 'print', usage:'General'},
+            //{name: 'list length', usage:'List'},
+            //{name: 'list item', usage:'List'},
+            //{name: 'sort list', usage:'List'},
+            //{name: 'reverse list', usage:'List'},
+            //{name: 'combine lists', usage:'List'}
         ];
 
         // listen to the graph, when a node is clicked, update the procedure/ interface tabs
@@ -99,6 +98,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','generateCode',
                 if(n['title'] == 'Data'){
                     var props=['id',
                                 'title',
+                                'type',
                                 'dataName',
                                 'dataValue',
                                 'inputConnectors',
@@ -119,11 +119,14 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','generateCode',
                     var props=['id',
                                 'title',
                                 'controlType',
+                        'nodes',
+
                                 'dataName',
                                 'forList',
                                 'inputConnectors',
                                 'outputConnectors']
                 }
+
 
                 var i,l,
                     result={};
@@ -157,6 +160,30 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','generateCode',
             // object of flatten procedure data tree
             $scope.flattenData = nodes;
 
+            // observing all data procedures, if duplicated, change type to 'assign'
+            // indicating assign value to existing variable instead of creating new variable
+            for(var i in $scope.flattenData){
+                var previous;
+                previous = $filter('positionFilter')($scope.data,$scope.flattenData[i].id,$scope);
+
+                // if is data
+                if($scope.flattenData[i].title === 'Data'){
+                    for(var j in previous){
+                        // with same dataName in previous
+                        if(previous[j].dataName === $scope.flattenData[i].dataName){
+                            for(var k in $scope.data){
+                                if($scope.data[k].id ===  $scope.flattenData[i].id){
+                                    $scope.data[k].type = 'assign';
+                                    console.log('this is assign!')
+                                }
+                                if($scope.data[k].id === previous[j].id){
+                                    $scope.data[k].type = 'new';
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }, true);
 
         //
@@ -172,7 +199,9 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','generateCode',
             scope.toggle();
         };
 
-        $scope.newItem = function(cate) {
+
+
+        $scope.newItem = function(cate,type) {
             try{
                 if(cate == 'Data'){
                     $scope.data.push({
@@ -181,23 +210,34 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','generateCode',
                         nodes: [],
                         dataName:undefined,
                         dataValue:undefined,
+                        // create new variable or assign value to existing variable
+                        type:undefined,
                         inputConnectors: $scope.chartViewModel.nodes[$scope.nodeIndex].data.inputConnectors,
-                        outputConnectors:$scope.chartViewModel.nodes[$scope.nodeIndex].data.outputConnectors,
+                        outputConnectors:$scope.chartViewModel.nodes[$scope.nodeIndex].data.outputConnectors
                     });
-                    console.log($scope.data);
                 } else if(cate == 'Action'){
+                    var parameters = [];
+                    var result;
+                    switch(type){
+                        case 'print':
+                            parameters.push({type:'variable', value:'variable to print'});
+                            result = undefined;
+                            break;
+                    }
+
                     $scope.data.push({
                         id: $scope.data.length  + 1,
                         title:  'Action',
                         nodes: [],
 
-                        // for method name
+                        // method name
+                        method:type,
 
-                        method:'',
+                        // method's arguments
+                        parameters:parameters,
 
-                        // for method's arguments
-
-                        parameters:[],
+                        // method's return value
+                        result:result,
 
                         // if the method is get data from input port, use following two as holder
 
@@ -205,22 +245,57 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','generateCode',
                         dataName:undefined,
                         dataValue:undefined,
                         inputConnectors: $scope.chartViewModel.nodes[$scope.nodeIndex].data.inputConnectors,
-                        outputConnectors:$scope.chartViewModel.nodes[$scope.nodeIndex].data.outputConnectors,
+                        outputConnectors:$scope.chartViewModel.nodes[$scope.nodeIndex].data.outputConnectors
+                    }
+                );
 
-                    });
                 } else if(cate == 'Control'){
-                    $scope.data.push({
-                        id: $scope.data.length  + 1,
-                        title:  'Control',
-                        nodesIf:[],
-                        nodesElse:[],
-                        nodes: [],
-                        controlType: undefined,
-                        dataName:undefined,
-                        forList:undefined,
-                        inputConnectors: $scope.chartViewModel.nodes[$scope.nodeIndex].data.inputConnectors,
-                        outputConnectors:$scope.chartViewModel.nodes[$scope.nodeIndex].data.outputConnectors,
-                    });
+                    switch(type){
+                        case 'for each':
+                            $scope.data.push({
+                                id: $scope.data.length  + 1,
+                                title:  'Control',
+                                nodes: [],
+                                controlType: type,
+
+                                dataName:undefined,
+                                forList:undefined,
+
+                                inputConnectors: $scope.chartViewModel.nodes[$scope.nodeIndex].data.inputConnectors,
+                                outputConnectors:$scope.chartViewModel.nodes[$scope.nodeIndex].data.outputConnectors
+                            });
+                            break;
+
+                        case 'if else':
+                            $scope.data.push({
+                                id: $scope.data.length  + 1,
+                                title:  'Control',
+                                nodes: [
+                                    {
+                                        id: $scope.data.length  + 'if',
+                                        title:  'Control',
+                                        controlType:'if',
+                                        nodes: [],
+                                        ifExpression:undefined
+
+                                    },
+                                    {
+                                        id: $scope.data.length  + 'else',
+                                        title:  'Control',
+                                        controlType:'else',
+                                        nodes: []
+                                    }
+                                ],
+
+                                controlType: type,
+
+                                inputConnectors: $scope.chartViewModel.nodes[$scope.nodeIndex].data.inputConnectors,
+                                outputConnectors:$scope.chartViewModel.nodes[$scope.nodeIndex].data.outputConnectors
+                            });
+                            break;
+
+                    }
+
                 }
             }
             catch(err){

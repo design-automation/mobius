@@ -463,8 +463,14 @@
 
               };
 
+              // @ vidamo prevent nodes go into data/action node
               callbacks.beforeDrop = function (event) {
-
+                if(event.dest.nodesScope.$parent.$modelValue){
+                  if(event.dest.nodesScope.$parent.$modelValue.title == "Data"
+                      || event.dest.nodesScope.$parent.$modelValue.title == "Action"){
+                    event.source.nodeScope.$$apply = false;
+                  }
+                }
               };
 
               scope.$watch(attrs.uiTree, function (newVal, oldVal) {

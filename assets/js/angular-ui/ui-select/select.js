@@ -952,7 +952,7 @@
                             if (appendToBody !== undefined ? appendToBody : uiSelectConfig.appendToBody) {
                                 scope.$watch('$select.open', function(isOpen) {
                                     if (isOpen) {
-                                        positionDropdown();
+                                       positionDropdown();
                                     } else {
                                         resetDropdown();
                                     }
@@ -984,8 +984,8 @@
                                 originalWidth = element[0].style.width;
 
                                 // Now move the actual dropdown element to the end of the body
-                                $document.find('body').append(element);
-
+                                 $document.find('body').append(element);
+                                //
                                 element[0].style.position = 'absolute';
                                 element[0].style.left = offset.left + 'px';
                                 element[0].style.top = offset.top + 'px';
@@ -993,6 +993,7 @@
                             }
 
                             function resetDropdown() {
+
                                 if (placeholder === null) {
                                     // The dropdown has not actually been display yet, so there's nothing to reset
                                     return;

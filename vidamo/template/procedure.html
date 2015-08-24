@@ -1,22 +1,11 @@
 <!--vidamo-->
 <!-- procedure template -->
 
+
+
 <div ui-tree-handle class="tree-node tree-node-content">
 
-    <!--data name and value for data -->
-    <!--<span ng-if="node.nodes && node.nodes.length > 0-->
-         <!--|| node.nodes && node.nodes.length == 0"-->
-         <!--data-nodrag-->
-         <!--ng-click="toggle(this)" style="display:inline-block">-->
-        <!--<i class="glyphicon"-->
-             <!--ng-class="{'glyphicon-chevron-right': !status.open,-->
-                        <!--'glyphicon-chevron-down': status.open}">-->
-        <!--</i>-->
-    <!--</span>-->
-
-
-    <div ng-if="node.title == 'Data'" style="padding-left:20px " class="tree-node-content">
-
+    <div ng-if="node.title === 'Data'" style="padding-left:20px " class="tree-node-content">
         <a>
             <a href="#" data-nodrag editable-text="node.dataName" buttons="no">{{ node.dataName || 'name' }}</a>
             =
@@ -24,28 +13,91 @@
         </a>
 
         <a class="pull-right btn btn-xs" data-nodrag ng-click="remove(this)" style="padding: 0;margin: 0" >
-                <span class="glyphicon glyphicon-remove">
-                </span>
+            <span class="glyphicon glyphicon-remove">
+            </span>
         </a>
 
     </div>
 
-    <div ng-if="node.title == 'Action'" style="padding-left:20px " class="tree-node-content">
-        {{node.title}}
-
-        <a class="pull-right btn btn-xs" data-nodrag ng-click="remove(this)" style="padding: 0;margin: 0" >
-                <span class="glyphicon glyphicon-remove">
-                </span>
+    <div ng-if="node.title === 'Action'" style="padding-left:20px" class="tree-node-content">
+        <!--return vairable-->
+        <a href="#" data-nodrag buttons="no"
+           ng-if="node.result === 'return value'"
+           editable-text="node.result"
+           style="display: inline-block">
+            {{ node.result || 'return variable' }}
         </a>
 
+        <!--method name-->
+        {{node.method}}
+
+        <!--parameters-->
+        <div ng-repeat="parameter in node.parameters" style="display: inline-block">
+
+            <!--parameter: selection of created variable-->
+            <a ng-if="parameter.type == 'variable'"
+               href="#" data-nodrag buttons="no"
+               editable-select="parameter.value"
+               e-ng-options="node.dataName as node.dataName for node in flattenData |
+                             positionFilter:node.id:this |
+                             dataNameFilter">
+                {{parameter.value||'variable to print'}}
+            </a>
+
+        </div>
+
+        <a class="pull-right btn btn-xs" data-nodrag ng-click="remove(this)" style="padding: 0;margin: 0" >
+            <span class="glyphicon glyphicon-remove">
+            </span>
+        </a>
 
 
     </div>
 
-    <div ng-if="node.title == 'Control'" style="padding-left:20px " class="tree-node-content">
-        {{node.title}}
+    <div ng-if="node.title === 'Control'" style="padding-left:20px" class="tree-node-content">
+
+        <a data-nodrag ng-click="toggle(this)">
+            <span
+                class="glyphicon"
+                ng-class="{
+                          'glyphicon-chevron-right': collapsed,
+                          'glyphicon-chevron-down': !collapsed
+                           }">
+            </span>
+        </a>
+
+        <div ng-if="node.controlType === 'for each'" style="padding-left:20px; display: inline-block">
+            for each
+            <a href="#" data-nodrag editable-text="node.dataName" buttons="no">
+                {{ node.dataName || 'item' }}
+            </a>
+            in
+            <a href="#" data-nodrag buttons="no"
+               editable-select="node.forList"
+               e-ng-options="node.dataName as node.dataName for node in flattenData |
+                             positionFilter:node.id:this |
+                             dataNameFilter">
+                {{node.forList||'list'}}
+            </a>
+        </div>
+
+        <div ng-if="node.controlType === 'if else'" style="padding-left:20px; display: inline-block">
+            if...else...
+        </div>
+
+        <div ng-if="node.controlType === 'if'" style="padding-left:20px; display: inline-block">
+            if
+            <a href="#" data-nodrag editable-text="node.ifExpression" buttons="no">
+                {{ node.ifExpression || 'expression' }}
+            </a>
+        </div>
+
+        <div ng-if="node.controlType === 'else'" style="padding-left:20px; display: inline-block">
+            else
+        </div>
+
         <a class="pull-right btn btn-xs" data-nodrag ng-click="remove(this)" style="padding: 0;margin: 0" >
-                <span class="glyphicon glyphicon-remove">
+                <span class="glyphicon glyphicon-remove" >
                 </span>
         </a>
 

@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="assets/css/graph.css">
     <link rel="stylesheet" href="assets/css/select.css">
     <link rel="stylesheet" href="assets/css/xeditable.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">
 
 
 </head>
@@ -193,6 +194,7 @@
                                 <div ng-if = "currentNodeName">
                                     <pre class="nodeName">&nbsp Node: &nbsp {{currentNodeName}}</pre>
                                 </div>
+
                                 <tabset justified="true" >
                                     <!--add to interface -->
                                     <tab heading="Parameters">
@@ -227,8 +229,28 @@
                                         <div class = "buttons" >
                                             <br>
                                             <button class="btn btn-default btn-xs" ng-click="newItem('Data')">Add Data</button>
-                                            <button class="btn btn-default btn-xs" ng-click="newItem('Action')">Add Action</button>
-                                            <button class="btn btn-default btn-xs" ng-click="newItem('Control')">Add Control</button>
+                                            <!--<button class="btn btn-default btn-xs" ng-click="newItem('Action')">Add Action</button>-->
+                                            <ui-select ng-model="method"
+                                                    style="display: inline-block;"
+                                                       on-select="newItem('Action',$select.selected.name)">
+                                                <ui-select-match placeholder="Add action">Add action</ui-select-match>
+                                                <ui-select-choices
+                                                        group-by="'usage'"
+                                                        repeat="method.name as method in methods| filter: $select.search">
+                                                    <span ng-bind-html="method.name| highlight: $select.search"></span>
+                                                </ui-select-choices>
+                                            </ui-select>
+
+                                            <!--<button class="btn btn-default btn-xs" ng-click="newItem('Control')">Add Control</button>-->
+                                            <ui-select ng-model="controlType"
+                                                       style="display: inline-block;"
+                                                       on-select="newItem('Control',$select.selected)">
+                                                <ui-select-match placeholder="Add Control">Add Control</ui-select-match>
+                                                <ui-select-choices
+                                                        repeat="controlType in controlTypes| filter: $select.search">
+                                                    <span ng-bind-html="controlType| highlight: $select.search"></span>
+                                                </ui-select-choices>
+                                            </ui-select>
                                         </div>
 
                                     </tab>

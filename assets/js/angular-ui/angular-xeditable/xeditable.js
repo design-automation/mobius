@@ -1,6 +1,6 @@
 /*!
 angular-xeditable - 0.1.9
-Edit-in-place for angular.js
+Edit-in-place for
 Build date: 2015-03-26 
 */
 /**
@@ -297,7 +297,7 @@ angular.module('xeditable').directive('editableRadiolist', [
       },
       autosubmit: function() {
         var self = this;
-        self.inputEl.bind('change', function() {
+        self.inputEl.bind('on-select', function() {
           setTimeout(function() {
             self.scope.$apply(function() {
               self.scope.$form.$submit();
@@ -327,7 +327,8 @@ angular.module('xeditable').directive('editableSelect', ['editableDirectiveFacto
 
 //ui-select
 angular.module('xeditable')
-    .directive('editableUiSelect', function (editableDirectiveFactory) {
+    .directive('editableUiSelect',[ 'editableDirectiveFactory',
+      function (editableDirectiveFactory) {
           var rename = function (tag, el) {
                 var newEl = angular.element('<' + tag + '/>');
                 newEl.html(el.html());
@@ -338,7 +339,7 @@ angular.module('xeditable')
                 return newEl;
             };
 
-              var match = null;
+          var match = null;
           var choices = null;
           var dir = editableDirectiveFactory({
                   directiveName: 'editableUiSelect',
@@ -347,27 +348,37 @@ angular.module('xeditable')
                     this.parent.render.call(this);
                     this.inputEl.append(rename('ui-select-match', match));
                     this.inputEl.append(rename('ui-select-choices', choices));
-
-                    }
+                    },
+                  autosubmit: function() {
+                    var self = this;
+                    self.inputEl.bind('on-select', function() {
+                      setTimeout(function() {
+                        self.scope.$apply(function() {
+                          self.scope.$form.$submit();
+                        });
+                      }, 500);
+                    });
+                  }
           });
-       var linkOrg = dir.link;
 
-            dir.link = function (scope, el, attrs, ctrl) {
+         var linkOrg = dir.link;
 
-                  var matchEl = el.find('editable-ui-select-match');
-              var choicesEl = el.find('editable-ui-select-choices');
+              dir.link = function (scope, el, attrs, ctrl) {
 
-                  match = matchEl.clone();
-              choices = choicesEl.clone();
+                    var matchEl = el.find('editable-ui-select-match');
+                var choicesEl = el.find('editable-ui-select-choices');
 
-                  matchEl.remove();
-              choicesEl.remove();
+                    match = matchEl.clone();
+                choices = choicesEl.clone();
 
-                  return linkOrg(scope, el, attrs, ctrl);
-          };
+                    matchEl.remove();
+                choicesEl.remove();
 
-            return dir;
-    });
+                    return linkOrg(scope, el, attrs, ctrl);
+            };
+
+      return dir;
+    }]);
 
 
 //textarea
@@ -1049,6 +1060,7 @@ angular.module('xeditable').factory('editableFormController',
   
   // bind click to body: cancel|submit|ignore forms
   $document.bind('click', function(e) {
+
     // ignore right/middle button click
     if ((e.which && e.which !== 1) || e.isDefaultPrevented()) {
       return;
@@ -1070,7 +1082,8 @@ angular.module('xeditable').factory('editableFormController',
       }
 
       if (shown[i]._blur === 'cancel' && isBlur(shown[i], e)) {
-        toCancel.push(shown[i]);
+        //toCancel.push(shown[i]);
+        toSubmit.push(shown[i]);
       }
 
       if (shown[i]._blur === 'submit' && isBlur(shown[i], e)) {
@@ -2246,6 +2259,8 @@ angular.module('xeditable').factory('editableThemes', function() {
           case 'editableTime':
           case 'editableMonth':
           case 'editableWeek':
+          case 'editableUiSelect':
+
             this.inputEl.addClass('form-control');
             if(this.theme.inputClass) {
               // don`t apply `input-sm` and `input-lg` to select multiple

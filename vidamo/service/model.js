@@ -274,6 +274,17 @@ vidamo.factory('generateCode', function () {
                 var codeBlock = '';
 
                 if(procedure.title == "Data"){
+                    if(procedure.type === 'assign'){
+                        // asssign value to variable instead of creating new variable
+                        codeBlock = intentation + "    "
+                            + procedure.dataName
+                            + " = "
+                            + procedure.dataValue + ";\n";
+
+                        data.javascriptCode += codeBlock;
+                        data.codeList[nodeIndex] += codeBlock;
+                    }else{
+                        // creating new variable
                         codeBlock = intentation + "    " + "var "
                             + procedure.dataName
                             + " = "
@@ -281,6 +292,7 @@ vidamo.factory('generateCode', function () {
 
                         data.javascriptCode += codeBlock;
                         data.codeList[nodeIndex] += codeBlock;
+                    }
                 }
             }
 
@@ -307,9 +319,9 @@ vidamo.factory('generateCode', function () {
                 }
 
                 // action: print data
-                if(procedure.method == 'print data'){
+                if(procedure.method == 'print'){
                     codeBlock =  intentation  + '    ' + 'VIDAMO.print_data('
-                        + procedure.parameters[0] + ');\n';
+                        + procedure.parameters[0].value + ');\n';
 
                     data.javascriptCode += codeBlock;
                     data.codeList[nodeIndex] += codeBlock;
@@ -375,7 +387,7 @@ vidamo.factory('generateCode', function () {
                         data.javascriptCode += codeBlock;
                         data.codeList[nodeIndex] += codeBlock;
                     }
-                };
+                }
 
                 // action: create new var contains reversed list and keep original list unchanged
                 if(procedure.method == 'reverse list'){
@@ -408,33 +420,69 @@ vidamo.factory('generateCode', function () {
                     data.javascriptCode += codeBlock;
                     data.codeList[nodeIndex] += codeBlock;
                 }
-            };
+            }
 
             // control procedure
              function procedure_control(procedure,nodeIndex,fromLoop){
+                 var intentation;
                 if(fromLoop){
-                    var intentation = '    ';
+                    intentation = '    ';
                 }else{
-                    var intentation = '';
+                    intentation = '';
                 }
-                data.javascriptCode +=  intentation + '    ' + 'for( var ' +
-                    procedure.dataName + ' of '
-                    + procedure.forList + '){\n';
+                 if(procedure.controlType === 'for each'){
+                     data.javascriptCode +=  intentation + '    ' + 'for( var ' +
+                         procedure.dataName + ' of '
+                         + procedure.forList + '){\n';
 
-                data.codeList[nodeIndex] +=  intentation + '    ' + 'for( var ' +
-                    procedure.dataName + ' of '
-                    + procedure.forList + '){\n';
+                     data.codeList[nodeIndex] +=  intentation + '    ' + 'for( var ' +
+                         procedure.dataName + ' of '
+                         + procedure.forList + '){\n';
 
-                if(procedure.nodes.length > 0){
-                    for(var m = 0; m < procedure.nodes.length; m++){
-                        if(procedure.nodes[m].title == 'Action'){procedure_action(procedure.nodes[m],nodeIndex,true)}
-                        if(procedure.nodes[m].title == 'Data'){procedure_data(procedure.nodes[m],nodeIndex,true)}
-                        if(procedure.nodes[m].title == 'Control'){procedure_control(procedure.nodes[m],nodeIndex,true)}
-                    }
-                }
-                data.javascriptCode += intentation + '    }\n'
-                data.codeList[nodeIndex] += intentation + '    }\n'
-            };
+                     if(procedure.nodes.length > 0){
+                         for(var m = 0; m < procedure.nodes.length; m++){
+                             if(procedure.nodes[m].title == 'Action'){procedure_action(procedure.nodes[m],nodeIndex,true)}
+                             if(procedure.nodes[m].title == 'Data'){procedure_data(procedure.nodes[m],nodeIndex,true)}
+                             if(procedure.nodes[m].title == 'Control'){procedure_control(procedure.nodes[m],nodeIndex,true)}
+                         }
+                     }
+                     data.javascriptCode += intentation + '    }\n';
+                     data.codeList[nodeIndex] += intentation + '    }\n';
+                 }
+
+                 else if (procedure.controlType === 'if else'){
+
+                     data.javascriptCode +=  intentation + '    ' + 'if( ' +
+                         procedure.nodes[0].ifExpression + ' ){\n';
+
+                     data.codeList[nodeIndex] +=  intentation + '    ' + 'if( ' +
+                         procedure.nodes[0].ifExpression + ' ){\n';
+
+
+                     if(procedure.nodes[0].nodes.length > 0){
+                         for(var i = 0; i < procedure.nodes[0].nodes.length; i++){
+                             if(procedure.nodes[0].nodes[i].title == 'Action'){procedure_action(procedure.nodes[0].nodes[i],nodeIndex,true)}
+                             if(procedure.nodes[0].nodes[i].title == 'Data'){procedure_data(procedure.nodes[0].nodes[i],nodeIndex,true)}
+                             if(procedure.nodes[0].nodes[i].title == 'Control'){procedure_control(procedure.nodes[0].nodes[i],nodeIndex,true)}
+                         }
+                     }
+
+                     data.javascriptCode += intentation + '    }else{\n';
+                     data.codeList[nodeIndex] += intentation + '    }else{\n';
+
+                     if(procedure.nodes[1].nodes.length > 0){
+                         for(var m = 0; m < procedure.nodes[1].nodes.length; m++){
+                             if(procedure.nodes[1].nodes[m].title == 'Action'){procedure_action(procedure.nodes[1].nodes[m],nodeIndex,true)}
+                             if(procedure.nodes[1].nodes[m].title == 'Data'){procedure_data(procedure.nodes[1].nodes[m],nodeIndex,true)}
+                             if(procedure.nodes[1].nodes[m].title == 'Control'){procedure_control(procedure.nodes[1].nodes[m],nodeIndex,true)}
+                         }
+                     }
+
+                     data.javascriptCode += intentation + '    }\n';
+                     data.codeList[nodeIndex] += intentation + '    }\n';
+                 }
+
+            }
         }
     };
 });

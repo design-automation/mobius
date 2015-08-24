@@ -197,6 +197,7 @@ right pane code area
 }
 
 .code-area .buttons{
+    display: inline-block;
     position: absolute;
     bottom: 8px;
     width: 100%;
