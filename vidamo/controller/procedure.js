@@ -159,33 +159,56 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
 
             // object of flatten procedure data tree
             $scope.flattenData = nodes;
+            $scope.checkDupDataName();
+        }, true);
 
-            // observing all data procedures, if duplicated, change type to 'assign'
-            // indicating assign value to existing variable instead of creating new variable
+        //
+        // observing all data procedures, if duplicated, change type to 'assign'
+        // indicating assign value to existing variable instead of creating new variable
+        //
+        $scope.checkDupDataName = function(){
             for(var i in $scope.flattenData){
+
                 var previous;
                 previous = $filter('positionFilter')($scope.data,$scope.flattenData[i].id,$scope);
 
-                // if is data
-                if($scope.flattenData[i].title === 'Data'){
+                var current = $scope.flattenData[i];
+
+                if(current.title === 'Data'){
+
+                    var hasDupName = false;
+
                     for(var j in previous){
-                        // with same dataName in previous
-                        if($scope.flattenData[i].dataName!= undefined &&
-                            previous[j].dataName === $scope.flattenData[i].dataName){
+
+                        if(current.dataName!= undefined && previous[j].dataName === current.dataName){
+
+                            hasDupName = true;
+
+                            var original;
+
                             for(var k in $scope.data){
-                                if($scope.data[k].id ===  $scope.flattenData[i].id){
-                                    $scope.data[k].type = 'assign';
-                                    console.log('this is assign!')
+                                original = $scope.data[k];
+
+                                if(original.id ===  current.id){
+                                    original.type = 'assign';
                                 }
-                                if($scope.data[k].id === previous[j].id){
-                                    $scope.data[k].type = 'new';
-                                }
+                            }
+                        }
+                    }
+                    if(!hasDupName){
+                        var original;
+
+                        for(var k in $scope.data){
+                            original = $scope.data[k];
+
+                            if(original.id ===  current.id){
+                                original.type = 'new';
                             }
                         }
                     }
                 }
             }
-        }, true);
+        };
 
         //
         // procedure manipulation
