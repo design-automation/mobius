@@ -170,7 +170,8 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
                 if($scope.flattenData[i].title === 'Data'){
                     for(var j in previous){
                         // with same dataName in previous
-                        if(previous[j].dataName === $scope.flattenData[i].dataName){
+                        if($scope.flattenData[i].dataName!= undefined &&
+                            previous[j].dataName === $scope.flattenData[i].dataName){
                             for(var k in $scope.data){
                                 if($scope.data[k].id ===  $scope.flattenData[i].id){
                                     $scope.data[k].type = 'assign';
