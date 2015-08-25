@@ -439,8 +439,16 @@
                 return !(destNodesScope.nodropEnabled || destNodesScope.outOfDepth(sourceNodeScope));
               };
 
+              //
+              // @ vidamo prevent if tag and else tag from dragging
+              //
               callbacks.beforeDrag = function (sourceNodeScope) {
-                return true;
+                if(sourceNodeScope.$modelValue.controlType === 'if' ||
+                    sourceNodeScope.$modelValue.controlType === 'else'){
+                  return false;
+                }else{
+                  return true;
+                }
               };
 
               callbacks.removed = function (node) {
@@ -463,11 +471,14 @@
 
               };
 
+              //
               // @ vidamo prevent nodes go into data/action node
+              //
               callbacks.beforeDrop = function (event) {
                 if(event.dest.nodesScope.$parent.$modelValue){
-                  if(event.dest.nodesScope.$parent.$modelValue.title == "Data"
-                      || event.dest.nodesScope.$parent.$modelValue.title == "Action"){
+                  if(event.dest.nodesScope.$parent.$modelValue.title === 'Data'
+                      || event.dest.nodesScope.$parent.$modelValue.title === 'Action'
+                      || event.dest.nodesScope.$parent.$modelValue.controlType === 'if else'){
                     event.source.nodeScope.$$apply = false;
                   }
                 }

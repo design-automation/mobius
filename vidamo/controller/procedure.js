@@ -49,9 +49,6 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
         // currently selected node ID
         $scope.nodeIndex = '';
 
-        // procedure select dropdown types
-        // data types
-
         // control types
         $scope.controlTypes = ['for each',
                                 'if else'];
@@ -109,6 +106,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
                                 'title',
                                 'dataName',
                                 'dataValue',
+                                'type',
                                 'dataType',
                                 'method',
                                 'parameters',
@@ -119,8 +117,8 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
                     var props=['id',
                                 'title',
                                 'controlType',
-                        'nodes',
-
+                                'nodes',
+                                'type',
                                 'dataName',
                                 'forList',
                                 'inputConnectors',
@@ -163,7 +161,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
         }, true);
 
         //
-        // observing all data procedures, if duplicated, change type to 'assign'
+        // observing all procedures, if dataName duplicated, change type to 'assign'
         // indicating assign value to existing variable instead of creating new variable
         //
         $scope.checkDupDataName = function(){
@@ -174,36 +172,67 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
 
                 var current = $scope.flattenData[i];
 
-                if(current.title === 'Data'){
+                var hasDupName = false;
 
-                    var hasDupName = false;
-
-                    for(var j in previous){
-
-                        if(current.dataName!= undefined && previous[j].dataName === current.dataName){
-
-                            hasDupName = true;
-
-                            var original;
-
-                            for(var k in $scope.data){
-                                original = $scope.data[k];
-
-                                if(original.id ===  current.id){
-                                    original.type = 'assign';
-                                }
-                            }
-                        }
-                    }
-                    if(!hasDupName){
+                // check duplication with current node's input/ouput connector
+                for(var m in current.inputConnectors){
+                    if(current.dataName === current.inputConnectors[m].name){
+                        hasDupName = true;
                         var original;
 
                         for(var k in $scope.data){
                             original = $scope.data[k];
 
                             if(original.id ===  current.id){
-                                original.type = 'new';
+                                original.type = 'assign';
                             }
+                        }
+                    }
+                }
+
+                for(var n in current.outputConnectors){
+                    if(current.dataName === current.outputConnectors[m].name){
+                        hasDupName = true;
+                        var original;
+
+                        for(var k in $scope.data){
+                            original = $scope.data[k];
+
+                            if(original.id ===  current.id){
+                                console.log('yes');
+                                original.type = 'assign';
+                            }
+                        }
+                    }
+                }
+
+
+                // check duplication with previous defined dataName
+                for(var j in previous){
+
+                    if(current.dataName!= undefined && previous[j].dataName === current.dataName){
+
+                        hasDupName = true;
+
+                        var original;
+
+                        for(var k in $scope.data){
+                            original = $scope.data[k];
+
+                            if(original.id ===  current.id){
+                                original.type = 'assign';
+                            }
+                        }
+                    }
+                }
+                if(!hasDupName){
+                    var original;
+
+                    for(var k in $scope.data){
+                        original = $scope.data[k];
+
+                        if(original.id ===  current.id){
+                            original.type = 'new';
                         }
                     }
                 }
@@ -225,7 +254,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
 
 
 
-        $scope.newItem = function(cate,type) {
+        $scope.newItem = function(cate,subCate) {
             try{
                 if(cate == 'Data'){
                     $scope.data.push({
@@ -242,7 +271,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
                 } else if(cate == 'Action'){
                     var parameters = [];
                     var result;
-                    switch(type){
+                    switch(subCate){
                         case 'print':
                             parameters.push({type:'variable', value:'variable to print'});
                             result = undefined;
@@ -253,9 +282,10 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
                         id: $scope.data.length  + 1,
                         title:  'Action',
                         nodes: [],
+                        type:undefined,
 
                         // method name
-                        method:type,
+                        method:subCate,
 
                         // method's arguments
                         parameters:parameters,
@@ -265,23 +295,26 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
 
                         // if the method is get data from input port, use following two as holder
 
-                        dataType:undefined,
                         dataName:undefined,
-                        dataValue:undefined,
                         inputConnectors: $scope.chartViewModel.nodes[$scope.nodeIndex].data.inputConnectors,
                         outputConnectors:$scope.chartViewModel.nodes[$scope.nodeIndex].data.outputConnectors
                     }
                 );
 
                 } else if(cate == 'Control'){
-                    switch(type){
+                    switch(subCate){
                         case 'for each':
                             $scope.data.push({
                                 id: $scope.data.length  + 1,
                                 title:  'Control',
                                 nodes: [],
-                                controlType: type,
+                                // assign or create new
+                                type:undefined,
 
+                                // control type
+                                controlType: subCate,
+
+                                // for each
                                 dataName:undefined,
                                 forList:undefined,
 
@@ -311,7 +344,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
                                     }
                                 ],
 
-                                controlType: type,
+                                controlType: subCate,
 
                                 inputConnectors: $scope.chartViewModel.nodes[$scope.nodeIndex].data.inputConnectors,
                                 outputConnectors:$scope.chartViewModel.nodes[$scope.nodeIndex].data.outputConnectors

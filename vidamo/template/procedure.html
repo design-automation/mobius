@@ -5,20 +5,31 @@
 
 <div ui-tree-handle class="tree-node tree-node-content">
 
+    <!--data procedure-->
     <div ng-if="node.title === 'Data'" style="padding-left:20px " class="tree-node-content">
+        <!--vairable name-->
         <a>
             <a href="#" data-nodrag editable-text="node.dataName" buttons="no">{{ node.dataName || 'name' }}</a>
             =
             <a data-nodrag href="#" editable-text="node.dataValue" buttons="no">{{ node.dataValue || 'value' }}</a>
         </a>
 
+        <!--variable value-->
         <a class="pull-right btn btn-xs" data-nodrag ng-click="remove(this)" style="padding: 0;margin: 0" >
             <span class="glyphicon glyphicon-remove">
             </span>
         </a>
 
+        <!--delete key-->
+        <div ui-tree-nodes=""  ng-model="node.nodes" ng-class="{hidden: collapsed}">
+            <div ng-repeat="node in node.nodes"
+                 ui-tree-node ng-include="'vidamo/template/procedure.html'">
+            </div>
+        </div>
+
     </div>
 
+    <!--action procedure-->
     <div ng-if="node.title === 'Action'" style="padding-left:20px" class="tree-node-content">
         <!--return vairable-->
         <a href="#" data-nodrag buttons="no"
@@ -46,16 +57,16 @@
 
         </div>
 
+        <!--delete key-->
         <a class="pull-right btn btn-xs" data-nodrag ng-click="remove(this)" style="padding: 0;margin: 0" >
             <span class="glyphicon glyphicon-remove">
             </span>
         </a>
-
-
     </div>
 
+    <!--control procedure-->
     <div ng-if="node.title === 'Control'" style="padding-left:20px" class="tree-node-content">
-
+        <!--expand/collapse key-->
         <a data-nodrag ng-click="toggle(this)">
             <span
                 class="glyphicon"
@@ -66,12 +77,15 @@
             </span>
         </a>
 
-        <div ng-if="node.controlType === 'for each'" style="padding-left:20px; display: inline-block">
+        <!--for each loop-->
+        <div ng-if="node.controlType === 'for each'" style="display: inline-block">
             for each
+            <!--list item name-->
             <a href="#" data-nodrag editable-text="node.dataName" buttons="no">
                 {{ node.dataName || 'item' }}
             </a>
             in
+            <!--iteration list-->
             <a href="#" data-nodrag buttons="no"
                editable-select="node.forList"
                e-ng-options="node.dataName as node.dataName for node in flattenData |
@@ -79,26 +93,35 @@
                              dataNameFilter">
                 {{node.forList||'list'}}
             </a>
+
         </div>
 
-        <div ng-if="node.controlType === 'if else'" style="padding-left:20px; display: inline-block">
+        <!--if else control-->
+        <div ng-if="node.controlType === 'if else'" style=" display: inline-block">
             if...else...
         </div>
 
-        <div ng-if="node.controlType === 'if'" style="padding-left:20px; display: inline-block">
+        <!--if tag-->
+        <div data-nodrag ng-if="node.controlType === 'if'" style="display: inline-block">
             if
             <a href="#" data-nodrag editable-text="node.ifExpression" buttons="no">
                 {{ node.ifExpression || 'expression' }}
             </a>
         </div>
 
-        <div ng-if="node.controlType === 'else'" style="padding-left:20px; display: inline-block">
+        <!--else tag-->
+        <div data-nodrag ng-if="node.controlType === 'else'" style="display: inline-block">
             else
         </div>
 
-        <a class="pull-right btn btn-xs" data-nodrag ng-click="remove(this)" style="padding: 0;margin: 0" >
-                <span class="glyphicon glyphicon-remove" >
-                </span>
+        <!--delete key-->
+        <a ng-if="node.controlType !== 'if' && node.controlType !== 'else'"
+           class="pull-right btn btn-xs"
+           data-nodrag
+           ng-click="remove(this)"
+           style="padding: 0;margin: 0">
+            <span class="glyphicon glyphicon-remove">
+            </span>
         </a>
 
     </div>
