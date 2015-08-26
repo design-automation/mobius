@@ -9,7 +9,7 @@ angular.module('flowChart', ['dragging'] )
 .directive('flowChart', function() {
   return {
   	restrict: 'E',
-  	templateUrl: "assets/js/angular-ui/ui-flowchart/flowchart_template.html",
+  	templateUrl: "vidamo/graph/ui-flowchart/flowchart_template.html",
   	replace: true,
   	scope: {
   		chart: "=chart",

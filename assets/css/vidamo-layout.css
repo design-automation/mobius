@@ -1,6 +1,4 @@
-﻿/***************************************************************
-CSS For index.html
-***************************************************************/
+﻿/* css For vidamo.html */
 
 body {
     font-family: Arial, sans-serif;
@@ -81,17 +79,11 @@ a{
     text-align: center;
 }
 
-.graph-area .dropdownButton {
-    display: inline-block;
-    vertical-align: middle;
-    font-size: 12px !important;
-    position: relative;
-    width: 22px;
-}
-
-.new-node{
-    width:90px;
-    display: inline-block;
+.graph-area .codeEditor{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
 }
 
 /**************************
@@ -128,7 +120,6 @@ a{
     top: 0px;
 }
 
-
 .view-area .monitor .ui-layout-column .ui-splitbar{
     border:0px;
 }
@@ -151,12 +142,6 @@ a{
     cursor: pointer;
 }
 
-.graph-area .codeEditor{
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    overflow: auto;
-}
 
 .info-title {
     font-size: 13px;
@@ -173,19 +158,17 @@ a{
 right pane code area
 *************************/
 .code-area{
-    border-top: 1px solid #aaaaaa;
-    border-right: 1px solid #aaaaaa;
-    border-bottom: 1px solid #aaaaaa;
-
     border-top-left-radius: 0;
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
-    border-bottom-left-radius: 0px;
+    border-bottom-left-radius: 0;
 
+    border:0;
     overflow: auto;
     width:100%;
     margin-bottom: 2px;
 }
+
 .code-area .nodeName{
     padding: 4px;
     margin: 0;
@@ -220,19 +203,10 @@ right pane code area
     overflow: auto;
 }
 
-.code-area .nodeName{
-    border:0px;
-}
 
-.code-area .subheading{
-    font-weight: 400;
-}
-
-.angular-ui-tree-placeholder {
-
-}
-
-/*hack for bootstrap*/
+/*  hack for bootstrap
+    fixme forget what these things really do
+*/
 .group-title {
     background-color: #687074 !important;
     color: #FFF !important;
@@ -256,8 +230,6 @@ right pane code area
 .panel{
     border-left: 2px solid #aaaaaa !important;
 }
-
-
 
 /*.btn {*/
     /*padding: 0 4px 0 4px!important;*/

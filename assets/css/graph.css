@@ -4,9 +4,7 @@ CSS For ui-flowchart [left pane graph area]
 
 ***************************************************************/
 
-/*
-Styles for nodes and connectors.
-*/
+/*Styles for nodes and connectors flowchart svg template*/
 
 .node-rect {
 	stroke: #aaaaaa;

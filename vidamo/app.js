@@ -19,11 +19,19 @@ var vidamo = angular.module('vidamo',
         return prompt;
     });
 
+    // configuration for angular-xeditable plugin
     // bootstrap3 theme. Can be also 'bs2', 'default'
     vidamo.run(function(editableOptions) {
         editableOptions.theme = 'bs3';
     });
 
+    // config for ui-select plugin
+    vidamo.config(function(uiSelectConfig) {
+        uiSelectConfig.theme = 'bootstrap';
+        uiSelectConfig.appendToBody = true;
+    });
+
+    // configuration of download files
     // config to add blob as safe prefix in the white list
     vidamo.config( [
         '$compileProvider',
@@ -32,13 +40,7 @@ var vidamo = angular.module('vidamo',
         }
     ]);
 
-    // config for ui-select
-    vidamo.config(function(uiSelectConfig) {
-        uiSelectConfig.theme = 'bootstrap';
-        uiSelectConfig.appendToBody = true;
-    });
-
-    // todo put these in factory
+    // fixme not in use anymore
     // recursively searching by id
     // return target object
     function updateById(id, data, cate, value){
@@ -56,22 +58,6 @@ var vidamo = angular.module('vidamo',
         return null;
     }
 
-    // verify the function name
-    function isValidName(inputName) {
-        if(inputName){
-            var testString =  'function ' + inputName  + '(){};';
-
-            try{
-                eval(testString);
-            }
-            catch(err){
-                document.getElementById('log').innerHTML += "<div style='color: red'>Error: invalid name!</div>";
-                return false;
-            }
-            return true;
-        }
-        return false;
-    }
 
     // check for the various File API support.
     function checkBrowser(){

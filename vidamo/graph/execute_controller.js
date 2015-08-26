@@ -1,5 +1,5 @@
 //
-// Execute generated code
+// Execute generated code ('run' button)
 //
 
 vidamo.controller('executeCtrl',['$scope','generateCode',

@@ -641,6 +641,7 @@ function ($document, PanZoomService) {
     replace: true
   };
 }]);
+
 angular.module('panzoom').factory('PanZoomService', ['$q',
     function ($q) {
         // key -> deferred with promise of API

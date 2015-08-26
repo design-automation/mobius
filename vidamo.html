@@ -4,7 +4,6 @@
 <head>
   <meta charset="utf-8" />
   <title>Vidamo</title>
-
     <!--loading page-->
     <script  src="assets/js/packages/pace/pace.min.js"></script>
     <link href="assets/css/pace-theme.css" rel="stylesheet" />
@@ -18,177 +17,175 @@
     <link rel="stylesheet" href="assets/css/select.css">
     <link rel="stylesheet" href="assets/css/xeditable.css">
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">
-
-
 </head>
 
 <body>
-        <div>
-            <!--dropdown Menu-->
-            <div ng-controller="menuCtrl">
-                <div class = "menubar">
-                    <span class="dropdown" on-toggle="toggled(open)">
-                      <a href class="dropdown-toggle">  File |</a>
+    <div>
+        <!--dropdown Menu-->
+        <div ng-controller="menuCtrl">
+            <div class = "menubar">
+                <span class="dropdown" on-toggle="toggled(open)">
+                    <a href class="dropdown-toggle">  File |</a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a onclick="onNewOptionClick ()"> New </a>
+                        </li>
+
+                        <li>
+                            <input type="file" id="openSceneJson"
+                                 style="visibility: hidden; width: 1px; height: 1px" multiple
+                                 onchange="angular.element(this).scope().openSceneJson(this.files)"/>
+                            <a href="" onclick="document.getElementById('openSceneJson').click()">Open Scene</a>
+                        </li>
+
+                        <li id = "sceneJson">
+                            <a ng-href="{{sceneUrl}}" download="scene.json" ng-click = "saveSceneJson()">
+                                Save Scene
+                            </a>
+                        </li>
+                    </ul>
+                </span>
+
+                <span class="dropdown" on-toggle="toggled(open)" >
+                      <a href class="dropdown-toggle">  Node |</a>
                       <ul class="dropdown-menu">
                           <li>
-                              <a onclick="onNewOptionClick ()"> New </a>
-                          </li>
-
-                          <li>
-                              <input type="file" id="openSceneJson"
+                              <input type="file" id="importNode"
                                      style="visibility: hidden; width: 1px; height: 1px" multiple
-                                     onchange="angular.element(this).scope().openSceneJson(this.files)"/>
-                              <a href="" onclick="document.getElementById('openSceneJson').click()">Open Scene</a>
+                                     onchange="angular.element(this).scope().importNode(this.files)"/>
+                              <a href="" onclick="document.getElementById('importNode').click()"> Import Node </a>
                           </li>
 
-                          <li id = "sceneJson">
-                              <a ng-href="{{sceneUrl}}" download="scene.json" ng-click = "saveSceneJson()"> Save Scene </a>
-                          </li>
-
-                      </ul>
-                    </span>
-
-                    <span class="dropdown" on-toggle="toggled(open)" >
-                          <a href class="dropdown-toggle">  Node |</a>
-                          <ul class="dropdown-menu">
-                              <li>
-                                  <input type="file" id="importNode"
-                                         style="visibility: hidden; width: 1px; height: 1px" multiple
-                                         onchange="angular.element(this).scope().importNode(this.files)"/>
-                                  <a href="" onclick="document.getElementById('importNode').click()"> Import Node </a>
-                              </li>
-
-                              <li>
-                                  <a ng-href="{{nodeUrl}}" download="node.json" ng-click = "exportNode()"> Export Node </a>
-                              </li>
-                          </ul>
-
-                    </span>
-
-                    <span class="dropdown" on-toggle="toggled(open)" >
-                        <a href class="dropdown-toggle">  Code |</a>
-                        <ul class="dropdown-menu">
-                            <li id = "downloadJs">
-                                <a ng-href="{{jsUrl}}" download="project.js" ng-click = "downloadJs()"> Export Graph&Nodes </a>
-                            </li>
-
-                            <li id = "downloadLib">
-                                <a ng-href="{{libUrl}}" download="vidamo.js" ng-click = "downloadLib()"> Export Function Library </a>
-                            </li>
-                        </ul>
-                    </span>
-
-                    <span class="dropdown" on-toggle="toggled(open)">
-                      <a href class="dropdown-toggle">  About </a>
-                      <ul class="dropdown-menu">
                           <li>
-                              <a href="https://github.com/phtj/vidamo" target="_blank"> Github Repo </a>
+                              <a ng-href="{{nodeUrl}}" download="node.json" ng-click = "exportNode()">
+                                  Export Node
+                              </a>
                           </li>
                       </ul>
-                    </span>
-                </div>
+
+                </span>
+
+                <span class="dropdown" on-toggle="toggled(open)" >
+                    <a href class="dropdown-toggle">  Code |</a>
+                    <ul class="dropdown-menu">
+                        <li id = "downloadJs">
+                            <a ng-href="{{jsUrl}}" download="project.js" ng-click = "downloadJs()">
+                                Export Graph&Nodes
+                            </a>
+                        </li>
+
+                        <li id = "downloadLib">
+                            <a ng-href="{{libUrl}}" download="vidamo.js" ng-click = "downloadLib()">
+                                Export Function Library
+                            </a>
+                        </li>
+                    </ul>
+                </span>
+
+                <span class="dropdown" on-toggle="toggled(open)">
+                  <a href class="dropdown-toggle">  About </a>
+                  <ul class="dropdown-menu">
+                      <li>
+                          <a href="https://github.com/phtj/vidamo" target="_blank"> Github Repo </a>
+                      </li>
+                  </ul>
+                </span>
             </div>
+        </div>
 
-            <!--resizable layout-->
-            <div ui-layout>
-                <div class="layout-area" ui-layout="{flow : 'column'}">
-                    <!--graph area-->
-                        <div class="graph-area" ui-layout-container size="25%">
-                            <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
-                                <!--pan & zoom field-->
-                                    <div
-                                         mouse-capture
-                                         ng-keydown="keyDown($event)"
-                                         ng-keyup="keyUp($event)"
-                                         ui-layout-container size = "85%"
-                                         >
-                                        <div ng-controller="graphCtrl">
-                                            <div ng-controller="znpController" class="znpController">
-                                                <div>
-                                                    <panzoom config="panzoomConfig"
-                                                             model="panzoomModel"
-                                                             class="panzoom">
-                                                        <div>
-
-                                                            <flow-chart chart="chartViewModel" class = "flow-chart" >
-                                                            </flow-chart>
-
-                                                        </div>
-                                                    </panzoom>
-                                                </div>
+        <!--resizable layout-->
+        <div ui-layout>
+            <div class="layout-area" ui-layout="{flow : 'column'}">
+                <!--graph area-->
+                <div class="graph-area" ui-layout-container size="25%">
+                    <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
+                        <!--pan & zoom field-->
+                        <div mouse-capture
+                             ng-keydown="keyDown($event)"
+                             ng-keyup="keyUp($event)"
+                             ui-layout-container size = "85%">
+                            <div ng-controller="graphCtrl">
+                                <div ng-controller="znpController" class="znpController">
+                                    <div>
+                                        <panzoom config="panzoomConfig"
+                                                 model="panzoomModel"
+                                                 class="panzoom">
+                                            <div>
+                                                <flow-chart chart="chartViewModel" class = "flow-chart" >
+                                                </flow-chart>
                                             </div>
-
-                                            <div class = "buttons">
-                                                <span ng-controller="executeCtrl">
-                                                    <button class="btn btn-default btn-xs"
-                                                            ng-click="run()"
-                                                            title="Run program">
-                                                        Run
-                                                    </button>
-                                                </span>
-                                            </div>
-                                        </div>
+                                        </panzoom>
                                     </div>
+                                </div>
 
-                                <!--graph code field -->
-                                <div ui-layout-container size = "15%">
-                                    <div ng-controller="graphCtrl">
-                                        <div class="info-title">Scene Code:</div>
-
-                                        <div class="codeEditor"
-                                             ui-ace="{ mode: 'javascript',
-                                                       theme: 'tomorrow',
-                                                      }"
-                                             ng-model="javascriptCode"
-                                             readonly="{{true}}"
-                                             >
-                                        </div>
-                                    </div>
+                                <div class = "buttons">
+                                    <span ng-controller="executeCtrl">
+                                        <button class="btn btn-default btn-xs"
+                                                ng-click="run()"
+                                                title="Run program">
+                                            Run
+                                        </button>
+                                    </span>
                                 </div>
                             </div>
                         </div>
+
+                        <!--graph code field -->
+                        <div ui-layout-container size = "15%">
+                            <div ng-controller="graphCtrl">
+                                <div class="info-title">Scene Code:</div>
+
+                                <div class="codeEditor"
+                                     ui-ace="{ mode: 'javascript',
+                                               theme: 'tomorrow',
+                                              }"
+                                     ng-model="javascriptCode"
+                                     readonly="{{true}}"
+                                        >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!--3D view area  -->
-                    <div class=" view-area" ui-layout-container size="50%">
-                        <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
+                <div class=" view-area" ui-layout-container size="50%">
+                    <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
                         <!--threejs editor view port-->
-                            <div ui-layout-container size = "85%" id="xxx">
+                        <div ui-layout-container size = "85%" id="xxx">
 
-                                <div viewport id="threeViewport">
-                                </div>
-
-                                <!--<div ng-controller="graphCtrl">-->
-                                    <!--<textarea-->
-                                            <!--style="width: 100%; height: 100%;-->
-                                            <!--padding-top: 8px;-->
-                                            <!--padding-left: 8px;-->
-                                            <!--padding-right: 8px;-->
-                                            <!--padding-bottom: 20px;-->
-                                            <!--font-size: 12px;-->
-                                            <!--overflow: auto;-->
-                                            <!--position: absolute;"-->
-                                            <!--chart-json-edit-->
-                                            <!--view-model="chartViewModel">-->
-                                                                               <!--</textarea>-->
-                                <!--</div>-->
+                            <div viewport id="threeViewport">
                             </div>
 
-                            <div ui-layout-container size = "15%" class="monitor">
-                                <div>
-                                    <div class = "info-title" ng-controller="consoleCtrl">
-                                        Console:
-                                        <a id = "clear" ng-click="clearConsole()"> Clear </a>
-                                    </div>
-                                    <div class="console" id = 'log'></div>
-                                </div>
-                            </div>
+                            <!--<div ng-controller="graphCtrl">-->
+                            <!--<textarea-->
+                            <!--style="width: 100%; height: 100%;-->
+                            <!--padding-top: 8px;-->
+                            <!--padding-left: 8px;-->
+                            <!--padding-right: 8px;-->
+                            <!--padding-bottom: 20px;-->
+                            <!--font-size: 12px;-->
+                            <!--overflow: auto;-->
+                            <!--position: absolute;"-->
+                            <!--chart-json-edit-->
+                            <!--view-model="chartViewModel">-->
+                            <!--</textarea>-->
+                            <!--</div>-->
                         </div>
 
+                        <div ui-layout-container size = "15%" class="monitor">
+                            <div>
+                                <div class = "info-title" ng-controller="consoleCtrl">
+                                    Console:
+                                    <a id = "clear" ng-click="clearConsole()"> Clear </a>
+                                </div>
+                                <div class="console" id = 'log'></div>
+                            </div>
+                        </div>
                     </div>
-
+                </div>
 
                 <!--code area-->
-
                 <div class="code-area" ui-layout-container size="25%" >
                     <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
                         <div ui-layout-container size = "85%">
@@ -201,18 +198,19 @@
                                     <!--add to interface -->
                                     <tab heading="Parameters">
                                         <div class="tabArea">
-
                                             <div ui-tree id="tree-root-1">
                                                 <div ui-tree-nodes="" ng-model="interface">
                                                     <div ng-repeat="node in interface"
-                                                         ui-tree-node ng-include="'vidamo/template/interface.html'">
+                                                         ui-tree-node
+                                                         ng-include="'vidamo/procedure/interface_template.html'">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="buttons">
-                                            <button class="btn btn-default btn-xs" ng-click="newInterface('Data')">New Parameter</button>
+                                            <button class="btn btn-default btn-xs" ng-click="newInterface('Data')">
+                                                New Parameter</button>
                                         </div>
                                     </tab>
 
@@ -222,7 +220,8 @@
                                             <div ui-tree id="tree-root">
                                                 <div ui-tree-nodes="" ng-model="data">
                                                     <div ng-repeat="node in data"
-                                                         ui-tree-node ng-include="'vidamo/template/procedure.html'">
+                                                         ui-tree-node
+                                                         ng-include="'vidamo/procedure/procedure_template.html'">
                                                     </div>
                                                 </div>
                                             </div>
@@ -233,7 +232,7 @@
                                             <button class="btn btn-default btn-xs" ng-click="newItem('Data')">Add Data</button>
                                             <!--<button class="btn btn-default btn-xs" ng-click="newItem('Action')">Add Action</button>-->
                                             <ui-select ng-model="method"
-                                                    style="display: inline-block;"
+                                                       style="display: inline-block;"
                                                        on-select="newItem('Action',$select.selected.name)">
                                                 <ui-select-match placeholder="Add action">Add action</ui-select-match>
                                                 <ui-select-choices
@@ -254,9 +253,7 @@
                                                 </ui-select-choices>
                                             </ui-select>
                                         </div>
-
                                     </tab>
-
                                 </tabset>
                             </div>
                         </div>
@@ -268,7 +265,7 @@
                                     <div class="info-title">Procedure Code: </div>
                                     <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'tomorrow' }"
                                          readonly="{{true}}">// To generate code,
-// create nodes & procedures and run!</div>
+                                    </div>
                                 </div>
 
                                 <div ng-if="codeList[nodeIndex]">
@@ -281,75 +278,72 @@
                             </div>
                         </div>
                     </div>
-                 </div>
-              </div>
+                </div>
             </div>
+        </div>
     </div>
 
-     <!--jquery-->
-     <script type="text/javascript" src="assets/js/jquery/jquery-1.11.1.js"></script>
+    <!--jquery-->
+    <script type="text/javascript" src="assets/js/jquery/jquery-1.11.1.js"></script>
 
-     <!-- angularJs -->
-     <script type="application/javascript" src="assets/js/angular/angular.min.js"></script>
-     <script type="text/javascript" src="assets/js/angular/angular-sanitize.js"></script>
+    <!-- angularJs -->
+    <script type="application/javascript" src="assets/js/angular/angular.min.js"></script>
+    <script type="text/javascript" src="assets/js/angular/angular-sanitize.js"></script>
 
-     <!--angular-ui -->
+    <!--angular-ui -->
     <script type="application/javascript" src="assets/js/angular-ui/ui-layout/ui-layout.js"></script>
     <script src="assets/js/angular-ui/ui-bootstrap/ui-bootstrap-tpls-0.11.0.min.js"></script>
-    <script type="text/javascript" src="assets/js/angular-ui/ui-tree/angular-ui-tree.js"></script>
+    <script type="text/javascript" src="vidamo/procedure/angular-ui-tree.js"></script>
     <script type="text/javascript" src="assets/js/angular-ui/ui-select/select.js"></script>
     <script type="text/javascript" src="assets/js/angular-ui/angular-xeditable/xeditable.js"></script>
 
 
-     <!-- ace -->
-     <script type="text/javascript" src="assets/js/angular-ui/ui-ace/ui-ace.js"></script>
-     <script type="text/javascript" src="assets/js/packages/ace-builds/src-min-noconflict/ace.js"></script>
+    <!-- ace -->
+    <script type="text/javascript" src="assets/js/angular-ui/ui-ace/ui-ace.js"></script>
+    <script type="text/javascript" src="assets/js/packages/ace-builds/src-min-noconflict/ace.js"></script>
 
-     <!-- flowchart -->
-     <script src="assets/js/angular-ui/ui-flowchart/debug.js" type="text/javascript"></script>
-     <script src="assets/js/angular-ui/ui-flowchart/svg_class.js" type="text/javascript"></script>
-     <script src="assets/js/angular-ui/ui-flowchart/mouse_capture_service.js" type="text/javascript"></script>
-     <script src="assets/js/angular-ui/ui-flowchart/dragging_service.js" type="text/javascript"></script>
-     <script src="assets/js/angular-ui/ui-flowchart/flowchart_viewmodel.js" type="text/javascript"></script>
-     <script src="assets/js/angular-ui/ui-flowchart/flowchart_directive.js" type="text/javascript"></script>
+    <!-- flowchart -->
+    <script src="vidamo/graph/ui-flowchart/debug.js" type="text/javascript"></script>
+    <script src="vidamo/graph/ui-flowchart/svg_class.js" type="text/javascript"></script>
+    <script src="vidamo/graph/ui-flowchart/mouse_capture_service.js" type="text/javascript"></script>
+    <script src="vidamo/graph/ui-flowchart/dragging_service.js" type="text/javascript"></script>
+    <script src="vidamo/graph/ui-flowchart/flowchart_viewmodel.js" type="text/javascript"></script>
+    <script src="vidamo/graph/ui-flowchart/flowchart_directive.js" type="text/javascript"></script>
 
-      <!-- zoom and pan-->
-     <script src="assets/js/packages/hamsterjs/hamster.js"></script>
-     <script src="assets/js/angular/angular-mousewheel/mousewheel.js"></script>
-     <script src="assets/js/angular-ui/ui-panzoom/panzoom.js"></script>
+    <!-- zoom and pan-->
+    <script src="assets/js/packages/hamsterjs/hamster.js"></script>
+    <script src="assets/js/angular/angular-mousewheel/mousewheel.js"></script>
+    <script src="assets/js/angular-ui/ui-panzoom/panzoom.js"></script>
 
     <!--three.js-->
-
     <script src="assets/js/threejs/build/three.js"></script>
     <script src="assets/js/threejs/examples/js/controls/TransformControls.js"></script>
     <script src="assets/js/threejs/examples/js/controls/OrbitControls.js"></script>
 
-     <!-- app -->
-     <script src="vidamo/app.js"></script>
+    <!-- app -->
+    <script src="vidamo/app.js"></script>
 
-     <!-- controllers -->
-     <script src="vidamo/controller/graph.js"></script>
-     <script src="vidamo/controller/menu.js"></script>
-     <script src="vidamo/controller/procedure.js"></script>
-     <script src="vidamo/controller/panzoom.js"></script>
-     <script src="vidamo/controller/execute.js"></script>
-     <script src="vidamo/controller/console.js"></script>
+    <!-- controllers -->
+    <script src="vidamo/graph/graph_controller.js"></script>
+    <script src="vidamo/menu/menu_controller.js"></script>
+    <script src="vidamo/procedure/procedure_controller.js"></script>
+    <script src="vidamo/graph/panzoom_controller.js"></script>
+    <script src="vidamo/graph/execute_controller.js"></script>
+    <script src="vidamo/viewport/console_controller.js"></script>
 
     <!-- directives -->
-    <script src="vidamo/directive/contextMenu.js"></script>
-    <script src="vidamo/directive/viewPort.js"></script>
+    <script src="vidamo/graph/contextMenu_directive.js"></script>
+    <script src="vidamo/viewport/viewport_directive.js"></script>
 
-     <!-- services -->
-     <script src="vidamo/service/model.js"></script>
-     <script src="vidamo/service/nodeCollection.js"></script>
+    <!-- services -->
+    <script src="vidamo/service/model.js"></script>
+    <script src="vidamo/service/nodeCollection.js"></script>
 
-     <!-- filters -->
-     <script src="vidamo/filter/filters.js"></script>
+    <!-- filters -->
+    <script src="vidamo/procedure/procedure_filters.js"></script>
 
     <!-- other -->
-     <script src="vidamo/module.js"></script>
-
-
+    <script src="vidamo/service/module.js"></script>
 
 </body>
 

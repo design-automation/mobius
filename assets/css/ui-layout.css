@@ -1,6 +1,5 @@
-/**
-  UI.Layout CSS
-*************************************/
+/*  UI.Layout css for draggable and resizable layout */
+
 .stretch {
     position: absolute;
     top: 13px;

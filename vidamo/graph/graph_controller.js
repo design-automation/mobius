@@ -96,6 +96,24 @@ vidamo.controller('graphCtrl',[
         // Create the view-model for the chart and attach to the scope.
         $scope.chartViewModel = new flowchart.ChartViewModel(chartDataModel);
 
+        // verify the function name
+        // fixme eval should not be a good option
+        function isValidName(inputName) {
+            if(inputName){
+                var testString =  'function ' + inputName  + '(){};';
+
+                try{
+                    eval(testString);
+                }
+                catch(err){
+                    document.getElementById('log').innerHTML += "<div style='color: red'>Error: invalid name!</div>";
+                    return false;
+                }
+                return true;
+            }
+            return false;
+        }
+
         // listen to the graph, when a node is clicked, update the visual procedure/ code/ interface accordions
          $scope.$on("nodeIndex", function(event, message) {
 
