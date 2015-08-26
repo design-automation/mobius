@@ -49,15 +49,9 @@ vidamo.controller('graphCtrl',[
 
         // graph flowchart view model
         // pass by reference
+        // watch chartViewModel.data instead of chartViewModel to prevent stack limit exceeded
         $scope.chartViewModel= generateCode.getChartViewModel();
-        $scope.$watch('chartViewModel', function () {
-            if($scope.chartViewModel !== generateCode.getChartViewModel()){
-                generateCode.setChartViewModel($scope.chartViewModel);
-            }
-        });
-
-        // watch change of connections, update code
-        $scope.$watch('chartViewModel.data.connections', function () {
+        $scope.$watch('chartViewModel.data', function () {
             generateCode.generateCode();
         },true);
 
@@ -73,8 +67,7 @@ vidamo.controller('graphCtrl',[
             return nodeCollection.getNodeTypes();
         };
 
-
-        // fixme for node name
+        // for generate node name
         $scope.nextNodeId = 0;
 
         // currently selected node ID
@@ -120,10 +113,6 @@ vidamo.controller('graphCtrl',[
              $scope.nodeIndex = message;
 
              $scope.currentNodeName =  $scope.chartViewModel.nodes[$scope.nodeIndex].data.name;
-
-             // update generated code
-
-             generateCode.generateCode();
          });
 
 
@@ -163,35 +152,33 @@ vidamo.controller('graphCtrl',[
             $scope.$emit('cleanGraph');
 
             $scope.nextNodeId++;
-            // update generated code
-            generateCode.generateCode();
         };
 
         // Add an input connector to selected nodes.
 
         $scope.$on("newInputConnector",function () {
             try{
-                // todo set time out
+                setTimeout(function(){
+                    var connectorName = prompt("Enter a connector name:", "in"
+                        + $scope.chartViewModel.nodes[$scope.nodeIndex].inputConnectors.length
+                        + '_'
+                        + $scope.chartViewModel.nodes[$scope.nodeIndex].data.name);
 
-                var connectorName = prompt("Enter a connector name:", "in"
-                    + $scope.chartViewModel.nodes[$scope.nodeIndex].inputConnectors.length
-                    + '_'
-                    + $scope.chartViewModel.nodes[$scope.nodeIndex].data.name);
+                    if (!isValidName(connectorName)) {
+                        return;
+                    }
 
-                if (!isValidName(connectorName)) {
-                    return;
-                }
+                    var selectedNodes = $scope.chartViewModel.getSelectedNodes();
 
-                var selectedNodes = $scope.chartViewModel.getSelectedNodes();
+                    for (var i = 0; i < selectedNodes.length; ++i) {
+                        var node = selectedNodes[i];
 
-                for (var i = 0; i < selectedNodes.length; ++i) {
-                    var node = selectedNodes[i];
-
-                    node.addInputConnector({
-                        name: connectorName,
-                        value:''
-                    });
-                }
+                        node.addInputConnector({
+                            name: connectorName,
+                            value:''
+                        });
+                    }
+                },0);
             }
             catch(err){
                 document.getElementById('log').innerHTML += "<div style='color: red'>Error: no node selected!</div>";
@@ -206,7 +193,7 @@ vidamo.controller('graphCtrl',[
         $scope.$on("newOutputConnector",function () {
 
             try{
-                    // todo set time out
+                setTimeout(function(){
                     var connectorName = prompt("Enter a connector name:", "out"
                         + $scope.chartViewModel.nodes[$scope.nodeIndex].outputConnectors.length);
 
@@ -223,6 +210,7 @@ vidamo.controller('graphCtrl',[
                             value: ""
                         });
                     }
+                },0);
             }
             catch(err){
                 document.getElementById('log').innerHTML += "<div style='color: red'>Error: no node selected!</div>";
@@ -256,9 +244,10 @@ vidamo.controller('graphCtrl',[
 
 
         $scope.$on("renameSelected",function(){
-            // todo set time out
-            var newName = prompt('Enter a new name:');
-            $scope.chartViewModel.renameSelected(newName);
+            setTimeout(function(){
+                var newName = prompt('Enter a new name:');
+                $scope.chartViewModel.renameSelected(newName);
+            }, 0);
         });
 
     }]);

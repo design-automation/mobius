@@ -1,5 +1,6 @@
 //
 // right-click triggered context menu in graph section
+// forked from https://github.com/Templarian/ui.bootstrap.contextMenu
 //
 
 angular.module('ui.bootstrap.contextMenu', [])

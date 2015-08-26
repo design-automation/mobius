@@ -108,7 +108,14 @@ angular.module('flowChart', ['dragging'] )
         }]
     ];
 
-    // test menu for right clicj on canvas
+	// menu for right click on connection
+	$scope.connectionMenuOptions = [
+		['Delete', function () {
+		$scope.$emit("deleteSelected");
+	}]
+	];
+
+    // test menu for right click on canvas
     $scope.canvasMenuOptions = [
         ['no operation', function () {
 
@@ -118,7 +125,7 @@ angular.module('flowChart', ['dragging'] )
 	var controller = this;
 
 	//
-	// Reference to the document and jQuery, can be overridden for testting.
+	// Reference to the document and jQuery, can be overridden for testing.
 	//
 	this.document = document;
 
@@ -279,7 +286,7 @@ angular.module('flowChart', ['dragging'] )
 		$scope.dbClickMenu.x = dBclickPoint.x * (1/$scope.scaleFactor );
 		$scope.dbClickMenu.y = dBclickPoint.y *(1/$scope.scaleFactor );
 
-        // todo node location
+        // node location
         $scope.chart.newPos.x = $scope.dbClickMenu.x;
         $scope.chart.newPos.y = $scope.dbClickMenu.y;
 	};
@@ -502,50 +509,48 @@ angular.module('flowChart', ['dragging'] )
         // fixme control
         document.getElementById("node-creator").style.display = "none";
 
+			//
+			// Initiate dragging out of a connection.
+			//
+			dragging.startDrag(evt, {
+
+				//
+				// Called when the mouse has moved greater than the threshold distance
+				// and dragging has commenced.
+				//
+				dragStarted: function (x, y) {
+
+					var curCoords = controller.translateCoordinates(x, y);
+
+					$rootScope.$on("Update", function(event, message) {
+						$scope.scaleFactor = message;
+					});
+
+					$scope.draggingConnection = true;
+					$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector);
+					$scope.dragPoint2 = {
+						x: curCoords.x*(1/$scope.scaleFactor ),
+						y: curCoords.y*(1/$scope.scaleFactor )
+					};
+					$scope.dragTangent1 = flowchart.computeConnectionSourceTangent($scope.dragPoint1, $scope.dragPoint2);
+					$scope.dragTangent2 = flowchart.computeConnectionDestTangent($scope.dragPoint1, $scope.dragPoint2);
+				},
+
+				//
+				// Called on mousemove while dragging out a connection.
+				//
+				dragging: function (x, y) {
+					var startCoords = controller.translateCoordinates(x, y);
+
 					//
-					// Initiate dragging out of a connection.
+					// @ vidamo communicate with pan&zoom controller to correct scale
 					//
-					dragging.startDrag(evt, {
+					$rootScope.$on("Update", function(event, message) {
+						$scope.scaleFactor = message;
+					});
 
-						//
-						// Called when the mouse has moved greater than the threshold distance
-						// and dragging has commenced.
-						//
-
-
-						dragStarted: function (x, y) {
-
-							var curCoords = controller.translateCoordinates(x, y);
-
-							$rootScope.$on("Update", function(event, message) {
-								$scope.scaleFactor = message;
-							});
-
-							$scope.draggingConnection = true;
-							$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector);
-							$scope.dragPoint2 = {
-								x: curCoords.x*(1/$scope.scaleFactor ),
-								y: curCoords.y*(1/$scope.scaleFactor )
-							};
-							$scope.dragTangent1 = flowchart.computeConnectionSourceTangent($scope.dragPoint1, $scope.dragPoint2);
-							$scope.dragTangent2 = flowchart.computeConnectionDestTangent($scope.dragPoint1, $scope.dragPoint2);
-						},
-
-						//
-						// Called on mousemove while dragging out a connection.
-						//
-						dragging: function (x, y) {
-							var startCoords = controller.translateCoordinates(x, y);
-
-							//
-							// @ vidamo communicate with pan&zoom controller to correct scale
-							//
-							$rootScope.$on("Update", function(event, message) {
-								$scope.scaleFactor = message;
-							});
-
-							$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector);
-							$scope.dragPoint2 = {
+					$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector);
+					$scope.dragPoint2 = {
 					x: startCoords.x*(1/$scope.scaleFactor ),
 					y: startCoords.y*(1/$scope.scaleFactor )
 				};

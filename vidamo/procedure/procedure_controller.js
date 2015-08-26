@@ -56,7 +56,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
         // methods types
         $scope.methods = [
             //{name:'get input', usage:'I/O'},
-            {name:'set output', usage:'I/O'},
+            //{name:'set output', usage:'I/O'},
             {name: 'print', usage:'General'},
             //{name: 'list length', usage:'List'},
             //{name: 'list item', usage:'List'},

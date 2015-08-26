@@ -281,6 +281,7 @@ var flowchart = {
 		//
 
 		// data attribute for transferring data from node to node through connections
+		// fixme data in connection no longer in use
 		this.data = connectionDataModel;
 		this.source = sourceConnector;
 		this.dest = destConnector;
@@ -443,6 +444,7 @@ var flowchart = {
 
 
 		// @ vidamo new node position
+        // fixme this should be responsive
 		this.newPos = {x:1900,y:2100};
 
 		//

@@ -110,6 +110,7 @@
       ng-repeat="connection in chart.connections"
       class="connection"
       ng-mousedown="connectionMouseDown($event, connection)"
+      context-menu="connectionMenuOptions"
       >
         <path
           ng-attr-class="{{connection.selected() && 'selected-connection-line' || (connection == mouseOverConnection && 'mouseover-connection-line' || 'connection-line')}}"

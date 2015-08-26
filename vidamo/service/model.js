@@ -1,5 +1,5 @@
 //
-// data service for application data synchronization among controllers
+// data model service for application data synchronization among controllers
 // code generation module
 //
 

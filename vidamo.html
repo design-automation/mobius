@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="assets/css/graph.css">
     <link rel="stylesheet" href="assets/css/select.css">
     <link rel="stylesheet" href="assets/css/xeditable.css">
+    <!-- not in use-->
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">
 </head>
 
@@ -27,8 +28,9 @@
                 <span class="dropdown" on-toggle="toggled(open)">
                     <a href class="dropdown-toggle">  File |</a>
                     <ul class="dropdown-menu">
+                        <!--todo new: refresh? -->
                         <li>
-                            <a onclick="onNewOptionClick ()"> New </a>
+                            <a> Todo:New </a>
                         </li>
 
                         <li>
@@ -42,6 +44,20 @@
                             <a ng-href="{{sceneUrl}}" download="scene.json" ng-click = "saveSceneJson()">
                                 Save Scene
                             </a>
+                        </li>
+                    </ul>
+                </span>
+
+                <!--todo redo/undo-->
+                <span class="dropdown" on-toggle="toggled(open)">
+                    <a href class="dropdown-toggle">  Edit |</a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a> Todo:Undo </a>
+                        </li>
+
+                        <li>
+                            <a> Todo:Redo </a>
                         </li>
                     </ul>
                 </span>
@@ -78,6 +94,16 @@
                             <a ng-href="{{libUrl}}" download="vidamo.js" ng-click = "downloadLib()">
                                 Export Function Library
                             </a>
+                        </li>
+                    </ul>
+                </span>
+
+                <!--todo help -->
+                <span class="dropdown" on-toggle="toggled(open)">
+                    <a href class="dropdown-toggle">  Help |</a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a> Todo:Help </a>
                         </li>
                     </ul>
                 </span>
@@ -158,18 +184,18 @@
                             </div>
 
                             <!--<div ng-controller="graphCtrl">-->
-                            <!--<textarea-->
-                            <!--style="width: 100%; height: 100%;-->
-                            <!--padding-top: 8px;-->
-                            <!--padding-left: 8px;-->
-                            <!--padding-right: 8px;-->
-                            <!--padding-bottom: 20px;-->
-                            <!--font-size: 12px;-->
-                            <!--overflow: auto;-->
-                            <!--position: absolute;"-->
-                            <!--chart-json-edit-->
-                            <!--view-model="chartViewModel">-->
-                            <!--</textarea>-->
+                                <!--<textarea-->
+                                <!--style="width: 100%; height: 100%;-->
+                                <!--padding-top: 8px;-->
+                                <!--padding-left: 8px;-->
+                                <!--padding-right: 8px;-->
+                                <!--padding-bottom: 20px;-->
+                                <!--font-size: 12px;-->
+                                <!--overflow: auto;-->
+                                <!--position: absolute;"-->
+                                <!--chart-json-edit-->
+                                <!--view-model="chartViewModel">-->
+                                <!--</textarea>-->
                             <!--</div>-->
                         </div>
 
@@ -215,9 +241,9 @@
                                     </tab>
 
                                     <!--procedure-->
-                                    <tab heading="Procedure" style="height:100%">
-                                        <div class="tabArea">
-                                            <div ui-tree id="tree-root">
+                                    <tab heading="Procedure">
+                                        <div >
+                                            <div ui-tree id="tree-root" class="tabArea">
                                                 <div ui-tree-nodes="" ng-model="data">
                                                     <div ng-repeat="node in data"
                                                          ui-tree-node
@@ -225,33 +251,34 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class = "buttons" >
-                                            <br>
-                                            <button class="btn btn-default btn-xs" ng-click="newItem('Data')">Add Data</button>
-                                            <!--<button class="btn btn-default btn-xs" ng-click="newItem('Action')">Add Action</button>-->
-                                            <ui-select ng-model="method"
-                                                       style="display: inline-block;"
-                                                       on-select="newItem('Action',$select.selected.name)">
-                                                <ui-select-match placeholder="Add action">Add action</ui-select-match>
-                                                <ui-select-choices
-                                                        group-by="'usage'"
-                                                        repeat="method.name as method in methods| filter: $select.search">
-                                                    <span ng-bind-html="method.name| highlight: $select.search"></span>
-                                                </ui-select-choices>
-                                            </ui-select>
+                                            <div class = "buttons" >
+                                                <button id="button-data" class="btn btn-default btn-xs" ng-click="newItem('Data')">Add Data</button>
 
-                                            <!--<button class="btn btn-default btn-xs" ng-click="newItem('Control')">Add Control</button>-->
-                                            <ui-select ng-model="controlType"
-                                                       style="display: inline-block;"
-                                                       on-select="newItem('Control',$select.selected)">
-                                                <ui-select-match placeholder="Add Control">Add Control</ui-select-match>
-                                                <ui-select-choices
-                                                        repeat="controlType in controlTypes| filter: $select.search">
-                                                    <span ng-bind-html="controlType| highlight: $select.search"></span>
-                                                </ui-select-choices>
-                                            </ui-select>
+                                                <ui-select id="button-action"
+                                                           ng-model="method"
+                                                           style="display: inline-block;"
+                                                           on-select="newItem('Action',$select.selected.name)">
+                                                    <ui-select-match placeholder="Add Action">Add Action</ui-select-match>
+                                                    <ui-select-choices
+                                                            group-by="'usage'"
+                                                            repeat="method.name as method in methods| filter: $select.search">
+                                                        <span ng-bind-html="method.name| highlight: $select.search"></span>
+                                                    </ui-select-choices>
+                                                </ui-select>
+
+                                                <ui-select id="button-control"
+                                                           ng-model="controlType"
+                                                           style="display: inline-block;"
+                                                           on-select="newItem('Control',$select.selected)">
+                                                    <ui-select-match placeholder="Add Control">Add Control</ui-select-match>
+                                                    <ui-select-choices
+                                                            repeat="controlType in controlTypes| filter: $select.search">
+                                                        <span ng-bind-html="controlType| highlight: $select.search"></span>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+
                                         </div>
                                     </tab>
                                 </tabset>
@@ -264,8 +291,7 @@
                                 <div ng-if="!codeList[nodeIndex]">
                                     <div class="info-title">Procedure Code: </div>
                                     <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'tomorrow' }"
-                                         readonly="{{true}}">// To generate code,
-                                    </div>
+                                         readonly="{{true}}">// To generate code, create graph&procedure and run</div>
                                 </div>
 
                                 <div ng-if="codeList[nodeIndex]">
@@ -343,7 +369,7 @@
     <script src="vidamo/procedure/procedure_filters.js"></script>
 
     <!-- other -->
-    <script src="vidamo/service/module.js"></script>
+    <script src="vidamo/module.js"></script>
 
 </body>
 
