@@ -224,7 +224,7 @@
                                     <!--add to interface -->
                                     <tab heading="Parameters">
                                         <div class="tabArea">
-                                            <div ui-tree id="tree-root-1">
+                                            <div ui-tree id="tree-root-interface" data-nodrop-enabled="true">
                                                 <div ui-tree-nodes="" ng-model="interface">
                                                     <div ng-repeat="node in interface"
                                                          ui-tree-node
@@ -233,17 +233,23 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div class="buttons">
-                                            <button class="btn btn-default btn-xs" ng-click="newInterface('Data')">
-                                                New Parameter</button>
-                                        </div>
                                     </tab>
 
-                                    <!--procedure-->
                                     <tab heading="Procedure">
-                                        <div >
-                                            <div ui-tree id="tree-root" class="tabArea">
+                                        <div  class="tabArea">
+                                            <!--parameters-->
+                                            <div ui-tree id="tree-root-parameter">
+                                                <div ui-tree-nodes="" ng-model="interface" data-nodrop-enabled="true">
+                                                    <div ng-repeat="node in interface"
+                                                         ui-tree-node
+                                                         ng-include="'vidamo/procedure/parameter_template.html'">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <hr>
+                                            <!--procedure-->
+                                            <div ui-tree id="tree-root-procedure">
                                                 <div ui-tree-nodes="" ng-model="data">
                                                     <div ng-repeat="node in data"
                                                          ui-tree-node
@@ -251,35 +257,41 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <div class = "buttons" >
-                                                <button id="button-data" class="btn btn-default btn-xs" ng-click="newItem('Data')">Add Data</button>
-
-                                                <ui-select id="button-action"
-                                                           ng-model="method"
-                                                           style="display: inline-block;"
-                                                           on-select="newItem('Action',$select.selected.name)">
-                                                    <ui-select-match placeholder="Add Action">Add Action</ui-select-match>
-                                                    <ui-select-choices
-                                                            group-by="'usage'"
-                                                            repeat="method.name as method in methods| filter: $select.search">
-                                                        <span ng-bind-html="method.name| highlight: $select.search"></span>
-                                                    </ui-select-choices>
-                                                </ui-select>
-
-                                                <ui-select id="button-control"
-                                                           ng-model="controlType"
-                                                           style="display: inline-block;"
-                                                           on-select="newItem('Control',$select.selected)">
-                                                    <ui-select-match placeholder="Add Control">Add Control</ui-select-match>
-                                                    <ui-select-choices
-                                                            repeat="controlType in controlTypes| filter: $select.search">
-                                                        <span ng-bind-html="controlType| highlight: $select.search"></span>
-                                                    </ui-select-choices>
-                                                </ui-select>
-                                            </div>
-
                                         </div>
+
+                                        <div class = "buttons" >
+                                            <button id="button-data"
+                                                    class="btn btn-default btn-xs"
+                                                    ng-click="newItem('Data')">Add Data</button>
+
+                                            <button id="button-parameter"
+                                                    class="btn btn-default btn-xs"
+                                                    ng-click="newInterface('Data')"> Add Parameter</button>
+
+                                            <ui-select id="button-action"
+                                                       ng-model="method"
+                                                       style="display: inline-block;"
+                                                       on-select="newItem('Action',$select.selected.name)">
+                                                <ui-select-match placeholder="Add Action">Add Action</ui-select-match>
+                                                <ui-select-choices
+                                                        group-by="'usage'"
+                                                        repeat="method.name as method in methods| filter: $select.search">
+                                                    <span ng-bind-html="method.name| highlight: $select.search"></span>
+                                                </ui-select-choices>
+                                            </ui-select>
+
+                                            <ui-select id="button-control"
+                                                       ng-model="controlType"
+                                                       style="display: inline-block;"
+                                                       on-select="newItem('Control',$select.selected)">
+                                                <ui-select-match placeholder="Add Control">Add Control</ui-select-match>
+                                                <ui-select-choices
+                                                        repeat="controlType in controlTypes| filter: $select.search">
+                                                    <span ng-bind-html="controlType| highlight: $select.search"></span>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </div>
+
                                     </tab>
                                 </tabset>
                             </div>

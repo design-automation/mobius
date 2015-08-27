@@ -5,12 +5,19 @@
 
 <div ui-tree-handle class="tree-node tree-node-content">
 
-    <!-- parameter presentation-->
+    <!--data procedure-->
     <div ng-if="node.title === 'Data'" style="padding-left:20px " class="tree-node-content">
+        <!--vairable name-->
         <a>
-            {{ node.dataName || 'undefined' }}
+            <a href="#" data-nodrag editable-text="node.dataName" buttons="no">{{ node.dataName || 'name' }}</a>
             =
             <a data-nodrag href="#" editable-text="node.dataValue" buttons="no">{{ node.dataValue || 'value' }}</a>
+        </a>
+
+        <!--delete key-->
+        <a class="pull-right btn btn-xs" data-nodrag ng-click="remove(this)" style="padding: 0;margin: 0" >
+            <span class="glyphicon glyphicon-remove">
+            </span>
         </a>
 
         <div ui-tree-nodes=""  ng-model="node.nodes" ng-class="{hidden: collapsed}">
@@ -22,5 +29,4 @@
     </div>
 
 </div>
-
 

@@ -180,35 +180,40 @@ right pane code area
 }
 
 .code-area .buttons{
-    display: inline-block;
     position: absolute;
     bottom: 8px;
     width: 100%;
 }
 
+.code-area .buttons #button-parameter{
+    display: inline-block;
+    width:20%;
+    left:8%;
+    position:absolute;
+    bottom:0;
+}
 
 .code-area .buttons #button-data{
     display: inline-block;
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     width: 20%;
-    left: 18%;
-    margin:auto;
+    left: 29.5%;
 }
 
 .code-area .buttons #button-action{
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     width: 20%;
-    left: 40%;
+    right: 29.5%;
 }
 
 .code-area .buttons #button-control{
     display: inline-block;
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     width: 20%;
-    right:18%;
+    right:8%;
 }
 
 .code-area .codeEditor {
