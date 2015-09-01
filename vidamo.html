@@ -213,18 +213,19 @@
 
                 <!--code area-->
                 <div class="code-area" ui-layout-container size="25%" >
-                    <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
-                        <div ui-layout-container size = "85%">
-                            <div ng-controller="procedureCtrl">
+                    <div ng-controller="procedureCtrl">
+                        <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
+                            <div ui-layout-container size = "85%">
+                            <div>
                                 <div ng-if = "currentNodeName">
                                     <pre class="nodeName">&nbsp Node: &nbsp {{currentNodeName}}</pre>
                                 </div>
 
-                                <tabset justified="true" >
+                                <tabset justified="true">
                                     <!--add to interface -->
-                                    <tab heading="Parameters">
+                                    <tab heading="Parameters" select="toggleCodeContent('outer')">
                                         <div class="tabArea">
-                                            <div ui-tree id="tree-root-interface" data-nodrop-enabled="true">
+                                            <div ui-tree id="tree-root-interface">
                                                 <div ui-tree-nodes="" ng-model="interface">
                                                     <div ng-repeat="node in interface"
                                                          ui-tree-node
@@ -235,11 +236,13 @@
                                         </div>
                                     </tab>
 
-                                    <tab heading="Procedure">
+                                    <tab heading="Procedure" select="toggleCodeContent('inner')">
                                         <div  class="tabArea">
                                             <!--parameters-->
-                                            <div ui-tree id="tree-root-parameter">
-                                                <div ui-tree-nodes="" ng-model="interface" data-nodrop-enabled="true">
+                                            <div ui-tree id="tree-root-parameter"
+                                                 style="padding-bottom:6px"
+                                                 data-nodrop-enabled="true">
+                                                <div ui-tree-nodes="" ng-model="interface">
                                                     <div ng-repeat="node in interface"
                                                          ui-tree-node
                                                          ng-include="'vidamo/procedure/parameter_template.html'">
@@ -247,9 +250,8 @@
                                                 </div>
                                             </div>
 
-                                            <hr>
                                             <!--procedure-->
-                                            <div ui-tree id="tree-root-procedure">
+                                            <div ui-tree id="tree-root-procedure" >
                                                 <div ui-tree-nodes="" ng-model="data">
                                                     <div ng-repeat="node in data"
                                                          ui-tree-node
@@ -266,7 +268,7 @@
 
                                             <button id="button-parameter"
                                                     class="btn btn-default btn-xs"
-                                                    ng-click="newInterface('Data')"> Add Parameter</button>
+                                                    ng-click="newInterface('Parameter')"> Add Parameter</button>
 
                                             <ui-select id="button-action"
                                                        ng-model="method"
@@ -291,15 +293,29 @@
                                                 </ui-select-choices>
                                             </ui-select>
                                         </div>
-
                                     </tab>
                                 </tabset>
                             </div>
                         </div>
 
-                        <div ui-layout-container size = "15%" class="monitor">
-                            <div ng-controller="procedureCtrl">
-                                <!--ace text editor-->
+                            <div ui-layout-container size = "15%" class="monitor">
+                            <div ng-if = "codeContent === 'outer'">
+                                <div ng-if="!codeList[nodeIndex]">
+                                    <div class="info-title">Interface Code: </div>
+                                    <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'tomorrow' }"
+                                         readonly="{{true}}">// To generate code, create graph&procedure and run</div>
+                                </div>
+
+                                <div ng-if="codeList[nodeIndex]">
+                                    <div class="info-title">Interface Code: </div>
+                                    <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'tomorrow' }"
+                                         ng-model="codeList[nodeIndex]"
+                                         readonly="{{true}}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div ng-if = "codeContent === 'inner'">
                                 <div ng-if="!codeList[nodeIndex]">
                                     <div class="info-title">Procedure Code: </div>
                                     <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'tomorrow' }"
@@ -314,6 +330,7 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -330,7 +347,7 @@
 
     <!--angular-ui -->
     <script type="application/javascript" src="assets/js/angular-ui/ui-layout/ui-layout.js"></script>
-    <script src="assets/js/angular-ui/ui-bootstrap/ui-bootstrap-tpls-0.11.0.min.js"></script>
+    <script src="assets/js/angular-ui/ui-bootstrap/ui-bootstrap-tpls-0.13.3.min.js"></script>
     <script type="text/javascript" src="vidamo/procedure/angular-ui-tree.js"></script>
     <script type="text/javascript" src="assets/js/angular-ui/ui-select/select.js"></script>
     <script type="text/javascript" src="assets/js/angular-ui/angular-xeditable/xeditable.js"></script>

@@ -59,12 +59,20 @@ var vidamo = angular.module('vidamo',
     }
 
 
-    // check for the various File API support.
+    // check for the various browser support.
     function checkBrowser(){
+        // html5 file api
         if (window.File && window.FileReader && window.FileList && window.Blob) {
-            console.log('The File APIs are supported in this browser');
+            console.log('File APIs are fully supported in this browser.');
         } else {
-            alert('The File APIs are not fully supported in this browser.');
+            alert('File APIs are not fully supported in this browser.');
+        }
+
+        // html5 localstorage
+        if( 'localStorage' in window && window['localStorage'] !== null){
+            console.log('Local storage is supported in this browser.');
+        } else {
+            alert('Local storage is not supported in this browser');
         }
     }
 

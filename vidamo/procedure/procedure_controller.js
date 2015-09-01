@@ -7,6 +7,11 @@
 vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode',
     function($scope,$rootScope,$filter,generateCode) {
 
+        $scope.codeContent = '';
+        $scope.toggleCodeContent = function(content){
+            $scope.codeContent = content;
+        };
+
         // synchronization with vidamo application data pool
 
         // function code for procedures
@@ -82,6 +87,11 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
 
 
         // watch change of procedure data tree, if change update the flattenData
+
+        $scope.$watch('interfaceList',function(){
+            generateCode.generateCode();
+        },true);
+
         $scope.$watch('data', function(){
             //update generatedCodd
             generateCode.generateCode();
@@ -252,8 +262,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
             scope.toggle();
         };
 
-
-
+        // new parameter / procedure items
         $scope.newItem = function(cate,subCate) {
             try{
                 if(cate == 'Data'){
@@ -361,143 +370,21 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
 
         };
 
-        //onchange write the input value
-
-        $scope.applyValue = function (cate, value,location){
-            switch (cate){
-
-                case 'dataName':
-                    location.dataName = value;;
-                    break;
-
-                //
-                // ----------- cases for data procedure -----------
-                //
-
-                case 'dataValue':
-                    location.dataValue = value;
-                    break;
-
-                //
-                // ----------- cases for action procedure -----------
-                //
-
-                case 'method':
-                    location.method = value;
-                    location.dataName = undefined;
-                    location.parameters[0] = undefined;
-                    location.parameters[1] = undefined;
-                    location.parameters[2] = undefined;
-                    break;
-
-                // set output method
-                // parameters[0]:  output port
-                // parameters[2]:  dataName
-
-                case 'outputPort':
-                    location.parameters[0] = value;
-                    break;
-
-                case 'outputDataName':
-                    location.parameters[2] = value;
-                    break;
-
-                // get input method
-                // parameters[0]: input port index
-                case 'inputPort':
-                    location.parameters[0] = value;
-                    break;
-
-                // print data method
-                // parameters[0]: name of data to be printed
-                case 'printDataName':
-                    location.parameters[0] = value;
-                    break;
-
-
-                // list length
-                // parameter[0]: target list
-                // dataName: variable name to store list length
-
-                case 'targetList':
-                    location.parameters[0] = value;
-                    break;
-
-
-                // list item
-                // parameters[0]: target list
-                // parameters[1]: sorting category (alphabetic or numeric)
-                // dataName: variable name to store list item
-                case 'itemIndex':
-                    location.parameters[1] = value;
-                    break;
-
-                // sort list
-                case 'category':
-                    location.parameters[1] = value;
-                    break;
-
-                // reverse list
-                // parameters[0]: target list
-                // dataName: variable name to store list item
-
-                // combine list
-                // parameters[0]: first list
-                // parameters[1]: second list
-                // dataName: variable name to store combined list
-                case  'targetList1':
-                    location.parameters[0] = value;
-                    break;
-
-                case 'targetList2':
-                    location.parameters[1] = value;
-                    break;
-
-                //insert item to list
-
-
-                //
-                // ----------- control procedure -----------
-                //
-
-                case 'controlType':
-                    location.controlType = value;
-                    break;
-
-                case 'forList':
-                    location.forList  = value;
-                    break;
-
-                // ----------- add data to interface ------------
-                // parameter0: dataValue parameter1: dataName parameter2: node id
-
-                case 'addToInterface':
-                    location.dataName = value.dataName;
-                    location.dataValue = value.dataValue;
-                    location.id = value.id;
-                    break;
-
-                // change data in interface and synchronize with procedure
-
-                case 'interfaceValue':
-                    location.dataValue = value;
-                    updateById(location.id, $scope.data,'dataValue',value);
-                    break;
-            }
-        };
-
         // add new item in interface
 
         $scope.newInterface = function(cate) {
 
             try{
-                if(cate == 'Data'){
+                if(cate == 'Parameter'){
                     $scope.interface.push({
-                        id: $scope.data.length  + 1,
+                        id: $scope.interface.length  + 1,
                         title:  'Data',
-                        dataName:'',
-                        parameters:[],
-                        dataValue:'',
+
+                        //overwrite:false,
+
+                        dataName:undefined,
+                        dataValue:undefined,
+
                         inputConnectors: $scope.chartViewModel.nodes[$scope.nodeIndex].data.inputConnectors,
                         outputConnectors:$scope.chartViewModel.nodes[$scope.nodeIndex].data.outputConnectors,
                     });

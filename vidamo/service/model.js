@@ -202,6 +202,20 @@ vidamo.factory('generateCode', function () {
                 }
 
 
+                // parameters code
+                for(var j = 0; j < data.interfaceList[i].length;j++){
+
+                        // creating new parameters
+                        // todo assign or create new variable
+                        var codeBlock = "    " + "var "
+                            + data.interfaceList[i][j].dataName
+                            + " = "
+                            + data.interfaceList[i][j].dataValue + ";\n";
+
+                        data.javascriptCode += codeBlock;
+                        data.codeList[i] += codeBlock;
+                }
+
                 for(var j = 0; j < data.dataList[i].length; j++){
 
                     // data procedure

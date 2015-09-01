@@ -95,7 +95,9 @@ angular.module('flowChart', ['dragging'] )
         }],
         ['Rename', function () {
             $scope.$emit("renameSelected");
-        }]
+        }],
+		['Save as new type', function () {}],
+		['Overwrite the original type', function () {}]
 	];
 
     // menu for right click on connector

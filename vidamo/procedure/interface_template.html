@@ -1,21 +1,28 @@
 <!--vidamo-->
-<!-- procedure template -->
-
-
+<!-- interface template -->
 
 <div ui-tree-handle class="tree-node tree-node-content">
 
     <!-- parameter presentation-->
     <div ng-if="node.title === 'Data'" style="padding-left:20px " class="tree-node-content">
-        <a>
-            {{ node.dataName || 'undefined' }}
-            =
-            <a data-nodrag href="#" editable-text="node.dataValue" buttons="no">{{ node.dataValue || 'value' }}</a>
-        </a>
+
+        {{ node.dataName || 'undefined' }}
+        =
+        <a data-nodrag href="#" editable-text="node.dataValue" buttons="no">{{ node.dataValue || 'value' }}</a>
+
+
+        <!--<a href="#"-->
+           <!--editable-checkbox="node.overwrite"-->
+           <!--e-title="overwritten by input"-->
+           <!--data-nodrag-->
+           <!--buttons="no"-->
+           <!--style="margin-left:20px;">-->
+            <!--{{ node.overwrite && "overwriten by input" || "no input" }}-->
+        <!--</a>-->
 
         <div ui-tree-nodes=""  ng-model="node.nodes" ng-class="{hidden: collapsed}">
             <div ng-repeat="node in node.nodes"
-                 ui-tree-node ng-include="'vidamo/template/procedure.html'">
+                 ui-tree-node ng-include="'vidamo/procedure/interface_template.html'">
             </div>
         </div>
 

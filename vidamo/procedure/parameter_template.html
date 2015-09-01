@@ -1,7 +1,5 @@
 <!--vidamo-->
-<!-- procedure template -->
-
-
+<!-- parameter template -->
 
 <div ui-tree-handle class="tree-node tree-node-content">
 
@@ -14,6 +12,15 @@
             <a data-nodrag href="#" editable-text="node.dataValue" buttons="no">{{ node.dataValue || 'value' }}</a>
         </a>
 
+        <!--<a href="#"-->
+           <!--editable-checkbox="node.overwrite"-->
+           <!--e-title="overwritten by input"-->
+           <!--data-nodrag-->
+           <!--buttons="no"-->
+           <!--style="margin-left:20px;">-->
+            <!--{{ node.overwrite && "overwriten by input" || "no input" }}-->
+        <!--</a>-->
+
         <!--delete key-->
         <a class="pull-right btn btn-xs" data-nodrag ng-click="remove(this)" style="padding: 0;margin: 0" >
             <span class="glyphicon glyphicon-remove">
@@ -22,7 +29,7 @@
 
         <div ui-tree-nodes=""  ng-model="node.nodes" ng-class="{hidden: collapsed}">
             <div ng-repeat="node in node.nodes"
-                 ui-tree-node ng-include="'vidamo/template/procedure.html'">
+                 ui-tree-node ng-include="'vidamo/procedure/parameter_template.html'">
             </div>
         </div>
 

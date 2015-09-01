@@ -3,14 +3,17 @@
 //
 
 vidamo.factory('nodeCollection', function () {
-    var nodes = [{
+
+    var nodes= [];
+    var defaultNodes = [{
 
         // node type
-        nodeType: 'empty',
+        nodeType: 'create new type',
 
         // node data model for graph
         nodeDataModel: {
             name: undefined,
+            type:undefined,
             id: undefined,
             x: undefined,
             y: undefined,
@@ -25,7 +28,63 @@ vidamo.factory('nodeCollection', function () {
 
         // procedure data model linked with node
         interfaceDataModel: []
-    }];
+    },
+        {
+
+            // node type
+            nodeType: 'point(default)',
+
+            // node data model for graph
+            nodeDataModel: {
+                name: undefined,
+                id: undefined,
+                x: undefined,
+                y: undefined,
+                inputConnectors: [
+                ],
+                outputConnectors: [
+                ]
+            },
+
+            // procedure data model linked with node
+            procedureDataModel: [],
+
+            // procedure data model linked with node
+            interfaceDataModel: []
+        },
+        {
+
+            // node type
+            nodeType: 'node from a friend',
+
+            // node data model for graph
+            nodeDataModel: {
+                name: undefined,
+                id: undefined,
+                x: undefined,
+                y: undefined,
+                inputConnectors: [
+                ],
+                outputConnectors: [
+                ]
+            },
+
+            // procedure data model linked with node
+            procedureDataModel: [],
+
+            // procedure data model linked with node
+            interfaceDataModel: []
+        }];
+
+
+    // check if node types exists in local storage, if not, store default
+    if(localStorage.vidamoNodeTypes === undefined){
+        // store default into local storage
+        localStorage.vidamoNodeTypes = JSON.stringify(defaultNodes);
+    }
+
+    // retrieve the local storage node types for usage
+    nodes = JSON.parse(localStorage.vidamoNodeTypes);
 
     return{
 

@@ -472,7 +472,9 @@
               };
 
               //
-              // @ vidamo prevent nodes go into data/action node
+              // @ vidamo prevent nodes go into
+              //                  data/action node
+              //                  if else node
               //
               callbacks.beforeDrop = function (event) {
                 if(event.dest.nodesScope.$parent.$modelValue){
