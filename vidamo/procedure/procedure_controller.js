@@ -4,8 +4,8 @@
 
 // todo value of in/out connector is not used
 
-vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode',
-    function($scope,$rootScope,$filter,generateCode) {
+vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode','nodeCollection',
+    function($scope,$rootScope,$filter,generateCode,nodeCollection) {
 
         $scope.codeContent = '';
         $scope.toggleCodeContent = function(content){
@@ -93,7 +93,17 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
         },true);
 
         $scope.$watch('data', function(){
-            //update generatedCodd
+
+            // compare current node procedure to original node type procedure
+            // if change, update version
+            if($scope.nodeIndex !== ''){
+                //$scope.chartViewModel.nodes[$scope.nodeIndex].data.version
+                //$scope.chartViewModel.nodes[$scope.nodeIndex].data.type
+                console.log('node:', $scope.data);
+            }
+
+
+            //update generatedCode
             generateCode.generateCode();
 
             // flatten the procedure three for data searching
@@ -394,5 +404,17 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
                 document.getElementById('log').innerHTML += "<div style='color: red'>Error: no node selected!</div>";
             }
         };
+
+        $scope.$on('overWriteProcedure',function(){
+            setTimeout(function(){
+                // todo
+                // 1. get new type node name
+                // 2. update the node type in nodeCollection
+                // 3. set this node instance's type name
+                // 4. update other same instances
+                var newName = prompt('Enter a new name:');
+
+            }, 0);
+        });
 
     }]);

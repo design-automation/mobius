@@ -2,79 +2,33 @@
 // data pool for default types of nodes
 //
 
+// todo
+// 2. method to overwrite node types
+// 4. file system implementation
+
 vidamo.factory('nodeCollection', function () {
 
     var nodes= [];
     var defaultNodes = [{
 
+        // this should be the future template
+        // node type name
+        nodeType:'create new type',
         // node type
-        nodeType: 'create new type',
+        version:'',
+        // node option to be overwritten
+        overwrite:false,
 
-        // node data model for graph
-        nodeDataModel: {
-            name: undefined,
-            type:undefined,
-            id: undefined,
-            x: undefined,
-            y: undefined,
-            inputConnectors: [
-            ],
-            outputConnectors: [
-            ]
-        },
+        // graph info
+        inputConnectors: [],
+        outputConnectors: [],
 
         // procedure data model linked with node
         procedureDataModel: [],
 
         // procedure data model linked with node
         interfaceDataModel: []
-    },
-        {
-
-            // node type
-            nodeType: 'point(default)',
-
-            // node data model for graph
-            nodeDataModel: {
-                name: undefined,
-                id: undefined,
-                x: undefined,
-                y: undefined,
-                inputConnectors: [
-                ],
-                outputConnectors: [
-                ]
-            },
-
-            // procedure data model linked with node
-            procedureDataModel: [],
-
-            // procedure data model linked with node
-            interfaceDataModel: []
-        },
-        {
-
-            // node type
-            nodeType: 'node from a friend',
-
-            // node data model for graph
-            nodeDataModel: {
-                name: undefined,
-                id: undefined,
-                x: undefined,
-                y: undefined,
-                inputConnectors: [
-                ],
-                outputConnectors: [
-                ]
-            },
-
-            // procedure data model linked with node
-            procedureDataModel: [],
-
-            // procedure data model linked with node
-            interfaceDataModel: []
-        }];
+    }];
 
 
     // check if node types exists in local storage, if not, store default
@@ -87,7 +41,6 @@ vidamo.factory('nodeCollection', function () {
     nodes = JSON.parse(localStorage.vidamoNodeTypes);
 
     return{
-
         // return node types for graph
         getNodeTypes: function(){
             var nodeTypes = [];
@@ -97,21 +50,39 @@ vidamo.factory('nodeCollection', function () {
             return nodeTypes;
         },
 
-        // return node data model for graph
-        getNodeDataModel: function(type){
+        // return overwrite option
+        getOverwrite: function(typeName){
+            for(var i = 0; i < nodes.length; i++){
+                if(nodes[i].nodeType == typeName){
+                    return nodes[i].overwrite;
+                }
+            }
+        },
+
+        getInputConnectors: function(type){
             for(var i = 0; i < nodes.length; i++){
                 if(nodes[i].nodeType == type){
-                    var obj = {};
-                    angular.copy(nodes[i].nodeDataModel,obj);
-                    return obj;
+                    var input = [];
+                    angular.copy(nodes[i].inputConnectors,input);
+                    return input;
+                }
+            }
+        },
+
+        getOutputConnectors: function(type){
+            for(var i = 0; i < nodes.length; i++){
+                if(nodes[i].nodeType == type){
+                    var output = [];
+                    angular.copy(nodes[i].outputConnectors,output);
+                    return output;
                 }
             }
         },
 
         // return procedure data model for procedure
-        getProcedureDataModel: function(type){
+        getProcedureDataModel: function(typeName){
             for(var i = 0; i < nodes.length; i++){
-                if(nodes[i].nodeType == type){
+                if(nodes[i].nodeType == typeName){
                     var obj = [];
                     angular.copy(nodes[i].procedureDataModel,obj);
                     return obj;
@@ -120,9 +91,9 @@ vidamo.factory('nodeCollection', function () {
         },
 
         // return interface data model for interface
-        getInterfaceDataModel: function(type){
+        getInterfaceDataModel: function(typeName){
             for(var i = 0; i < nodes.length; i++){
-                if(nodes[i].nodeType == type){
+                if(nodes[i].nodeType == typeName){
                     var obj = [];
                     angular.copy(nodes[i].interfaceDataModel,obj);
                     return obj;
@@ -130,20 +101,34 @@ vidamo.factory('nodeCollection', function () {
             }
         },
 
-        // install node for import node
-        installNewNode: function(name, nodeObj, procedureList, interfaceList){
+        // install node for create new node type / import node
+        installNewNodeType: function(type, procedureList, interfaceList){
             var newNode = {
-                nodeType: name,
-
-                nodeDataModel: nodeObj,
+                nodeType: type,
+                version:0,
+                overwrite:true,
 
                 procedureDataModel: procedureList,
-
                 interfaceDataModel: interfaceList
             };
 
             nodes.push(newNode);
-            console.log(nodes);
+            localStorage.vidamoNodeTypes = JSON.stringify(nodes);
+        },
+
+        // update node procedure content
+        // todo
+        updateNodeType: function(type,newType,newProcedureList,newInterfaceList){
+            for(var i = 0; i < nodes.length; i++){
+                if(nodes[i].nodeType == type){
+                    nodes[i].nodeType = newType;
+                    //nodes[i].nodeDataModel.type = newType;
+                    nodes[i].procedureDataModel = newProcedureList;
+                    nodes[i].interfaceDataModel = newInterfaceList;
+                }
+
+                localStorage.vidamoNodeTypes = JSON.stringify(nodes);
+            }
         }
     }
 });

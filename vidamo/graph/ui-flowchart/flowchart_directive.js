@@ -97,7 +97,10 @@ angular.module('flowChart', ['dragging'] )
             $scope.$emit("renameSelected");
         }],
 		['Save as new type', function () {}],
-		['Overwrite the original type', function () {}]
+		// todo when multiple nodes selected, this option should be grey out
+		['Overwrite the original type', function () {
+			$scope.$emit("overWriteProcedure"); // -> procedure controller
+		}]
 	];
 
     // menu for right click on connector

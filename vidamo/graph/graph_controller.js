@@ -76,10 +76,6 @@ vidamo.controller('graphCtrl',[
         // currently selected node name
         $scope.currentNodeName = '';
 
-
-        // number of deleted nodes which have the largest node id
-        // in order to correct the new node id
-
         // Setup the data-model for the chart.
         var chartDataModel = {
             nodes: [],
@@ -90,7 +86,7 @@ vidamo.controller('graphCtrl',[
         $scope.chartViewModel = new flowchart.ChartViewModel(chartDataModel);
 
         // verify the function name
-        // fixme eval should not be a good option
+        // fixme replace eval with regex
         function isValidName(inputName) {
             if(inputName){
                 var testString =  'function ' + inputName  + '(){};';
@@ -103,8 +99,10 @@ vidamo.controller('graphCtrl',[
                     return false;
                 }
                 return true;
+            }else{
+                document.getElementById('log').innerHTML += "<div style='color: red'>Error: invalid name!</div>";
+                return false;
             }
-            return false;
         }
 
         // listen to the graph, when a node is clicked, update the visual procedure/ code/ interface accordions
@@ -117,24 +115,32 @@ vidamo.controller('graphCtrl',[
 
 
         // Add a new node to the chart.
+        // todo integrate with fancy prompt
 
         $scope.addNewNode = function (type) {
-            // promote for name of new node
-            var nodeName = prompt('Enter a node name:', 'node' + $scope.nextNodeId);
-
-            // validate input name
-            if (!isValidName(nodeName)) {
-                return;
+            if(type === 'create new type'){
+                // install new node type and update type
+                type = $scope.createNewNodeType();
+                if(!type){
+                    return;
+                }
             }
 
-            // get pre-defined node data model
-            var newNodeDataModel = nodeCollection.getNodeDataModel(type);
+            // prompt for name of new node and validate
+            var nodeName = prompt('Enter a name for new node:', 'node' + $scope.nextNodeId);
+            if (!isValidName(nodeName)) {return;}
 
             // update node name, node id and location
+            var newNodeDataModel = {};
             newNodeDataModel.id = $scope.chartViewModel.nodes.length;
             newNodeDataModel.name = nodeName;
             newNodeDataModel.x = 1900;
             newNodeDataModel.y = 2100;
+            newNodeDataModel.inputConnectors = nodeCollection.getInputConnectors(type);
+            newNodeDataModel.outputConnectors = nodeCollection.getOutputConnectors(type);
+            newNodeDataModel.type = type;
+            newNodeDataModel.version = 0;
+            newNodeDataModel.overwrite = nodeCollection.getOverwrite(type);
 
             // when new node added, increase the number of procedure list by one
             $scope.dataList.push(nodeCollection.getProcedureDataModel(type));
@@ -145,17 +151,37 @@ vidamo.controller('graphCtrl',[
             // when new node added, increase the number of interface list by one
             $scope.interfaceList.push(nodeCollection.getInterfaceDataModel(type));
 
+            // todo interface code list
+
             // add new node data model to view model
             $scope.chartViewModel.addNode(newNodeDataModel);
 
-            // clean dropdown menu
+            // clean dropdown menu -> flowchart directive
             $scope.$emit('cleanGraph');
 
             $scope.nextNodeId++;
         };
 
-        // Add an input connector to selected nodes.
+        // create and install a new node type
+        $scope.createNewNodeType = function (){
+            // prompt for name of new type and validate
+            var newTypeName = prompt('Enter a node for new type:');
 
+            if (!isValidName(newTypeName)) {return;}
+            if ($scope.nodeTypes().indexOf(newTypeName) >= 0 ){
+                document.getElementById('log').innerHTML += "<div style='color: red'>Error: node type name exists!</div>"
+                return;
+            }
+
+            var newProcedureDataModel =  [];
+            var newInterfaceDataModel = [];
+
+            nodeCollection.installNewNodeType(newTypeName,newProcedureDataModel,newInterfaceDataModel);
+
+            return newTypeName;
+        };
+
+        // Add an input connector to selected nodes.
         $scope.$on("newInputConnector",function () {
             try{
                 setTimeout(function(){
@@ -248,6 +274,11 @@ vidamo.controller('graphCtrl',[
                 var newName = prompt('Enter a new name:');
                 $scope.chartViewModel.renameSelected(newName);
             }, 0);
+        });
+
+
+        $scope.$on("Save as new type",function(){
+
         });
 
     }]);

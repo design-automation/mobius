@@ -103,7 +103,7 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','generateCode','n
                             var newNodeName = nodeJsonObj.name;
 
                             // install new imported node into nodeCollection
-                            nodeCollection.installNewNode(newNodeName, nodeJsonObj,procedureJsonObj,interfaceJsonObj);
+                            nodeCollection.installNewNodeType(newNodeName, nodeJsonObj,procedureJsonObj,interfaceJsonObj);
 
                             document.getElementById('log').innerHTML += "<div style='color: green'> node imported!</div>";
                         }else{

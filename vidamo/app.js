@@ -15,7 +15,8 @@ var vidamo = angular.module('vidamo',
                             'ui.bootstrap.contextMenu']);
 
     // Simple service to create a prompt.
-    vidamo.service('prompt', function () {
+    // todo replace with customizable one
+     vidamo.service('prompt', function () {
         return prompt;
     });
 
