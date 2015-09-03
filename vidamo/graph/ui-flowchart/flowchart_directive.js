@@ -85,21 +85,23 @@ angular.module('flowChart', ['dragging'] )
     // menu for right click on node
 	$scope.nodeMenuOptions = [
 		['Add input connector', function () {
-            $scope.$emit("newInputConnector");
+            $scope.$emit("newInputConnector"); // -> graph controller
 		}],
 		['Add output connector', function () {
-            $scope.$emit("newOutputConnector");
+            $scope.$emit("newOutputConnector"); // -> graph controller
 		}],
         ['Delete', function () {
-            $scope.$emit("deleteSelected");
+            $scope.$emit("deleteSelected"); // -> graph controller
         }],
         ['Rename', function () {
-            $scope.$emit("renameSelected");
+            $scope.$emit("renameSelected"); // -> graph controller
         }],
-		['Save as new type', function () {}],
+		['Save as new type', function () {
+			$scope.$emit("saveAsNewType"); // -> graph controller
+		}],
 		// todo when multiple nodes selected, this option should be grey out
 		['Overwrite the original type', function () {
-			$scope.$emit("overWriteProcedure"); // -> procedure controller
+			$scope.$emit("overWriteProcedure"); // -> graph controller
 		}]
 	];
 

@@ -102,11 +102,14 @@ vidamo.factory('nodeCollection', function () {
         },
 
         // install node for create new node type / import node
-        installNewNodeType: function(type, procedureList, interfaceList){
+        installNewNodeType: function(type, input, output, procedureList, interfaceList){
             var newNode = {
                 nodeType: type,
                 version:0,
                 overwrite:true,
+
+                inputConnectors: input,
+                outputConnectors: output,
 
                 procedureDataModel: procedureList,
                 interfaceDataModel: interfaceList
@@ -117,12 +120,12 @@ vidamo.factory('nodeCollection', function () {
         },
 
         // update node procedure content
-        // todo
-        updateNodeType: function(type,newType,newProcedureList,newInterfaceList){
+        updateNodeType: function(oldType,newType, input, output, newProcedureList,newInterfaceList){
             for(var i = 0; i < nodes.length; i++){
-                if(nodes[i].nodeType == type){
+                if(nodes[i].nodeType == oldType){
                     nodes[i].nodeType = newType;
-                    //nodes[i].nodeDataModel.type = newType;
+                    nodes[i].inputConnectors = input;
+                    nodes[i].outputConnectors = output;
                     nodes[i].procedureDataModel = newProcedureList;
                     nodes[i].interfaceDataModel = newInterfaceList;
                 }

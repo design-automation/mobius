@@ -7,6 +7,7 @@
 vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode','nodeCollection',
     function($scope,$rootScope,$filter,generateCode,nodeCollection) {
 
+        // toggle code view
         $scope.codeContent = '';
         $scope.toggleCodeContent = function(content){
             $scope.codeContent = content;
@@ -42,12 +43,17 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
         });
 
         // graph flowchart view model
+        // pass by reference
+        // deep watch chartViewModel.data instead of chartViewModel to prevent stack limit exceeded
         $scope.chartViewModel= generateCode.getChartViewModel();
-        $scope.$watch('chartViewModel', function () {
-            generateCode.setChartViewModel($scope.chartViewModel);
-        });
+        $scope.$watch('chartViewModel.data', function () {
+            generateCode.generateCode();
+        },true);
+
         $scope.$watch(function () { return generateCode.getChartViewModel(); }, function () {
-            $scope.chartViewModel = generateCode.getChartViewModel();
+            if(generateCode.getChartViewModel() !== $scope.chartViewModel){
+                $scope.chartViewModel= generateCode.getChartViewModel();
+            }
         });
 
 
@@ -60,14 +66,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
 
         // methods types
         $scope.methods = [
-            //{name:'get input', usage:'I/O'},
-            //{name:'set output', usage:'I/O'},
-            {name: 'print', usage:'General'},
-            //{name: 'list length', usage:'List'},
-            //{name: 'list item', usage:'List'},
-            //{name: 'sort list', usage:'List'},
-            //{name: 'reverse list', usage:'List'},
-            //{name: 'combine lists', usage:'List'}
+            {name: 'print', usage:'General'}
         ];
 
         // listen to the graph, when a node is clicked, update the procedure/ interface tabs
@@ -97,9 +96,13 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
             // compare current node procedure to original node type procedure
             // if change, update version
             if($scope.nodeIndex !== ''){
-                //$scope.chartViewModel.nodes[$scope.nodeIndex].data.version
-                //$scope.chartViewModel.nodes[$scope.nodeIndex].data.type
-                console.log('node:', $scope.data);
+                var currentType = $scope.chartViewModel.nodes[$scope.nodeIndex].data.type;
+                var currentProcedure = $scope.data;
+                var typeProcedure = nodeCollection.getProcedureDataModel(currentType);
+                if(!angular.equals(currentProcedure,typeProcedure)){
+                    var d = new Date();
+                    $scope.chartViewModel.nodes[$scope.nodeIndex].data.version = d.getTime();
+                }
             }
 
 
@@ -404,17 +407,4 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
                 document.getElementById('log').innerHTML += "<div style='color: red'>Error: no node selected!</div>";
             }
         };
-
-        $scope.$on('overWriteProcedure',function(){
-            setTimeout(function(){
-                // todo
-                // 1. get new type node name
-                // 2. update the node type in nodeCollection
-                // 3. set this node instance's type name
-                // 4. update other same instances
-                var newName = prompt('Enter a new name:');
-
-            }, 0);
-        });
-
     }]);

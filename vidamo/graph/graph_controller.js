@@ -277,8 +277,87 @@ vidamo.controller('graphCtrl',[
         });
 
 
-        $scope.$on("Save as new type",function(){
+        $scope.$on("saveAsNewType",function(){
+            setTimeout(function(){
+            var newTypeName = prompt('Enter a node for new type:');
 
+            if (!isValidName(newTypeName)) {return;}
+            if ($scope.nodeTypes().indexOf(newTypeName) >= 0 ){
+                document.getElementById('log').innerHTML += "<div style='color: red'>Error: node type name exists!</div>"
+                return;
+            }
+
+            var input =  $scope.chartViewModel.getSelectedNodes()[0].data.inputConnectors;
+            var output = $scope.chartViewModel.getSelectedNodes()[0].data.outputConnectors;
+            var index = $scope.chartViewModel.getSelectedNodes()[0].data.id;
+            var newProcedureDataModel =  $scope.dataList[index];
+            var newInterfaceDataModel = $scope.interfaceList[index];
+
+            nodeCollection.installNewNodeType(newTypeName,input,output,newProcedureDataModel,newInterfaceDataModel);
+            },0);
+        });
+
+
+        $scope.$on('overWriteProcedure',function(){
+            if($scope.chartViewModel.getSelectedNodes()[0].data.overwrite){
+                setTimeout(function(){
+                    // get new type name, by default the original type name
+                    var instanceName =  $scope.chartViewModel.getSelectedNodes()[0].data.name;
+                    var oldTypeName = $scope.chartViewModel.getSelectedNodes()[0].data.type;
+                    var newTypeName = prompt('Enter a node for new type:', oldTypeName);
+
+                    if(newTypeName !== oldTypeName){
+                        if (!isValidName(newTypeName)) {return;}
+                        if ($scope.nodeTypes().indexOf(newTypeName) >= 0 ){
+                            document.getElementById('log').innerHTML += "<div style='color: red'>Error: node type name exists!</div>"
+                            return;
+                        }
+                    }
+
+                    // update the original type
+                    var input =  $scope.chartViewModel.getSelectedNodes()[0].data.inputConnectors;
+                    var output = $scope.chartViewModel.getSelectedNodes()[0].data.outputConnectors;
+                    var index = $scope.chartViewModel.getSelectedNodes()[0].data.id;
+                    var newProcedureDataModel = $scope.dataList[index];
+                    var newInterfaceDataModel = $scope.interfaceList[index];
+
+                    nodeCollection.updateNodeType(oldTypeName, newTypeName, input,output,newProcedureDataModel,newInterfaceDataModel);
+
+                    // update this node
+                    $scope.chartViewModel.getSelectedNodes()[0].data.type = newTypeName;
+                    $scope.chartViewModel.getSelectedNodes()[0].data.version = 0;
+
+                    // update other nodes with original type and version 0
+                    for(var i = 0; i < $scope.chartViewModel.nodes.length; i++){
+                        var node = $scope.chartViewModel.nodes[i];
+                        if(node.data.type === oldTypeName){
+                            if(node.data.name !== instanceName && node.data.version === 0){
+                                // nodeModel update
+
+                                //var newNodeDataModel = {};
+                                //newNodeDataModel.id = node.data.id;
+                                //newNodeDataModel.name = node.data.name;
+                                //newNodeDataModel.x = node.data.x;
+                                //newNodeDataModel.y = node.data.y;
+                                //newNodeDataModel.inputConnectors = input;
+                                //newNodeDataModel.outputConnectors = output;
+                                //newNodeDataModel.type = newTypeName;
+                                //newNodeDataModel.overwrite = true;
+
+                                //node.data.type = newTypeName;
+                                //node.data.inputConnectors = input;
+                                //node.data.outputConnectors = output;
+
+
+                                // procedure Model whole
+                                //$scope.dataList[node.data.id] = newProcedureDataModel;
+                                // interface Model whole
+                                //$scope.interfaceList[node.data.id] = newProcedureDataModel;
+                            }
+                        }
+                    }
+                },0)
+            }
         });
 
     }]);
