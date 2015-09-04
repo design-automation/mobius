@@ -4,10 +4,11 @@
 
 vidamo.controller('graphCtrl',[
                     '$scope',
+                    '$timeout',
                     'generateCode',
                     'nodeCollection',
                     'prompt',
-    function($scope,generateCode,nodeCollection,prompt) {
+    function($scope,$timeout,generateCode,nodeCollection,prompt) {
 
         // synchronization with vidamo application data pool
 
@@ -184,7 +185,7 @@ vidamo.controller('graphCtrl',[
         // Add an input connector to selected nodes.
         $scope.$on("newInputConnector",function () {
             try{
-                setTimeout(function(){
+                $timeout(function(){
                     var connectorName = prompt("Enter a connector name:", "in"
                         + $scope.chartViewModel.nodes[$scope.nodeIndex].inputConnectors.length
                         + '_'
@@ -204,7 +205,7 @@ vidamo.controller('graphCtrl',[
                             value:''
                         });
                     }
-                },0);
+                },100);
             }
             catch(err){
                 document.getElementById('log').innerHTML += "<div style='color: red'>Error: no node selected!</div>";
@@ -219,7 +220,7 @@ vidamo.controller('graphCtrl',[
         $scope.$on("newOutputConnector",function () {
 
             try{
-                setTimeout(function(){
+                $timeout(function(){
                     var connectorName = prompt("Enter a connector name:", "out"
                         + $scope.chartViewModel.nodes[$scope.nodeIndex].outputConnectors.length);
 
@@ -236,7 +237,7 @@ vidamo.controller('graphCtrl',[
                             value: ""
                         });
                     }
-                },0);
+                },10);
             }
             catch(err){
                 document.getElementById('log').innerHTML += "<div style='color: red'>Error: no node selected!</div>";
@@ -270,37 +271,38 @@ vidamo.controller('graphCtrl',[
 
 
         $scope.$on("renameSelected",function(){
-            setTimeout(function(){
+            $timeout(function(){
                 var newName = prompt('Enter a new name:');
                 $scope.chartViewModel.renameSelected(newName);
-            }, 0);
+            }, 10);
         });
 
 
         $scope.$on("saveAsNewType",function(){
-            setTimeout(function(){
-            var newTypeName = prompt('Enter a node for new type:');
+            $timeout(function(){
+                var newTypeName = prompt('Enter a node for new type:');
 
-            if (!isValidName(newTypeName)) {return;}
-            if ($scope.nodeTypes().indexOf(newTypeName) >= 0 ){
-                document.getElementById('log').innerHTML += "<div style='color: red'>Error: node type name exists!</div>"
-                return;
-            }
+                if (!isValidName(newTypeName)) {return;}
+                if ($scope.nodeTypes().indexOf(newTypeName) >= 0 ){
+                    document.getElementById('log').innerHTML += "<div style='color: red'>Error: node type name exists!</div>"
+                    return;
+                }
 
-            var input =  $scope.chartViewModel.getSelectedNodes()[0].data.inputConnectors;
-            var output = $scope.chartViewModel.getSelectedNodes()[0].data.outputConnectors;
-            var index = $scope.chartViewModel.getSelectedNodes()[0].data.id;
-            var newProcedureDataModel =  $scope.dataList[index];
-            var newInterfaceDataModel = $scope.interfaceList[index];
+                var input =  $scope.chartViewModel.getSelectedNodes()[0].data.inputConnectors;
+                var output = $scope.chartViewModel.getSelectedNodes()[0].data.outputConnectors;
+                var index = $scope.chartViewModel.getSelectedNodes()[0].data.id;
+                var newProcedureDataModel =  $scope.dataList[index];
+                var newInterfaceDataModel = $scope.interfaceList[index];
 
-            nodeCollection.installNewNodeType(newTypeName,input,output,newProcedureDataModel,newInterfaceDataModel);
-            },0);
+                nodeCollection.installNewNodeType(newTypeName,input,output,newProcedureDataModel,newInterfaceDataModel);
+            },10);
+
         });
 
 
         $scope.$on('overWriteProcedure',function(){
             if($scope.chartViewModel.getSelectedNodes()[0].data.overwrite){
-                setTimeout(function(){
+
                     // get new type name, by default the original type name
                     var instanceName =  $scope.chartViewModel.getSelectedNodes()[0].data.name;
                     var oldTypeName = $scope.chartViewModel.getSelectedNodes()[0].data.type;
@@ -333,30 +335,21 @@ vidamo.controller('graphCtrl',[
                         if(node.data.type === oldTypeName){
                             if(node.data.name !== instanceName && node.data.version === 0){
                                 // nodeModel update
-
-                                //var newNodeDataModel = {};
-                                //newNodeDataModel.id = node.data.id;
-                                //newNodeDataModel.name = node.data.name;
-                                //newNodeDataModel.x = node.data.x;
-                                //newNodeDataModel.y = node.data.y;
-                                //newNodeDataModel.inputConnectors = input;
-                                //newNodeDataModel.outputConnectors = output;
-                                //newNodeDataModel.type = newTypeName;
-                                //newNodeDataModel.overwrite = true;
-
-                                //node.data.type = newTypeName;
-                                //node.data.inputConnectors = input;
-                                //node.data.outputConnectors = output;
-
+                                node.data.type = newTypeName;
+                                node.data.inputConnectors = input;
+                                node.data.outputConnectors = output;
 
                                 // procedure Model whole
-                                //$scope.dataList[node.data.id] = newProcedureDataModel;
+                                $scope.dataList[node.data.id] = newProcedureDataModel;
+
                                 // interface Model whole
-                                //$scope.interfaceList[node.data.id] = newProcedureDataModel;
+                                $scope.interfaceList[node.data.id] = newProcedureDataModel;
                             }
                         }
                     }
-                },0)
+
+                    $scope.chartViewModel = new flowchart.ChartViewModel($scope.chartViewModel.data);
+
             }
         });
 
