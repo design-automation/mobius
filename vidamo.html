@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <title>Vidamo</title>
-    <!--loading page-->
+    <!-- loading page -->
     <script  src="assets/js/packages/pace/pace.min.js"></script>
     <link href="assets/css/pace-theme.css" rel="stylesheet" />
 
@@ -16,13 +16,13 @@
     <link rel="stylesheet" href="assets/css/graph.css">
     <link rel="stylesheet" href="assets/css/select.css">
     <link rel="stylesheet" href="assets/css/xeditable.css">
-    <!-- not in use-->
+    <!-- not in use -->
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">
 </head>
 
 <body>
     <div>
-        <!--dropdown Menu-->
+        <!-- dropdown Menu -->
         <div ng-controller="menuCtrl">
             <div class = "menubar">
                 <span dropdown on-toggle="toggled(open)">
@@ -48,7 +48,7 @@
                     </ul>
                 </span>
 
-                <!--todo redo/undo-->
+                <!-- todo redo/undo -->
                 <span dropdown on-toggle="toggled(open)">
                     <a href dropdown-toggle>  Edit |</a>
                     <ul class="dropdown-menu">
@@ -78,7 +78,6 @@
                               </a>
                           </li>
                       </ul>
-
                 </span>
 
                 <span dropdown on-toggle="toggled(open)" >
@@ -98,7 +97,7 @@
                     </ul>
                 </span>
 
-                <!--todo help -->
+                <!-- todo help -->
                 <span dropdown on-toggle="toggled(open)">
                     <a href dropdown-toggle>  Help |</a>
                     <ul class="dropdown-menu">
@@ -119,13 +118,13 @@
             </div>
         </div>
 
-        <!--resizable layout-->
+        <!-- resizable layout -->
         <div ui-layout>
             <div class="layout-area" ui-layout="{flow : 'column'}">
-                <!--graph area-->
+                <!-- graph area -->
                 <div class="graph-area" ui-layout-container size="25%">
                     <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
-                        <!--pan & zoom field-->
+                        <!-- pan & zoom field -->
                         <div mouse-capture
                              ng-keydown="keyDown($event)"
                              ng-keyup="keyUp($event)"
@@ -156,7 +155,7 @@
                             </div>
                         </div>
 
-                        <!--graph code field -->
+                        <!-- graph code field -->
                         <div ui-layout-container size = "15%">
                             <div ng-controller="graphCtrl">
                                 <div class="info-title">Scene Code:</div>
@@ -174,10 +173,10 @@
                     </div>
                 </div>
 
-                <!--3D view area  -->
+                <!-- 3D view area  -->
                 <div class=" view-area" ui-layout-container size="50%">
                     <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
-                        <!--threejs editor view port-->
+                        <!-- threejs editor view port -->
                         <div ui-layout-container size = "85%" id="xxx">
 
                             <div viewport id="threeViewport">
@@ -211,7 +210,7 @@
                     </div>
                 </div>
 
-                <!--code area-->
+                <!-- code area -->
                 <div class="code-area" ui-layout-container size="25%" >
                     <div ng-controller="procedureCtrl">
                         <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
@@ -222,7 +221,7 @@
                                 </div>
 
                                 <tabset justified="true">
-                                    <!--add to interface -->
+                                    <!-- add to interface -->
                                     <tab heading="Parameters" select="toggleCodeContent('outer')">
                                         <div class="tabArea">
                                             <div ui-tree id="tree-root-interface">
@@ -238,7 +237,7 @@
 
                                     <tab heading="Procedure" select="toggleCodeContent('inner')">
                                         <div  class="tabArea">
-                                            <!--parameters-->
+                                            <!-- parameters -->
                                             <div ui-tree id="tree-root-parameter"
                                                  style="padding-bottom:6px"
                                                  data-nodrop-enabled="true">
@@ -250,7 +249,7 @@
                                                 </div>
                                             </div>
 
-                                            <!--procedure-->
+                                            <!-- procedure -->
                                             <div ui-tree id="tree-root-procedure" >
                                                 <div ui-tree-nodes="" ng-model="data">
                                                     <div ng-repeat="node in data"
@@ -273,12 +272,11 @@
                                             <ui-select id="button-action"
                                                        ng-model="method"
                                                        style="display: inline-block;"
-                                                       on-select="newItem('Action',$select.selected.name)">
+                                                       on-select="newItem('Action',$select.selected)">
                                                 <ui-select-match placeholder="Add Action">Add Action</ui-select-match>
                                                 <ui-select-choices
-                                                        group-by="'usage'"
-                                                        repeat="method.name as method in methods| filter: $select.search">
-                                                    <span ng-bind-html="method.name| highlight: $select.search"></span>
+                                                        repeat="method as method in methods()| filter: $select.search">
+                                                    <span ng-bind-html="method| highlight: $select.search"></span>
                                                 </ui-select-choices>
                                             </ui-select>
 
@@ -299,38 +297,38 @@
                         </div>
 
                             <div ui-layout-container size = "15%" class="monitor">
-                            <div ng-if = "codeContent === 'outer'">
-                                <div ng-if="!codeList[nodeIndex]">
-                                    <div class="info-title">Interface Code: </div>
-                                    <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'tomorrow' }"
-                                         readonly="{{true}}">// To generate code, create graph&procedure and run</div>
+                                <div ng-if = "codeContent === 'outer'">
+                                    <div ng-if="!codeList[nodeIndex]">
+                                        <div class="info-title">Interface Code: </div>
+                                        <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'tomorrow' }"
+                                             readonly="{{true}}">// To generate code, create graph&procedure and run</div>
+                                    </div>
+
+                                    <div ng-if="codeList[nodeIndex]">
+                                        <div class="info-title">Interface Code: </div>
+                                        <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'tomorrow' }"
+                                             ng-model="codeList[nodeIndex]"
+                                             readonly="{{true}}">
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div ng-if="codeList[nodeIndex]">
-                                    <div class="info-title">Interface Code: </div>
-                                    <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'tomorrow' }"
-                                         ng-model="codeList[nodeIndex]"
-                                         readonly="{{true}}">
+                                <div ng-if = "codeContent === 'inner'">
+                                    <div ng-if="!codeList[nodeIndex]">
+                                        <div class="info-title">Procedure Code: </div>
+                                        <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'tomorrow' }"
+                                             readonly="{{true}}">// To generate code, create graph&procedure and run</div>
+                                    </div>
+
+                                    <div ng-if="codeList[nodeIndex]">
+                                        <div class="info-title">Procedure Code: </div>
+                                        <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'tomorrow' }"
+                                             ng-model="codeList[nodeIndex]"
+                                             readonly="{{true}}">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <div ng-if = "codeContent === 'inner'">
-                                <div ng-if="!codeList[nodeIndex]">
-                                    <div class="info-title">Procedure Code: </div>
-                                    <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'tomorrow' }"
-                                         readonly="{{true}}">// To generate code, create graph&procedure and run</div>
-                                </div>
-
-                                <div ng-if="codeList[nodeIndex]">
-                                    <div class="info-title">Procedure Code: </div>
-                                    <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'tomorrow' }"
-                                         ng-model="codeList[nodeIndex]"
-                                         readonly="{{true}}">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         </div>
                     </div>
                 </div>
@@ -338,14 +336,14 @@
         </div>
     </div>
 
-    <!--jquery-->
+    <!-- jquery -->
     <script type="text/javascript" src="assets/js/jquery/jquery-1.11.1.js"></script>
 
     <!-- angularJs -->
     <script type="application/javascript" src="assets/js/angular/angular.min.js"></script>
     <script type="text/javascript" src="assets/js/angular/angular-sanitize.js"></script>
 
-    <!--angular-ui -->
+    <!-- angular-ui -->
     <script type="application/javascript" src="assets/js/angular-ui/ui-layout/ui-layout.js"></script>
     <script src="assets/js/angular-ui/ui-bootstrap/ui-bootstrap-tpls-0.13.3.min.js"></script>
     <script type="text/javascript" src="vidamo/procedure/angular-ui-tree.js"></script>
@@ -365,12 +363,12 @@
     <script src="vidamo/graph/ui-flowchart/flowchart_viewmodel.js" type="text/javascript"></script>
     <script src="vidamo/graph/ui-flowchart/flowchart_directive.js" type="text/javascript"></script>
 
-    <!-- zoom and pan-->
+    <!-- zoom and pan -->
     <script src="assets/js/packages/hamsterjs/hamster.js"></script>
     <script src="assets/js/angular/angular-mousewheel/mousewheel.js"></script>
     <script src="assets/js/angular-ui/ui-panzoom/panzoom.js"></script>
 
-    <!--three.js-->
+    <!-- three.js -->
     <script src="assets/js/threejs/build/three.js"></script>
     <script src="assets/js/threejs/examples/js/controls/TransformControls.js"></script>
     <script src="assets/js/threejs/examples/js/controls/OrbitControls.js"></script>

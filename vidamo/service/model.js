@@ -334,7 +334,7 @@ vidamo.factory('generateCode', function () {
 
                 // action: print data
                 if(procedure.method == 'print'){
-                    codeBlock =  intentation  + '    ' + 'VIDAMO.print_data('
+                    codeBlock =  intentation  + '    ' + 'VIDAMO.print('
                         + procedure.parameters[0].value + ');\n';
 
                     data.javascriptCode += codeBlock;

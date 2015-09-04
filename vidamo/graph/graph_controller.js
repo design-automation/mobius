@@ -128,39 +128,43 @@ vidamo.controller('graphCtrl',[
             }
 
             // prompt for name of new node and validate
-            var nodeName = prompt('Enter a name for new node:', 'node' + $scope.nextNodeId);
-            if (!isValidName(nodeName)) {return;}
+            $timeout(function(){
+                var nodeName = prompt('Enter a name for new node:', 'node' + $scope.nextNodeId);
+                if (!isValidName(nodeName)) {return;}
 
-            // update node name, node id and location
-            var newNodeDataModel = {};
-            newNodeDataModel.id = $scope.chartViewModel.nodes.length;
-            newNodeDataModel.name = nodeName;
-            newNodeDataModel.x = 1900;
-            newNodeDataModel.y = 2100;
-            newNodeDataModel.inputConnectors = nodeCollection.getInputConnectors(type);
-            newNodeDataModel.outputConnectors = nodeCollection.getOutputConnectors(type);
-            newNodeDataModel.type = type;
-            newNodeDataModel.version = 0;
-            newNodeDataModel.overwrite = nodeCollection.getOverwrite(type);
+                // update node name, node id and location
+                var newNodeDataModel = {};
+                newNodeDataModel.id = $scope.chartViewModel.nodes.length;
+                newNodeDataModel.name = nodeName;
+                newNodeDataModel.x = 1900;
+                newNodeDataModel.y = 2100;
+                newNodeDataModel.inputConnectors = nodeCollection.getInputConnectors(type);
+                newNodeDataModel.outputConnectors = nodeCollection.getOutputConnectors(type);
+                newNodeDataModel.type = type;
+                newNodeDataModel.version = 0;
+                newNodeDataModel.overwrite = nodeCollection.getOverwrite(type);
 
-            // when new node added, increase the number of procedure list by one
-            $scope.dataList.push(nodeCollection.getProcedureDataModel(type));
+                // when new node added, increase the number of procedure list by one
+                $scope.dataList.push(nodeCollection.getProcedureDataModel(type));
 
-            // when new node added, add new code block
-            $scope.codeList.push('//\n' + '// To generate code, create nodes & procedures and run!\n' + '//\n');
+                // when new node added, add new code block
+                $scope.codeList.push('//\n' + '// To generate code, create nodes & procedures and run!\n' + '//\n');
 
-            // when new node added, increase the number of interface list by one
-            $scope.interfaceList.push(nodeCollection.getInterfaceDataModel(type));
+                // when new node added, increase the number of interface list by one
+                $scope.interfaceList.push(nodeCollection.getInterfaceDataModel(type));
 
-            // todo interface code list
+                // todo interface code list
 
-            // add new node data model to view model
-            $scope.chartViewModel.addNode(newNodeDataModel);
+                // add new node data model to view model
 
-            // clean dropdown menu -> flowchart directive
-            $scope.$emit('cleanGraph');
+                $scope.chartViewModel.addNode(newNodeDataModel);
 
-            $scope.nextNodeId++;
+                // clean dropdown menu -> flowchart directive
+                $scope.$emit('cleanGraph');
+
+                $scope.nextNodeId++;
+            },100);
+
         };
 
         // create and install a new node type
@@ -302,7 +306,7 @@ vidamo.controller('graphCtrl',[
 
         $scope.$on('overWriteProcedure',function(){
             if($scope.chartViewModel.getSelectedNodes()[0].data.overwrite){
-
+                $timeout(function(){
                     // get new type name, by default the original type name
                     var instanceName =  $scope.chartViewModel.getSelectedNodes()[0].data.name;
                     var oldTypeName = $scope.chartViewModel.getSelectedNodes()[0].data.type;
@@ -329,6 +333,8 @@ vidamo.controller('graphCtrl',[
                     $scope.chartViewModel.getSelectedNodes()[0].data.type = newTypeName;
                     $scope.chartViewModel.getSelectedNodes()[0].data.version = 0;
 
+
+
                     // update other nodes with original type and version 0
                     for(var i = 0; i < $scope.chartViewModel.nodes.length; i++){
                         var node = $scope.chartViewModel.nodes[i];
@@ -336,8 +342,25 @@ vidamo.controller('graphCtrl',[
                             if(node.data.name !== instanceName && node.data.version === 0){
                                 // nodeModel update
                                 node.data.type = newTypeName;
-                                node.data.inputConnectors = input;
-                                node.data.outputConnectors = output;
+                                node.data.inputConnectors = [];
+                                node.data.outputConnectors = [];
+                                node.inputConnectors = [];
+                                node.outputConnectors = [];
+
+
+                                for(var j = 0; j < input.length; j++){
+                                    node.addInputConnector({
+                                        name: input[j].name,
+                                        value:''
+                                    });
+                                }
+
+                                for(var k = 0; k < output.length; k++){
+                                    node.addOutputConnector({
+                                        name: output[k].name,
+                                        value:''
+                                    });
+                                }
 
                                 // procedure Model whole
                                 $scope.dataList[node.data.id] = newProcedureDataModel;
@@ -347,9 +370,7 @@ vidamo.controller('graphCtrl',[
                             }
                         }
                     }
-
-                    $scope.chartViewModel = new flowchart.ChartViewModel($scope.chartViewModel.data);
-
+                },100);
             }
         });
 

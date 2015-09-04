@@ -65,9 +65,15 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
                                 'if else'];
 
         // methods types
-        $scope.methods = [
-            {name: 'print', usage:'General'}
-        ];
+        $scope.methods = function(){
+            var props = Object.getOwnPropertyNames(VIDAMO);
+            var func_props = props.filter(function(property) {
+                return typeof VIDAMO[property] == 'function';
+            });
+
+            return func_props;
+        };
+
 
         // listen to the graph, when a node is clicked, update the procedure/ interface tabs
         $rootScope.$on("nodeIndex", function(event, message) {
@@ -372,9 +378,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
                                 outputConnectors:$scope.chartViewModel.nodes[$scope.nodeIndex].data.outputConnectors
                             });
                             break;
-
                     }
-
                 }
             }
             catch(err){
