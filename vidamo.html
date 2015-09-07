@@ -217,7 +217,7 @@
                             <div ui-layout-container size = "85%">
                             <div>
                                 <div ng-if = "currentNodeName">
-                                    <pre class="nodeName">&nbsp Node: &nbsp {{currentNodeName}}</pre>
+                                    <pre class="nodeName">&nbsp Node: &nbsp {{currentNodeName}} &nbsp Type: &nbsp {{currentNodeType}} &nbsp</pre>
                                 </div>
 
                                 <tabset justified="true">
@@ -261,13 +261,13 @@
                                         </div>
 
                                         <div class = "buttons" >
-                                            <button id="button-data"
-                                                    class="btn btn-default btn-xs"
-                                                    ng-click="newItem('Data')">Add Data</button>
-
                                             <button id="button-parameter"
                                                     class="btn btn-default btn-xs"
                                                     ng-click="newInterface('Parameter')"> Add Parameter</button>
+
+                                            <button id="button-data"
+                                                    class="btn btn-default btn-xs"
+                                                    ng-click="newItem('Data')">Add Data</button>
 
                                             <ui-select id="button-action"
                                                        ng-model="method"
@@ -298,32 +298,32 @@
 
                             <div ui-layout-container size = "15%" class="monitor">
                                 <div ng-if = "codeContent === 'outer'">
-                                    <div ng-if="!codeList[nodeIndex]">
+                                    <div ng-if="!outerCodeList[nodeIndex]">
                                         <div class="info-title">Interface Code: </div>
                                         <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'tomorrow' }"
                                              readonly="{{true}}">// To generate code, create graph&procedure and run</div>
                                     </div>
 
-                                    <div ng-if="codeList[nodeIndex]">
+                                    <div ng-if="outerCodeList[nodeIndex]">
                                         <div class="info-title">Interface Code: </div>
                                         <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'tomorrow' }"
-                                             ng-model="codeList[nodeIndex]"
+                                             ng-model="outerCodeList[nodeIndex]"
                                              readonly="{{true}}">
                                         </div>
                                     </div>
                                 </div>
 
                                 <div ng-if = "codeContent === 'inner'">
-                                    <div ng-if="!codeList[nodeIndex]">
+                                    <div ng-if="!innerCodeList[nodeIndex]">
                                         <div class="info-title">Procedure Code: </div>
                                         <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'tomorrow' }"
                                              readonly="{{true}}">// To generate code, create graph&procedure and run</div>
                                     </div>
 
-                                    <div ng-if="codeList[nodeIndex]">
+                                    <div ng-if="innerCodeList[nodeIndex]">
                                         <div class="info-title">Procedure Code: </div>
                                         <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'tomorrow' }"
-                                             ng-model="codeList[nodeIndex]"
+                                             ng-model="innerCodeList[nodeIndex]"
                                              readonly="{{true}}">
                                         </div>
                                     </div>

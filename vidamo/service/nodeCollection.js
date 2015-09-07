@@ -3,7 +3,6 @@
 //
 
 // todo
-// 2. method to overwrite node types
 // 4. file system implementation
 
 vidamo.factory('nodeCollection', function () {

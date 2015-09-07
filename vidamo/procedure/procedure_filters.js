@@ -36,8 +36,10 @@ vidamo.filter('positionFilter', function() {
 
         for(var i = 0, len = scope.flattenData.length; i < len; i++) {
             if (scope.flattenData[i].id === currentId) {
-                index = i;
-                break;
+                if(scope.flattenData[i].temp !== 'Data'){
+                    index = i;
+                    break;
+                }
             }
         }
 
@@ -45,7 +47,10 @@ vidamo.filter('positionFilter', function() {
             var tempIndex = -1;
 
             for(var i = 0, len = scope.flattenData.length; i < len; i++) {
-                if (scope.flattenData[i].id === item.id) {
+                if(scope.flattenData[i].temp === 'Parameter'){
+                    filtered.push(item);
+                }
+                if (scope.flattenData[i].id === item.id && scope.flattenData[i].title === 'Data') {
                     tempIndex = i;
                     break;
                 }

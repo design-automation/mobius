@@ -21,13 +21,22 @@ vidamo.controller('graphCtrl',[
             $scope.javascriptCode = generateCode.getJavascriptCode();
         });
 
-        // function code for procedures
-        $scope.codeList = generateCode.getCodeList();
-        $scope.$watch('codeList', function () {
-            generateCode.setCodeList($scope.codeList);
+        // inner function code for procedures
+        $scope.innerCodeList = generateCode.getInnerCodeList();
+        $scope.$watch('innerCodeList', function () {
+            generateCode.setInnerCodeList($scope.innerCodeList);
         });
-        $scope.$watch(function () { return generateCode.getCodeList(); }, function () {
-            $scope.codeList = generateCode.getCodeList();
+        $scope.$watch(function () { return generateCode.getInnerCodeList(); }, function () {
+            $scope.innerCodeList = generateCode.getInnerCodeList();
+        });
+
+        // outer function code for procedures
+        $scope.outerCodeList = generateCode.getOuterCodeList();
+        $scope.$watch('outerCodeList', function () {
+            generateCode.setOuterCodeList($scope.outerCodeList);
+        });
+        $scope.$watch(function () { return generateCode.getOuterCodeList(); }, function () {
+            $scope.outerCodeList = generateCode.getOuterCodeList();
         });
 
         // procedure data list
@@ -76,6 +85,8 @@ vidamo.controller('graphCtrl',[
 
         // currently selected node name
         $scope.currentNodeName = '';
+        $scope.currentNodeType = '';
+
 
         // Setup the data-model for the chart.
         var chartDataModel = {
@@ -111,7 +122,11 @@ vidamo.controller('graphCtrl',[
 
              $scope.nodeIndex = message;
 
-             $scope.currentNodeName =  $scope.chartViewModel.nodes[$scope.nodeIndex].data.name;
+             $scope.currentNodeName = $scope.chartViewModel.nodes[$scope.nodeIndex].data.name;
+
+             $scope.currentNodeType = $scope.chartViewModel.nodes[$scope.nodeIndex].data.type;
+
+             console.log($scope.currentNodeType);
          });
 
 
@@ -148,7 +163,8 @@ vidamo.controller('graphCtrl',[
                 $scope.dataList.push(nodeCollection.getProcedureDataModel(type));
 
                 // when new node added, add new code block
-                $scope.codeList.push('//\n' + '// To generate code, create nodes & procedures and run!\n' + '//\n');
+                $scope.innerCodeList.push('//\n' + '// To generate code, create nodes & procedures and run!\n' + '//\n');
+                $scope.outerCodeList.push('//\n' + '// To generate code, create nodes & procedures and run!\n' + '//\n');
 
                 // when new node added, increase the number of interface list by one
                 $scope.interfaceList.push(nodeCollection.getInterfaceDataModel(type));
@@ -215,6 +231,10 @@ vidamo.controller('graphCtrl',[
                 document.getElementById('log').innerHTML += "<div style='color: red'>Error: no node selected!</div>";
             }
 
+            // update version fixme
+            var d = new Date();
+            $scope.chartViewModel.nodes[$scope.nodeIndex].data.version = d.getTime();
+
             // update generated code
             generateCode.generateCode();
         });
@@ -247,6 +267,10 @@ vidamo.controller('graphCtrl',[
                 document.getElementById('log').innerHTML += "<div style='color: red'>Error: no node selected!</div>";
             }
 
+            // update version fixme
+            var d = new Date();
+            $scope.chartViewModel.nodes[$scope.nodeIndex].data.version = d.getTime();
+
             // update generated code
             generateCode.generateCode();
         });
@@ -265,9 +289,11 @@ vidamo.controller('graphCtrl',[
             for(var i = deletedNodeIds.length -1; i >= 0 ; i--){
                 // update scene data structure
                 $scope.dataList.splice(deletedNodeIds[i],1);
-                $scope.codeList.splice(deletedNodeIds[i],1);
+                $scope.innerCodeList.splice(deletedNodeIds[i],1);
+                $scope.outerCodeList.splice(deletedNodeIds[i],1);
                 $scope.interfaceList.splice(deletedNodeIds[i],1);
             }
+
 
             // update generated code
             generateCode.generateCode();
@@ -284,13 +310,13 @@ vidamo.controller('graphCtrl',[
 
         $scope.$on("saveAsNewType",function(){
             $timeout(function(){
-                var newTypeName = prompt('Enter a node for new type:');
+                var newTypeName = prompt('Enter a name for new type:');
 
                 if (!isValidName(newTypeName)) {return;}
                 if ($scope.nodeTypes().indexOf(newTypeName) >= 0 ){
                     document.getElementById('log').innerHTML += "<div style='color: red'>Error: node type name exists!</div>"
                     return;
-                }
+                }else{document.getElementById('log').innerHTML += "<div style='color: green'>node type added!</div>"}
 
                 var input =  $scope.chartViewModel.getSelectedNodes()[0].data.inputConnectors;
                 var output = $scope.chartViewModel.getSelectedNodes()[0].data.outputConnectors;
@@ -317,6 +343,8 @@ vidamo.controller('graphCtrl',[
                         if ($scope.nodeTypes().indexOf(newTypeName) >= 0 ){
                             document.getElementById('log').innerHTML += "<div style='color: red'>Error: node type name exists!</div>"
                             return;
+                        }else{
+                            document.getElementById('log').innerHTML += "<div style='color: green'>Node type overwritten!</div>"
                         }
                     }
 

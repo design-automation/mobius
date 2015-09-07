@@ -50,8 +50,7 @@
                href="#" data-nodrag buttons="no"
                editable-select="parameter.value"
                e-ng-options="node.dataName as node.dataName for node in flattenData |
-                             positionFilter:node.id:this |
-                             dataNameFilter">
+                             positionFilter:node.id:this ">
                 {{parameter.value||'variable to print'}}
             </a>
 
