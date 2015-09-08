@@ -334,16 +334,27 @@ vidamo.factory('generateCode', function () {
                     var intentation = '';
                 }
 
-                var codeBlock = '';
+                 var codeBlock = '';
+                 if(procedure.method !== 'print'){
+                    codeBlock += intentation  + '    '  + 'var ' + procedure.result + ' = ';
+                 }else{
+                     codeBlock += intentation  + '    ';
 
-                // action: print data
-                if(procedure.method == 'print'){
-                    codeBlock =  intentation  + '    ' + 'VIDAMO.print('
-                        + procedure.parameters[0].value + ');\n';
+                 }
 
-                    data.innerCodeList[nodeIndex] += codeBlock;
-                }
-            }
+                codeBlock +=  'VIDAMO.' + procedure.method + '(';
+
+                 for(var j = 0; j< procedure.parameters.length; j++){
+                    if(j != procedure.parameters.length - 1 ){
+                        codeBlock +=  procedure.parameters[j].value + ', ';
+                    }else{
+                        codeBlock += procedure.parameters[j].value;
+                    }
+                 }
+
+                 codeBlock += ');\n';
+                 data.innerCodeList[nodeIndex] += codeBlock;
+             }
 
             // control procedure
             function procedure_control(procedure,nodeIndex,fromLoop){

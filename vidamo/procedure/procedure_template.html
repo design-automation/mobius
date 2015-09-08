@@ -33,10 +33,10 @@
     <div ng-if="node.title === 'Action'" style="padding-left:20px" class="tree-node-content">
         <!--return vairable-->
         <a href="#" data-nodrag buttons="no"
-           ng-if="node.result === 'return value'"
+           ng-if="node.method !== 'print'"
            editable-text="node.result"
            style="display: inline-block">
-            {{ node.result || 'return variable' }}
+            {{ node.result || 'result' }} =
         </a>
 
         <!--method name-->
@@ -44,16 +44,7 @@
 
         <!--parameters-->
         <div ng-repeat="parameter in node.parameters" style="display: inline-block">
-
-            <!--parameter: selection of created variable-->
-            <a ng-if="parameter.type == 'variable'"
-               href="#" data-nodrag buttons="no"
-               editable-select="parameter.value"
-               e-ng-options="node.dataName as node.dataName for node in flattenData |
-                             positionFilter:node.id:this ">
-                {{parameter.value||'variable to print'}}
-            </a>
-
+            <a data-nodrag href="#" editable-text="parameter.value" buttons="no">{{parameter.value || parameter.type}}&nbsp;&nbsp;&nbsp;</a>
         </div>
 
         <!--delete key-->

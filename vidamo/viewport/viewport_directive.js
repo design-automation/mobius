@@ -4,18 +4,23 @@
 
 /* todo */
 // 1.2 geometry control
-// 1.3 integration with verbs.js
 // 2. gird toggle
 // 3. extend view
 // 4. shading mode
 // 5. set view position
 
 
-vidamo.directive('viewport', function() {
+vidamo.directive('viewport', function factory() {
     return {
-        restrict: 'ACE',
+        restrict: 'E',
+        replace: true,
+        scope: {
+            control: '='
+        },
 
         link: function (scope, elem) {
+
+            scope.internalControl = scope.control || {};
 
             // retrieve the viewport dom element
             var container = elem[0];
@@ -44,7 +49,7 @@ vidamo.directive('viewport', function() {
 
                 camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
                 scene.add(camera);
-                camera.position.set(-1200, 600, 1600);
+                camera.position.set(-120, 60, 200);
                 camera.lookAt(new THREE.Vector3(0,0,0));
 
                 // prepare renderer
@@ -60,7 +65,7 @@ vidamo.directive('viewport', function() {
                 controls.target = new THREE.Vector3(0, 0, 0);
                 container.appendChild(renderer.domElement);
 
-                // add point light
+                //// add point light
                 var pointLight = new THREE.PointLight(0xffff00, 1.0);
                 pointLight.position.set(300,300,300);
                 scene.add(pointLight);
@@ -68,7 +73,8 @@ vidamo.directive('viewport', function() {
                 // add helpers:
 
                 // GridHelper
-                var gridHelper = new THREE.GridHelper(500, 40); // 500 is grid size, 20 is grid step
+                var gridHelper = new THREE.GridHelper(100, 10); // 100 is grid size, 10 is grid step
+                gridHelper.setColors(0x999999,0xaaaaaa);
                 gridHelper.position = new THREE.Vector3(0, 0, 0);
                 gridHelper.rotation = new THREE.Euler(0, 0, 0);
                 scene.add(gridHelper);
@@ -116,6 +122,67 @@ vidamo.directive('viewport', function() {
             function render() {
                 renderer.render(scene, camera);
             }
+
+
+            scope.internalControl.addCurveToScene = function(geom, material){
+                material = material || new THREE.LineBasicMaterial({ linewidth: 100, color: 0xff0000});
+                scene.add( new THREE.Line( geom, material ) );
+                scene.add( new THREE.Line( geom, material ) );
+            };
+
+            //
+            // supporting function for geometry from verb to three.js
+            //
+
+            scope.internalControl.addLineToScene = function(pts, mat){
+                addCurveToScene(asGeometry(asVector3(pts)), mat);
+            };
+
+            scope.internalControl.addMeshToScene =  function(mesh, material, wireframe ){
+                material = material || new THREE.MeshNormalMaterial( { side: THREE.DoubleSide, wireframe: false, shading: THREE.SmoothShading, transparent: true, opacity: 0.4 } )
+
+                scene.add( new THREE.Mesh( mesh, material ) );
+
+                if (wireframe){
+                    var material2 = new THREE.MeshBasicMaterial( { color: 0x000000, side: THREE.DoubleSide, wireframe: true } );
+                    var mesh2 = new THREE.Mesh( mesh, material2 );
+                    scene.add( mesh2 );
+                }
+            };
+
+            scope.internalControl.asVector3 = function(pts){
+                return pts.map(function(x){
+                    return new THREE.Vector3(x[0],x[1],x[2]);
+                });
+            };
+
+            scope.internalControl.asGeometry = function(threePts){
+                var geometry = new THREE.Geometry();
+                geometry.vertices.push.apply( geometry.vertices, threePts );
+                return geometry;
+            };
+
+            scope.internalControl.benchmark = function(func, runs){
+                var d1 = Date.now();
+                for (var i = 0 ; i < runs; i++)
+                    res = func();
+                var d2 = Date.now();
+                return { result : res, elapsed : d2-d1, each : (d2-d1)/runs };
+            };
+
+            scope.internalControl.pointsAsGeometry = function(pts){
+                return asGeometry( asVector3(pts) )
+            };
+
+            scope.internalControl.addPointsToScene = function(pts){
+
+                var geom = asGeometry( asVector3( pts ) );
+                var cloudMat2 = new THREE.PointCloudMaterial({ size: 6.5, sizeAttenuation: false, color: 0xffffff });
+                var cloud2 = new THREE.PointCloud( geom, cloudMat2 );
+
+                scene.add( cloud2 );
+            }
+
         }
     }
 });

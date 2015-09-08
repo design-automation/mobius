@@ -209,7 +209,6 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
             // add interface data to flatten data for dropdown search
             $scope.flattenData.push.apply($scope.flattenData, $scope.interfaceList[$scope.nodeIndex]);
 
-            console.log($scope.flattenData);
             $scope.checkDupDataName();
         };
 
@@ -252,7 +251,6 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
                             original = $scope.data[k];
 
                             if(original.id ===  current.id){
-                                console.log('yes');
                                 original.type = 'assign';
                             }
                         }
@@ -323,11 +321,20 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
                 } else if(cate == 'Action'){
                     var parameters = [];
                     var result;
-                    switch(subCate){
-                        case 'print':
-                            parameters.push({type:'variable', value:'variable to print'});
-                            result = undefined;
-                            break;
+
+                    if(subCate === 'print'){
+                        result = undefined;
+                    }else{
+                        result = '';
+                    }
+
+                    for(var funcName in VIDAMO) {
+                        if(subCate === funcName){
+                            var paraList = getParamNames(VIDAMO[funcName]);
+                            for(var j = 0; j< paraList.length; j++){
+                                parameters.push({value:'',type:paraList[j]});
+                            }
+                        }
                     }
 
                     $scope.data.push({

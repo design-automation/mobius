@@ -179,8 +179,10 @@
                         <!-- threejs editor view port -->
                         <div ui-layout-container size = "85%" id="xxx">
 
-                            <div viewport id="threeViewport">
-                            </div>
+                        <div ng-controller="viewportCtrl">
+                            <viewport control="viewportControl" id="threeViewport">
+                            </viewport>
+                        </div>
 
                             <!--<div ng-controller="graphCtrl">-->
                                 <!--<textarea-->
@@ -373,6 +375,11 @@
     <script src="assets/js/threejs/examples/js/controls/TransformControls.js"></script>
     <script src="assets/js/threejs/examples/js/controls/OrbitControls.js"></script>
 
+    <!--verb js-->
+    <script src="assets/js/verb/verb.js"></script>
+    <script src="assets/js/verb/verbToThreeConversion.js"></script>
+
+
     <!-- app -->
     <script src="vidamo/app.js"></script>
 
@@ -383,6 +390,8 @@
     <script src="vidamo/graph/panzoom_controller.js"></script>
     <script src="vidamo/graph/execute_controller.js"></script>
     <script src="vidamo/viewport/console_controller.js"></script>
+    <script src="vidamo/viewport/viewport_controller.js"></script>
+
 
     <!-- directives -->
     <script src="vidamo/graph/contextMenu_directive.js"></script>
