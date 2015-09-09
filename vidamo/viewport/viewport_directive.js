@@ -35,7 +35,6 @@ vidamo.directive('viewport', function factory() {
             init();
             animate();
 
-
             // Initialization
             function init(){
                 // create scene
@@ -108,6 +107,7 @@ vidamo.directive('viewport', function factory() {
 
             // Animate the scene
             function animate() {
+                console.log('animate');
                 requestAnimationFrame(animate);
                 render();
                 update();
@@ -122,7 +122,7 @@ vidamo.directive('viewport', function factory() {
             function render() {
                 renderer.render(scene, camera);
             }
-
+            
 
             scope.internalControl.addCurveToScene = function(geom, material){
                 material = material || new THREE.LineBasicMaterial({ linewidth: 100, color: 0xff0000});

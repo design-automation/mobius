@@ -7,14 +7,13 @@
 
     <!--data procedure-->
     <div ng-if="node.title === 'Data'" style="padding-left:20px " class="tree-node-content">
-        <!--vairable name-->
         <a>
+            <!--vairable name and value-->
             <a href="#" data-nodrag editable-text="node.dataName" buttons="no">{{ node.dataName || 'name' }}</a>
             =
             <a data-nodrag href="#" editable-text="node.dataValue" buttons="no">{{ node.dataValue || 'value' }}</a>
         </a>
 
-        <!--variable value-->
         <a class="pull-right btn btn-xs" data-nodrag ng-click="remove(this)" style="padding: 0;margin: 0" >
             <span class="glyphicon glyphicon-remove">
             </span>
@@ -44,7 +43,7 @@
 
         <!--parameters-->
         <div ng-repeat="parameter in node.parameters" style="display: inline-block">
-            <a data-nodrag href="#" editable-text="parameter.value" buttons="no">{{parameter.value || parameter.type}}&nbsp;&nbsp;&nbsp;</a>
+            <a data-nodrag href="#" editable-text="parameter.value" buttons="no">{{parameter.value || parameter.type}}</a>&nbsp; , &nbsp;
         </div>
 
         <!--delete key-->
@@ -76,13 +75,14 @@
             </a>
             in
             <!--iteration list-->
-            <a href="#" data-nodrag buttons="no"
-               editable-select="node.forList"
-               e-ng-options="node.dataName as node.dataName for node in flattenData |
-                             positionFilter:node.id:this |
-                             dataNameFilter">
-                {{node.forList||'list'}}
-            </a>
+            <!--<a href="#" data-nodrag buttons="no"-->
+               <!--editable-select="node.forList"-->
+               <!--e-ng-options="node.dataName as node.dataName for node in flattenData |-->
+                             <!--positionFilter:node.id:this |-->
+                             <!--dataNameFilter">-->
+                <!--{{node.forList||'list'}}-->
+            <!--</a>-->
+            <a data-nodrag href="#" editable-text="node.forList" buttons="no"> {{node.forList||'list'}}</a>
 
         </div>
 
