@@ -80,7 +80,8 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
                 return typeof VIDAMO[property] == 'function';
             });
 
-            return func_props;
+            var expression = ['expression']
+            return expression.concat(func_props);
         };
 
 
@@ -321,8 +322,9 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
                 } else if(cate == 'Action'){
                     var parameters = [];
                     var result;
+                    var expression;
 
-                    if(subCate === 'print'){
+                    if(subCate === 'print' || subCate === 'expression'){
                         result = undefined;
                     }else{
                         result = '';
@@ -342,6 +344,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
                         title:  'Action',
                         nodes: [],
                         type:undefined,
+                        expression:'',
 
                         // method name
                         method:subCate,

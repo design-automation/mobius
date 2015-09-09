@@ -107,7 +107,6 @@ vidamo.directive('viewport', function factory() {
 
             // Animate the scene
             function animate() {
-                console.log('animate');
                 requestAnimationFrame(animate);
                 render();
                 update();

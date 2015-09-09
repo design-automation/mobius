@@ -335,24 +335,29 @@ vidamo.factory('generateCode', function () {
                 }
 
                  var codeBlock = '';
-                 if(procedure.method !== 'print'){
+                 if(procedure.method !== 'print' && procedure.method !== 'expression'){
                     codeBlock += intentation  + '    '  + 'var ' + procedure.result + ' = ';
                  }else{
                      codeBlock += intentation  + '    ';
-
                  }
 
-                codeBlock +=  'VIDAMO.' + procedure.method + '(';
+                 if(procedure.method !== 'expression'){
+                     codeBlock +=  'VIDAMO.' + procedure.method + '(';
 
-                 for(var j = 0; j< procedure.parameters.length; j++){
-                    if(j != procedure.parameters.length - 1 ){
-                        codeBlock +=  procedure.parameters[j].value + ', ';
-                    }else{
-                        codeBlock += procedure.parameters[j].value;
-                    }
+                     for(var j = 0; j< procedure.parameters.length; j++){
+                         if(j != procedure.parameters.length - 1 ){
+                             codeBlock +=  procedure.parameters[j].value + ', ';
+                         }else{
+                             codeBlock += procedure.parameters[j].value;
+                         }
+                     }
+
+                     codeBlock += ');\n';
+                 }else if(procedure.method === 'expression'){
+                     codeBlock += procedure.expression;
                  }
 
-                 codeBlock += ');\n';
+
                  data.innerCodeList[nodeIndex] += codeBlock;
              }
 

@@ -29,7 +29,7 @@
     </div>
 
     <!--action procedure-->
-    <div ng-if="node.title === 'Action'" style="padding-left:20px" class="tree-node-content">
+    <div ng-if="node.title === 'Action' && node.method !== 'expression'" style="padding-left:20px" class="tree-node-content">
         <!--return vairable-->
         <a href="#" data-nodrag buttons="no"
            ng-if="node.method !== 'print'"
@@ -45,6 +45,18 @@
         <div ng-repeat="parameter in node.parameters" style="display: inline-block">
             <a data-nodrag href="#" editable-text="parameter.value" buttons="no">{{parameter.value || parameter.type}}</a>&nbsp; , &nbsp;
         </div>
+
+        <!--delete key-->
+        <a class="pull-right btn btn-xs" data-nodrag ng-click="remove(this)" style="padding: 0;margin: 0" >
+            <span class="glyphicon glyphicon-remove">
+            </span>
+        </a>
+    </div>
+
+    <div ng-if="node.title === 'Action' && node.method === 'expression'" style="padding-left:20px" class="tree-node-content">
+        <a data-nodrag href="#" editable-text="node.expression" buttons="no">
+            {{ node.expression || 'expression' }}
+        </a>
 
         <!--delete key-->
         <a class="pull-right btn btn-xs" data-nodrag ng-click="remove(this)" style="padding: 0;margin: 0" >
