@@ -14,6 +14,7 @@ vidamo.factory('generateCode', function () {
 
     var data = {
         javascriptCode: '// To generate code,\n' + '// create nodes & procedures and run!\n',
+        geomListCode: "var geomList = 'madan';\n",
         innerCodeList:[],
         outerCodeList:[],
         dataList:[],
@@ -26,6 +27,10 @@ vidamo.factory('generateCode', function () {
             return data.javascriptCode;
         },
 
+        getGeomListCode: function () {
+            return data.geomListCode;
+        },
+
         setJavascriptCode: function (value) {
             data.javascriptCode = value;
         },
@@ -33,6 +38,8 @@ vidamo.factory('generateCode', function () {
         getInnerCodeList: function () {
             return data.innerCodeList;
         },
+
+
 
         getOuterCodeList: function () {
             return data.outerCodeList;

@@ -126,7 +126,6 @@ vidamo.controller('graphCtrl',[
 
              $scope.currentNodeType = $scope.chartViewModel.nodes[$scope.nodeIndex].data.type;
 
-             console.log($scope.currentNodeType);
          });
 
 

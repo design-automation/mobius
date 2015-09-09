@@ -125,16 +125,15 @@ vidamo.directive('viewport', function factory() {
             // clear geometries in scene when run
             scope.internalControl.refresh = function(){
                 for(var i = 0; i < scene.children.length; i++){
-                    console.log();
                     if(scene.children[i].id > 4){
                         scene.remove( scene.children[i]);
-                        animate();
+                        i--;
                     }
                 }
             };
 
             scope.internalControl.addCurveToScene = function(geom, material){
-                material = material || new THREE.LineBasicMaterial({ linewidth: 100, color: 0xff0000});
+                material = material || new THREE.LineBasicMaterial({ linewidth: 100, color: 0x000000});
                 scene.add( new THREE.Line( geom, material ) );
             };
 

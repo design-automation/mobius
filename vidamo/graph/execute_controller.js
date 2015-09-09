@@ -13,6 +13,11 @@ vidamo.controller('executeCtrl',['$scope','generateCode',
             $scope.javascriptCode = generateCode.getJavascriptCode();
         });
 
+        $scope.$watch(function () { return generateCode.getGeomListCode(); }, function () {
+            $scope.geomListCode = generateCode.getGeomListCode();
+        });
+
+        $scope.outputs = [];
 
         $scope.run = function(){
 
@@ -26,7 +31,9 @@ vidamo.controller('executeCtrl',['$scope','generateCode',
             document.getElementById('log').innerHTML += "<div></br> Executing generated code ... </div>";
 
             try{
-                eval( $scope.javascriptCode);
+                // eval( $scope.javascriptCode);
+                $scope.outputs = new Function(   $scope.javascriptCode + $scope.geomListCode + 'return geomList;')();
+                console.log($scope.outputs);
             }catch (e) {
                 document.getElementById('log').innerHTML +=     "<div style='color:red'>" +  e.message + "</div>";
                 alert(e.stack);
