@@ -14,7 +14,7 @@ vidamo.factory('generateCode', function () {
 
     var data = {
         javascriptCode: '// To generate code,\n' + '// create nodes & procedures and run!\n',
-        geomListCode: "var geomList = 'madan';\n",
+        geomListCode: "var geomList = [];\n",
         innerCodeList:[],
         outerCodeList:[],
         dataList:[],
@@ -96,7 +96,7 @@ vidamo.factory('generateCode', function () {
             // execution based topological sort
             function generate_execution_code(){
                 data.javascriptCode = '// execution: \n';
-
+                data.geomListCode = "var geomList = [];\n";
                 for(var n = 0; n < sortedOrder.length; n++) {
 
                     // case where the node has output
@@ -106,10 +106,11 @@ vidamo.factory('generateCode', function () {
                     if (output_port_num != 0) {
 
                         // first get the return object
-
                         data.javascriptCode += 'var ' + return_obj_name + ' = ';
+                        data.geomListCode += 'geomList.push('+ return_obj_name + ');'
 
                     }
+
 
                     // case where the node has no output
                     data.javascriptCode += data.chartViewModel.nodes[sortedOrder[n]].data.name + "(";

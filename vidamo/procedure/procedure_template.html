@@ -41,10 +41,14 @@
         <!--method name-->
         {{node.method}}
 
+        (
         <!--parameters-->
         <div ng-repeat="parameter in node.parameters" style="display: inline-block">
-            <a data-nodrag href="#" editable-text="parameter.value" buttons="no">{{parameter.value || parameter.type}}</a>&nbsp; , &nbsp;
+            &nbsp;
+            <a data-nodrag href="#" editable-text="parameter.value" buttons="no">{{parameter.value || parameter.type}}</a>
+            &nbsp;
         </div>
+        )
 
         <!--delete key-->
         <a class="pull-right btn btn-xs" data-nodrag ng-click="remove(this)" style="padding: 0;margin: 0" >
