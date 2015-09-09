@@ -21,8 +21,10 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','generateCode','n
             var jsonString;
             var graphJsonString;
             var procedureJsonString;
+            var interfaceJsonString;
             var graphJsonObj;
             var procedureJsonObj;
+            var interfaceJsonObj;
 
             var reader = new FileReader();
 
@@ -32,16 +34,22 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','generateCode','n
                         jsonString = e.target.result;
 
                         graphJsonString = jsonString.split("//procedure json")[0];
-                        procedureJsonString = jsonString.split("//procedure json")[1];
+                        var secondhalf = jsonString.split("//procedure json")[1];
+                        procedureJsonString = secondhalf.split("//interface json")[0];
+                        interfaceJsonString = secondhalf.split("//interface json")[1];
 
                         graphJsonObj = JSON.parse(graphJsonString);
                         procedureJsonObj = JSON.parse(procedureJsonString);
+                        interfaceJsonObj = JSON.parse(interfaceJsonString);
 
                         // update the graph
                         generateCode.setChartViewModel(new flowchart.ChartViewModel(graphJsonObj));
 
                         // update the procedure
                         generateCode.setDataList(procedureJsonObj);
+
+                        // update the interface
+                        generateCode.setInterfaceList(interfaceJsonObj);
 
                         document.getElementById('log').innerHTML += "<div style='color: green'>Scene imported!</div>";
                     }else{
@@ -62,7 +70,12 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','generateCode','n
 
             var procedureJson = JSON.stringify(generateCode.getDataList(), null, 4);
 
-            var sceneBlob = new Blob([graphJson + '\n\n' + '//procedure json\n' + procedureJson], {type: "application/json"});
+            var interfaceJson = JSON.stringify(generateCode.getInterfaceList(), null, 4);
+
+
+            var sceneBlob = new Blob([graphJson + '\n\n' + '//procedure json\n'
+                                    + procedureJson + '\n\n' + '//interface json\n'
+                                    + interfaceJson], {type: "application/json"});
 
             $scope.sceneUrl = URL.createObjectURL(sceneBlob);
         };
