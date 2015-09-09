@@ -18,7 +18,7 @@ vidamo.controller('executeCtrl',['$scope','generateCode',
 
             setTimeout(function(){
                     var scope = angular.element(document.getElementById('threeViewport')).scope();
-                    scope.$apply(function(){scope.viewportControl.refreshScene();} );
+                    scope.$apply(function(){scope.viewportControl.refresh();} );
                 }
                 ,0);
 
