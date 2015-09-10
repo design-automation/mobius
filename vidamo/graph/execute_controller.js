@@ -60,7 +60,6 @@ vidamo.controller('executeCtrl',['$scope','generateCode',
                     for(var j =0; j < selectedNodes.length; j++){
                         if($scope.outputs[i].name === selectedNodes[j].data.name){
                             for(var k in $scope.outputs[i].value){
-                                console.log('added!');
                                 scope.$apply(function(){scope.viewportControl.addGeometryToScene($scope.outputs[i].value[k] );} );
                             }
                         }

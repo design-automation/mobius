@@ -137,6 +137,14 @@ vidamo.directive('viewport', function factory() {
             // supporting function for geometry from verb to three.js
             //
 
+            var allGeom = [];
+
+            scope.internalControl.updateGeomInScene = function(){
+                if(allGeom.length !== 0){
+
+                }
+            };
+
             scope.internalControl.addGeometryToScene = function(geom){
                 if(geom.constructor === Array){
                     for(var i = 0; i< geom.length ;i++){

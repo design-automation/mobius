@@ -126,30 +126,31 @@ vidamo.controller('graphCtrl',[
 
         // listen to the graph, when a node is clicked, update the visual procedure/ code/ interface accordions
          $scope.$on("nodeIndex", function(event, message) {
+            if($scope.nodeIndex !== message){
+                $scope.nodeIndex = message;
 
-                 $scope.nodeIndex = message;
+                $scope.currentNodeName = $scope.chartViewModel.nodes[$scope.nodeIndex].data.name;
 
-                 $scope.currentNodeName = $scope.chartViewModel.nodes[$scope.nodeIndex].data.name;
+                $scope.currentNodeType = $scope.chartViewModel.nodes[$scope.nodeIndex].data.type;
 
-                 $scope.currentNodeType = $scope.chartViewModel.nodes[$scope.nodeIndex].data.type;
+                // display geometries on node selected
+                var selectedNodes = $scope.chartViewModel.getSelectedNodes();
+                var scope = angular.element(document.getElementById('threeViewport')).scope();
 
-             // display geometries on node selected
-             var selectedNodes = $scope.chartViewModel.getSelectedNodes();
-             var scope = angular.element(document.getElementById('threeViewport')).scope();
+                scope.$apply(function(){scope.viewportControl.refresh();} );
 
-             scope.$apply(function(){scope.viewportControl.refresh();} );
+                for(var i = 0; i < $scope.outputGeom.length; i++){
 
-             for(var i = 0; i < $scope.outputGeom.length; i++){
+                    for(var j =0; j < selectedNodes.length; j++){
 
-                 for(var j =0; j < selectedNodes.length; j++){
-
-                     if($scope.outputGeom[i].name === selectedNodes[j].data.name){
-                         for(var k in $scope.outputGeom[i].value){
-                             scope.$apply(function(){scope.viewportControl.addGeometryToScene($scope.outputGeom[i].value[k] );} );
-                         }
-                     }
-                 }
-             }
+                        if($scope.outputGeom[i].name === selectedNodes[j].data.name){
+                            for(var k in $scope.outputGeom[i].value){
+                                scope.$apply(function(){scope.viewportControl.addGeometryToScene($scope.outputGeom[i].value[k] );} );
+                            }
+                        }
+                    }
+                }
+            }
          });
 
 
