@@ -99,6 +99,7 @@ vidamo.directive('viewport', function factory() {
 
             // update on resize of viewport
             function resizeUpdate() {
+                console.log('resizing');
                 renderer.setSize(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
                 container.appendChild(renderer.domElement);
                 camera.aspect = VIEWPORT_WIDTH / VIEWPORT_HEIGHT;
@@ -132,14 +133,34 @@ vidamo.directive('viewport', function factory() {
                 }
             };
 
+            //
+            // supporting function for geometry from verb to three.js
+            //
+
+            scope.internalControl.addGeometryToScene = function(geom){
+                if(geom.constructor === Array){
+                    for(var i = 0; i< geom.length ;i++){
+                        if(geom[i] instanceof verb.geom.NurbsSurface){
+                            scope.internalControl.addMeshToScene(geom[i].toThreeGeometry());
+                        }
+                        else if(geom[i] instanceof verb.geom.NurbsCurve){
+                            scope.internalControl.addCurveToScene(geom[i].toThreeGeometry());
+                        }
+                    }
+                } else {
+                    if(geom instanceof verb.geom.NurbsSurface){
+                        scope.internalControl.addMeshToScene(geom.toThreeGeometry());
+                    }
+                    else if(geom instanceof verb.geom.NurbsCurve){
+                        scope.internalControl.addCurveToScene(geom.toThreeGeometry());
+                    }
+                }
+            };
+
             scope.internalControl.addCurveToScene = function(geom, material){
                 material = material || new THREE.LineBasicMaterial({ linewidth: 100, color: 0x000000});
                 scene.add( new THREE.Line( geom, material ) );
             };
-
-            //
-            // supporting function for geometry from verb to three.js
-            //
 
             scope.internalControl.addLineToScene = function(pts, mat){
                 addCurveToScene(asGeometry(asVector3(pts)), mat);

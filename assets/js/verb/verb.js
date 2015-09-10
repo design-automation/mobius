@@ -4948,7 +4948,7 @@ if ( typeof window != 'object'){
         this.refine = true;
         this.maxDepth = 10;
         this.minDepth = 0;
-        this.normTol = 2.5e-2;
+        this.normTol = 1;
     };
     verb_core_types_AdaptiveRefinementOptions.__name__ = ["verb","core","types","AdaptiveRefinementOptions"];
     var verb_core_types_AdaptiveRefinementNode = $hx_exports.core.AdaptiveRefinementNode = function(srf,corners,neighbors) {

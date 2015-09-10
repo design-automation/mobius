@@ -305,8 +305,13 @@ angular.module('flowChart', ['dragging'] )
 
 		if(evt.which == 1){
 			$scope.chart.deselectAll();
+		//	setTimeout(
+		//		function(){
+		//			$scope.$emit("nodeIndex",false);
+		//		},0
+		//);
 
-            //
+			//
             // @ vidamo toggle new node dropdown
             // fixme
 
@@ -359,9 +364,8 @@ angular.module('flowChart', ['dragging'] )
 				dragEnded: function () {
 					$scope.dragSelecting = false;
 					var index = $scope.chart.applySelectionRect($scope.dragSelectionRect);
-					if(index){
 						$scope.$emit("nodeIndex", index);
-					}
+						console.log(index);
 					delete $scope.dragSelectionStartPoint;
 					delete $scope.dragSelectionRect;
 				},

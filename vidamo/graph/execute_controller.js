@@ -9,12 +9,26 @@ vidamo.controller('executeCtrl',['$scope','generateCode',
 
         //$scope.javascriptCode = generateCode.getJavascriptCode();
 
+
+
         $scope.$watch(function () { return generateCode.getJavascriptCode(); }, function () {
             $scope.javascriptCode = generateCode.getJavascriptCode();
         });
 
         $scope.$watch(function () { return generateCode.getGeomListCode(); }, function () {
             $scope.geomListCode = generateCode.getGeomListCode();
+        });
+
+        $scope.chartViewModel ='';
+        $scope.$watch(function () { return generateCode.getChartViewModel(); }, function () {
+            if(generateCode.getChartViewModel() !== $scope.chartViewModel){
+                $scope.chartViewModel= generateCode.getChartViewModel();
+            }
+        });
+
+        $scope.$watch('outputs',function(){
+            generateCode.setOutputGeom($scope.outputs);
+            console.log('from execute:', $scope.outputs)
         });
 
         $scope.outputs = [];
@@ -33,11 +47,27 @@ vidamo.controller('executeCtrl',['$scope','generateCode',
             try{
                 // eval( $scope.javascriptCode);
                 $scope.outputs = new Function(   $scope.javascriptCode + $scope.geomListCode + 'return geomList;')();
-                console.log($scope.outputs);
             }catch (e) {
                 document.getElementById('log').innerHTML +=     "<div style='color:red'>" +  e.message + "</div>";
                 alert(e.stack);
             }
+
+            setTimeout(function(){
+                var selectedNodes = $scope.chartViewModel.getSelectedNodes();
+                var scope = angular.element(document.getElementById('threeViewport')).scope();
+
+                for(var i = 0; i < $scope.outputs.length; i++){
+                    for(var j =0; j < selectedNodes.length; j++){
+                        if($scope.outputs[i].name === selectedNodes[j].data.name){
+                            for(var k in $scope.outputs[i].value){
+                                console.log('added!');
+                                scope.$apply(function(){scope.viewportControl.addGeometryToScene($scope.outputs[i].value[k] );} );
+                            }
+                        }
+                    }
+                }
+            },0);
+
 
             document.getElementById('log').innerHTML += "<div> Execution done </div>";
         }

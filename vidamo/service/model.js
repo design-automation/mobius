@@ -12,6 +12,8 @@ vidamo.factory('generateCode', function () {
         connections: []
     };
 
+    var outputGeom = [];
+
     var data = {
         javascriptCode: '// To generate code,\n' + '// create nodes & procedures and run!\n',
         geomListCode: "var geomList = [];\n",
@@ -23,6 +25,14 @@ vidamo.factory('generateCode', function () {
     };
 
     return {
+        getOutputGeom: function(){
+            return outputGeom;
+        },
+
+        setOutputGeom: function(value){
+            outputGeom = value;
+        },
+
         getJavascriptCode: function () {
             return data.javascriptCode;
         },
@@ -38,8 +48,6 @@ vidamo.factory('generateCode', function () {
         getInnerCodeList: function () {
             return data.innerCodeList;
         },
-
-
 
         getOuterCodeList: function () {
             return data.outerCodeList;
@@ -101,14 +109,17 @@ vidamo.factory('generateCode', function () {
 
                     // case where the node has output
                     var output_port_num = data.chartViewModel.nodes[sortedOrder[n]].outputConnectors.length;
+                    var node_name = data.chartViewModel.nodes[sortedOrder[n]].data.name;
                     var return_obj_name = 'ouput_' + data.chartViewModel.nodes[sortedOrder[n]].data.name;
 
                     if (output_port_num != 0) {
-
                         // first get the return object
                         data.javascriptCode += 'var ' + return_obj_name + ' = ';
-                        data.geomListCode += 'geomList.push('+ return_obj_name + ');'
-
+                        data.geomListCode += 'geomList.push({'
+                                            + 'name:'
+                                            + node_name +'.name,'
+                                            + 'value:'
+                                            + return_obj_name + '});'
                     }
 
 
