@@ -144,8 +144,12 @@ vidamo.controller('graphCtrl',[
                     for(var j =0; j < selectedNodes.length; j++){
 
                         if($scope.outputGeom[i].name === selectedNodes[j].data.name){
+                            var p =0;
                             for(var k in $scope.outputGeom[i].value){
-                                scope.$apply(function(){scope.viewportControl.addGeometryToScene($scope.outputGeom[i].value[k] );} );
+                                scope.$apply(function(){
+                                    scope.viewportControl
+                                        .addGeometryToScene($scope.outputGeom[i].value[k],$scope.outputGeom[i].geom[p]);} );
+                                p ++;
                             }
                         }
                     }

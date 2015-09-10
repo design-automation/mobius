@@ -119,7 +119,10 @@ vidamo.factory('generateCode', function () {
                                             + 'name:'
                                             + node_name +'.name,'
                                             + 'value:'
-                                            + return_obj_name + '});'
+                                            + return_obj_name + ','
+                                            + 'geom:'
+                                            + '[]'
+                                            +'});'
                     }
 
 
