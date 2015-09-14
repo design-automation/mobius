@@ -26,8 +26,15 @@
         stop-color="#eeeeee"
         />
     </linearGradient>
+
+      <pattern id="dots-4-11" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+          <circle cx="10" cy="10" r="0.5" style="stroke:none; fill:#aaaaaa;" />
+      </pattern>
   </defs>
-  <g
+
+    <rect x="0" y="0" height="4000" width="4000" style="stroke-width:1; stroke:black; fill:url(#dots-4-11);" />
+
+    <g
     ng-repeat="node in chart.nodes"
     ng-mousedown="nodeMouseDown($event, node)"
     ng-attr-transform="translate({{node.x()}}, {{node.y()}})"
