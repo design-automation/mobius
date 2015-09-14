@@ -62,17 +62,37 @@ var VIDAMO = ( function (mod){
 
     mod.makeTubeByLine = function(line, transparent){
 
-        var start = line.start();
-        var end = line.end();
 
-        var axis = [start[0] - end[0],start[1] - end[1],start[2] - end[2]]
-            , xaxis = [1,0,0]
-            , base = end
+        var start = line.start()
+        var end = line.end()
+
+        var axis = [start[0] - end[0], start[1] - end[1], start[2] - end[2]]
             , height = 1 //this is a multiplying factor to the axis vector
             , radius = 0.1;
 
-        var tube = new verb.geom.CylindricalSurface( axis, xaxis, base, height, radius );
-        var material = new THREE.MeshNormalMaterial( { side: THREE.DoubleSide, wireframe: false, shading: THREE.SmoothShading, transparent: transparent, opacity: 0.5} )
+        //construction of a perpendicular vector
+        var xaxis = [1, 1, 1];
+        if(axis[0] * axis[1] * axis[2] != 0)
+            xaxis = [ -axis[1]/axis[0], 1, 0]
+        else if(axis.reduce(function(n, val) {
+                return n + (val === 0);
+            }, 0) > 1)
+            xaxis = [0, 0, 0]
+        else{
+            //is there a better way??
+            var flag = 0
+            xaxis[axis.indexOf(0)] = 0
+            for(var i=0; i < 3; i++){
+                if(xaxis[i] == 0)
+                    continue;
+                else if(!flag)
+                    flag = axis[i]
+                else
+                    xaxis[i] = -(flag/axis[i])
+            }
+        }
+
+        var tube = new verb.geom.CylindricalSurface( axis, xaxis, end, height, radius );
 
         return tube;
     };

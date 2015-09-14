@@ -64,10 +64,21 @@ vidamo.directive('viewport', function factory() {
                 controls.target = new THREE.Vector3(0, 0, 0);
                 container.appendChild(renderer.domElement);
 
-                //// add point light
-                var pointLight = new THREE.PointLight(0xffff00, 1.0);
-                pointLight.position.set(300,300,300);
-                scene.add(pointLight);
+                var ambientLight = new THREE.AmbientLight( 0xbbbbbb );
+                scene.add( ambientLight );
+
+                var lights = [];
+                lights[0] = new THREE.PointLight( 0xececec, 0.25, 0 );
+                lights[1] = new THREE.PointLight( 0xececec, 0.25, 0 );
+                lights[2] = new THREE.PointLight( 0xececec, 0.25, 0 );
+
+                lights[0].position.set( 0, 100, 0 );
+                lights[1].position.set( 100, 200, 100 );
+                lights[2].position.set( -100, -200, -100 );
+
+                scene.add( lights[0] );
+                scene.add( lights[1] );
+                scene.add( lights[2] );
 
                 // add helpers:
 
@@ -126,7 +137,7 @@ vidamo.directive('viewport', function factory() {
             // clear geometries in scene when run
             scope.internalControl.refresh = function(){
                 for(var i = 0; i < scene.children.length; i++){
-                    if(scene.children[i].id > 4){
+                    if(scene.children[i].id > 7){
                         scene.remove( scene.children[i]);
                         i--;
                     }
@@ -138,7 +149,6 @@ vidamo.directive('viewport', function factory() {
             //
 
             scope.internalControl.addGeometryToScene = function(geom,value){
-                console.log(value);
 
                 if(geom.constructor === Array){
                     for(var i = 0; i< geom.length ;i++){
@@ -173,15 +183,15 @@ vidamo.directive('viewport', function factory() {
             };
 
             scope.internalControl.addMeshToScene =  function(mesh, material, wireframe ){
-                material = material || new THREE.MeshNormalMaterial( { side: THREE.DoubleSide, wireframe: false, shading: THREE.SmoothShading, transparent: true, opacity: 0.4 } )
+                material =  new THREE.MeshLambertMaterial( { side: THREE.DoubleSide, wireframe: false, shading: THREE.SmoothShading, transparent: false, color: 0xffffff} )
 
                 scene.add( new THREE.Mesh( mesh, material ) );
 
-                if (wireframe){
-                    var material2 = new THREE.MeshBasicMaterial( { color: 0x000000, side: THREE.DoubleSide, wireframe: true } );
-                    var mesh2 = new THREE.Mesh( mesh, material2 );
-                    scene.add( mesh2 );
-                }
+                //if (wireframe){
+                //    var material2 = new THREE.MeshBasicMaterial( { color: 0x000000, side: THREE.DoubleSide, wireframe: true } );
+                //    var mesh2 = new THREE.Mesh( mesh, material2 );
+                //    scene.add( mesh2 );
+                //}
             };
 
             scope.internalControl.asVector3 = function(pts){
