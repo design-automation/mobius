@@ -186,11 +186,11 @@ vidamo.directive('viewport', function factory() {
 
                 scene.add( new THREE.Mesh( mesh, material ) );
 
-                //if (wireframe){
-                //    var material2 = new THREE.MeshBasicMaterial( { color: 0x000000, side: THREE.DoubleSide, wireframe: true } );
-                //    var mesh2 = new THREE.Mesh( mesh, material2 );
-                //    scene.add( mesh2 );
-                //}
+                if (wireframe){
+                    var material2 = new THREE.MeshBasicMaterial( { color: 0x000000, side: THREE.DoubleSide, wireframe: true } );
+                    var mesh2 = new THREE.Mesh( mesh, material2 );
+                    scene.add( mesh2 );
+                }
             };
 
             scope.internalControl.asVector3 = function(pts){

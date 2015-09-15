@@ -365,7 +365,6 @@ angular.module('flowChart', ['dragging'] )
 					$scope.dragSelecting = false;
 					var index = $scope.chart.applySelectionRect($scope.dragSelectionRect);
 						$scope.$emit("nodeIndex", index);
-						console.log(index);
 					delete $scope.dragSelectionStartPoint;
 					delete $scope.dragSelectionRect;
 				},

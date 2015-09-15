@@ -80,7 +80,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
                 return typeof VIDAMO[property] == 'function';
             });
 
-            var expression = ['expression']
+            var expression = ['expression'];
             return expression.concat(func_props);
         };
 
@@ -317,8 +317,6 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
                         dataValue:undefined,
                         // create new variable or assign value to existing variable
                         type:undefined
-                        //inputConnectors: $scope.chartViewModel.nodes[$scope.nodeIndex].data.inputConnectors,
-                        //outputConnectors:$scope.chartViewModel.nodes[$scope.nodeIndex].data.outputConnectors
                     });
                 } else if(cate == 'Action'){
                     var parameters = [];
@@ -359,8 +357,6 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
                         // if the method is get data from input port, use following two as holder
 
                         dataName:undefined
-                        //inputConnectors: $scope.chartViewModel.nodes[$scope.nodeIndex].data.inputConnectors,
-                        //outputConnectors:$scope.chartViewModel.nodes[$scope.nodeIndex].data.outputConnectors
                     }
                 );
 
@@ -381,8 +377,6 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
                                 dataName:undefined,
                                 forList:undefined
 
-                                //inputConnectors: $scope.chartViewModel.nodes[$scope.nodeIndex].data.inputConnectors,
-                                //outputConnectors:$scope.chartViewModel.nodes[$scope.nodeIndex].data.outputConnectors
                             });
                             break;
 
@@ -409,8 +403,6 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
 
                                 controlType: subCate
 
-                                //inputConnectors: $scope.chartViewModel.nodes[$scope.nodeIndex].data.inputConnectors,
-                                //outputConnectors:$scope.chartViewModel.nodes[$scope.nodeIndex].data.outputConnectors
                             });
                             break;
                     }
@@ -436,8 +428,6 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
                         dataName:undefined,
                         dataValue:undefined
 
-                        //inputConnectors: $scope.chartViewModel.nodes[$scope.nodeIndex].data.inputConnectors,
-                        //outputConnectors:$scope.chartViewModel.nodes[$scope.nodeIndex].data.outputConnectors,
                     });
                 }
             }

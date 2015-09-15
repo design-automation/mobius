@@ -132,33 +132,31 @@ vidamo.controller('graphCtrl',[
                 $scope.currentNodeName = $scope.chartViewModel.nodes[$scope.nodeIndex].data.name;
 
                 $scope.currentNodeType = $scope.chartViewModel.nodes[$scope.nodeIndex].data.type;
-
-                // display geometries on node selected
-                var selectedNodes = $scope.chartViewModel.getSelectedNodes();
-                var scope = angular.element(document.getElementById('threeViewport')).scope();
-
-                scope.$apply(function(){scope.viewportControl.refresh();} );
-
-                for(var i = 0; i < $scope.outputGeom.length; i++){
-
-                    for(var j =0; j < selectedNodes.length; j++){
-
-                        if($scope.outputGeom[i].name === selectedNodes[j].data.name){
-                            var p =0;
-                            for(var k in $scope.outputGeom[i].value){
-                                scope.$apply(function(){
-                                    scope.viewportControl
-                                        .addGeometryToScene($scope.outputGeom[i].value[k],$scope.outputGeom[i].geom[p]);} );
-                                p ++;
-                            }
-                        }
-                    }
-                }
             }
+
+             // display geometries on node selected
+             var selectedNodes = $scope.chartViewModel.getSelectedNodes();
+
+             var scope = angular.element(document.getElementById('threeViewport')).scope();
+
+             scope.$apply(function(){scope.viewportControl.refresh();} );
+
+             for(var i = 0; i < $scope.outputGeom.length; i++){
+
+                 for(var j =0; j < selectedNodes.length; j++){
+
+                     if($scope.outputGeom[i].name === selectedNodes[j].data.name){
+                         var p =0;
+                         for(var k in $scope.outputGeom[i].value){
+                             scope.$apply(function(){
+                                 scope.viewportControl
+                                     .addGeometryToScene($scope.outputGeom[i].value[k],$scope.outputGeom[i].geom[p]);} );
+                             p ++;
+                         }
+                     }
+                 }
+             }
          });
-
-
-
 
         // Add a new node to the chart.
         // todo integrate with fancy prompt
