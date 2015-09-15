@@ -126,7 +126,7 @@ vidamo.controller('graphCtrl',[
 
         // listen to the graph, when a node is clicked, update the visual procedure/ code/ interface accordions
          $scope.$on("nodeIndex", function(event, message) {
-            if($scope.nodeIndex !== message){
+            if($scope.nodeIndex !== message ){
                 $scope.nodeIndex = message;
 
                 $scope.currentNodeName = $scope.chartViewModel.nodes[$scope.nodeIndex].data.name;

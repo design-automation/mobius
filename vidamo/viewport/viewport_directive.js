@@ -103,18 +103,17 @@ vidamo.directive('viewport', function factory() {
                     VIEWPORT_WIDTH = container.offsetWidth;
                     VIEWPORT_HEIGHT = container.offsetHeight;
                     resizeUpdate();
-                    animate();
+                    //animate();
                 },
                 true
             );
 
             // update on resize of viewport
             function resizeUpdate() {
-                console.log('resizing');
-                renderer.setSize(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
                 container.appendChild(renderer.domElement);
                 camera.aspect = VIEWPORT_WIDTH / VIEWPORT_HEIGHT;
                 camera.updateProjectionMatrix ();
+                renderer.setSize(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
             }
 
             // Animate the scene
