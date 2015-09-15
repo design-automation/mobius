@@ -15,8 +15,7 @@
         </a>
 
         <a class="pull-right btn btn-xs" data-nodrag ng-click="remove(this)" style="padding: 0;margin: 0" >
-            <span class="glyphicon glyphicon-remove">
-            </span>
+            <span style="font-weight: 400; font-size: 16px;line-height:1" > x </span>
         </a>
 
         <!--delete key-->
@@ -52,8 +51,7 @@
 
         <!--delete key-->
         <a class="pull-right btn btn-xs" data-nodrag ng-click="remove(this)" style="padding: 0;margin: 0" >
-            <span class="glyphicon glyphicon-remove">
-            </span>
+            <span style="font-weight: 400; font-size: 16px;line-height:1" > x </span>
         </a>
     </div>
 
@@ -64,61 +62,68 @@
 
         <!--delete key-->
         <a class="pull-right btn btn-xs" data-nodrag ng-click="remove(this)" style="padding: 0;margin: 0" >
-            <span class="glyphicon glyphicon-remove">
-            </span>
+            <span style="font-weight: 400; font-size: 16px;line-height:1" > x </span>
         </a>
     </div>
 
     <!--control procedure-->
-    <div ng-if="node.title === 'Control'" style="padding-left:20px" class="tree-node-content">
+    <div ng-if="node.title === 'Control'"  class="tree-node-content">
         <!--expand/collapse key-->
-        <a data-nodrag ng-click="toggle(this)">
+        <div ng-if="node.controlType === 'if' || node.controlType === 'else' " style="margin-left: -20px">
+            <a data-nodrag ng-click="toggle(this)" >
+                <span
+                    class="fa"
+                    style="font-weight: 900; font-size: 17px;"
+                    ng-class="{
+                              'fa-angle-right': collapsed,
+                              'fa-angle-down': !collapsed
+                               }">
+                </span>
+            </a>
+
+            <!--if tag-->
+            <div data-nodrag ng-if="node.controlType === 'if'" style="display: inline-block; padding-left:23px">
+                if
+                <a href="#" data-nodrag editable-text="node.ifExpression" buttons="no">
+                    {{ node.ifExpression || 'expression' }}
+                </a>
+            </div>
+
+            <!--else tag-->
+            <div data-nodrag ng-if="node.controlType === 'else'" style="display: inline-block;padding-left:23px">
+                else
+            </div>
+        </div>
+
+
+        <a ng-if="node.controlType !== 'if' && node.controlType !== 'else' " data-nodrag ng-click="toggle(this)">
             <span
-                class="glyphicon"
-                ng-class="{
-                          'glyphicon-chevron-right': collapsed,
-                          'glyphicon-chevron-down': !collapsed
+                    class="fa"
+                    style="font-weight: 900; font-size: 17px;"
+                    ng-class="{
+                          'fa-angle-right': collapsed,
+                          'fa-angle-down': !collapsed
                            }">
             </span>
         </a>
 
         <!--for each loop-->
-        <div ng-if="node.controlType === 'for each'" style="display: inline-block">
+        <div ng-if="node.controlType === 'for each'" style="display: inline-block; padding-left:3px">
             for each
             <!--list item name-->
             <a href="#" data-nodrag editable-text="node.dataName" buttons="no">
                 {{ node.dataName || 'item' }}
             </a>
             in
-            <!--iteration list-->
-            <!--<a href="#" data-nodrag buttons="no"-->
-               <!--editable-select="node.forList"-->
-               <!--e-ng-options="node.dataName as node.dataName for node in flattenData |-->
-                             <!--positionFilter:node.id:this |-->
-                             <!--dataNameFilter">-->
-                <!--{{node.forList||'list'}}-->
-            <!--</a>-->
             <a data-nodrag href="#" editable-text="node.forList" buttons="no"> {{node.forList||'list'}}</a>
 
         </div>
 
         <!--if else control-->
-        <div ng-if="node.controlType === 'if else'" style=" display: inline-block">
+        <div ng-if="node.controlType === 'if else'" style=" display: inline-block; padding-left:3px">
             if...else...
         </div>
 
-        <!--if tag-->
-        <div data-nodrag ng-if="node.controlType === 'if'" style="display: inline-block">
-            if
-            <a href="#" data-nodrag editable-text="node.ifExpression" buttons="no">
-                {{ node.ifExpression || 'expression' }}
-            </a>
-        </div>
-
-        <!--else tag-->
-        <div data-nodrag ng-if="node.controlType === 'else'" style="display: inline-block">
-            else
-        </div>
 
         <!--delete key-->
         <a ng-if="node.controlType !== 'if' && node.controlType !== 'else'"
@@ -126,7 +131,8 @@
            data-nodrag
            ng-click="remove(this)"
            style="padding: 0;margin: 0">
-            <span class="glyphicon glyphicon-remove">
+            <span>
+                <span style="font-weight: 400; font-size: 16px;line-height:1" > x </span>
             </span>
         </a>
 
