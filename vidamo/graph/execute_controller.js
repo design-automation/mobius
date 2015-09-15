@@ -2,8 +2,8 @@
 // Execute generated code ('run' button)
 //
 
-vidamo.controller('executeCtrl',['$scope','generateCode',
-    function($scope,generateCode) {
+vidamo.controller('executeCtrl',['$scope','generateCode','hotkeys',
+    function($scope,generateCode,hotkeys) {
 
         // one-way binding of generated javascript code
 
@@ -28,10 +28,20 @@ vidamo.controller('executeCtrl',['$scope','generateCode',
 
         $scope.$watch('outputs',function(){
             generateCode.setOutputGeom($scope.outputs);
-            console.log('from execute:', $scope.outputs)
         });
 
         $scope.outputs = [];
+
+
+        // shortcut keys
+        hotkeys.add({
+            combo: 'ctrl+enter',
+            description: 'run',
+            callback: function() {
+                $scope.run();
+            }
+        });
+
 
         $scope.run = function(){
 

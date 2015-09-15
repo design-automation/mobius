@@ -8,6 +8,7 @@
     <script  src="assets/js/packages/pace/pace.min.js"></script>
     <link href="assets/css/pace-theme.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
     <!-- stylesheet -->
     <link rel="stylesheet" href="assets/css/vidamo-layout.css">
     <link rel="stylesheet" href="assets/css/ui-layout.css">
@@ -16,8 +17,8 @@
     <link rel="stylesheet" href="assets/css/graph.css">
     <link rel="stylesheet" href="assets/css/select.css">
     <link rel="stylesheet" href="assets/css/xeditable.css">
-    <!-- not in use -->
-    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">
+    <link rel="stylesheet" href="assets/css/hotkeys.css">
+
 </head>
 
 <body>
@@ -99,22 +100,21 @@
 
                 <!-- todo help -->
                 <span dropdown on-toggle="toggled(open)">
-                    <a href dropdown-toggle>  Help |</a>
+                    <a href dropdown-toggle>  Help </a>
+
                     <ul class="dropdown-menu">
                         <li>
                             <a> Todo:Help </a>
                         </li>
+                        <li>
+                            <a href="https://github.com/phtj/vidamo" target="_blank"> Github Repo </a>
+                        </li>
+                        <li>
+                            <a href ng-click=" toggleCheatSheet();">hotkeys</a>
+                        </li>
                     </ul>
                 </span>
 
-                <span dropdown on-toggle="toggled(open)">
-                  <a href dropdown-toggle>  About </a>
-                  <ul class="dropdown-menu">
-                      <li>
-                          <a href="https://github.com/phtj/vidamo" target="_blank"> Github Repo </a>
-                      </li>
-                  </ul>
-                </span>
             </div>
         </div>
 
@@ -344,6 +344,8 @@
     <!-- angularJs -->
     <script type="application/javascript" src="assets/js/angular/angular.min.js"></script>
     <script type="text/javascript" src="assets/js/angular/angular-sanitize.js"></script>
+    <script type="text/javascript" src="assets/js/angular/angular-route.js"></script>
+
 
     <!-- angular-ui -->
     <script type="application/javascript" src="assets/js/angular-ui/ui-layout/ui-layout.js"></script>
@@ -352,6 +354,8 @@
     <script type="text/javascript" src="assets/js/angular-ui/ui-select/select.js"></script>
     <script type="text/javascript" src="assets/js/angular-ui/angular-xeditable/xeditable.js"></script>
     <script type="text/javascript" src="assets/js/angular-ui/angular-prompt.js"></script>
+    <script type="text/javascript" src="assets/js/angular-ui/hotkeys.js"></script>
+
 
     <!-- ace -->
     <script type="text/javascript" src="assets/js/angular-ui/ui-ace/ui-ace.js"></script>

@@ -1,5 +1,5 @@
-vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','generateCode','nodeCollection','$http',
-    function($scope,$rootScope,$timeout,generateCode,nodeCollection,$http){
+vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','generateCode','nodeCollection','$http','hotkeys',
+    function($scope,$rootScope,$timeout,generateCode,nodeCollection,$http,hotkeys){
 
         // store json url
         $scope.sceneUrl= '';
@@ -164,6 +164,10 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','generateCode','n
                     $scope.libUrl = URL.createObjectURL(libBlob);
                 }
             );
+        };
+
+        $scope.toggleCheatSheet = function(){
+            hotkeys.toggleCheatSheet();
         };
 
     }]);
