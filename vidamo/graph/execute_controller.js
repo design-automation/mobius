@@ -36,7 +36,7 @@ vidamo.controller('executeCtrl',['$scope','generateCode','hotkeys',
         // shortcut keys
         hotkeys.add({
             combo: 'ctrl+enter',
-            description: 'run',
+            description: 'Run the generated code',
             callback: function() {
                 $scope.run();
             }

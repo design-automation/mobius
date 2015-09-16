@@ -16,46 +16,46 @@ vidamo.controller('graphCtrl',[
         $scope.javascriptCode = generateCode.getJavascriptCode();
         $scope.$watch('javascriptCode', function () {
             generateCode.setJavascriptCode($scope.javascriptCode);
-        });
+        },true);
         $scope.$watch(function () { return generateCode.getJavascriptCode(); }, function () {
             $scope.javascriptCode = generateCode.getJavascriptCode();
-        });
+        },true);
 
         // inner function code for procedures
         $scope.innerCodeList = generateCode.getInnerCodeList();
         $scope.$watch('innerCodeList', function () {
             generateCode.setInnerCodeList($scope.innerCodeList);
-        });
+        },true);
         $scope.$watch(function () { return generateCode.getInnerCodeList(); }, function () {
             $scope.innerCodeList = generateCode.getInnerCodeList();
-        });
+        },true);
 
         // outer function code for procedures
         $scope.outerCodeList = generateCode.getOuterCodeList();
         $scope.$watch('outerCodeList', function () {
             generateCode.setOuterCodeList($scope.outerCodeList);
-        });
+        },true);
         $scope.$watch(function () { return generateCode.getOuterCodeList(); }, function () {
             $scope.outerCodeList = generateCode.getOuterCodeList();
-        });
+        },true);
 
         // procedure data list
         $scope.dataList = generateCode.getDataList();
         $scope.$watch('dataList', function () {
             generateCode.setDataList($scope.dataList);
-        });
+        },true);
         $scope.$watch(function () { return generateCode.getDataList(); }, function () {
             $scope.dataList = generateCode.getDataList();
-        });
+        },true);
 
         // interface data list
         $scope.interfaceList= generateCode.getInterfaceList();
         $scope.$watch('interfaceList', function () {
             generateCode.setInterfaceList($scope.interfaceList);
-        });
+        },true);
         $scope.$watch(function () { return generateCode.getInterfaceList(); }, function () {
             $scope.interfaceList= generateCode.getInterfaceList();
-        });
+        },true);
 
         // graph flowchart view model
         // pass by reference
@@ -253,15 +253,17 @@ vidamo.controller('graphCtrl',[
                             value:''
                         });
                     }
+
+                    // update version fixme
+                    var d = new Date();
+                    $scope.chartViewModel.nodes[$scope.nodeIndex].data.version = d.getTime();
+
                 },100);
             }
             catch(err){
                 document.getElementById('log').innerHTML += "<div style='color: red'>Error: no node selected!</div>";
             }
 
-            // update version fixme
-            var d = new Date();
-            $scope.chartViewModel.nodes[$scope.nodeIndex].data.version = d.getTime();
 
             // update generated code
             generateCode.generateCode();
@@ -289,15 +291,16 @@ vidamo.controller('graphCtrl',[
                             value: ""
                         });
                     }
-                },10);
+                },100);
+
+
+                // update version fixme
+                var d = new Date();
+                $scope.chartViewModel.nodes[$scope.nodeIndex].data.version = d.getTime();
             }
             catch(err){
                 document.getElementById('log').innerHTML += "<div style='color: red'>Error: no node selected!</div>";
             }
-
-            // update version fixme
-            var d = new Date();
-            $scope.chartViewModel.nodes[$scope.nodeIndex].data.version = d.getTime();
 
             // update generated code
             generateCode.generateCode();
@@ -306,32 +309,33 @@ vidamo.controller('graphCtrl',[
         // Delete selected nodes and connections in data&view model
 
         $scope.$on("deleteSelected", function (){
-            var deletedNodeIds = $scope.chartViewModel.deleteSelected();
+            var deletedObj = $scope.chartViewModel.deleteSelected();
 
-            // ensure the deleted ids are sorted in ascend order
-            // deletedNodeIds.sort(function(a,b){return b-a;});
-
-            // update only if selected is a node
-            // reverse order, otherwise mess up
-
-            for(var i = deletedNodeIds.length -1; i >= 0 ; i--){
-                // update scene data structure
-                $scope.dataList.splice(deletedNodeIds[i],1);
-                $scope.innerCodeList.splice(deletedNodeIds[i],1);
-                $scope.outerCodeList.splice(deletedNodeIds[i],1);
-                $scope.interfaceList.splice(deletedNodeIds[i],1);
+            if(deletedObj.deletedNodeIds.length === 0){
+                // update version since connector changed
+                var d = new Date();
+                $scope.chartViewModel.nodes[deletedObj.nodeIndex].data.version = d.getTime();
+            }else{
+                for(var i = deletedObj.deletedNodeIds.length -1; i >= 0 ; i--){
+                    // update scene data structure
+                    $scope.dataList.splice(deletedObj.deletedNodeIds[i],1);
+                    $scope.innerCodeList.splice(deletedObj.deletedNodeIds[i],1);
+                    $scope.outerCodeList.splice(deletedObj.deletedNodeIds[i],1);
+                    $scope.interfaceList.splice(deletedObj.deletedNodeIds[i],1);
+                }
             }
-
-
-            // update generated code
-            generateCode.generateCode();
         });
 
 
         $scope.$on("renameSelected",function(){
             $timeout(function(){
                 var newName = prompt('Enter a new name:');
-                $scope.chartViewModel.renameSelected(newName);
+                var renameObj = $scope.chartViewModel.renameSelected(newName);
+                if(renameObj.isConnector){
+                    // update version since connector changed
+                    var d = new Date();
+                    $scope.chartViewModel.nodes[renameObj.nodeIndex].data.version = d.getTime();
+                }
             }, 10);
         });
 
@@ -364,7 +368,7 @@ vidamo.controller('graphCtrl',[
                     // get new type name, by default the original type name
                     var instanceName =  $scope.chartViewModel.getSelectedNodes()[0].data.name;
                     var oldTypeName = $scope.chartViewModel.getSelectedNodes()[0].data.type;
-                    var newTypeName = prompt('Enter a node for new type:', oldTypeName);
+                    var newTypeName = prompt('Enter a name for new type:', oldTypeName);
 
                     if(newTypeName !== oldTypeName){
                         if (!isValidName(newTypeName)) {return;}
@@ -389,8 +393,6 @@ vidamo.controller('graphCtrl',[
                     $scope.chartViewModel.getSelectedNodes()[0].data.type = newTypeName;
                     $scope.chartViewModel.getSelectedNodes()[0].data.version = 0;
 
-
-
                     // update other nodes with original type and version 0
                     for(var i = 0; i < $scope.chartViewModel.nodes.length; i++){
                         var node = $scope.chartViewModel.nodes[i];
@@ -402,7 +404,6 @@ vidamo.controller('graphCtrl',[
                                 node.data.outputConnectors = [];
                                 node.inputConnectors = [];
                                 node.outputConnectors = [];
-
 
                                 for(var j = 0; j < input.length; j++){
                                     node.addInputConnector({
@@ -422,14 +423,12 @@ vidamo.controller('graphCtrl',[
                                 $scope.dataList[node.data.id] = newProcedureDataModel;
 
                                 // interface Model whole
-                                $scope.interfaceList[node.data.id] = newProcedureDataModel;
+                                $scope.interfaceList[node.data.id] = newInterfaceDataModel;
                             }
                         }
                     }
                 },100);
             }
         });
-
-
 
     }]);

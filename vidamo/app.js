@@ -13,7 +13,6 @@ var vidamo = angular.module('vidamo',
                             'panzoom',
                             'xeditable',
                             'ui.bootstrap.contextMenu',
-                                'ngRoute',
                                 'cfp.hotkeys']);
 
     // Simple service to create a prompt.

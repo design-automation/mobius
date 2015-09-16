@@ -879,25 +879,38 @@ var flowchart = {
 
 				var node = this.nodes[nodeIndex];
 
+				// let graph know what is changing so it can update accordingly
+				var renameObj = {
+					isConnector:false,
+					nodeIndex:''
+				};
+
 				// update selected node name
 				if (this.nodes[nodeIndex].selected()) {
 					this.data.nodes[nodeIndex].name = newName;
 					this.nodes[nodeIndex].data = this.data.nodes[nodeIndex];
+					return renameObj;
 				}
 
 				// update selected input connector name
 				for(var inputIndex = 0; inputIndex < node.inputConnectors.length; inputIndex ++){
 					if (node.inputConnectors[inputIndex].selected()) {
-                        this.data.nodes[nodeIndex].inputConnectors[inputIndex].name = newName;
+						renameObj.isConnector = true;
+                        renameObj.nodeIndex = nodeIndex;
+						this.data.nodes[nodeIndex].inputConnectors[inputIndex].name = newName;
                         this.nodes[nodeIndex].data = this.data.nodes[nodeIndex];
+						return renameObj;
 					}
 				}
 
 				// update selected output connector name
 				for(var outputIndex = 0; outputIndex < node.outputConnectors.length; outputIndex ++){
 					if (node.outputConnectors[outputIndex].selected()) {
+						renameObj.isConnector = true;
+						renameObj.nodeIndex = nodeIndex;
 						this.data.nodes[nodeIndex].outputConnectors[outputIndex].name = newName;
                         this.nodes[nodeIndex].data = this.data.nodes[nodeIndex];
+						return renameObj;
 					}
 				}
 			}
@@ -913,6 +926,7 @@ var flowchart = {
 			var newNodeDataModels = [];
 
 			var deletedNodeIds = [];
+			var returnIndex;
 
 			var deletedInputConnectors = [];
 			var deletedOutputConnectors = [];
@@ -948,6 +962,7 @@ var flowchart = {
 					}
 
 					else{
+						returnIndex = nodeIndex;
 						deletedInputConnectors.push({
 												nodeId:node.data.id,
 												inputConnectorIndex:node.inputConnectors.indexOf(inputConnector)
@@ -964,6 +979,8 @@ var flowchart = {
 					}
 
 					else{
+						returnIndex = nodeIndex;
+
 						deletedOutputConnectors.push({
 							nodeId:node.data.id,
 							outputConnectorIndex:node.outputConnectors.indexOf(outputConnector)
@@ -1096,7 +1113,10 @@ var flowchart = {
 				edgeList.push([this.data.connections[j].source.nodeID, this.data.connections[j].dest.nodeID]);
 			}
 
-            return deletedNodeIds;
+            return {
+				deletedNodeIds:deletedNodeIds,
+				nodeIndex:returnIndex
+			};
 		};
 
 		//

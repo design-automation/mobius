@@ -1,5 +1,5 @@
 //
-// data pool for default types of nodes
+// data pool for node types
 //
 
 // todo

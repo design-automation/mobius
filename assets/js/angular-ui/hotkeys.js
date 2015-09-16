@@ -62,7 +62,7 @@
             '</tr>' +
             '</tbody></table>' +
             '<div ng-bind-html="footer" ng-if="footer"></div>' +
-            '<div class="cfp-hotkeys-close" ng-click="toggleCheatSheet()">×</div>' +
+            '<div class="cfp-hotkeys-close" ng-click="toggleCheatSheet()">&times</div>' +
             '</div></div>';
 
         /**

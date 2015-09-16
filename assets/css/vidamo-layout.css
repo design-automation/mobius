@@ -30,7 +30,7 @@ body {
 }
 
 .dropdown{
-    z-index: 100000;
+    z-index: 999;
 }
 
 .dropdown-menu {
