@@ -110,7 +110,7 @@ vidamo.factory('generateCode', function () {
                     // case where the node has output
                     var output_port_num = data.chartViewModel.nodes[sortedOrder[n]].outputConnectors.length;
                     var node_name = data.chartViewModel.nodes[sortedOrder[n]].data.name;
-                    var return_obj_name = 'ouput_' + data.chartViewModel.nodes[sortedOrder[n]].data.name;
+                    var return_obj_name = 'output_' + data.chartViewModel.nodes[sortedOrder[n]].data.name;
 
                     if (output_port_num != 0) {
                         // first get the return object

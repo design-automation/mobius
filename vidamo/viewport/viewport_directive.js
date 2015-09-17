@@ -152,21 +152,17 @@ vidamo.directive('viewport', function factory() {
                 if(geom.constructor === Array){
                     for(var i = 0; i< geom.length ;i++){
                         if(geom[i] instanceof verb.geom.NurbsSurface){
-                            //scope.internalControl.addMeshToScene(geom[i].toThreeGeometry());
                             scope.internalControl.addMeshToScene(value[i]);
                         }
                         else if(geom[i] instanceof verb.geom.NurbsCurve){
-                            //scope.internalControl.addCurveToScene(geom[i].toThreeGeometry());
                             scope.internalControl.addCurveToScene(value[i]);
                         }
                     }
                 } else {
                     if(geom instanceof verb.geom.NurbsSurface){
-                        //scope.internalControl.addMeshToScene(geom.toThreeGeometry());
                         scope.internalControl.addMeshToScene(value);
                     }
                     else if(geom instanceof verb.geom.NurbsCurve){
-                        //scope.internalControl.addCurveToScene(geom.toThreeGeometry());
                         scope.internalControl.addCurveToScene(value);
                     }
                 }

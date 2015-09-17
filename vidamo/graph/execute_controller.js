@@ -55,7 +55,6 @@ vidamo.controller('executeCtrl',['$scope','generateCode','hotkeys',
             document.getElementById('log').innerHTML += "<div></br> Executing generated code ... </div>";
 
             try{
-                // eval( $scope.javascriptCode);
                 $scope.outputs = new Function(   $scope.javascriptCode + $scope.geomListCode + 'return geomList;')();
             }catch (e) {
                 document.getElementById('log').innerHTML +=     "<div style='color:red'>" +  e.message + "</div>";
@@ -68,10 +67,11 @@ vidamo.controller('executeCtrl',['$scope','generateCode','hotkeys',
 
                 for(var i = 0; i < $scope.outputs.length; i++){
 
+                    // convert verbs geometry into three geometry
                     for(var m in $scope.outputs[i].value) {
                         var geoms = [];
                         if($scope.outputs[i].value[m].constructor !== Array){
-                            geoms.push($scope.outputs[i].value[m].toThreeGeometry());
+                            $scope.outputs[i].geom.push($scope.outputs[i].value[m].toThreeGeometry());
                         }
                         else{
                             for(var n =0; n < $scope.outputs[i].value[m].length; n++){
@@ -81,9 +81,12 @@ vidamo.controller('executeCtrl',['$scope','generateCode','hotkeys',
                         $scope.outputs[i].geom.push(geoms);
                     }
 
+                    // display in the viewport according to node selection
                     for(var j =0; j < selectedNodes.length; j++){
                         if($scope.outputs[i].name === selectedNodes[j].data.name){
                             var p = 0;
+
+                            console.log($scope.outputs[i].geom);
                             for(var k in $scope.outputs[i].value){
                                 scope.$apply(function(){
                                     scope.viewportControl.
@@ -93,7 +96,6 @@ vidamo.controller('executeCtrl',['$scope','generateCode','hotkeys',
                             }
                         }
                     }
-                    console.log($scope.outputs[i].geom)
                 }
             },0);
 
