@@ -30,7 +30,9 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','generateCode','n
 
             reader.onload = (function () {
                 return function (e) {
+
                     if(f.name.split('.').pop() == 'json') {
+
                         jsonString = e.target.result;
 
                         graphJsonString = jsonString.split("//procedure json")[0];
@@ -60,7 +62,6 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','generateCode','n
             })(f);
 
             reader.readAsText(f);
-
         };
 
         // save json file for scene

@@ -8,6 +8,7 @@
 //scope.$apply(function(){scope.viewportControl.ready();} );
 
 var VIDAMO = ( function (mod){
+    mod.result = '';
 
     // print data method
     mod.print = function(content){
@@ -61,8 +62,6 @@ var VIDAMO = ( function (mod){
     };
 
     mod.makeTubeByLine = function(line, transparent){
-
-
         var start = line.start()
         var end = line.end()
 
@@ -103,6 +102,10 @@ var VIDAMO = ( function (mod){
                 polygon.point(1,0),
                 polygon.point(1,1),
                 polygon.point(0,1)]
+    };
+
+    mod.dataConversion = function(data){
+
     };
 
     return mod;

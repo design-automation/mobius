@@ -1125,7 +1125,7 @@ var flowchart = {
 		this.applySelectionRect = function (selectionRect) {
 
 			this.deselectAll();
-			var index = 0;
+			var index = undefined;
 
 			for (var i = 0; i < this.nodes.length; ++i) {
 				var node = this.nodes[i];

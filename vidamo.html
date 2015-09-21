@@ -35,8 +35,8 @@
                         </li>
 
                         <li>
-                            <input type="file" id="openSceneJson"
-                                 style="visibility: hidden; width: 1px; height: 1px" multiple
+                            <input type="file" id="openSceneJson" name="files[]"
+                                   style="visibility: hidden; width: 1px; height: 1px" multiple
                                  onchange="angular.element(this).scope().openSceneJson(this.files)"/>
                             <a href="" onclick="document.getElementById('openSceneJson').click()">Open Scene</a>
                         </li>
