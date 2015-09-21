@@ -2,13 +2,7 @@
 // VIDAMO module
 //
 
-
-// code to invoke controller functions outside angularjs
-//var scope = angular.element(document.getElementById('threeViewport')).scope();
-//scope.$apply(function(){scope.viewportControl.ready();} );
-
 var VIDAMO = ( function (mod){
-    mod.result = '';
 
     // print data method
     mod.print = function(content){
@@ -61,9 +55,9 @@ var VIDAMO = ( function (mod){
         return div_surfaces
     };
 
-    mod.makeTubeByLine = function(line, transparent){
-        var start = line.start()
-        var end = line.end()
+    mod.makeTubeByLine = function(line){
+        var start = line.start();
+        var end = line.end();
 
         var axis = [start[0] - end[0], start[1] - end[1], start[2] - end[2]]
             , height = 1 //this is a multiplying factor to the axis vector
@@ -104,8 +98,27 @@ var VIDAMO = ( function (mod){
                 polygon.point(0,1)]
     };
 
+    // convert all function return data into vidamo display format
+    // three.js geometry for 3d viewport visualization
     mod.dataConversion = function(data){
 
+        // convert geometry into three.js geometry
+        for(var i = 0; i < data.length; i++) {
+
+            for (var m in data[i].value) {
+                var geoms = [];
+                if (data[i].value[m].constructor !== Array) {
+                    data[i].geom.push(data[i].value[m].toThreeGeometry());
+                }
+                else {
+                    for (var n = 0; n < data[i].value[m].length; n++) {
+                        geoms.push(data[i].value[m][n].toThreeGeometry());
+                    }
+                }
+                data[i].geom.push(geoms);
+            }
+        }
+        return data;
     };
 
     return mod;

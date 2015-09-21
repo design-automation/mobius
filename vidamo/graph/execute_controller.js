@@ -7,10 +7,6 @@ vidamo.controller('executeCtrl',['$scope','generateCode','hotkeys',
 
         // one-way binding of generated javascript code
 
-        //$scope.javascriptCode = generateCode.getJavascriptCode();
-
-
-
         $scope.$watch(function () { return generateCode.getJavascriptCode(); }, function () {
             $scope.javascriptCode = generateCode.getJavascriptCode();
         });
@@ -55,11 +51,15 @@ vidamo.controller('executeCtrl',['$scope','generateCode','hotkeys',
             document.getElementById('log').innerHTML += "<div></br> Executing generated code ... </div>";
 
             try{
-                $scope.outputs = new Function(   $scope.javascriptCode + $scope.geomListCode + 'return geomList;')();
+                $scope.outputs = new Function(   $scope.javascriptCode
+                                                + $scope.geomListCode
+                                                + 'return VIDAMO.dataConversion(geomList);')();
             }catch (e) {
                 document.getElementById('log').innerHTML +=     "<div style='color:red'>" +  e.message + "</div>";
                 alert(e.stack);
             }
+
+            // display in the viewport according to node selection
 
             setTimeout(function(){
                 var selectedNodes = $scope.chartViewModel.getSelectedNodes();
@@ -67,21 +67,6 @@ vidamo.controller('executeCtrl',['$scope','generateCode','hotkeys',
 
                 for(var i = 0; i < $scope.outputs.length; i++){
 
-                    // convert verbs geometry into three geometry
-                    for(var m in $scope.outputs[i].value) {
-                        var geoms = [];
-                        if($scope.outputs[i].value[m].constructor !== Array){
-                            $scope.outputs[i].geom.push($scope.outputs[i].value[m].toThreeGeometry());
-                        }
-                        else{
-                            for(var n =0; n < $scope.outputs[i].value[m].length; n++){
-                                geoms.push($scope.outputs[i].value[m][n].toThreeGeometry());
-                            }
-                        }
-                        $scope.outputs[i].geom.push(geoms);
-                    }
-
-                    // display in the viewport according to node selection
                     for(var j =0; j < selectedNodes.length; j++){
                         if($scope.outputs[i].name === selectedNodes[j].data.name){
                             var p = 0;
