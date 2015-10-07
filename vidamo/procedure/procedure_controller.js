@@ -87,7 +87,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
 
         // listen to the graph, when a node is clicked, update the procedure/ interface tabs
         $rootScope.$on("nodeIndex", function(event, message) {
-            if(message){
+            if(message+1){
                 console.log(message)
                 $scope.nodeIndex = message;
 

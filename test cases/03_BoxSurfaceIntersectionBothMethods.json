@@ -1,0 +1,273 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "curves",
+            "x": 1854.2828206470767,
+            "y": 1968.3035910042506,
+            "inputConnectors": [],
+            "outputConnectors": [
+                {
+                    "name": "allCurves",
+                    "value": ""
+                }
+            ],
+            "type": "curves",
+            "version": 1443775294594,
+            "overwrite": true
+        },
+        {
+            "id": 1,
+            "name": "surface",
+            "x": 1829.9583896375468,
+            "y": 2048.3715097439544,
+            "inputConnectors": [
+                {
+                    "name": "allCurves",
+                    "value": ""
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "name": "surface",
+                    "value": ""
+                }
+            ],
+            "type": "makeSurface",
+            "version": 1443775301753,
+            "overwrite": true
+        },
+        {
+            "id": 2,
+            "name": "node1",
+            "x": 1834.0124614724682,
+            "y": 2113.490038592384,
+            "inputConnectors": [
+                {
+                    "name": "verbSurface",
+                    "value": ""
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "name": "out0",
+                    "value": ""
+                }
+            ],
+            "type": "sphere",
+            "version": 1443775324187,
+            "overwrite": true
+        },
+        {
+            "id": 3,
+            "name": "node2",
+            "x": 1852.7625437089812,
+            "y": 2197.105270187645,
+            "inputConnectors": [
+                {
+                    "name": "srf",
+                    "value": ""
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "name": "out0",
+                    "value": ""
+                }
+            ],
+            "type": "sphere",
+            "version": 1443775325477,
+            "overwrite": true
+        }
+    ],
+    "connections": [
+        {
+            "source": {
+                "nodeID": 0,
+                "connectorIndex": 0
+            },
+            "dest": {
+                "nodeID": 1,
+                "connectorIndex": 0
+            }
+        },
+        {
+            "source": {
+                "nodeID": 1,
+                "connectorIndex": 0
+            },
+            "dest": {
+                "nodeID": 2,
+                "connectorIndex": 0
+            }
+        },
+        {
+            "source": {
+                "nodeID": 2,
+                "connectorIndex": 0
+            },
+            "dest": {
+                "nodeID": 3,
+                "connectorIndex": 0
+            }
+        }
+    ]
+}
+
+//procedure json
+[
+    [
+        {
+            "id": 1,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "makeCurve",
+            "parameters": [
+                {
+                    "value": "crv_pnt1",
+                    "type": "points",
+                    "$$hashKey": "object:544"
+                }
+            ],
+            "result": "allCurves",
+            "$$hashKey": "object:536"
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "makeSurfaceByExtrusion",
+            "parameters": [
+                {
+                    "value": "allCurves",
+                    "type": "profile",
+                    "$$hashKey": "object:668"
+                },
+                {
+                    "value": "direction",
+                    "type": "direction",
+                    "$$hashKey": "object:669"
+                }
+            ],
+            "result": "surface",
+            "$$hashKey": "object:660"
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "convertVerbsToThree",
+            "parameters": [
+                {
+                    "value": "verbSurface",
+                    "type": "vSurface",
+                    "$$hashKey": "object:3615"
+                },
+                {
+                    "value": "true",
+                    "type": "directMethod",
+                    "$$hashKey": "object:3616"
+                }
+            ],
+            "result": "out0",
+            "$$hashKey": "object:3607"
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "makeBox",
+            "parameters": [
+                {
+                    "value": "20",
+                    "type": "length",
+                    "$$hashKey": "object:3911"
+                },
+                {
+                    "value": "20",
+                    "type": "breadth",
+                    "$$hashKey": "object:3912"
+                },
+                {
+                    "value": "20",
+                    "type": "height",
+                    "$$hashKey": "object:3913"
+                }
+            ],
+            "result": "box",
+            "$$hashKey": "object:3903"
+        },
+        {
+            "id": 2,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "booleanOperation",
+            "parameters": [
+                {
+                    "value": "srf",
+                    "type": "geom1",
+                    "$$hashKey": "object:4102"
+                },
+                {
+                    "value": "box",
+                    "type": "geom2",
+                    "$$hashKey": "object:4103"
+                },
+                {
+                    "value": "\"subtract\"",
+                    "type": "operation",
+                    "$$hashKey": "object:4104"
+                },
+                {
+                    "value": "false",
+                    "type": "bsp",
+                    "$$hashKey": "object:4105"
+                }
+            ],
+            "result": "out0",
+            "$$hashKey": "object:4094"
+        }
+    ]
+]
+
+//interface json
+[
+    [
+        {
+            "id": 1,
+            "title": "Data",
+            "temp": "Parameter",
+            "dataName": "crv_pnt1",
+            "dataValue": "[[-20,10,0], [10,0,0], [20,0,0], [30,0,0], [40,0,0]]",
+            "$$hashKey": "object:198"
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Data",
+            "temp": "Parameter",
+            "dataName": "direction",
+            "dataValue": "[0,0,10]",
+            "$$hashKey": "object:677"
+        }
+    ],
+    [],
+    []
+]

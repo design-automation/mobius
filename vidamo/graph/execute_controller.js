@@ -23,6 +23,7 @@ vidamo.controller('executeCtrl',['$scope','generateCode','hotkeys',
         });
 
         $scope.$watch('outputs',function(){
+			console.log($scope.outputs)
             generateCode.setOutputGeom($scope.outputs);
         });
 
@@ -53,7 +54,7 @@ vidamo.controller('executeCtrl',['$scope','generateCode','hotkeys',
             try{
                 $scope.outputs = new Function(   $scope.javascriptCode
                                                 + $scope.geomListCode
-                                                + 'return VIDAMO.dataConversion(geomList);')();
+                                                + 'return VIDAMO.dataConversion(geomList);')(); 
             }catch (e) {
                 document.getElementById('log').innerHTML +=     "<div style='color:red'>" +  e.message + "</div>";
                 alert(e.stack);
@@ -71,7 +72,6 @@ vidamo.controller('executeCtrl',['$scope','generateCode','hotkeys',
                         if($scope.outputs[i].name === selectedNodes[j].data.name){
                             var p = 0;
 
-                            console.log($scope.outputs[i].geom);
                             for(var k in $scope.outputs[i].value){
                                 scope.$apply(function(){
                                     scope.viewportControl.

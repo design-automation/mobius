@@ -1,0 +1,507 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "curves",
+            "x": 1857.323374523268,
+            "y": 2037.2228121979201,
+            "inputConnectors": [],
+            "outputConnectors": [
+                {
+                    "name": "allCurves",
+                    "value": ""
+                }
+            ],
+            "type": "curves",
+            "version": 1443596784563,
+            "overwrite": true
+        },
+        {
+            "id": 1,
+            "name": "polysurface",
+            "x": 1818.8096920915118,
+            "y": 2112.7299001233378,
+            "inputConnectors": [
+                {
+                    "name": "allCurves",
+                    "value": ""
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "name": "mesh",
+                    "value": ""
+                }
+            ],
+            "type": "makeSurface",
+            "version": 1443596904934,
+            "overwrite": true
+        },
+        {
+            "id": 2,
+            "name": "panels",
+            "x": 1857.323374523268,
+            "y": 2198.878926615424,
+            "inputConnectors": [
+                {
+                    "name": "mesh",
+                    "value": ""
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "name": "tubes",
+                    "value": ""
+                }
+            ],
+            "type": "panels",
+            "version": 1443596898502,
+            "overwrite": true
+        }
+    ],
+    "connections": [
+        {
+            "source": {
+                "nodeID": 0,
+                "connectorIndex": 0
+            },
+            "dest": {
+                "nodeID": 1,
+                "connectorIndex": 0
+            }
+        },
+        {
+            "source": {
+                "nodeID": 1,
+                "connectorIndex": 0
+            },
+            "dest": {
+                "nodeID": 2,
+                "connectorIndex": 0
+            }
+        }
+    ]
+}
+
+//procedure json
+[
+    [
+        {
+            "id": 1,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "crv_pnts",
+            "dataValue": "[crv_pnt1, crv_pnt2, crv_pnt3, crv_pnt4]",
+            "type": "new",
+            "$$hashKey": "object:263"
+        },
+        {
+            "id": 3,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "allCurves",
+            "dataValue": "[]",
+            "type": "new",
+            "$$hashKey": "object:333"
+        },
+        {
+            "id": 2,
+            "title": "Control",
+            "nodes": [
+                {
+                    "id": 3,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "method": "makeCurve",
+                    "parameters": [
+                        {
+                            "value": "crv_pnt",
+                            "type": "points",
+                            "$$hashKey": "object:399"
+                        }
+                    ],
+                    "result": "crv",
+                    "$$hashKey": "object:391"
+                },
+                {
+                    "id": 4,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "expression": "allCurves.push(crv)",
+                    "method": "expression",
+                    "parameters": [],
+                    "$$hashKey": "object:275"
+                }
+            ],
+            "type": "new",
+            "controlType": "for each",
+            "dataName": "crv_pnt",
+            "forList": "crv_pnts",
+            "$$hashKey": "object:285"
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "method": "makeSurfaceByLoft",
+            "parameters": [
+                {
+                    "value": "allCurves",
+                    "type": "curves",
+                    "$$hashKey": "object:512"
+                }
+            ],
+            "result": "surface",
+            "$$hashKey": "object:504"
+        },
+        {
+            "id": 2,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "method": "makeMeshBySubdivision",
+            "parameters": [
+                {
+                    "value": "surface",
+                    "type": "surface",
+                    "$$hashKey": "object:542"
+                },
+                {
+                    "value": "u",
+                    "type": "ugrid",
+                    "$$hashKey": "object:543"
+                },
+                {
+                    "value": "v",
+                    "type": "vgrid",
+                    "$$hashKey": "object:544"
+                }
+            ],
+            "result": "mesh_obj",
+            "$$hashKey": "object:534"
+        },
+        {
+            "id": 3,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "addMaterial",
+            "parameters": [
+                {
+                    "value": "mesh_obj",
+                    "type": "object",
+                    "$$hashKey": "object:338"
+                },
+                {
+                    "value": "mat_type",
+                    "type": "material_type",
+                    "$$hashKey": "object:339"
+                },
+                {
+                    "value": "opts",
+                    "type": "options",
+                    "$$hashKey": "object:340"
+                }
+            ],
+            "result": "mesh",
+            "$$hashKey": "object:330"
+        }
+    ],
+    [
+        {
+            "id": 2,
+            "title": "Control",
+            "nodes": [
+                {
+                    "id": 3,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "method": "getPointsFromPolygon",
+                    "parameters": [
+                        {
+                            "value": "polygon",
+                            "type": "polygon",
+                            "$$hashKey": "object:699"
+                        }
+                    ],
+                    "result": "vertices",
+                    "$$hashKey": "object:691"
+                },
+                {
+                    "id": 3,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "method": "makeLine",
+                    "parameters": [
+                        {
+                            "value": "vertices[0]",
+                            "type": "start",
+                            "$$hashKey": "object:741"
+                        },
+                        {
+                            "value": "vertices[2]",
+                            "type": "end",
+                            "$$hashKey": "object:742"
+                        }
+                    ],
+                    "result": "line1",
+                    "$$hashKey": "object:733"
+                },
+                {
+                    "id": 4,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "method": "makeLine",
+                    "parameters": [
+                        {
+                            "value": "vertices[1]",
+                            "type": "start",
+                            "$$hashKey": "object:770"
+                        },
+                        {
+                            "value": "vertices[3]",
+                            "type": "end",
+                            "$$hashKey": "object:771"
+                        }
+                    ],
+                    "result": "line2",
+                    "$$hashKey": "object:762"
+                },
+                {
+                    "id": 5,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "method": "makeTubeByLine",
+                    "parameters": [
+                        {
+                            "value": "line1",
+                            "type": "line",
+                            "$$hashKey": "object:797"
+                        },
+                        {
+                            "value": "transparent",
+                            "type": "transparent",
+                            "$$hashKey": "object:798"
+                        }
+                    ],
+                    "result": "tube1",
+                    "$$hashKey": "object:789"
+                },
+                {
+                    "id": 6,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "method": "makeTubeByLine",
+                    "parameters": [
+                        {
+                            "value": "line2",
+                            "type": "line",
+                            "$$hashKey": "object:822"
+                        },
+                        {
+                            "value": "transparent",
+                            "type": "transparent",
+                            "$$hashKey": "object:823"
+                        }
+                    ],
+                    "result": "tube2",
+                    "$$hashKey": "object:814"
+                },
+                {
+                    "id": 3,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "assign",
+                    "expression": "",
+                    "method": "addMaterial",
+                    "parameters": [
+                        {
+                            "value": "tube1",
+                            "type": "object",
+                            "$$hashKey": "object:314"
+                        },
+                        {
+                            "value": "material_type",
+                            "type": "material_type",
+                            "$$hashKey": "object:315"
+                        },
+                        {
+                            "value": "options",
+                            "type": "options",
+                            "$$hashKey": "object:316"
+                        }
+                    ],
+                    "result": "mat_tube1",
+                    "$$hashKey": "object:306"
+                },
+                {
+                    "id": 3,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "assign",
+                    "expression": "tubes.push(mat_tube1);",
+                    "method": "expression",
+                    "parameters": [],
+                    "$$hashKey": "object:988"
+                },
+                {
+                    "id": 3,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "assign",
+                    "expression": "tubes.push(tube2);",
+                    "method": "expression",
+                    "parameters": [],
+                    "$$hashKey": "object:1021"
+                }
+            ],
+            "type": "new",
+            "controlType": "for each",
+            "dataName": "polygon",
+            "forList": "mesh",
+            "$$hashKey": "object:647"
+        },
+        {
+            "id": 2,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "tubes",
+            "dataValue": "tubes",
+            "type": "new",
+            "$$hashKey": "object:229"
+        }
+    ]
+]
+
+//interface json
+[
+    [
+        {
+            "id": 1,
+            "title": "Data",
+            "temp": "Parameter",
+            "dataName": "crv_pnt1",
+            "dataValue": "[[-20,10,0], [10,0,0], [20,0,0], [30,0,0], [40,0,0]]",
+            "$$hashKey": "object:198"
+        },
+        {
+            "id": 2,
+            "title": "Data",
+            "temp": "Parameter",
+            "dataName": "crv_pnt2",
+            "$$hashKey": "object:196",
+            "dataValue": "[[-20,15,0], [10,10,4], [20,10,0], [30,10,0]]"
+        },
+        {
+            "id": 3,
+            "title": "Data",
+            "temp": "Parameter",
+            "dataName": "crv_pnt3",
+            "$$hashKey": "object:211",
+            "dataValue": "[[-20,20,0], [10,20,0], [20,20,-1.5], [30,20,0]]"
+        },
+        {
+            "id": 4,
+            "title": "Data",
+            "temp": "Parameter",
+            "dataName": "crv_pnt4",
+            "dataValue": "[[-20,30,0], [10,30,-1.6], [20,30,0], [30,30,0]]",
+            "$$hashKey": "object:937"
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Data",
+            "temp": "Parameter",
+            "dataName": "u",
+            "$$hashKey": "object:441",
+            "dataValue": "10"
+        },
+        {
+            "id": 2,
+            "title": "Data",
+            "temp": "Parameter",
+            "dataName": "v",
+            "$$hashKey": "object:456",
+            "dataValue": "20"
+        },
+        {
+            "id": 3,
+            "title": "Data",
+            "temp": "Parameter",
+            "dataName": "allCurves",
+            "$$hashKey": "object:471",
+            "dataValue": "allCurves"
+        },
+        {
+            "id": 4,
+            "title": "Data",
+            "temp": "Parameter",
+            "dataName": "mat_type",
+            "dataValue": "\"MeshNormalMaterial\"",
+            "$$hashKey": "object:578"
+        },
+        {
+            "id": 5,
+            "title": "Data",
+            "temp": "Parameter",
+            "dataName": "opts",
+            "dataValue": "{ side: THREE.DoubleSide, wireframe: true, shading: THREE.SmoothShading, transparent: false, color: 0xffffff}",
+            "$$hashKey": "object:590"
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Data",
+            "temp": "Parameter",
+            "dataName": "mesh",
+            "dataValue": "mesh",
+            "$$hashKey": "object:567"
+        },
+        {
+            "id": 2,
+            "title": "Data",
+            "temp": "Parameter",
+            "dataName": "transparent",
+            "dataValue": "false",
+            "$$hashKey": "object:906"
+        },
+        {
+            "id": 3,
+            "title": "Data",
+            "temp": "Parameter",
+            "dataName": "tubes",
+            "dataValue": "[]",
+            "$$hashKey": "object:696"
+        },
+        {
+            "id": 4,
+            "title": "Data",
+            "temp": "Parameter",
+            "dataName": "material_type",
+            "dataValue": "\"MeshLambertMaterial\"",
+            "$$hashKey": "object:342"
+        },
+        {
+            "id": 5,
+            "title": "Data",
+            "temp": "Parameter",
+            "dataName": "options",
+            "dataValue": "{ side: THREE.DoubleSide, wireframe: false, shading: THREE.SmoothShading, transparent: false, color: 0xffffff}",
+            "$$hashKey": "object:360"
+        }
+    ]
+]
