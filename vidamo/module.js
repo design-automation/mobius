@@ -230,58 +230,13 @@ var VIDAMO = ( function (mod){
 	 * Take input as primitives or Mesh, give output as Mesh
 	 */
 	
-	//
-	// Trial function to simplify geometry
-	//
-	mod.simplifyGeometry = function(mesh, lod){
-		
-		var ori_geometry = mesh.geometry; //console.log( "original", mesh.geometry.faces.length );
-		var modifier = new THREE.SubdivisionModifier(0);
-		var smooth = ori_geometry.clone();
-		smooth.mergeVertices();
-		modifier.modify(smooth);
-		var simplify = new THREE.SimplifyModifier(400);
-		sortedGeometry=simplify.modify(smooth);
-		
-		// changing LOD
-		var map=sortedGeometry.map;
-		var permutations=sortedGeometry.sortedGeometry;
-		var sortedVertices=sortedGeometry.vertices;
-		var t=sortedVertices.length-1;
-		t=t*(lod)|0;   //change LOD here - from 0 to 1
-		var numFaces=0;
-		var face;
-		var geometry=smooth;
-		for(i=0;i<geometry.faces.length;i++){
-			face=geometry.faces[i];
-			var oldFace=sortedGeometry.faces[i];
-			face.a=oldFace.a;
-			face.b=oldFace.b;
-			face.c=oldFace.c;
-			while(face.a>t)
-				face.a=map[face.a];
-			while(face.b>t)
-				face.b=map[face.b];
-			while(face.c>t)
-				face.c=map[face.c];
-			if(face.a!==face.b&&face.b!==face.c&&face.c!==face.a)
-				numFaces++;
-			}
-		simplifiedFaces=numFaces;
-		simplifiedVertices=t;
-		geometry.computeFaceNormals(); console.log( "original", geometry.vertices.length );
-		geometry.verticesNeedUpdate=true;
-		geometry.normalsNeedUpdate=true;	
-		
-		return new THREE.Mesh(geometry, mesh.material);
-	}
-	
 	mod.makeBox = function(length, breadth, height){
-		return new THREE.Mesh( new THREE.BoxGeometry( length, breadth, height ), default_material_meshFromThree ) ;
+		//return new THREE.Mesh( new THREE.BoxGeometry( length, breadth, height ), default_material_meshFromThree ) ;
+		return TOPOLOGY.createFromGeometry( new THREE.BoxGeometry( length, breadth, height ) );
 	}
 	
 	mod.makeSphere = function(radius){
-		return new THREE.Mesh( new THREE.SphereGeometry( radius , 32, 32), default_material_meshFromThree ) ; // gives call stack exceeded error with segments > 80x80
+		return TOPOLOGY.createFromGeometry( new THREE.SphereGeometry( radius , 32, 32) );
 	}	
 
 	/** TODO: Merge the translation functions below into 1 **/
@@ -291,7 +246,8 @@ var VIDAMO = ( function (mod){
 			geom1 = new THREE.Mesh( geom  );
 		}
 		var clone = new THREE.Mesh( geom1.geometry, geom1.material );
-		return clone.translateX( translation_value )
+		//return clone.translateX( translation_value )
+		return TOPOLOGY.createFromGeometry( clone.translateX( translation_value ).geometry )
 	}
 
 	mod.translateY = function(geom1, translation_value){
@@ -301,7 +257,8 @@ var VIDAMO = ( function (mod){
 			geom1 = new THREE.Mesh( geom );
 		}
 		var clone = new THREE.Mesh( geom1.geometry, geom1.material );  //if you clone it - the original will remain when you put both statements in the same node - again, the function on particular object load
-		return clone.translateY( translation_value )
+		//return clone.translateY( translation_value )
+		return TOPOLOGY.createFromGeometry( clone.translateY( translation_value ).geometry )
 	} 
 
 	mod.translateZ = function(geom1, translation_value){
@@ -310,18 +267,21 @@ var VIDAMO = ( function (mod){
 			geom1 = new THREE.Mesh( geom );
 		}
 		var clone = new THREE.Mesh( geom1.geometry, geom1.material );
-		return clone.translateZ( translation_value )
+		//return clone.translateZ( translation_value )
+		return TOPOLOGY.createFromGeometry( clone.translateZ( translation_value ).geometry )
 	}
 
 	//
 	//	takes a mesh - creates a new mesh from the reference geometry, reference material and coordinates given
 	//
 	mod.makeCopy = function(geom, transX, transY, transZ){
-		var newCopy = new THREE.Mesh( geom.geometry, geom.material);
+		// needs to be optimized
+		var newCopy = new THREE.Mesh( geom.convertToGeometry() );   // this interconversion takes a very long time
 		newCopy.translateX(transX);
 		newCopy.translateY(transY);
 		newCopy.translateZ(transZ);
-		return newCopy;
+		//return newCopy;
+		return TOPOLOGY.createFromGeometry( newCopy.geometry )
 	}
 	
 	//
@@ -346,121 +306,42 @@ var VIDAMO = ( function (mod){
 	 * Take input as Mesh or BSP, give output as Mesh
 	 */
 	mod.booleanOperation = function(geom1, geom2, operation, bsp){
-
 		//operation should be a string - "union", "subtract", "intersect"
 		// TODO : returns BSP is only for testing purpose - fix this to return error whenever it doesn't return required values
-		if(geom1 instanceof THREE.Mesh)
-			geom1 = new ThreeBSP( geom1 ); 
-		if(geom2 instanceof THREE.Mesh)
-				geom2 = new ThreeBSP ( geom2 );
+		var a = new ThreeBSP( new THREE.Mesh( geom1.convertToGeometry() ) );
+		var b = new ThreeBSP( new THREE.Mesh( geom2.convertToGeometry() ) );
 		
 		var result; 
 		
-		if(geom2.constructor !== Array){ 
-			result = geom1[operation]( geom2 );
-		} /*else {
-			    // doesn't work with arrays - need to correct
-				for(var index = 1; index <= geom2.length; index++){
-					result = result[operation]( new ThreeBSP( geom2[index]) );
-				} 
-		}*/
+		if(a.constructor !== Array){ 
+			result = a[operation]( b );
+		}
 		
 		if(!bsp){
 			mesh_geom = result.toMesh( default_material_meshFromThree );
 			mesh_geom.geometry.computeVertexNormals(); 
 			console.log("returned non bsp")
-			return mesh_geom; 
+			// converting mesh to Topology
+			return new TOPOLOGY.createFromGeometry( mesh_geom.geometry )
 		}else{
 			console.log("returned bsp")
 			return result;
 		}
 	};
-	
-	// interconversion between verbs and three.js Surface
-	mod.convertVerbsToThree = function( vSurface , directMethod ){ 
-		
-		if(!directMethod){	
-			var surfaceData = vSurface.asNurbs();
-			var controlPoints = surfaceData.controlPoints;
-			
-			for(var controlPnt = 0; controlPnt < controlPoints.length; controlPnt++) { 
-				for(var coordArr=0; coordArr < controlPoints[controlPnt].length; coordArr++){
-					var points = controlPoints[controlPnt][coordArr];
-					controlPoints[controlPnt][coordArr] = new THREE.Vector4 ( points[0], points[1], points[2], points[3] ) // could be Vector2, 3 or 4 - correct later
-				}
-			} 
-			
-			var nurbsSurface = new THREE.NURBSSurface(surfaceData.degreeU, surfaceData.degreeV, surfaceData.knotsU, surfaceData.knotsV, controlPoints); 
-			
-			getSurfacePoint = function(u, v) {
-						return nurbsSurface.getPoint(u, v);
-					};
-
-			var geometry = new THREE.ParametricGeometry( getSurfacePoint, 60, 60 );  //only retains vertices - all the NURBS related data is lost : 60 represents smoothness of the model
-			geometry.originalNurbsSurface = nurbsSurface; 
-			
-			return new THREE.Mesh( geometry, default_material_meshFromThree);
-	    }else{
-			var mesh = new THREE.Mesh( vSurface.toThreeGeometry(), default_material_meshFromVerbs);
-			mesh.geometry.dynamic = true
-			mesh.geometry.__dirtyVertices = true;
-			mesh.geometry.__dirtyNormals = true;
-
-			mesh.flipSided = true;
-
-			//flip every vertex normal in mesh by multiplying normal by -1
-			for(var i = 0; i<mesh.geometry.faces.length; i++) {
-				mesh.geometry.faces[i].normal.x = -1*mesh.geometry.faces[i].normal.x;
-				mesh.geometry.faces[i].normal.y = -1*mesh.geometry.faces[i].normal.y;
-				mesh.geometry.faces[i].normal.z = -1*mesh.geometry.faces[i].normal.z;
-			}
-
-			mesh.geometry.computeVertexNormals();
-			mesh.geometry.computeFaceNormals();
-			return mesh  // Works well with simple geometry - the method above as well as this - however works badly for complex geometry
-		}		
-	};
-	
-	mod.convertThreeToVerbs = function( threeNurbsSurface ){
-
-	if (threeNurbsSurface instanceof THREE.Mesh)
-		threeNurbsSurface = threeNurbsSurface.geometry.originalNurbsSurface;
-	
-	var controlPoints = threeNurbsSurface.controlPoints; 
-	var weights = [];
-		
-		for(var controlPnt = 0; controlPnt < controlPoints.length; controlPnt++) { 
-			for(var coordArr=0; coordArr < controlPoints[controlPnt].length; coordArr++){
-				var points = controlPoints[controlPnt][coordArr];
-				controlPoints[controlPnt][coordArr] = [points[0], points[1], points[2], points[3]]
-				weights.push(1);
-			}
-		} 
-		
-		var verbGeom = new verb.geom.NurbsSurface.byKnotsControlPointsWeights( threeNurbsSurface.degree1, threeNurbsSurface.degree2, threeNurbsSurface.knots1, threeNurbsSurface.knots2, controlPoints ); // what happens to weights??
-		//console.log(verbGeom);
-		return verbGeom;
-	};
-
 	 
     // convert all objects to types recognized by Vidamo - tables, text, numbers, three.js mesh
     mod.dataConversion = function(data){
 		
 		//internal function - without 'mod' to segregate data 
 		conversionByDataType = function(singleDataObject){
-			
 			// first if case to return primitives that VIDAMO recognizes
+			if( singleDataObject instanceof TOPOLOGY.Topology){ 
+				// convert to Mesh
+				return new THREE.Mesh( singleDataObject.convertToGeometry(), singleDataObject.material || default_material_meshFromThree)
+			} /*
 			if( singleDataObject instanceof THREE.Mesh ){
 				return singleDataObject
-			}/*
-			else if( singleDataObject instanceof THREE.Geometry){
-				return ( new THREE.Mesh( singleDataObject, singleDataObject.material) )
-			}
-			else if( singleDataObject instanceof ThreeBSP){   //will hardly ever be the case - remove later - only for testing purposes
-				var result = singleDataObject.toMesh( default_material_mesh ); console.log("here")
-				result.geometry.computeVertexNormals();
-				return result;
-			}*/
+			} */
 			else if( singleDataObject instanceof verb.geom.NurbsSurface ){
 				var geometry = singleDataObject.toThreeGeometry(); 
 				if ( singleDataObject.material )
@@ -476,7 +357,7 @@ var VIDAMO = ( function (mod){
 					return ( new THREE.Line( geometry, default_material_lineFromVerbs ) );
 			}
 			else if (singleDataObject instanceof verb.geom.Intersect){
-				console.log("Interection!");
+				console.log("Intersection!");
 			}
 			else {
 				console.log("Module doesnt recognise either!", singleDataObject);	
