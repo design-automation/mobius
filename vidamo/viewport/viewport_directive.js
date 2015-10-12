@@ -146,28 +146,37 @@ vidamo.directive('viewport', function factory() {
             //
             // supporting function for geometry from verb to three.js
             //
-
-            scope.internalControl.addGeometryToScene = function(geom,value){
-
-                if(geom.constructor === Array){
-                    for(var i = 0; i< geom.length ;i++){
-                        if(geom[i] instanceof verb.geom.NurbsSurface){
-                            scope.internalControl.addMeshToScene(value[i]);
-                        }
-                        else if(geom[i] instanceof verb.geom.NurbsCurve){
-                            scope.internalControl.addCurveToScene(value[i]);
-                        }
-                    }
-                } else {
-                    if(geom instanceof verb.geom.NurbsSurface){
-                        scope.internalControl.addMeshToScene(value);
-                    }
-                    else if(geom instanceof verb.geom.NurbsCurve){
-                        scope.internalControl.addCurveToScene(value);
-                    }
-                }
+            scope.internalControl.addGeometryToScene = function(geom,value){ 
+				if(geom.constructor === Array){
+					for(var i = 0; i< geom.length ;i++){
+						scope.internalControl.displayObject(value[i]);
+					}
+				} else {
+						scope.internalControl.displayObject(value)
+				}
+            };
+			
+			//
+			// takes in single data object and categorizes and displays accordingly
+			//
+			scope.internalControl.displayObject = function(singleDataObject){
+				if(singleDataObject instanceof THREE.Mesh || singleDataObject instanceof THREE.Line)
+					scene.add(singleDataObject)
+				else if(singleDataObject instanceof Number)
+					console.log(singleDataObject)
+				else
+					console.log("Vidamo doesn't recognise this type!")
+			};
+			
+			scope.internalControl.benchmark = function(func, runs){
+                var d1 = Date.now();
+                for (var i = 0 ; i < runs; i++)
+                    res = func();
+                var d2 = Date.now();
+                return { result : res, elapsed : d2-d1, each : (d2-d1)/runs };
             };
 
+			/* TODO - Work out if all THREE Geometry objects that can directly be added to scene are covered - especially points
             scope.internalControl.addCurveToScene = function(geom, material){
                 material = material || new THREE.LineBasicMaterial({ linewidth: 100, color: 0x000000});
                 scene.add( new THREE.Line( geom, material ) );
@@ -177,17 +186,6 @@ vidamo.directive('viewport', function factory() {
                 addCurveToScene(asGeometry(asVector3(pts)), mat);
             };
 
-            scope.internalControl.addMeshToScene =  function(mesh, material, wireframe ){
-                material =  new THREE.MeshLambertMaterial( { side: THREE.DoubleSide, wireframe: false, shading: THREE.SmoothShading, transparent: false, color: 0xffffff} )
-
-                scene.add( new THREE.Mesh( mesh, material ) );
-
-                if (wireframe){
-                    var material2 = new THREE.MeshBasicMaterial( { color: 0x000000, side: THREE.DoubleSide, wireframe: true } );
-                    var mesh2 = new THREE.Mesh( mesh, material2 );
-                    scene.add( mesh2 );
-                }
-            };
 
             scope.internalControl.asVector3 = function(pts){
                 return pts.map(function(x){
@@ -201,14 +199,6 @@ vidamo.directive('viewport', function factory() {
                 return geometry;
             };
 
-            scope.internalControl.benchmark = function(func, runs){
-                var d1 = Date.now();
-                for (var i = 0 ; i < runs; i++)
-                    res = func();
-                var d2 = Date.now();
-                return { result : res, elapsed : d2-d1, each : (d2-d1)/runs };
-            };
-
             scope.internalControl.pointsAsGeometry = function(pts){
                 return asGeometry( asVector3(pts) )
             };
@@ -220,7 +210,7 @@ vidamo.directive('viewport', function factory() {
                 var cloud2 = new THREE.PointCloud( geom, cloudMat2 );
 
                 scene.add( cloud2 );
-            }
+            } */
 
         }
     }
