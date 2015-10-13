@@ -27,7 +27,7 @@ vidamo.directive('viewport', function factory() {
             var VIEWPORT_WIDTH = container.offsetWidth;
             var VIEWPORT_HEIGHT = container.offsetHeight;
 
-            var scene,
+            var //scene,
                 camera,
                 renderer,
                 controls;
@@ -159,7 +159,7 @@ vidamo.directive('viewport', function factory() {
 			//
 			// takes in single data object and categorizes and displays accordingly
 			//
-			scope.internalControl.displayObject = function(singleDataObject){
+			scope.internalControl.displayObject = function(singleDataObject){ 
 				if(singleDataObject instanceof THREE.Mesh || singleDataObject instanceof THREE.Line)
 					scene.add(singleDataObject)
 				else if(singleDataObject instanceof Number)
