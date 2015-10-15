@@ -25,83 +25,144 @@ var VIDAMO = ( function (mod){
 	 */
 	 
 	//
-	// makes a NURBS Curves of different shapes
+	// Input: Number Array 
+	// Output: MobiusDataObject with NURBS geometry
 	//
     mod.makeLine = function(start, end){
         return new MobiusDataObject( new verb.geom.Line(start, end) );
     };
 	
+	//
+	// Input: Numeric and Numeric Array Input
+	// Output: MobiusDataObject with NURBS geometry 
+	//
 	mod.makeArc = function(center,xaxis,yaxis,radius,minAngle,maxAngle){
 		return new MobiusDataObject( new verb.geom.Arc(center,xaxis,yaxis,radius,minAngle,maxAngle) );
 	};
-	
+
+	//
+	// Input: Numeric and Numeric Array Input
+	// Output: MobiusDataObject with NURBS geometry 
+	//	
 	mod.makeBezierCurve = function(points, weights){
 		return new MobiusDataObject( new verb.geom.BezierCurve(points, weights) );
 	};
-	
+
+	//
+	// Input: Numeric and Numeric Array Input
+	// Output: MobiusDataObject with NURBS geometry 
+	//		
 	mod.makeCircle = function(center,xaxis,yaxis,radius){
 		return new MobiusDataObject( new verb.geom.Circle(center,xaxis,yaxis,radius) );
 	};
 	
+	//
+	// Input: Numeric and Numeric Array Input
+	// Output: MobiusDataObject with NURBS geometry 
+	//		
 	mod.makeEllipse = function ( center,xaxis,yaxis ){
 		return new MobiusDataObject( new verb.geom.Ellipse( center,xaxis,yaxis ) );
 	};
 	
+	//
+	// Input: Numeric and Numeric Array Input
+	// Output: MobiusDataObject with NURBS geometry 
+	//	
 	mod.makeEllipseArc = function ( center,xaxis,yaxis,minAngle,maxAngle ){
 		return new MobiusDataObject( new verb.geom.EllipseArc( center,xaxis,yaxis,minAngle,maxAngle ) );
 	};
 
+	//
+	// Input: Numeric and Numeric Array Input
+	// Output: MobiusDataObject with NURBS geometry 
+	//	
     mod.makeCurve = function(points){
         return new MobiusDataObject( new verb.geom.NurbsCurve.byPoints( points ) );
     };
-	
+
+	//
+	// Input: Numeric and Numeric Array Input
+	// Output: MobiusDataObject with NURBS geometry 
+	//		
 	mod.makeCurveByKnotsControlPointsWeights = function ( degree,knots,controlPoints,weights ){
 		return new MobiusDataObject( new verb.geom.NurbsCurve.byKnotsControlPointsWeights( degree,knots,controlPoints,weights ) );
 	};
 
 	//
-	// makes a NURBS Surfaces by different methods
-	//
+	// Input: Numeric and Numeric Array Input
+	// Output: MobiusDataObject with NURBS geometry 
+	//	
 	mod.makeSurfaceByKnotsControlPointsWeights = function ( degreeU,degreeV,knotsU,knotsV,controlPoints,weights ){
 		return new MobiusDataObject( new verb.geom.NurbsSurface.byKnotsControlPointsWeights( degreeU,degreeV,knotsU,knotsV,controlPoints,weights ) );
 	};
-	
+
+	//
+	// Input: Numeric and Numeric Array Input
+	// Output: MobiusDataObject with NURBS geometry 
+	//		
 	mod.makeSurfaceByCorners = function ( point0,point1,point2,point3 ){
 		return new MobiusDataObject( new verb.geom.NurbsSurface.byCorners ( point0,point1,point2,point3 ) );
 	};
-	
-	mod.makeSurfaceByRevolution = function ( mbObj, centre, axis, angle ){
-		var profile = mbObj.geometry;
+
+	//
+	// Input: MobiusDataObject, Numeric Input
+	// Output: MobiusDataObject with NURBS geometry 
+	//		
+	mod.makeSurfaceByRevolution = function ( mObj, centre, axis, angle ){
+		var profile = mObj.geometry;
 		return new MobiusDataObject( new verb.geom.RevolvedSurface( profile, centre, axis, angle )  );
 	};
-	
-	mod.makeSurfaceBySweep = function ( mbObjProfile, mbObjRail){
-		var profile = mbObjProfile.geometry; 
-		var rail = mbObjRail.geometry;
+
+	//
+	// Input: MobiusDataObjects with NURBS geometry
+	// Output: MobiusDataObject with NURBS geometry 
+	//			
+	mod.makeSurfaceBySweep = function ( mObjProfile, mbObjRail){
+		var profile = mObjProfile.geometry; 
+		var rail = mObjRail.geometry;
 		return new MobiusDataObject( new verb.geom.SweptSurface ( profile, rail ) );
 	};
-	
+
+	//
+	// Input: Array of MobiusDataObjects with NURBS geometry
+	// Output: MobiusDataObject with NURBS geometry 
+	//	
     mod.makeSurfaceByLoft = function(arrOfCurves){
 		var curves = []; 
 		for(var c=0; c<arrOfCurves.length; c++)
 			curves.push(arrOfCurves[c].geometry);	
 		return new MobiusDataObject( new verb.geom.NurbsSurface.byLoftingCurves( curves, 3 ) );
     };
-	
-	mod.makeSurfaceByExtrusion = function ( mbObjProfile, mbObjDirection){
-		var profile = mbObjProfile.geometry;
-		var direction = mbObjDirection.geometry;
+
+	//
+	// Input: MobiusDataObjects with NURBS geometry, direction Numeric Array
+	// Output: MobiusDataObject with NURBS geometry 
+	//		
+	mod.makeSurfaceByExtrusion = function ( mObjProfile, direction){
+		var profile = mObjProfile.geometry; 
 		return new MobiusDataObject( new verb.geom.ExtrudedSurface( profile, direction ) ); 
 	};
-	
+
+	//
+	// Input: Numeric
+	// Output: MobiusDataObject with NURBS geometry 
+	//		
 	mod.makeSurfaceAsSphere = function(centre, radius){
 		return new MobiusDataObject( new verb.geom.SphericalSurface(centre, radius) ); 
 	};
-	
+
+	//
+	// Input: Numeric
+	// Output: MobiusDataObject with NURBS geometry 
+	//		
 	mod.makeSurfaceAsCone = function( axis,xaxis,base,height,radius ){
 		return new MobiusDataObject( new verb.geom.ConicalSurface( axis,xaxis,base,height,radius ) ); 
 	};
-	
+
+	//
+	// Input: Numeric
+	// Output: MobiusDataObject with NURBS geometry 
+	//		
 	mod.makeSurfaceAsCylinder = function ( axis, xaxis, base, height, radius ){
 		return new MobiusDataObject( new verb.geom.CylindricalSurface( axis,xaxis,base,height,radius ) ); 
 	};	
@@ -111,11 +172,12 @@ var VIDAMO = ( function (mod){
 	//
 	
 	//
-	// takes a Mobius Object with NURBS geoemtry and outputs and array of mobius objects with NURBS Surface geometry (polysurface)
-	//
-    mod.makeMeshBySubdivision = function( mobiusObject, ugrid, vgrid ){
+	// Input: MobiusDataObject with NURBS geoemtry, numeric values
+	// Output: Array of MobiusDataObject with NURBS geometry (four point surface)
+	//	
+    mod.makeMeshBySubdivision = function( mObj, ugrid, vgrid ){
 		
-		var surface = mobiusObject.geometry;
+		var surface = mObj.geometry;
         
 		var div_surfaces = [], gridPoints = [];
         var uincr = 1/ugrid;
@@ -140,11 +202,12 @@ var VIDAMO = ( function (mod){
     };
 	
 	//
-	//	takes a Mobius Object with NURBS Line geometry and returns a Mobius object with NURBS surface geoemtry - better to make something that follows a NURBS curve path too - more generalised? 
+	// Input: MobiusDataObject with NURBS geoemtry (line)
+	// Output: MobiusDataObject with NURBS geometry (cylinderical surface)
 	//
-    mod.makeTubeByLine = function( mbObject ){
+    mod.makeTubeByLine = function( mObj ){
 		
-		var line = mbObject.geometry;
+		var line = mObj.geometry;
 		
         var start = line.start();
         var end = line.end();
@@ -181,11 +244,12 @@ var VIDAMO = ( function (mod){
     };
 	
 	//
-	// takes in a NURBS Surface and gets the extreme points - polygon is a NURBS Four Point Surface
+	// Input: MobiusDataObject with NURBS geoemtry (surface)
+	// Output: Numeric Array of Points
 	//
-    mod.getPointsFromPolygon = function( mbObject ){
+    mod.getPointsFromPolygon = function( mObj ){
 		
-		var polygon = mbObject.geometry;
+		var polygon = mObj.geometry;
         
 		return [
                 polygon.point(0,0),
@@ -194,27 +258,47 @@ var VIDAMO = ( function (mod){
                 polygon.point(0,1)]
     };
 	
-	/* to be generalised 
-	mod.intersectCurveAndSurface = function ( curve, surface, tolerance, Async ){
+	//
+	// Input: MobiusDataObjects with NURBS geoemtry (curve & surface)
+	// Output: ??
+	//
+	mod.intersectCurveAndSurface = function ( mObjCurve, mObjSurface, tolerance, Async ){
+		var curve = mObjCurve.geometry;
+		var surface = mObjSurface.geometry;
+		
 		if(Async)
 			return new verb.geom.Intersect.curveAndSurfaceAsync( curve, surface, tolerance );
 		else
 			return new verb.geom.Intersect.curveAndSurface( curve, surface, tolerance );
-	}
-	
-	mod.intersectCurves = function (curve, curve, tolerance, Async){
+	};
+
+	//
+	// Input: MobiusDataObjects with NURBS geoemtry (curve & curve)
+	// Output: ??
+	//	
+	mod.intersectCurves = function (mObjCurve1, mObjCurve2, tolerance, Async){
+		var curve1 = mObjCurve1.geometry;
+		var curve2 = mObjCurve2.geometry;
+		
 		if(Async)
-			return new verb.geom.Intersect.curvesAsync( curve, curve, tolerance );
+			return new verb.geom.Intersect.curvesAsync( curve1, curve2, tolerance );
 		else
-			return new verb.geom.Intersect.curves( curve, curve, tolerance );
-	}
-	
-	mod.intersectCurves = function (surface, surface, tolerance, Async){
+			return new verb.geom.Intersect.curves( curve1, curve2, tolerance );
+	};
+
+	//
+	// Input: MobiusDataObjects with NURBS geoemtry (surface & surface)
+	// Output: ??
+	//	
+	mod.intersectCurves = function (mObjSurface1, mObjSurface2, tolerance, Async){
+		var surface1 = mObjSurface1.geometry;
+		var surface2 = mObjSurface2.geometry;
+		
 		if(Async)
-			return new verb.geom.Intersect.surfacesAsync( surface, surface, tolerance );
+			return new verb.geom.Intersect.surfacesAsync( surface1, surface2, tolerance );
 		else
-			return new verb.geom.Intersect.surfaces( surface, surface, tolerance );
-	} */
+			return new verb.geom.Intersect.surfaces( surface1, surface2, tolerance );
+	};
 
 	
 	/* 
@@ -222,7 +306,8 @@ var VIDAMO = ( function (mod){
 	 */
 	 
 	//
-	// makes a sequence from start value, end value and stepsize - returns a numeric array
+	// Input: Numeric
+	// Output: Number Array
 	//
 	mod.makeSequence = function(start, end, stepSize){
 		var arr = [];
@@ -232,97 +317,74 @@ var VIDAMO = ( function (mod){
 	};	
 	
 	//
-	// Adds a single new object to array
+	// Input: Array, Object
+	// Output: Modified Array
 	// 
 	mod.addToArray = function(originalArr, newObj){
 		return originalArr.push(newObj)
 	};
 	
 	/* 
-	 * ThreeCSG Functions, Akshata
-	 * Take input as primitives or Mesh, give output as Mesh
+	 * ThreeCSG Functions
 	 */
-	
+
+	//
+	// Input: Numeric Input
+	// Output: MobiusDataObject with Three.js geometry
+	// 	 
 	mod.makeBox = function(length, breadth, height){
-		//return new THREE.Mesh( new THREE.BoxGeometry( length, breadth, height ), default_material_meshFromThree ) ;
-		return MobiusDataObject ( new THREE.BoxGeometry( length, breadth, height ) ) ;
+		return new MobiusDataObject ( new THREE.BoxGeometry( length, breadth, height ) ) ;
 	};
-	
+
+	//
+	// Input: Numeric Input
+	// Output: MobiusDataObject with Three.js geometry
+	//	
 	mod.makeSphere = function(radius){
-		return MobiusDataObject ( new THREE.SphereGeometry( radius , 32, 32) ) ;
+		return new MobiusDataObject ( new THREE.SphereGeometry( radius , 32, 32) ) ;
 	};	
 
-	/** TODO: Merge the translation functions below into 1 **/
-	mod.translateX = function(geom1, translation_value){
-		// if three.js geometry, convert to mesh
-		if(geom1 instanceof THREE.Geometry){
-			geom1 = new THREE.Mesh( geom  );
-		}
-		var clone = new THREE.Mesh( geom1.geometry, geom1.material );
-		//return clone.translateX( translation_value )
-		return TOPOLOGY.createFromGeometry( clone.translateX( translation_value ).geometry )
-	};
-
-	mod.translateY = function(geom1, translation_value){
-		// discuss and check other software if remove original option is to be given - copy function removed?
-		// if three.js geometry, convert to mesh
-		if(geom1 instanceof THREE.Geometry){
-			geom1 = new THREE.Mesh( geom );
-		}
-		var clone = new THREE.Mesh( geom1.geometry, geom1.material );  //if you clone it - the original will remain when you put both statements in the same node - again, the function on particular object load
-		//return clone.translateY( translation_value )
-		return TOPOLOGY.createFromGeometry( clone.translateY( translation_value ).geometry )
-	};
-	
-	mod.translateZ = function(geom1, translation_value){
-		// if three.js geometry, convert to mesh
-		if(geom1 instanceof THREE.Geometry){
-			geom1 = new THREE.Mesh( geom );
-		}
-		var clone = new THREE.Mesh( geom1.geometry, geom1.material );
-		//return clone.translateZ( translation_value )
-		return TOPOLOGY.createFromGeometry( clone.translateZ( translation_value ).geometry )
-	};
-
 	//
-	//	takes a mesh - creates a new mesh from the reference geometry, reference material and coordinates given
+	// Input: MobiusDataObject (with any kind of geometry), numeric input
+	// Output: MobiusDataObject with Three.js geometry
 	//
-	mod.makeCopy = function(geom, transX, transY, transZ){
+	mod.makeCopy = function(mObj, transX, transY, transZ){
 		// needs to be optimized
-		var newCopy = new THREE.Mesh( geom.convertToGeometry() );   // this interconversion takes a very long time
+		
+		var newCopy = new THREE.Mesh( mObj.extractGeometry().geometry );   // this interconversion takes a very long time
 		newCopy.translateX(transX);
 		newCopy.translateY(transY);
 		newCopy.translateZ(transZ);
-		//return newCopy;
-		return TOPOLOGY.createFromGeometry( newCopy.geometry )
+		//return newCopy; 
+		return new MobiusDataObject( newCopy ); //needs to be sorted out
 	};
 	
 	//
-	//	creates a THREE Material from user input - applies it to the object in the .material property - returns the object; [irrespective of any input]
+	// Input: Single or Array of MobiusDataObject (with any kind of geometry), numeric input
+	// Output: MobiusDataObject with Three.js geometry
 	//
-	mod.addMaterial = function(object, material_type, options){
+	mod.addMaterial = function(obj, material_type, options){
 
 		var material = new THREE[material_type](options);
 		
-		//check if array of objects
-		if(object.constructor === Array){
-			for(var i=0; i<object.length; i++)
-				object[i].material = material
+		if(obj.constructor === Array){
+			for(var i=0; i<obj.length; i++)
+				obj[i].material = material;
 		}else
-			object.material = material;
-
-		return object;
+			obj.material = material; 
+			
+		return obj;
 	};
 	
-	/* 
-     * ThreeCSG Functions, Akshata
-	 * Take input as Mesh or BSP, give output as Mesh
-	 */
-	mod.booleanOperation = function(geom1, geom2, operation, bsp){
+	//
+	// Input: MobiusDataObject (with any kind of geometry), numeric input
+	// Output: MobiusDataObject with Three.js geometry
+	//
+	mod.booleanOperation = function( mObj1, mObj2, operation ){ 
 		//operation should be a string - "union", "subtract", "intersect"
 		// TODO : returns BSP is only for testing purpose - fix this to return error whenever it doesn't return required values
-		var a = new ThreeBSP( new THREE.Mesh( geom1.convertToGeometry() ) );
-		var b = new ThreeBSP( new THREE.Mesh( geom2.convertToGeometry() ) );
+		var a = new ThreeBSP( mObj1.extractGeometry() );
+		var b = new ThreeBSP( mObj2.extractGeometry() );
 		
 		var result; 
 		
@@ -330,22 +392,14 @@ var VIDAMO = ( function (mod){
 			result = a[operation]( b );
 		}
 		
-		if(!bsp){
-			mesh_geom = result.toMesh( default_material_meshFromThree );
-			mesh_geom.geometry.computeVertexNormals(); 
-			console.log("returned non bsp")
-			// converting mesh to Topology
-			return new TOPOLOGY.createFromGeometry( mesh_geom.geometry )
-		}else{
-			console.log("returned bsp")
-			return result;
-		}
+		return new MobiusDataObject( result );
 	};
 	 
     // convert all objects to types recognized by Vidamo - tables, text, numbers, three.js mesh
 	//
 	// Obsolete function - by implementation of data structure
 	//
+	// TODO - remove this and directly integrate in VIDAMO
     mod.dataConversion = function(data){
 
 		// actual processing

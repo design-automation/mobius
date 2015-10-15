@@ -9,7 +9,8 @@ var default_material_lineFromVerbs = new THREE.LineBasicMaterial({ linewidth: 10
 var MobiusDataObject = function( geometry ){
 	
 	var computeTopology = function( mesh ){
-		
+		if( mesh.geometry.faces > 1000 )
+			return;
 		// conversion of topology
 		if( mesh.constructor != Array )
 			return new TOPOLOGY.createFromGeometry( mesh.geometry );
@@ -30,6 +31,8 @@ var MobiusDataObject = function( geometry ){
 				return singleDataObject
 			else if(singleDataObject instanceof THREE.Geometry)
 				return new THREE.Mesh( singleDataObject, singleDataObject.material )
+			else if(singleDataObject instanceof ThreeBSP)
+				return new THREE.Mesh( singleDataObject.toGeometry(), default_material_meshFromThree );
 			else if( singleDataObject instanceof verb.geom.NurbsSurface ){
 				
 				var geometry = singleDataObject.toThreeGeometry(); 
@@ -59,20 +62,24 @@ var MobiusDataObject = function( geometry ){
 		}
 		
 		if (geom.constructor !== Array) 
-			return convertToThree( geom )
+			return convertToThree( geom ) /*
         else {
 			var convertedGeoms;
             for (var n = 0; n < geom.length; n++) 
 			   convertedGeoms.push( convertToThree( geom[n] ) );
 			return convertedGeoms;
-        }
+        }*/
 	}
 	
 	this.geometry = geometry; 
 
 	var convertedGeometry = convertGeometry ( geometry ); 
 	
-	var topology = computeTopology( convertedGeometry ); 
+	//
+	//	trial run indicates that topology is a BIG problem! - everything works ok without topology computation - good amount of memory management has to be done. 
+	//
+	//var topology = computeTopology( convertedGeometry ); 
+	var topology = { edge:[], face:[], vertex:[] }
 		
 	for (var property in topology) {
 	  if (topology.hasOwnProperty(property)) 
@@ -80,6 +87,8 @@ var MobiusDataObject = function( geometry ){
 	}
 		
 	this.extractGeometry = function(){
+		if(this.material)
+			convertedGeometry.material = this.material;
 		return convertedGeometry;
 	}
 	
