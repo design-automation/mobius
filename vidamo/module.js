@@ -377,6 +377,21 @@ var VIDAMO = ( function (mod){
 	};
 	
 	//
+	//	Input : MobiusObject or Topology Object (Array or Single)
+	//	Output: Modified object with data
+	//
+	mod.addData = function(obj, dataName, dataValue){
+		
+		// decide on topology heirarchy also - if edge gets a property, do the vertices also get the same property?
+		if(obj.constructor === Array){
+			for(var i=0; i<obj.length; i++)
+				obj[i].dataName = dataValue;
+		}else
+			obj.dataName = dataValue;
+		
+	}
+	
+	//
 	// Input: MobiusDataObject (with any kind of geometry), numeric input
 	// Output: MobiusDataObject with Three.js geometry
 	//
@@ -407,11 +422,16 @@ var VIDAMO = ( function (mod){
             for (var m in data[i].value) {
                 var geoms = [];
                 if (data[i].value[m].constructor !== Array) { 
-					data[i].geom.push( data[i].value[m].extractGeometry() );
+					// compute topology if not already calculated of the mbObj
+					
+					//data[i].geom.push( data[i].value[m].extractGeometry() );
+					data[i].geom.push( data[i].value[m].extractTopology() );
                 }
                 else {
                     for (var n = 0; n < data[i].value[m].length; n++) { 		
-						geoms.push( data[i].value[m][n].extractGeometry() );
+						// compute topology if not already calculated of the mbObj
+						//geoms.push( data[i].value[m][n].extractGeometry() );
+						geoms.push( data[i].value[m][n].extractTopology() );
                     }
                 }
                 data[i].geom.push(geoms);
