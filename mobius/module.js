@@ -76,11 +76,7 @@ var VIDAMO = ( function (mod){
 	// Output: MobiusDataObject with NURBS geometry 
 	//	
     mod.makeCurve = function(points){
-<<<<<<< HEAD:vidamo/module.js
         return new MobiusDataObject( new verb.geom.NurbsCurve.byPoints( points ) );
-=======
-        return new verb.geom.NurbsCurve.byPoints( points );
->>>>>>> gh-pages:mobius/module.js
     };
 
 	//
