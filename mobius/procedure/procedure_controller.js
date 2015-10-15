@@ -7,6 +7,8 @@
 vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode','nodeCollection',
     function($scope,$rootScope,$filter,generateCode,nodeCollection) {
 
+        $scope.functionCodeList =[];
+
         // toggle code view
         $scope.codeContent = '';
         $scope.toggleCodeContent = function(content){
@@ -19,19 +21,24 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
         $scope.innerCodeList = generateCode.getInnerCodeList();
         $scope.$watch('innerCodeList', function () {
             generateCode.setInnerCodeList($scope.innerCodeList);
-        });
+            $scope.functionCodeList = generateCode.getFunctionCodeList();
+        },true);
         $scope.$watch(function () { return generateCode.getInnerCodeList(); }, function () {
             $scope.innerCodeList = generateCode.getInnerCodeList();
-        });
+            $scope.functionCodeList = generateCode.getFunctionCodeList();
+        },true);
 
         // outer function code for procedures
         $scope.outerCodeList = generateCode.getOuterCodeList();
         $scope.$watch('outerCodeList', function () {
             generateCode.setOuterCodeList($scope.outerCodeList);
-        });
+            $scope.functionCodeList = generateCode.getFunctionCodeList();
+        },true);
         $scope.$watch(function () { return generateCode.getOuterCodeList(); }, function () {
             $scope.outerCodeList = generateCode.getOuterCodeList();
-        });
+            $scope.functionCodeList = generateCode.getFunctionCodeList();
+        },true);
+
 
         // procedure data list
         $scope.dataList = generateCode.getDataList();
@@ -88,7 +95,6 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
         // listen to the graph, when a node is clicked, update the procedure/ interface tabs
         $rootScope.$on("nodeIndex", function(event, message) {
             if(message+1){
-                console.log(message)
                 $scope.nodeIndex = message;
 
                 $scope.currentNodeName = $scope.chartViewModel.nodes[$scope.nodeIndex].data.name;

@@ -10,6 +10,7 @@ vidamo.controller('graphCtrl',[
                     'prompt',
     function($scope,$timeout,generateCode,nodeCollection,prompt) {
 
+        $scope.functionCodeList = [];
         // synchronization with vidamo application data pool
 
         // generated javascript code

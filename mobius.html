@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html ng-app="vidamo" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Mobius</title>
+    <!-- loading page -->
+    <script  src="assets/js/packages/pace/pace.min.js"></script>
+    <link href="assets/css/pace-theme.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+    <!-- stylesheet -->
+    <link rel="stylesheet" href="assets/css/vidamo-layout.css">
+    <link rel="stylesheet" href="assets/css/ui-layout.css">
+    <link rel="stylesheet" href="assets/css/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="assets/css/ui-tree.css">
+    <link rel="stylesheet" href="assets/css/graph.css">
+    <link rel="stylesheet" href="assets/css/select.css">
+    <link rel="stylesheet" href="assets/css/xeditable.css">
+    <link rel="stylesheet" href="assets/css/hotkeys.css">
+
+</head>
+
+<body>
+<div>
+    <!-- dropdown Menu -->
+    <div ng-controller="menuCtrl">
+        <div class = "menubar">
+                <span dropdown on-toggle="toggled(open)">
+                    <a href dropdown-toggle>  File |</a>
+                    <ul class="dropdown-menu">
+                        <!--todo new: refresh? -->
+                        <li>
+                            <a> Todo:New </a>
+                        </li>
+
+                        <li>
+                            <input type="file" id="openSceneJson" name="files[]"
+                                   style="visibility: hidden; width: 1px; height: 1px" multiple
+                                   onchange="angular.element(this).scope().openSceneJson(this.files)"/>
+                            <a href="" onclick="document.getElementById('openSceneJson').click()">Open Scene</a>
+                        </li>
+
+                        <li id = "sceneJson">
+                            <a ng-href="{{sceneUrl}}" download="scene.json" ng-click = "saveSceneJson()">
+                                Save Scene
+                            </a>
+                        </li>
+                    </ul>
+                </span>
+
+            <!-- todo redo/undo -->
+                <span dropdown on-toggle="toggled(open)">
+                    <a href dropdown-toggle>  Edit |</a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a> Todo:Undo </a>
+                        </li>
+
+                        <li>
+                            <a> Todo:Redo </a>
+                        </li>
+                    </ul>
+                </span>
+
+                <span dropdown on-toggle="toggled(open)" >
+                      <a href dropdown-toggle>  Node |</a>
+                      <ul class="dropdown-menu">
+                          <li>
+                              <input type="file" id="importNode"
+                                     style="visibility: hidden; width: 1px; height: 1px" multiple
+                                     onchange="angular.element(this).scope().importNode(this.files)"/>
+                              <a href="" onclick="document.getElementById('importNode').click()"> Import Node </a>
+                          </li>
+
+                          <li>
+                              <a ng-href="{{nodeUrl}}" download="node.json" ng-click = "exportNode()">
+                                  Export Node
+                              </a>
+                          </li>
+                      </ul>
+                </span>
+
+                <span dropdown on-toggle="toggled(open)" >
+                    <a href dropdown-toggle>  Code |</a>
+                    <ul class="dropdown-menu">
+                        <li id = "downloadJs">
+                            <a ng-href="{{jsUrl}}" download="project.js" ng-click = "downloadJs()">
+                                Export Graph&Nodes
+                            </a>
+                        </li>
+
+                        <li id = "downloadLib">
+                            <a ng-href="{{libUrl}}" download="vidamo.js" ng-click = "downloadLib()">
+                                Export Function Library
+                            </a>
+                        </li>
+
+                        <li>
+                            <a ng-click = "toggleFullCode()">
+                                Show Full Code
+                            </a>
+                        </li>
+                    </ul>
+                </span>
+
+            <!-- todo help -->
+                <span dropdown on-toggle="toggled(open)">
+                    <a href dropdown-toggle>  Help </a>
+
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a> Todo:Help </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/phtj/vidamo" target="_blank"> Github Repo </a>
+                        </li>
+                        <li>
+                            <a href ng-click=" toggleCheatSheet();"> Hotkeys </a>
+                        </li>
+                    </ul>
+                </span>
+
+        </div>
+    </div>
+
+    <!-- resizable layout -->
+    <div ui-layout>
+        <div ng-controller="layoutCtrl">
+            <div class="layout-area" ui-layout="{flow : 'column'}" ng-controller="procedureCtrl">
+
+                <!-- 3D view area  -->
+                <div class=" view-area" ui-layout-container size={{viewportWidth}}>
+                    <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
+                        <!-- threejs editor view port -->
+                        <div ui-layout-container size = "85%" >
+
+                            <div ng-controller="viewportCtrl">
+                                <viewport control="viewportControl" id="threeViewport">
+                                </viewport>
+
+                                <div ng-if="toggleFullCode">
+                                    <div style="height: 100%;width: 100%;top:0;left:0;position: absolute;opacity: 0.75"
+                                        ui-ace="{ mode: 'javascript',theme: 'tomorrow'}"
+                                        ng-model="javascriptCode"
+                                        readonly="{{true}}"
+                                        ng-controller="graphCtrl">
+                                    </div>
+
+                                    <div class="pull-right btn btn-xs"
+                                       style="top:5px; right:20px;position: absolute"
+                                       ng-click="closeFullCode()">
+                                        <span style="font-weight: 400; font-size: 25px;line-height:1;z-index: 99999999;color:#000">
+                                            &times;
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--<div ng-controller="graphCtrl">-->
+                            <!--<textarea-->
+                            <!--style="width: 100%; height: 100%;-->
+                            <!--padding-top: 8px;-->
+                            <!--padding-left: 8px;-->
+                            <!--padding-right: 8px;-->
+                            <!--padding-bottom: 20px;-->
+                            <!--font-size: 12px;-->
+                            <!--overflow: auto;-->
+                            <!--position: absolute;"-->
+                            <!--chart-json-edit-->
+                            <!--view-model="chartViewModel">-->
+                            <!--</textarea>-->
+                            <!--</div>-->
+                        </div>
+
+                        <div ui-layout-container size = "15%" class="monitor">
+                            <div>
+                                <div class = "info-title" ng-controller="consoleCtrl">
+                                    Console:
+                                    <a id = "clear" ng-click="clearConsole()"> Clear </a>
+                                </div>
+                                <div class="console" id = 'log'>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- procedure area -->
+                <ng-include  ng-if="displayProcedure"
+                             ui-layout-container
+                             size={{procedureWidth}}
+                             src = "procedureHTML.url">
+                </ng-include>
+
+                <!-- graph area -->
+                <div class="graph-area" ui-layout-container  size={{graphWidth}}>
+                    <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
+                        <div ui-layout-container size = "25%">
+
+                            <div ng-controller="procedureCtrl">
+                                <div ng-if = "currentNodeName">
+                                    <pre class="nodeName" style="padding: 4px">
+                                        &nbsp &nbsp {{currentNodeType}} &nbsp : &nbsp {{currentNodeName}} &nbsp
+                                    </pre>
+                                </div>
+
+                                <div ng-if = "!currentNodeName">
+                                    <pre class="nodeName" style="padding: 4px">
+                                        &nbsp &nbsp No Node Selected
+                                    </pre>
+                                </div>
+
+                                <div ui-tree id="tree-root-interface">
+                                    <div ui-tree-nodes="" ng-model="interface">
+                                        <div ng-repeat="node in interface"
+                                             ui-tree-node
+                                             ng-include="'mobius/procedure/interface_template.html'">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- pan & zoom field -->
+                        <div mouse-capture
+                             ng-keydown="keyDown($event)"
+                             ng-keyup="keyUp($event)"
+                             ui-layout-container size = "75%">
+                            <div ng-controller="graphCtrl">
+                                <div ng-controller="znpController" class="znpController">
+                                    <div>
+                                        <panzoom config="panzoomConfig"
+                                                 model="panzoomModel"
+                                                 class="panzoom">
+                                            <div>
+                                                <flow-chart chart="chartViewModel" class = "flow-chart" >
+                                                </flow-chart>
+                                            </div>
+                                        </panzoom>
+                                    </div>
+                                </div>
+
+                                <div class = "buttons">
+                                    <span ng-controller="executeCtrl">
+                                        <button class="btn btn-default btn-xs"
+                                                ng-click="run()"
+                                                title="Run program">
+                                            Run
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- jquery -->
+<script type="text/javascript" src="assets/js/jquery/jquery-1.11.1.js"></script>
+
+<!-- angularJs -->
+<script type="application/javascript" src="assets/js/angular/angular.min.js"></script>
+<script type="text/javascript" src="assets/js/angular/angular-sanitize.js"></script>
+
+
+<!-- angular-ui -->
+<script type="application/javascript" src="assets/js/angular-ui/ui-layout/ui-layout.js"></script>
+<script src="assets/js/angular-ui/ui-bootstrap/ui-bootstrap-tpls-0.13.3.min.js"></script>
+<script type="text/javascript" src="mobius/procedure/angular-ui-tree.js"></script>
+<script type="text/javascript" src="assets/js/angular-ui/ui-select/select.js"></script>
+<script type="text/javascript" src="assets/js/angular-ui/angular-xeditable/xeditable.js"></script>
+<script type="text/javascript" src="assets/js/angular-ui/angular-prompt.js"></script>
+<script type="text/javascript" src="assets/js/angular-ui/hotkeys.js"></script>
+
+
+<!-- ace -->
+<script type="text/javascript" src="assets/js/angular-ui/ui-ace/ui-ace.js"></script>
+<script type="text/javascript" src="assets/js/packages/ace-builds/src-min-noconflict/ace.js"></script>
+
+<!-- flowchart -->
+<script src="mobius/graph/ui-flowchart/debug.js" type="text/javascript"></script>
+<script src="mobius/graph/ui-flowchart/svg_class.js" type="text/javascript"></script>
+<script src="mobius/graph/ui-flowchart/mouse_capture_service.js" type="text/javascript"></script>
+<script src="mobius/graph/ui-flowchart/dragging_service.js" type="text/javascript"></script>
+<script src="mobius/graph/ui-flowchart/flowchart_viewmodel.js" type="text/javascript"></script>
+<script src="mobius/graph/ui-flowchart/flowchart_directive.js" type="text/javascript"></script>
+
+<!-- zoom and pan -->
+<script src="assets/js/packages/hamsterjs/hamster.js"></script>
+<script src="assets/js/angular/angular-mousewheel/mousewheel.js"></script>
+<script src="assets/js/angular-ui/ui-panzoom/panzoom.js"></script>
+
+<!-- three.js -->
+<script src="assets/js/threejs/build/three.js"></script>
+<script src="assets/js/threejs/examples/js/controls/TransformControls.js"></script>
+<script src="assets/js/threejs/examples/js/controls/OrbitControls.js"></script>
+
+<script src="assets/js/threejs/curves/NURBSCurve.js"></script>
+<script src="assets/js/threejs/curves/NURBSSurface.js"></script>
+<script src="assets/js/threejs/curves/NURBSUtils.js"></script>
+
+<!--verb js-->
+<script src="assets/js/verb/verb.js"></script>
+<script src="assets/js/verb/verbToThreeConversion.js"></script>
+
+<!--csg js-->
+<script src="assets/js/csg/csg.js"></script>
+<script src="assets/js/csg/ThreeCSG.js"></script>
+
+<!--simplify js-->
+<script src="assets/js/simplify/SimplifyModifier.js"></script>
+<script src="assets/js/simplify/SubdivisionModifier.js"></script>
+
+<!-- app -->
+<script src="mobius/app.js"></script>
+
+<!-- controllers -->
+<script src="mobius/graph/graph_controller.js"></script>
+<script src="mobius/menu/menu_controller.js"></script>
+<script src="mobius/procedure/procedure_controller.js"></script>
+<script src="mobius/graph/panzoom_controller.js"></script>
+<script src="mobius/graph/execute_controller.js"></script>
+<script src="mobius/viewport/console_controller.js"></script>
+<script src="mobius/viewport/viewport_controller.js"></script>
+<script src="mobius/layout_controller.js"></script>
+
+
+
+<!-- directives -->
+<script src="mobius/graph/contextMenu_directive.js"></script>
+<script src="mobius/viewport/viewport_directive.js"></script>
+
+<!-- services -->
+<script src="mobius/service/model.js"></script>
+<script src="mobius/service/nodeCollection.js"></script>
+
+<!-- filters -->
+<script src="mobius/procedure/procedure_filters.js"></script>
+
+<!-- other -->
+<script src="mobius/module.js"></script>
+
+</body>
+
+</html>

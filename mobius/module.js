@@ -8,7 +8,6 @@ var VIDAMO = ( function (mod){
     // print data method
     mod.print = function(content){
         // try to find vidamo web app, if found print in vidamo console
-        // todo will there be an error?
 
         this.content = content;
 
@@ -77,7 +76,11 @@ var VIDAMO = ( function (mod){
 	// Output: MobiusDataObject with NURBS geometry 
 	//	
     mod.makeCurve = function(points){
+<<<<<<< HEAD:vidamo/module.js
         return new MobiusDataObject( new verb.geom.NurbsCurve.byPoints( points ) );
+=======
+        return new verb.geom.NurbsCurve.byPoints( points );
+>>>>>>> gh-pages:mobius/module.js
     };
 
 	//

@@ -166,7 +166,8 @@ right pane code area
     margin-bottom: 2px;
 }
 
-.code-area .nodeName{
+.nodeName{
+    white-space: nowrap;:
     padding: 4px;
     margin: 0;
     position: relative;
