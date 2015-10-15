@@ -11,7 +11,6 @@ var VIDAMO = ( function (mod){
     // print data method
     mod.print = function(content){
         // try to find vidamo web app, if found print in vidamo console
-        // todo will there be an error?
 
         this.content = content;
 
@@ -55,9 +54,7 @@ var VIDAMO = ( function (mod){
 	};
 
     mod.makeCurve = function(points){
-        //console.log(verb.geom.NurbsCurve.byPoints( points, points.length - 1));
         return new verb.geom.NurbsCurve.byPoints( points );
-
     };
 	
 	mod.makeCurveByKnotsControlPointsWeights = function ( degree,knots,controlPoints,weights ){

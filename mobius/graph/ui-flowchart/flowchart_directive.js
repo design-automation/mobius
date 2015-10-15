@@ -9,7 +9,7 @@ angular.module('flowChart', ['dragging'] )
 .directive('flowChart', function() {
   return {
   	restrict: 'E',
-  	templateUrl: "vidamo/graph/ui-flowchart/flowchart_template.html",
+  	templateUrl: "mobius/graph/ui-flowchart/flowchart_template.html",
   	replace: true,
   	scope: {
   		chart: "=chart",
@@ -102,6 +102,9 @@ angular.module('flowChart', ['dragging'] )
 		// todo when multiple nodes selected, this option should be grey out
 		['Overwrite the original type', function () {
 			$scope.$emit("overWriteProcedure"); // -> graph controller
+		}],
+		['Edit Procedure', function () {
+			$scope.$emit("editProcedure"); // -> graph controller
 		}]
 	];
 

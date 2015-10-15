@@ -84,8 +84,16 @@ vidamo.factory('generateCode', function () {
         setChartViewModel: function (value) {
             data.chartViewModel= value;
         },
+        getFunctionCodeList: function(){
+            var functionCode = [];
+            for(var i = 0; i< data.outerCodeList.length; i++){
+                functionCode.push(data.outerCodeList[i] + data.innerCodeList[i]);
+            }
+            return functionCode;
+        },
 
         generateCode: function (){
+            console.log('generateCode');
             // copy the sorted order
             var sortedOrder = data.chartViewModel.topoSort().slice();
 
