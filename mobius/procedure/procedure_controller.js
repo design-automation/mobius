@@ -83,6 +83,14 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
         // methods types
         $scope.methods = function(){
             var props = Object.getOwnPropertyNames(VIDAMO);
+
+            // remove private usage functions
+            for(var i =0; i < props.length;i++){
+                if(props[i] === 'dataConversion'){
+                    props.splice(i, 1);
+                }
+            }
+
             var func_props = props.filter(function(property) {
                 return typeof VIDAMO[property] == 'function';
             });

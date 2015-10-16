@@ -95,12 +95,6 @@
                                 Export Function Library
                             </a>
                         </li>
-
-                        <li>
-                            <a ng-click = "toggleFullCode()">
-                                Show Full Code
-                            </a>
-                        </li>
                     </ul>
                 </span>
 
@@ -136,41 +130,86 @@
                         <div ui-layout-container size = "85%" >
 
                             <div ng-controller="viewportCtrl">
-                                <viewport control="viewportControl" id="threeViewport">
+
+                                <span dropdown on-toggle="toggled(open)" style="left:10px;">
+
+                                 <button class="btn btn-default btn-xs" dropdown-toggle>
+                                     Viewport
+                                     <span class="caret"></span>
+                                 </button>
+
+                                <ul class="dropdown-menu" >
+                                    <!--<li class="divider"></li>-->
+                                    <li class="dropdown-submenu">
+                                        <a tabindex="-1" href="#"> Set Viewport </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a tabindex="-1" href="#" ng-click = "toggleGeometry()">Geometry</a></li>
+                                            <li><a tabindex="-1" href="#" ng-click = "toggleFullCode()">Generated Code</a></li>
+                                            <li><a tabindex="-1" href="#" ng-click = "toggleData()">Data</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="dropdown-submenu">
+                                        <a tabindex="-1" href="#"> Set View </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a tabindex="-1" href="#">Top</a></li>
+                                            <li><a tabindex="-1" href="#">Bottom</a></li>
+                                            <li><a tabindex="-1" href="#">Front</a></li>
+                                            <li><a tabindex="-1" href="#">Back</a></li>
+                                            <li><a tabindex="-1" href="#">Left</a></li>
+                                            <li><a tabindex="-1" href="#">Right</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="dropdown-submenu">
+                                        <a tabindex="-1" href="#">Display Mode</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a tabindex="-1" href="#">Shaded</a></li>
+                                            <li><a tabindex="-1" href="#">Wireframe</a></li>
+                                            <li><a tabindex="-1" href="#">Render</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </span>
+
+                                <viewport ng-if="showGeometry" id="threeViewport">
                                 </viewport>
 
-                                <div ng-if="toggleFullCode">
-                                    <div style="height: 100%;width: 100%;top:0;left:0;position: absolute;opacity: 0.75"
+                                <div ng-if="showFullCode">
+                                    <div style="height: 100%;width: 100%;top:30px;left:0;position: absolute;"
                                         ui-ace="{ mode: 'javascript',theme: 'tomorrow'}"
                                         ng-model="javascriptCode"
                                         readonly="{{true}}"
                                         ng-controller="graphCtrl">
                                     </div>
 
-                                    <div class="pull-right btn btn-xs"
-                                       style="top:5px; right:20px;position: absolute"
-                                       ng-click="closeFullCode()">
-                                        <span style="font-weight: 400; font-size: 25px;line-height:1;z-index: 99999999;color:#000">
-                                            &times;
-                                        </span>
+                                    <!--<div class="pull-right btn btn-xs"-->
+                                       <!--style="top:5px; right:20px;position: absolute"-->
+                                       <!--ng-click="toggleFullCode()">-->
+                                        <!--<span style="font-weight: 400; font-size: 25px;line-height:1;z-index: 99999999;color:#000">-->
+                                            <!--&times;-->
+                                        <!--</span>-->
+                                    <!--</div>-->
+                                </div>
+
+                                <div ng-if="showData">
+                                    <div ng-controller="graphCtrl">
+                                        <textarea
+                                            style="width: 100%; height: 100%;border:0;
+                                            padding-top: 8px;
+                                            padding-left: 8px;
+                                            padding-right: 8px;
+                                            padding-bottom: 20px;
+                                            font-size: 12px;
+                                            overflow: auto;
+                                            position: absolute;"
+                                            chart-json-edit
+                                            view-model="chartViewModel">
+                                        </textarea>
                                     </div>
                                 </div>
                             </div>
 
-                            <!--<div ng-controller="graphCtrl">-->
-                            <!--<textarea-->
-                            <!--style="width: 100%; height: 100%;-->
-                            <!--padding-top: 8px;-->
-                            <!--padding-left: 8px;-->
-                            <!--padding-right: 8px;-->
-                            <!--padding-bottom: 20px;-->
-                            <!--font-size: 12px;-->
-                            <!--overflow: auto;-->
-                            <!--position: absolute;"-->
-                            <!--chart-json-edit-->
-                            <!--view-model="chartViewModel">-->
-                            <!--</textarea>-->
-                            <!--</div>-->
                         </div>
 
                         <div ui-layout-container size = "15%" class="monitor">
