@@ -40,7 +40,10 @@ var default_material_topology_face = new THREE.MeshBasicMaterial({
             opacity: 1
     });
 
-
+var topoDef = { vertex:[],
+				edge:[],
+				face:[]
+			}
 
 	var computeTopology = function( mesh ){
 		
@@ -191,49 +194,21 @@ var MobiusDataObject = function( geometry ){
 	// conversion to topology should be called only with extract topology
 	// 
 	//
-	
-	/*
-	for (var property in topologyDefinition) {
-		console.log("property", property)
-		this[property] = function(){
-			if (this.topology == undefined){
-				if(this.convertedGeometry == undefined)
-					this.convertedGeometry = this.extractGeometry();
-				this.topology = computeTopology( this.convertedGeometry );
-			} 
-			console.log("this.", property, "getting value", this.topology[property]);
+
+	for (var property in topoDef) {
+		Object.defineProperty(this, property, {
+		get: function(){
+				if (this.topology == undefined){
+					if(this.convertedGeometry == undefined)
+							this.convertedGeometry = this.extractGeometry();
+					this.topology = computeTopology( this.convertedGeometry );
+				} 
 			return this.topology[property];
-		}
-	} */
-	
-	// automate the ones below
-	this.vertex = function(index){
-		if (this.topology == undefined){
-			if(this.convertedGeometry == undefined)
-					this.convertedGeometry = this.extractGeometry();
-			this.topology = computeTopology( this.convertedGeometry );
-		} 
-		return this.topology.vertex[index];
-	}
-		
-	this.edge = function(index){
-		if (this.topology == undefined){
-			if(this.convertedGeometry == undefined)
-				this.convertedGeometry = this.extractGeometry();
-			this.topology = computeTopology( this.convertedGeometry );
-		} 
-		return this.topology.edge[index];
+		},
+		set: undefined
+		});
 	}
 	
-	this.face = function(index){
-		if (this.topology == undefined){
-			if(this.convertedGeometry == undefined)
-				this.convertedGeometry = this.extractGeometry();
-			this.topology = computeTopology( this.convertedGeometry );
-		} 
-		return this.topology.face[index];
-	}
-		
 	this.extractGeometry = function(){
 		
 		// if undefined, defines it and saves it
