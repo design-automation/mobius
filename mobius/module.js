@@ -380,15 +380,20 @@ var VIDAMO = ( function (mod){
 	//	Output: Modified object with data
 	//
 	mod.addData = function(obj, dataName, dataValue){
-		
+		console.log(obj);
 		// decide on topology heirarchy also - if edge gets a property, do the vertices also get the same property?
 		if(obj.constructor === Array){
-			for(var i=0; i<obj.length; i++)
-				obj[i].dataName = dataValue;
-		}else
-			obj.dataName = dataValue;
-		
-	}
+			for(var i=0; i<obj.length; i++){
+				if(obj[i].data == undefined)
+					obj[i].data = {};	
+				obj[i].data[dataName] = dataValue;
+			}
+		}else{
+			if(obj.data == undefined)
+				obj.data = {};
+			obj.data[dataName] = dataValue;
+		}	
+	};
 	
 	//
 	// Input: MobiusDataObject (with any kind of geometry), numeric input
@@ -425,12 +430,14 @@ var VIDAMO = ( function (mod){
 					
 					//data[i].geom.push( data[i].value[m].extractGeometry() );
 					data[i].geom.push( data[i].value[m].extractTopology() );
+					console.log( data[i].value[m].extractData() );
                 }
                 else {
                     for (var n = 0; n < data[i].value[m].length; n++) { 		
 						// compute topology if not already calculated of the mbObj
 						//geoms.push( data[i].value[m][n].extractGeometry() );
 						geoms.push( data[i].value[m][n].extractTopology() );
+						console.log( data[i].value[m][n].extractTopology() );
                     }
                 }
                 data[i].geom.push(geoms);

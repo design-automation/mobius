@@ -1,0 +1,104 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "node0",
+            "x": 1927.0027341859857,
+            "y": 1994.6550579312418,
+            "inputConnectors": [],
+            "outputConnectors": [
+                {
+                    "name": "out0",
+                    "value": ""
+                }
+            ],
+            "type": "box",
+            "version": 1444976811033,
+            "overwrite": true
+        }
+    ],
+    "connections": []
+}
+
+//procedure json
+[
+    [
+        {
+            "id": 1,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "makeBox",
+            "parameters": [
+                {
+                    "value": "12",
+                    "type": "length",
+                    "$$hashKey": "object:226"
+                },
+                {
+                    "value": "12",
+                    "type": "breadth",
+                    "$$hashKey": "object:227"
+                },
+                {
+                    "value": "12",
+                    "type": "height",
+                    "$$hashKey": "object:228"
+                }
+            ],
+            "result": "box",
+            "$$hashKey": "object:218"
+        },
+        {
+            "id": 4,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "face1",
+            "dataValue": "box.face(1);",
+            "type": "new",
+            "$$hashKey": "object:177"
+        },
+        {
+            "id": 4,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "addMaterial",
+            "parameters": [
+                {
+                    "value": "face1",
+                    "type": "obj",
+                    "$$hashKey": "object:271"
+                },
+                {
+                    "value": "\"MeshBasicMaterial\"",
+                    "type": "material_type",
+                    "$$hashKey": "object:272"
+                },
+                {
+                    "value": "{             color:\"blue\",             shading: THREE.FlatShading,             side: THREE.DoubleSide,             vertexColors: THREE.FaceColors,              overdraw: true,              needsUpdate : true,             opacity: 1     }",
+                    "type": "options",
+                    "$$hashKey": "object:273"
+                }
+            ],
+            "result": "face1",
+            "$$hashKey": "object:263"
+        },
+        {
+            "id": 3,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "out0",
+            "dataValue": "box",
+            "type": "new",
+            "$$hashKey": "object:162"
+        }
+    ]
+]
+
+//interface json
+[
+    []
+]

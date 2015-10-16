@@ -2,18 +2,35 @@
 //	Using modified Topology.js by Lee Stemkoski
 //
 
-var default_material_meshFromThree = new THREE.MeshLambertMaterial( { side: THREE.DoubleSide, wireframe: false, shading: THREE.SmoothShading, transparent: false, color: 0x0066CC} )
-var default_material_meshFromVerbs = new THREE.MeshLambertMaterial( { side: THREE.DoubleSide, wireframe: false, shading: THREE.SmoothShading, transparent: false, color: 0x999900} )
-var default_material_lineFromVerbs = new THREE.LineBasicMaterial({ linewidth: 100, color: 0x999900})
-var default_material_topology_vertex = new THREE.ShaderMaterial( {
-
-					uniforms: {
-						color:   { type: "c", value: new THREE.Color( 0xffffff ) },
-					},
-					alphaTest: 0.9,
-				} );
-var default_material_topology_edge = new THREE.LineBasicMaterial({ linewidth: 200, color: 0x999900})
-mat = new THREE.MeshBasicMaterial({
+var default_material_meshFromThree = new THREE.MeshLambertMaterial( { 
+											side: THREE.DoubleSide, 
+											wireframe: false, 
+											shading: THREE.SmoothShading, 
+											transparent: false, 
+											color: 0x0066CC
+										} );
+var default_material_meshFromVerbs = new THREE.MeshLambertMaterial( { 
+											side: THREE.DoubleSide, 
+											wireframe: false, 
+											shading: THREE.SmoothShading, 
+											transparent: false, 
+											color: 0x999900
+										} );
+var default_material_lineFromVerbs = new THREE.LineBasicMaterial({ 
+											linewidth: 100, 
+											color: 0x999900
+										});
+var default_material_topology_vertex = new THREE.ParticleBasicMaterial({
+											color: 0xCCCCFF,
+											size: 1,
+											blending: THREE.AdditiveBlending,
+											transparent: true
+										});
+var default_material_topology_edge = new THREE.LineBasicMaterial({ 
+											linewidth: 200, 
+											color: 0x999900
+										});
+var default_material_topology_face = new THREE.MeshBasicMaterial({
             color:"white",
             shading: THREE.FlatShading,
             side: THREE.DoubleSide,
@@ -23,15 +40,6 @@ mat = new THREE.MeshBasicMaterial({
             opacity: 1
     });
 
-    mat_2 = new THREE.MeshBasicMaterial({
-            color: 0xcccccc,
-            shading: THREE.FlatShading,
-            side: THREE.DoubleSide,
-            vertexColors: THREE.FaceColors, 
-            overdraw: true, 
-            needsUpdate : true,
-            opacity: 1
-    });
 
 
 	var computeTopology = function( mesh ){
@@ -94,7 +102,7 @@ mat = new THREE.MeshBasicMaterial({
 	}
 	
 	var convertTopology = function ( topology ){
-		console.log(topology);
+
 		// if topology is a single object or topology is a group of topology???
 		
 		// vertexs will be points
@@ -107,13 +115,8 @@ mat = new THREE.MeshBasicMaterial({
 		var group = new THREE.Object3D();
 		
 		// vertexs
-		var particles = new THREE.Geometry(),
-			pMaterial = new THREE.ParticleBasicMaterial({
-		    color: 0xCCCCFF,
-			size: 1,
-			blending: THREE.AdditiveBlending,
-			transparent: true
-		});
+		var particles = new THREE.Geometry();
+			
 		for(var vertexNo = 0; vertexNo < topology.vertex.length; vertexNo++){
 			  // create a particle with random
 			  // position values, -250 -> 250
@@ -125,7 +128,7 @@ mat = new THREE.MeshBasicMaterial({
 		// create the particle system
 		var particleSystem = new THREE.ParticleSystem(
 			particles,
-			pMaterial);
+			default_material_topology_vertex);
 			
 		group.add(particleSystem);
 		
@@ -139,7 +142,6 @@ mat = new THREE.MeshBasicMaterial({
 			);
 
 			lineGeometry.computeVertexNormals();
-			console.log(topology.edge[edgeNo].material);
 			var line = new THREE.Line( lineGeometry, default_material_topology_edge || topology.edge[edgeNo].material );
 			
 			group.add(line);
@@ -160,24 +162,24 @@ mat = new THREE.MeshBasicMaterial({
 			faceGeometry.computeFaceNormals();
 			faceGeometry.computeVertexNormals();
 			
-			materials = [mat, mat_2];
-			faceGeometry.faces[0].materialIndex = 1;
+			var materials = [ topology.face[faceNo].material || default_material_topology_face ];
+			faceGeometry.faces[0].materialIndex = 0;
 
 			group.add(new THREE.Mesh( faceGeometry , new THREE.MeshFaceMaterial( materials ) ));
 		}
 
 		return group;
 	}
-	
+
 var MobiusDataObject = function( geometry ){
 	
 	var self = this;
 	
 	this.geometry = geometry; 
 	
-	var topology = { edge:[], face:[], vertex:[] }
+	this.topology = undefined;
 
-	var convertedGeometry = convertGeometry ( geometry ); 
+	this.convertedGeometry = undefined; 
 	
 	//
 	//	trial run indicates that topology is a BIG problem! - everything works ok without topology computation - good amount of memory management has to be done. 
@@ -189,31 +191,99 @@ var MobiusDataObject = function( geometry ){
 	// conversion to topology should be called only with extract topology
 	// 
 	//
-		/*
-	for (var property in topology) {
-		if (topology.hasOwnProperty(property)) {
-			self[property] = topology
+	
+	/*
+	for (var property in topologyDefinition) {
+		console.log("property", property)
+		this[property] = function(){
+			if (this.topology == undefined){
+				if(this.convertedGeometry == undefined)
+					this.convertedGeometry = this.extractGeometry();
+				this.topology = computeTopology( this.convertedGeometry );
+			} 
+			console.log("this.", property, "getting value", this.topology[property]);
+			return this.topology[property];
 		}
-	}*/
+	} */
 	
+	// automate the ones below
+	this.vertex = function(index){
+		if (this.topology == undefined){
+			if(this.convertedGeometry == undefined)
+					this.convertedGeometry = this.extractGeometry();
+			this.topology = computeTopology( this.convertedGeometry );
+		} 
+		return this.topology.vertex[index];
+	}
+		
+	this.edge = function(index){
+		if (this.topology == undefined){
+			if(this.convertedGeometry == undefined)
+				this.convertedGeometry = this.extractGeometry();
+			this.topology = computeTopology( this.convertedGeometry );
+		} 
+		return this.topology.edge[index];
+	}
 	
+	this.face = function(index){
+		if (this.topology == undefined){
+			if(this.convertedGeometry == undefined)
+				this.convertedGeometry = this.extractGeometry();
+			this.topology = computeTopology( this.convertedGeometry );
+		} 
+		return this.topology.face[index];
+	}
 		
 	this.extractGeometry = function(){
+		
+		// if undefined, defines it and saves it
+		if(this.convertedGeometry == undefined)
+			this.convertedGeometry = convertGeometry( geometry );
+		
+		// if material has been assigned to this data object, assigns the same material to the converted geometry
 		if(this.material)
-			convertedGeometry.material = this.material;
-		return convertedGeometry;
+			this.convertedGeometry.material = this.material;
+		
+		return this.convertedGeometry;
 	}
 	
 	this.extractTopology = function(){
 		// convert topology into three.js objects with numbers and return
-		if(topology.status == undefined){
-			topology = computeTopology( convertedGeometry );
-		}	
-		return convertTopology( topology );
+		
+		// if topology has not be computed before, computes and saves
+		if(this.topology == undefined){
+			this.topology = computeTopology( this.extractGeometry() );
+		}
+		
+		return convertTopology( this.topology );
 	}
 	
 	this.extractData = function(){
 		// parse topology object, extract data and return as three.js table
+		
+		// LIMITATION - Data can only be added to the topology
+		if( this.topology == undefined && this.data == undefined )
+			console.log("No data exists for this object!");
+		else{
+			if (this.data != undefined)
+				console.log("Object Properties: ", JSON.stringify(this.data));
+			
+			for( var index=0; index < this.topology.vertex.length; index++){
+				if (this.topology.vertex[index].data != undefined)
+					console.log("Properties of Vertex ", index, ":", JSON.stringify(this.topology.vertex[index].data));
+			}
+			
+			for( var index=0; index < this.topology.edge.length; index++){
+				if (this.topology.edge[index].data != undefined)
+					console.log("Properties of Edge ", index, ":", JSON.stringify(this.topology.edge[index].data));
+			}
+			
+			for( var index=0; index < this.topology.face.length; index++){
+				if (this.topology.face[index].data != undefined)
+					console.log("Properties of Face ", index, ":", JSON.stringify(this.topology.face[index].data));
+			}
+
+		}
 	}
 }
 
