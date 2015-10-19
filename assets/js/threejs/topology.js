@@ -1,9 +1,16 @@
-/**
- * @author Lee Stemkoski
- */
- 
+ /*
+  * Requirements for merging with Mobius - 
+  *	Namespace should be TOPOLOGY
+  *	TOPOLOGY.topoDef - should exist with an empty definition of the topology
+  */ 
+  
 // declare namespace
 var TOPOLOGY = TOPOLOGY || {};
+
+TOPOLOGY.topoDef = { vertex:[],
+				edge:[],
+				face:[]
+			}
 
 ///////////////////////////////////////////////////////////////////////////////
 TOPOLOGY.Vertex = function(params)

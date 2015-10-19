@@ -2,8 +2,7 @@
 // VIDAMO module
 //
 
-var VIDAMO = ( function (mod){
-
+var VIDAMO = ( function (mod, pvt){
 
     // print data method
     mod.print = function(content){
@@ -380,7 +379,6 @@ var VIDAMO = ( function (mod){
 	//	Output: Modified object with data
 	//
 	mod.addData = function(obj, dataName, dataValue){
-		console.log(obj);
 		// decide on topology heirarchy also - if edge gets a property, do the vertices also get the same property?
 		if(obj.constructor === Array){
 			for(var i=0; i<obj.length; i++){
@@ -429,15 +427,15 @@ var VIDAMO = ( function (mod){
 					// compute topology if not already calculated of the mbObj
 					
 					//data[i].geom.push( data[i].value[m].extractGeometry() );
-					data[i].geom.push( data[i].value[m].extractTopology() );
+					data[i].geom.push( data[i].value[m].extractGeometry() );
 					console.log( data[i].value[m].extractData() );
                 }
                 else {
                     for (var n = 0; n < data[i].value[m].length; n++) { 		
 						// compute topology if not already calculated of the mbObj
 						//geoms.push( data[i].value[m][n].extractGeometry() );
-						geoms.push( data[i].value[m][n].extractTopology() );
-						console.log( data[i].value[m][n].extractTopology() );
+						geoms.push( data[i].value[m][n].extractGeometry() );
+						console.log( data[i].value[m][n].extractData() );
                     }
                 }
                 data[i].geom.push(geoms);

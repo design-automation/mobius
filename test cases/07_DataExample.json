@@ -13,7 +13,7 @@
                 }
             ],
             "type": "box",
-            "version": 1444986556208,
+            "version": 1445226200144,
             "overwrite": true
         }
     ],
@@ -166,6 +166,16 @@
             ],
             "result": "d2",
             "$$hashKey": "object:512"
+        },
+        {
+            "id": 9,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "console.log(\"Window cost is\", face1.data.Cost);",
+            "method": "expression",
+            "parameters": [],
+            "$$hashKey": "object:272"
         },
         {
             "id": 3,
