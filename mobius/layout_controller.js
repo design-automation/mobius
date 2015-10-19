@@ -42,12 +42,15 @@ vidamo.controller('layoutCtrl',['$scope',
 
         $scope.hideProcedure =  function(){
 
+        //setTimeout(function(){
             $scope.displayProcedure = false;
             $scope.viewportSize += $scope.procedureSize;
 
             $scope.viewportWidth = $scope.viewportSize +'%';
             $scope.procedureWidth = $scope.procedureSize +'%';
             $scope.graphWidth = $scope.graphSize +'%';
+        //},0);
+
 
         };
 
