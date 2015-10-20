@@ -54,14 +54,16 @@ var default_material_topology_face = new THREE.MeshBasicMaterial({
 //  Add another if-else condition for each new geometry
 //
 var convertGeomToThreeMesh = function( geom ){
-		
+
 		// internal function
 		convertToThree = function(singleDataObject){
 			
 		if( singleDataObject instanceof THREE.Mesh )
-			return singleDataObject
+			return singleDataObject;
 		else if(singleDataObject instanceof THREE.Geometry)
-			return new THREE.Mesh( singleDataObject, singleDataObject.material )
+			return new THREE.Mesh( singleDataObject, singleDataObject.material );
+		else if(singleDataObject instanceof TOPOLOGY.Topology)
+			return new THREE.Mesh( singleDataObject.convertToGeometry(), default_material_meshFromThree );
 		else if(singleDataObject instanceof ThreeBSP)
 			return new THREE.Mesh( singleDataObject.toGeometry(), default_material_meshFromThree );
 		else if( singleDataObject instanceof verb.geom.NurbsSurface ){
@@ -84,6 +86,8 @@ var convertGeomToThreeMesh = function( geom ){
 				return ( new THREE.Line( geometry, default_material_lineFromVerbs ) );
 		
 		}
+		else if(singleDataObject instanceof TOPOLOGY.Topology)
+			return singleDataObject.convertToGeometry();
 		else if (singleDataObject instanceof verb.geom.Intersect){
 			console.log("Intersection!");
 		}
@@ -172,20 +176,19 @@ var displayTopologyInThree = function ( topology ){
 	// faces
 	for(var faceNo = 0; faceNo < topology.face.length; faceNo++){
 		
-		var faceGeometry = new THREE.Geometry();
-		faceGeometry.vertices.push( topology.vertex[topology.face[faceNo].vertexIDs[0]].vector3 );
-		faceGeometry.vertices.push( topology.vertex[topology.face[faceNo].vertexIDs[1]].vector3 );
-		faceGeometry.vertices.push( topology.vertex[topology.face[faceNo].vertexIDs[2]].vector3 );
-
-		faceGeometry.faces.push( new THREE.Face3( 0, 1, 2 ));
-
-		faceGeometry.computeFaceNormals();
-		faceGeometry.computeVertexNormals();
-		
-		var materials = [ topology.face[faceNo].material || default_material_topology_face ];
-		faceGeometry.faces[0].materialIndex = 0;
-
-		group.add(new THREE.Mesh( faceGeometry , new THREE.MeshFaceMaterial( materials ) ));
+		for(var i=1; i<topology.face[faceNo].vertexIDs.length-1; i++){
+			var faceGeometry = new THREE.Geometry();
+			faceGeometry.vertices.push( topology.vertex[topology.face[faceNo].vertexIDs[0]].vector3 );
+			faceGeometry.vertices.push( topology.vertex[topology.face[faceNo].vertexIDs[i]].vector3 );
+			faceGeometry.vertices.push( topology.vertex[topology.face[faceNo].vertexIDs[i+1]].vector3 );
+			faceGeometry.faces.push( new THREE.Face3( 0, 1, 2 ));
+			faceGeometry.computeFaceNormals();
+			faceGeometry.computeVertexNormals();
+			
+			var materials = [ topology.face[faceNo].material || default_material_topology_face ];
+			faceGeometry.faces[0].materialIndex = 0;
+			group.add(new THREE.Mesh( faceGeometry , new THREE.MeshFaceMaterial( materials ) ));
+		}
 	}
 
 	return group;

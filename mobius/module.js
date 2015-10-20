@@ -416,22 +416,69 @@ var VIDAMO = ( function (mod, pvt){
 	 *	Topology Functions
 	 *
 	 */
+	mod.makePoint = function(x, y, z){
+		return new MobiusDataObject( new THREE.Vector3(x, y, z));
+	} 
+	
+	/* Should independent creation of topological elements be allowed??
+	mod.makeVertex = function( id, point){
+		return	new MobiusDataObject( new TOPOLOGY.Vertex({
+			ID: id,
+			vector3: point.geometry
+		})); 
+	}
+	
+	mod.makeEdge = function( id, point){
+		return	new MobiusDataObject( new TOPOLOGY.Vertex({
+			ID: id,
+			vector3: point.geometry
+		})); 
+	}
+	
+	mod.makeFace = function( id, point){
+		return	new MobiusDataObject( new TOPOLOGY.Vertex({
+			ID: id,
+			vector3: point.geometry
+		})); 
+	} */
+	 
 	mod.makeTopology = function(){
-		return new TOPOLOGY.Topology();
+		return new MobiusDataObject( new TOPOLOGY.Topology() );
 	};
 	
-	mod.addVertexToTopology = function(topology, vertex){
-		newVertex = topology.create('vertex');
-		newVertex.vector3 = vertex;
+	mod.addVertexToTopology = function(topologyObject, pointObject){
+		var topology = topologyObject.geometry;
+		var vector3 = pointObject.geometry;
+		
+		var newVertex = topology.create('vertex');
+		newVertex.vector3 = vector3;
+		
+		console.log("VertexID: ", newVertex.ID);
+		return newVertex.ID;
 	};
 	
-	mod.addEdgeToTopology = function(topology, edge, vertexA, vertexB){
-		topology.addIncidenceData("edge", edge, "vertex", [vertexA, vertexB]);
+	mod.addEdgeToTopology = function(topologyObject, vertexIDs){
+		var topology = topologyObject.geometry;
+
+		var newEdge = topology.create('edge');
+		topology.addIncidenceData( "edge", newEdge.ID , "vertex", vertexIDs)
+		
+		console.log(newEdge);
+		return newEdge.ID;
 	};
 	
-	mod.addFaceToTopology = function(topology, vertices, edges, face){
-		topology.addIncidenceData("edge", edge, "vertex", [vertexA, vertexB]);
+	mod.addFaceToTopology = function(topologyObject, vertexIDs, edgeIDs){
+		var topology = topologyObject.geometry;
+		
+		var newFace = topology.create('face');
+
+		topology.addIncidenceData("face", newFace.ID, "vertex", vertexIDs)
+		topology.addIncidenceData( "face", newFace.ID, "edge", edgeIDs)
+		
+		console.log(newFace);
+		return newFace.ID;
 	};
+
 
 	//
 	// 

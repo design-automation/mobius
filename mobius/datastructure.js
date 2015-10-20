@@ -52,12 +52,17 @@ var MobiusDataObject = function( geometry ){
 	this.extractTopology = function(){
 		// convert topology into three.js objects with numbers and return
 		
-		// if topology has not be computed before, computes and saves
-		if(topology == undefined){
-			topology = threeToTopology( this.extractGeometry() );
+		// incase the topology is user-defined - it should display the user-defined topology
+		if(this.geometry instanceof TOPOLOGY.Topology){
+			return displayTopologyInThree( this.geometry );
+		}			
+		else{
+			// if topology has not be computed before, computes and saves
+			if(topology == undefined){
+				topology = threeToTopology( this.extractGeometry() );
+			}
+			return displayTopologyInThree( topology );
 		}
-		
-		return displayTopologyInThree( topology );
 	}
 	
 	this.extractData = function(){

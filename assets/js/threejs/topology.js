@@ -423,7 +423,7 @@ TOPOLOGY.Topology.prototype.convertToGeometry = function()
 	for (var i = 0; i < this.vertex.length; i++)
 	{
 		if (this.vertex[i] == null) continue;
-		
+
 		geometry.vertices[i] = this.vertex[i].vector3.clone();
 	}
 
@@ -439,11 +439,17 @@ TOPOLOGY.Topology.prototype.convertToGeometry = function()
 		var a = this.face[i].vertexIDs;
 		var geoFace = new THREE.Face3( a[0], a[1], a[2] );
 		geometry.faces[totalFaces] = geoFace;
-		geometry.faces[totalFaces].color = palette[this.face[i].colorID];
-		
+		geometry.faces[totalFaces].color = palette[this.face[i].colorID]; console.log(a); 
+		if(a.length>3){
+			totalFaces++;
+			for(var j=2; j<a.length-1; j++){
+				var triangleface = new THREE.Face3( a[0], a[j], a[j+1] ); // assuming convexity
+				geometry.faces[totalFaces] = triangleface;
+				geometry.faces[totalFaces].color = palette[this.face[i].colorID];
+			}
+		}
 		totalFaces++;
 	}
-	
 	geometry.computeFaceNormals();
 	geometry.computeVertexNormals();
 
