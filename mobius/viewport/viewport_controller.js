@@ -8,14 +8,27 @@ vidamo.controller('viewportCtrl',[
     function($scope) {
         $scope.viewportControl = {};
 
-        $scope.toggleFullCode = false;
+        $scope.showGeometry = true;
+        $scope.showFullCode = false;
+        $scope.showData = false;
 
-        $scope.$on('toggleFullCode',function(){
-            $scope.toggleFullCode = true;
-        });
+        $scope.toggleFullCode = function(){
+            $scope.showGeometry = false;
+            $scope.showFullCode = true;
+            $scope.showData = false;
 
-        $scope.closeFullCode = function(){
-            $scope.toggleFullCode = false;
-        }
+        };
+
+        $scope.toggleGeometry = function(){
+            $scope.showGeometry = true;
+            $scope.showFullCode = false;
+            $scope.showData = false;
+        };
+
+        $scope.toggleData = function(){
+            $scope.showGeometry = false;
+            $scope.showFullCode = false;
+            $scope.showData = true;
+        };
     }
 ]);

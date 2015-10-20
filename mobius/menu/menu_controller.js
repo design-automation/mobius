@@ -170,9 +170,4 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','generateCode','n
         $scope.toggleCheatSheet = function(){
             hotkeys.toggleCheatSheet();
         };
-
-        $scope.toggleFullCode = function(){
-            $rootScope.$broadcast("toggleFullCode");
-        };
-
     }]);

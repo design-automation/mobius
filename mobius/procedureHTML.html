@@ -1,15 +1,15 @@
 <div class="code-area">
     <div>
         <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
-            <div ui-layout-container size = "85%">
+            <div ui-layout-container >
                 <div>
                     <div ng-if = "currentNodeName">
                         <pre class="nodeName" style="padding: 4px">
                             <span>
                                 &nbsp &nbsp {{currentNodeType}} &nbsp : &nbsp {{currentNodeName}} &nbsp
                             </span>
-                            <a class="pull-right btn btn-xs"
-                               style="display:inline-block; padding: 0;margin: 0"
+                            <a class="pull-right"
+                               style="display:inline-block; padding: 0;cursor: pointer "
                                ng-click="hideProcedure()">
                                 <span style="font-weight: 400; font-size: 16px;line-height:1"> &times; </span>
                             </a>
@@ -17,19 +17,19 @@
                     </div>
 
                     <div ng-if = "!currentNodeName">
-                        <pre class="nodeName" style="padding: 4px">
-                            <span>
+                        <pre class="nodeName" style="padding: 4px;">
                                 &nbsp &nbsp No Node Selected
-                            </span>
                             <a class="pull-right btn btn-xs"
-                               style="display:inline-block; padding: 0;margin: 0"
+                               style="display:inline-block; padding: 0;margin: 0;cursor: pointer"
                                ng-click="hideProcedure()">
-                                <span style="font-weight: 400; font-size: 16px;line-height:1"> &times; </span>
+                                <span style="font-weight: 400; font-size: 16px;line-height:1;"> &times; </span>
                             </a>
                         </pre>
                     </div>
+                </div>
 
-                    <!-- add to interface -->
+
+                <!-- add to interface -->
                     <div class="tabArea">
                         <!-- parameters -->
                         <div ui-tree id="tree-root-parameter"
@@ -55,41 +55,43 @@
                     </div>
 
                     <div class = "buttons" >
-                        <button id="button-parameter"
-                                class="btn btn-default btn-xs"
-                                ng-click="newInterface('Parameter')"> Add Parameter</button>
+                    <button id="button-parameter"
+                            class="btn btn-default btn-xs"
+                            ng-click="newInterface('Parameter')"> Add Argument</button>
 
-                        <button id="button-data"
-                                class="btn btn-default btn-xs"
-                                ng-click="newItem('Data')">Add Data</button>
+                    <button id="button-data"
+                            class="btn btn-default btn-xs"
+                            ng-click="newItem('Data')">Add Variable</button>
 
-                        <ui-select id="button-action"
-                                   ng-model="method"
-                                   style="display: inline-block;"
-                                   on-select="newItem('Action',$select.selected)">
-                            <ui-select-match placeholder="Add Action">Add Action</ui-select-match>
-                            <ui-select-choices
-                                    repeat="method as method in methods()| filter: $select.search">
-                                <span ng-bind-html="method| highlight: $select.search"></span>
-                            </ui-select-choices>
-                        </ui-select>
+                    <ui-select id="button-action"
+                               ng-model="method"
+                               style="display: inline-block;"
+                               on-select="newItem('Action',$select.selected)">
+                        <ui-select-match placeholder="Add Method">Add Method</ui-select-match>
+                        <ui-select-choices
+                                repeat="method as method in methods()| filter: $select.search">
+                            <span ng-bind-html="method| highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
 
-                        <ui-select id="button-control"
-                                   ng-model="controlType"
-                                   style="display: inline-block;"
-                                   on-select="newItem('Control',$select.selected)">
-                            <ui-select-match placeholder="Add Control">Add Control</ui-select-match>
-                            <ui-select-choices
-                                    repeat="controlType in controlTypes| filter: $select.search">
-                                <span ng-bind-html="controlType| highlight: $select.search"></span>
-                            </ui-select-choices>
-                        </ui-select>
-                    </div>
+                    <ui-select id="button-control"
+                               ng-model="controlType"
+                               style="display: inline-block;"
+                               on-select="newItem('Control',$select.selected)">
+                        <ui-select-match placeholder="Add Control">Add Control</ui-select-match>
+                        <ui-select-choices
+                                repeat="controlType in controlTypes| filter: $select.search">
+                            <span ng-bind-html="controlType| highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
                 </div>
             </div>
 
-            <div ui-layout-container size = "15%" class="monitor" >
-                <div class="info-title">Function Code: </div>
+            <div ui-layout-container size = "27px" class="monitor" >
+
+                <pre class="nodeName" style="padding: 4px">
+                        &nbsp &nbsp Function Code
+                </pre>
 
                 <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'tomorrow' }"
                      ng-model= "functionCodeList[nodeIndex]"

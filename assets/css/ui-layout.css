@@ -2,7 +2,8 @@
 
 .stretch {
     position: absolute;
-    top: 13px;
+    /*mobius*/
+    top: 0px;
     left: 0;
     right: 0;
     bottom: 0;
@@ -32,6 +33,7 @@
     text-align: center;
     justify-content: center;
     align-items: center;
+    /*border: 1px solid #0f0;*/
 }
 .ui-layout-column > .ui-splitbar{
     width: 5px;
@@ -41,11 +43,7 @@
     -webkit-flex-direction: column;
     flex-direction: column;
     margin-bottom: 2px;
-
-    border-top: 1px solid #aaaaaa;
-
-    border-bottom: 1px solid #aaaaaa;
-
+    /*border: 1px solid #0f0;*/
 }
 
 .ui-layout-column > .ui-splitbar > a{
@@ -58,9 +56,4 @@
     cursor: pointer;
     font-size: 9px;
     margin: 10px;
-}
-
-/*todo temp fix*/
-.ui-layout-row {
-    margin-top: -13px;
 }
