@@ -40,16 +40,24 @@ vidamo.controller('layoutCtrl',['$scope',
 
         });
 
-        $scope.hideProcedure =  function(){
+        $scope.$on('hideProcedure', function(){
+            if($scope.displayProcedure === true){
+                $scope.displayProcedure = false;
+                $scope.viewportSize += $scope.procedureSize;
 
-        //setTimeout(function(){
+                $scope.viewportWidth = $scope.viewportSize +'%';
+                $scope.procedureWidth = $scope.procedureSize +'%';
+                $scope.graphWidth = $scope.graphSize +'%';
+            }
+        });
+
+        $scope.hideProcedure =  function(){
             $scope.displayProcedure = false;
             $scope.viewportSize += $scope.procedureSize;
 
             $scope.viewportWidth = $scope.viewportSize +'%';
             $scope.procedureWidth = $scope.procedureSize +'%';
             $scope.graphWidth = $scope.graphSize +'%';
-        //},0);
         };
 
     }]);

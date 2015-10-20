@@ -69,7 +69,6 @@ angular.module('flowChart', ['dragging'] )
 			});
 		}
 	}
-
 })
 
 //
@@ -162,7 +161,9 @@ angular.module('flowChart', ['dragging'] )
         // fixme
 
         // todo shall hide dropdown when zoom?
-        document.getElementById("node-creator").style.transform = 'scale(' + (1/$scope.scaleFactor)+')';
+        document.getElementById("node-creator").style.transform
+			= 'scale(' + 1/$scope.scaleFactor+','+ 1/$scope.scaleFactor +')';
+
     });
 
 	/* Can use this to test the drag selection rect.
@@ -287,14 +288,22 @@ angular.module('flowChart', ['dragging'] )
             $scope.scaleFactor = message;
         });
 
-        // enable dropdown
-        document.getElementById("node-creator").style.display = "inline-block";
 
+		var offset = 0;
+
+		if($scope.scaleFactor > 1){
+			offset = -1;
+		}else{
+			offset = 1;
+		}
 
         // update dropdown location
 		var dBclickPoint = controller.translateCoordinates(evt.clientX, evt.clientY);
-		$scope.dbClickMenu.x = dBclickPoint.x * (1/$scope.scaleFactor );
+		$scope.dbClickMenu.x = dBclickPoint.x * (1/$scope.scaleFactor) 	- (90-90/$scope.scaleFactor);
 		$scope.dbClickMenu.y = dBclickPoint.y *(1/$scope.scaleFactor );
+
+		// enable dropdown
+		document.getElementById("node-creator").style.display = "inline-block";
 
         // node location
         $scope.chart.newPos.x = $scope.dbClickMenu.x;
@@ -321,6 +330,7 @@ angular.module('flowChart', ['dragging'] )
             var mouseOverElement = controller.hitTest(evt.clientX, evt.clientY);
             if(mouseOverElement instanceof SVGElement){
                 document.getElementById("node-creator").style.display = "none";
+				$scope.$emit("nodeIndex", undefined);
             }
 
 			dragging.startDrag(evt, {

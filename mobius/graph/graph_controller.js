@@ -134,6 +134,10 @@ vidamo.controller('graphCtrl',[
                 $scope.currentNodeName = $scope.chartViewModel.nodes[$scope.nodeIndex].data.name;
 
                 $scope.currentNodeType = $scope.chartViewModel.nodes[$scope.nodeIndex].data.type;
+            }else if(message === undefined){
+                $scope.nodeIndex = message;
+                $scope.currentNodeName = '';
+                $scope.$emit("hideProcedure");
             }
 
              // display geometries on node selected
