@@ -26,6 +26,7 @@ var default_material_meshFromVerbs = new THREE.MeshLambertMaterial( {
 											color: 0x999900
 										} );
 var default_material_lineFromVerbs = new THREE.LineBasicMaterial({ 
+											side: THREE.DoubleSide,
 											linewidth: 100, 
 											color: 0x999900
 										});
@@ -36,6 +37,7 @@ var default_material_topology_vertex = new THREE.ParticleBasicMaterial({
 											transparent: true
 										});
 var default_material_topology_edge = new THREE.LineBasicMaterial({ 
+											side: THREE.DoubleSide,
 											linewidth: 200, 
 											color: 0x999900
 										});
@@ -185,7 +187,7 @@ var displayTopologyInThree = function ( topology ){
 			faceGeometry.computeFaceNormals();
 			faceGeometry.computeVertexNormals();
 			
-			var materials = [ topology.face[faceNo].material || default_material_topology_face ];
+			var materials = [ topology.face[faceNo].material || default_material_topology_face ]; 
 			faceGeometry.faces[0].materialIndex = 0;
 			group.add(new THREE.Mesh( faceGeometry , new THREE.MeshFaceMaterial( materials ) ));
 		}

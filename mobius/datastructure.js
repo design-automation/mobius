@@ -22,7 +22,9 @@ var MobiusDataObject = function( geometry ){
 	for (var property in TOPOLOGY.topoDef) {
 		Object.defineProperty(this, property, {
 		get: function(){
-				if (topology == undefined){
+				if(this.geometry instanceof TOPOLOGY.Topology)
+					topology = this.geometry;
+				else if (topology == undefined){
 					if(convertedGeometry == undefined)
 							convertedGeometry = this.extractGeometry();
 					topology = threeToTopology( convertedGeometry );
@@ -53,16 +55,15 @@ var MobiusDataObject = function( geometry ){
 		// convert topology into three.js objects with numbers and return
 		
 		// incase the topology is user-defined - it should display the user-defined topology
-		if(this.geometry instanceof TOPOLOGY.Topology){
-			return displayTopologyInThree( this.geometry );
-		}			
-		else{
-			// if topology has not be computed before, computes and saves
-			if(topology == undefined){
-				topology = threeToTopology( this.extractGeometry() );
+		// if topology has not be computed before, computes and saves
+		if(topology == undefined){
+			if(this.geometry instanceof TOPOLOGY.Topology){
+				topology = this.geometry;
 			}
-			return displayTopologyInThree( topology );
+			else
+				topology = threeToTopology( this.extractGeometry() );
 		}
+		return displayTopologyInThree( topology );
 	}
 	
 	this.extractData = function(){
@@ -80,9 +81,12 @@ var MobiusDataObject = function( geometry ){
 					for( var index=0; index < topology[property].length; index++){
 					if (topology[property][index].data != undefined)
 						console.log("Properties of ", property , index, ":", JSON.stringify(topology[property][index].data));
+					else
+						console.log("No data defined for ", property);
 					}
 				} 
 			}
 		}
+		return "JSON Data Object";
 	}
 }

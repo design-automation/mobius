@@ -369,7 +369,7 @@ var VIDAMO = ( function (mod, pvt){
 				obj[i].material = material;
 		}else
 			obj.material = material; 
-			
+	
 		return obj;
 	};
 	
@@ -441,11 +441,19 @@ var VIDAMO = ( function (mod, pvt){
 			vector3: point.geometry
 		})); 
 	} */
-	 
+	
+	//
+	//	Input :
+	//	Output : MobiusDataObject with Topology geometry
+	//
 	mod.makeTopology = function(){
 		return new MobiusDataObject( new TOPOLOGY.Topology() );
 	};
-	
+
+	//
+	//	Input : MobiusDataObject with Topology Geometry, MobiusDataObject with three.js point geometry
+	//	Output : Topology Vertex ID (should this be the whole vertex instead?)
+	//
 	mod.addVertexToTopology = function(topologyObject, pointObject){
 		var topology = topologyObject.geometry;
 		var vector3 = pointObject.geometry;
@@ -453,20 +461,26 @@ var VIDAMO = ( function (mod, pvt){
 		var newVertex = topology.create('vertex');
 		newVertex.vector3 = vector3;
 		
-		console.log("VertexID: ", newVertex.ID);
 		return newVertex.ID;
 	};
 	
+	//
+	//	Input : MobiusDataObject with Topology Geometry, Number Array (should this be the vertices instead?)
+	//	Output : Topology Edge ID (should this be the whole vertex instead?)
+	//	
 	mod.addEdgeToTopology = function(topologyObject, vertexIDs){
 		var topology = topologyObject.geometry;
 
 		var newEdge = topology.create('edge');
 		topology.addIncidenceData( "edge", newEdge.ID , "vertex", vertexIDs)
 		
-		console.log(newEdge);
 		return newEdge.ID;
 	};
-	
+
+	//
+	//	Input : MobiusDataObject with Topology Geometry, Number Array (should this be the edges and the vertices instead)
+	//	Output : Topology Edge ID (should this be the whole vertex instead?)
+	//	
 	mod.addFaceToTopology = function(topologyObject, vertexIDs, edgeIDs){
 		var topology = topologyObject.geometry;
 		
@@ -475,8 +489,21 @@ var VIDAMO = ( function (mod, pvt){
 		topology.addIncidenceData("face", newFace.ID, "vertex", vertexIDs)
 		topology.addIncidenceData( "face", newFace.ID, "edge", edgeIDs)
 		
-		console.log(newFace);
 		return newFace.ID;
+	};
+	
+	//
+	//	Input : Array of MobiusDataObject with Topology Geometry
+	//	Output : Topology Edge ID (should this be the whole vertex instead?)
+	//
+	mod.makeSolid = function(arr_mObj){
+		
+		var solidTopo = new TOPOLOGY.Topology();
+		
+		// takes in the array and combines all into one topological element
+		for(var i=0; i<arr_mObj.length; i++){
+			solidTopo.add
+		}
 	};
 
 
