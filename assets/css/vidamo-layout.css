@@ -5,10 +5,6 @@ body {
     font-size: 14px !important;
 }
 
-
-
-
-
 @media (min-width: 768px) {
     .nav-tabs.nav-justified > li > a{
         padding: 3px;
@@ -137,7 +133,7 @@ body {
 
 .info-title {
     font-size: 13px;
-    padding-top: 0px;
+    padding-top: 0;
     padding-bottom: 3px;
     padding-right: 3px;
     padding-left: 3px;

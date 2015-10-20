@@ -16,7 +16,7 @@ vidamo.controller('layoutCtrl',['$scope',
 
 
         // templates not in use
-        $scope.procedureHTML = { name: 'procedureHTML.html', url: 'mobius/procedureHTML.html'} ;
+       $scope.procedureHTML = { name: 'procedureHTML.html', url: 'mobius/procedureHTML.html'} ;
 
         $scope.$on('editProcedure', function(){
             if($scope.displayProcedure === false){
@@ -26,7 +26,7 @@ vidamo.controller('layoutCtrl',['$scope',
                     $scope.procedureSize = 25;
                 }
                 else if($scope.graphWidth > 25){
-                    $scope.graphSize -= 25;
+                      $scope.graphSize -= 25;
                     $scope.procedureSize = 25;
                 }
             }else{
@@ -50,8 +50,6 @@ vidamo.controller('layoutCtrl',['$scope',
             $scope.procedureWidth = $scope.procedureSize +'%';
             $scope.graphWidth = $scope.graphSize +'%';
         //},0);
-
-
         };
 
     }]);

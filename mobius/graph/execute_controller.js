@@ -2,8 +2,8 @@
 // Execute generated code ('run' button)
 //
 
-vidamo.controller('executeCtrl',['$scope','generateCode','hotkeys',
-    function($scope,generateCode,hotkeys) {
+vidamo.controller('executeCtrl',['$scope','consoleMsg','generateCode','hotkeys',
+    function($scope,consoleMsg,generateCode,hotkeys) {
 
         // one-way binding of generated javascript code
 
@@ -23,7 +23,6 @@ vidamo.controller('executeCtrl',['$scope','generateCode','hotkeys',
         });
 
         $scope.$watch('outputs',function(){
-			console.log($scope.outputs)
             generateCode.setOutputGeom($scope.outputs);
         });
 
@@ -48,16 +47,13 @@ vidamo.controller('executeCtrl',['$scope','generateCode','hotkeys',
                 }
                 ,0);
 
-            // declare start running in console
-            document.getElementById('log').innerHTML += "<div></br> Executing generated code ... </div>";
-
             try{
                 $scope.outputs = new Function(   $scope.javascriptCode
                                                 + $scope.geomListCode
-                                                + 'return VIDAMO.dataConversion(geomList);')(); 
+                                                + 'return VIDAMO.dataConversion(geomList);')();
+                consoleMsg.runtimeMsg();
             }catch (e) {
-                document.getElementById('log').innerHTML +=     "<div style='color:red'>" +  e.message + "</div>";
-                alert(e.stack);
+                consoleMsg.runtimeMsg(e.message);
             }
 
             // display in the viewport according to node selection
@@ -84,8 +80,6 @@ vidamo.controller('executeCtrl',['$scope','generateCode','hotkeys',
                 }
             },0);
 
-
-            document.getElementById('log').innerHTML += "<div> Execution done </div>";
         }
     }]);
 
