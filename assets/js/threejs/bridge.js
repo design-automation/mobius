@@ -144,7 +144,8 @@ var displayTopologyInThree = function ( topology ){
 		  var particle = topology.vertex[vertexNo].vector3
 		  // add it to the geometry
 		  particles.vertices.push(particle);
-	}
+
+		  }
 	// create the particle system
 	var particleSystem = new THREE.ParticleSystem(
 		particles,

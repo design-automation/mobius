@@ -288,7 +288,7 @@ var VIDAMO = ( function (mod, pvt){
 	// Input: MobiusDataObjects with NURBS geoemtry (surface & surface)
 	// Output: ??
 	//	
-	mod.intersectCurves = function (mObjSurface1, mObjSurface2, tolerance, Async){
+	mod.intersectSurfaces	= function (mObjSurface1, mObjSurface2, tolerance, Async){
 		var surface1 = mObjSurface1.geometry;
 		var surface2 = mObjSurface2.geometry;
 		
@@ -358,13 +358,12 @@ var VIDAMO = ( function (mod, pvt){
 	};
 	
 	//
-	// Input: Single or Array of MobiusDataObject (with any kind of geometry), numeric input
+	// Input: Single or Array of MobiusDataObject (with any kind of geometry) or TopoGeometry, numeric input
 	// Output: MobiusDataObject with Three.js geometry
 	//
 	mod.addMaterial = function(obj, material_type, options){
 
 		var material = new THREE[material_type](options);
-		
 		if(obj.constructor === Array){
 			for(var i=0; i<obj.length; i++)
 				obj[i].material = material;
@@ -379,6 +378,7 @@ var VIDAMO = ( function (mod, pvt){
 	//	Output: Modified object with data
 	//
 	mod.addData = function(obj, dataName, dataValue){
+		
 		// decide on topology heirarchy also - if edge gets a property, do the vertices also get the same property?
 		if(obj.constructor === Array){
 			for(var i=0; i<obj.length; i++){
@@ -411,30 +411,46 @@ var VIDAMO = ( function (mod, pvt){
 		
 		return new MobiusDataObject( result );
 	};
-	 
-    // convert all objects to types recognized by Vidamo - tables, text, numbers, three.js mesh
+	
+	/*
+	 *	Topology Functions
+	 *
+	 */
+	mod.makeTopology = function(){
+		return new TOPOLOGY.Topology();
+	};
+	
+	mod.addVertexToTopology = function(topology, vertex){
+		newVertex = topology.create('vertex');
+		newVertex.vector3 = vertex;
+	};
+	
+	mod.addEdgeToTopology = function(topology, edge, vertexA, vertexB){
+		topology.addIncidenceData("edge", edge, "vertex", [vertexA, vertexB]);
+	};
+	
+	mod.addFaceToTopology = function(topology, vertices, edges, face){
+		topology.addIncidenceData("edge", edge, "vertex", [vertexA, vertexB]);
+	};
+
 	//
-	// Obsolete function - by implementation of data structure
+	// 
 	//
-	// TODO - remove this and directly integrate in VIDAMO
     mod.dataConversion = function(data){
 
 		// actual processing
         for(var i = 0; i < data.length; i++) {
             for (var m in data[i].value) {
                 var geoms = [];
-                if (data[i].value[m].constructor !== Array) { 
-					// compute topology if not already calculated of the mbObj
-					
+                if (data[i].value[m].constructor !== Array) { 			
 					//data[i].geom.push( data[i].value[m].extractGeometry() );
-					data[i].geom.push( data[i].value[m].extractGeometry() );
+					data[i].geom.push( data[i].value[m].extractTopology() );
 					console.log( data[i].value[m].extractData() );
                 }
                 else {
                     for (var n = 0; n < data[i].value[m].length; n++) { 		
-						// compute topology if not already calculated of the mbObj
 						//geoms.push( data[i].value[m][n].extractGeometry() );
-						geoms.push( data[i].value[m][n].extractGeometry() );
+						geoms.push( data[i].value[m][n].extractTopology() );
 						console.log( data[i].value[m][n].extractData() );
                     }
                 }
