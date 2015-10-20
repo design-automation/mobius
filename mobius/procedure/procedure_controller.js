@@ -4,8 +4,8 @@
 
 // todo value of in/out connector is not used
 
-vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode','nodeCollection',
-    function($scope,$rootScope,$filter,generateCode,nodeCollection) {
+vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg','generateCode','nodeCollection',
+    function($scope,$rootScope,$filter,consoleMsg,generateCode,nodeCollection) {
 
         $scope.functionCodeList =[];
 
@@ -425,7 +425,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
                 }
             }
             catch(err){
-                document.getElementById('log').innerHTML += "<div style='color: red'>Error: no node selected!</div>";
+                consoleMsg.errorMsg('noNode');
             }
 
         };
@@ -448,7 +448,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','generateCode
                 }
             }
             catch(err){
-                document.getElementById('log').innerHTML += "<div style='color: red'>Error: no node selected!</div>";
+                consoleMsg.errorMsg('noNode');
             }
         };
     }]);

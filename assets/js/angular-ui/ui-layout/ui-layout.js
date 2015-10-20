@@ -747,7 +747,9 @@ angular.module('ui.layout', [])
           });
 
           scope.$on('$destroy', function() {
-            htmlElement.off('mouseup touchend mousemove touchmove');
+            //htmlElement.off('mouseup touchend mousemove touchmove');
+            // mobius temp fix may lead to memory leak
+            htmlElement.off('mousemove touchmove');
           });
 
           //Add splitbar to layout container list

@@ -5,10 +5,11 @@
 vidamo.controller('graphCtrl',[
                     '$scope',
                     '$timeout',
+                    'consoleMsg',
                     'generateCode',
                     'nodeCollection',
                     'prompt',
-    function($scope,$timeout,generateCode,nodeCollection,prompt) {
+    function($scope,$timeout,consoleMsg,generateCode,nodeCollection,prompt) {
 
         $scope.functionCodeList = [];
         // synchronization with vidamo application data pool
@@ -115,12 +116,12 @@ vidamo.controller('graphCtrl',[
                     eval(testString);
                 }
                 catch(err){
-                    document.getElementById('log').innerHTML += "<div style='color: red'>Error: invalid name!</div>";
+                    consoleMsg.errorMsg('invalidName');
                     return false;
                 }
                 return true;
             }else{
-                document.getElementById('log').innerHTML += "<div style='color: red'>Error: invalid name!</div>";
+                consoleMsg.errorMsg('invalidName');
                 return false;
             }
         }
@@ -219,7 +220,7 @@ vidamo.controller('graphCtrl',[
 
             if (!isValidName(newTypeName)) {return;}
             if ($scope.nodeTypes().indexOf(newTypeName) >= 0 ){
-                document.getElementById('log').innerHTML += "<div style='color: red'>Error: node type name exists!</div>"
+                consoleMsg.errorMsg('dupName');
                 return;
             }
 
@@ -262,7 +263,7 @@ vidamo.controller('graphCtrl',[
                 },100);
             }
             catch(err){
-                document.getElementById('log').innerHTML += "<div style='color: red'>Error: no node selected!</div>";
+                consoleMsg.errorMsg('noNode');
             }
 
 
@@ -300,7 +301,7 @@ vidamo.controller('graphCtrl',[
                 $scope.chartViewModel.nodes[$scope.nodeIndex].data.version = d.getTime();
             }
             catch(err){
-                document.getElementById('log').innerHTML += "<div style='color: red'>Error: no node selected!</div>";
+                consoleMsg.errorMsg('noNode');
             }
 
             // update generated code
@@ -347,9 +348,11 @@ vidamo.controller('graphCtrl',[
 
                 if (!isValidName(newTypeName)) {return;}
                 if ($scope.nodeTypes().indexOf(newTypeName) >= 0 ){
-                    document.getElementById('log').innerHTML += "<div style='color: red'>Error: node type name exists!</div>"
+                    consoleMsg.errorMsg('dupName');
                     return;
-                }else{document.getElementById('log').innerHTML += "<div style='color: green'>node type added!</div>"}
+                }else{
+                    consoleMsg.confirmMsg('typeAdded');
+                }
 
                 var input =  $scope.chartViewModel.getSelectedNodes()[0].data.inputConnectors;
                 var output = $scope.chartViewModel.getSelectedNodes()[0].data.outputConnectors;
@@ -374,10 +377,10 @@ vidamo.controller('graphCtrl',[
                     if(newTypeName !== oldTypeName){
                         if (!isValidName(newTypeName)) {return;}
                         if ($scope.nodeTypes().indexOf(newTypeName) >= 0 ){
-                            document.getElementById('log').innerHTML += "<div style='color: red'>Error: node type name exists!</div>"
+                            consoleMsg.errorMsg('dupName');
                             return;
                         }else{
-                            document.getElementById('log').innerHTML += "<div style='color: green'>Node type overwritten!</div>"
+                            consoleMsg.confirmMsg('typeOverwritten');
                         }
                     }
 

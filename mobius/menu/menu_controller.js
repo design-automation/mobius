@@ -1,5 +1,9 @@
-vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','generateCode','nodeCollection','$http','hotkeys',
-    function($scope,$rootScope,$timeout,generateCode,nodeCollection,$http,hotkeys){
+//
+// Controller for menubar
+//
+
+vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','generateCode','nodeCollection','$http','hotkeys',
+    function($scope,$rootScope,$timeout,consoleMsg,generateCode,nodeCollection,$http,hotkeys){
 
         // store json url
         $scope.sceneUrl= '';
@@ -53,9 +57,9 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','generateCode','n
                         // update the interface
                         generateCode.setInterfaceList(interfaceJsonObj);
 
-                        document.getElementById('log').innerHTML += "<div style='color: green'>Scene imported!</div>";
+                        consoleMsg.confirmMsg('sceneImport');
                     }else{
-                        document.getElementById('log').innerHTML += "<div style='color: red'>Error: File type is not Json!</div>";
+                        consoleMsg.errorMsg('invalidFileType');
                     }
                     generateCode.generateCode();
                 };
@@ -119,9 +123,9 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','generateCode','n
                             // install new imported node into nodeCollection
                             nodeCollection.installNewNodeType(newNodeName, nodeJsonObj,procedureJsonObj,interfaceJsonObj);
 
-                            document.getElementById('log').innerHTML += "<div style='color: green'> node imported!</div>";
+                            consoleMsg.confirmMsg('nodeImport');
                         }else{
-                            document.getElementById('log').innerHTML += "<div style='color: red'>Error: File type is not Json!</div>";
+                            consoleMsg.errorMsg('invalidFileType');
                         }
                     };
                 })(f);
