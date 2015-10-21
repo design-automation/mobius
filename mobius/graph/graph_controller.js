@@ -446,59 +446,16 @@ vidamo.controller('graphCtrl',[
                             }
                         }
                         consoleMsg.confirmMsg('typeOverwritten');
-
                     }
                 }
             }
         });
 
-        var ctrlDown = false;
+        $scope.$on('selectAll',function(){
+            $scope.chartViewModel.selectAll();
+        });
 
-        //
-        // Event handler for key-down on the flowchart.
-        //
-        $scope.keyDown = function (evt) {
-
-            if (evt.keyCode === 65) {
-
-                ctrlDown = true;
-                evt.stopPropagation();
-                evt.preventDefault();
-            }
-        };
-
-        //
-        // Event handler for key-up on the flowchart.
-        //
-        $scope.keyUp = function (evt) {
-            console.log('up');
-
-            if (evt.keyCode === 46) {
-                //
-                // Delete key.
-                //
-                console.log('emitting');
-                $scope.$emit("deleteSelected");
-            }
-
-            if (evt.keyCode == 17 && ctrlDown) {
-                //
-                // Ctrl + A
-                //
-                $scope.chartViewModel.selectAll();
-            }
-
-            if (evt.keyCode == 27) {
-                // Escape.
-                $scope.chartViewModel.deselectAll();
-            }
-
-            if (evt.keyCode === 65) {
-                ctrlDown = false;
-
-                evt.stopPropagation();
-                evt.preventDefault();
-            }
-        };
-
+        $scope.$on('deselectAll',function(){
+            $scope.chartViewModel.deselectAll();
+        });
     }]);

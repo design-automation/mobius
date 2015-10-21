@@ -21,10 +21,9 @@
 
 </head>
 
-<body
-        ng-keydown="keyDown($event)"
-        ng-keyup="keyUp($event)"
-        ng-controller="graphCtrl">
+<body ng-keydown="keyDown($event)"
+      ng-keyup="keyUp($event)"
+      ng-controller="keyCtrl">
 <div>
     <!-- dropdown Menu -->
     <div ng-controller="menuCtrl" class = "menubar">
@@ -293,7 +292,8 @@
                                                  model="panzoomModel"
                                                  class="panzoom">
                                             <div>
-                                                <flow-chart chart="chartViewModel" class = "flow-chart" >
+                                                <flow-chart
+                                                                    chart="chartViewModel" class = "flow-chart" >
                                                 </flow-chart>
                                             </div>
                                         </panzoom>
@@ -387,7 +387,7 @@
 <script src="mobius/viewport/console_controller.js"></script>
 <script src="mobius/viewport/viewport_controller.js"></script>
 <script src="mobius/layout_controller.js"></script>
-
+<script src="mobius/keyboard_controller.js"></script>
 
 <!-- directives -->
 <script src="mobius/graph/contextMenu_directive.js"></script>
