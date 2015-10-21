@@ -97,7 +97,7 @@ angular.module('dragging', ['mouseCapture', ] )
 
 	  		evt.stopPropagation();
 	  		evt.preventDefault();
-  		},
+  		}
 
 	};
 

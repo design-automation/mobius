@@ -379,64 +379,126 @@ vidamo.controller('graphCtrl',[
                     var newTypeName = prompt('Enter a name for new type:', oldTypeName);
 
                     if(newTypeName !== oldTypeName){
-                        if (!isValidName(newTypeName)) {return;}
+                        if (!isValidName(newTypeName)) {
+                            consoleMsg.errorMsg('invalidName');
+                            return;}
                         if ($scope.nodeTypes().indexOf(newTypeName) >= 0 ){
                             consoleMsg.errorMsg('dupName');
                             return;
-                        }else{
-                            consoleMsg.confirmMsg('typeOverwritten');
+                        }else {
+                            overwriteType(oldTypeName,newTypeName,instanceName);
                         }
-                    }
-
-                    // update the original type
-                    var input =  $scope.chartViewModel.getSelectedNodes()[0].data.inputConnectors;
-                    var output = $scope.chartViewModel.getSelectedNodes()[0].data.outputConnectors;
-                    var index = $scope.chartViewModel.getSelectedNodes()[0].data.id;
-                    var newProcedureDataModel = $scope.dataList[index];
-                    var newInterfaceDataModel = $scope.interfaceList[index];
-
-                    nodeCollection.updateNodeType(oldTypeName, newTypeName, input,output,newProcedureDataModel,newInterfaceDataModel);
-
-                    // update this node
-                    $scope.chartViewModel.getSelectedNodes()[0].data.type = newTypeName;
-                    $scope.chartViewModel.getSelectedNodes()[0].data.version = 0;
-
-                    // update other nodes with original type and version 0
-                    for(var i = 0; i < $scope.chartViewModel.nodes.length; i++){
-                        var node = $scope.chartViewModel.nodes[i];
-                        if(node.data.type === oldTypeName){
-                            if(node.data.name !== instanceName && node.data.version === 0){
-                                // nodeModel update
-                                node.data.type = newTypeName;
-                                node.data.inputConnectors = [];
-                                node.data.outputConnectors = [];
-                                node.inputConnectors = [];
-                                node.outputConnectors = [];
-
-                                for(var j = 0; j < input.length; j++){
-                                    node.addInputConnector({
-                                        name: input[j].name,
-                                        value:''
-                                    });
-                                }
-
-                                for(var k = 0; k < output.length; k++){
-                                    node.addOutputConnector({
-                                        name: output[k].name,
-                                        value:''
-                                    });
-                                }
-
-                                // procedure Model whole
-                                $scope.dataList[node.data.id] = newProcedureDataModel;
-
-                                // interface Model whole
-                                $scope.interfaceList[node.data.id] = newInterfaceDataModel;
-                            }
-                        }
+                    }else if(newTypeName === oldTypeName){
+                        overwriteType(oldTypeName,newTypeName,instanceName);
                     }
                 },100);
+
+
+                function overwriteType(oldTypeName,newTypeName,instanceName){
+                    if (confirm("You are about the overwrite type '" + oldTypeName
+                            +"' with type'" + newTypeName + "', are you sure?") === true) {
+
+                        // update the original type
+                        var input =  $scope.chartViewModel.getSelectedNodes()[0].data.inputConnectors;
+                        var output = $scope.chartViewModel.getSelectedNodes()[0].data.outputConnectors;
+                        var index = $scope.chartViewModel.getSelectedNodes()[0].data.id;
+                        var newProcedureDataModel = $scope.dataList[index];
+                        var newInterfaceDataModel = $scope.interfaceList[index];
+
+                        nodeCollection.updateNodeType(oldTypeName, newTypeName, input,output,newProcedureDataModel,newInterfaceDataModel);
+
+                        // update this node
+                        $scope.chartViewModel.getSelectedNodes()[0].data.type = newTypeName;
+                        $scope.chartViewModel.getSelectedNodes()[0].data.version = 0;
+
+                        // update other nodes with original type and version 0
+                        for(var i = 0; i < $scope.chartViewModel.nodes.length; i++){
+                            var node = $scope.chartViewModel.nodes[i];
+                            if(node.data.type === oldTypeName){
+                                if(node.data.name !== instanceName && node.data.version === 0){
+                                    // nodeModel update
+                                    node.data.type = newTypeName;
+                                    node.data.inputConnectors = [];
+                                    node.data.outputConnectors = [];
+                                    node.inputConnectors = [];
+                                    node.outputConnectors = [];
+
+                                    for(var j = 0; j < input.length; j++){
+                                        node.addInputConnector({
+                                            name: input[j].name,
+                                            value:''
+                                        });
+                                    }
+
+                                    for(var k = 0; k < output.length; k++){
+                                        node.addOutputConnector({
+                                            name: output[k].name,
+                                            value:''
+                                        });
+                                    }
+
+                                    // procedure Model whole
+                                    $scope.dataList[node.data.id] = newProcedureDataModel;
+
+                                    // interface Model whole
+                                    $scope.interfaceList[node.data.id] = newInterfaceDataModel;
+                                }
+                            }
+                        }
+                        consoleMsg.confirmMsg('typeOverwritten');
+
+                    }
+                }
             }
         });
+
+        var ctrlDown = false;
+
+        //
+        // Event handler for key-down on the flowchart.
+        //
+        $scope.keyDown = function (evt) {
+
+            if (evt.keyCode === 65) {
+
+                ctrlDown = true;
+                evt.stopPropagation();
+                evt.preventDefault();
+            }
+        };
+
+        //
+        // Event handler for key-up on the flowchart.
+        //
+        $scope.keyUp = function (evt) {
+            console.log('up');
+
+            if (evt.keyCode === 46) {
+                //
+                // Delete key.
+                //
+                console.log('emitting');
+                $scope.$emit("deleteSelected");
+            }
+
+            if (evt.keyCode == 17 && ctrlDown) {
+                //
+                // Ctrl + A
+                //
+                $scope.chartViewModel.selectAll();
+            }
+
+            if (evt.keyCode == 27) {
+                // Escape.
+                $scope.chartViewModel.deselectAll();
+            }
+
+            if (evt.keyCode === 65) {
+                ctrlDown = false;
+
+                evt.stopPropagation();
+                evt.preventDefault();
+            }
+        };
 
     }]);

@@ -3,7 +3,6 @@
   xmlns="http://www.w3.org/2000/svg"
   ng-mousedown="mouseDown($event)"
   ng-mousemove="mouseMove($event)"
-  ng-dblclick ="doubleClick($event)"
   oncontextmenu="return false;"
 >
   <defs>
@@ -32,7 +31,10 @@
       </pattern>
   </defs>
 
-    <rect x="0" y="0" height="4000" width="4000" style="stroke-width:1; stroke:black; fill:url(#dots-4-11);" />
+    <rect x="0" y="0"
+          height="4000" width="4000"
+          ng-dblclick ="doubleClick($event)"
+          style="stroke-width:1; stroke:black; fill:url(#dots-4-11);" />
 
     <g
     ng-repeat="node in chart.nodes"
@@ -49,7 +51,8 @@
       ng-attr-height="{{node.height()}}" 
       fill="url(#nodeBackgroundGradient)"
       context-menu="nodeMenuOptions"
-      >
+      ng-dblclick ="nodeDoubleClick($event)"
+            >
     </rect>
 
 

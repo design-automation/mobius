@@ -21,7 +21,10 @@
 
 </head>
 
-<body>
+<body
+        ng-keydown="keyDown($event)"
+        ng-keyup="keyUp($event)"
+        ng-controller="graphCtrl">
 <div>
     <!-- dropdown Menu -->
     <div ng-controller="menuCtrl" class = "menubar">
@@ -267,8 +270,7 @@
 
                         <!-- pan & zoom field -->
                         <div mouse-capture
-                             ng-keydown="keyDown($event)"
-                             ng-keyup="keyUp($event)"
+
                              ui-layout-container size = "75%">
                             <div ng-controller="graphCtrl">
                                 <div ng-if = "currentNodeName">

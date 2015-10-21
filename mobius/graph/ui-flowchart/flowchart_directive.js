@@ -107,6 +107,13 @@ angular.module('flowChart', ['dragging'] )
 		}]
 	];
 
+	$scope.deleteSelected = function(evt){
+		console.log("xxx")
+		//if(evt.KeyCode === ){
+		//	$scope.$emit("deleteSelected"); // -> graph controller
+		//}
+	};
+
     // menu for right click on connector
     $scope.connectorMenuOptions = [
         ['Delete', function () {
@@ -127,7 +134,6 @@ angular.module('flowChart', ['dragging'] )
     // test menu for right click on canvas
     $scope.canvasMenuOptions = [
         ['no operation', function () {
-
         }]
     ];
 
@@ -149,7 +155,7 @@ angular.module('flowChart', ['dragging'] )
 	// Init data-model variables.
 	//
 	$scope.draggingConnection = false;
-	$scope.connectorSize = 8;
+	$scope.connectorSize = 6;
 	$scope.dragSelecting = false;
 
 	// @ vidamo for zoom and pan
@@ -163,8 +169,7 @@ angular.module('flowChart', ['dragging'] )
         // todo shall hide dropdown when zoom?
         document.getElementById("node-creator").style.transform
 			= 'scale(' + 1/$scope.scaleFactor+','+ 1/$scope.scaleFactor +')';
-
-    });
+	});
 
 	/* Can use this to test the drag selection rect.
 	$scope.dragSelectionRect = {
@@ -288,15 +293,6 @@ angular.module('flowChart', ['dragging'] )
             $scope.scaleFactor = message;
         });
 
-
-		var offset = 0;
-
-		if($scope.scaleFactor > 1){
-			offset = -1;
-		}else{
-			offset = 1;
-		}
-
         // update dropdown location
 		var dBclickPoint = controller.translateCoordinates(evt.clientX, evt.clientY);
 		$scope.dbClickMenu.x = dBclickPoint.x * (1/$scope.scaleFactor) 	- (90-90/$scope.scaleFactor);
@@ -306,7 +302,7 @@ angular.module('flowChart', ['dragging'] )
 		document.getElementById("node-creator").style.display = "inline-block";
 
         // node location
-        $scope.chart.newPos.x = $scope.dbClickMenu.x;
+        $scope.chart.newPos.x = dBclickPoint.x * (1/$scope.scaleFactor);
         $scope.chart.newPos.y = $scope.dbClickMenu.y;
 	};
 
@@ -330,8 +326,10 @@ angular.module('flowChart', ['dragging'] )
             var mouseOverElement = controller.hitTest(evt.clientX, evt.clientY);
             if(mouseOverElement instanceof SVGElement){
                 document.getElementById("node-creator").style.display = "none";
-				$scope.$emit("nodeIndex", undefined);
-            }
+				setTimeout(function(){
+					$scope.$emit("nodeIndex", undefined);
+				},0);
+			}
 
 			dragging.startDrag(evt, {
 
@@ -442,10 +440,8 @@ angular.module('flowChart', ['dragging'] )
         // fixme control
         document.getElementById("node-creator").style.display = "none";
 
-
 		var chart = $scope.chart;
 		var lastMouseCoords;
-
 
 		dragging.startDrag(evt, {
 
@@ -503,6 +499,16 @@ angular.module('flowChart', ['dragging'] )
 			}
 
 		});
+	};
+
+	//
+	// Handle double click on a node
+	$scope.nodeDoubleClick = function(evt){
+		document.getElementById("node-creator").style.display = "none";
+		$scope.$emit("editProcedure"); // -> graph controller
+
+		console.log("it is dbl clicked!")
+
 	};
 
 	//
@@ -621,5 +627,4 @@ angular.module('flowChart', ['dragging'] )
 			}
 		});
 	};
-}])
-;
+}]);
