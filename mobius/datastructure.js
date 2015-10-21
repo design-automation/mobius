@@ -38,6 +38,10 @@ var MobiusDataObject = function( geometry ){
 	//
 	// Functions used by Mobius or Module for the different viewers
 	//
+	
+	//
+	// Converts the geometry of the MobiusDataObject - to three.js Mesh by calling a bridging function 'convertGeomtoThreeMesh' in the module 
+	//
 	this.extractGeometry = function(){
 		
 		// if undefined, defines it and saves it
@@ -51,6 +55,10 @@ var MobiusDataObject = function( geometry ){
 		return convertedGeometry;
 	}
 	
+	//
+	// Gets a three.js 3D Object with a Topological representation from the convertedGeometry (three.js mesh) - extracts the three.js mesh firstChild
+	// Uses 'threeToTopology' bridging function defined in the module
+	//
 	this.extractTopology = function(){
 		// convert topology into three.js objects with numbers and return
 		
@@ -66,27 +74,33 @@ var MobiusDataObject = function( geometry ){
 		return displayTopologyInThree( topology );
 	}
 	
+	//
+	// Extracts data at MobiusDataObject level and topology level, converts it into a JSON object and returns it to the calling function
+	// Doesnot require any bridging functions from the module
+	//
 	this.extractData = function(){
-		// parse topology object, extract data and return as three.js table
+		
+		var jsonData = {}
 		
 		// LIMITATION - Data can only be added to the topology
 		if( topology == undefined && this.data == undefined )
-			console.log("No data exists for this object!");
+			return jsonData;
 		else{
-			if (this.data != undefined)
-				console.log("Object Properties: ", JSON.stringify(this.data));
-			
+			if (this.data != undefined){
+				jsonData['Object'] = this.data;
+			}
+
 			for(property in topology){ 
 				if(topology.hasOwnProperty(property)){
 					for( var index=0; index < topology[property].length; index++){
-					if (topology[property][index].data != undefined)
-						console.log("Properties of ", property , index, ":", JSON.stringify(topology[property][index].data));
-					else
-						console.log("No data defined for ", property);
+						if (topology[property][index].data != undefined)
+							jsonData[property+index] = topology[property][index].data;	
+						/*else
+							jsonData[property+index] = 'No data';	*/
 					}
 				} 
 			}
 		}
-		return "JSON Data Object";
+		return jsonData;
 	}
 }

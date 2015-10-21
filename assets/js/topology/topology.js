@@ -439,7 +439,7 @@ TOPOLOGY.Topology.prototype.convertToGeometry = function()
 		var a = this.face[i].vertexIDs;
 		var geoFace = new THREE.Face3( a[0], a[1], a[2] );
 		geometry.faces[totalFaces] = geoFace;
-		geometry.faces[totalFaces].color = palette[this.face[i].colorID]; console.log(a); 
+		geometry.faces[totalFaces].color = palette[this.face[i].colorID]; 
 		if(a.length>3){
 			totalFaces++;
 			for(var j=2; j<a.length-1; j++){
