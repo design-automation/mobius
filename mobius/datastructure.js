@@ -80,27 +80,40 @@ var MobiusDataObject = function( geometry ){
 	//
 	this.extractData = function(){
 		
-		var jsonData = {}
+		var dataTable = [];
 		
 		// LIMITATION - Data can only be added to the topology
 		if( topology == undefined && this.data == undefined )
-			return jsonData;
+			return dataTable;
 		else{
 			if (this.data != undefined){
-				jsonData['Object'] = this.data;
+				for(var property in this.data){
+					var jsonObject = {
+										'attachedTo' : 'Object',
+										'Property' : property,
+										'Value' : this.data[property]
+									};
+					dataTable.push(jsonObject);
+				}	
 			}
 
-			for(property in topology){ 
-				if(topology.hasOwnProperty(property)){
-					for( var index=0; index < topology[property].length; index++){
-						if (topology[property][index].data != undefined)
-							jsonData[property+index] = topology[property][index].data;	
-						/*else
-							jsonData[property+index] = 'No data';	*/
+			for(topoElement in topology){ 
+				if(topology.hasOwnProperty(topoElement)){
+					for( var index=0; index < topology[topoElement].length; index++){
+						if (topology[topoElement][index].data != undefined){
+							for(var property in topology[topoElement][index].data){
+								var jsonObject = {
+													'attachedTo' : topoElement,
+													'Property' : property,
+													'Value' : topology[topoElement][index].data[property]
+												};
+								dataTable.push(jsonObject);
+							}
+						}
 					}
 				} 
 			}
 		}
-		return jsonData;
+		return dataTable;
 	}
 }
