@@ -27,7 +27,7 @@ vidamo.directive('viewport', function factory() {
             var VIEWPORT_WIDTH = container.offsetWidth;
             var VIEWPORT_HEIGHT = container.offsetHeight;
 
-            var scene,
+            var //scene,
                 camera,
                 renderer,
                 controls;
@@ -146,72 +146,40 @@ vidamo.directive('viewport', function factory() {
             //
             // supporting function for geometry from verb to three.js
             //
-            scope.internalControl.addGeometryToScene = function(geom,value){ 
-				if(geom.constructor === Array){
-					for(var i = 0; i< geom.length ;i++){
-						scope.internalControl.displayObject(value[i]);
-					}
-				} else {
-						scope.internalControl.displayObject(value)
-				}
+            scope.internalControl.addGeometryToScene = function(geom,value){
+                if(geom.constructor === Array){
+                    for(var i = 0; i< geom.length ;i++){
+                        scope.internalControl.displayObject(value[i]);
+                    }
+                } else {
+                    scope.internalControl.displayObject(value)
+                }
             };
-			
-			//
-			// takes in single data object and categorizes and displays accordingly
-			//
-			scope.internalControl.displayObject = function(singleDataObject){
-				if(singleDataObject instanceof THREE.Mesh || singleDataObject instanceof THREE.Line)
-					scene.add(singleDataObject)
-				else if(singleDataObject instanceof Number)
-					console.log(singleDataObject)
-				else
-					console.log("Vidamo doesn't recognise this type!")
-			};
-			
-			scope.internalControl.benchmark = function(func, runs){
+
+            //
+            // takes in single data object and categorizes and displays accordingly
+            //
+            scope.internalControl.displayObject = function(singleDataObject){
+                if(singleDataObject instanceof THREE.Mesh
+                    || singleDataObject instanceof THREE.Line
+                    || singleDataObject instanceof THREE.Object3D)
+                    scene.add(singleDataObject);
+                else if(singleDataObject instanceof Number)
+                    console.log(singleDataObject);
+                else
+                    console.log("Vidamo doesn't recognise this type!")
+            };
+
+
+            // anyone tells me what the hell is this
+            // fixme
+            scope.internalControl.benchmark = function(func, runs){
                 var d1 = Date.now();
                 for (var i = 0 ; i < runs; i++)
                     res = func();
                 var d2 = Date.now();
                 return { result : res, elapsed : d2-d1, each : (d2-d1)/runs };
             };
-
-			/* TODO - Work out if all THREE Geometry objects that can directly be added to scene are covered - especially points
-            scope.internalControl.addCurveToScene = function(geom, material){
-                material = material || new THREE.LineBasicMaterial({ linewidth: 100, color: 0x000000});
-                scene.add( new THREE.Line( geom, material ) );
-            };
-
-            scope.internalControl.addLineToScene = function(pts, mat){
-                addCurveToScene(asGeometry(asVector3(pts)), mat);
-            };
-
-
-            scope.internalControl.asVector3 = function(pts){
-                return pts.map(function(x){
-                    return new THREE.Vector3(x[0],x[1],x[2]);
-                });
-            };
-
-            scope.internalControl.asGeometry = function(threePts){
-                var geometry = new THREE.Geometry();
-                geometry.vertices.push.apply( geometry.vertices, threePts );
-                return geometry;
-            };
-
-            scope.internalControl.pointsAsGeometry = function(pts){
-                return asGeometry( asVector3(pts) )
-            };
-
-            scope.internalControl.addPointsToScene = function(pts){
-
-                var geom = asGeometry( asVector3( pts ) );
-                var cloudMat2 = new THREE.PointCloudMaterial({ size: 6.5, sizeAttenuation: false, color: 0xffffff });
-                var cloud2 = new THREE.PointCloud( geom, cloudMat2 );
-
-                scene.add( cloud2 );
-            } */
-
         }
     }
 });
