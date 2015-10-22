@@ -9,11 +9,12 @@ var vidamo = angular.module('vidamo',
                             'ui.select',
                             'ngSanitize',
                             'ui.tree',
+                            'ui.grid',
                             'flowChart',
                             'panzoom',
                             'xeditable',
                             'ui.bootstrap.contextMenu',
-                                'cfp.hotkeys']);
+                            'cfp.hotkeys']);
 
     // Simple service to create a prompt.
     // todo replace with customizable one

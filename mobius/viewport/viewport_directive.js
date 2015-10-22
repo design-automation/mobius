@@ -15,7 +15,7 @@ vidamo.directive('viewport', function factory() {
         restrict: 'E',
         replace: true,
         scope: {
-            control: '='
+            control: '=',
         },
 
         link: function (scope, elem) {
@@ -146,28 +146,39 @@ vidamo.directive('viewport', function factory() {
             //
             // supporting function for geometry from verb to three.js
             //
-            scope.internalControl.addGeometryToScene = function(geom,value){
+            scope.internalControl.addGeometryToScene = function(geom,value,geomData){
                 if(geom.constructor === Array){
                     for(var i = 0; i< geom.length ;i++){
-                        scope.internalControl.displayObject(value[i]);
+                        scope.internalControl.displayObject(value[i],geomData[i]);
                     }
                 } else {
-                    scope.internalControl.displayObject(value)
+                    scope.internalControl.displayObject(value,geomData);
                 }
             };
 
             //
             // takes in single data object and categorizes and displays accordingly
             //
-            scope.internalControl.displayObject = function(singleDataObject){
-                if(singleDataObject instanceof THREE.Mesh
-                    || singleDataObject instanceof THREE.Line
-                    || singleDataObject instanceof THREE.Object3D)
-                    scene.add(singleDataObject);
-                else if(singleDataObject instanceof Number)
-                    console.log(singleDataObject);
-                else
-                    console.log("Vidamo doesn't recognise this type!")
+            scope.internalControl.displayObject = function(singleGeomObject, singleGeomDataObject){
+                console.log("single: ",singleGeomDataObject);
+
+                // update the 3d viewport
+                if(singleGeomObject instanceof THREE.Mesh
+                    || singleGeomObject instanceof THREE.Line
+                    || singleGeomObject instanceof THREE.Object3D){
+                    scene.add(singleGeomObject);
+                }
+                // update the data table viewport
+
+                if(singleGeomDataObject.length !== 0){
+                    scope.internalControl.geometryData = [];
+                    scope.internalControl.geometryData.push(singleGeomDataObject);
+                    console.log(scope.internalControl.geometryData);
+                }
+                else{
+                    console.log("Vidamo doesn't recognise this type!");
+                }
+
             };
 
 

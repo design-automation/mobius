@@ -44,13 +44,12 @@ vidamo.controller('executeCtrl',['$scope','consoleMsg','generateCode','hotkeys',
             setTimeout(function(){
                     var scope = angular.element(document.getElementById('threeViewport')).scope();
                     scope.$apply(function(){scope.viewportControl.refresh();} );
-                }
-                ,0);
+                },0);
 
             try{
                 $scope.outputs = new Function(   $scope.javascriptCode
                                                 + $scope.geomListCode
-                                                + 'return VIDAMO.dataConversion(geomList);')();
+                                                + '\n return VIDAMO.dataConversion(geomList);')();
                 consoleMsg.runtimeMsg();
             }catch (e) {
                 consoleMsg.runtimeMsg(e.message);
@@ -60,6 +59,7 @@ vidamo.controller('executeCtrl',['$scope','consoleMsg','generateCode','hotkeys',
 
             setTimeout(function(){
                 var selectedNodes = $scope.chartViewModel.getSelectedNodes();
+                // fixme scope regulation
                 var scope = angular.element(document.getElementById('threeViewport')).scope();
 
                 for(var i = 0; i < $scope.outputs.length; i++){
@@ -71,7 +71,9 @@ vidamo.controller('executeCtrl',['$scope','consoleMsg','generateCode','hotkeys',
                             for(var k in $scope.outputs[i].value){
                                 scope.$apply(function(){
                                     scope.viewportControl.
-                                        addGeometryToScene($scope.outputs[i].value[k],$scope.outputs[i].geom[p]);
+                                        addGeometryToScene($scope.outputs[i].value[k],
+                                                            $scope.outputs[i].geom[p],
+                                                        $scope.outputGeom[i].geomData[p]);
                                 } );
                                 p++;
                             }

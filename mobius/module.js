@@ -517,26 +517,34 @@ var VIDAMO = ( function (mod, pvt){
 	mod.dataConversion = function(data){
 
 		// actual processing
+		console.log("before data: ", data);
 		for(var i = 0; i < data.length; i++) {
 			for (var m in data[i].value) {
-				var geoms = [];
+				var geoms = [];   		// primitive geometry
+				var geomDatas = [];	    // geometry data
+				var topo = [];    		// topology geometry
+
 				if (data[i].value[m].constructor !== Array) {
 					// switch of data type
 					data[i].geom.push( data[i].value[m].extractGeometry() );
+					data[i].geomData.push( data[i].value[m].extractData()[0] );
 					//data[i].geom.push( data[i].value[m].extractTopology() );
-					console.log( data[i].value[m].extractData() );
+					console.log( "fresh: ",data[i].value[m].extractData() );
 				}
 				else {
 					for (var n = 0; n < data[i].value[m].length; n++) {
 						geoms.push( data[i].value[m][n].extractGeometry() );
+						geomDatas.push( data[i].value[m][n].extractData() );
 						//geoms.push( data[i].value[m][n].extractTopology() );
-						console.log( data[i].value[m][n].extractData() );
+						console.log( "fresh: ",data[i].value[m][n].extractData() );
 					}
 				}
 				data[i].geom.push(geoms);
+				data[i].geomData.push(geomDatas);
 			}
 		}
-		//console.log("ConvertedData", data)
+		console.log("after data: ", data);
+
 		return data;
 	};
 

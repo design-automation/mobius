@@ -128,8 +128,9 @@ vidamo.factory('generateCode', function () {
                                             + node_name +'.name,'
                                             + 'value:'
                                             + return_obj_name + ','
-                                            + 'geom:'
-                                            + '[]'
+                                            + 'geom:[],'
+                                            + 'geomData:[],'
+                                            + 'topo:[]'
                                             +'});'
                     }
 

@@ -156,7 +156,9 @@ vidamo.controller('graphCtrl',[
                          for(var k in $scope.outputGeom[i].value){
                              scope.$apply(function(){
                                  scope.viewportControl
-                                     .addGeometryToScene($scope.outputGeom[i].value[k],$scope.outputGeom[i].geom[p]);} );
+                                     .addGeometryToScene($scope.outputGeom[i].value[k],
+                                                        $scope.outputGeom[i].geom[p],
+                                                        $scope.outputGeom[i].geomData[p]);} );
                              p ++;
                          }
                      }
