@@ -14,6 +14,8 @@ var vidamo = angular.module('vidamo',
                             'panzoom',
                             'xeditable',
                             'ui.bootstrap.contextMenu',
+                                'ui.grid.resizeColumns',
+                                'ui.grid.autoResize',
                             'cfp.hotkeys']);
 
     // Simple service to create a prompt.

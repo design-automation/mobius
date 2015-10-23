@@ -171,7 +171,6 @@ vidamo.controller('graphCtrl',[
                          }
                      }
                  }
-
          });
 
         // Add a new node to the chart.

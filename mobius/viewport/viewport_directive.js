@@ -21,7 +21,6 @@ vidamo.directive('viewport', function factory() {
         link: function (scope, elem) {
 
             scope.internalControl = scope.control || {};
-            console.log(scope)
 
             // retrieve the viewport dom element
             var container = elem[0];

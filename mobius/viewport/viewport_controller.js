@@ -7,8 +7,15 @@ vidamo.controller('viewportCtrl',[
     '$scope',
     function($scope) {
         $scope.viewportControl = {
-            "geometryData":[{Property:'', Value:'',attachedTo:''}]
+            "geometryData":[]
         };
+
+
+        $scope.gridOptions = {data: 'viewportControl.geometryData',
+                            columnDefs:
+                                [{ field: 'Property', displayName: 'Property'},
+                                { field: 'Value', displayName: 'Value'},
+                                { field: 'attachedTo', displayName: 'AttachedTo'}]};
 
         $scope.topoViewportControl = {
         };
@@ -25,7 +32,7 @@ vidamo.controller('viewportCtrl',[
             $scope.showData = false;
             $scope.showTopology = false;
             document.getElementById("threeViewport").style.display = "none";
-            document.getElementById("topoViewport").style.display = "none";
+            //document.getElementById("topoViewport").style.display = "none";
         };
 
         $scope.toggleGeometry = function(){
@@ -34,7 +41,7 @@ vidamo.controller('viewportCtrl',[
             $scope.showData = false;
             $scope.showTopology = false;
             document.getElementById("threeViewport").style.display = "inline";
-            document.getElementById("topoViewport").style.display = "none";
+            //document.getElementById("topoViewport").style.display = "none";
         };
 
         $scope.toggleData = function(){
@@ -43,7 +50,7 @@ vidamo.controller('viewportCtrl',[
             $scope.showData = true;
             $scope.showTopology = false;
             document.getElementById("threeViewport").style.display = "none";
-            document.getElementById("topoViewport").style.display = "none";
+            //document.getElementById("topoViewport").style.display = "none";
         };
 
         $scope.toggleTopology = function(){
@@ -52,7 +59,7 @@ vidamo.controller('viewportCtrl',[
             $scope.showData = false;
             $scope.showTopology = true;
             document.getElementById("threeViewport").style.display = "none";
-            document.getElementById("topoViewport").style.display = "inline";
+            //document.getElementById("topoViewport").style.display = "inline";
         };
     }
 ]);
