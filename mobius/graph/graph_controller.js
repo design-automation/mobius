@@ -140,7 +140,6 @@ vidamo.controller('graphCtrl',[
                 $scope.$emit("hideProcedure");
             }
 
-             if(message){
                  // display geometries on node selected
                  var selectedNodes = $scope.chartViewModel.getSelectedNodes();
 
@@ -172,7 +171,6 @@ vidamo.controller('graphCtrl',[
                          }
                      }
                  }
-             }
 
          });
 

@@ -149,7 +149,6 @@ vidamo.directive('viewport', function factory() {
             //
             scope.internalControl.addGeometryToScene = function(geom,value,geomData){
                 scope.internalControl.geometryData = [{Property:'', Value:'',attachedTo:''}];
-                console.log('before: ', scope.internalControl.geometryData);
 
                 if(geom.constructor === Array){
                     for(var i = 0; i< geom.length ;i++){
@@ -158,7 +157,6 @@ vidamo.directive('viewport', function factory() {
                 } else {
                     scope.internalControl.displayObject(value,geomData);
                 }
-                console.log('after: ', scope.internalControl.geometryData);
             };
 
             //
@@ -175,8 +173,6 @@ vidamo.directive('viewport', function factory() {
                 // update the data table viewport
 
                 if(singleGeomDataObject.length !== 0){
-                    console.log('single; ',singleGeomDataObject);
-                    //scope.internalControl.geometryData = [];
                     scope.internalControl.geometryData = scope.internalControl.geometryData.concat(singleGeomDataObject);
                 }
                 else{
