@@ -446,7 +446,8 @@ var VIDAMO = ( function (mod){
 	mod.makeCopy = function(mObj, transX, transY, transZ){
 		// needs to be optimized
 		
-		var newCopy = new THREE.Mesh( mObj.extractGeometry().geometry );   // this interconversion takes a very long time
+		// needs to cater to any kind of three.js object - mesh, lines, points - caters to just one right now
+		var newCopy = new THREE.Mesh( mObj.extractGeometry().geometry, mObj.material || default_material_meshFromThree	);   // this interconversion takes a very long time
 		newCopy.translateX(transX);
 		newCopy.translateY(transY);
 		newCopy.translateZ(transZ);
@@ -722,14 +723,14 @@ var VIDAMO = ( function (mod){
             for (var m in data[i].value) {
                 var geoms = [];
                 if (data[i].value[m].constructor !== Array) { 			
-					data[i].geom.push( data[i].value[m].extractGeometry() ); console.log( data[i].value[m].extractGeometry() );
-					//data[i].geom.push( data[i].value[m].extractTopology() );
+					//data[i].geom.push( data[i].value[m].extractGeometry() ); 
+					data[i].geom.push( data[i].value[m].extractTopology() );
 					console.log( data[i].value[m].extractData() );
                 }
                 else {
                     for (var n = 0; n < data[i].value[m].length; n++) { 		
-						geoms.push( data[i].value[m][n].extractGeometry() ); console.log( data[i].value[m][n].extractGeometry() )
-						//geoms.push( data[i].value[m][n].extractTopology() );
+						//geoms.push( data[i].value[m][n].extractGeometry() ); console.log( data[i].value[m][n].extractGeometry() )
+						geoms.push( data[i].value[m][n].extractTopology() );
 						console.log( data[i].value[m][n].extractData() );
                     }
                 }
@@ -766,7 +767,7 @@ var VIDAMO = ( function (mod){
 //
 var default_material_meshFromThree = new THREE.MeshLambertMaterial( { 
 											side: THREE.DoubleSide, 
-											wireframe: true, 
+											wireframe: false, 
 											shading: THREE.SmoothShading, 
 											transparent: false, 
 											color: 0x0066CC
@@ -813,10 +814,12 @@ var convertGeomToThreeMesh = function( geom ){
 		// internal function
 		convertToThree = function(singleDataObject){
 			
-				if( singleDataObject instanceof THREE.Mesh )
+				if( singleDataObject instanceof THREE.Mesh ){
 					return singleDataObject;
-				else if(singleDataObject instanceof THREE.Geometry)
-					return new THREE.Mesh( singleDataObject, singleDataObject.material );	
+				}					
+				else if(singleDataObject instanceof THREE.Geometry){
+					return new THREE.Mesh( singleDataObject, default_material_meshFromThree || singleDataObject.material );	
+				}	
 				else if(singleDataObject instanceof TOPOLOGY.Topology){
 					// display topology itself 
 					return displayTopologyInThree(singleDataObject);

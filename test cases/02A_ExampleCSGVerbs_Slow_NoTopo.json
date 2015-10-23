@@ -13,7 +13,7 @@
                 }
             ],
             "type": "curves",
-            "version": 1443586541807,
+            "version": 1445572209048,
             "overwrite": true
         },
         {
@@ -34,7 +34,7 @@
                 }
             ],
             "type": "makeSurface",
-            "version": 1443598848905,
+            "version": 1445572208480,
             "overwrite": true
         },
         {
@@ -59,7 +59,7 @@
                 }
             ],
             "type": "panels",
-            "version": 1443775933544,
+            "version": 1445572213477,
             "overwrite": true
         },
         {
@@ -75,7 +75,7 @@
                 }
             ],
             "type": "panel",
-            "version": 1443776029593,
+            "version": 1445572207364,
             "overwrite": true
         }
     ],
@@ -397,31 +397,21 @@
             "nodes": [],
             "type": "new",
             "expression": "",
-            "method": "booleanOperation",
+            "method": "objectIntersect",
             "parameters": [
                 {
                     "value": "box",
-                    "type": "geom1",
-                    "$$hashKey": "object:2550"
+                    "type": "mObj1",
+                    "$$hashKey": "object:1297"
                 },
                 {
                     "value": "sphere",
-                    "type": "geom2",
-                    "$$hashKey": "object:2551"
-                },
-                {
-                    "value": "booleanOp",
-                    "type": "operation",
-                    "$$hashKey": "object:2552"
-                },
-                {
-                    "value": "true",
-                    "type": "bsp",
-                    "$$hashKey": "object:2553"
+                    "type": "mObj2",
+                    "$$hashKey": "object:1298"
                 }
             ],
             "result": "intmodel",
-            "$$hashKey": "object:2542"
+            "$$hashKey": "object:1289"
         },
         {
             "id": 5,
@@ -441,36 +431,26 @@
             "$$hashKey": "object:3480"
         },
         {
-            "id": 7,
+            "id": 6,
             "title": "Action",
             "nodes": [],
             "type": "new",
             "expression": "",
-            "method": "booleanOperation",
+            "method": "objectSubtract",
             "parameters": [
                 {
                     "value": "intmodel",
-                    "type": "geom1",
-                    "$$hashKey": "object:2649"
+                    "type": "mObj1",
+                    "$$hashKey": "object:1416"
                 },
                 {
                     "value": "smallSp",
-                    "type": "geom2",
-                    "$$hashKey": "object:2650"
-                },
-                {
-                    "value": "booleanOp1",
-                    "type": "operation",
-                    "$$hashKey": "object:2651"
-                },
-                {
-                    "value": "false",
-                    "type": "bsp",
-                    "$$hashKey": "object:2652"
+                    "type": "mObj2",
+                    "$$hashKey": "object:1417"
                 }
             ],
             "result": "model",
-            "$$hashKey": "object:2641"
+            "$$hashKey": "object:1408"
         }
     ]
 ]
@@ -603,14 +583,6 @@
             "dataName": "smallSphereRad",
             "dataValue": "1.1",
             "$$hashKey": "object:790"
-        },
-        {
-            "id": 6,
-            "title": "Data",
-            "temp": "Parameter",
-            "dataName": "booleanOp",
-            "dataValue": "\"intersect\"",
-            "$$hashKey": "object:1755"
         },
         {
             "id": 7,

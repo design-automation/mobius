@@ -103,7 +103,7 @@ var MobiusDataObject = function( geometry ){
 						if (topology[topoElement][index].data != undefined){
 							for(var property in topology[topoElement][index].data){
 								var jsonObject = {
-													'attachedTo' : topoElement,
+													'attachedTo' : topoElement+index,
 													'Property' : property,
 													'Value' : topology[topoElement][index].data[property]
 												};

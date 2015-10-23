@@ -13,7 +13,7 @@
                 }
             ],
             "type": "curves",
-            "version": 1445573531589,
+            "version": 1445574660467,
             "overwrite": true
         },
         {
@@ -34,7 +34,7 @@
                 }
             ],
             "type": "makeSurface",
-            "version": 1445573532341,
+            "version": 1445574662483,
             "overwrite": true
         },
         {
@@ -55,7 +55,7 @@
                 }
             ],
             "type": "panels",
-            "version": 1445573535816,
+            "version": 1445574789273,
             "overwrite": true
         }
     ],
@@ -206,6 +206,70 @@
                     ],
                     "result": "vertices",
                     "$$hashKey": "object:691"
+                },
+                {
+                    "id": 3,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "assign",
+                    "expression": "",
+                    "method": "addData",
+                    "parameters": [
+                        {
+                            "value": "polygon",
+                            "type": "obj",
+                            "$$hashKey": "object:995"
+                        },
+                        {
+                            "value": "\"cornerPoints\"",
+                            "type": "dataName",
+                            "$$hashKey": "object:996"
+                        },
+                        {
+                            "value": "vertices",
+                            "type": "dataValue",
+                            "$$hashKey": "object:997"
+                        }
+                    ],
+                    "result": "dummyVar",
+                    "$$hashKey": "object:987"
+                },
+                {
+                    "id": 3,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "assign",
+                    "expression": "",
+                    "method": "addData",
+                    "parameters": [
+                        {
+                            "value": "polygon.face[0]",
+                            "type": "obj",
+                            "$$hashKey": "object:1703"
+                        },
+                        {
+                            "value": "\"desc\"",
+                            "type": "dataName",
+                            "$$hashKey": "object:1704"
+                        },
+                        {
+                            "value": "\"half a panel\"",
+                            "type": "dataValue",
+                            "$$hashKey": "object:1705"
+                        }
+                    ],
+                    "result": "dummyVar",
+                    "$$hashKey": "object:1695"
+                },
+                {
+                    "id": 3,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "assign",
+                    "expression": "console.log(polygon);",
+                    "method": "expression",
+                    "parameters": [],
+                    "$$hashKey": "object:1577"
                 },
                 {
                     "id": 3,

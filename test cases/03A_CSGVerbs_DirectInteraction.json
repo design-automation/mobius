@@ -13,7 +13,7 @@
                 }
             ],
             "type": "curves",
-            "version": 1443775294594,
+            "version": 1445572370926,
             "overwrite": true
         },
         {
@@ -34,35 +34,14 @@
                 }
             ],
             "type": "makeSurface",
-            "version": 1443775301753,
+            "version": 1445572377906,
             "overwrite": true
         },
         {
             "id": 2,
-            "name": "node1",
-            "x": 1834.0124614724682,
-            "y": 2113.490038592384,
-            "inputConnectors": [
-                {
-                    "name": "verbSurface",
-                    "value": ""
-                }
-            ],
-            "outputConnectors": [
-                {
-                    "name": "out0",
-                    "value": ""
-                }
-            ],
-            "type": "sphere",
-            "version": 1443775324187,
-            "overwrite": true
-        },
-        {
-            "id": 3,
             "name": "node2",
-            "x": 1852.7625437089812,
-            "y": 2197.105270187645,
+            "x": 1846.7625437089812,
+            "y": 2130.105270187645,
             "inputConnectors": [
                 {
                     "name": "srf",
@@ -76,7 +55,7 @@
                 }
             ],
             "type": "sphere",
-            "version": 1443775325477,
+            "version": 1445572397325,
             "overwrite": true
         }
     ],
@@ -98,16 +77,6 @@
             },
             "dest": {
                 "nodeID": 2,
-                "connectorIndex": 0
-            }
-        },
-        {
-            "source": {
-                "nodeID": 2,
-                "connectorIndex": 0
-            },
-            "dest": {
-                "nodeID": 3,
                 "connectorIndex": 0
             }
         }
@@ -166,30 +135,6 @@
             "nodes": [],
             "type": "new",
             "expression": "",
-            "method": "convertVerbsToThree",
-            "parameters": [
-                {
-                    "value": "verbSurface",
-                    "type": "vSurface",
-                    "$$hashKey": "object:3615"
-                },
-                {
-                    "value": "true",
-                    "type": "directMethod",
-                    "$$hashKey": "object:3616"
-                }
-            ],
-            "result": "out0",
-            "$$hashKey": "object:3607"
-        }
-    ],
-    [
-        {
-            "id": 1,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
             "method": "makeBox",
             "parameters": [
                 {
@@ -212,36 +157,26 @@
             "$$hashKey": "object:3903"
         },
         {
-            "id": 2,
+            "id": 3,
             "title": "Action",
             "nodes": [],
             "type": "new",
             "expression": "",
-            "method": "booleanOperation",
+            "method": "objectSubtract",
             "parameters": [
                 {
                     "value": "srf",
-                    "type": "geom1",
-                    "$$hashKey": "object:4102"
+                    "type": "mObj1",
+                    "$$hashKey": "object:2273"
                 },
                 {
                     "value": "box",
-                    "type": "geom2",
-                    "$$hashKey": "object:4103"
-                },
-                {
-                    "value": "\"subtract\"",
-                    "type": "operation",
-                    "$$hashKey": "object:4104"
-                },
-                {
-                    "value": "false",
-                    "type": "bsp",
-                    "$$hashKey": "object:4105"
+                    "type": "mObj2",
+                    "$$hashKey": "object:2274"
                 }
             ],
             "result": "out0",
-            "$$hashKey": "object:4094"
+            "$$hashKey": "object:2265"
         }
     ]
 ]
@@ -268,6 +203,5 @@
             "$$hashKey": "object:677"
         }
     ],
-    [],
     []
 ]
