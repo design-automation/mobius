@@ -3,8 +3,8 @@
         {
             "id": 0,
             "name": "curves",
-            "x": 1857.323374523268,
-            "y": 2037.2228121979201,
+            "x": 1859.323374523268,
+            "y": 2038.2228121979201,
             "inputConnectors": [],
             "outputConnectors": [
                 {
@@ -13,12 +13,12 @@
                 }
             ],
             "type": "curves",
-            "version": 1443596784563,
+            "version": 1445574660467,
             "overwrite": true
         },
         {
             "id": 1,
-            "name": "polysurface",
+            "name": "surface",
             "x": 1818.8096920915118,
             "y": 2112.7299001233378,
             "inputConnectors": [
@@ -34,7 +34,7 @@
                 }
             ],
             "type": "makeSurface",
-            "version": 1443596904934,
+            "version": 1445574662483,
             "overwrite": true
         },
         {
@@ -55,7 +55,7 @@
                 }
             ],
             "type": "panels",
-            "version": 1443596898502,
+            "version": 1445574789273,
             "overwrite": true
         }
     ],
@@ -182,35 +182,8 @@
                     "$$hashKey": "object:544"
                 }
             ],
-            "result": "mesh_obj",
-            "$$hashKey": "object:534"
-        },
-        {
-            "id": 3,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "addMaterial",
-            "parameters": [
-                {
-                    "value": "mesh_obj",
-                    "type": "object",
-                    "$$hashKey": "object:338"
-                },
-                {
-                    "value": "mat_type",
-                    "type": "material_type",
-                    "$$hashKey": "object:339"
-                },
-                {
-                    "value": "opts",
-                    "type": "options",
-                    "$$hashKey": "object:340"
-                }
-            ],
             "result": "mesh",
-            "$$hashKey": "object:330"
+            "$$hashKey": "object:534"
         }
     ],
     [
@@ -233,6 +206,70 @@
                     ],
                     "result": "vertices",
                     "$$hashKey": "object:691"
+                },
+                {
+                    "id": 3,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "assign",
+                    "expression": "",
+                    "method": "addData",
+                    "parameters": [
+                        {
+                            "value": "polygon",
+                            "type": "obj",
+                            "$$hashKey": "object:995"
+                        },
+                        {
+                            "value": "\"cornerPoints\"",
+                            "type": "dataName",
+                            "$$hashKey": "object:996"
+                        },
+                        {
+                            "value": "vertices",
+                            "type": "dataValue",
+                            "$$hashKey": "object:997"
+                        }
+                    ],
+                    "result": "dummyVar",
+                    "$$hashKey": "object:987"
+                },
+                {
+                    "id": 3,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "assign",
+                    "expression": "",
+                    "method": "addData",
+                    "parameters": [
+                        {
+                            "value": "polygon.face[0]",
+                            "type": "obj",
+                            "$$hashKey": "object:1703"
+                        },
+                        {
+                            "value": "\"desc\"",
+                            "type": "dataName",
+                            "$$hashKey": "object:1704"
+                        },
+                        {
+                            "value": "\"half a panel\"",
+                            "type": "dataValue",
+                            "$$hashKey": "object:1705"
+                        }
+                    ],
+                    "result": "dummyVar",
+                    "$$hashKey": "object:1695"
+                },
+                {
+                    "id": 3,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "assign",
+                    "expression": "console.log(polygon);",
+                    "method": "expression",
+                    "parameters": [],
+                    "$$hashKey": "object:1577"
                 },
                 {
                     "id": 3,
@@ -323,34 +360,7 @@
                     "title": "Action",
                     "nodes": [],
                     "type": "assign",
-                    "expression": "",
-                    "method": "addMaterial",
-                    "parameters": [
-                        {
-                            "value": "tube1",
-                            "type": "object",
-                            "$$hashKey": "object:314"
-                        },
-                        {
-                            "value": "material_type",
-                            "type": "material_type",
-                            "$$hashKey": "object:315"
-                        },
-                        {
-                            "value": "options",
-                            "type": "options",
-                            "$$hashKey": "object:316"
-                        }
-                    ],
-                    "result": "mat_tube1",
-                    "$$hashKey": "object:306"
-                },
-                {
-                    "id": 3,
-                    "title": "Action",
-                    "nodes": [],
-                    "type": "assign",
-                    "expression": "tubes.push(mat_tube1);",
+                    "expression": "tubes.push(tube1);",
                     "method": "expression",
                     "parameters": [],
                     "$$hashKey": "object:988"
@@ -427,7 +437,7 @@
             "temp": "Parameter",
             "dataName": "u",
             "$$hashKey": "object:441",
-            "dataValue": "10"
+            "dataValue": "4"
         },
         {
             "id": 2,
@@ -435,7 +445,7 @@
             "temp": "Parameter",
             "dataName": "v",
             "$$hashKey": "object:456",
-            "dataValue": "20"
+            "dataValue": "4"
         },
         {
             "id": 3,
@@ -444,22 +454,6 @@
             "dataName": "allCurves",
             "$$hashKey": "object:471",
             "dataValue": "allCurves"
-        },
-        {
-            "id": 4,
-            "title": "Data",
-            "temp": "Parameter",
-            "dataName": "mat_type",
-            "dataValue": "\"MeshNormalMaterial\"",
-            "$$hashKey": "object:578"
-        },
-        {
-            "id": 5,
-            "title": "Data",
-            "temp": "Parameter",
-            "dataName": "opts",
-            "dataValue": "{ side: THREE.DoubleSide, wireframe: true, shading: THREE.SmoothShading, transparent: false, color: 0xffffff}",
-            "$$hashKey": "object:590"
         }
     ],
     [
@@ -486,22 +480,6 @@
             "dataName": "tubes",
             "dataValue": "[]",
             "$$hashKey": "object:696"
-        },
-        {
-            "id": 4,
-            "title": "Data",
-            "temp": "Parameter",
-            "dataName": "material_type",
-            "dataValue": "\"MeshLambertMaterial\"",
-            "$$hashKey": "object:342"
-        },
-        {
-            "id": 5,
-            "title": "Data",
-            "temp": "Parameter",
-            "dataName": "options",
-            "dataValue": "{ side: THREE.DoubleSide, wireframe: false, shading: THREE.SmoothShading, transparent: false, color: 0xffffff}",
-            "$$hashKey": "object:360"
         }
     ]
 ]

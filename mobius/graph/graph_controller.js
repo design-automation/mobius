@@ -140,30 +140,40 @@ vidamo.controller('graphCtrl',[
                 $scope.$emit("hideProcedure");
             }
 
-             // display geometries on node selected
-             var selectedNodes = $scope.chartViewModel.getSelectedNodes();
+             if(message){
+                 // display geometries on node selected
+                 var selectedNodes = $scope.chartViewModel.getSelectedNodes();
 
-             var scope = angular.element(document.getElementById('threeViewport')).scope();
+                 var scope = angular.element(document.getElementById('threeViewport')).scope();
+                 var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
 
-             scope.$apply(function(){scope.viewportControl.refresh();} );
+                 scope.$apply(function(){scope.viewportControl.refresh();} );
 
-             for(var i = 0; i < $scope.outputGeom.length; i++){
+                 for(var i = 0; i < $scope.outputGeom.length; i++){
 
-                 for(var j =0; j < selectedNodes.length; j++){
+                     for(var j =0; j < selectedNodes.length; j++){
 
-                     if($scope.outputGeom[i].name === selectedNodes[j].data.name){
-                         var p =0;
-                         for(var k in $scope.outputGeom[i].value){
-                             scope.$apply(function(){
-                                 scope.viewportControl
-                                     .addGeometryToScene($scope.outputGeom[i].value[k],
-                                                        $scope.outputGeom[i].geom[p],
-                                                        $scope.outputGeom[i].geomData[p]);} );
-                             p ++;
+                         if($scope.outputGeom[i].name === selectedNodes[j].data.name){
+                             var p =0;
+                             for(var k in $scope.outputGeom[i].value){
+                                 scope.$apply(function(){
+                                     scope.viewportControl
+                                         .addGeometryToScene($scope.outputGeom[i].value[k],
+                                         $scope.outputGeom[i].geom[p],
+                                         $scope.outputGeom[i].geomData[p]);} );
+
+                                 //scopeTopo.$apply(function(){
+                                 //    scopeTopo.topoViewportControl.
+                                 //        addGeometryToScene($scope.outputs[i].value[k],
+                                 //        $scope.outputGeom[i].topo[p]);
+                                 //} );
+                                 p ++;
+                             }
                          }
                      }
                  }
              }
+
          });
 
         // Add a new node to the chart.

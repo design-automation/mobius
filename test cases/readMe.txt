@@ -1,1 +1,0 @@
-simply open scene in vidamo for case test

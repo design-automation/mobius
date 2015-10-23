@@ -61,6 +61,8 @@ vidamo.controller('executeCtrl',['$scope','consoleMsg','generateCode','hotkeys',
                 var selectedNodes = $scope.chartViewModel.getSelectedNodes();
                 // fixme scope regulation
                 var scope = angular.element(document.getElementById('threeViewport')).scope();
+                var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
+
 
                 for(var i = 0; i < $scope.outputs.length; i++){
 
@@ -75,6 +77,12 @@ vidamo.controller('executeCtrl',['$scope','consoleMsg','generateCode','hotkeys',
                                                             $scope.outputs[i].geom[p],
                                                         $scope.outputGeom[i].geomData[p]);
                                 } );
+
+                                //scopeTopo.$apply(function(){
+                                //    scopeTopo.topoViewportControl.
+                                //        addGeometryToScene($scope.outputs[i].value[k],
+                                //        $scope.outputGeom[i].topo[p]);
+                                //} );
                                 p++;
                             }
                         }

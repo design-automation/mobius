@@ -13,32 +13,11 @@
                 }
             ],
             "type": "sphere",
-            "version": 1443774400719,
+            "version": 1445572449154,
             "overwrite": true
         },
         {
             "id": 1,
-            "name": "node1",
-            "x": 1877.0869747185116,
-            "y": 2057.999930351894,
-            "inputConnectors": [
-                {
-                    "name": "vSphere",
-                    "value": ""
-                }
-            ],
-            "outputConnectors": [
-                {
-                    "name": "out0",
-                    "value": ""
-                }
-            ],
-            "type": "sphere",
-            "version": 1443774402100,
-            "overwrite": true
-        },
-        {
-            "id": 2,
             "name": "node2",
             "x": 1880.1275285947029,
             "y": 2119.82452583445,
@@ -55,7 +34,7 @@
                 }
             ],
             "type": "sphere",
-            "version": 1443774402598,
+            "version": 1445572469144,
             "overwrite": true
         }
     ],
@@ -67,16 +46,6 @@
             },
             "dest": {
                 "nodeID": 1,
-                "connectorIndex": 0
-            }
-        },
-        {
-            "source": {
-                "nodeID": 1,
-                "connectorIndex": 0
-            },
-            "dest": {
-                "nodeID": 2,
                 "connectorIndex": 0
             }
         }
@@ -116,30 +85,6 @@
             "nodes": [],
             "type": "new",
             "expression": "",
-            "method": "convertVerbsToThree",
-            "parameters": [
-                {
-                    "value": "vSphere",
-                    "type": "vSurface",
-                    "$$hashKey": "object:253"
-                },
-                {
-                    "value": "false",
-                    "type": "directMethod",
-                    "$$hashKey": "object:254"
-                }
-            ],
-            "result": "out0",
-            "$$hashKey": "object:245"
-        }
-    ],
-    [
-        {
-            "id": 1,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
             "method": "makeBox",
             "parameters": [
                 {
@@ -162,43 +107,32 @@
             "$$hashKey": "object:458"
         },
         {
-            "id": 2,
+            "id": 3,
             "title": "Action",
             "nodes": [],
             "type": "new",
             "expression": "",
-            "method": "booleanOperation",
+            "method": "objectSubtract",
             "parameters": [
                 {
                     "value": "tSphere",
-                    "type": "geom1",
-                    "$$hashKey": "object:573"
+                    "type": "mObj1",
+                    "$$hashKey": "object:2487"
                 },
                 {
                     "value": "box",
-                    "type": "geom2",
-                    "$$hashKey": "object:574"
-                },
-                {
-                    "value": "\"subtract\"",
-                    "type": "operation",
-                    "$$hashKey": "object:575"
-                },
-                {
-                    "value": "false",
-                    "type": "bsp",
-                    "$$hashKey": "object:576"
+                    "type": "mObj2",
+                    "$$hashKey": "object:2488"
                 }
             ],
             "result": "out0",
-            "$$hashKey": "object:565"
+            "$$hashKey": "object:2479"
         }
     ]
 ]
 
 //interface json
 [
-    [],
     [],
     []
 ]

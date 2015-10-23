@@ -21,6 +21,7 @@ vidamo.directive('viewport', function factory() {
         link: function (scope, elem) {
 
             scope.internalControl = scope.control || {};
+            console.log(scope)
 
             // retrieve the viewport dom element
             var container = elem[0];
@@ -147,6 +148,9 @@ vidamo.directive('viewport', function factory() {
             // supporting function for geometry from verb to three.js
             //
             scope.internalControl.addGeometryToScene = function(geom,value,geomData){
+                scope.internalControl.geometryData = [{Property:'', Value:'',attachedTo:''}];
+                console.log('before: ', scope.internalControl.geometryData);
+
                 if(geom.constructor === Array){
                     for(var i = 0; i< geom.length ;i++){
                         scope.internalControl.displayObject(value[i],geomData[i]);
@@ -154,13 +158,13 @@ vidamo.directive('viewport', function factory() {
                 } else {
                     scope.internalControl.displayObject(value,geomData);
                 }
+                console.log('after: ', scope.internalControl.geometryData);
             };
 
             //
             // takes in single data object and categorizes and displays accordingly
             //
             scope.internalControl.displayObject = function(singleGeomObject, singleGeomDataObject){
-                console.log("single: ",singleGeomDataObject);
 
                 // update the 3d viewport
                 if(singleGeomObject instanceof THREE.Mesh
@@ -171,9 +175,9 @@ vidamo.directive('viewport', function factory() {
                 // update the data table viewport
 
                 if(singleGeomDataObject.length !== 0){
-                    scope.internalControl.geometryData = [];
-                    scope.internalControl.geometryData.push(singleGeomDataObject);
-                    console.log(scope.internalControl.geometryData);
+                    console.log('single; ',singleGeomDataObject);
+                    //scope.internalControl.geometryData = [];
+                    scope.internalControl.geometryData = scope.internalControl.geometryData.concat(singleGeomDataObject);
                 }
                 else{
                     console.log("Vidamo doesn't recognise this type!");

@@ -92,6 +92,16 @@ body {
     right: 0;
 }
 
+.view-area #topoViewport {
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    background-color: black;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
 
 .view-area .tabArea{
     position: relative;

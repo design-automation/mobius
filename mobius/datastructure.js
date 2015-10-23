@@ -29,7 +29,7 @@ var MobiusDataObject = function( geometry ){
                         convertedGeometry = this.extractGeometry();
                     topology = threeToTopology( convertedGeometry );
                 }
-                return topology[property];
+                return topology[property]; // returning a topology object - not a MobiusObject - will not work if it's the final output or with other geometric functions
             },
             set: undefined
         });
@@ -103,7 +103,7 @@ var MobiusDataObject = function( geometry ){
                         if (topology[topoElement][index].data != undefined){
                             for(var property in topology[topoElement][index].data){
                                 var jsonObject = {
-                                    'attachedTo' : topoElement,
+                                    'attachedTo' : topoElement+index,
                                     'Property' : property,
                                     'Value' : topology[topoElement][index].data[property]
                                 };

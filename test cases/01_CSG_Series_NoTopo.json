@@ -13,7 +13,7 @@
                 }
             ],
             "type": "cubes",
-            "version": 1443518300761,
+            "version": 1445570976479,
             "overwrite": true
         },
         {
@@ -29,7 +29,7 @@
                 }
             ],
             "type": "spher",
-            "version": 1443518301357,
+            "version": 1445570979538,
             "overwrite": true
         },
         {
@@ -54,7 +54,7 @@
                 }
             ],
             "type": "boolean",
-            "version": 1443518310774,
+            "version": 1445570981394,
             "overwrite": true
         },
         {
@@ -75,7 +75,7 @@
                 }
             ],
             "type": "spher",
-            "version": 1443581947838,
+            "version": 1445570960906,
             "overwrite": true
         },
         {
@@ -96,7 +96,7 @@
                 }
             ],
             "type": "copy",
-            "version": 1443582907041,
+            "version": 1445570963496,
             "overwrite": true
         }
     ],
@@ -210,26 +210,21 @@
             "nodes": [],
             "type": "new",
             "expression": "",
-            "method": "booleanOperation",
+            "method": "objectIntersect",
             "parameters": [
                 {
                     "value": "geom1",
-                    "type": "geom1",
-                    "$$hashKey": "object:213"
+                    "type": "mObj1",
+                    "$$hashKey": "object:498"
                 },
                 {
                     "value": "geom2",
-                    "type": "geom2",
-                    "$$hashKey": "object:214"
-                },
-                {
-                    "value": "\"intersect\"",
-                    "type": "operation",
-                    "$$hashKey": "object:215"
+                    "type": "mObj2",
+                    "$$hashKey": "object:499"
                 }
             ],
             "result": "out0",
-            "$$hashKey": "object:205"
+            "$$hashKey": "object:490"
         }
     ],
     [
@@ -256,26 +251,21 @@
             "nodes": [],
             "type": "new",
             "expression": "",
-            "method": "booleanOperation",
+            "method": "objectSubtract",
             "parameters": [
                 {
                     "value": "dice",
-                    "type": "geom1",
-                    "$$hashKey": "object:437"
+                    "type": "mObj1",
+                    "$$hashKey": "object:648"
                 },
                 {
                     "value": "newobj",
-                    "type": "geom2",
-                    "$$hashKey": "object:438"
-                },
-                {
-                    "value": "\"subtract\"",
-                    "type": "operation",
-                    "$$hashKey": "object:439"
+                    "type": "mObj2",
+                    "$$hashKey": "object:649"
                 }
             ],
             "result": "out0",
-            "$$hashKey": "object:429"
+            "$$hashKey": "object:640"
         }
     ],
     [
