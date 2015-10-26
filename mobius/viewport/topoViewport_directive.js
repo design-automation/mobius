@@ -1,13 +1,6 @@
 //
-// Three JS View Port Directive
+// ThreeJS Topology ViewPort Directive
 //
-
-/* todo */
-// 1.2 geometry control1
-// 2. gird toggle
-// 3. extend view
-// 4. shading mode
-// 5. set view position
 
 
 vidamo.directive('topoViewport', function factoryTopo() {
@@ -22,12 +15,10 @@ vidamo.directive('topoViewport', function factoryTopo() {
 
             scope.internalControlTopo = scope.control || {};
 
-            console.log(scope);
-
             // retrieve the viewport dom element
             var container1 = elem[0];
-            var VIEWPORT_WIDTH = container1.offsetWidth;
-            var VIEWPORT_HEIGHT = container1.offsetHeight;
+            var VIEWPORT_WIDTH1 = container1.offsetWidth;
+            var VIEWPORT_HEIGHT1 = container1.offsetHeight;
 
             var scene1,
                 camera1,
@@ -44,7 +35,7 @@ vidamo.directive('topoViewport', function factoryTopo() {
 
                 // prepare camera1
                 var VIEW_ANGLE = 45,
-                    ASPECT = VIEWPORT_WIDTH / VIEWPORT_HEIGHT,
+                    ASPECT = VIEWPORT_WIDTH1 / VIEWPORT_HEIGHT1,
                     NEAR = 1,
                     FAR = 10000;
 
@@ -55,7 +46,7 @@ vidamo.directive('topoViewport', function factoryTopo() {
 
                 // prepare renderer1
                 renderer1 = new THREE.WebGLRenderer({antialias:true, alpha: false});
-                renderer1.setSize(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+                renderer1.setSize(VIEWPORT_WIDTH1, VIEWPORT_HEIGHT1);
                 renderer1.setClearColor(0xffffff);
 
                 renderer1.shadowMapEnabled = true;
@@ -66,8 +57,8 @@ vidamo.directive('topoViewport', function factoryTopo() {
                 controls1.target = new THREE.Vector3(0, 0, 0);
                 container1.appendChild(renderer1.domElement);
 
-                var ambientLight = new THREE.AmbientLight( 0xbbbbbb );
-                scene1.add( ambientLight );
+                var ambientLight1 = new THREE.AmbientLight( 0xbbbbbb );
+                scene1.add( ambientLight1 );
 
                 var lights1 = [];
                 lights1[0] = new THREE.PointLight( 0xececec, 0.25, 0 );
@@ -86,6 +77,7 @@ vidamo.directive('topoViewport', function factoryTopo() {
 
                 // GridHelper
                 var gridHelper1 = new THREE.GridHelper(100, 10); // 100 is grid size, 10 is grid step
+                gridHelper1.name = 'helper';
                 gridHelper1.setColors(0x999999,0xaaaaaa);
                 gridHelper1.position = new THREE.Vector3(0, 0, 0);
                 gridHelper1.rotation = new THREE.Euler(0, 0, 0);
@@ -102,8 +94,8 @@ vidamo.directive('topoViewport', function factoryTopo() {
                     }
                 },
                 function () {
-                    VIEWPORT_WIDTH = container1.offsetWidth;
-                    VIEWPORT_HEIGHT = container1.offsetHeight;
+                    VIEWPORT_WIDTH1 = container1.offsetWidth;
+                    VIEWPORT_HEIGHT1 = container1.offsetHeight;
                     resizeUpdateTopo();
                 },
                 true
@@ -112,9 +104,9 @@ vidamo.directive('topoViewport', function factoryTopo() {
             // update on resize of viewport
             function resizeUpdateTopo() {
                 container1.appendChild(renderer1.domElement);
-                camera1.aspect = VIEWPORT_WIDTH / VIEWPORT_HEIGHT;
+                camera1.aspect = VIEWPORT_WIDTH1 / VIEWPORT_HEIGHT1;
                 camera1.updateProjectionMatrix ();
-                renderer1.setSize(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+                renderer1.setSize(VIEWPORT_WIDTH1, VIEWPORT_HEIGHT1);
             }
 
             // Animate the scene1
@@ -135,10 +127,11 @@ vidamo.directive('topoViewport', function factoryTopo() {
             }
 
             // clear geometries in scene1 when run
-            scope.internalControlTopo.refresh = function(){
-                for(var i = 0; i < scene1.children.length; i++){
-                    if(scene1.children[i].id > 7){
-                        scene1.remove( scene1.children[i]);
+            scope.internalControlTopo.refreshView = function(){
+                for(var i = 0; i < scene1.children.length; i++) {
+                    if ((scene1.children[i] instanceof THREE.Mesh
+                        || scene1.children[i]  instanceof THREE.Line ) && scene1.children[i].name !== 'helper') {
+                        scene1.remove(scene1.children[i]);
                         i--;
                     }
                 }
@@ -147,20 +140,20 @@ vidamo.directive('topoViewport', function factoryTopo() {
             //
             // supporting function for geometry from verb to three.js
             //
-            scope.internalControlTopo.addGeometryToscene1 = function(geom,value,geomData){
+            scope.internalControlTopo.addGeometryToScene = function(geom,value){
                 if(geom.constructor === Array){
                     for(var i = 0; i< geom.length ;i++){
-                        scope.internalControlTopo.displayObject(value[i],geomData[i]);
+                        scope.internalControlTopo.displayObject(value[i]);
                     }
                 } else {
-                    scope.internalControlTopo.displayObject(value,geomData);
+                    scope.internalControlTopo.displayObject(value);
                 }
             };
 
             //
             // takes in single data object and categorizes and displays accordingly
             //
-            scope.internalControlTopo.displayObject = function(singleGeomObject, singleGeomDataObject){
+            scope.internalControlTopo.displayObject = function(singleGeomObject){
 
                 // update the 3d topo viewport
                 if(singleGeomObject instanceof THREE.Mesh

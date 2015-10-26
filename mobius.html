@@ -174,7 +174,7 @@
                                 </ul>
                             </span>
 
-                                <!--<topo-viewport control="topoViewportControl" id="topoViewport"></topo-viewport>-->
+                                <topo-viewport control="topoViewportControl" id="topoViewport"></topo-viewport>
 
                                 <viewport control="viewportControl" id="threeViewport"></viewport>
 
@@ -187,9 +187,13 @@
                                     </div>
                                 </div>
 
-                                <div ng-if="showData"
-                                     ui-grid="{data: viewportControl.geometryData}"
-                                     style="height: 100%;width: 100%;top:30px;left:0;position: absolute;">
+                                <div ng-if="showData" style="height: 100%;width: 100%;left:0;position: absolute;">
+                                    <div ui-grid="gridOptions"
+                                         class="grid"
+                                         ui-grid-resize-columns
+                                         ui-grid-auto-resize
+                                         style="height: 100%;width: 100%; bottom:100px">
+                                    </div>
                                 </div>
 
                             </div>

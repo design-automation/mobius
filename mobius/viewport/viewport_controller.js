@@ -6,12 +6,18 @@
 vidamo.controller('viewportCtrl',[
     '$scope',
     function($scope) {
+
+        $scope.topoViewportControl = {"xxx":[]};
+
         $scope.viewportControl = {
-            "geometryData":[{Property:'', Value:'',attachedTo:''}]
+            "geometryData":[]
         };
 
-        $scope.topoViewportControl = {
-        };
+        $scope.gridOptions = {data: 'viewportControl.geometryData',
+                            columnDefs:
+                                [{ field: 'Property', displayName: 'Property'},
+                                { field: 'Value', displayName: 'Value'},
+                                { field: 'attachedTo', displayName: 'AttachedTo'}]};
 
         $scope.showGeometry = true;
         $scope.showFullCode = false;

@@ -5,7 +5,7 @@ vidamo.controller('keyCtrl',['$scope',
 
         //// Event handler for key-down on the flowchart.
         $scope.keyDown = function (evt) {
-            if (evt.keyCode === 17) {
+            if (evt.keyCode === 65) {
                 ctrlDown = true;
                 evt.stopPropagation();
                 evt.preventDefault();
