@@ -9,9 +9,13 @@
     <div ng-if="node.title === 'Data'" style="padding-left:20px " class="tree-node-content">
         <a>
             <!--vairable name and value-->
-            <a href="#" data-nodrag editable-text="node.dataName" buttons="no">{{ node.dataName || 'name' }}</a>
+            <a href="#" data-nodrag editable-text="node.dataName" blur="submit"  buttons="no" >
+                {{ node.dataName || 'name' }}
+            </a>
             =
-            <a data-nodrag href="#" editable-text="node.dataValue" buttons="no">{{ node.dataValue || 'value' }}</a>
+            <a data-nodrag href="#" editable-text="node.dataValue" buttons="no" blur="submit">
+                {{ node.dataValue || 'value' }}
+            </a>
         </a>
 
         <!--delete key-->
@@ -31,6 +35,7 @@
     <div ng-if="node.title === 'Action' && node.method !== 'expression'" style="padding-left:20px" class="tree-node-content">
         <!--return vairable-->
         <a href="#" data-nodrag buttons="no"
+           blur="submit"
            ng-if="node.method !== 'print'"
            editable-text="node.result"
            style="display: inline-block">
@@ -44,7 +49,10 @@
         <!--parameters-->
         <div ng-repeat="parameter in node.parameters" style="display: inline-block">
             &nbsp;
-            <a data-nodrag href="#" editable-text="parameter.value" buttons="no">{{parameter.value || parameter.type}}</a>
+            <a data-nodrag href="#"
+               editable-text="parameter.value"
+               buttons="no"
+               blur="submit">{{parameter.value || parameter.type}}</a>
             &nbsp;
         </div>
         )
@@ -56,7 +64,7 @@
     </div>
 
     <div ng-if="node.title === 'Action' && node.method === 'expression'" style="padding-left:20px" class="tree-node-content">
-        <a data-nodrag href="#" editable-text="node.expression" buttons="no">
+        <a data-nodrag href="#" editable-text="node.expression" buttons="no" blur="submit">
             {{ node.expression || 'expression' }}
         </a>
 
@@ -84,7 +92,7 @@
             <!--if tag-->
             <div data-nodrag ng-if="node.controlType === 'if'" style="display: inline-block; padding-left:23px">
                 if
-                <a href="#" data-nodrag editable-text="node.ifExpression" buttons="no">
+                <a href="#" data-nodrag editable-text="node.ifExpression" buttons="no" blur="submit">
                     {{ node.ifExpression || 'expression' }}
                 </a>
             </div>
@@ -111,11 +119,11 @@
         <div ng-if="node.controlType === 'for each'" style="display: inline-block; padding-left:3px">
             for each
             <!--list item name-->
-            <a href="#" data-nodrag editable-text="node.dataName" buttons="no">
+            <a href="#" data-nodrag editable-text="node.dataName" buttons="no" blur="submit">
                 {{ node.dataName || 'item' }}
             </a>
             in
-            <a data-nodrag href="#" editable-text="node.forList" buttons="no"> {{node.forList||'list'}}</a>
+            <a data-nodrag href="#" editable-text="node.forList" buttons="no" blur="submit"> {{node.forList||'list'}}</a>
 
         </div>
 
