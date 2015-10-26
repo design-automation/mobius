@@ -69,14 +69,23 @@ var VIDAMO = ( function (mod){
 	 *	Geometry Analysis Functions
 	 * 
 	 */
+	
+	//
+	//
+	//
+	//
 	mod.computeArea = function(arrayOfPoints){
 		//calculate area based on what kind of object
 	};
 	
+	//
+	//
+	//
+	//
 	mod.getCentre = function(mObj){
 		//calculate centre based on what kind of object
 	};
-
+	
 	/*
 	 *
 	 * Verbs Functions
@@ -232,6 +241,38 @@ var VIDAMO = ( function (mod){
 	mod.makeSurfaceAsCylinder = function ( axis, xaxis, base, height, radius ){
 		return new MobiusDataObject( new verb.geom.CylindricalSurface( axis,xaxis,base,height,radius ) );
 	};
+	
+	//
+	//
+	//
+	//
+	mod.getPointOnSurface = function( u, v ){
+		
+	};
+	
+	//
+	//
+	//
+	//
+	mod.getPointOnCurve = function( t ){
+		
+	};
+	
+	//
+	//
+	//
+	//
+	mod.divideSurfaceByShape = function(){
+		
+	};
+	
+	//
+	//
+	//
+	//
+	mod.divideCurve = function(){
+		
+	};
 
 	//
 	// Input: MobiusDataObject with NURBS geometry, numeric values
@@ -386,7 +427,7 @@ var VIDAMO = ( function (mod){
 	};
 	
 	//
-	//
+	// Input: 
 	//
 	//
 	mod.makePolyline = function(arrOfPoints){
@@ -396,6 +437,26 @@ var VIDAMO = ( function (mod){
 			pline.vertices.push(new THREE.Vector3(arrOfPoints[point][0], arrOfPoints[point][1], arrOfPoints[point][2]));
 				
 		return new MobiusDataObject( pline );
+	};
+	
+	//
+	//
+	//
+	//
+	mod.makeCurve = function( parametricFuncDefOfCurve ){
+		var customCurve = THREE.Curve.create(
+			// parametric definition of the curve
+			function ( t ) { //getPoint: t is between 0-1
+				var tx = t * 3 - 1.5,
+					ty = Math.sin( 2 * Math.PI * t ),
+					tz = 0;
+
+				return new THREE.Vector3(tx, ty, tz).multiplyScalar(this.scale);
+			}
+		);
+		
+		//return new customCurve();
+		return new MobiusDataObject( return new customCurve());
 	};
 
 	//
@@ -485,24 +546,24 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
-	mod.makeLathe = function(){
-		
+	mod.makeLathe = function( points, segments ){
+		return new MobiusDataObject( new THREE.LatheGeometry( points, segments ) );
 	};
 	
 	//
 	//
 	//
 	//
-	mod.makeParametric = function(){
-		
+	mod.makeParametric = function( func ){
+		return new MobiusDataObject( new THREE.ParametricGeometry(func, 120, 120, false));
 	};
 	
 	//
 	//
 	//
 	//
-	mod.makePlane = function(){
-		
+	mod.makePlane = function( width, height ){
+		return new MobiusDataObject( new THREE.PlaneGeometry( width, height, 1) );
 	};
 	
 	//
@@ -510,47 +571,47 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	mod.makePolyhedron = function(){
-		
+		return new MobiusDataObject( new THREE.PolyhedronGeometry( verticesOfCube, indicesOfFaces, 6, 2 ) );
 	};
 	
 	//
 	//
 	//
 	//
-	mod.makeRing = function(){
-		
+	mod.makeRing = function( innerRadius, outerRadius, segments ){
+		return new MobiusDataObject( new THREE.RingGeometry( innerRadius, outerRadius, segments ) );
 	};
 	
 	//
 	//
 	//
 	//
-	mod.makeTetrahedron = function(){
-		
+	mod.makeTetrahedron = function( radius ){
+		return new MobiusDataObject( new THREE.TetrahedronGeometry( radius ) );
 	};
 	
 	//
 	//
 	//
 	//
-	mod.makeTorus = function(){
-		
+	mod.makeTorus = function(radius, tube, radialSegments, tubularSegments){
+		return new MobiusDataObject( new THREE.TorusGeometry( radius, tube, radialSegments, tubularSegments ) );
 	};
 	
 	//
 	//
 	//
 	//
-	mod.makeTorusKnot = function(){
-		
+	mod.makeTorusKnot = function( radius, tube, radialSegments, tubularSegments ){
+		new MobiusDataObject( new THREE.TorusKnotGeometry(radius, tube, radialSegments, tubularSegments) );
 	};
 	
 	//
+	// Input: path - instance of a three.js curve
 	//
 	//
-	//
-	mod.makeTube = function(){
-		
+	mod.makeTube = function( path, segments, radius, radiusSegments, closed ){
+		new MobiusDataObject( new THREE.TubeGeometry( path, segments, radius, radiusSegments, closed ) );
 	};
 
 	/*
