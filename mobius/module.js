@@ -48,6 +48,22 @@ var VIDAMO = ( function (mod){
 		return originalArr.push(newObj)
 	};
 	
+	//
+	//
+	//
+	//
+	mod.convertDegreesToRadians = function( degrees ){
+		return 0.01745*degrees;
+	};
+	
+	//
+	//
+	//
+	//
+	mod.convertRadiansToDegrees = function( radians ){
+		return 57.29*radians;
+	};
+	
 	/*
 	 *
 	 *	Geometry Analysis Functions
@@ -469,26 +485,73 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
-
-
-
-	/*
-	 mod.ExtrudeGeometry = function( shape)
-	 ExtrudeGeometry
-
-	 LatheGeometry
-
-	 ParametricGeometry
-	 PlaneGeometry
-	 PolyhedronGeometry
-	 RingGeometry
-	 ShapeGeometry
-
-	 TetrahedronGeometry
-	 TorusGeometry
-	 TorusKnotGeometry
-	 TubeGeometry
-	 */
+	mod.makeLathe = function(){
+		
+	};
+	
+	//
+	//
+	//
+	//
+	mod.makeParametric = function(){
+		
+	};
+	
+	//
+	//
+	//
+	//
+	mod.makePlane = function(){
+		
+	};
+	
+	//
+	//
+	//
+	//
+	mod.makePolyhedron = function(){
+		
+	};
+	
+	//
+	//
+	//
+	//
+	mod.makeRing = function(){
+		
+	};
+	
+	//
+	//
+	//
+	//
+	mod.makeTetrahedron = function(){
+		
+	};
+	
+	//
+	//
+	//
+	//
+	mod.makeTorus = function(){
+		
+	};
+	
+	//
+	//
+	//
+	//
+	mod.makeTorusKnot = function(){
+		
+	};
+	
+	//
+	//
+	//
+	//
+	mod.makeTube = function(){
+		
+	};
 
 	/*
 	 *
