@@ -49,7 +49,8 @@ vidamo.directive('viewport', function factory() {
                 camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
                 scene.add(camera);
                 camera.position.set(-120, 60, 200);
-                camera.lookAt(new THREE.Vector3(0,0,0));
+                //camera.lookAt(new THREE.Vector3(0,0,0));
+                camera.lookAt( scene.position );
 
                 // prepare renderer
                 renderer = new THREE.WebGLRenderer({antialias:true, alpha: false});
