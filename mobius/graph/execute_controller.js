@@ -43,8 +43,12 @@ vidamo.controller('executeCtrl',['$scope','consoleMsg','generateCode','hotkeys',
 
             setTimeout(function(){
                     var scope = angular.element(document.getElementById('threeViewport')).scope();
-                    scope.$apply(function(){scope.viewportControl.refresh();} );
-                },0);
+                    var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
+
+                    scope.$apply(function(){scope.viewportControl.refreshView();} );
+                    scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
+
+            },0);
 
             try{
                 $scope.outputs = new Function(   $scope.javascriptCode
@@ -78,11 +82,11 @@ vidamo.controller('executeCtrl',['$scope','consoleMsg','generateCode','hotkeys',
                                                         $scope.outputGeom[i].geomData[p]);
                                 } );
 
-                                //scopeTopo.$apply(function(){
-                                //    scopeTopo.topoViewportControl.
-                                //        addGeometryToScene($scope.outputs[i].value[k],
-                                //        $scope.outputGeom[i].topo[p]);
-                                //} );
+                                scopeTopo.$apply(function(){
+                                    scopeTopo.topoViewportControl.
+                                        addGeometryToScene($scope.outputs[i].value[k],
+                                        $scope.outputGeom[i].topo[p]);
+                                } );
                                 p++;
                             }
                         }

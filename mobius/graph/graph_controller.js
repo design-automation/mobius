@@ -146,9 +146,11 @@ vidamo.controller('graphCtrl',[
                  var scope = angular.element(document.getElementById('threeViewport')).scope();
                  var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
 
-                 scope.$apply(function(){scope.viewportControl.refresh();} );
+                 scope.$apply(function(){scope.viewportControl.refreshView();} );
+                 scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
 
-                 for(var i = 0; i < $scope.outputGeom.length; i++){
+
+             for(var i = 0; i < $scope.outputGeom.length; i++){
 
                      for(var j =0; j < selectedNodes.length; j++){
 
@@ -161,11 +163,11 @@ vidamo.controller('graphCtrl',[
                                          $scope.outputGeom[i].geom[p],
                                          $scope.outputGeom[i].geomData[p]);} );
 
-                                 //scopeTopo.$apply(function(){
-                                 //    scopeTopo.topoViewportControl.
-                                 //        addGeometryToScene($scope.outputs[i].value[k],
-                                 //        $scope.outputGeom[i].topo[p]);
-                                 //} );
+                                 scopeTopo.$apply(function(){
+                                     scopeTopo.topoViewportControl.
+                                         addGeometryToScene($scope.outputs[i].value[k],
+                                         $scope.outputGeom[i].topo[p]);
+                                 } );
                                  p ++;
                              }
                          }

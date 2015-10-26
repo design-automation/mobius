@@ -84,6 +84,7 @@ vidamo.directive('viewport', function factory() {
 
                 // GridHelper
                 var gridHelper = new THREE.GridHelper(100, 10); // 100 is grid size, 10 is grid step
+                gridHelper.name = 'helper';
                 gridHelper.setColors(0x999999,0xaaaaaa);
                 gridHelper.position = new THREE.Vector3(0, 0, 0);
                 gridHelper.rotation = new THREE.Euler(0, 0, 0);
@@ -134,9 +135,10 @@ vidamo.directive('viewport', function factory() {
             }
 
             // clear geometries in scene when run
-            scope.internalControl.refresh = function(){
+            scope.internalControl.refreshView = function(){
                 for(var i = 0; i < scene.children.length; i++){
-                    if(scene.children[i].id > 7){
+                    if((scene.children[i] instanceof THREE.Mesh
+                    || scene.children[i]  instanceof THREE.Line )&& scene.children[i].name !== 'helper'){
                         scene.remove( scene.children[i]);
                         i--;
                     }
