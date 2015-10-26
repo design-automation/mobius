@@ -62,8 +62,9 @@ vidamo.controller('executeCtrl',['$scope','consoleMsg','generateCode','hotkeys',
             // display in the viewport according to node selection
 
             setTimeout(function(){
+
                 var selectedNodes = $scope.chartViewModel.getSelectedNodes();
-                // fixme scope regulation
+
                 var scope = angular.element(document.getElementById('threeViewport')).scope();
                 var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
 

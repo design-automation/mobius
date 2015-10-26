@@ -16,7 +16,7 @@ vidamo.controller('keyCtrl',['$scope',
         $scope.keyUp = function (evt) {
             if (evt.keyCode === 46) {
                 // Delete key.
-                $scope.$broadcast("deleteSelected");
+                //$scope.$broadcast("deleteSelected");
             }
 
             if (evt.keyCode === 192 && ctrlDown) {

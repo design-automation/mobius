@@ -51,6 +51,7 @@ vidamo.controller('graphCtrl',[
         },true);
 
         // interface data list
+
         $scope.interfaceList= generateCode.getInterfaceList();
         $scope.$watch('interfaceList', function () {
             generateCode.setInterfaceList($scope.interfaceList);
@@ -65,6 +66,7 @@ vidamo.controller('graphCtrl',[
         $scope.chartViewModel= generateCode.getChartViewModel();
         $scope.$watch('chartViewModel.data', function () {
             generateCode.generateCode();
+            console.log($scope.chartViewModel.data)
         },true);
 
         $scope.$watch(function () { return generateCode.getChartViewModel(); }, function () {
@@ -129,16 +131,18 @@ vidamo.controller('graphCtrl',[
         // listen to the graph, when a node is clicked, update the visual procedure/ code/ interface accordions
          $scope.$on("nodeIndex", function(event, message) {
             if($scope.nodeIndex !== message && message !== undefined){
+                // on change of node selection, update
                 $scope.nodeIndex = message;
-
                 $scope.currentNodeName = $scope.chartViewModel.nodes[$scope.nodeIndex].data.name;
-
                 $scope.currentNodeType = $scope.chartViewModel.nodes[$scope.nodeIndex].data.type;
+                displayGeometry();
             }else if(message === undefined){
                 $scope.nodeIndex = message;
                 $scope.currentNodeName = '';
                 $scope.$emit("hideProcedure");
             }
+
+             function displayGeometry(){
 
                  // display geometries on node selected
                  var selectedNodes = $scope.chartViewModel.getSelectedNodes();
@@ -150,7 +154,7 @@ vidamo.controller('graphCtrl',[
                  scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
 
 
-             for(var i = 0; i < $scope.outputGeom.length; i++){
+                 for(var i = 0; i < $scope.outputGeom.length; i++){
 
                      for(var j =0; j < selectedNodes.length; j++){
 
@@ -165,7 +169,7 @@ vidamo.controller('graphCtrl',[
 
                                  scopeTopo.$apply(function(){
                                      scopeTopo.topoViewportControl.
-                                         addGeometryToScene($scope.outputs[i].value[k],
+                                         addGeometryToScene($scope.outputGeom[i].value[k],
                                          $scope.outputGeom[i].topo[p]);
                                  } );
                                  p ++;
@@ -173,6 +177,8 @@ vidamo.controller('graphCtrl',[
                          }
                      }
                  }
+             }
+
          });
 
         // Add a new node to the chart.
