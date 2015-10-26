@@ -6,10 +6,29 @@ vidamo.controller('graphCtrl',[
                     '$scope',
                     '$timeout',
                     'consoleMsg',
+                    'hotkeys',
                     'generateCode',
                     'nodeCollection',
                     'prompt',
-    function($scope,$timeout,consoleMsg,generateCode,nodeCollection,prompt) {
+    function($scope,$timeout,consoleMsg,hotkeys,generateCode,nodeCollection,prompt) {
+
+        hotkeys.add({
+            combo: 'ctrl+a',
+            description: 'Select all the nodes in the graph',
+            callback: function(event,hotkey) {
+                event.preventDefault();
+                $scope.$broadcast("selectAll");
+            }
+        });
+
+        hotkeys.add({
+            combo: 'del',
+            description: 'Delete selected node in the graph',
+            callback: function(event,hotkey) {
+                event.preventDefault();
+                $scope.$broadcast("deleteSelected");
+            }
+        });
 
         $scope.functionCodeList = [];
         // synchronization with vidamo application data pool
@@ -66,7 +85,6 @@ vidamo.controller('graphCtrl',[
         $scope.chartViewModel= generateCode.getChartViewModel();
         $scope.$watch('chartViewModel.data', function () {
             generateCode.generateCode();
-            console.log($scope.chartViewModel.data)
         },true);
 
         $scope.$watch(function () { return generateCode.getChartViewModel(); }, function () {
