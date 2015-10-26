@@ -1,6 +1,15 @@
 
-vidamo.controller('layoutCtrl',['$scope',
-    function($scope) {
+vidamo.controller('layoutCtrl',['$scope','hotkeys',
+    function($scope,hotkeys) {
+
+        hotkeys.add({
+            combo: 'ctrl+`',
+            description: 'Toggle procedure panel',
+            callback: function(event,hotkey) {
+                $scope.$emit("editProcedure");
+            }
+        });
+
 
         // toggle procedure
         $scope.displayProcedure = false;
@@ -13,6 +22,9 @@ vidamo.controller('layoutCtrl',['$scope',
         $scope.viewportWidth = $scope.viewportSize +'%';
         $scope.procedureWidth = $scope.procedureSize +'%';
         $scope.graphWidth = $scope.graphSize +'%';
+
+
+
 
 
         // templates not in use

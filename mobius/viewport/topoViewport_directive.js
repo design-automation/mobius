@@ -130,11 +130,14 @@ vidamo.directive('topoViewport', function factoryTopo() {
             scope.internalControlTopo.refreshView = function(){
                 for(var i = 0; i < scene1.children.length; i++) {
                     if ((scene1.children[i] instanceof THREE.Mesh
-                        || scene1.children[i]  instanceof THREE.Line ) && scene1.children[i].name !== 'helper') {
+                        || scene1.children[i]  instanceof THREE.Line
+                        || scene1.children[i] instanceof THREE.Object3D)
+                        && scene1.children[i].name !== 'helper') {
                         scene1.remove(scene1.children[i]);
                         i--;
                     }
                 }
+                console.log(scene1)
             };
 
             //

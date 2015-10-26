@@ -1,60 +1,59 @@
 <div class="code-area">
-    <div>
-        <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
-            <div ui-layout-container >
-                <div>
-                    <div ng-if = "currentNodeName">
-                        <pre class="nodeName" style="padding: 4px">
-                            <span>
-                                &nbsp &nbsp {{currentNodeType}} &nbsp : &nbsp {{currentNodeName}} &nbsp
-                            </span>
-                            <a class="pull-right"
-                               style="display:inline-block; padding: 0;cursor: pointer "
-                               ng-click="hideProcedure()">
-                                <span style="font-weight: 400; font-size: 16px;line-height:1"> &times; </span>
-                            </a>
-                        </pre>
+    <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
+        <div ui-layout-container >
+            <div>
+                <div ng-if = "currentNodeName">
+                    <pre class="nodeName" style="padding: 4px">
+                        <span>
+                            &nbsp &nbsp {{currentNodeType}} &nbsp : &nbsp {{currentNodeName}} &nbsp
+                        </span>
+                        <a class="pull-right"
+                           style="display:inline-block; padding: 0;cursor: pointer "
+                           ng-click="hideProcedure()">
+                            <span style="font-weight: 400; font-size: 16px;line-height:1"> &times; </span>
+                        </a>
+                    </pre>
+                </div>
+
+                <div ng-if = "!currentNodeName">
+                    <pre class="nodeName" style="padding: 4px;">
+                            &nbsp &nbsp No Node Selected
+                        <a class="pull-right btn btn-xs"
+                           style="display:inline-block; padding: 0;margin: 0;cursor: pointer"
+                           ng-click="hideProcedure()">
+                            <span style="font-weight: 400; font-size: 16px;line-height:1;"> &times; </span>
+                        </a>
+                    </pre>
+                </div>
+            </div>
+
+
+            <!-- add to interface -->
+                <div class="tabArea" id="procedure">
+                    <!-- parameters -->
+                    <div ui-tree id="tree-root-parameter"
+                         style="padding-bottom:6px"
+                         data-nodrop-enabled="true">
+                        <div ui-tree-nodes="" ng-model="interface">
+                            <div ng-repeat="node in interface"
+                                 ui-tree-node
+                                 ng-include="'mobius/procedure/parameter_template.html'">
+                            </div>
+                        </div>
                     </div>
 
-                    <div ng-if = "!currentNodeName">
-                        <pre class="nodeName" style="padding: 4px;">
-                                &nbsp &nbsp No Node Selected
-                            <a class="pull-right btn btn-xs"
-                               style="display:inline-block; padding: 0;margin: 0;cursor: pointer"
-                               ng-click="hideProcedure()">
-                                <span style="font-weight: 400; font-size: 16px;line-height:1;"> &times; </span>
-                            </a>
-                        </pre>
+                    <!-- procedure -->
+                    <div ui-tree id="tree-root-procedure" >
+                        <div ui-tree-nodes="" ng-model="data">
+                            <div ng-repeat="node in data"
+                                 ui-tree-node
+                                 ng-include="'mobius/procedure/procedure_template.html'">
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-
-                <!-- add to interface -->
-                    <div class="tabArea">
-                        <!-- parameters -->
-                        <div ui-tree id="tree-root-parameter"
-                             style="padding-bottom:6px"
-                             data-nodrop-enabled="true">
-                            <div ui-tree-nodes="" ng-model="interface">
-                                <div ng-repeat="node in interface"
-                                     ui-tree-node
-                                     ng-include="'mobius/procedure/parameter_template.html'">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- procedure -->
-                        <div ui-tree id="tree-root-procedure" >
-                            <div ui-tree-nodes="" ng-model="data">
-                                <div ng-repeat="node in data"
-                                     ui-tree-node
-                                     ng-include="'mobius/procedure/procedure_template.html'">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class = "buttons" >
+                <div class = "buttons" >
                     <button id="button-parameter"
                             class="btn btn-default btn-xs"
                             ng-click="newInterface('Parameter')"> Add Argument</button>
@@ -87,18 +86,16 @@
                 </div>
             </div>
 
-            <div ui-layout-container size = "27px" class="monitor" >
+        <div ui-layout-container size = "27px" class="monitor" >
 
-                <pre class="nodeName" style="padding: 4px">
-                        &nbsp &nbsp Function Code
-                </pre>
+            <pre class="nodeName" style="padding: 4px">
+                    &nbsp &nbsp Function Code
+            </pre>
 
-                <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'tomorrow' }"
-                     ng-model= "functionCodeList[nodeIndex]"
-                     readonly="{{true}}">
-                </div>
+            <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'tomorrow' }"
+                 ng-model= "functionCodeList[nodeIndex]"
+                 readonly="{{true}}">
             </div>
-
         </div>
     </div>
 </div>

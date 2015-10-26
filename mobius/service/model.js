@@ -93,7 +93,6 @@ vidamo.factory('generateCode', function () {
         },
 
         generateCode: function (){
-            console.log('generateCode');
             // copy the sorted order
             var sortedOrder = data.chartViewModel.topoSort().slice();
 

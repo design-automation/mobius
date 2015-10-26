@@ -913,24 +913,24 @@ var VIDAMO = ( function (mod){
 			for (var m in data[i].value) {
 				var geoms = [];   		// primitive geometry
 				var geomDatas = [];	    // geometry data
-				var topos = [];    		// topology geometry
+				//var topos = [];    		// topology geometry
 
 				if (data[i].value[m].constructor !== Array) {
 					// switch of data type
 					data[i].geom.push( data[i].value[m].extractGeometry() );
 					data[i].geomData.push( data[i].value[m].extractData() );
-					data[i].topo.push( data[i].value[m].extractTopology() );
+					//data[i].topo.push( data[i].value[m].extractTopology() );
 				}
 				else {
 					for (var n = 0; n < data[i].value[m].length; n++) {
 						geoms.push( data[i].value[m][n].extractGeometry() );
 						geomDatas.push( data[i].value[m][n].extractData() );
-						topos.push( data[i].value[m][n].extractTopology() );
+						//topos.push( data[i].value[m][n].extractTopology() );
 					}
 				}
 				data[i].geom.push(geoms);
 				data[i].geomData.push(geomDatas);
-				data[i].topo.push(topos);
+				//data[i].topo.push(topos);
 			}
 		}
 

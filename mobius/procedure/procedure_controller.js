@@ -7,6 +7,11 @@
 vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg','generateCode','nodeCollection',
     function($scope,$rootScope,$filter,consoleMsg,generateCode,nodeCollection) {
 
+        $scope.autoScroll = function(){
+            var procedureDiv = document.getElementById("procedure");
+            procedureDiv.scrollTop = procedureDiv.scrollHeight;
+        };
+
         $scope.functionCodeList =[];
 
         // toggle code view
@@ -328,6 +333,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
         // new parameter / procedure items
         $scope.newItem = function(cate,subCate) {
+
             try{
                 if(cate == 'Data'){
                     $scope.data.push({
@@ -433,6 +439,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                 consoleMsg.errorMsg('noNode');
             }
 
+            setTimeout(function(){$scope.autoScroll();},0);
         };
 
         // add new item in interface
