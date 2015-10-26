@@ -47,6 +47,19 @@ var VIDAMO = ( function (mod){
 	mod.addToArray = function(originalArr, newObj){
 		return originalArr.push(newObj)
 	};
+	
+	/*
+	 *
+	 *	Geometry Analysis Functions
+	 * 
+	 */
+	mod.computeArea = function(arrayOfPoints){
+		//calculate area based on what kind of object
+	};
+	
+	mod.getCentre = function(mObj){
+		//calculate centre based on what kind of object
+	};
 
 	/*
 	 *
@@ -60,14 +73,19 @@ var VIDAMO = ( function (mod){
 	// Output: MobiusDataObject with NURBS geometry
 	//
 	mod.makeLine = function(start, end){
+		// input variations
+		// start, end could be a vector3 - has to be converted into an array
+		
 		return new MobiusDataObject( new verb.geom.Line(start, end) );
 	};
-
+	
 	//
 	// Input: Numeric and Numeric Array Input
 	// Output: MobiusDataObject with NURBS geometry
 	//
 	mod.makeArc = function(center,xaxis,yaxis,radius,minAngle,maxAngle){
+		// input variations
+		// center, axis and yaxis could be vector3
 		return new MobiusDataObject( new verb.geom.Arc(center,xaxis,yaxis,radius,minAngle,maxAngle) );
 	};
 
@@ -76,6 +94,7 @@ var VIDAMO = ( function (mod){
 	// Output: MobiusDataObject with NURBS geometry
 	//
 	mod.makeBezierCurve = function(points, weights){
+		// points could be vector3
 		return new MobiusDataObject( new verb.geom.BezierCurve(points, weights) );
 	};
 
@@ -349,6 +368,19 @@ var VIDAMO = ( function (mod){
 	mod.makeCylinder = function(radiusTop, radiusBottom, height, radiusSegments, heightSegments, openEnded, thetaStart, thetaLength){
 		return new MobiusDataObject( new THREE.CylinderGeometry( radiusTop, radiusBottom, height, radiusSegments, heightSegments, openEnded, thetaStart, thetaLength ));
 	};
+	
+	//
+	//
+	//
+	//
+	mod.makePolyline = function(arrOfPoints){
+		var pline = new THREE.Geometry();
+
+		for(var point=0; point < arrOfPoints.length; point++)
+			pline.vertices.push(new THREE.Vector3(arrOfPoints[point][0], arrOfPoints[point][1], arrOfPoints[point][2]));
+				
+		return new MobiusDataObject( pline );
+	};
 
 	//
 	// Input: Numeric Input
@@ -378,7 +410,7 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
-	mod.makePolygon = function(origin, points){
+	mod.makePolygonByPoints = function(origin, points){
 
 		var customShape = new THREE.Shape();
 
@@ -390,8 +422,12 @@ var VIDAMO = ( function (mod){
 		customShape.lineTo(origin[0], origin[1]);
 
 		var geom = new THREE.ShapeGeometry( customShape );
-
+		console.log(geom); console.log(customShape);
 		return new MobiusDataObject ( geom );
+	};
+	
+	mod.makePolygonByFace = function( face ){
+		// takes a face and creates a polygon 
 	};
 
 	//
@@ -405,6 +441,28 @@ var VIDAMO = ( function (mod){
 		var geometry = new THREE.ExtrudeGeometry( shape, extrudeSettings );
 
 		return new MobiusDataObject( geometry );
+	};
+	
+	//
+	// Input: Mobius Object with three.js geometry; direction as vector3
+	// Output: modified Mobius Object with three.js geometry
+	//
+	mod.extrudeByDirection = function( mObj, dir ){
+		
+		// input is not three.js geometry - convert it
+		var geometry = mObj.geometry;
+		
+		var matrix = new THREE.Matrix4();
+
+		var Syx = dir.x / dir.y,
+			Syz = dir.z / dir.y;
+
+		matrix.set(   1,   Syx,   0,   0,
+					  0,     1,   0,   0,
+					  0,   Syz,   1,   0,
+					  0,     0,   0,   1  );
+
+		geometry.applyMatrix( matrix );
 	};
 
 	//
@@ -789,6 +847,11 @@ var default_material_lineFromVerbs = new THREE.LineBasicMaterial({
 	linewidth: 100,
 	color: 0x999900
 });
+var default_material_lineFromThree = new THREE.LineBasicMaterial({
+	side: THREE.DoubleSide,
+	linewidth: 100,
+	color: 0x0066CC
+});
 var default_material_topology_vertex = new THREE.ParticleBasicMaterial({
 	color: 0xCCCCFF,
 	size: 1,
@@ -823,7 +886,11 @@ var convertGeomToThreeMesh = function( geom ){
 			return singleDataObject;
 		}
 		else if(singleDataObject instanceof THREE.Geometry){
-			return new THREE.Mesh( singleDataObject, default_material_meshFromThree || singleDataObject.material );
+			// if faces > 0 - it's a mesh
+			if(singleDataObject.faces.length)
+				return new THREE.Mesh( singleDataObject, default_material_meshFromThree || singleDataObject.material );
+			else
+				return new THREE.Line( singleDataObject, default_material_lineFromThree || singleDataObject.material ) // else line
 		}
 		else if(singleDataObject instanceof TOPOLOGY.Topology){
 			// display topology itself
