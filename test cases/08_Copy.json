@@ -1,0 +1,100 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "node0",
+            "x": 1946.5129548915465,
+            "y": 1995.6685758899723,
+            "inputConnectors": [],
+            "outputConnectors": [
+                {
+                    "name": "out0",
+                    "value": ""
+                }
+            ],
+            "type": "pline",
+            "version": 1445855101789,
+            "overwrite": true
+        }
+    ],
+    "connections": []
+}
+
+//procedure json
+[
+    [
+        {
+            "id": 1,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "makeBox",
+            "parameters": [
+                {
+                    "value": "12",
+                    "type": "length",
+                    "$$hashKey": "object:356"
+                },
+                {
+                    "value": "12",
+                    "type": "breadth",
+                    "$$hashKey": "object:357"
+                },
+                {
+                    "value": "12",
+                    "type": "height",
+                    "$$hashKey": "object:358"
+                }
+            ],
+            "result": "box",
+            "$$hashKey": "object:348"
+        },
+        {
+            "id": 2,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "makeCopy",
+            "parameters": [
+                {
+                    "value": "box",
+                    "type": "mObj",
+                    "$$hashKey": "object:531"
+                },
+                {
+                    "value": "12",
+                    "type": "transX",
+                    "$$hashKey": "object:532"
+                },
+                {
+                    "value": "12",
+                    "type": "transY",
+                    "$$hashKey": "object:533"
+                },
+                {
+                    "value": "0",
+                    "type": "transZ",
+                    "$$hashKey": "object:534"
+                }
+            ],
+            "result": "copy",
+            "$$hashKey": "object:523"
+        },
+        {
+            "id": 3,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "out0",
+            "dataValue": "[box, copy]",
+            "type": "new",
+            "$$hashKey": "object:644"
+        }
+    ]
+]
+
+//interface json
+[
+    []
+]

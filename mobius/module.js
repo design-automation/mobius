@@ -76,6 +76,7 @@ var VIDAMO = ( function (mod){
 	//
 	mod._computeArea = function(arrayOfPoints){
 		//calculate area based on what kind of object
+		// could be three.js or verbs
 	};
 	
 	//
@@ -192,7 +193,7 @@ var VIDAMO = ( function (mod){
 	// Input: MobiusDataObjects with NURBS geometry
 	// Output: MobiusDataObject with NURBS geometry
 	//
-	mod.makeSurfaceBySweep = function ( mObjProfile, mbObjRail){
+	mod.makeSurfaceBySweep = function ( mObjProfile, mObjRail){
 		var profile = mObjProfile.geometry;
 		var rail = mObjRail.geometry;
 		return new MobiusDataObject( new verb.geom.SweptSurface ( profile, rail ) );

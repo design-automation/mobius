@@ -1,0 +1,86 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "node0",
+            "x": 1950.060267747103,
+            "y": 2000.2294067042592,
+            "inputConnectors": [],
+            "outputConnectors": [
+                {
+                    "name": "out0",
+                    "value": ""
+                }
+            ],
+            "type": "pline",
+            "version": 1445851018952,
+            "overwrite": true
+        }
+    ],
+    "connections": []
+}
+
+//procedure json
+[
+    [
+        {
+            "id": 1,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "makePolygonByPoints",
+            "parameters": [
+                {
+                    "value": "[0,0,0]",
+                    "type": "origin",
+                    "$$hashKey": "object:417"
+                },
+                {
+                    "value": "[ [2, 6], [4, 7], [1, 7], [8, 9] ]",
+                    "type": "points",
+                    "$$hashKey": "object:418"
+                }
+            ],
+            "result": "poly",
+            "$$hashKey": "object:409"
+        },
+        {
+            "id": 2,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "_extrudePolygon",
+            "parameters": [
+                {
+                    "value": "poly",
+                    "type": "mObj",
+                    "$$hashKey": "object:586"
+                },
+                {
+                    "value": "12",
+                    "type": "thickness",
+                    "$$hashKey": "object:587"
+                },
+                {
+                    "value": "0",
+                    "type": "bevel",
+                    "$$hashKey": "object:588"
+                },
+                {
+                    "value": "{x:0, y:0, z:1}",
+                    "type": "direction",
+                    "$$hashKey": "object:589"
+                }
+            ],
+            "result": "out0",
+            "$$hashKey": "object:578"
+        }
+    ]
+]
+
+//interface json
+[
+    []
+]
