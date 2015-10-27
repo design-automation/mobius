@@ -13,7 +13,7 @@
                 }
             ],
             "type": "curves",
-            "version": 1445572085340,
+            "version": 1445935904721,
             "overwrite": true
         },
         {
@@ -34,7 +34,7 @@
                 }
             ],
             "type": "makeSurface",
-            "version": 1445572083592,
+            "version": 1445935903826,
             "overwrite": true
         },
         {
@@ -59,7 +59,7 @@
                 }
             ],
             "type": "panels",
-            "version": 1445572086939,
+            "version": 1445935896575,
             "overwrite": true
         },
         {
@@ -75,7 +75,7 @@
                 }
             ],
             "type": "panel",
-            "version": 1445572082158,
+            "version": 1445935903068,
             "overwrite": true
         }
     ],
@@ -139,20 +139,21 @@
             "title": "Control",
             "nodes": [
                 {
-                    "id": 3,
+                    "id": 4,
                     "title": "Action",
                     "nodes": [],
                     "type": "new",
-                    "method": "makeCurve",
+                    "expression": "",
+                    "method": "makeCurveByPoints",
                     "parameters": [
                         {
                             "value": "crv_pnt",
                             "type": "points",
-                            "$$hashKey": "object:399"
+                            "$$hashKey": "object:840"
                         }
                     ],
                     "result": "crv",
-                    "$$hashKey": "object:391"
+                    "$$hashKey": "object:832"
                 },
                 {
                     "id": 4,
@@ -319,7 +320,7 @@
             "$$hashKey": "object:647"
         },
         {
-            "id": 3,
+            "id": 4,
             "title": "Action",
             "nodes": [],
             "type": "new",
@@ -328,22 +329,32 @@
             "parameters": [
                 {
                     "value": "out0",
-                    "type": "object",
-                    "$$hashKey": "object:2196"
+                    "type": "obj",
+                    "$$hashKey": "object:1374"
                 },
                 {
                     "value": "mat_type",
                     "type": "material_type",
-                    "$$hashKey": "object:2197"
+                    "$$hashKey": "object:1375"
                 },
                 {
-                    "value": "opts",
-                    "type": "options",
-                    "$$hashKey": "object:2198"
+                    "value": "false",
+                    "type": "wireframe",
+                    "$$hashKey": "object:1376"
+                },
+                {
+                    "value": "0xffffff",
+                    "type": "color",
+                    "$$hashKey": "object:1377"
+                },
+                {
+                    "value": "false",
+                    "type": "transparent",
+                    "$$hashKey": "object:1378"
                 }
             ],
             "result": "final",
-            "$$hashKey": "object:2188"
+            "$$hashKey": "object:1366"
         }
     ],
     [
@@ -494,14 +505,6 @@
             "dataName": "mat_type",
             "dataValue": "\"MeshNormalMaterial\"",
             "$$hashKey": "object:2126"
-        },
-        {
-            "id": 3,
-            "title": "Data",
-            "temp": "Parameter",
-            "dataName": "opts",
-            "dataValue": "{ side: THREE.DoubleSide, wireframe: false, shading: THREE.SmoothShading, transparent: false, color: 0xffffff}",
-            "$$hashKey": "object:2138"
         }
     ],
     [

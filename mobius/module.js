@@ -65,6 +65,76 @@ var VIDAMO = ( function (mod){
 	};
 	
 	/*
+	 * 
+	 * List Operations
+	 *
+	 */
+	 
+	//
+	//
+	//
+	//
+	mod._getMaxValue = function( valueList ){
+		var maxValue = valueList[0];
+		for(var i=0; i<valueList.length; i++)
+			maxValue = Math.max(maxValue, valueList[i]);
+		return maxValue;
+	};
+	
+	//
+	//
+	//
+	//
+	mod._getMinValue = function( valueList ){
+		var minValue = valueList[0];
+		for(var i=0; i<valueList.length; i++)
+			minValue = Math.min(minValue, valueList[i]);
+		return minValue;
+	};
+	
+	//
+	//
+	//
+	//
+	mod._sumList = function( valueList ){
+		var sum = 0;
+		for(var i=0; i<valueList.length; i++)
+			sum += valueList[i];
+		return sum;
+	};
+	
+	//
+	//
+	//
+	//
+	mod._averageList = function( valueList ){
+		var sum = 0;
+		for(var i=0; i<valueList.length; i++)
+			sum += valueList[i];
+		return sum/valueList.length;
+	};
+	
+	//
+	//
+	//
+	//
+	mod._rangeOfList = function( valueList ){
+		var minValue = valueList[0];
+		for(var i=0; i<valueList.length; i++){
+			maxValue = Math.min(minValue, valueList[i]);
+		}	
+		return maxValue-minValue;
+	};
+	
+	//
+	//
+	//
+	//
+	mod._getListLength = function( valueList ){
+		return valueList.length
+	};
+	
+	/*
 	 *
 	 *	Geometry Analysis Functions
 	 * 
@@ -86,6 +156,47 @@ var VIDAMO = ( function (mod){
 	mod._getCentre = function(mObj){
 		//calculate centre based on what kind of object
 	};
+	
+	//
+	//
+	//
+	//
+	mod._distanceBetweenTwoPoints = function( point1, point2){
+		var deltaX, deltaY, deltaZ; 
+		
+		if(point1.geometry instanceof THREE.Vector3 && point2.geometry instanceof THREE.Vector3){
+			pnt1 = point1.geometry;
+			pnt2 = point2.geometry;
+			deltaX = pnt1.x - pnt2.x;
+			deltaY = pnt1.y - pnt2.y;
+			deltaZ = pnt1.z - pnt2.z;
+		}
+		else if(point1.constructor === Array && point2.constructor === Array){
+			deltaX = pnt1[0] - pnt2[0];
+			deltaY = pnt1[1] - pnt2[1];
+			deltaZ = pnt1[2] - pnt2[2];
+		}
+		else
+			return "Invalid Input"
+
+		var distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
+		return distance;
+	};
+
+	//
+	//
+	//
+	//
+	mod._getLengthOfVector = function( vector ){
+		return vector.length;
+	};
+	
+	//
+	//
+	//
+	//
+	
+	
 	
 	/*
 	 *
@@ -247,7 +358,7 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
-	mod.getPointOnSurface = function( surface, u, v ){
+	mod._getPointOnSurface = function( surface, u, v ){
 		if(surface instanceof verb.geom.NurbsSurface)
 			return surface.point( u, v );
 		else
@@ -258,7 +369,7 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
-	mod.getPointOnCurve = function( curve, t ){
+	mod._getPointOnCurve = function( curve, t ){
 		if( curve instanceof verb.geom.NurbsCurve)
 			return curve.point( t );
 		else
@@ -277,8 +388,11 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
-	mod._divideCurve = function(){
-		
+	mod._divideCurve = function( curve, divisions ){
+		var points = curve.divideByEqualArcLength( divisions )
+							.map(function(u){ return curve.point( u.u ); } );
+	
+		return points; //convert these into vector points 
 	};
 
 	//
@@ -438,6 +552,15 @@ var VIDAMO = ( function (mod){
 	//
 	mod.makeVector = function(x, y, z){
 		return new MobiusDataObject( new THREE.Vector3(x, y, z));
+	};
+	
+	mod._makeVectorsFromPoints = function( points ){
+		var mObjArr; 
+		for(var i=0; i<points.length; i++){
+			var obj = new MobiusDataObject( new THREE.Vector3(points[i][0], points[i][0], points[i][0]));
+			mObjArr.push(obj);
+		}
+		return mObjArr;
 	};
 
 	mod.makeCircle = function(radius, segments){
@@ -635,9 +758,10 @@ var VIDAMO = ( function (mod){
 		// needs to be optimized
 
 		// needs to cater to any kind of three.js object - mesh, lines, points - caters to just one right now
+		// copies with translations
 		var newCopy = new MobiusDataObject( mObj.geometry );
 
-		var newCopyMesh = newCopy.extractGeometry( mObj.extractGeometry() );
+		var newCopyMesh = newCopy.extractGeometry( mObj.extractGeometry().clone() );
 	
 		newCopyMesh.translateX(transX);
 		newCopyMesh.translateY(transY);
@@ -726,6 +850,19 @@ var VIDAMO = ( function (mod){
 		object.rotation.setFromRotationMatrix(object.matrix);
 
 		return mObj;
+	};
+	
+	//
+	//	STATUS: UnCHECKED
+	//
+	//
+	mod._makeChildOf = function(mObj1, mObj2){
+		mesh1 = mObj1.extractGeometry();
+		mesh2 = mObj2.extractGeometry();
+		
+		mesh1.add(mesh2);
+		
+		return;
 	};
 
 
