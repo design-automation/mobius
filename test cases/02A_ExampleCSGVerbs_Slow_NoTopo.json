@@ -13,7 +13,7 @@
                 }
             ],
             "type": "curves",
-            "version": 1445572209048,
+            "version": 1445919641023,
             "overwrite": true
         },
         {
@@ -34,7 +34,7 @@
                 }
             ],
             "type": "makeSurface",
-            "version": 1445572208480,
+            "version": 1445919622745,
             "overwrite": true
         },
         {
@@ -59,7 +59,7 @@
                 }
             ],
             "type": "panels",
-            "version": 1445572213477,
+            "version": 1445919646358,
             "overwrite": true
         },
         {
@@ -139,20 +139,21 @@
             "title": "Control",
             "nodes": [
                 {
-                    "id": 3,
+                    "id": 4,
                     "title": "Action",
                     "nodes": [],
                     "type": "new",
-                    "method": "makeCurve",
+                    "expression": "",
+                    "method": "makeCurveByPoints",
                     "parameters": [
                         {
                             "value": "crv_pnt",
                             "type": "points",
-                            "$$hashKey": "object:399"
+                            "$$hashKey": "object:499"
                         }
                     ],
                     "result": "crv",
-                    "$$hashKey": "object:391"
+                    "$$hashKey": "object:491"
                 },
                 {
                     "id": 4,

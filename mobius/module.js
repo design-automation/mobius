@@ -630,7 +630,7 @@ var VIDAMO = ( function (mod){
 	// Output: MobiusDataObject with Three.js geometry
 	// Note - modifies the convertedGeometry Mesh - needs to update topology if already created and re-link the data associated
 	//
-	mod._makeCopy = function(mObj, transX, transY, transZ){
+	mod.makeCopy = function(mObj, transX, transY, transZ){
 		// needs to be optimized
 
 		// needs to cater to any kind of three.js object - mesh, lines, points - caters to just one right now
@@ -652,6 +652,8 @@ var VIDAMO = ( function (mod){
 	//
 	mod._translateObject = function(mObj, transX, transY, transZ){
 
+		// could be a face too 
+		
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
 		var mesh = mObj.extractGeometry();
@@ -667,6 +669,8 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	mod.moveObjectToPoint = function(mObj, xCoord, yCoord, zCoord){
+		
+		//could be a face too
 
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
@@ -704,18 +708,21 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
-	mod.rotateObjectAroundAxis = function( mObj, mObjAxis, radians ){
+	mod._rotateObjectAroundAxis = function( mObj, mObjAxis, radians ){
 		//mObj Axis is a vector3
 
 		// Rotate an object around an axis in world space (the axis passes through the object's position)
 		var object = mObj.extractGeometry();
-		var axis = mObjAxis.extractGeometry();
+		var axis = mObjAxis.geometry;
 
-		var rotationMatrix = new THREE.Matrix4();
-		rotationMatrix.setRotationAxis( axis.normalize(), radians );
-		rotationMatrix.multiplySelf( object.matrix );                       // pre-multiply
-		object.matrix = rotationMatrix;
-		object.rotation.setRotationFromMatrix( object.matrix );
+		var rotWorldMatrix = new THREE.Matrix4();
+		rotWorldMatrix.makeRotationAxis(axis.normalize(), radians);
+
+		rotWorldMatrix.multiply(object.matrix);                // pre-multiply
+
+		object.matrix = rotWorldMatrix;
+
+		object.rotation.setFromRotationMatrix(object.matrix);
 
 		return mObj;
 	};
@@ -789,6 +796,7 @@ var VIDAMO = ( function (mod){
 	 *
 	 */
 
+	/*  
 	//
 	//	Input :
 	//	Output : MobiusDataObject with Topology geometry
@@ -852,6 +860,15 @@ var VIDAMO = ( function (mod){
 			solidTopo.add
 		}
 	};
+	*/
+	
+	//
+	//	Input: Topology Vertex
+	//
+	//
+	mod._changeVertexPosition = function(){
+		
+	};
 
 
 	/*
@@ -864,9 +881,14 @@ var VIDAMO = ( function (mod){
 	// Input: Single or Array of MobiusDataObject (with any kind of geometry) or TopoGeometry, numeric input
 	// Output: Modified MobiusDataObject
 	//
-	mod.addMaterial = function(obj, material_type, options){
-
-		var material = new THREE[material_type](options);
+	mod.addMaterial = function(obj, material_type, wireframe, color, transparent){
+		var option = {	wireframe: wireframe, 
+						color: color, 
+						transparent: transparent,
+						side: THREE.DoubleSide,
+						shading: THREE.SmoothShading
+					};
+		var material = new THREE[material_type](option);
 		if(obj.constructor === Array){
 			for(var i=0; i<obj.length; i++)
 				obj[i].material = material;
