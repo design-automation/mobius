@@ -152,6 +152,7 @@
                                     <li class="dropdown-submenu">
                                         <a tabindex="-1" href="#"> Set View </a>
                                         <ul class="dropdown-menu">
+                                            <li><a tabindex="-1" href="#">Perspective</a></li>
                                             <li><a tabindex="-1" href="#">Top</a></li>
                                             <li><a tabindex="-1" href="#">Bottom</a></li>
                                             <li><a tabindex="-1" href="#">Front</a></li>
@@ -242,7 +243,8 @@
                                     </pre>
                                 </div>
 
-                                <div style="overflow: auto;
+                                <div    ng-if = "currentNodeName"
+                                        style="overflow: auto;
                                             position: absolute;
                                             height: 100%;
                                             width: 100%;
@@ -353,6 +355,8 @@
 <script src="assets/js/threejs/build/three.js"></script>
 <script src="assets/js/threejs/examples/js/controls/TransformControls.js"></script>
 <script src="assets/js/threejs/examples/js/controls/OrbitControls.js"></script>
+<script src="assets/js/threejs/CombinedCamera.js"></script>
+
 
 <script src="assets/js/threejs/curves/NURBSCurve.js"></script>
 <script src="assets/js/threejs/curves/NURBSSurface.js"></script>

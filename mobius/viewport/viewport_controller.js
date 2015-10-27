@@ -7,7 +7,7 @@ vidamo.controller('viewportCtrl',[
     '$scope',
     function($scope) {
 
-        $scope.topoViewportControl = {"xxx":[]};
+        $scope.topoViewportControl = {};
 
         $scope.viewportControl = {
             "geometryData":[]
