@@ -133,7 +133,7 @@
                                 <span dropdown on-toggle="toggled(open)" style="left:10px;">
 
                                  <button class="btn btn-default btn-xs" dropdown-toggle>
-                                     Viewport
+                                     {{viewportControl.currentCate}}
                                      <span class="caret"></span>
                                  </button>
 
@@ -149,25 +149,24 @@
                                         </ul>
                                     </li>
 
-                                    <li class="dropdown-submenu">
+                                    <li class="dropdown-submenu" ng-if="showGeometry">
                                         <a tabindex="-1" href="#"> Set View </a>
                                         <ul class="dropdown-menu">
-                                            <li><a tabindex="-1" href="#">Perspective</a></li>
-                                            <li><a tabindex="-1" href="#">Top</a></li>
-                                            <li><a tabindex="-1" href="#">Bottom</a></li>
-                                            <li><a tabindex="-1" href="#">Front</a></li>
-                                            <li><a tabindex="-1" href="#">Back</a></li>
-                                            <li><a tabindex="-1" href="#">Left</a></li>
-                                            <li><a tabindex="-1" href="#">Right</a></li>
+                                            <li><a tabindex="-1" ng-click="viewportControl.perspectiveView()">Perspective</a></li>
+                                            <li><a tabindex="-1" ng-click="viewportControl.topView()">Top</a></li>
+                                            <li><a tabindex="-1" ng-click="viewportControl.bottomView()">Bottom</a></li>
+                                            <li><a tabindex="-1" ng-click="viewportControl.frontView()">Front</a></li>
+                                            <li><a tabindex="-1" ng-click="viewportControl.backView()">Back</a></li>
+                                            <li><a tabindex="-1" ng-click="viewportControl.leftView()">Left</a></li>
+                                            <li><a tabindex="-1" ng-click="viewportControl.rightView()">Right</a></li>
                                         </ul>
                                     </li>
 
-                                    <li class="dropdown-submenu">
+                                    <li class="dropdown-submenu" ng-if="showGeometry">
                                         <a tabindex="-1" href="#">Display Mode</a>
                                         <ul class="dropdown-menu">
-                                            <li><a tabindex="-1" href="#">Shaded</a></li>
-                                            <li><a tabindex="-1" href="#">Wireframe</a></li>
-                                            <li><a tabindex="-1" href="#">Render</a></li>
+                                            <li><a tabindex="-1"  ng-click="viewportControl.toggleWireframe()">Wireframe</a></li>
+                                            <li><a tabindex="-1" ng-click="viewportControl.toggleRender()">Render</a></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -352,9 +351,8 @@
 <script src="assets/js/angular-ui/ui-panzoom/panzoom.js"></script>
 
 <!-- three.js -->
-<script src="assets/js/threejs/build/three.js"></script>
-<script src="assets/js/threejs/examples/js/controls/TransformControls.js"></script>
-<script src="assets/js/threejs/examples/js/controls/OrbitControls.js"></script>
+<script src="assets/js/threejs/three.js"></script>
+<script src="assets/js/threejs/OrbitControls.js"></script>
 <script src="assets/js/threejs/CombinedCamera.js"></script>
 
 

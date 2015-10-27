@@ -26,6 +26,8 @@ vidamo.controller('viewportCtrl',[
 
 
         $scope.toggleFullCode = function(){
+            $scope.viewportControl.currentCate = 'Code';
+
             $scope.showGeometry = false;
             $scope.showFullCode = true;
             $scope.showData = false;
@@ -35,6 +37,8 @@ vidamo.controller('viewportCtrl',[
         };
 
         $scope.toggleGeometry = function(){
+            $scope.viewportControl.currentCate = $scope.viewportControl.currentView;
+
             $scope.showGeometry = true;
             $scope.showFullCode = false;
             $scope.showData = false;
@@ -44,6 +48,7 @@ vidamo.controller('viewportCtrl',[
         };
 
         $scope.toggleData = function(){
+            $scope.viewportControl.currentCate = 'Data';
             $scope.showGeometry = false;
             $scope.showFullCode = false;
             $scope.showData = true;
@@ -53,6 +58,7 @@ vidamo.controller('viewportCtrl',[
         };
 
         $scope.toggleTopology = function(){
+            $scope.viewportControl.currentCate = 'Topology';
             $scope.showGeometry = false;
             $scope.showFullCode = false;
             $scope.showData = false;

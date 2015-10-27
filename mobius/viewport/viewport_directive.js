@@ -6,7 +6,6 @@
 // 1.2 geometry control
 // 2. gird toggle
 // 3. extend view
-// 4. shading mode
 // 5. set view position
 
 
@@ -21,16 +20,21 @@ vidamo.directive('viewport', function factory() {
         link: function (scope, elem) {
 
             scope.internalControl = scope.control || {};
+            scope.internalControl.currentCate = 'Perspective';
+            scope.internalControl.currentView = 'Perspective';
 
             // retrieve the viewport dom element
             var container = elem[0];
             var VIEWPORT_WIDTH = container.offsetWidth;
             var VIEWPORT_HEIGHT = container.offsetHeight;
 
-            var //scene,
-                camera,
+            var scene,
+                camera, orthoCamera,
                 renderer,
-                controls;
+                controls,controlsPerspective, controlsOrtho;
+
+            var orthographic = false;
+            var wireframe = false;
 
             init();
             animate();
@@ -47,10 +51,16 @@ vidamo.directive('viewport', function factory() {
                     FAR = 10000;
 
                 camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
-                scene.add(camera);
                 camera.position.set(-120, 60, 200);
-                //camera.lookAt(new THREE.Vector3(0,0,0));
                 camera.lookAt( scene.position );
+
+                orthoCamera = new THREE.OrthographicCamera(
+                    VIEWPORT_WIDTH / -2,		// Left
+                    VIEWPORT_WIDTH / 2,		    // Right
+                    VIEWPORT_HEIGHT / 2,		// Top
+                    VIEWPORT_HEIGHT / -2,	    // Bottom
+                    -2000,            			// Near
+                    5000 );           			// Far
 
                 // prepare renderer
                 renderer = new THREE.WebGLRenderer({antialias:true, alpha: false});
@@ -61,8 +71,14 @@ vidamo.directive('viewport', function factory() {
                 renderer.shadowMapSoft = true;
 
                 // prepare controls (OrbitControls)
-                controls = new THREE.OrbitControls(camera, renderer.domElement);
-                controls.target = new THREE.Vector3(0, 0, 0);
+                controlsPerspective = new THREE.OrbitControls(camera, renderer.domElement);
+                controlsPerspective.enableKeys = false;
+
+                controlsOrtho = new THREE.OrbitControls(orthoCamera, renderer.domElement);
+                controlsOrtho.enableKeys = false;
+
+                controls = controlsPerspective;
+
                 container.appendChild(renderer.domElement);
 
                 var ambientLight = new THREE.AmbientLight( 0xbbbbbb );
@@ -92,6 +108,119 @@ vidamo.directive('viewport', function factory() {
                 scene.add(gridHelper);
             }
 
+            // perspective view
+            scope.internalControl.perspectiveView = function(){
+                controlsPerspective.reset();
+
+                orthographic = false;
+                controlsOrtho.enableRotate = true;
+            };
+
+            // top view
+            scope.internalControl.topView = function(){
+                scope.internalControl.currentView = 'Top';
+                scope.internalControl.currentCate = 'Top';
+
+
+                controlsOrtho.reset();
+                controls = controlsOrtho;
+                scene.add(orthoCamera);
+                controlsOrtho.enableRotate = false;
+                orthoCamera.position.set(0,1000,0);
+                orthoCamera.lookAt( scene.position );
+                orthographic = true;
+            };
+
+            // bottom view
+            scope.internalControl.bottomView = function(){
+                scope.internalControl.currentView = 'Bottom';
+                scope.internalControl.currentCate = 'Bottom';
+
+                controlsOrtho.reset();
+
+                orthoCamera.position.set(0,-1000,0);
+                orthoCamera.lookAt( scene.position );
+                scene.add(orthoCamera);
+                controlsOrtho.enableRotate = false;
+                orthographic = true;
+            };
+
+            //  front view
+            scope.internalControl.frontView = function(){
+                scope.internalControl.currentView = 'Front';
+                scope.internalControl.currentCate = 'Front';
+
+                controlsOrtho.reset();
+
+                orthoCamera.position.set(0,0,1000);
+                orthoCamera.lookAt( scene.position );
+                scene.add(orthoCamera);
+                controlsOrtho.enableRotate = false;
+                orthographic = true;
+            };
+
+            // back view
+            scope.internalControl.backView = function(){
+                scope.internalControl.currentView = 'Back';
+                scope.internalControl.currentCate = 'Back';
+
+                controlsOrtho.reset();
+
+                orthoCamera.position.set(0,0,-1000);
+                orthoCamera.lookAt( scene.position );
+                scene.add(orthoCamera);
+                controlsOrtho.enableRotate = false;
+                orthographic = true;
+            };
+
+            // left view
+            scope.internalControl.leftView = function(){
+                scope.internalControl.currentView = 'Left';
+                scope.internalControl.currentCate = 'Left';
+
+                controlsOrtho.reset();
+
+                orthoCamera.position.set(-1000,0,0);
+                orthoCamera.lookAt( scene.position );
+                scene.add(orthoCamera);
+                controlsOrtho.enableRotate = false;
+                orthographic = true;
+            };
+
+            // right view
+            scope.internalControl.rightView = function(){
+                scope.internalControl.currentView = 'Right';
+                scope.internalControl.currentCate = 'Right';
+
+                controlsOrtho.reset();
+
+                orthoCamera.position.set(1000,0,0);
+                orthoCamera.lookAt( scene.position );
+                scene.add(orthoCamera);
+                controlsOrtho.enableRotate = false;
+                orthographic = true;
+            };
+
+            scope.internalControl.toggleWireframe = function(){
+                wireframe = true;
+                for(var i =0; i < scene.children.length; i++){
+                    if((scene.children[i] instanceof THREE.Mesh
+                    || scene.children[i]  instanceof THREE.Line )&& scene.children[i].name !== 'helper'){
+                        scene.children[i].material.wireframe = true;
+                    }
+                }
+            };
+
+            scope.internalControl.toggleRender = function(){
+                wireframe = false;
+                for(var i =0; i < scene.children.length; i++){
+                    if((scene.children[i] instanceof THREE.Mesh
+                        || scene.children[i]  instanceof THREE.Line )&& scene.children[i].name !== 'helper'){
+                        scene.children[i].material.wireframe = false;
+                    }
+                }
+            };
+
 
             // monitoring viewport size change
             scope.$watch(
@@ -113,8 +242,14 @@ vidamo.directive('viewport', function factory() {
             // update on resize of viewport
             function resizeUpdate() {
                 container.appendChild(renderer.domElement);
+
+
                 camera.aspect = VIEWPORT_WIDTH / VIEWPORT_HEIGHT;
                 camera.updateProjectionMatrix ();
+
+                camera.aspect = VIEWPORT_WIDTH / VIEWPORT_HEIGHT;
+                orthoCamera.updateProjectionMatrix();
+
                 renderer.setSize(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
             }
 
@@ -132,7 +267,12 @@ vidamo.directive('viewport', function factory() {
 
             // Render the scene
             function render() {
-                renderer.render(scene, camera);
+                if(!orthographic){
+                    renderer.render(scene, camera);
+                }
+                else{
+                    renderer.render(scene, orthoCamera);
+                }
             }
 
             // clear geometries in scene when run
@@ -159,6 +299,14 @@ vidamo.directive('viewport', function factory() {
                 } else {
                     scope.internalControl.displayObject(value,geomData);
                 }
+                if(wireframe){
+                    for(var i =0; i < scene.children.length; i++){
+                        if((scene.children[i] instanceof THREE.Mesh
+                            || scene.children[i]  instanceof THREE.Line )&& scene.children[i].name !== 'helper'){
+                            scene.children[i].material.wireframe = true;
+                        }
+                    }
+                }
             };
 
             //
@@ -180,18 +328,6 @@ vidamo.directive('viewport', function factory() {
                 else{
                     console.log("Vidamo doesn't recognise this type!");
                 }
-
-            };
-
-
-            // anyone tells me what the hell is this
-            // fixme
-            scope.internalControl.benchmark = function(func, runs){
-                var d1 = Date.now();
-                for (var i = 0 ; i < runs; i++)
-                    res = func();
-                var d2 = Date.now();
-                return { result : res, elapsed : d2-d1, each : (d2-d1)/runs };
             };
         }
     }
