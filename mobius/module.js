@@ -153,8 +153,18 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
-	mod._getCentre = function(mObj){
+	mod.getCentre = function(mObj){
 		//calculate centre based on what kind of object
+		var geometry = mObj.geometry;
+		
+		if(geometry instanceof verb.geom.NurbsCurve)
+			return geometry.point(0.5);
+		else if(geometry instanceof verb.geom.NurbsSurface)
+			return geometry.point(0.5, 0.5);
+		else if(geometry instanceof THREE.Geometry)
+			return geometry.center;
+		else
+			return "Invalid Input"
 	};
 	
 	//
