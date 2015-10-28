@@ -18,8 +18,76 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
         });
 
 
+        // create new scene
+
+        $scope.newScene = function(){
+            // prompt user to save the current scene
+            if (confirm("Save the current scene before you create a new scene?") === true) {
+                setTimeout(function(){
+                    document.getElementById('saveSceneJson').click()
+                },0);
+            }
+
+            // reset procedure / interface / graph and refresh viewport
+            generateCode.setChartViewModel(new flowchart.ChartViewModel({
+                    "nodes": [],
+                    "connections": []
+                }
+            ));
+            generateCode.setDataList([]);
+            generateCode.setInterfaceList([]);
+
+            var scope = angular.element(document.getElementById('threeViewport')).scope();
+            var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
+
+            setTimeout(function(
+            ){
+                scope.$apply(function(){scope.viewportControl.refreshView();} );
+                scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
+            },0);
+
+            consoleMsg.confirmMsg('newSceneCreated');
+        };
+
+        $scope.loadExample = function(){
+            $http({
+                method: 'GET',
+                url: 'examples/simpleKillianRoof.json',
+                data: {},
+                transformResponse: function (data) {
+                    // since example files is not standard .json and can't parse correctly by $http
+                    // overwrite the default response
+                    return data;
+                }
+            }).success(
+                function(response) {
+                    var graphJsonString;
+                    var procedureJsonString;
+                    var interfaceJsonString;
+                    var graphJsonObj;
+                    var procedureJsonObj;
+                    var interfaceJsonObj;
+
+                    graphJsonString = response.split("//procedure json")[0];
+                    var secondhalf = response.split("//procedure json")[1];
+                    procedureJsonString = secondhalf.split("//interface json")[0];
+                    interfaceJsonString = secondhalf.split("//interface json")[1];
+
+                    graphJsonObj = JSON.parse(graphJsonString);
+                    procedureJsonObj = JSON.parse(procedureJsonString);
+                    interfaceJsonObj = JSON.parse(interfaceJsonString);
+
+                    generateCode.setChartViewModel(new flowchart.ChartViewModel(graphJsonObj));
+                    generateCode.setDataList(procedureJsonObj);
+                    generateCode.setInterfaceList(interfaceJsonObj);
+                    consoleMsg.confirmMsg('exampleImport');
+                    generateCode.generateCode();
+                }
+            );
+        };
+
+
         // open and read json file for scene
-        // todo interface
         $scope.openSceneJson = function(files){
             var f = files[0];
             var jsonString;
@@ -66,6 +134,15 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
             })(f);
 
             reader.readAsText(f);
+
+            var scope = angular.element(document.getElementById('threeViewport')).scope();
+            var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
+
+            setTimeout(function(
+            ){
+                scope.$apply(function(){scope.viewportControl.refreshView();} );
+                scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
+            },0);
         };
 
         // save json file for scene
@@ -84,6 +161,7 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
 
             $scope.sceneUrl = URL.createObjectURL(sceneBlob);
         };
+
 
         // import pre-defined node
         $scope.importNode = function (files) {
@@ -162,7 +240,7 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
 
         // save vidamo library file
         $scope.downloadLib = function(){
-            $http.get("vidamo/module.js")
+            $http.get("mobius/module.js")
                 .success(
                 function(response) {
                     var libBlob = new Blob([response], {type: "application/javascript"});

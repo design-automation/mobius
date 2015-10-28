@@ -1,5 +1,3 @@
-
-
 vidamo.factory('consoleMsg', function () {
 
     function autoScroll(){
@@ -25,6 +23,8 @@ vidamo.factory('consoleMsg', function () {
                     case 'nodeImport':printMsg = 'Node imported.';break;
                     case 'typeAdded':printMsg = 'New type added.';break;
                     case 'typeOverwritten':printMsg = 'Type is overwritten.';break;
+                    case 'newSceneCreated': printMsg = 'New Scene created.';break;
+                    case 'exampleImport': printMsg = 'Example loaded'; break;
                 }
 
                 printMsg = timeMsg() + ":" + printMsg;

@@ -534,6 +534,10 @@ var flowchart = {
 			debug.assertObjectValid(sourceConnector);
 			debug.assertObjectValid(destConnector);
 
+			// @ mobius : flag for input connector is connected
+			destConnector.data.connected = true;
+
+			console.log(destConnector);
 
 			var connectionsDataModel = this.data.connections;
 			if (!connectionsDataModel) {
@@ -584,7 +588,7 @@ var flowchart = {
                             nodeID: destNode.data.id,
                             connectorIndex: destConnectorIndex
                         }
-                    }
+                    };
                     connectionsDataModel.push(connectionDataModel);
                     var connectionViewModel = new flowchart.ConnectionViewModel(connectionDataModel, sourceConnector, destConnector);
                     connectionsViewModel.push(connectionViewModel);

@@ -148,7 +148,9 @@ vidamo.controller('graphCtrl',[
 
         // listen to the graph, when a node is clicked, update the visual procedure/ code/ interface accordions
          $scope.$on("nodeIndex", function(event, message) {
-            if($scope.nodeIndex !== message && message !== undefined){
+             console.log(message);
+
+             if($scope.nodeIndex !== message && message !== undefined){
                 // on change of node selection, update
                 $scope.nodeIndex = message;
                 $scope.currentNodeName = $scope.chartViewModel.nodes[$scope.nodeIndex].data.name;
@@ -158,6 +160,12 @@ vidamo.controller('graphCtrl',[
                 $scope.nodeIndex = message;
                 $scope.currentNodeName = '';
                 $scope.$emit("hideProcedure");
+
+                 var scope = angular.element(document.getElementById('threeViewport')).scope();
+                 var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
+
+                 scope.$apply(function(){scope.viewportControl.refreshView();} );
+                 scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
             }
 
              function displayGeometry(){
@@ -492,5 +500,11 @@ vidamo.controller('graphCtrl',[
 
         $scope.$on('deselectAll',function(){
             $scope.chartViewModel.deselectAll();
+            console.log('ref')
+            var scope = angular.element(document.getElementById('threeViewport')).scope();
+            var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
+
+            scope.$apply(function(){scope.viewportControl.refreshView();} );
+            scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
         });
     }]);
