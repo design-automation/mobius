@@ -137,19 +137,20 @@ vidamo.directive('topoViewport', function factoryTopo() {
                         i--;
                     }
                 }
-                console.log(scene1)
             };
 
             //
             // supporting function for geometry from verb to three.js
             //
             scope.internalControlTopo.addGeometryToScene = function(geom,value){
-                if(geom.constructor === Array){
-                    for(var i = 0; i< geom.length ;i++){
-                        scope.internalControlTopo.displayObject(value[i]);
+                if(geom !== undefined && value !== undefined){
+                    if(geom.constructor === Array){
+                        for(var i = 0; i< geom.length ;i++){
+                            scope.internalControlTopo.displayObject(value[i]);
+                        }
+                    } else {
+                        scope.internalControlTopo.displayObject(value);
                     }
-                } else {
-                    scope.internalControlTopo.displayObject(value);
                 }
             };
 

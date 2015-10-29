@@ -1067,40 +1067,62 @@ var VIDAMO = ( function (mod){
 	};
 
 
-	/*
-	 *
-	 * Data conversion function
-	 *
-	 */
+	//Could be shifted to MobiusSide
 
-
-	//
-	// Could be shifted to MobiusSide
-	//
 	mod.dataConversion = function(data){
 
 		for(var i = 0; i < data.length; i++) {
 			for (var m in data[i].value) {
-				var geoms = [];   		// primitive geometry
-				var geomDatas = [];	    // geometry data
-				//var topos = [];    		// topology geometry
 
-				if (data[i].value[m].constructor !== Array) {
-					// switch of data type
-					data[i].geom.push( data[i].value[m].extractGeometry() );
-					data[i].geomData.push( data[i].value[m].extractData() );
-					//data[i].topo.push( data[i].value[m].extractTopology() );
-				}
-				else {
-					for (var n = 0; n < data[i].value[m].length; n++) {
-						geoms.push( data[i].value[m][n].extractGeometry() );
-						geomDatas.push( data[i].value[m][n].extractData() );
-						//topos.push( data[i].value[m][n].extractTopology() );
+				if (data[i].value[m] !== undefined) {
+
+					if (data[i].value[m].constructor !== Array) {
+						extract(data[i].value[m],
+								data[i].geom,
+								data[i].geomData);
 					}
+					else {
+						var tempGeom = [];
+						var tempData = [];
+
+						for (var n = 0; n < data[i].value[m].length; n++) {
+
+							extract(data[i].value[m][n],
+									tempGeom,
+									tempData);
+						}
+						data[i].geom.push(tempGeom);
+						data[i].geomData.push(tempData);
+					}
+					console.log(data[i].geom);
+
 				}
-				data[i].geom.push(geoms);
-				data[i].geomData.push(geomDatas);
-				//data[i].topo.push(topos);
+			}
+		}
+
+		function extract (obj,geom,geomData){
+			if(obj.constructor === Array){
+				var tempGeom0 = [];
+				var tempData0 = [];
+
+				for(var k = 0; k < obj.length ; k++){
+					extract(obj[k],tempGeom0,tempData0);
+				}
+
+				geom.push(tempGeom0);
+				geomData.push(tempData0);
+				//for(var x = 0; x<tempGeom0.length; x++){
+				//	geom.push(tempGeom0[x]);
+				//	geomData.push(tempData0[x]);
+				//}
+			}
+			else if(obj instanceof  MobiusDataObject){
+				geom.push( obj.extractGeometry() );
+				geomData.push( obj.extractData() );
+			}else{
+				for(var key in obj){
+					extract(obj[key],geom,geomData);
+				}
 			}
 		}
 

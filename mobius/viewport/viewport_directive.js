@@ -292,21 +292,25 @@ vidamo.directive('viewport', function factory() {
             scope.internalControl.addGeometryToScene = function(geom,value,geomData){
                 scope.internalControl.geometryData = [{Property:'', Value:'',attachedTo:''}];
 
-                if(geom.constructor === Array){
-                    for(var i = 0; i< geom.length ;i++){
-                        scope.internalControl.displayObject(value[i],geomData[i]);
+                if(value !== undefined){
+                    if(value.constructor === Array){
+                        for(var i = 0; i< value.length ;i++){
+                            scope.internalControl.displayObject(value[i],geomData[i]);
+                        }
+                    } else {
+                        scope.internalControl.displayObject(value,geomData);
                     }
-                } else {
-                    scope.internalControl.displayObject(value,geomData);
                 }
+
                 if(wireframe){
                     for(var i =0; i < scene.children.length; i++){
-                        if((scene.children[i] instanceof THREE.Mesh
-                            || scene.children[i]  instanceof THREE.Line )&& scene.children[i].name !== 'helper'){
+                        if((scene.children[i] instanceof THREE.Mesh)&& scene.children[i].name !== 'helper'){
                             scene.children[i].material.wireframe = true;
                         }
                     }
                 }
+
+                console.log('scene:   ',scene);
             };
 
             //

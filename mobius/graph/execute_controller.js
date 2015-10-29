@@ -57,6 +57,7 @@ vidamo.controller('executeCtrl',['$scope','consoleMsg','generateCode','hotkeys',
                 consoleMsg.runtimeMsg();
             }catch (e) {
                 consoleMsg.runtimeMsg(e.message);
+                throw(e);
             }
 
             // display in the viewport according to node selection
