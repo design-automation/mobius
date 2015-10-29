@@ -29,26 +29,6 @@ var VIDAMO = ( function (mod){
 	};
 
 	//
-	// Input: Numeric
-	// Output: Number Array
-	//
-	mod.makeSequence = function(start, end, stepSize){
-
-		var arr = [];
-		for(var i = start; i <= end; i = i + stepSize)
-			arr.push(i);
-		return arr;
-	};
-
-	//
-	// Input: Array, Object
-	// Output: Modified Array
-	//
-	mod.addToArray = function(originalArr, newObj){
-		return originalArr.push(newObj)
-	};
-	
-	//
 	//
 	//
 	//
@@ -69,12 +49,48 @@ var VIDAMO = ( function (mod){
 	 * List Operations
 	 *
 	 */
-	 
+	
+	//
+	// Input: Numeric
+	// Output: Number Array
+	//
+	mod.makeSequence = function(start, end, stepSize){
+
+		var arr = [];
+		for(var i = start; i <= end; i = i + stepSize)
+			arr.push(i);
+		return arr;
+	};
+
+	//
+	// Input: Array, Object
+	// Output: Modified Array
+	//
+	mod.addToList = function( list, object ){
+		return list.push( object );
+	};
+	
 	//
 	//
 	//
 	//
-	mod._getMaxValue = function( valueList ){
+	mod.indexOfObject = function( list, object ){
+		return list.indexOf( object );
+	};
+	
+	//
+	//
+	//
+	//
+	mod.removeIndexFromList = function( list, index ){
+		list.splice(index, 1);
+		return list;
+	}; 
+	//
+	//
+	//
+	//
+	mod.getMaxValue = function( valueList ){
 		var maxValue = valueList[0];
 		for(var i=0; i<valueList.length; i++)
 			maxValue = Math.max(maxValue, valueList[i]);
@@ -85,7 +101,7 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
-	mod._getMinValue = function( valueList ){
+	mod.getMinValue = function( valueList ){
 		var minValue = valueList[0];
 		for(var i=0; i<valueList.length; i++)
 			minValue = Math.min(minValue, valueList[i]);
@@ -96,7 +112,7 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
-	mod._sumList = function( valueList ){
+	mod.sumList = function( valueList ){
 		var sum = 0;
 		for(var i=0; i<valueList.length; i++)
 			sum += valueList[i];
@@ -107,30 +123,23 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
-	mod._averageList = function( valueList ){
-		var sum = 0;
-		for(var i=0; i<valueList.length; i++)
-			sum += valueList[i];
-		return sum/valueList.length;
+	mod.averageList = function( valueList ){
+		return VIDAMO.sumList( valueList )/ valueList.length;
 	};
 	
 	//
 	//
 	//
 	//
-	mod._rangeOfList = function( valueList ){
-		var minValue = valueList[0];
-		for(var i=0; i<valueList.length; i++){
-			maxValue = Math.min(minValue, valueList[i]);
-		}	
-		return maxValue-minValue;
+	mod.rangeOfList = function( valueList ){
+		return VIDAMO.getMaxValue( valueList ) - VIDAMO.getMinValue( valueList );
 	};
 	
 	//
 	//
 	//
 	//
-	mod._getListLength = function( valueList ){
+	mod.getListLength = function( valueList ){
 		return valueList.length
 	};
 	
@@ -139,15 +148,6 @@ var VIDAMO = ( function (mod){
 	 *	Geometry Analysis Functions
 	 * 
 	 */
-	
-	//
-	//
-	//
-	//
-	mod._computeArea = function(arrayOfPoints){
-		//calculate area based on what kind of object
-		// could be three.js or verbs
-	};
 	
 	//
 	//
@@ -171,7 +171,7 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
-	mod._distanceBetweenTwoPoints = function( point1, point2){
+	mod.distanceBetweenTwoPoints = function( point1, point2){
 		var deltaX, deltaY, deltaZ; 
 		
 		if(point1.geometry instanceof THREE.Vector3 && point2.geometry instanceof THREE.Vector3){
@@ -197,7 +197,7 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
-	mod._getLengthOfVector = function( vector ){
+	mod.getLengthOfVector = function( vector ){
 		return vector.length;
 	};
 	
@@ -219,21 +219,21 @@ var VIDAMO = ( function (mod){
 	// Input: Number Array
 	// Output: MobiusDataObject with NURBS geometry
 	//
-	mod.makeLine = function(start, end){
+	mod.makeLine = function(startPoint, endPoint){
 		// input variations
 		// start, end could be a vector3 - has to be converted into an array
 		
-		return new MobiusDataObject( new verb.geom.Line(start, end) );
+		return new MobiusDataObject( new verb.geom.Line(startPoint, endPoint) );
 	};
 	
 	//
 	// Input: Numeric and Numeric Array Input
 	// Output: MobiusDataObject with NURBS geometry
 	//
-	mod.makeArc = function(center,xaxis,yaxis,radius,minAngle,maxAngle){
+	mod.makeArc = function(centerPoint, xaxis, yaxis, radius, minAngle, maxAngle){
 		// input variations
 		// center, axis and yaxis could be vector3
-		return new MobiusDataObject( new verb.geom.Arc(center,xaxis,yaxis,radius,minAngle,maxAngle) );
+		return new MobiusDataObject( new verb.geom.Arc(centerPoint,xaxis,yaxis,radius,minAngle,maxAngle) );
 	};
 
 	//
@@ -249,32 +249,32 @@ var VIDAMO = ( function (mod){
 	// Input: Numeric and Numeric Array Input
 	// Output: MobiusDataObject with NURBS geometry
 	//
-	mod.makeCircleBoundary = function(center,xaxis,yaxis,radius){
-		return new MobiusDataObject( new verb.geom.Circle(center,xaxis,yaxis,radius) );
+	mod.makeCircleBoundary = function(centerPoint,xaxis,yaxis,radius){
+		return new MobiusDataObject( new verb.geom.Circle(centerPoint,xaxis,yaxis,radius) );
 	};
 
 	//
 	// Input: Numeric and Numeric Array Input [centre], [xaxis], [yaxis]
 	// Output: MobiusDataObject with NURBS geometry
 	//
-	mod.makeEllipse = function ( center,xaxis,yaxis ){
-		return new MobiusDataObject( new verb.geom.Ellipse( center,xaxis,yaxis ) );
+	mod.makeEllipse = function ( centerPoint ,xaxis,yaxis ){
+		return new MobiusDataObject( new verb.geom.Ellipse( centerPoint,xaxis,yaxis ) );
 	};
 
 	//
 	// Input: Numeric and Numeric Array Input
 	// Output: MobiusDataObject with NURBS geometry
 	//
-	mod.makeEllipseArc = function ( center,xaxis,yaxis,minAngle,maxAngle ){
-		return new MobiusDataObject( new verb.geom.EllipseArc( center,xaxis,yaxis,minAngle,maxAngle ) );
+	mod.makeEllipseArc = function ( centerPoint,xaxis,yaxis,minAngle,maxAngle ){
+		return new MobiusDataObject( new verb.geom.EllipseArc( centerPoint,xaxis,yaxis,minAngle,maxAngle ) );
 	};
 
 	//
 	// Input: Numeric and Numeric Array Input
 	// Output: MobiusDataObject with NURBS geometry
 	//
-	mod.makeCurveByPoints = function( points ){
-		return new MobiusDataObject( new verb.geom.NurbsCurve.byPoints( points ) );
+	mod.makeCurveByPoints = function( points, degree ){
+		return new MobiusDataObject( new verb.geom.NurbsCurve.byPoints( points, degree ) );
 	};
 
 	//
@@ -297,7 +297,7 @@ var VIDAMO = ( function (mod){
 	// Input: Numeric and Numeric Array Input
 	// Output: MobiusDataObject with NURBS geometry
 	//
-	mod.makeSurfaceByCorners = function ( point0,point1,point2,point3 ){
+	mod.makeSurfaceByCorners = function ( point0, point1, point2, point3 ){
 		return new MobiusDataObject( new verb.geom.NurbsSurface.byCorners ( point0,point1,point2,point3 ) );
 	};
 
@@ -305,9 +305,9 @@ var VIDAMO = ( function (mod){
 	// Input: MobiusDataObject, Numeric Input
 	// Output: MobiusDataObject with NURBS geometry
 	//
-	mod.makeSurfaceByRevolution = function ( mObj, centre, axis, angle ){
+	mod.makeSurfaceByRevolution = function ( mObj, centrePoint, axis, angle ){
 		var profile = mObj.geometry;
-		return new MobiusDataObject( new verb.geom.RevolvedSurface( profile, centre, axis, angle )  );
+		return new MobiusDataObject( new verb.geom.RevolvedSurface( profile, centerPoint, axis, angle )  );
 	};
 
 	//
@@ -324,11 +324,12 @@ var VIDAMO = ( function (mod){
 	// Input: Array of MobiusDataObjects with NURBS geometry
 	// Output: MobiusDataObject with NURBS geometry
 	//
-	mod.makeSurfaceByLoft = function(arrOfCurves){
+	mod.makeSurfaceByLoft = function(listOfCurves, degree){
+		var deg = degree || 3;
 		var curves = [];
-		for(var c=0; c<arrOfCurves.length; c++)
-			curves.push(arrOfCurves[c].geometry);
-		return new MobiusDataObject( new verb.geom.NurbsSurface.byLoftingCurves( curves, 3 ) );
+		for(var c=0; c<listOfCurves.length; c++)
+			curves.push(listOfCurves[c].geometry);
+		return new MobiusDataObject( new verb.geom.NurbsSurface.byLoftingCurves( curves, deg ) );
 	};
 
 	//
@@ -344,8 +345,8 @@ var VIDAMO = ( function (mod){
 	// Input: Numeric
 	// Output: MobiusDataObject with NURBS geometry
 	//
-	mod.makeSurfaceAsSphere = function(centre, radius){
-		return new MobiusDataObject( new verb.geom.SphericalSurface(centre, radius) );
+	mod.makeSurfaceAsSphere = function(centrePoint, radius){
+		return new MobiusDataObject( new verb.geom.SphericalSurface(centrePoint, radius) );
 	};
 
 	//
@@ -368,7 +369,7 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
-	mod._getPointOnSurface = function( surface, u, v ){
+	mod.getPointOnSurface = function( surface, u, v ){
 		if(surface instanceof verb.geom.NurbsSurface)
 			return surface.point( u, v );
 		else
@@ -379,7 +380,7 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
-	mod._getPointOnCurve = function( curve, t ){
+	mod.getPointOnCurve = function( curve, t ){
 		if( curve instanceof verb.geom.NurbsCurve)
 			return curve.point( t );
 		else
@@ -390,15 +391,7 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
-	mod._divideSurfaceByShape = function(){
-		
-	};
-	
-	//
-	//
-	//
-	//
-	mod._divideCurve = function( curve, divisions ){
+	mod.divideCurve = function( curve, divisions ){
 		var points = curve.divideByEqualArcLength( divisions )
 							.map(function(u){ return curve.point( u.u ); } );
 	
@@ -408,8 +401,23 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
+	mod.getTangentAtCurveParameter = function( curve, t ){
+		return curve.tangent(point);
+	};
+	
 	//
-	mod.getContours = function( surface, countInU, countInV ){
+	//
+	//
+	//
+	mod.getNormalAtSurfaceParameter = function( surface, u, v ){
+		return surface.normal( u, v);
+	};
+	
+	//
+	//
+	//
+	//
+	mod.getContourCurves = function( surface, countU, countV ){
 		
 	};
 
@@ -420,27 +428,31 @@ var VIDAMO = ( function (mod){
 	mod.makeMeshBySubdivision = function( mObj, ugrid, vgrid ){
 
 		var surface = mObj.geometry;
+		
+		if(surface instanceof verb.geom.NurbsSurface){
+			var div_surfaces = [], gridPoints = [];
+			var uincr = 1/ugrid;
+			var vincr = 1/vgrid;
 
-		var div_surfaces = [], gridPoints = [];
-		var uincr = 1/ugrid;
-		var vincr = 1/vgrid;
-
-		//for uv lines
-		for(var i=0; i <= ugrid; i++){
-			for(var seg=0; seg <= vgrid; seg++)
-				gridPoints.push(surface.point(i*uincr, seg*vincr));
-		}
-
-		// creation of polygons from the gridPoints
-		for(var i=0; i< gridPoints.length-vgrid-2; i++){
-			if((i+vgrid+2)%(vgrid+1) != 0 || i==0){
-				// construction of the verbs four point surface
-				var mbObj = new MobiusDataObject( new verb.geom.NurbsSurface.byCorners(gridPoints[i], gridPoints[i+1],  gridPoints[i+vgrid+2], gridPoints[i+vgrid+1]) )
-				div_surfaces.push(mbObj)
+			//for uv lines
+			for(var i=0; i <= ugrid; i++){
+				for(var seg=0; seg <= vgrid; seg++)
+					gridPoints.push(surface.point(i*uincr, seg*vincr));
 			}
-		}
 
-		return div_surfaces
+			// creation of polygons from the gridPoints
+			for(var i=0; i< gridPoints.length-vgrid-2; i++){
+				if((i+vgrid+2)%(vgrid+1) != 0 || i==0){
+					// construction of the verbs four point surface
+					var mbObj = new MobiusDataObject( new verb.geom.NurbsSurface.byCorners(gridPoints[i], gridPoints[i+1],  gridPoints[i+vgrid+2], gridPoints[i+vgrid+1]) )
+					div_surfaces.push(mbObj)
+				}
+			}
+
+			return div_surfaces		
+		}
+		else
+			return "Invalid Input"
 	};
 
 	//
@@ -489,21 +501,6 @@ var VIDAMO = ( function (mod){
 	// Input: MobiusDataObject with NURBS geometry (surface)
 	// Output: Numeric Array of Points
 	//
-	mod.getPointsFromPolygon = function( mObj ){
-
-		var polygon = mObj.geometry;
-
-		return [
-			polygon.point(0,0),
-			polygon.point(1,0),
-			polygon.point(1,1),
-			polygon.point(0,1)]
-	};
-
-	//
-	// Same as above - new name
-	//
-	//
 	mod.getCornerPointsFromSurface = function( mObj ){
 
 		var polygon = mObj.geometry;
@@ -516,45 +513,11 @@ var VIDAMO = ( function (mod){
 	};
 	
 	//
-	// Input: MobiusDataObjects with NURBS geometry (curve & surface)
-	// Output: ??
 	//
-	mod._intersectCurveAndSurface = function ( mObjCurve, mObjSurface, tolerance, Async ){
-		var curve = mObjCurve.geometry;
-		var surface = mObjSurface.geometry;
-
-		if(Async)
-			return new verb.geom.Intersect.curveAndSurfaceAsync( curve, surface, tolerance );
-		else
-			return new verb.geom.Intersect.curveAndSurface( curve, surface, tolerance );
-	};
-
 	//
-	// Input: MobiusDataObjects with NURBS geometry (curve & curve)
-	// Output: ??
 	//
-	mod._intersectCurves = function (mObjCurve1, mObjCurve2, tolerance, Async){
-		var curve1 = mObjCurve1.geometry;
-		var curve2 = mObjCurve2.geometry;
-
-		if(Async)
-			return new verb.geom.Intersect.curvesAsync( curve1, curve2, tolerance );
-		else
-			return new verb.geom.Intersect.curves( curve1, curve2, tolerance );
-	};
-
-	//
-	// Input: MobiusDataObjects with NURBS geometry (surface & surface)
-	// Output: ??
-	//
-	mod._intersectSurfaces	= function (mObjSurface1, mObjSurface2, tolerance, Async){
-		var surface1 = mObjSurface1.geometry;
-		var surface2 = mObjSurface2.geometry;
-
-		if(Async)
-			return new verb.geom.Intersect.surfacesAsync( surface1, surface2, tolerance );
-		else
-			return new verb.geom.Intersect.surfaces( surface1, surface2, tolerance );
+	mod.makePoint = function(x, y, z){
+		return [x, y, z];
 	};
 
 	/*
@@ -568,11 +531,14 @@ var VIDAMO = ( function (mod){
 	//	Input: Numeric Input
 	//	Outout: MobiusDataObject with Three.js geometry
 	//
-	mod.makeVector = function(x, y, z){
-		return new MobiusDataObject( new THREE.Vector3(x, y, z));
+	mod.makePositionVector = function(x, y, z){
+		if(x.constructor === Array && y == undefined && z == undefined)
+			return new MobiusDataObject( new THREE.Vector3( x[0], x[1], x[2] ));
+		else
+			return new MobiusDataObject( new THREE.Vector3(x, y, z));
 	};
 	
-	mod._makeVectorsFromPoints = function( points ){
+	mod._makePositionVectorsFromPoints = function( list_of_points ){
 		var mObjArr; 
 		for(var i=0; i<points.length; i++){
 			var obj = new MobiusDataObject( new THREE.Vector3(points[i][0], points[i][0], points[i][0]));
@@ -602,26 +568,7 @@ var VIDAMO = ( function (mod){
 		return new MobiusDataObject( pline );
 	};
 	
-	//
-	//
-	//
-	//
-	mod._makeCurveByDefinition = function( parametricFuncDefOfCurve ){
-		var customCurve = THREE.Curve.create(
-			// parametric definition of the curve
-			function ( t ) { //getPoint: t is between 0-1
-				var tx = t * 3 - 1.5,
-					ty = Math.sin( 2 * Math.PI * t ),
-					tz = 0;
 
-				return new THREE.Vector3(tx, ty, tz).multiplyScalar(this.scale);
-			}
-		);
-		console.log(customCurve);
-		//return new customCurve();
-		return new MobiusDataObject( new customCurve());
-	};
-	
 	//
 	// Input: Numeric Input
 	// Output: MobiusDataObject with Three.js geometry
@@ -654,10 +601,6 @@ var VIDAMO = ( function (mod){
 		customShape.lineTo(origin[0], origin[1]);
 
 		return new MobiusDataObject ( customShape );
-	};
-	
-	mod._makePolygonByFace = function( face ){
-		// takes a face and creates a polygon 
 	};
 
 	//
@@ -695,14 +638,6 @@ var VIDAMO = ( function (mod){
 	//
 	mod.makeLathe = function( points, segments ){
 		return new MobiusDataObject( new THREE.LatheGeometry( points, segments ) );
-	};
-	
-	//
-	//
-	//
-	//
-	mod._makeParametric = function( func ){
-		return new MobiusDataObject( new THREE.ParametricGeometry(func, 120, 120, false));
 	};
 	
 	//
@@ -754,11 +689,11 @@ var VIDAMO = ( function (mod){
 	};
 	
 	//
-	// Input: path - instance of a three.js curve
 	//
 	//
-	mod._makeTube = function( path, segments, radius, radiusSegments, closed ){
-		return new MobiusDataObject( new THREE.TubeGeometry( path, segments, radius, radiusSegments, closed ) );
+	//
+	mod.getPointFromPositionVector = function( positionVector ){
+		return [ positionVector.x, positionVector.y, positionVector.z ];
 	};
 
 	/*
@@ -785,7 +720,6 @@ var VIDAMO = ( function (mod){
 		newCopyMesh.position.y = yCoord;
 		newCopyMesh.position.z = zCoord;
 		
-		//return newCopy;
 		return newCopy; //needs to be sorted out
 	};
 
@@ -793,16 +727,16 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
-	mod._translateObject = function(mObj, transX, transY, transZ){
+	mod.shiftObject = function(mObj, shiftX, shiftY, shiftZ){
 
 		// could be a face too 
 		
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
 		var mesh = mObj.extractGeometry();
-		mesh.translateX(transX);
-		mesh.translateY(transY);
-		mesh.translateZ(transZ);
+		mesh.translateX(shiftX);
+		mesh.translateY(shiftY);
+		mesh.translateZ(shiftZ);
 
 		return mObj;
 	};
@@ -871,16 +805,19 @@ var VIDAMO = ( function (mod){
 	};
 	
 	//
-	//	STATUS: UnCHECKED
 	//
 	//
-	mod._makeChildOf = function(mObj1, mObj2){
-		mesh1 = mObj1.extractGeometry();
-		mesh2 = mObj2.extractGeometry();
+	//
+	mod.orientObjectTowards = function( object, lookAtPoint ){
 		
-		mesh1.add(mesh2);
+		var lookAtPt; 
 		
-		return;
+		if(lookAtPoint.constructor === Array)
+			lookAtPt = new THREE.Vector3( lookAtPoint[0], lookAtPoint[1], lookAtPoint[2] );
+		else if(lookAtPoint instance of THREE.Vector3)
+			lookAt = lookAtPt;
+		
+		object.extractGeometry().lookAt( lookAtPt );
 	};
 
 
@@ -896,6 +833,9 @@ var VIDAMO = ( function (mod){
 	// Output: MobiusDataObject with Three.js geometry
 	//
 	mod.objectUnion = function( mObj1, mObj2 ){
+		
+		if(mObj1.geometry instanceof verb.geom.NurbsSurface || mObj2.geometry instanceof verb.geom.NurbsSurface)
+			return "CSG functions currently only work with Three.js objects"
 
 		var a = new ThreeBSP( mObj1.extractGeometry() );
 		var b = new ThreeBSP( mObj2.extractGeometry() );
@@ -914,8 +854,10 @@ var VIDAMO = ( function (mod){
 	// Output: MobiusDataObject with Three.js geometry
 	//
 	mod.objectSubtract = function( mObj1, mObj2 ){
-		//operation should be a string - "union", "subtract", "intersect"
-		// TODO : returns BSP is only for testing purpose - fix this to return error whenever it doesn't return required values
+		
+		if(mObj1.geometry instanceof verb.geom.NurbsSurface || mObj2.geometry instanceof verb.geom.NurbsSurface)
+			return "CSG functions currently only work with Three.js objects"
+		
 		var a = new ThreeBSP( mObj1.extractGeometry() );
 		var b = new ThreeBSP( mObj2.extractGeometry() );
 
@@ -933,8 +875,10 @@ var VIDAMO = ( function (mod){
 	// Output: MobiusDataObject with Three.js geometry
 	//
 	mod.objectIntersect = function( mObj1, mObj2 ){
-		//operation should be a string - "union", "subtract", "intersect"
-		// TODO : returns BSP is only for testing purpose - fix this to return error whenever it doesn't return required values
+		
+		if(mObj1.geometry instanceof verb.geom.NurbsSurface || mObj2.geometry instanceof verb.geom.NurbsSurface)
+			return "CSG functions currently only work with Three.js objects"
+		
 		var a = new ThreeBSP( mObj1.extractGeometry() );
 		var b = new ThreeBSP( mObj2.extractGeometry() );
 
@@ -1016,7 +960,7 @@ var VIDAMO = ( function (mod){
 			solidTopo.add
 		}
 	};
-	*/
+
 	
 	//
 	//	Input: Topology Vertex
@@ -1025,7 +969,7 @@ var VIDAMO = ( function (mod){
 	mod._changeVertexPosition = function(){
 		
 	};
-
+	*/
 
 	/*
 	 *	Data Functions
@@ -1041,8 +985,7 @@ var VIDAMO = ( function (mod){
 		var option = {	wireframe: wireframe, 
 						color: color, 
 						transparent: transparent,
-						side: THREE.DoubleSide,
-						shading: THREE.SmoothShading
+						side: THREE.DoubleSide
 					};
 		var material = new THREE[material_type](option);
 		if(obj.constructor === Array){
@@ -1355,48 +1298,3 @@ var displayTopologyInThree = function ( topology ){
 
 	return group;
 }
-
-/* to be implemented later - to enable topology to scale
- function changeLOD(k, actualGeometry){
-
- var subdivisions = 0
- var modifier=new THREE.SubdivisionModifier(subdivisions);
-
- //geometry is the actual geometry
- smooth=actualGeometry.geometry.clone(); console.log(smooth);
- smooth.mergeVertices();
- modifier.modify(smooth);
- var simplify=new THREE.SimplifyModifier(400);
- sortedGeometry=simplify.modify(smooth);
-
- var map=sortedGeometry.map;
- var permutations=sortedGeometry.sortedGeometry;
- var sortedVertices=sortedGeometry.vertices;
- var t=sortedVertices.length-1;
- t=t*k|0;
- var numFaces=0;
- var face;
- var geometry=smooth;
- for(i=0;i<geometry.faces.length;i++){
- face=geometry.faces[i];
- var oldFace=sortedGeometry.faces[i];
- face.a=oldFace.a;
- face.b=oldFace.b;
- face.c=oldFace.c;
- while(face.a>t)
- face.a=map[face.a];
- while(face.b>t)
- face.b=map[face.b];
- while(face.c>t)
- face.c=map[face.c];
- if(face.a!==face.b&&face.b!==face.c&&face.c!==face.a)
- numFaces++;
- }
- geometry.computeFaceNormals();
- geometry.verticesNeedUpdate=true;
- geometry.normalsNeedUpdate=true;
- console.log(actualGeometry.geometry.faces.length);
- console.log(geometry.faces.length);
- return geometry;
- }
- */
