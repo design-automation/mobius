@@ -764,7 +764,7 @@ var VIDAMO = ( function (mod){
 	// Output: MobiusDataObject with Three.js geometry
 	// Note - modifies the convertedGeometry Mesh - needs to update topology if already created and re-link the data associated
 	//
-	mod.makeCopy = function(mObj, transX, transY, transZ){
+	mod.makeCopy = function(mObj, xCoord, yCoord, zCoord){
 		// needs to be optimized
 
 		// needs to cater to any kind of three.js object - mesh, lines, points - caters to just one right now
@@ -773,9 +773,9 @@ var VIDAMO = ( function (mod){
 
 		var newCopyMesh = newCopy.extractGeometry( mObj.extractGeometry().clone() );
 	
-		newCopyMesh.translateX(transX);
-		newCopyMesh.translateY(transY);
-		newCopyMesh.translateZ(transZ);
+		newCopyMesh.position.x = xCoord;
+		newCopyMesh.position.y = yCoord;
+		newCopyMesh.position.z = zCoord;
 		
 		//return newCopy;
 		return newCopy; //needs to be sorted out
