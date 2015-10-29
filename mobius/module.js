@@ -167,7 +167,7 @@ var VIDAMO = ( function (mod){
 		else if(geometry instanceof verb.geom.NurbsSurface)
 			return geometry.point(0.5, 0.5);
 		else if(geometry instanceof THREE.Geometry)
-			return geometry.center;
+			return geometry.center();
 		else
 			return "Invalid Input"
 	};
@@ -187,9 +187,9 @@ var VIDAMO = ( function (mod){
 			deltaZ = pnt1.z - pnt2.z;
 		}
 		else if(point1.constructor === Array && point2.constructor === Array){
-			deltaX = pnt1[0] - pnt2[0];
-			deltaY = pnt1[1] - pnt2[1];
-			deltaZ = pnt1[2] - pnt2[2];
+			deltaX = point1[0] - point2[0];
+			deltaY = point1[1] - point2[1];
+			deltaZ = point1[2] - point2[2];
 		}
 		else
 			return "Invalid Input"
@@ -204,7 +204,7 @@ var VIDAMO = ( function (mod){
 	//
 	mod.getLengthOfVector = function( vector ){
 		var vec = vector.geometry;
-		return vector.length;
+		return vec.length();
 	};
 	
 	
@@ -550,9 +550,9 @@ var VIDAMO = ( function (mod){
 	};
 	
 	mod.makePositionVectorsFromPoints = function( list_of_points ){
-		var mObjArr; 
-		for(var i=0; i<points.length; i++){
-			var obj = new MobiusDataObject( new THREE.Vector3(points[i][0], points[i][0], points[i][0]));
+		var mObjArr = []; 
+		for(var i=0; i<list_of_points.length; i++){
+			var obj = new MobiusDataObject( new THREE.Vector3(list_of_points[i][0], list_of_points[i][1], list_of_points[i][2]));
 			mObjArr.push(obj);
 		}
 		return mObjArr;
@@ -704,7 +704,8 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	mod.getPointFromPositionVector = function( positionVector ){
-		return [ positionVector.x, positionVector.y, positionVector.z ];
+		var pos = positionVector.geometry;
+		return [ pos.x, pos.y, pos.z ];
 	};
 
 	/*
