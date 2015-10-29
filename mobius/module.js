@@ -404,6 +404,14 @@ var VIDAMO = ( function (mod){
 	
 		return points; //convert these into vector points 
 	};
+	
+	//
+	//
+	//
+	//
+	mod.getContours = function( surface, countInU, countInV ){
+		
+	};
 
 	//
 	// Input: MobiusDataObject with NURBS geometry, numeric values
