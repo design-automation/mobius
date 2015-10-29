@@ -829,6 +829,8 @@ var VIDAMO = ( function (mod){
 			lookAt = lookAtPt;
 		
 		object.extractGeometry().lookAt( lookAtPt );
+		
+		return object;
 	};
 
 
