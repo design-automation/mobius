@@ -797,12 +797,12 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
-	mod.rotateObjectAroundAxis = function( mObj, mObjAxis, radians ){
+	mod.rotateObjectAroundAxis = function( mObj, axisVector, radians ){
 		//mObj Axis is a vector3
 
 		// Rotate an object around an axis in world space (the axis passes through the object's position)
 		var object = mObj.extractGeometry();
-		var axis = mObjAxis.geometry;
+		var axis = axisVector.geometry;
 
 		var rotWorldMatrix = new THREE.Matrix4();
 		rotWorldMatrix.makeRotationAxis(axis.normalize(), radians);
