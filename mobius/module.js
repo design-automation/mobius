@@ -27,6 +27,10 @@ var VIDAMO = ( function (mod){
 			console.log('warnning: vidamo web app not connected.');
 		}
 	};
+	
+	mod.showObject = function( object ){
+		return JSON.stringify(object);
+	};
 
 	//
 	//
@@ -86,6 +90,7 @@ var VIDAMO = ( function (mod){
 		list.splice(index, 1);
 		return list;
 	}; 
+	
 	//
 	//
 	//
@@ -198,14 +203,9 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	mod.getLengthOfVector = function( vector ){
+		var vec = vector.geometry;
 		return vector.length;
 	};
-	
-	//
-	//
-	//
-	//
-	
 	
 	
 	/*
@@ -305,7 +305,7 @@ var VIDAMO = ( function (mod){
 	// Input: MobiusDataObject, Numeric Input
 	// Output: MobiusDataObject with NURBS geometry
 	//
-	mod.makeSurfaceByRevolution = function ( mObj, centrePoint, axis, angle ){
+	mod.makeSurfaceByRevolution = function ( mObj, centerPoint, axis, angle ){
 		var profile = mObj.geometry;
 		return new MobiusDataObject( new verb.geom.RevolvedSurface( profile, centerPoint, axis, angle )  );
 	};
@@ -370,8 +370,9 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	mod.getPointOnSurface = function( surface, u, v ){
-		if(surface instanceof verb.geom.NurbsSurface)
-			return surface.point( u, v );
+		var srf = surface.geometry;
+		if(srf instanceof verb.geom.NurbsSurface)
+			return srf.point( u, v );
 		else
 			return "Invalid Input"
 	};
@@ -381,8 +382,9 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	mod.getPointOnCurve = function( curve, t ){
-		if( curve instanceof verb.geom.NurbsCurve)
-			return curve.point( t );
+		var crv = curve.geometry;
+		if( crv instanceof verb.geom.NurbsCurve)
+			return crv.point( t );
 		else
 			return "Invalid Input"
 	};
@@ -392,8 +394,9 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	mod.divideCurve = function( curve, divisions ){
-		var points = curve.divideByEqualArcLength( divisions )
-							.map(function(u){ return curve.point( u.u ); } );
+		var crv = curve.geometry;
+		var points = crv.divideByEqualArcLength( divisions )
+							.map(function(u){ return crv.point( u.u ); } );
 	
 		return points; //convert these into vector points 
 	};
@@ -402,7 +405,11 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	mod.getTangentAtCurveParameter = function( curve, t ){
-		return curve.tangent(point);
+		var crv = curve.geometry;
+		if( crv instanceof verb.geom.NurbsCurve)
+			return crv.tangent(t);
+		else
+			return 'Invalid Input';
 	};
 	
 	//
@@ -410,7 +417,11 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	mod.getNormalAtSurfaceParameter = function( surface, u, v ){
-		return surface.normal( u, v);
+		var srf = surface.geometry;
+		if(srf instanceof verb.geom.NurbsSurface)
+			return srf.normal( u, v);
+		else
+			return 'Invalid Input';
 	};
 	
 	//
@@ -538,7 +549,7 @@ var VIDAMO = ( function (mod){
 			return new MobiusDataObject( new THREE.Vector3(x, y, z));
 	};
 	
-	mod._makePositionVectorsFromPoints = function( list_of_points ){
+	mod.makePositionVectorsFromPoints = function( list_of_points ){
 		var mObjArr; 
 		for(var i=0; i<points.length; i++){
 			var obj = new MobiusDataObject( new THREE.Vector3(points[i][0], points[i][0], points[i][0]));
@@ -607,7 +618,7 @@ var VIDAMO = ( function (mod){
 	// dir: {x:, y:, z:}
 	//
 	//
-	mod._extrudePolygon = function(mObj, thickness, bevel, dir ){
+	mod.extrudePolygon = function(mObj, thickness, bevel, dir ){
 		//mObj has to have shape  :/
 		var shape = mObj.geometry;
 		
@@ -785,7 +796,7 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
-	mod._rotateObjectAroundAxis = function( mObj, mObjAxis, radians ){
+	mod.rotateObjectAroundAxis = function( mObj, mObjAxis, radians ){
 		//mObj Axis is a vector3
 
 		// Rotate an object around an axis in world space (the axis passes through the object's position)
@@ -814,7 +825,7 @@ var VIDAMO = ( function (mod){
 		
 		if(lookAtPoint.constructor === Array)
 			lookAtPt = new THREE.Vector3( lookAtPoint[0], lookAtPoint[1], lookAtPoint[2] );
-		else if(lookAtPoint instance of THREE.Vector3)
+		else if(lookAtPoint instanceof THREE.Vector3)
 			lookAt = lookAtPt;
 		
 		object.extractGeometry().lookAt( lookAtPt );
@@ -891,86 +902,7 @@ var VIDAMO = ( function (mod){
 		return new MobiusDataObject( result );
 	};
 
-	/*
-	 *	Topology Functions
-	 *
-	 */
-
-	/*  
-	//
-	//	Input :
-	//	Output : MobiusDataObject with Topology geometry
-	//
-	mod.makeTopology = function(){
-		return new MobiusDataObject( new TOPOLOGY.Topology() );
-	};
-
-	//
-	//	Input : MobiusDataObject with Topology Geometry, MobiusDataObject with three.js point geometry
-	//	Output : Topology Vertex ID (should this be the whole vertex instead?)
-	//
-	mod.addVertexToTopology = function(topologyObject, pointObject){
-		var topology = topologyObject.geometry;
-		var vector3 = pointObject.geometry;
-
-		var newVertex = topology.create('vertex');
-		newVertex.vector3 = vector3;
-
-		return newVertex.ID;
-	};
-
-	//
-	//	Input : MobiusDataObject with Topology Geometry, Number Array (should this be the vertices instead?)
-	//	Output : Topology Edge ID (should this be the whole vertex instead?)
-	//
-	mod.addEdgeToTopology = function(topologyObject, vertexIDs){
-		var topology = topologyObject.geometry;
-
-		var newEdge = topology.create('edge');
-		topology.addIncidenceData( "edge", newEdge.ID , "vertex", vertexIDs)
-
-		return newEdge.ID;
-	};
-
-	//
-	//	Input : MobiusDataObject with Topology Geometry, Number Array (should this be the edges and the vertices instead)
-	//	Output : Topology Edge ID (should this be the whole vertex instead?)
-	//
-	mod.addFaceToTopology = function(topologyObject, vertexIDs, edgeIDs){
-		var topology = topologyObject.geometry;
-
-		var newFace = topology.create('face');
-
-		topology.addIncidenceData("face", newFace.ID, "vertex", vertexIDs)
-		topology.addIncidenceData( "face", newFace.ID, "edge", edgeIDs)
-
-		return newFace.ID;
-	};
-
-	//	UNDER CONSTRUCTION
-	//	Input : Array of MobiusDataObject with Topology Geometry
-	//	Output : Topology Edge ID (should this be the whole vertex instead?)
-	//
-	mod._makeSolid = function(arr_mObj){
-
-		var solidTopo = new TOPOLOGY.Topology();
-
-		// takes in the array and combines all into one topological element
-		for(var i=0; i<arr_mObj.length; i++){
-			solidTopo.add
-		}
-	};
-
 	
-	//
-	//	Input: Topology Vertex
-	//
-	//
-	mod._changeVertexPosition = function(){
-		
-	};
-	*/
-
 	/*
 	 *	Data Functions
 	 *	Input: MobiusDataObject or Topology Object; Output: Modified Object
