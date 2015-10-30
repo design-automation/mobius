@@ -596,20 +596,18 @@ var VIDAMO = ( function (mod){
 		return new MobiusDataObject ( new THREE.SphereGeometry( radius , 32, 32) ) ;
 	};
 
+	//	points need to be defined anti-clockwise
 	//
 	//
 	//
-	//
-	mod.makePolygonByPoints = function(origin, points){
-
+	mod.makePolygonByPoints = function( pointsXY ){
+		
+		// shape creation
 		var customShape = new THREE.Shape();
-
-		customShape.moveTo(origin[0], origin[1]);
-
-		for(var pointNo=0; pointNo < points.length; pointNo++)
-			customShape.lineTo(points[pointNo][0], points[pointNo][1]);
-
-		customShape.lineTo(origin[0], origin[1]);
+		customShape.moveTo(pointsXY[0], pointsXY[1]);
+		for(var pointNo=1; pointNo < pointsXY.length; pointNo++)
+			customShape.lineTo(pointsXY[pointNo][0], pointsXY[pointNo][1]);
+		customShape.lineTo(pointsXY[0][0], pointsXY[0][1]);
 
 		return new MobiusDataObject ( customShape );
 	};
@@ -618,7 +616,7 @@ var VIDAMO = ( function (mod){
 	// dir: {x:, y:, z:}
 	//
 	//
-	mod.extrudePolygon = function(mObj, thickness, bevel, dir ){
+	mod.extrudePolygon = function(mObj, thickness, bevel ){
 		//mObj has to have shape  :/
 		var shape = mObj.geometry;
 		
@@ -626,6 +624,7 @@ var VIDAMO = ( function (mod){
 			var extrudeSettings = { amount: thickness, bevelEnabled: bevel, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
 			geometry = new THREE.ExtrudeGeometry( shape, extrudeSettings );
 		
+		/*
 			// applying shear matrix according to extrude in direction specified
 			var matrix = new THREE.Matrix4();
 			var Syx = dir.x / dir.y,
@@ -634,7 +633,7 @@ var VIDAMO = ( function (mod){
 						  0,     1,   0,   0,
 						  0,   Syz,   1,   0,
 						  0,     0,   0,   1  );
-			geometry.applyMatrix( matrix );
+			geometry.applyMatrix( matrix ); */
 			
 			return new MobiusDataObject( geometry );
 		}
@@ -648,7 +647,10 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	mod.makeLathe = function( points, segments ){
-		return new MobiusDataObject( new THREE.LatheGeometry( points, segments ) );
+		var pts = []; 
+		for(var i=0; i<points.length; i++)
+			pts.push(new THREE.Vector3(points[i][0], points[i][1], points[i][2]))
+		return new MobiusDataObject( new THREE.LatheGeometry( pts, segments ) );
 	};
 	
 	//
@@ -1103,9 +1105,10 @@ var convertGeomToThreeMesh = function( geom ){
 			else
 				return new THREE.Line( singleDataObject, default_material_lineFromThree || singleDataObject.material ) // else line
 		}
-		else if(singleDataObject instanceof TOPOLOGY.Topology){
-			// display topology itself
-			return displayTopologyInThree(singleDataObject);
+		else if(singleDataObject instanceof THREE.Shape){
+			var geometry = new THREE.ShapeGeometry( singleDataObject );
+			var mesh = new THREE.Mesh( geometry, default_material_meshFromThree || singleDataObject.material );
+			return mesh;
 		}
 		else if(singleDataObject instanceof ThreeBSP)
 			return new THREE.Mesh( singleDataObject.toGeometry(), default_material_meshFromThree );
@@ -1129,9 +1132,6 @@ var convertGeomToThreeMesh = function( geom ){
 				return ( new THREE.Line( geometry, default_material_lineFromVerbs ) );
 
 		}
-		else if (singleDataObject instanceof verb.geom.Intersect){
-			console.log("Intersection!");
-		}
 		else {
 			console.log("Module doesnt recognise either!", singleDataObject);
 		}
@@ -1143,93 +1143,3 @@ var convertGeomToThreeMesh = function( geom ){
 	return optimizedResult;
 }
 
-//
-// Takes convertedGeometry (three.js) from MobiusDataObjects and converts it to topology*
-// Change content incase of change in Topology.js
-//
-var threeToTopology = function( convertedGeometry ){
-
-	// conversion of topology
-	if( convertedGeometry.constructor != Array ){
-		var topo = new TOPOLOGY.createFromGeometry( convertedGeometry.geometry );
-		return topo;
-	}
-	else{
-		var topoArray = [];
-		for(var geomNo = 0; geomNo < convertedGeometry.length; geomNo++)
-			topoArray.push( new TOPOLOGY.createFromGeometry( convertedGeometry[geomNo].geometry ) );
-		return topoArray;
-	}
-}
-
-//
-// Takes topology and converts into displayable three.js Object3D
-// Change content incase of change in Topology.js
-//
-var displayTopologyInThree = function ( topology ){
-
-	// if topology is a single object or topology is a group of topology???
-
-	// vertexs will be points
-	// edges will lines
-	// faces will be surfaces
-
-	// could be optimized further with three.js vertex colors etc -
-
-	// text will also be written
-	var group = new THREE.Object3D();
-
-	// vertexs
-	var particles = new THREE.Geometry();
-
-	for(var vertexNo = 0; vertexNo < topology.vertex.length; vertexNo++){
-		// create a particle with random
-		// position values, -250 -> 250
-		var particle = topology.vertex[vertexNo].vector3
-		// add it to the geometry
-		particles.vertices.push(particle);
-
-	}
-	// create the particle system
-	var particleSystem = new THREE.ParticleSystem(
-		particles,
-		default_material_topology_vertex);
-
-	group.add(particleSystem);
-
-	// edges
-	for(var edgeNo = 0; edgeNo < topology.edge.length; edgeNo++){
-
-		var lineGeometry = new THREE.Geometry();
-		lineGeometry.vertices.push(
-			topology.vertex[topology.edge[edgeNo].vertexIDs[0]].vector3,
-			topology.vertex[topology.edge[edgeNo].vertexIDs[1]].vector3
-		);
-
-		lineGeometry.computeVertexNormals();
-		var line = new THREE.Line( lineGeometry, default_material_topology_edge || topology.edge[edgeNo].material );
-
-		group.add(line);
-	}
-
-
-	// faces
-	for(var faceNo = 0; faceNo < topology.face.length; faceNo++){
-
-		for(var i=1; i<topology.face[faceNo].vertexIDs.length-1; i++){
-			var faceGeometry = new THREE.Geometry();
-			faceGeometry.vertices.push( topology.vertex[topology.face[faceNo].vertexIDs[0]].vector3 );
-			faceGeometry.vertices.push( topology.vertex[topology.face[faceNo].vertexIDs[i]].vector3 );
-			faceGeometry.vertices.push( topology.vertex[topology.face[faceNo].vertexIDs[i+1]].vector3 );
-			faceGeometry.faces.push( new THREE.Face3( 0, 1, 2 ));
-			faceGeometry.computeFaceNormals();
-			faceGeometry.computeVertexNormals();
-
-			var materials = [ topology.face[faceNo].material || default_material_topology_face ];
-			faceGeometry.faces[0].materialIndex = 0;
-			group.add(new THREE.Mesh( faceGeometry , new THREE.MeshFaceMaterial( materials ) ));
-		}
-	}
-
-	return group;
-}
