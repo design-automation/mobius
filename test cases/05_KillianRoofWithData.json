@@ -13,7 +13,7 @@
                 }
             ],
             "type": "curves",
-            "version": 1445573531589,
+            "version": 1445921117788,
             "overwrite": true
         },
         {
@@ -34,7 +34,7 @@
                 }
             ],
             "type": "makeSurface",
-            "version": 1445573532341,
+            "version": 1445921125165,
             "overwrite": true
         },
         {
@@ -55,7 +55,7 @@
                 }
             ],
             "type": "panels",
-            "version": 1445573535816,
+            "version": 1445921120739,
             "overwrite": true
         }
     ],
@@ -109,20 +109,21 @@
             "title": "Control",
             "nodes": [
                 {
-                    "id": 3,
+                    "id": 4,
                     "title": "Action",
                     "nodes": [],
                     "type": "new",
-                    "method": "makeCurve",
+                    "expression": "",
+                    "method": "makeCurveByPoints",
                     "parameters": [
                         {
                             "value": "crv_pnt",
                             "type": "points",
-                            "$$hashKey": "object:399"
+                            "$$hashKey": "object:2021"
                         }
                     ],
                     "result": "crv",
-                    "$$hashKey": "object:391"
+                    "$$hashKey": "object:2013"
                 },
                 {
                     "id": 4,
@@ -206,6 +207,70 @@
                     ],
                     "result": "vertices",
                     "$$hashKey": "object:691"
+                },
+                {
+                    "id": 3,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "assign",
+                    "expression": "",
+                    "method": "addData",
+                    "parameters": [
+                        {
+                            "value": "polygon",
+                            "type": "obj",
+                            "$$hashKey": "object:995"
+                        },
+                        {
+                            "value": "\"cornerPoints\"",
+                            "type": "dataName",
+                            "$$hashKey": "object:996"
+                        },
+                        {
+                            "value": "vertices",
+                            "type": "dataValue",
+                            "$$hashKey": "object:997"
+                        }
+                    ],
+                    "result": "dummyVar",
+                    "$$hashKey": "object:987"
+                },
+                {
+                    "id": 3,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "assign",
+                    "expression": "",
+                    "method": "addData",
+                    "parameters": [
+                        {
+                            "value": "polygon.face[0]",
+                            "type": "obj",
+                            "$$hashKey": "object:1703"
+                        },
+                        {
+                            "value": "\"desc\"",
+                            "type": "dataName",
+                            "$$hashKey": "object:1704"
+                        },
+                        {
+                            "value": "\"half a panel\"",
+                            "type": "dataValue",
+                            "$$hashKey": "object:1705"
+                        }
+                    ],
+                    "result": "dummyVar",
+                    "$$hashKey": "object:1695"
+                },
+                {
+                    "id": 3,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "assign",
+                    "expression": "console.log(polygon);",
+                    "method": "expression",
+                    "parameters": [],
+                    "$$hashKey": "object:1577"
                 },
                 {
                     "id": 3,
@@ -338,7 +403,7 @@
             "title": "Data",
             "temp": "Parameter",
             "dataName": "crv_pnt1",
-            "dataValue": "[[-20,10,0], [10,0,0], [20,0,0], [30,0,0], [40,0,0]]",
+            "dataValue": "[[-20,0,10], [10,0,0], [20,0,0], [30,0,0], [40,0,0]]",
             "$$hashKey": "object:198"
         },
         {
@@ -347,7 +412,7 @@
             "temp": "Parameter",
             "dataName": "crv_pnt2",
             "$$hashKey": "object:196",
-            "dataValue": "[[-20,15,0], [10,10,4], [20,10,0], [30,10,0]]"
+            "dataValue": "[[-20,0,15], [10,4,10], [20,0,10], [30,0,10]]"
         },
         {
             "id": 3,
@@ -355,14 +420,14 @@
             "temp": "Parameter",
             "dataName": "crv_pnt3",
             "$$hashKey": "object:211",
-            "dataValue": "[[-20,20,0], [10,20,0], [20,20,-1.5], [30,20,0]]"
+            "dataValue": "[[-20,0,20], [10,0,20], [20,-1.5,20], [30,0,20]]"
         },
         {
             "id": 4,
             "title": "Data",
             "temp": "Parameter",
             "dataName": "crv_pnt4",
-            "dataValue": "[[-20,30,0], [10,30,-1.6], [20,30,0], [30,30,0]]",
+            "dataValue": "[[-20,0,30], [10,-1.6,30], [20,0,30], [30,0,30]]",
             "$$hashKey": "object:937"
         }
     ],

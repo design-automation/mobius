@@ -42,18 +42,25 @@ var MobiusDataObject = function( geometry ){
     //
     // Converts the geometry of the MobiusDataObject - to three.js Mesh by calling a bridging function 'convertGeomtoThreeMesh' in the module
     //
-    this.extractGeometry = function(){
+    this.extractGeometry = function( setGeom ){
 
-        // if undefined, defines it and saves it
-        if(convertedGeometry == undefined)
-            convertedGeometry = convertGeomToThreeMesh(this.geometry);
+		// if setGeom is given, set the convertedGeom to that
+		if(setGeom == undefined){
+			// if undefined, defines it and saves it
+			if(convertedGeometry == undefined)
+				convertedGeometry = convertGeomToThreeMesh(this.geometry);
 
-        // if material has been assigned to this data object, assigns the same material to the converted geometry
-        if(this.material)
-            convertedGeometry.material = this.material;
+			// if material has been assigned to this data object, assigns the same material to the converted geometry
+			if(this.material)
+				convertedGeometry.material = this.material;
+		}
+		else{
+			convertedGeometry = setGeom;
+		}
 
         return convertedGeometry;
     }
+
 
     //
     // Gets a three.js 3D Object with a Topological representation from the convertedGeometry (three.js mesh) - extracts the three.js mesh firstChild

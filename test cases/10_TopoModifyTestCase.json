@@ -1,0 +1,142 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "node0",
+            "x": 1938.9115702010681,
+            "y": 2011.378104250294,
+            "inputConnectors": [],
+            "outputConnectors": [
+                {
+                    "name": "out0",
+                    "value": ""
+                }
+            ],
+            "type": "box",
+            "version": 1445918685717,
+            "overwrite": true
+        }
+    ],
+    "connections": []
+}
+
+//procedure json
+[
+    [
+        {
+            "id": 1,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "makeBox",
+            "parameters": [
+                {
+                    "value": "12",
+                    "type": "length",
+                    "$$hashKey": "object:351"
+                },
+                {
+                    "value": "12",
+                    "type": "breadth",
+                    "$$hashKey": "object:352"
+                },
+                {
+                    "value": "12",
+                    "type": "height",
+                    "$$hashKey": "object:353"
+                }
+            ],
+            "result": "box",
+            "$$hashKey": "object:343"
+        },
+        {
+            "id": 6,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "addMaterial",
+            "parameters": [
+                {
+                    "value": "box",
+                    "type": "obj",
+                    "$$hashKey": "object:1055"
+                },
+                {
+                    "value": "\"MeshBasicMaterial\"",
+                    "type": "material_type",
+                    "$$hashKey": "object:1056"
+                },
+                {
+                    "value": "{wireframe: true}",
+                    "type": "options",
+                    "$$hashKey": "object:1057"
+                }
+            ],
+            "result": "d",
+            "$$hashKey": "object:1047"
+        },
+        {
+            "id": 5,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "makeVector",
+            "parameters": [
+                {
+                    "value": "6",
+                    "type": "x",
+                    "$$hashKey": "object:892"
+                },
+                {
+                    "value": "10",
+                    "type": "y",
+                    "$$hashKey": "object:893"
+                },
+                {
+                    "value": "6",
+                    "type": "z",
+                    "$$hashKey": "object:894"
+                }
+            ],
+            "result": "newPos",
+            "$$hashKey": "object:884"
+        },
+        {
+            "id": 2,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "box.geometry.vertices[0] = newPos.geometry;",
+            "method": "expression",
+            "parameters": [],
+            "$$hashKey": "object:444"
+        },
+        {
+            "id": 3,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "box.verticesNeedUpdate = true;",
+            "method": "expression",
+            "parameters": [],
+            "$$hashKey": "object:525"
+        },
+        {
+            "id": 6,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "out0",
+            "dataValue": "box",
+            "type": "new",
+            "$$hashKey": "object:1091"
+        }
+    ]
+]
+
+//interface json
+[
+    []
+]

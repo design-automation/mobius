@@ -13,7 +13,7 @@
                 }
             ],
             "type": "curves",
-            "version": 1445572370926,
+            "version": 1445921025804,
             "overwrite": true
         },
         {
@@ -34,7 +34,7 @@
                 }
             ],
             "type": "makeSurface",
-            "version": 1445572377906,
+            "version": 1445921028395,
             "overwrite": true
         },
         {
@@ -55,7 +55,7 @@
                 }
             ],
             "type": "sphere",
-            "version": 1445572397325,
+            "version": 1445921029428,
             "overwrite": true
         }
     ],
@@ -87,21 +87,21 @@
 [
     [
         {
-            "id": 1,
+            "id": 2,
             "title": "Action",
             "nodes": [],
             "type": "new",
             "expression": "",
-            "method": "makeCurve",
+            "method": "makeCurveByPoints",
             "parameters": [
                 {
                     "value": "crv_pnt1",
                     "type": "points",
-                    "$$hashKey": "object:544"
+                    "$$hashKey": "object:1551"
                 }
             ],
             "result": "allCurves",
-            "$$hashKey": "object:536"
+            "$$hashKey": "object:1543"
         }
     ],
     [

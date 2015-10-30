@@ -13,7 +13,7 @@
                 }
             ],
             "type": "curves",
-            "version": 1445572209048,
+            "version": 1445935904721,
             "overwrite": true
         },
         {
@@ -34,7 +34,7 @@
                 }
             ],
             "type": "makeSurface",
-            "version": 1445572208480,
+            "version": 1445935903826,
             "overwrite": true
         },
         {
@@ -59,14 +59,14 @@
                 }
             ],
             "type": "panels",
-            "version": 1445572213477,
+            "version": 1445935896575,
             "overwrite": true
         },
         {
             "id": 3,
             "name": "node0",
-            "x": 1941.4453650978942,
-            "y": 2142.12192092652,
+            "x": 1939.4183291804331,
+            "y": 2140.12192092652,
             "inputConnectors": [],
             "outputConnectors": [
                 {
@@ -75,7 +75,7 @@
                 }
             ],
             "type": "panel",
-            "version": 1445572207364,
+            "version": 1445935903068,
             "overwrite": true
         }
     ],
@@ -139,20 +139,21 @@
             "title": "Control",
             "nodes": [
                 {
-                    "id": 3,
+                    "id": 4,
                     "title": "Action",
                     "nodes": [],
                     "type": "new",
-                    "method": "makeCurve",
+                    "expression": "",
+                    "method": "makeCurveByPoints",
                     "parameters": [
                         {
                             "value": "crv_pnt",
                             "type": "points",
-                            "$$hashKey": "object:399"
+                            "$$hashKey": "object:840"
                         }
                     ],
                     "result": "crv",
-                    "$$hashKey": "object:391"
+                    "$$hashKey": "object:832"
                 },
                 {
                     "id": 4,
@@ -319,7 +320,7 @@
             "$$hashKey": "object:647"
         },
         {
-            "id": 3,
+            "id": 4,
             "title": "Action",
             "nodes": [],
             "type": "new",
@@ -328,22 +329,32 @@
             "parameters": [
                 {
                     "value": "out0",
-                    "type": "object",
-                    "$$hashKey": "object:2326"
+                    "type": "obj",
+                    "$$hashKey": "object:1374"
                 },
                 {
                     "value": "mat_type",
                     "type": "material_type",
-                    "$$hashKey": "object:2327"
+                    "$$hashKey": "object:1375"
                 },
                 {
-                    "value": "opts",
-                    "type": "options",
-                    "$$hashKey": "object:2328"
+                    "value": "false",
+                    "type": "wireframe",
+                    "$$hashKey": "object:1376"
+                },
+                {
+                    "value": "0xffffff",
+                    "type": "color",
+                    "$$hashKey": "object:1377"
+                },
+                {
+                    "value": "false",
+                    "type": "transparent",
+                    "$$hashKey": "object:1378"
                 }
             ],
             "result": "final",
-            "$$hashKey": "object:2318"
+            "$$hashKey": "object:1366"
         }
     ],
     [
@@ -392,7 +403,7 @@
             "$$hashKey": "object:991"
         },
         {
-            "id": 6,
+            "id": 4,
             "title": "Action",
             "nodes": [],
             "type": "new",
@@ -402,55 +413,16 @@
                 {
                     "value": "box",
                     "type": "mObj1",
-                    "$$hashKey": "object:1297"
+                    "$$hashKey": "object:510"
                 },
                 {
                     "value": "sphere",
                     "type": "mObj2",
-                    "$$hashKey": "object:1298"
-                }
-            ],
-            "result": "intmodel",
-            "$$hashKey": "object:1289"
-        },
-        {
-            "id": 5,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "makeSphere",
-            "parameters": [
-                {
-                    "value": "smallSphereRad",
-                    "type": "radius",
-                    "$$hashKey": "object:3488"
-                }
-            ],
-            "result": "smallSp",
-            "$$hashKey": "object:3480"
-        },
-        {
-            "id": 6,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "objectSubtract",
-            "parameters": [
-                {
-                    "value": "intmodel",
-                    "type": "mObj1",
-                    "$$hashKey": "object:1416"
-                },
-                {
-                    "value": "smallSp",
-                    "type": "mObj2",
-                    "$$hashKey": "object:1417"
+                    "$$hashKey": "object:511"
                 }
             ],
             "result": "model",
-            "$$hashKey": "object:1408"
+            "$$hashKey": "object:502"
         }
     ]
 ]
@@ -532,15 +504,7 @@
             "temp": "Parameter",
             "dataName": "mat_type",
             "dataValue": "\"MeshNormalMaterial\"",
-            "$$hashKey": "object:2253"
-        },
-        {
-            "id": 3,
-            "title": "Data",
-            "temp": "Parameter",
-            "dataName": "opts",
-            "dataValue": "{ side: THREE.DoubleSide, wireframe: false, shading: THREE.SmoothShading, transparent: false, color: 0xffffff}",
-            "$$hashKey": "object:2265"
+            "$$hashKey": "object:2126"
         }
     ],
     [
@@ -549,7 +513,7 @@
             "title": "Data",
             "temp": "Parameter",
             "dataName": "sphereRad",
-            "dataValue": "1.2",
+            "dataValue": "1.3",
             "$$hashKey": "object:742"
         },
         {
@@ -581,16 +545,8 @@
             "title": "Data",
             "temp": "Parameter",
             "dataName": "smallSphereRad",
-            "dataValue": "1.1",
+            "dataValue": "4",
             "$$hashKey": "object:790"
-        },
-        {
-            "id": 7,
-            "title": "Data",
-            "temp": "Parameter",
-            "dataName": "booleanOp1",
-            "dataValue": "\"subtract\"",
-            "$$hashKey": "object:3503"
         }
     ]
 ]

@@ -1,0 +1,407 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "node0",
+            "x": 1959.9420678447243,
+            "y": 2085.364915237616,
+            "inputConnectors": [
+                {
+                    "name": "object",
+                    "value": ""
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "name": "out0",
+                    "value": ""
+                }
+            ],
+            "type": "curveframes",
+            "version": 0,
+            "overwrite": true
+        },
+        {
+            "id": 1,
+            "name": "node1",
+            "x": 1960.44882682409,
+            "y": 2015.9389350645804,
+            "inputConnectors": [],
+            "outputConnectors": [
+                {
+                    "name": "brk",
+                    "value": ""
+                }
+            ],
+            "type": "brick",
+            "version": 0,
+            "overwrite": true
+        }
+    ],
+    "connections": [
+        {
+            "source": {
+                "nodeID": 1,
+                "connectorIndex": 0
+            },
+            "dest": {
+                "nodeID": 0,
+                "connectorIndex": 0
+            }
+        }
+    ]
+}
+
+//procedure json
+[
+    [
+        {
+            "id": 1,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "makeCurveByPoints",
+            "parameters": [
+                {
+                    "value": "[[40, 0, -20], [10, 0,-5], [3,0,10], [-25, 0, -3], [-40, 0, -15]]",
+                    "type": "points",
+                    "$$hashKey": "object:300"
+                }
+            ],
+            "result": "crv",
+            "$$hashKey": "object:246"
+        },
+        {
+            "id": 4,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "makeSequence",
+            "parameters": [
+                {
+                    "value": "0",
+                    "type": "start",
+                    "$$hashKey": "object:306"
+                },
+                {
+                    "value": "1",
+                    "type": "end",
+                    "$$hashKey": "object:307"
+                },
+                {
+                    "value": "1/divisions",
+                    "type": "stepSize",
+                    "$$hashKey": "object:308"
+                }
+            ],
+            "result": "points",
+            "$$hashKey": "object:247"
+        },
+        {
+            "id": 5,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "objects",
+            "dataValue": "[]",
+            "type": "new",
+            "$$hashKey": "object:248"
+        },
+        {
+            "id": 3,
+            "title": "Control",
+            "nodes": [
+                {
+                    "id": 5,
+                    "title": "Data",
+                    "nodes": [],
+                    "dataName": "crvPoint",
+                    "dataValue": "crv.geometry.point( t )",
+                    "type": "new",
+                    "$$hashKey": "object:320"
+                },
+                {
+                    "id": 5,
+                    "title": "Data",
+                    "nodes": [],
+                    "dataName": "tangentPoint",
+                    "dataValue": "crv.geometry.tangent( t )",
+                    "type": "new",
+                    "$$hashKey": "object:321"
+                },
+                {
+                    "id": 7,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "expression": "",
+                    "method": "makeCopy",
+                    "parameters": [
+                        {
+                            "value": "object",
+                            "type": "mObj",
+                            "$$hashKey": "object:363"
+                        },
+                        {
+                            "value": "crvPoint[0]",
+                            "type": "transX",
+                            "$$hashKey": "object:364"
+                        },
+                        {
+                            "value": "crvPoint[1]",
+                            "type": "transY",
+                            "$$hashKey": "object:365"
+                        },
+                        {
+                            "value": "crvPoint[2]",
+                            "type": "transZ",
+                            "$$hashKey": "object:366"
+                        }
+                    ],
+                    "result": "copyObject",
+                    "$$hashKey": "object:322"
+                },
+                {
+                    "id": 6,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "expression": "copyObject.extractGeometry().lookAt(new THREE.Vector3(tangentPoint[0], tangentPoint[1], tangentPoint[2]));",
+                    "method": "expression",
+                    "parameters": [],
+                    "$$hashKey": "object:2925"
+                },
+                {
+                    "id": 6,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "expression": "",
+                    "method": "addToArray",
+                    "parameters": [
+                        {
+                            "value": "objects",
+                            "type": "originalArr",
+                            "$$hashKey": "object:378"
+                        },
+                        {
+                            "value": "copyObject",
+                            "type": "newObj",
+                            "$$hashKey": "object:379"
+                        }
+                    ],
+                    "result": "d",
+                    "$$hashKey": "object:323"
+                }
+            ],
+            "type": "assign",
+            "controlType": "for each",
+            "dataName": "t",
+            "forList": "points",
+            "$$hashKey": "object:249"
+        },
+        {
+            "id": 2,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "out0",
+            "dataValue": "objects",
+            "type": "new",
+            "$$hashKey": "object:250"
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "makeBox",
+            "parameters": [
+                {
+                    "value": "brickLength",
+                    "type": "length",
+                    "$$hashKey": "object:1523"
+                },
+                {
+                    "value": "brickHeight",
+                    "type": "breadth",
+                    "$$hashKey": "object:1524"
+                },
+                {
+                    "value": "brickWidth",
+                    "type": "height",
+                    "$$hashKey": "object:1525"
+                }
+            ],
+            "result": "brick",
+            "$$hashKey": "object:1436"
+        },
+        {
+            "id": 2,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "makeBox",
+            "parameters": [
+                {
+                    "value": "frogLength",
+                    "type": "length",
+                    "$$hashKey": "object:1535"
+                },
+                {
+                    "value": "frogHeight",
+                    "type": "breadth",
+                    "$$hashKey": "object:1536"
+                },
+                {
+                    "value": "frogWidth",
+                    "type": "height",
+                    "$$hashKey": "object:1537"
+                }
+            ],
+            "result": "frog",
+            "$$hashKey": "object:1437"
+        },
+        {
+            "id": 5,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "moveObjectToPoint",
+            "parameters": [
+                {
+                    "value": "frog",
+                    "type": "mObj",
+                    "$$hashKey": "object:1547"
+                },
+                {
+                    "value": "0",
+                    "type": "xCoord",
+                    "$$hashKey": "object:1548"
+                },
+                {
+                    "value": "frogWidth",
+                    "type": "yCoord",
+                    "$$hashKey": "object:1549"
+                },
+                {
+                    "value": "0",
+                    "type": "zCoord",
+                    "$$hashKey": "object:1550"
+                }
+            ],
+            "result": "dummy",
+            "$$hashKey": "object:1438"
+        },
+        {
+            "id": 5,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "objectSubtract",
+            "parameters": [
+                {
+                    "value": "brick",
+                    "type": "mObj1",
+                    "$$hashKey": "object:1562"
+                },
+                {
+                    "value": "frog",
+                    "type": "mObj2",
+                    "$$hashKey": "object:1563"
+                }
+            ],
+            "result": "completeBrick",
+            "$$hashKey": "object:1439"
+        },
+        {
+            "id": 6,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "completeBrick.extractGeometry().rotateY(Math.PI/2);",
+            "method": "expression",
+            "parameters": [],
+            "$$hashKey": "object:6984"
+        },
+        {
+            "id": 4,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "brk",
+            "dataValue": "completeBrick",
+            "type": "new",
+            "$$hashKey": "object:1440"
+        }
+    ]
+]
+
+//interface json
+[
+    [
+        {
+            "id": 1,
+            "title": "Data",
+            "temp": "Parameter",
+            "dataName": "divisions",
+            "dataValue": "35",
+            "$$hashKey": "object:118"
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Data",
+            "temp": "Parameter",
+            "dataName": "brickHeight",
+            "dataValue": "0.55",
+            "$$hashKey": "object:409"
+        },
+        {
+            "id": 2,
+            "title": "Data",
+            "temp": "Parameter",
+            "dataName": "brickWidth",
+            "dataValue": "1.025",
+            "$$hashKey": "object:410"
+        },
+        {
+            "id": 3,
+            "title": "Data",
+            "temp": "Parameter",
+            "dataName": "brickLength",
+            "dataValue": "2.15",
+            "$$hashKey": "object:411"
+        },
+        {
+            "id": 4,
+            "title": "Data",
+            "temp": "Parameter",
+            "dataName": "frogHeight",
+            "dataValue": "brickHeight/4",
+            "$$hashKey": "object:412"
+        },
+        {
+            "id": 5,
+            "title": "Data",
+            "temp": "Parameter",
+            "dataName": "frogLength",
+            "dataValue": "brickLength/2",
+            "$$hashKey": "object:413"
+        },
+        {
+            "id": 6,
+            "title": "Data",
+            "temp": "Parameter",
+            "dataName": "frogWidth",
+            "dataValue": "brickWidth/4",
+            "$$hashKey": "object:414"
+        }
+    ]
+]

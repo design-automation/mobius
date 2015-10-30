@@ -13,14 +13,14 @@
                 }
             ],
             "type": "curves",
-            "version": 1445919417475,
+            "version": 1446112114288,
             "overwrite": true
         },
         {
             "id": 1,
             "name": "surface",
-            "x": 1818.8096920915118,
-            "y": 2112.7299001233378,
+            "x": 1853.2693026883467,
+            "y": 2115.7704539995293,
             "inputConnectors": [
                 {
                     "name": "allCurves",
@@ -34,7 +34,7 @@
                 }
             ],
             "type": "makeSurface",
-            "version": 1445919416330,
+            "version": 1446112132860,
             "overwrite": true
         },
         {
@@ -55,7 +55,7 @@
                 }
             ],
             "type": "panels",
-            "version": 1445919418716,
+            "version": 1446112127639,
             "overwrite": true
         }
     ],
@@ -119,11 +119,11 @@
                         {
                             "value": "crv_pnt",
                             "type": "points",
-                            "$$hashKey": "object:528"
+                            "$$hashKey": "object:2021"
                         }
                     ],
                     "result": "crv",
-                    "$$hashKey": "object:520"
+                    "$$hashKey": "object:2013"
                 },
                 {
                     "id": 4,
@@ -196,17 +196,82 @@
                     "id": 3,
                     "title": "Action",
                     "nodes": [],
-                    "type": "new",
-                    "method": "getPointsFromPolygon",
+                    "type": "assign",
+                    "expression": "",
+                    "method": "getCornerPointsFromSurface",
                     "parameters": [
                         {
                             "value": "polygon",
-                            "type": "polygon",
-                            "$$hashKey": "object:699"
+                            "type": "mObj",
+                            "$$hashKey": "object:2810"
                         }
                     ],
                     "result": "vertices",
-                    "$$hashKey": "object:691"
+                    "$$hashKey": "object:2802"
+                },
+                {
+                    "id": 3,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "assign",
+                    "expression": "",
+                    "method": "addData",
+                    "parameters": [
+                        {
+                            "value": "polygon",
+                            "type": "obj",
+                            "$$hashKey": "object:995"
+                        },
+                        {
+                            "value": "\"cornerPoints\"",
+                            "type": "dataName",
+                            "$$hashKey": "object:996"
+                        },
+                        {
+                            "value": "vertices",
+                            "type": "dataValue",
+                            "$$hashKey": "object:997"
+                        }
+                    ],
+                    "result": "dummyVar",
+                    "$$hashKey": "object:987"
+                },
+                {
+                    "id": 3,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "assign",
+                    "expression": "",
+                    "method": "addData",
+                    "parameters": [
+                        {
+                            "value": "polygon.face[0]",
+                            "type": "obj",
+                            "$$hashKey": "object:1703"
+                        },
+                        {
+                            "value": "\"desc\"",
+                            "type": "dataName",
+                            "$$hashKey": "object:1704"
+                        },
+                        {
+                            "value": "\"half a panel\"",
+                            "type": "dataValue",
+                            "$$hashKey": "object:1705"
+                        }
+                    ],
+                    "result": "dummyVar",
+                    "$$hashKey": "object:1695"
+                },
+                {
+                    "id": 3,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "assign",
+                    "expression": "console.log(polygon);",
+                    "method": "expression",
+                    "parameters": [],
+                    "$$hashKey": "object:1577"
                 },
                 {
                     "id": 3,
@@ -374,7 +439,7 @@
             "temp": "Parameter",
             "dataName": "u",
             "$$hashKey": "object:441",
-            "dataValue": "4"
+            "dataValue": "15"
         },
         {
             "id": 2,
@@ -382,7 +447,7 @@
             "temp": "Parameter",
             "dataName": "v",
             "$$hashKey": "object:456",
-            "dataValue": "4"
+            "dataValue": "13"
         },
         {
             "id": 3,

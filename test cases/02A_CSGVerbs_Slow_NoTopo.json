@@ -13,7 +13,7 @@
                 }
             ],
             "type": "curves",
-            "version": 1445572085340,
+            "version": 1445919641023,
             "overwrite": true
         },
         {
@@ -34,7 +34,7 @@
                 }
             ],
             "type": "makeSurface",
-            "version": 1445572083592,
+            "version": 1445919622745,
             "overwrite": true
         },
         {
@@ -59,14 +59,14 @@
                 }
             ],
             "type": "panels",
-            "version": 1445572086939,
+            "version": 1445919646358,
             "overwrite": true
         },
         {
             "id": 3,
             "name": "node0",
-            "x": 1939.4183291804331,
-            "y": 2140.12192092652,
+            "x": 1941.4453650978942,
+            "y": 2142.12192092652,
             "inputConnectors": [],
             "outputConnectors": [
                 {
@@ -75,7 +75,7 @@
                 }
             ],
             "type": "panel",
-            "version": 1445572082158,
+            "version": 1445572207364,
             "overwrite": true
         }
     ],
@@ -139,20 +139,21 @@
             "title": "Control",
             "nodes": [
                 {
-                    "id": 3,
+                    "id": 4,
                     "title": "Action",
                     "nodes": [],
                     "type": "new",
-                    "method": "makeCurve",
+                    "expression": "",
+                    "method": "makeCurveByPoints",
                     "parameters": [
                         {
                             "value": "crv_pnt",
                             "type": "points",
-                            "$$hashKey": "object:399"
+                            "$$hashKey": "object:499"
                         }
                     ],
                     "result": "crv",
-                    "$$hashKey": "object:391"
+                    "$$hashKey": "object:491"
                 },
                 {
                     "id": 4,
@@ -329,21 +330,21 @@
                 {
                     "value": "out0",
                     "type": "object",
-                    "$$hashKey": "object:2196"
+                    "$$hashKey": "object:2326"
                 },
                 {
                     "value": "mat_type",
                     "type": "material_type",
-                    "$$hashKey": "object:2197"
+                    "$$hashKey": "object:2327"
                 },
                 {
                     "value": "opts",
                     "type": "options",
-                    "$$hashKey": "object:2198"
+                    "$$hashKey": "object:2328"
                 }
             ],
             "result": "final",
-            "$$hashKey": "object:2188"
+            "$$hashKey": "object:2318"
         }
     ],
     [
@@ -392,7 +393,7 @@
             "$$hashKey": "object:991"
         },
         {
-            "id": 4,
+            "id": 6,
             "title": "Action",
             "nodes": [],
             "type": "new",
@@ -402,16 +403,55 @@
                 {
                     "value": "box",
                     "type": "mObj1",
-                    "$$hashKey": "object:510"
+                    "$$hashKey": "object:1297"
                 },
                 {
                     "value": "sphere",
                     "type": "mObj2",
-                    "$$hashKey": "object:511"
+                    "$$hashKey": "object:1298"
+                }
+            ],
+            "result": "intmodel",
+            "$$hashKey": "object:1289"
+        },
+        {
+            "id": 5,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "makeSphere",
+            "parameters": [
+                {
+                    "value": "smallSphereRad",
+                    "type": "radius",
+                    "$$hashKey": "object:3488"
+                }
+            ],
+            "result": "smallSp",
+            "$$hashKey": "object:3480"
+        },
+        {
+            "id": 6,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "objectSubtract",
+            "parameters": [
+                {
+                    "value": "intmodel",
+                    "type": "mObj1",
+                    "$$hashKey": "object:1416"
+                },
+                {
+                    "value": "smallSp",
+                    "type": "mObj2",
+                    "$$hashKey": "object:1417"
                 }
             ],
             "result": "model",
-            "$$hashKey": "object:502"
+            "$$hashKey": "object:1408"
         }
     ]
 ]
@@ -493,7 +533,7 @@
             "temp": "Parameter",
             "dataName": "mat_type",
             "dataValue": "\"MeshNormalMaterial\"",
-            "$$hashKey": "object:2126"
+            "$$hashKey": "object:2253"
         },
         {
             "id": 3,
@@ -501,7 +541,7 @@
             "temp": "Parameter",
             "dataName": "opts",
             "dataValue": "{ side: THREE.DoubleSide, wireframe: false, shading: THREE.SmoothShading, transparent: false, color: 0xffffff}",
-            "$$hashKey": "object:2138"
+            "$$hashKey": "object:2265"
         }
     ],
     [
@@ -510,7 +550,7 @@
             "title": "Data",
             "temp": "Parameter",
             "dataName": "sphereRad",
-            "dataValue": "1.3",
+            "dataValue": "1.2",
             "$$hashKey": "object:742"
         },
         {
@@ -542,8 +582,16 @@
             "title": "Data",
             "temp": "Parameter",
             "dataName": "smallSphereRad",
-            "dataValue": "4",
+            "dataValue": "1.1",
             "$$hashKey": "object:790"
+        },
+        {
+            "id": 7,
+            "title": "Data",
+            "temp": "Parameter",
+            "dataName": "booleanOp1",
+            "dataValue": "\"subtract\"",
+            "$$hashKey": "object:3503"
         }
     ]
 ]

@@ -27,7 +27,33 @@ var VIDAMO = ( function (mod){
 			console.log('warnning: vidamo web app not connected.');
 		}
 	};
+	
+	mod.showObject = function( object ){
+		return JSON.stringify(object);
+	};
 
+	//
+	//
+	//
+	//
+	mod.convertDegreesToRadians = function( degrees ){
+		return 0.01745*degrees;
+	};
+	
+	//
+	//
+	//
+	//
+	mod.convertRadiansToDegrees = function( radians ){
+		return 57.29*radians;
+	};
+	
+	/*
+	 * 
+	 * List Operations
+	 *
+	 */
+	
 	//
 	// Input: Numeric
 	// Output: Number Array
@@ -44,10 +70,144 @@ var VIDAMO = ( function (mod){
 	// Input: Array, Object
 	// Output: Modified Array
 	//
-	mod.addToArray = function(originalArr, newObj){
-		return originalArr.push(newObj)
+	mod.addToList = function( list, object ){
+		return list.push( object );
+	};
+	
+	//
+	//
+	//
+	//
+	mod.indexOfObject = function( list, object ){
+		return list.indexOf( object );
+	};
+	
+	//
+	//
+	//
+	//
+	mod.removeIndexFromList = function( list, index ){
+		list.splice(index, 1);
+		return list;
+	}; 
+	
+	//
+	//
+	//
+	//
+	mod.getMaxValue = function( valueList ){
+		var maxValue = valueList[0];
+		for(var i=0; i<valueList.length; i++)
+			maxValue = Math.max(maxValue, valueList[i]);
+		return maxValue;
+	};
+	
+	//
+	//
+	//
+	//
+	mod.getMinValue = function( valueList ){
+		var minValue = valueList[0];
+		for(var i=0; i<valueList.length; i++)
+			minValue = Math.min(minValue, valueList[i]);
+		return minValue;
+	};
+	
+	//
+	//
+	//
+	//
+	mod.sumList = function( valueList ){
+		var sum = 0;
+		for(var i=0; i<valueList.length; i++)
+			sum += valueList[i];
+		return sum;
+	};
+	
+	//
+	//
+	//
+	//
+	mod.averageList = function( valueList ){
+		return VIDAMO.sumList( valueList )/ valueList.length;
+	};
+	
+	//
+	//
+	//
+	//
+	mod.rangeOfList = function( valueList ){
+		return VIDAMO.getMaxValue( valueList ) - VIDAMO.getMinValue( valueList );
+	};
+	
+	//
+	//
+	//
+	//
+	mod.getListLength = function( valueList ){
+		return valueList.length
+	};
+	
+	/*
+	 *
+	 *	Geometry Analysis Functions
+	 * 
+	 */
+	
+	//
+	//
+	//
+	//
+	mod.getCentre = function(mObj){
+		//calculate centre based on what kind of object
+		var geometry = mObj.geometry;
+		
+		if(geometry instanceof verb.geom.NurbsCurve)
+			return geometry.point(0.5);
+		else if(geometry instanceof verb.geom.NurbsSurface)
+			return geometry.point(0.5, 0.5);
+		else if(geometry instanceof THREE.Geometry)
+			return geometry.center();
+		else
+			return "Invalid Input"
+	};
+	
+	//
+	//
+	//
+	//
+	mod.distanceBetweenTwoPoints = function( point1, point2){
+		var deltaX, deltaY, deltaZ; 
+		
+		if(point1.geometry instanceof THREE.Vector3 && point2.geometry instanceof THREE.Vector3){
+			pnt1 = point1.geometry;
+			pnt2 = point2.geometry;
+			deltaX = pnt1.x - pnt2.x;
+			deltaY = pnt1.y - pnt2.y;
+			deltaZ = pnt1.z - pnt2.z;
+		}
+		else if(point1.constructor === Array && point2.constructor === Array){
+			deltaX = point1[0] - point2[0];
+			deltaY = point1[1] - point2[1];
+			deltaZ = point1[2] - point2[2];
+		}
+		else
+			return "Invalid Input"
+
+		var distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
+		return distance;
 	};
 
+	//
+	//
+	//
+	//
+	mod.getLengthOfVector = function( vector ){
+		var vec = vector.geometry;
+		return vec.length();
+	};
+	
+	
 	/*
 	 *
 	 * Verbs Functions
@@ -59,16 +219,21 @@ var VIDAMO = ( function (mod){
 	// Input: Number Array
 	// Output: MobiusDataObject with NURBS geometry
 	//
-	mod.makeLine = function(start, end){
-		return new MobiusDataObject( new verb.geom.Line(start, end) );
+	mod.makeLine = function(startPoint, endPoint){
+		// input variations
+		// start, end could be a vector3 - has to be converted into an array
+		
+		return new MobiusDataObject( new verb.geom.Line(startPoint, endPoint) );
 	};
-
+	
 	//
 	// Input: Numeric and Numeric Array Input
 	// Output: MobiusDataObject with NURBS geometry
 	//
-	mod.makeArc = function(center,xaxis,yaxis,radius,minAngle,maxAngle){
-		return new MobiusDataObject( new verb.geom.Arc(center,xaxis,yaxis,radius,minAngle,maxAngle) );
+	mod.makeArc = function(centerPoint, xaxis, yaxis, radius, minAngle, maxAngle){
+		// input variations
+		// center, axis and yaxis could be vector3
+		return new MobiusDataObject( new verb.geom.Arc(centerPoint,xaxis,yaxis,radius,minAngle,maxAngle) );
 	};
 
 	//
@@ -76,6 +241,7 @@ var VIDAMO = ( function (mod){
 	// Output: MobiusDataObject with NURBS geometry
 	//
 	mod.makeBezierCurve = function(points, weights){
+		// points could be vector3
 		return new MobiusDataObject( new verb.geom.BezierCurve(points, weights) );
 	};
 
@@ -83,32 +249,32 @@ var VIDAMO = ( function (mod){
 	// Input: Numeric and Numeric Array Input
 	// Output: MobiusDataObject with NURBS geometry
 	//
-	mod.makeCircle = function(center,xaxis,yaxis,radius){
-		return new MobiusDataObject( new verb.geom.Circle(center,xaxis,yaxis,radius) );
+	mod.makeCircleBoundary = function(centerPoint,xaxis,yaxis,radius){
+		return new MobiusDataObject( new verb.geom.Circle(centerPoint,xaxis,yaxis,radius) );
+	};
+
+	//
+	// Input: Numeric and Numeric Array Input [centre], [xaxis], [yaxis]
+	// Output: MobiusDataObject with NURBS geometry
+	//
+	mod.makeEllipse = function ( centerPoint ,xaxis,yaxis ){
+		return new MobiusDataObject( new verb.geom.Ellipse( centerPoint,xaxis,yaxis ) );
 	};
 
 	//
 	// Input: Numeric and Numeric Array Input
 	// Output: MobiusDataObject with NURBS geometry
 	//
-	mod.makeEllipse = function ( center,xaxis,yaxis ){
-		return new MobiusDataObject( new verb.geom.Ellipse( center,xaxis,yaxis ) );
+	mod.makeEllipseArc = function ( centerPoint,xaxis,yaxis,minAngle,maxAngle ){
+		return new MobiusDataObject( new verb.geom.EllipseArc( centerPoint,xaxis,yaxis,minAngle,maxAngle ) );
 	};
 
 	//
 	// Input: Numeric and Numeric Array Input
 	// Output: MobiusDataObject with NURBS geometry
 	//
-	mod.makeEllipseArc = function ( center,xaxis,yaxis,minAngle,maxAngle ){
-		return new MobiusDataObject( new verb.geom.EllipseArc( center,xaxis,yaxis,minAngle,maxAngle ) );
-	};
-
-	//
-	// Input: Numeric and Numeric Array Input
-	// Output: MobiusDataObject with NURBS geometry
-	//
-	mod.makeCurve = function(points){
-		return new MobiusDataObject( new verb.geom.NurbsCurve.byPoints( points ) );
+	mod.makeCurveByPoints = function( points, degree ){
+		return new MobiusDataObject( new verb.geom.NurbsCurve.byPoints( points, degree ) );
 	};
 
 	//
@@ -131,7 +297,7 @@ var VIDAMO = ( function (mod){
 	// Input: Numeric and Numeric Array Input
 	// Output: MobiusDataObject with NURBS geometry
 	//
-	mod.makeSurfaceByCorners = function ( point0,point1,point2,point3 ){
+	mod.makeSurfaceByCorners = function ( point0, point1, point2, point3 ){
 		return new MobiusDataObject( new verb.geom.NurbsSurface.byCorners ( point0,point1,point2,point3 ) );
 	};
 
@@ -139,16 +305,16 @@ var VIDAMO = ( function (mod){
 	// Input: MobiusDataObject, Numeric Input
 	// Output: MobiusDataObject with NURBS geometry
 	//
-	mod.makeSurfaceByRevolution = function ( mObj, centre, axis, angle ){
+	mod.makeSurfaceByRevolution = function ( mObj, centerPoint, axis, angle ){
 		var profile = mObj.geometry;
-		return new MobiusDataObject( new verb.geom.RevolvedSurface( profile, centre, axis, angle )  );
+		return new MobiusDataObject( new verb.geom.RevolvedSurface( profile, centerPoint, axis, angle )  );
 	};
 
 	//
 	// Input: MobiusDataObjects with NURBS geometry
 	// Output: MobiusDataObject with NURBS geometry
 	//
-	mod.makeSurfaceBySweep = function ( mObjProfile, mbObjRail){
+	mod.makeSurfaceBySweep = function ( mObjProfile, mObjRail){
 		var profile = mObjProfile.geometry;
 		var rail = mObjRail.geometry;
 		return new MobiusDataObject( new verb.geom.SweptSurface ( profile, rail ) );
@@ -158,11 +324,12 @@ var VIDAMO = ( function (mod){
 	// Input: Array of MobiusDataObjects with NURBS geometry
 	// Output: MobiusDataObject with NURBS geometry
 	//
-	mod.makeSurfaceByLoft = function(arrOfCurves){
+	mod.makeSurfaceByLoft = function(listOfCurves, degree){
+		var deg = degree || 3;
 		var curves = [];
-		for(var c=0; c<arrOfCurves.length; c++)
-			curves.push(arrOfCurves[c].geometry);
-		return new MobiusDataObject( new verb.geom.NurbsSurface.byLoftingCurves( curves, 3 ) );
+		for(var c=0; c<listOfCurves.length; c++)
+			curves.push(listOfCurves[c].geometry);
+		return new MobiusDataObject( new verb.geom.NurbsSurface.byLoftingCurves( curves, deg ) );
 	};
 
 	//
@@ -178,8 +345,8 @@ var VIDAMO = ( function (mod){
 	// Input: Numeric
 	// Output: MobiusDataObject with NURBS geometry
 	//
-	mod.makeSurfaceAsSphere = function(centre, radius){
-		return new MobiusDataObject( new verb.geom.SphericalSurface(centre, radius) );
+	mod.makeSurfaceAsSphere = function(centrePoint, radius){
+		return new MobiusDataObject( new verb.geom.SphericalSurface(centrePoint, radius) );
 	};
 
 	//
@@ -197,6 +364,73 @@ var VIDAMO = ( function (mod){
 	mod.makeSurfaceAsCylinder = function ( axis, xaxis, base, height, radius ){
 		return new MobiusDataObject( new verb.geom.CylindricalSurface( axis,xaxis,base,height,radius ) );
 	};
+	
+	//
+	//
+	//
+	//
+	mod.getPointOnSurface = function( surface, u, v ){
+		var srf = surface.geometry;
+		if(srf instanceof verb.geom.NurbsSurface)
+			return srf.point( u, v );
+		else
+			return "Invalid Input"
+	};
+	
+	//
+	//
+	//
+	//
+	mod.getPointOnCurve = function( curve, t ){
+		var crv = curve.geometry;
+		if( crv instanceof verb.geom.NurbsCurve)
+			return crv.point( t );
+		else
+			return "Invalid Input"
+	};
+	
+	//
+	//
+	//
+	//
+	mod.divideCurve = function( curve, divisions ){
+		var crv = curve.geometry;
+		var points = crv.divideByEqualArcLength( divisions )
+							.map(function(u){ return crv.point( u.u ); } );
+	
+		return points; //convert these into vector points 
+	};
+	
+	//
+	//
+	//
+	mod.getTangentAtCurveParameter = function( curve, t ){
+		var crv = curve.geometry;
+		if( crv instanceof verb.geom.NurbsCurve)
+			return crv.tangent(t);
+		else
+			return 'Invalid Input';
+	};
+	
+	//
+	//
+	//
+	//
+	mod.getNormalAtSurfaceParameter = function( surface, u, v ){
+		var srf = surface.geometry;
+		if(srf instanceof verb.geom.NurbsSurface)
+			return srf.normal( u, v);
+		else
+			return 'Invalid Input';
+	};
+	
+	//
+	//
+	//
+	//
+	mod.getContourCurves = function( surface, countU, countV ){
+		
+	};
 
 	//
 	// Input: MobiusDataObject with NURBS geometry, numeric values
@@ -205,31 +439,35 @@ var VIDAMO = ( function (mod){
 	mod.makeMeshBySubdivision = function( mObj, ugrid, vgrid ){
 
 		var surface = mObj.geometry;
+		
+		if(surface instanceof verb.geom.NurbsSurface){
+			var div_surfaces = [], gridPoints = [];
+			var uincr = 1/ugrid;
+			var vincr = 1/vgrid;
 
-		var div_surfaces = [], gridPoints = [];
-		var uincr = 1/ugrid;
-		var vincr = 1/vgrid;
-
-		//for uv lines
-		for(var i=0; i <= ugrid; i++){
-			for(var seg=0; seg <= vgrid; seg++)
-				gridPoints.push(surface.point(i*uincr, seg*vincr));
-		}
-
-		// creation of polygons from the gridPoints
-		for(var i=0; i< gridPoints.length-vgrid-2; i++){
-			if((i+vgrid+2)%(vgrid+1) != 0 || i==0){
-				// construction of the verbs four point surface
-				var mbObj = new MobiusDataObject( new verb.geom.NurbsSurface.byCorners(gridPoints[i], gridPoints[i+1],  gridPoints[i+vgrid+2], gridPoints[i+vgrid+1]) )
-				div_surfaces.push(mbObj)
+			//for uv lines
+			for(var i=0; i <= ugrid; i++){
+				for(var seg=0; seg <= vgrid; seg++)
+					gridPoints.push(surface.point(i*uincr, seg*vincr));
 			}
-		}
 
-		return div_surfaces
+			// creation of polygons from the gridPoints
+			for(var i=0; i< gridPoints.length-vgrid-2; i++){
+				if((i+vgrid+2)%(vgrid+1) != 0 || i==0){
+					// construction of the verbs four point surface
+					var mbObj = new MobiusDataObject( new verb.geom.NurbsSurface.byCorners(gridPoints[i], gridPoints[i+1],  gridPoints[i+vgrid+2], gridPoints[i+vgrid+1]) )
+					div_surfaces.push(mbObj)
+				}
+			}
+
+			return div_surfaces		
+		}
+		else
+			return "Invalid Input"
 	};
 
 	//
-	// Input: MobiusDataObject with NURBS geoemtry (line)
+	// Input: MobiusDataObject with NURBS geometry (line)
 	// Output: MobiusDataObject with NURBS geometry (cylinderical surface)
 	//
 	mod.makeTubeByLine = function( mObj ){
@@ -274,7 +512,7 @@ var VIDAMO = ( function (mod){
 	// Input: MobiusDataObject with NURBS geometry (surface)
 	// Output: Numeric Array of Points
 	//
-	mod.getPointsFromPolygon = function( mObj ){
+	mod.getCornerPointsFromSurface = function( mObj ){
 
 		var polygon = mObj.geometry;
 
@@ -284,47 +522,13 @@ var VIDAMO = ( function (mod){
 			polygon.point(1,1),
 			polygon.point(0,1)]
 	};
-
+	
 	//
-	// Input: MobiusDataObjects with NURBS geoemtry (curve & surface)
-	// Output: ??
 	//
-	mod.intersectCurveAndSurface = function ( mObjCurve, mObjSurface, tolerance, Async ){
-		var curve = mObjCurve.geometry;
-		var surface = mObjSurface.geometry;
-
-		if(Async)
-			return new verb.geom.Intersect.curveAndSurfaceAsync( curve, surface, tolerance );
-		else
-			return new verb.geom.Intersect.curveAndSurface( curve, surface, tolerance );
-	};
-
 	//
-	// Input: MobiusDataObjects with NURBS geometry (curve & curve)
-	// Output: ??
 	//
-	mod.intersectCurves = function (mObjCurve1, mObjCurve2, tolerance, Async){
-		var curve1 = mObjCurve1.geometry;
-		var curve2 = mObjCurve2.geometry;
-
-		if(Async)
-			return new verb.geom.Intersect.curvesAsync( curve1, curve2, tolerance );
-		else
-			return new verb.geom.Intersect.curves( curve1, curve2, tolerance );
-	};
-
-	//
-	// Input: MobiusDataObjects with NURBS geometry (surface & surface)
-	// Output: ??
-	//
-	mod.intersectSurfaces	= function (mObjSurface1, mObjSurface2, tolerance, Async){
-		var surface1 = mObjSurface1.geometry;
-		var surface2 = mObjSurface2.geometry;
-
-		if(Async)
-			return new verb.geom.Intersect.surfacesAsync( surface1, surface2, tolerance );
-		else
-			return new verb.geom.Intersect.surfaces( surface1, surface2, tolerance );
+	mod.makePoint = function(x, y, z){
+		return [x, y, z];
 	};
 
 	/*
@@ -338,17 +542,43 @@ var VIDAMO = ( function (mod){
 	//	Input: Numeric Input
 	//	Outout: MobiusDataObject with Three.js geometry
 	//
-	mod.makeVector = function(x, y, z){
-		return new MobiusDataObject( new THREE.Vector3(x, y, z));
+	mod.makePositionVector = function(x, y, z){
+		if(x.constructor === Array && y == undefined && z == undefined)
+			return new MobiusDataObject( new THREE.Vector3( x[0], x[1], x[2] ));
+		else
+			return new MobiusDataObject( new THREE.Vector3(x, y, z));
+	};
+	
+	mod.makePositionVectorsFromPoints = function( list_of_points ){
+		var mObjArr = []; 
+		for(var i=0; i<list_of_points.length; i++){
+			var obj = new MobiusDataObject( new THREE.Vector3(list_of_points[i][0], list_of_points[i][1], list_of_points[i][2]));
+			mObjArr.push(obj);
+		}
+		return mObjArr;
 	};
 
 	mod.makeCircle = function(radius, segments){
 		return new MobiusDataObject( new THREE.CircleGeometry( radius, segments ));
 	};
 
-	mod.makeCylinder = function(radiusTop, radiusBottom, height, radiusSegments, heightSegments, openEnded, thetaStart, thetaLength){
-		return new MobiusDataObject( new THREE.CylinderGeometry( radiusTop, radiusBottom, height, radiusSegments, heightSegments, openEnded, thetaStart, thetaLength ));
+	mod.makeCylinder = function(radiusTop, radiusBottom, height, radiusSegments, heightSegments, openEnded ){
+		return new MobiusDataObject( new THREE.CylinderGeometry( radiusTop, radiusBottom, height, radiusSegments, heightSegments, openEnded ));
 	};
+	
+	//
+	// Input: 
+	//
+	//
+	mod.makePolyline = function(arrOfPoints){
+		var pline = new THREE.Geometry();
+
+		for(var point=0; point < arrOfPoints.length; point++)
+			pline.vertices.push(new THREE.Vector3(arrOfPoints[point][0], arrOfPoints[point][1], arrOfPoints[point][2]));
+				
+		return new MobiusDataObject( pline );
+	};
+	
 
 	//
 	// Input: Numeric Input
@@ -366,71 +596,119 @@ var VIDAMO = ( function (mod){
 		return new MobiusDataObject ( new THREE.SphereGeometry( radius , 32, 32) ) ;
 	};
 
+	//	points need to be defined anti-clockwise
 	//
 	//
 	//
-	//
-	mod.makeDodecahedron = function( radius, detail ){
-		return new MobiusDataObject( new THREE.DodecahedronGeometry(radius, detail));
-	};
-
-	//
-	//
-	//
-	//
-	mod.makePolygon = function(origin, points){
-
+	mod.makePolygonByPoints = function( pointsXY ){
+		
+		// shape creation
 		var customShape = new THREE.Shape();
+		customShape.moveTo(pointsXY[0], pointsXY[1]);
+		for(var pointNo=1; pointNo < pointsXY.length; pointNo++)
+			customShape.lineTo(pointsXY[pointNo][0], pointsXY[pointNo][1]);
+		customShape.lineTo(pointsXY[0][0], pointsXY[0][1]);
 
-		customShape.moveTo(origin[0], origin[1]);
-
-		for(var pointNo=0; pointNo < points.length; pointNo++)
-			customShape.lineTo(points[pointNo][0], points[pointNo][1]);
-
-		customShape.lineTo(origin[0], origin[1]);
-
-		var geom = new THREE.ShapeGeometry( customShape );
-
-		return new MobiusDataObject ( geom );
+		return new MobiusDataObject ( customShape );
 	};
 
 	//
+	// dir: {x:, y:, z:}
 	//
 	//
-	//
-	mod.extrudeGeometry = function(mObj, thickness, bevel ){
-		//mObj has to have shape geoemtry :/
+	mod.extrudePolygon = function(mObj, thickness, bevel ){
+		//mObj has to have shape  :/
+		var shape = mObj.geometry;
+		
+		if( shape instanceof THREE.Shape ){
+			var extrudeSettings = { amount: thickness, bevelEnabled: bevel, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
+			geometry = new THREE.ExtrudeGeometry( shape, extrudeSettings );
+		
+		/*
+			// applying shear matrix according to extrude in direction specified
+			var matrix = new THREE.Matrix4();
+			var Syx = dir.x / dir.y,
+				Syz = dir.z / dir.y;
+			matrix.set(   1,   Syx,   0,   0,
+						  0,     1,   0,   0,
+						  0,   Syz,   1,   0,
+						  0,     0,   0,   1  );
+			geometry.applyMatrix( matrix ); */
+			
+			return new MobiusDataObject( geometry );
+		}
+		else
+			return "Invalid Input. Please input polygon"
 
-		var extrudeSettings = { amount: thickness, bevelEnabled: bevel, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
-		var geometry = new THREE.ExtrudeGeometry( shape, extrudeSettings );
-
-		return new MobiusDataObject( geometry );
 	};
 
 	//
+	// Array of vector3 : points
+	//
+	//
+	mod.makeLathe = function( points, segments ){
+		var pts = []; 
+		for(var i=0; i<points.length; i++)
+			pts.push(new THREE.Vector3(points[i][0], points[i][1], points[i][2]))
+		return new MobiusDataObject( new THREE.LatheGeometry( pts, segments ) );
+	};
+	
 	//
 	//
 	//
-
-
-
-	/*
-	 mod.ExtrudeGeometry = function( shape)
-	 ExtrudeGeometry
-
-	 LatheGeometry
-
-	 ParametricGeometry
-	 PlaneGeometry
-	 PolyhedronGeometry
-	 RingGeometry
-	 ShapeGeometry
-
-	 TetrahedronGeometry
-	 TorusGeometry
-	 TorusKnotGeometry
-	 TubeGeometry
-	 */
+	//
+	mod.makePlane = function( width, height ){
+		return new MobiusDataObject( new THREE.PlaneGeometry( width, height, 1) );
+	};
+	
+	//
+	//
+	//
+	//
+	mod.makePolyhedron = function( verticesOfCube, indicesOfFaces ){
+		return new MobiusDataObject( new THREE.PolyhedronGeometry( verticesOfCube, indicesOfFaces, 6, 2 ) );
+	};
+	
+	//
+	//
+	//
+	//
+	mod.make2DRing = function( innerRadius, outerRadius, segments ){
+		return new MobiusDataObject( new THREE.RingGeometry( innerRadius, outerRadius, segments ) );
+	};
+	
+	//
+	//
+	//
+	//
+	mod.makeTetrahedron = function( radius ){
+		return new MobiusDataObject( new THREE.TetrahedronGeometry( radius ) );
+	};
+	
+	//
+	//
+	//
+	//
+	mod.makeTorus = function(radius, tube, radialSegments, tubularSegments){
+		return new MobiusDataObject( new THREE.TorusGeometry( radius, tube, radialSegments, tubularSegments ) );
+	};
+	
+	//
+	//
+	//
+	//
+	mod.makeTorusKnot = function( radius, tube, radialSegments, tubularSegments ){
+		return new MobiusDataObject( new THREE.TorusKnotGeometry(radius, tube, radialSegments, tubularSegments) );
+	};
+	
+	//
+	//
+	//
+	//
+	mod.getPointFromPositionVector = function( positionVector ){
+		var pos = positionVector.geometry;
+		return [ pos.x, pos.y, pos.z ];
+	};
 
 	/*
 	 *
@@ -443,30 +721,36 @@ var VIDAMO = ( function (mod){
 	// Output: MobiusDataObject with Three.js geometry
 	// Note - modifies the convertedGeometry Mesh - needs to update topology if already created and re-link the data associated
 	//
-	mod.makeCopy = function(mObj, transX, transY, transZ){
+	mod.makeCopy = function(mObj, xCoord, yCoord, zCoord){
 		// needs to be optimized
 
 		// needs to cater to any kind of three.js object - mesh, lines, points - caters to just one right now
-		var newCopy = new THREE.Mesh( mObj.extractGeometry().geometry, mObj.material || default_material_meshFromThree	);   // this interconversion takes a very long time
-		newCopy.translateX(transX);
-		newCopy.translateY(transY);
-		newCopy.translateZ(transZ);
-		//return newCopy;
-		return new MobiusDataObject( newCopy ); //needs to be sorted out
+		// copies with translations
+		var newCopy = new MobiusDataObject( mObj.geometry );
+
+		var newCopyMesh = newCopy.extractGeometry( mObj.extractGeometry().clone() );
+	
+		newCopyMesh.position.x = xCoord;
+		newCopyMesh.position.y = yCoord;
+		newCopyMesh.position.z = zCoord;
+		
+		return newCopy; //needs to be sorted out
 	};
 
 	//
 	//
 	//
 	//
-	mod.translateObject = function(mObj, transX, transY, transZ){
+	mod.shiftObject = function(mObj, shiftX, shiftY, shiftZ){
 
+		// could be a face too 
+		
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
-		var mesh = mObj.extractGeoemtry();
-		mesh.translateX(transX);
-		mesh.translateY(transY);
-		mesh.translateZ(transZ);
+		var mesh = mObj.extractGeometry();
+		mesh.translateX(shiftX);
+		mesh.translateY(shiftY);
+		mesh.translateZ(shiftZ);
 
 		return mObj;
 	};
@@ -476,10 +760,12 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	mod.moveObjectToPoint = function(mObj, xCoord, yCoord, zCoord){
+		
+		//could be a face too
 
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
-		mObj.extractGeoemtry().position.set(xCoord, yCoord, zCoord);
+		mObj.extractGeometry().position.set(xCoord, yCoord, zCoord);
 
 		return mObj;
 	};
@@ -492,7 +778,7 @@ var VIDAMO = ( function (mod){
 
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
-		mObj.extractGeoemtry().scale.set(scaleX, scaleY, scaleZ);
+		mObj.extractGeometry().scale.set(scaleX, scaleY, scaleZ);
 
 		return mObj;
 	};
@@ -503,7 +789,7 @@ var VIDAMO = ( function (mod){
 	//
 	mod.rotateObject = function(mObj, xAxis, yAxis, zAxis){
 		// angles taken in radians
-		var mesh = mObj.extractGeoemtry();
+		var mesh = mObj.extractGeometry();
 		mesh.rotateX(xAxis);
 		mesh.rotateY(yAxis);
 		mesh.rotateZ(zAxis);
@@ -513,20 +799,41 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
-	mod.rotateObjectAroundAxis = function( mObj, mObjAxis, radians ){
+	mod.rotateObjectAroundAxis = function( mObj, axisVector, radians ){
 		//mObj Axis is a vector3
 
 		// Rotate an object around an axis in world space (the axis passes through the object's position)
 		var object = mObj.extractGeometry();
-		var axis = mObjAxis.extractGeometry();
+		var axis = axisVector.geometry;
 
-		var rotationMatrix = new THREE.Matrix4();
-		rotationMatrix.setRotationAxis( axis.normalize(), radians );
-		rotationMatrix.multiplySelf( object.matrix );                       // pre-multiply
-		object.matrix = rotationMatrix;
-		object.rotation.setRotationFromMatrix( object.matrix );
+		var rotWorldMatrix = new THREE.Matrix4();
+		rotWorldMatrix.makeRotationAxis(axis.normalize(), radians);
+
+		rotWorldMatrix.multiply(object.matrix);                // pre-multiply
+
+		object.matrix = rotWorldMatrix;
+
+		object.rotation.setFromRotationMatrix(object.matrix);
 
 		return mObj;
+	};
+	
+	//
+	//
+	//
+	//
+	mod.orientObjectTowards = function( object, lookAtPoint ){
+		
+		var lookAtPt; 
+		
+		if(lookAtPoint.constructor === Array)
+			lookAtPt = new THREE.Vector3( lookAtPoint[0], lookAtPoint[1], lookAtPoint[2] );
+		else if(lookAtPoint instanceof THREE.Vector3)
+			lookAt = lookAtPt;
+		
+		object.extractGeometry().lookAt( lookAtPt );
+		
+		return object;
 	};
 
 
@@ -542,6 +849,9 @@ var VIDAMO = ( function (mod){
 	// Output: MobiusDataObject with Three.js geometry
 	//
 	mod.objectUnion = function( mObj1, mObj2 ){
+		
+		if(mObj1.geometry instanceof verb.geom.NurbsSurface || mObj2.geometry instanceof verb.geom.NurbsSurface)
+			return "CSG functions currently only work with Three.js objects"
 
 		var a = new ThreeBSP( mObj1.extractGeometry() );
 		var b = new ThreeBSP( mObj2.extractGeometry() );
@@ -560,8 +870,10 @@ var VIDAMO = ( function (mod){
 	// Output: MobiusDataObject with Three.js geometry
 	//
 	mod.objectSubtract = function( mObj1, mObj2 ){
-		//operation should be a string - "union", "subtract", "intersect"
-		// TODO : returns BSP is only for testing purpose - fix this to return error whenever it doesn't return required values
+		
+		if(mObj1.geometry instanceof verb.geom.NurbsSurface || mObj2.geometry instanceof verb.geom.NurbsSurface)
+			return "CSG functions currently only work with Three.js objects"
+		
 		var a = new ThreeBSP( mObj1.extractGeometry() );
 		var b = new ThreeBSP( mObj2.extractGeometry() );
 
@@ -579,8 +891,10 @@ var VIDAMO = ( function (mod){
 	// Output: MobiusDataObject with Three.js geometry
 	//
 	mod.objectIntersect = function( mObj1, mObj2 ){
-		//operation should be a string - "union", "subtract", "intersect"
-		// TODO : returns BSP is only for testing purpose - fix this to return error whenever it doesn't return required values
+		
+		if(mObj1.geometry instanceof verb.geom.NurbsSurface || mObj2.geometry instanceof verb.geom.NurbsSurface)
+			return "CSG functions currently only work with Three.js objects"
+		
 		var a = new ThreeBSP( mObj1.extractGeometry() );
 		var b = new ThreeBSP( mObj2.extractGeometry() );
 
@@ -593,76 +907,7 @@ var VIDAMO = ( function (mod){
 		return new MobiusDataObject( result );
 	};
 
-	/*
-	 *	Topology Functions
-	 *
-	 */
-
-	//
-	//	Input :
-	//	Output : MobiusDataObject with Topology geometry
-	//
-	mod.makeTopology = function(){
-		return new MobiusDataObject( new TOPOLOGY.Topology() );
-	};
-
-	//
-	//	Input : MobiusDataObject with Topology Geometry, MobiusDataObject with three.js point geometry
-	//	Output : Topology Vertex ID (should this be the whole vertex instead?)
-	//
-	mod.addVertexToTopology = function(topologyObject, pointObject){
-		var topology = topologyObject.geometry;
-		var vector3 = pointObject.geometry;
-
-		var newVertex = topology.create('vertex');
-		newVertex.vector3 = vector3;
-
-		return newVertex.ID;
-	};
-
-	//
-	//	Input : MobiusDataObject with Topology Geometry, Number Array (should this be the vertices instead?)
-	//	Output : Topology Edge ID (should this be the whole vertex instead?)
-	//
-	mod.addEdgeToTopology = function(topologyObject, vertexIDs){
-		var topology = topologyObject.geometry;
-
-		var newEdge = topology.create('edge');
-		topology.addIncidenceData( "edge", newEdge.ID , "vertex", vertexIDs)
-
-		return newEdge.ID;
-	};
-
-	//
-	//	Input : MobiusDataObject with Topology Geometry, Number Array (should this be the edges and the vertices instead)
-	//	Output : Topology Edge ID (should this be the whole vertex instead?)
-	//
-	mod.addFaceToTopology = function(topologyObject, vertexIDs, edgeIDs){
-		var topology = topologyObject.geometry;
-
-		var newFace = topology.create('face');
-
-		topology.addIncidenceData("face", newFace.ID, "vertex", vertexIDs)
-		topology.addIncidenceData( "face", newFace.ID, "edge", edgeIDs)
-
-		return newFace.ID;
-	};
-
-	//	UNDER CONSTRUCTION
-	//	Input : Array of MobiusDataObject with Topology Geometry
-	//	Output : Topology Edge ID (should this be the whole vertex instead?)
-	//
-	mod.makeSolid = function(arr_mObj){
-
-		var solidTopo = new TOPOLOGY.Topology();
-
-		// takes in the array and combines all into one topological element
-		for(var i=0; i<arr_mObj.length; i++){
-			solidTopo.add
-		}
-	};
-
-
+	
 	/*
 	 *	Data Functions
 	 *	Input: MobiusDataObject or Topology Object; Output: Modified Object
@@ -673,9 +918,13 @@ var VIDAMO = ( function (mod){
 	// Input: Single or Array of MobiusDataObject (with any kind of geometry) or TopoGeometry, numeric input
 	// Output: Modified MobiusDataObject
 	//
-	mod.addMaterial = function(obj, material_type, options){
-
-		var material = new THREE[material_type](options);
+	mod.addMaterial = function(obj, material_type, wireframe, color, transparent){
+		var option = {	wireframe: wireframe, 
+						color: color, 
+						transparent: transparent,
+						side: THREE.DoubleSide
+					};
+		var material = new THREE[material_type](option);
 		if(obj.constructor === Array){
 			for(var i=0; i<obj.length; i++)
 				obj[i].material = material;
@@ -811,27 +1060,12 @@ var default_material_lineFromVerbs = new THREE.LineBasicMaterial({
 	linewidth: 100,
 	color: 0x999900
 });
-var default_material_topology_vertex = new THREE.ParticleBasicMaterial({
-	color: 0xCCCCFF,
-	size: 1,
-	blending: THREE.AdditiveBlending,
-	transparent: true
-});
-var default_material_topology_edge = new THREE.LineBasicMaterial({
+var default_material_lineFromThree = new THREE.LineBasicMaterial({
 	side: THREE.DoubleSide,
-	linewidth: 200,
-	color: 0x999900
+	linewidth: 100,
+	color: 0x0066CC
 });
-var default_material_topology_face = new THREE.MeshBasicMaterial({
-	color:"white",
-	shading: THREE.FlatShading,
-	side: THREE.DoubleSide,
-	vertexColors: THREE.FaceColors,
-	overdraw: true,
-	needsUpdate : true,
-	opacity: 1
-});
-
+var default_material_pointFromThree = new THREE.PointCloudMaterial( { size: 5, sizeAttenuation: false } );
 //
 //	Function to convert native geometry into three.js Mesh geometry
 //  Add another if-else condition for each new geometry
@@ -845,11 +1079,21 @@ var convertGeomToThreeMesh = function( geom ){
 			return singleDataObject;
 		}
 		else if(singleDataObject instanceof THREE.Geometry){
-			return new THREE.Mesh( singleDataObject, default_material_meshFromThree || singleDataObject.material );
+			// if faces > 0 - it's a mesh
+			if(singleDataObject.faces.length)
+				return new THREE.Mesh( singleDataObject, default_material_meshFromThree || singleDataObject.material );
+			else
+				return new THREE.Line( singleDataObject, default_material_lineFromThree || singleDataObject.material ) // else line
 		}
-		else if(singleDataObject instanceof TOPOLOGY.Topology){
-			// display topology itself
-			return displayTopologyInThree(singleDataObject);
+		else if(singleDataObject instanceof THREE.Vector3){
+			var dotGeometry = new THREE.Geometry();
+			dotGeometry.vertices.push(singleDataObject);	
+			return new THREE.PointCloud( dotGeometry, default_material_pointFromThree || singleDataObject.material );
+		}
+		else if(singleDataObject instanceof THREE.Shape){
+			var geometry = new THREE.ShapeGeometry( singleDataObject );
+			var mesh = new THREE.Mesh( geometry, default_material_meshFromThree || singleDataObject.material );
+			return mesh;
 		}
 		else if(singleDataObject instanceof ThreeBSP)
 			return new THREE.Mesh( singleDataObject.toGeometry(), default_material_meshFromThree );
@@ -864,17 +1108,13 @@ var convertGeomToThreeMesh = function( geom ){
 
 		}
 		else if( singleDataObject instanceof verb.geom.NurbsCurve ){
-
+			console.log('nurbs curve detected');
 			var geometry = singleDataObject.toThreeGeometry();
 
 			if ( singleDataObject.material )
 				return ( new THREE.Line( geometry, singleDataObject.material ) );
 			else
 				return ( new THREE.Line( geometry, default_material_lineFromVerbs ) );
-
-		}
-		else if (singleDataObject instanceof verb.geom.Intersect){
-			console.log("Intersection!");
 		}
 		else {
 			console.log("Module doesnt recognise either!", singleDataObject);
@@ -905,120 +1145,3 @@ var threeToTopology = function( convertedGeometry ){
 		return topoArray;
 	}
 }
-
-//
-// Takes topology and converts into displayable three.js Object3D
-// Change content incase of change in Topology.js
-//
-var displayTopologyInThree = function ( topology ){
-
-	// if topology is a single object or topology is a group of topology???
-
-	// vertexs will be points
-	// edges will lines
-	// faces will be surfaces
-
-	// could be optimized further with three.js vertex colors etc -
-
-	// text will also be written
-	var group = new THREE.Object3D();
-
-	// vertexs
-	var particles = new THREE.Geometry();
-
-	for(var vertexNo = 0; vertexNo < topology.vertex.length; vertexNo++){
-		// create a particle with random
-		// position values, -250 -> 250
-		var particle = topology.vertex[vertexNo].vector3
-		// add it to the geometry
-		particles.vertices.push(particle);
-
-	}
-	// create the particle system
-	var particleSystem = new THREE.ParticleSystem(
-		particles,
-		default_material_topology_vertex);
-
-	group.add(particleSystem);
-
-	// edges
-	for(var edgeNo = 0; edgeNo < topology.edge.length; edgeNo++){
-
-		var lineGeometry = new THREE.Geometry();
-		lineGeometry.vertices.push(
-			topology.vertex[topology.edge[edgeNo].vertexIDs[0]].vector3,
-			topology.vertex[topology.edge[edgeNo].vertexIDs[1]].vector3
-		);
-
-		lineGeometry.computeVertexNormals();
-		var line = new THREE.Line( lineGeometry, default_material_topology_edge || topology.edge[edgeNo].material );
-
-		group.add(line);
-	}
-
-
-	// faces
-	for(var faceNo = 0; faceNo < topology.face.length; faceNo++){
-
-		for(var i=1; i<topology.face[faceNo].vertexIDs.length-1; i++){
-			var faceGeometry = new THREE.Geometry();
-			faceGeometry.vertices.push( topology.vertex[topology.face[faceNo].vertexIDs[0]].vector3 );
-			faceGeometry.vertices.push( topology.vertex[topology.face[faceNo].vertexIDs[i]].vector3 );
-			faceGeometry.vertices.push( topology.vertex[topology.face[faceNo].vertexIDs[i+1]].vector3 );
-			faceGeometry.faces.push( new THREE.Face3( 0, 1, 2 ));
-			faceGeometry.computeFaceNormals();
-			faceGeometry.computeVertexNormals();
-
-			var materials = [ topology.face[faceNo].material || default_material_topology_face ];
-			faceGeometry.faces[0].materialIndex = 0;
-			group.add(new THREE.Mesh( faceGeometry , new THREE.MeshFaceMaterial( materials ) ));
-		}
-	}
-
-	return group;
-}
-
-/* to be implemented later - to enable topology to scale
- function changeLOD(k, actualGeometry){
-
- var subdivisions = 0
- var modifier=new THREE.SubdivisionModifier(subdivisions);
-
- //geometry is the actual geometry
- smooth=actualGeometry.geometry.clone(); console.log(smooth);
- smooth.mergeVertices();
- modifier.modify(smooth);
- var simplify=new THREE.SimplifyModifier(400);
- sortedGeometry=simplify.modify(smooth);
-
- var map=sortedGeometry.map;
- var permutations=sortedGeometry.sortedGeometry;
- var sortedVertices=sortedGeometry.vertices;
- var t=sortedVertices.length-1;
- t=t*k|0;
- var numFaces=0;
- var face;
- var geometry=smooth;
- for(i=0;i<geometry.faces.length;i++){
- face=geometry.faces[i];
- var oldFace=sortedGeometry.faces[i];
- face.a=oldFace.a;
- face.b=oldFace.b;
- face.c=oldFace.c;
- while(face.a>t)
- face.a=map[face.a];
- while(face.b>t)
- face.b=map[face.b];
- while(face.c>t)
- face.c=map[face.c];
- if(face.a!==face.b&&face.b!==face.c&&face.c!==face.a)
- numFaces++;
- }
- geometry.computeFaceNormals();
- geometry.verticesNeedUpdate=true;
- geometry.normalsNeedUpdate=true;
- console.log(actualGeometry.geometry.faces.length);
- console.log(geometry.faces.length);
- return geometry;
- }
- */

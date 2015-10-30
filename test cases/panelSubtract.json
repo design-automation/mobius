@@ -1,0 +1,257 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "node0",
+            "x": 1942.458883056625,
+            "y": 2006.3105144566418,
+            "inputConnectors": [],
+            "outputConnectors": [
+                {
+                    "name": "out0",
+                    "value": ""
+                }
+            ],
+            "type": "surface",
+            "version": 1445956533889,
+            "overwrite": true
+        }
+    ],
+    "connections": []
+}
+
+//procedure json
+[
+    [
+        {
+            "id": 5,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "makeLine",
+            "parameters": [
+                {
+                    "value": "[0,0,0]",
+                    "type": "start",
+                    "$$hashKey": "object:913"
+                },
+                {
+                    "value": "[20,0,0]",
+                    "type": "end",
+                    "$$hashKey": "object:914"
+                }
+            ],
+            "result": "rail",
+            "$$hashKey": "object:905"
+        },
+        {
+            "id": 2,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "makeBezierCurve",
+            "parameters": [
+                {
+                    "value": "[[0, 0, -30], [0,25, -15], [0,7, 0], [0, 38, 15], [0,0, 30]]",
+                    "type": "points",
+                    "$$hashKey": "object:538"
+                },
+                {
+                    "value": "undefined",
+                    "type": "weights",
+                    "$$hashKey": "object:539"
+                }
+            ],
+            "result": "profile",
+            "$$hashKey": "object:530"
+        },
+        {
+            "id": 1,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "makeSurfaceBySweep",
+            "parameters": [
+                {
+                    "value": "profile",
+                    "type": "mObjProfile",
+                    "$$hashKey": "object:367"
+                },
+                {
+                    "value": "rail",
+                    "type": "mObjRail",
+                    "$$hashKey": "object:368"
+                }
+            ],
+            "result": "srf",
+            "$$hashKey": "object:359"
+        },
+        {
+            "id": 5,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "makeMeshBySubdivision",
+            "parameters": [
+                {
+                    "value": "srf",
+                    "type": "mObj",
+                    "$$hashKey": "object:1113"
+                },
+                {
+                    "value": "10",
+                    "type": "ugrid",
+                    "$$hashKey": "object:1114"
+                },
+                {
+                    "value": "10",
+                    "type": "vgrid",
+                    "$$hashKey": "object:1115"
+                }
+            ],
+            "result": "polysurface",
+            "$$hashKey": "object:1105"
+        },
+        {
+            "id": 7,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "circles",
+            "dataValue": "[]",
+            "type": "new",
+            "$$hashKey": "object:2480"
+        },
+        {
+            "id": 6,
+            "title": "Control",
+            "nodes": [
+                {
+                    "id": 7,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "expression": "",
+                    "method": "getPointsFromPolygon",
+                    "parameters": [
+                        {
+                            "value": "surface",
+                            "type": "mObj",
+                            "$$hashKey": "object:1867"
+                        }
+                    ],
+                    "result": "points",
+                    "$$hashKey": "object:1859"
+                },
+                {
+                    "id": 8,
+                    "title": "Control",
+                    "nodes": [],
+                    "type": "new",
+                    "controlType": "for each",
+                    "dataName": "point",
+                    "forList": "points",
+                    "$$hashKey": "object:3056"
+                },
+                {
+                    "id": 7,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "expression": "",
+                    "method": "makeCircle",
+                    "parameters": [
+                        {
+                            "value": "1",
+                            "type": "radius",
+                            "$$hashKey": "object:2207"
+                        },
+                        {
+                            "value": "23",
+                            "type": "segments",
+                            "$$hashKey": "object:2208"
+                        }
+                    ],
+                    "result": "circle",
+                    "$$hashKey": "object:2199"
+                },
+                {
+                    "id": 8,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "expression": "",
+                    "method": "_translateObject",
+                    "parameters": [
+                        {
+                            "value": "circle",
+                            "type": "mObj",
+                            "$$hashKey": "object:2931"
+                        },
+                        {
+                            "value": "point[0]",
+                            "type": "transX",
+                            "$$hashKey": "object:2932"
+                        },
+                        {
+                            "value": "point[1]",
+                            "type": "transY",
+                            "$$hashKey": "object:2933"
+                        },
+                        {
+                            "value": "point[2]",
+                            "type": "transZ",
+                            "$$hashKey": "object:2934"
+                        }
+                    ],
+                    "result": "da",
+                    "$$hashKey": "object:2923"
+                },
+                {
+                    "id": 8,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "expression": "",
+                    "method": "addToArray",
+                    "parameters": [
+                        {
+                            "value": "circles",
+                            "type": "originalArr",
+                            "$$hashKey": "object:2659"
+                        },
+                        {
+                            "value": "circle",
+                            "type": "newObj",
+                            "$$hashKey": "object:2660"
+                        }
+                    ],
+                    "result": "d",
+                    "$$hashKey": "object:2651"
+                }
+            ],
+            "type": "assign",
+            "controlType": "for each",
+            "dataName": "surface",
+            "forList": "polysurface",
+            "$$hashKey": "object:1572"
+        },
+        {
+            "id": 4,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "out0",
+            "dataValue": "circles",
+            "type": "new",
+            "$$hashKey": "object:732"
+        }
+    ]
+]
+
+//interface json
+[
+    []
+]
