@@ -1065,27 +1065,7 @@ var default_material_lineFromThree = new THREE.LineBasicMaterial({
 	linewidth: 100,
 	color: 0x0066CC
 });
-var default_material_topology_vertex = new THREE.ParticleBasicMaterial({
-	color: 0xCCCCFF,
-	size: 1,
-	blending: THREE.AdditiveBlending,
-	transparent: true
-});
-var default_material_topology_edge = new THREE.LineBasicMaterial({
-	side: THREE.DoubleSide,
-	linewidth: 200,
-	color: 0x999900
-});
-var default_material_topology_face = new THREE.MeshBasicMaterial({
-	color:"white",
-	shading: THREE.FlatShading,
-	side: THREE.DoubleSide,
-	vertexColors: THREE.FaceColors,
-	overdraw: true,
-	needsUpdate : true,
-	opacity: 1
-});
-
+var default_material_pointFromThree = new THREE.PointCloudMaterial( { size: 5, sizeAttenuation: false } );
 //
 //	Function to convert native geometry into three.js Mesh geometry
 //  Add another if-else condition for each new geometry
@@ -1104,6 +1084,11 @@ var convertGeomToThreeMesh = function( geom ){
 				return new THREE.Mesh( singleDataObject, default_material_meshFromThree || singleDataObject.material );
 			else
 				return new THREE.Line( singleDataObject, default_material_lineFromThree || singleDataObject.material ) // else line
+		}
+		else if(singleDataObject instanceof THREE.Vector3){
+			var dotGeometry = new THREE.Geometry();
+			dotGeometry.vertices.push(singleDataObject);	
+			return new THREE.PointCloud( dotGeometry, default_material_pointFromThree || singleDataObject.material );
 		}
 		else if(singleDataObject instanceof THREE.Shape){
 			var geometry = new THREE.ShapeGeometry( singleDataObject );
@@ -1130,7 +1115,6 @@ var convertGeomToThreeMesh = function( geom ){
 				return ( new THREE.Line( geometry, singleDataObject.material ) );
 			else
 				return ( new THREE.Line( geometry, default_material_lineFromVerbs ) );
-
 		}
 		else {
 			console.log("Module doesnt recognise either!", singleDataObject);
@@ -1143,3 +1127,21 @@ var convertGeomToThreeMesh = function( geom ){
 	return optimizedResult;
 }
 
+//
+// Takes convertedGeometry (three.js) from MobiusDataObjects and converts it to topology*
+// Change content incase of change in Topology.js
+//
+var threeToTopology = function( convertedGeometry ){
+
+	// conversion of topology
+	if( convertedGeometry.constructor != Array ){
+		var topo = new TOPOLOGY.createFromGeometry( convertedGeometry.geometry );
+		return topo;
+	}
+	else{
+		var topoArray = [];
+		for(var geomNo = 0; geomNo < convertedGeometry.length; geomNo++)
+			topoArray.push( new TOPOLOGY.createFromGeometry( convertedGeometry[geomNo].geometry ) );
+		return topoArray;
+	}
+}

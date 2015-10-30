@@ -321,6 +321,7 @@ vidamo.directive('viewport', function factory() {
                 // update the 3d viewport
                 if(singleGeomObject instanceof THREE.Mesh
                     || singleGeomObject instanceof THREE.Line
+					|| singleGeomObject instanceof THREE.PointCloud
                     || singleGeomObject instanceof THREE.Object3D){
                     scene.add(singleGeomObject);
                 }
