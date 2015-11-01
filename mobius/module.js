@@ -328,7 +328,7 @@ var VIDAMO = ( function (mod){
 		var deg = degree || 3;
 		var curves = [];
 		for(var c=0; c<listOfCurves.length; c++)
-			curves.push(listOfCurves[c].geometry);
+			curves.push(listOfCurves[c].geometry); demoC = curves;
 		return new MobiusDataObject( new verb.geom.NurbsSurface.byLoftingCurves( curves, deg ) );
 	};
 
@@ -746,6 +746,8 @@ var VIDAMO = ( function (mod){
 		newCopyMesh.position.y = yCoord;
 		newCopyMesh.position.z = zCoord;
 		
+		newCopyMesh.is_mObj = true;
+		
 		return newCopy; //needs to be sorted out
 	};
 
@@ -813,6 +815,11 @@ var VIDAMO = ( function (mod){
 	//
 	mod.rotateObjectAroundAxis = function( mObj, axisVector, radians ){
 		//mObj Axis is a vector3
+		
+		//
+		// will have to do it through object 3D - make a default node instead??
+		// complicated
+		//
 
 		// Rotate an object around an axis in world space (the axis passes through the object's position)
 		var object = mObj.extractGeometry();

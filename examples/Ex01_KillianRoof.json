@@ -13,7 +13,7 @@
                 }
             ],
             "type": "curves",
-            "version": 1446184829524,
+            "version": 1446374003487,
             "overwrite": true
         },
         {
@@ -34,7 +34,7 @@
                 }
             ],
             "type": "makeSurface",
-            "version": 1446184911537,
+            "version": 1446374010440,
             "overwrite": true
         },
         {
@@ -55,7 +55,7 @@
                 }
             ],
             "type": "panels",
-            "version": 1446184936905,
+            "version": 1446374016531,
             "overwrite": true
         }
     ],
@@ -375,7 +375,7 @@
                     "method": "addData",
                     "parameters": [
                         {
-                            "value": "polygon.face[0]",
+                            "value": "polygon",
                             "type": "obj",
                             "$$hashKey": "object:995"
                         },
@@ -411,7 +411,7 @@
                                     "method": "addData",
                                     "parameters": [
                                         {
-                                            "value": "polygon.face[0]",
+                                            "value": "polygon",
                                             "type": "obj",
                                             "$$hashKey": "object:1703"
                                         },
@@ -558,7 +558,7 @@
                                     "method": "addData",
                                     "parameters": [
                                         {
-                                            "value": "polygon.face[0]",
+                                            "value": "polygon",
                                             "type": "obj",
                                             "$$hashKey": "object:3144"
                                         },
