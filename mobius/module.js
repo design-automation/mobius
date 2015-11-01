@@ -393,10 +393,22 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
-	mod.divideCurve = function( curve, divisions ){
+	mod.divideCurveByEqualArcLength = function( curve, divisions ){
 		var crv = curve.geometry;
 		var points = crv.divideByEqualArcLength( divisions )
-							.map(function(u){ return crv.point( u.u ); } );
+							.map(function(u){ return ( u.u ); } );
+	
+		return points; 
+	};
+	
+	//
+	//
+	//
+	//
+	mod.divideCurveByArcLength = function( curve, arcLength ){
+		var crv = curve.geometry;
+		var points = crv.divideByArcLength( arcLength )
+							.map(function(u){ return ( u.u ); } );
 	
 		return points; //convert these into vector points 
 	};
@@ -822,6 +834,29 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
+	mod.createFrame = function(){
+		return new MobiusDataObject( new THREE.Object3D() );
+	};
+	
+	//
+	//
+	//
+	//
+	mod.addToFrame = function( frame, object ){
+		var frameRef = frame.geometry
+		
+		if(frameRef instanceof THREE.Object3D){
+			
+			frameRef.add(object.extractGeometry());
+		}
+		else
+			console.log("Invalid Frame")
+	};
+	
+	//
+	//
+	//
+	//
 	mod.orientObjectTowards = function( object, lookAtPoint ){
 		
 		var lookAtPt; 
@@ -1075,7 +1110,7 @@ var convertGeomToThreeMesh = function( geom ){
 	// internal function
 	convertToThree = function(singleDataObject){
 
-		if( singleDataObject instanceof THREE.Mesh ){
+		if( singleDataObject instanceof THREE.Mesh  || singleDataObject instanceof THREE.Object3D ){
 			return singleDataObject;
 		}
 		else if(singleDataObject instanceof THREE.Geometry){
