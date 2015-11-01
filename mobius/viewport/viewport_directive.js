@@ -278,8 +278,10 @@ vidamo.directive('viewport', function factory() {
             // clear geometries in scene when run
             scope.internalControl.refreshView = function(){
                 for(var i = 0; i < scene.children.length; i++){
-                    if((scene.children[i] instanceof THREE.Mesh
-                    || scene.children[i]  instanceof THREE.Line )&& scene.children[i].name !== 'helper'){
+                    if( /*akm - (scene.children[i] instanceof THREE.Mesh
+                    || scene.children[i]  instanceof THREE.Line 
+					|| scene.children[i]  instanceof THREE.Object3D
+					|| scene.children[i]  instanceof THREE.PointCloud) && scene.children[i].name !== 'helper'*/ scene.children[i].is_mObj == true){
                         scene.remove( scene.children[i]);
                         i--;
                     }

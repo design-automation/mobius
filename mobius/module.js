@@ -834,7 +834,7 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
-	mod.createFrame = function(){
+	mod.makeFrame = function(){
 		return new MobiusDataObject( new THREE.Object3D() );
 	};
 	
@@ -1158,7 +1158,8 @@ var convertGeomToThreeMesh = function( geom ){
 
 	var rawResult = convertToThree( geom );
 	var optimizedResult = /*changeLOD(0.2, */rawResult//); // run polychop on this and reduce the number of faces needs for the desired level of LOD
-
+	
+	optimizedResult.is_mObj = true;
 	return optimizedResult;
 }
 
