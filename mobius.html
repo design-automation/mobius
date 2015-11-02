@@ -155,7 +155,7 @@
 
                             <div ng-controller="viewportCtrl">
 
-                                <span dropdown on-toggle="toggled(open)" style="left:10px;">
+                                <span dropdown on-toggle="toggled(open)" style="left:5px;top:10px">
 
                                  <button class="btn btn-default btn-xs" dropdown-toggle>
                                      {{viewportControl.currentCate}}
@@ -202,7 +202,7 @@
                                 <viewport control="viewportControl" id="threeViewport"></viewport>
 
                                 <div ng-if="showFullCode">
-                                    <div style="height: 100%;width: 100%;top:30px;left:0;position: absolute;"
+                                    <div style="height: 100%;width: 100%;top:35px;left:0;position: absolute;"
                                         ui-ace="{ mode: 'javascript',theme: 'tomorrow'}"
                                         ng-model="javascriptCode"
                                         readonly="{{true}}"
@@ -210,12 +210,12 @@
                                     </div>
                                 </div>
 
-                                <div ng-if="showData" style="height: 100%;width: 100%;left:0;position: absolute;">
+                                <div ng-if="showData" style="height: 100%;width: 100%;left:0;position: absolute;top:40px">
                                     <div ui-grid="gridOptions"
                                          class="grid"
                                          ui-grid-resize-columns
                                          ui-grid-auto-resize
-                                         style="height: 100%;width: 100%; bottom:100px">
+                                         style="height: 100%;width: 100%; bottom:100px; font-size: 12px">
                                     </div>
                                 </div>
 
@@ -227,7 +227,7 @@
                             <div ng-controller="consoleCtrl">
                                  <pre class="nodeName" style="padding: 4px">
                                     &nbsp &nbsp Console
-                                    <button class="pull-right"
+                                    <button class="btn btn-default btn-xs pull-right"
                                             style="padding-top: 0;padding-bottom:0"
                                             id = "clear"
                                             ng-click="clearConsole()"> Clear </button>
@@ -295,12 +295,26 @@
                                 <div ng-if = "currentNodeName">
                                     <pre class="nodeName" style="padding: 4px">
                                         &nbsp &nbsp {{currentNodeType}} &nbsp : &nbsp {{currentNodeName}} &nbsp
+                                             <button  ng-controller="executeCtrl"
+                                                      class="btn btn-default btn-xs pull-right"
+                                                      style="display: inline-block"
+                                                      ng-click="run()"
+                                                      title="Run program">
+                                                 Run
+                                             </button>
                                     </pre>
                                 </div>
 
                                 <div ng-if = "!currentNodeName">
                                     <pre class="nodeName" style="padding: 4px">
                                         &nbsp &nbsp Graph
+                                        <button  ng-controller="executeCtrl"
+                                                class="btn btn-default btn-xs pull-right"
+                                                style="display: inline-block"
+                                                ng-click="run()"
+                                                title="Run program">
+                                            Run
+                                        </button>
                                     </pre>
                                 </div>
 
@@ -317,16 +331,6 @@
                                             </div>
                                         </panzoom>
                                     </div>
-                                </div>
-
-                                <div class = "buttons">
-                                    <span ng-controller="executeCtrl">
-                                        <button class="btn btn-default btn-xs"
-                                                ng-click="run()"
-                                                title="Run program">
-                                            Run
-                                        </button>
-                                    </span>
                                 </div>
                             </div>
                         </div>

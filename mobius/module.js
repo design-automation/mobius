@@ -28,6 +28,10 @@ var VIDAMO = ( function (mod){
 		}
 	};
 
+	mod.showObject = function( object ){
+		return JSON.stringify(object);
+	};
+
 	//
 	//
 	//
@@ -42,6 +46,22 @@ var VIDAMO = ( function (mod){
 	//
 	mod.convertRadiansToDegrees = function( radians ){
 		return 57.29*radians;
+	};
+
+	//
+	//
+	//
+	//
+	mod.getAbsoluteValue = function( number ){
+		return Math.abs( number );
+	};
+
+	//
+	//
+	//
+	//
+	mod.getSignificantDigits = function( number, digits){
+		return number.toFixed(digits);
 	};
 
 	/*
@@ -144,6 +164,7 @@ var VIDAMO = ( function (mod){
 		return valueList.length
 	};
 
+
 	/*
 	 *
 	 *	Geometry Analysis Functions
@@ -198,9 +219,9 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
-	mod.getLengthOfVector = function( vector ){
-		var vec = vector.geometry;
-		return vec.length();
+	mod.getLength = function( mObj ){
+		var geom = mObj.geometry;
+		return geom.length();
 	};
 
 
@@ -324,7 +345,7 @@ var VIDAMO = ( function (mod){
 		var deg = degree || 3;
 		var curves = [];
 		for(var c=0; c<listOfCurves.length; c++)
-			curves.push(listOfCurves[c].geometry);
+			curves.push(listOfCurves[c].geometry); demoC = curves;
 		return new MobiusDataObject( new verb.geom.NurbsSurface.byLoftingCurves( curves, deg ) );
 	};
 
@@ -389,10 +410,22 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
-	mod.divideCurve = function( curve, divisions ){
+	mod.divideCurveByEqualArcLength = function( curve, divisions ){
 		var crv = curve.geometry;
 		var points = crv.divideByEqualArcLength( divisions )
-			.map(function(u){ return crv.point( u.u ); } );
+			.map(function(u){ return ( u.u ); } );
+
+		return points;
+	};
+
+	//
+	//
+	//
+	//
+	mod.divideCurveByArcLength = function( curve, arcLength ){
+		var crv = curve.geometry;
+		var points = crv.divideByArcLength( arcLength )
+			.map(function(u){ return ( u.u ); } );
 
 		return points; //convert these into vector points
 	};
@@ -466,7 +499,7 @@ var VIDAMO = ( function (mod){
 	// Input: MobiusDataObject with NURBS geometry (line)
 	// Output: MobiusDataObject with NURBS geometry (cylinderical surface)
 	//
-	mod.makeTubeByLine = function( mObj ){
+	mod.makeTubeByLine = function( mObj, radius ){
 
 		var line = mObj.geometry;
 
@@ -475,7 +508,7 @@ var VIDAMO = ( function (mod){
 
 		var axis = [start[0] - end[0], start[1] - end[1], start[2] - end[2]]
 			, height = 1 //this is a multiplying factor to the axis vector
-			, radius = 0.1;
+			, radius = radius;
 
 		//construction of a perpendicular vector
 		var xaxis = [1, 1, 1];
@@ -730,6 +763,8 @@ var VIDAMO = ( function (mod){
 		newCopyMesh.position.y = yCoord;
 		newCopyMesh.position.z = zCoord;
 
+		newCopyMesh.is_mObj = true;
+
 		return newCopy; //needs to be sorted out
 	};
 
@@ -747,6 +782,14 @@ var VIDAMO = ( function (mod){
 		mesh.translateX(shiftX);
 		mesh.translateY(shiftY);
 		mesh.translateZ(shiftZ);
+
+		// if it's verbs geometry, the geometry itself needs to be changed so that copies are accurate
+		// var raw_matrix = mesh.matrix.elements;
+		// var mat = [];
+		// for(var i=0; i<16; i=i+4){
+		// var subArr=[raw_matrix[i], raw_matrix[i+1], raw_matrix[i+2], raw_matrix[i+3]];
+		// mat.push(subArr);
+		// }
 
 		return mObj;
 	};
@@ -798,6 +841,11 @@ var VIDAMO = ( function (mod){
 	mod.rotateObjectAroundAxis = function( mObj, axisVector, radians ){
 		//mObj Axis is a vector3
 
+		//
+		// will have to do it through object 3D - make a default node instead??
+		// complicated
+		//
+
 		// Rotate an object around an axis in world space (the axis passes through the object's position)
 		var object = mObj.extractGeometry();
 		var axis = axisVector.geometry;
@@ -812,6 +860,29 @@ var VIDAMO = ( function (mod){
 		object.rotation.setFromRotationMatrix(object.matrix);
 
 		return mObj;
+	};
+
+	//
+	//
+	//
+	//
+	mod.makeFrame = function(){
+		return new MobiusDataObject( new THREE.Object3D() );
+	};
+
+	//
+	//
+	//
+	//
+	mod.addToFrame = function( frame, object ){
+		var frameRef = frame.geometry
+
+		if(frameRef instanceof THREE.Object3D){
+
+			frameRef.add(object.extractGeometry());
+		}
+		else
+			console.log("Invalid Frame")
 	};
 
 	//
@@ -1042,24 +1113,24 @@ var default_material_meshFromThree = new THREE.MeshLambertMaterial( {
 	wireframe: false,
 	shading: THREE.SmoothShading,
 	transparent: false,
-	color: 0x0066CC
+	color: 0x003399
 } );
 var default_material_meshFromVerbs = new THREE.MeshLambertMaterial( {
 	side: THREE.DoubleSide,
 	wireframe: false,
 	shading: THREE.SmoothShading,
 	transparent: false,
-	color: 0x999900
+	color: 0x003399
 } );
 var default_material_lineFromVerbs = new THREE.LineBasicMaterial({
 	side: THREE.DoubleSide,
 	linewidth: 100,
-	color: 0x999900
+	color: 0x003399
 });
 var default_material_lineFromThree = new THREE.LineBasicMaterial({
 	side: THREE.DoubleSide,
 	linewidth: 100,
-	color: 0x0066CC
+	color: 0x003399
 });
 var default_material_pointFromThree = new THREE.PointCloudMaterial( { size: 5, sizeAttenuation: false } );
 //
@@ -1071,7 +1142,7 @@ var convertGeomToThreeMesh = function( geom ){
 	// internal function
 	convertToThree = function(singleDataObject){
 
-		if( singleDataObject instanceof THREE.Mesh ){
+		if( singleDataObject instanceof THREE.Mesh  || singleDataObject instanceof THREE.Object3D ){
 			return singleDataObject;
 		}
 		else if(singleDataObject instanceof THREE.Geometry){
@@ -1120,6 +1191,7 @@ var convertGeomToThreeMesh = function( geom ){
 	var rawResult = convertToThree( geom );
 	var optimizedResult = /*changeLOD(0.2, */rawResult//); // run polychop on this and reduce the number of faces needs for the desired level of LOD
 
+	optimizedResult.is_mObj = true;
 	return optimizedResult;
 }
 
