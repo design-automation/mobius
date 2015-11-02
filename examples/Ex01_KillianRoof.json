@@ -2,9 +2,9 @@
     "nodes": [
         {
             "id": 0,
-            "name": "CentralProfile",
-            "x": 1972.10428334949,
-            "y": 1847.6949539153288,
+            "name": "StandardProfile",
+            "x": 1818.8096920915118,
+            "y": 1855.2963386058073,
             "inputConnectors": [],
             "outputConnectors": [
                 {
@@ -12,15 +12,15 @@
                     "value": ""
                 }
             ],
-            "type": "Standard",
-            "version": 1446439153469,
+            "type": "Curve",
+            "version": 0,
             "overwrite": true
         },
         {
             "id": 1,
-            "name": "curves",
-            "x": 1971.5975243701246,
-            "y": 1915.093898170903,
+            "name": "Curves",
+            "x": 1819.3164510708773,
+            "y": 1914.5871391915375,
             "inputConnectors": [
                 {
                     "name": "centralProfile",
@@ -34,15 +34,15 @@
                     "value": ""
                 }
             ],
-            "type": "Standard",
-            "version": 1446439343227,
+            "type": "Curves",
+            "version": 1446455560826,
             "overwrite": true
         },
         {
             "id": 2,
-            "name": "surface",
-            "x": 1971.8509038598072,
-            "y": 1972.1042833494898,
+            "name": "Lofting",
+            "x": 1819.3164510708768,
+            "y": 1975.3982167153633,
             "inputConnectors": [
                 {
                     "name": "crvs",
@@ -56,15 +56,15 @@
                     "value": ""
                 }
             ],
-            "type": "Standard",
-            "version": 1446439357901,
+            "type": "LoftSurface",
+            "version": 0,
             "overwrite": true
         },
         {
             "id": 3,
-            "name": "panels",
-            "x": 1972.3576628391722,
-            "y": 2034.6890173010938,
+            "name": "KillianRoof",
+            "x": 1819.823210050242,
+            "y": 2030.1281864868074,
             "inputConnectors": [
                 {
                     "name": "mesh",
@@ -78,8 +78,8 @@
                     "value": ""
                 }
             ],
-            "type": "Standard",
-            "version": 1446439358873,
+            "type": "Panels",
+            "version": 0,
             "overwrite": true
         }
     ],
@@ -129,18 +129,18 @@
             "method": "makeCurveByPoints",
             "parameters": [
                 {
-                    "value": "[[-40, 0, 0],[-20,-5,0],[0, -14, 0],[20, -17, 0],[70, -5, 0]]",
+                    "value": "[[-80, 0, 0],[-40,-5,20],[0, -14, 0],[40, -17, -20],[80, -5, 0]]",
                     "type": "points",
-                    "$$hashKey": "object:412"
+                    "$$hashKey": "object:1296"
                 },
                 {
                     "value": "3",
                     "type": "degree",
-                    "$$hashKey": "object:413"
+                    "$$hashKey": "object:1297"
                 }
             ],
             "result": "profile",
-            "$$hashKey": "object:404"
+            "$$hashKey": "object:1288"
         }
     ],
     [
@@ -155,16 +155,16 @@
                 {
                     "value": "centralProfile",
                     "type": "curve",
-                    "$$hashKey": "object:1425"
+                    "$$hashKey": "object:1342"
                 },
                 {
                     "value": "numberOfCurves-1",
                     "type": "divisions",
-                    "$$hashKey": "object:1426"
+                    "$$hashKey": "object:1343"
                 }
             ],
             "result": "divisions",
-            "$$hashKey": "object:1417"
+            "$$hashKey": "object:1306"
         },
         {
             "id": 3,
@@ -173,7 +173,7 @@
             "dataName": "crvs",
             "dataValue": "[]",
             "type": "new",
-            "$$hashKey": "object:2159"
+            "$$hashKey": "object:1307"
         },
         {
             "id": 4,
@@ -190,16 +190,60 @@
                         {
                             "value": "centralProfile",
                             "type": "curve",
-                            "$$hashKey": "object:2108"
+                            "$$hashKey": "object:1387"
                         },
                         {
                             "value": "t",
                             "type": "t",
-                            "$$hashKey": "object:2109"
+                            "$$hashKey": "object:1388"
                         }
                     ],
                     "result": "point",
-                    "$$hashKey": "object:2100"
+                    "$$hashKey": "object:1353"
+                },
+                {
+                    "id": 4,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "assign",
+                    "expression": "",
+                    "method": "getTangentAtCurveParameter",
+                    "parameters": [
+                        {
+                            "value": "centralProfile",
+                            "type": "curve",
+                            "$$hashKey": "object:1396"
+                        },
+                        {
+                            "value": "t",
+                            "type": "t",
+                            "$$hashKey": "object:1397"
+                        }
+                    ],
+                    "result": "tang",
+                    "$$hashKey": "object:1354"
+                },
+                {
+                    "id": 4,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "assign",
+                    "expression": "",
+                    "method": "getCrossProduct",
+                    "parameters": [
+                        {
+                            "value": "tang",
+                            "type": "mat1",
+                            "$$hashKey": "object:1770"
+                        },
+                        {
+                            "value": "[0,1,0]",
+                            "type": "mat2",
+                            "$$hashKey": "object:1771"
+                        }
+                    ],
+                    "result": "tang2",
+                    "$$hashKey": "object:1762"
                 },
                 {
                     "id": 6,
@@ -212,36 +256,36 @@
                         {
                             "value": "point",
                             "type": "centerPoint",
-                            "$$hashKey": "object:968"
+                            "$$hashKey": "object:1407"
                         },
                         {
-                            "value": "[0,0,1]",
+                            "value": "tang2",
                             "type": "xaxis",
-                            "$$hashKey": "object:969"
+                            "$$hashKey": "object:1408"
                         },
                         {
                             "value": "[0,1,0]",
                             "type": "yaxis",
-                            "$$hashKey": "object:970"
+                            "$$hashKey": "object:1409"
                         },
                         {
                             "value": "heightOfKillian-point[1]",
                             "type": "radius",
-                            "$$hashKey": "object:971"
+                            "$$hashKey": "object:1410"
                         },
                         {
                             "value": "0",
                             "type": "minAngle",
-                            "$$hashKey": "object:972"
+                            "$$hashKey": "object:1411"
                         },
                         {
                             "value": "22/7",
                             "type": "maxAngle",
-                            "$$hashKey": "object:973"
+                            "$$hashKey": "object:1412"
                         }
                     ],
                     "result": "newCurve",
-                    "$$hashKey": "object:960"
+                    "$$hashKey": "object:1356"
                 },
                 {
                     "id": 4,
@@ -254,23 +298,23 @@
                         {
                             "value": "crvs",
                             "type": "list",
-                            "$$hashKey": "object:2338"
+                            "$$hashKey": "object:1428"
                         },
                         {
                             "value": "newCurve",
                             "type": "object",
-                            "$$hashKey": "object:2339"
+                            "$$hashKey": "object:1429"
                         }
                     ],
                     "result": "d",
-                    "$$hashKey": "object:2330"
+                    "$$hashKey": "object:1357"
                 }
             ],
             "type": "assign",
             "controlType": "for each",
             "dataName": "t",
             "forList": "divisions",
-            "$$hashKey": "object:1890"
+            "$$hashKey": "object:1308"
         }
     ],
     [
@@ -285,16 +329,16 @@
                 {
                     "value": "crvs",
                     "type": "listOfCurves",
-                    "$$hashKey": "object:4401"
+                    "$$hashKey": "object:1957"
                 },
                 {
                     "value": "3",
                     "type": "degree",
-                    "$$hashKey": "object:4402"
+                    "$$hashKey": "object:1958"
                 }
             ],
             "result": "srf",
-            "$$hashKey": "object:4393"
+            "$$hashKey": "object:1926"
         },
         {
             "id": 2,
@@ -307,21 +351,21 @@
                 {
                     "value": "srf",
                     "type": "mObj",
-                    "$$hashKey": "object:1457"
+                    "$$hashKey": "object:1966"
                 },
                 {
                     "value": "u",
                     "type": "ugrid",
-                    "$$hashKey": "object:1458"
+                    "$$hashKey": "object:1967"
                 },
                 {
                     "value": "v",
                     "type": "vgrid",
-                    "$$hashKey": "object:1459"
+                    "$$hashKey": "object:1968"
                 }
             ],
             "result": "mesh",
-            "$$hashKey": "object:1449"
+            "$$hashKey": "object:1927"
         }
     ],
     [
@@ -332,7 +376,7 @@
             "dataName": "allPanels",
             "dataValue": "[]",
             "type": "new",
-            "$$hashKey": "object:3546"
+            "$$hashKey": "object:1975"
         },
         {
             "id": 1,
@@ -349,11 +393,11 @@
                         {
                             "value": "polysurface",
                             "type": "mObj",
-                            "$$hashKey": "object:2685"
+                            "$$hashKey": "object:2024"
                         }
                     ],
                     "result": "vertice",
-                    "$$hashKey": "object:2677"
+                    "$$hashKey": "object:1990"
                 },
                 {
                     "id": 3,
@@ -361,7 +405,7 @@
                     "temp": "Parameter",
                     "dataName": "seq",
                     "dataValue": "[0,1]",
-                    "$$hashKey": "object:1241"
+                    "$$hashKey": "object:1991"
                 },
                 {
                     "id": 4,
@@ -370,7 +414,7 @@
                     "dataName": "rads",
                     "dataValue": "[]",
                     "type": "new",
-                    "$$hashKey": "object:1043"
+                    "$$hashKey": "object:1992"
                 },
                 {
                     "id": 4,
@@ -387,16 +431,16 @@
                                 {
                                     "value": "vertice[index]",
                                     "type": "startPoint",
-                                    "$$hashKey": "object:3118"
+                                    "$$hashKey": "object:2097"
                                 },
                                 {
                                     "value": "vertice[index+2]",
                                     "type": "endPoint",
-                                    "$$hashKey": "object:3119"
+                                    "$$hashKey": "object:2098"
                                 }
                             ],
                             "result": "diag",
-                            "$$hashKey": "object:3110"
+                            "$$hashKey": "object:2036"
                         },
                         {
                             "id": 4,
@@ -406,7 +450,7 @@
                             "expression": "console.log(diag);",
                             "method": "expression",
                             "parameters": [],
-                            "$$hashKey": "object:1961"
+                            "$$hashKey": "object:2037"
                         },
                         {
                             "id": 4,
@@ -419,20 +463,20 @@
                                 {
                                     "value": "diag",
                                     "type": "mObj",
-                                    "$$hashKey": "object:1040"
+                                    "$$hashKey": "object:2108"
                                 }
                             ],
                             "result": "tubeLength",
-                            "$$hashKey": "object:1032"
+                            "$$hashKey": "object:2038"
                         },
                         {
                             "id": 4,
                             "title": "Data",
                             "nodes": [],
                             "dataName": "radius",
-                            "dataValue": "0.05*tubeLength",
+                            "dataValue": "0.02*tubeLength",
                             "type": "new",
-                            "$$hashKey": "object:1486"
+                            "$$hashKey": "object:2039"
                         },
                         {
                             "id": 5,
@@ -445,16 +489,16 @@
                                 {
                                     "value": "radius",
                                     "type": "number",
-                                    "$$hashKey": "object:514"
+                                    "$$hashKey": "object:2118"
                                 },
                                 {
                                     "value": "2",
                                     "type": "digits",
-                                    "$$hashKey": "object:515"
+                                    "$$hashKey": "object:2119"
                                 }
                             ],
                             "result": "radius",
-                            "$$hashKey": "object:506"
+                            "$$hashKey": "object:2040"
                         },
                         {
                             "id": 4,
@@ -467,16 +511,16 @@
                                 {
                                     "value": "rads",
                                     "type": "list",
-                                    "$$hashKey": "object:1017"
+                                    "$$hashKey": "object:2127"
                                 },
                                 {
                                     "value": "radius",
                                     "type": "object",
-                                    "$$hashKey": "object:1018"
+                                    "$$hashKey": "object:2128"
                                 }
                             ],
                             "result": "d",
-                            "$$hashKey": "object:1009"
+                            "$$hashKey": "object:2041"
                         },
                         {
                             "id": 4,
@@ -489,16 +533,16 @@
                                 {
                                     "value": "diag",
                                     "type": "mObj",
-                                    "$$hashKey": "object:1679"
+                                    "$$hashKey": "object:2136"
                                 },
                                 {
                                     "value": "radius",
                                     "type": "radius",
-                                    "$$hashKey": "object:1680"
+                                    "$$hashKey": "object:2137"
                                 }
                             ],
                             "result": "tube",
-                            "$$hashKey": "object:1671"
+                            "$$hashKey": "object:2042"
                         },
                         {
                             "id": 3,
@@ -511,23 +555,23 @@
                                 {
                                     "value": "allPanels",
                                     "type": "list",
-                                    "$$hashKey": "object:3724"
+                                    "$$hashKey": "object:2145"
                                 },
                                 {
                                     "value": "tube",
                                     "type": "object",
-                                    "$$hashKey": "object:3725"
+                                    "$$hashKey": "object:2146"
                                 }
                             ],
                             "result": "d",
-                            "$$hashKey": "object:3716"
+                            "$$hashKey": "object:2043"
                         }
                     ],
                     "type": "new",
                     "controlType": "for each",
                     "dataName": "index",
                     "forList": "seq",
-                    "$$hashKey": "object:1271"
+                    "$$hashKey": "object:1993"
                 },
                 {
                     "id": 4,
@@ -540,28 +584,28 @@
                         {
                             "value": "polysurface",
                             "type": "obj",
-                            "$$hashKey": "object:794"
+                            "$$hashKey": "object:2061"
                         },
                         {
                             "value": "\"Tube Radius\"",
                             "type": "dataName",
-                            "$$hashKey": "object:795"
+                            "$$hashKey": "object:2062"
                         },
                         {
                             "value": "rads",
                             "type": "dataValue",
-                            "$$hashKey": "object:796"
+                            "$$hashKey": "object:2063"
                         }
                     ],
                     "result": "d",
-                    "$$hashKey": "object:786"
+                    "$$hashKey": "object:1994"
                 }
             ],
             "type": "assign",
             "controlType": "for each",
             "dataName": "polysurface",
             "forList": "mesh",
-            "$$hashKey": "object:2476"
+            "$$hashKey": "object:1976"
         }
     ]
 ]
@@ -575,8 +619,8 @@
             "title": "Data",
             "temp": "Parameter",
             "dataName": "heightOfKillian",
-            "dataValue": "27",
-            "$$hashKey": "object:350"
+            "dataValue": "15",
+            "$$hashKey": "object:1094"
         },
         {
             "id": 2,
@@ -584,7 +628,7 @@
             "temp": "Parameter",
             "dataName": "numberOfCurves",
             "dataValue": "5",
-            "$$hashKey": "object:362"
+            "$$hashKey": "object:1095"
         }
     ],
     [
@@ -594,7 +638,7 @@
             "temp": "Parameter",
             "dataName": "u",
             "dataValue": "10",
-            "$$hashKey": "object:1169"
+            "$$hashKey": "object:1008"
         },
         {
             "id": 2,
@@ -602,7 +646,7 @@
             "temp": "Parameter",
             "dataName": "v",
             "dataValue": "30",
-            "$$hashKey": "object:1181"
+            "$$hashKey": "object:1009"
         }
     ],
     []

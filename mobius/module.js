@@ -64,6 +64,22 @@ var VIDAMO = ( function (mod){
 		return number.toFixed(digits);
 	};
 
+	//
+	//
+	//
+	//
+	mod.getDotProduct = function( mat1, mat2 ){
+		return verb.core.Vec.dot(mat1, mat2);
+	};
+
+	//
+	//
+	//
+	//
+	mod.getCrossProduct = function( mat1, mat2 ){
+		return verb.core.Vec.cross(mat1, mat2);
+	};
+
 	/*
 	 *
 	 * List Operations
