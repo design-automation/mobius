@@ -158,12 +158,13 @@ vidamo.factory('generateCode', function () {
                     // extract items from return through label
                     for(var m =0; m < output_port_num; m++){
 
+                        var output_port_node_id = data.chartViewModel.nodes[sortedOrder[n]].data.id;
                         var output_port_name = data.chartViewModel.nodes[sortedOrder[n]].outputConnectors[m].data.name;
 
                         for (var l = 0; l < data.chartViewModel.connections.length; l++) {
 
-                            if (output_port_name == data.chartViewModel.connections[l].source.name()) {
-
+                            if (output_port_name == data.chartViewModel.connections[l].source.name()
+                                &&         output_port_node_id === data.chartViewModel.connections[l].data.source.nodeID) {
                                 var connected_input_name = data.chartViewModel.connections[l].dest.data.name;
 
                                 data.javascriptCode +=  'var '

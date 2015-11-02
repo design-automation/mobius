@@ -62,10 +62,10 @@ body {
 }
 
 .graph-area .buttons{
-    position: absolute;
-    bottom: 8px;
-    width: 100%;
-    text-align: center;
+    /*position: absolute;*/
+    /*bottom: 8px;*/
+    /*width: 100%;*/
+    /*text-align: center;*/
 }
 
 .graph-area .codeEditor{
@@ -175,7 +175,8 @@ right pane code area
     border-radius: 3px;
     font-size: 12px;
     font-family: Arial, sans-serif;
-    background-color: #fafafa;
+    line-height: 1.92857143;
+    background:-webkit-gradient(linear, left bottom, left top, color-stop(0, #eee), color-stop(1, #fff));
 }
 
 .code-area .buttons{
@@ -198,27 +199,47 @@ right pane code area
     bottom:8px;
 }
 
-.code-area .buttons #button-data{
+.code-area .buttons .button-data{
     display: inline-block;
     position: absolute;
     bottom: 8px;
     width: 20%;
     left: 29.5%;
+
 }
 
-.code-area .buttons #button-action{
-    position: absolute;
-    bottom: 8px;
-    width: 20%;
-    right: 29.5%;
+
+.btn {
+    margin: 0;
+    font-size: 12px !important;
+    height: 24px !important;
+    line-height: 1 !important;
 }
 
-.code-area .buttons #button-control{
+.button-action{
     display: inline-block;
     position: absolute;
-    bottom: 8px;
+    top: 5px;
     width: 20%;
-    right:8%;
+    right: 43%;
+    margin: 0;
+    font-size: 12px !important;
+    height: 24px !important;
+    line-height: 1 !important;
+    white-space: nowrap;
+}
+
+ .button-control{
+    display: inline-block;
+    position: absolute;
+    top: 5px;
+    width: 20%;
+    right:21%;
+ margin: 0;
+ font-size: 12px !important;
+ height: 24px !important;
+ line-height: 1 !important;
+ white-space: nowrap;
 }
 
 .code-area .codeEditor {
@@ -242,7 +263,7 @@ right pane code area
     border-radius: 4px;
     margin-top:1px;
     /*fixme css3*/
-    height:  calc(100% - 100px);
+    height:  calc(100% - 27px);
     overflow: auto;
 }
 
@@ -278,11 +299,14 @@ right pane code area
 
 /* css fix for dropdown selects*/
 .form-control{
-    height:24px !important;
+    margin: 0;
+    font-size: 12px !important;
+    height: 24px !important;
+    line-height: 1 !important;
 }
 
 .code-area .buttons .btn {
-    margin: 0px;
+    margin: 0;
     font-size: 12px !important;
     height: 24px !important;
     line-height: 1 !important;
@@ -327,4 +351,8 @@ right pane code area
     -webkit-border-radius:6px 0 6px 6px;
     -moz-border-radius:6px 0 6px 6px;
     border-radius:6px 0 6px 6px;
+}
+
+.ui-select-bootstrap .ui-select-toggle>.caret {
+display: none;
 }

@@ -2,8 +2,8 @@
 // Execute generated code ('run' button)
 //
 
-vidamo.controller('executeCtrl',['$scope','consoleMsg','generateCode','hotkeys',
-    function($scope,consoleMsg,generateCode,hotkeys) {
+vidamo.controller('executeCtrl',['$scope','$rootScope','consoleMsg','generateCode','hotkeys',
+    function($scope,$rootScope,consoleMsg,generateCode,hotkeys) {
 
         // one-way binding of generated javascript code
 
@@ -39,7 +39,14 @@ vidamo.controller('executeCtrl',['$scope','consoleMsg','generateCode','hotkeys',
         });
 
 
+        $rootScope.$on('runNewScene',function(){
+            $scope.run();
+        });
+
         $scope.run = function(){
+
+            // clean output buffer
+            $scope.outputs = [];
 
             setTimeout(function(){
                     var scope = angular.element(document.getElementById('threeViewport')).scope();

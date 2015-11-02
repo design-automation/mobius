@@ -7,6 +7,11 @@
 vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg','generateCode','nodeCollection',
     function($scope,$rootScope,$filter,consoleMsg,generateCode,nodeCollection) {
 
+        $scope.selectedItem = null;
+        $scope.searchText = '';
+        $scope.items = [{name:"xxx"},{name:'aaa'}];
+
+
         $scope.autoScroll = function(){
             var procedureDiv = document.getElementById("procedure");
             procedureDiv.scrollTop = procedureDiv.scrollHeight;
@@ -462,5 +467,8 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
             catch(err){
                 consoleMsg.errorMsg('noNode');
             }
+
+            var argumentDiv = document.getElementById("argument");
+            setTimeout(function(){argumentDiv.scrollTop = argumentDiv.scrollHeight;},0);
         };
     }]);

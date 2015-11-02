@@ -28,7 +28,7 @@ vidamo.directive('viewport', function factory() {
             var VIEWPORT_WIDTH = container.offsetWidth;
             var VIEWPORT_HEIGHT = container.offsetHeight;
 
-            var //scene,
+            var scene,
                 camera, orthoCamera,
                 renderer,
                 controls,controlsPerspective, controlsOrtho;
@@ -110,6 +110,9 @@ vidamo.directive('viewport', function factory() {
 
             // perspective view
             scope.internalControl.perspectiveView = function(){
+                scope.internalControl.currentView = 'Perspective';
+                scope.internalControl.currentCate = 'Perspective';
+
                 controlsPerspective.reset();
 
                 orthographic = false;
@@ -243,11 +246,16 @@ vidamo.directive('viewport', function factory() {
             function resizeUpdate() {
                 container.appendChild(renderer.domElement);
 
-
                 camera.aspect = VIEWPORT_WIDTH / VIEWPORT_HEIGHT;
                 camera.updateProjectionMatrix ();
 
-                camera.aspect = VIEWPORT_WIDTH / VIEWPORT_HEIGHT;
+                //VIEWPORT_HEIGHT
+                orthoCamera.left = VIEWPORT_WIDTH / -2;
+                orthoCamera.right = VIEWPORT_WIDTH / 2;
+                orthoCamera.top = VIEWPORT_HEIGHT / 2;
+                orthoCamera.bottom = VIEWPORT_HEIGHT / -2;
+
+
                 orthoCamera.updateProjectionMatrix();
 
                 renderer.setSize(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
@@ -278,13 +286,17 @@ vidamo.directive('viewport', function factory() {
             // clear geometries in scene when run
             scope.internalControl.refreshView = function(){
                 for(var i = 0; i < scene.children.length; i++){
-                    if((scene.children[i] instanceof THREE.Mesh
-                    || scene.children[i]  instanceof THREE.Line )&& scene.children[i].name !== 'helper'){
+                    if( /*akm - (scene.children[i] instanceof THREE.Mesh
+                         || scene.children[i]  instanceof THREE.Line
+                         || scene.children[i]  instanceof THREE.Object3D
+                         || scene.children[i]  instanceof THREE.PointCloud) && scene.children[i].name !== 'helper'*/
+                        scene.children[i].is_mObj == true){
                         scene.remove( scene.children[i]);
                         i--;
                     }
                 }
             };
+
 
             //
             // supporting function for geometry from verb to three.js
@@ -309,8 +321,6 @@ vidamo.directive('viewport', function factory() {
                         }
                     }
                 }
-
-                console.log('scene:   ',scene);
             };
 
             //
@@ -321,8 +331,8 @@ vidamo.directive('viewport', function factory() {
                 // update the 3d viewport
                 if(singleGeomObject instanceof THREE.Mesh
                     || singleGeomObject instanceof THREE.Line
-					|| singleGeomObject instanceof THREE.PointCloud
-                    || singleGeomObject instanceof THREE.Object3D){
+                    || singleGeomObject instanceof THREE.Object3D
+                    || singleGeomObject instanceof THREE.PointCloud){
                     scene.add(singleGeomObject);
                 }
                 // update the data table viewport
