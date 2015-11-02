@@ -469,13 +469,6 @@ var VIDAMO = ( function (mod){
 			return 'Invalid Input';
 	};
 
-	//
-	//
-	//
-	//
-	mod.getContourCurves = function( surface, countU, countV ){
-
-	};
 
 	//
 	// Input: MobiusDataObject with NURBS geometry, numeric values
@@ -769,8 +762,6 @@ var VIDAMO = ( function (mod){
 	mod.makeCopy = function(mObj, xCoord, yCoord, zCoord){
 		// needs to be optimized
 
-		// needs to cater to any kind of three.js object - mesh, lines, points - caters to just one right now
-		// copies with translations
 		var newCopy = new MobiusDataObject( mObj.geometry );
 
 		var newCopyMesh = newCopy.extractGeometry( mObj.extractGeometry().clone() );
@@ -778,7 +769,7 @@ var VIDAMO = ( function (mod){
 		newCopyMesh.position.x = xCoord;
 		newCopyMesh.position.y = yCoord;
 		newCopyMesh.position.z = zCoord;
-
+		
 		newCopyMesh.is_mObj = true;
 
 		return newCopy; //needs to be sorted out
@@ -794,18 +785,19 @@ var VIDAMO = ( function (mod){
 
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
+		
+		// if geom is nurbs - nothing in the mesh gets changed -solve for data issues though
+		if( mObj.geometry instanceof verb.geom.NurbsCurve || mObj.geometry instanceof verb.geom.NurbsSurface){
+			var mat = [[1,0,0,shiftX],[0,1,0,shiftY],[0,0,1,shiftZ],[0,0,0,1]]
+			mObj.geometry = mObj.geometry.transform( mat );
+			mObj.geometryUpdated = true;
+			return mObj;
+		}
+		
 		var mesh = mObj.extractGeometry();
 		mesh.translateX(shiftX);
 		mesh.translateY(shiftY);
 		mesh.translateZ(shiftZ);
-
-		// if it's verbs geometry, the geometry itself needs to be changed so that copies are accurate
-		// var raw_matrix = mesh.matrix.elements;
-		// var mat = [];
-		// for(var i=0; i<16; i=i+4){
-		// var subArr=[raw_matrix[i], raw_matrix[i+1], raw_matrix[i+2], raw_matrix[i+3]];
-		// mat.push(subArr);
-		// }
 
 		return mObj;
 	};
@@ -817,10 +809,21 @@ var VIDAMO = ( function (mod){
 	mod.moveObjectToPoint = function(mObj, xCoord, yCoord, zCoord){
 
 		//could be a face too
-
+		if( mObj.geometry instanceof verb.geom.NurbsCurve || mObj.geometry instanceof verb.geom.NurbsSurface){
+			var centre = VIDAMO.getCentre(mObj);
+			
+			var transX = xCoord - centre[0];
+			var transY = xCoord - centre[0];
+			var transZ = xCoord - centre[0];
+			
+			return VIDAMO.shiftObject( mObj, transX, transY, transZ );
+		}
+		
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
 		mObj.extractGeometry().position.set(xCoord, yCoord, zCoord);
+		
+
 
 		return mObj;
 	};
@@ -831,6 +834,14 @@ var VIDAMO = ( function (mod){
 	//
 	mod.scaleObject = function(mObj, scaleX, scaleY, scaleZ){
 
+		// if geom is nurbs - nothing in the mesh gets changed -solve for data issues though
+		if( mObj.geometry instanceof verb.geom.NurbsCurve || mObj.geometry instanceof verb.geom.NurbsSurface){
+			var mat = [[scaleX,0,0,0],[0,scaleY,0,0],[0,0,scaleZ,0],[0,0,0,1]]
+			mObj.geometry = mObj.geometry.transform( mat );
+			mObj.geometryUpdated = true;
+			return mObj;
+		}
+		
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
 		mObj.extractGeometry().scale.set(scaleX, scaleY, scaleZ);
@@ -843,39 +854,21 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	mod.rotateObject = function(mObj, xAxis, yAxis, zAxis){
+		
+		// if geom is nurbs - nothing in the mesh gets changed -solve for data issues though
+		// still left
+		if( mObj.geometry instanceof verb.geom.NurbsCurve || mObj.geometry instanceof verb.geom.NurbsSurface){
+			var mat = [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]
+			mObj.geometry = mObj.geometry.transform( mat );
+			mObj.geometryUpdated = true;
+			return mObj;
+		}
+		
 		// angles taken in radians
 		var mesh = mObj.extractGeometry();
 		mesh.rotateX(xAxis);
 		mesh.rotateY(yAxis);
 		mesh.rotateZ(zAxis);
-	};
-
-	//
-	//
-	//
-	//
-	mod.rotateObjectAroundAxis = function( mObj, axisVector, radians ){
-		//mObj Axis is a vector3
-
-		//
-		// will have to do it through object 3D - make a default node instead??
-		// complicated
-		//
-
-		// Rotate an object around an axis in world space (the axis passes through the object's position)
-		var object = mObj.extractGeometry();
-		var axis = axisVector.geometry;
-
-		var rotWorldMatrix = new THREE.Matrix4();
-		rotWorldMatrix.makeRotationAxis(axis.normalize(), radians);
-
-		rotWorldMatrix.multiply(object.matrix);                // pre-multiply
-
-		object.matrix = rotWorldMatrix;
-
-		object.rotation.setFromRotationMatrix(object.matrix);
-
-		return mObj;
 	};
 
 	//

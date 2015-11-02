@@ -9,6 +9,7 @@ var MobiusDataObject = function( geometry ){
     // public property - native geometry stored in the data object
     //
     this.geometry = geometry;
+	this.geometryUpdated = false;
 
     //
     // private variables to store convertedGeometry and topology
@@ -47,8 +48,10 @@ var MobiusDataObject = function( geometry ){
         // if setGeom is given, set the convertedGeom to that
         if(setGeom == undefined){
             // if undefined, defines it and saves it
-            if(convertedGeometry == undefined)
-                convertedGeometry = convertGeomToThreeMesh(this.geometry);
+            if(convertedGeometry == undefined || this.geometryUpdated == true){
+				this.geometryUpdated = false;
+				convertedGeometry = convertGeomToThreeMesh(this.geometry);
+			}
 
             // if material has been assigned to this data object, assigns the same material to the converted geometry
             if(this.material)
