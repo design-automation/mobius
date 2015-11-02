@@ -25,7 +25,7 @@
 
 </head>
 
-<body class="md-body-2">
+<body>
 <div>
     <!-- dropdown Menu -->
     <div ng-controller="menuCtrl" class = "menubar">
@@ -115,7 +115,7 @@
                 </li>
 
                 <li id = "downloadLib">
-                    <a ng-href="{{libUrl}}" download="vidamo.js" ng-click = "downloadLib()">
+                    <a ng-href="{{libUrl}}" download="mobius.js" ng-click = "downloadLib()">
                         Export Function Library
                     </a>
                 </li>
@@ -157,7 +157,7 @@
 
                                 <span dropdown on-toggle="toggled(open)" style="left:5px;top:10px">
 
-                                 <button class="btn btn-default btn-xs" dropdown-toggle>
+                                 <button class="btn btn-default btn-xs" dropdown-toggle style="    background: #ddd;">
                                      {{viewportControl.currentCate}}
                                      <span class="caret"></span>
                                  </button>
