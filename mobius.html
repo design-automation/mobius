@@ -215,7 +215,7 @@
                                          class="grid"
                                          ui-grid-resize-columns
                                          ui-grid-auto-resize
-                                         style="height: 100%;width: 100%; bottom:100px; font-size: 12px">
+                                         style="height: 100%;width: 100%; bottom:100px;font-size: 12px">
                                     </div>
                                 </div>
 
@@ -225,7 +225,7 @@
 
                         <div ui-layout-container size = "15%" class="monitor">
                             <div ng-controller="consoleCtrl">
-                                 <pre class="nodeName" style="padding: 4px">
+                                 <pre class="nodeName" style="padding: 1px">
                                     &nbsp &nbsp Console
                                     <button class="btn btn-default btn-xs pull-right"
                                             style="padding-top: 0;padding-bottom:0"
@@ -256,13 +256,13 @@
 
                             <div ng-controller="procedureCtrl">
                                 <div ng-if = "currentNodeName">
-                                    <pre class="nodeName" style="padding: 4px">
+                                    <pre class="nodeName" style="padding: 1px">
                                         &nbsp &nbsp {{currentNodeType}} &nbsp : &nbsp {{currentNodeName}} &nbsp
                                     </pre>
                                 </div>
 
                                 <div ng-if = "!currentNodeName">
-                                    <pre class="nodeName" style="padding: 4px">
+                                    <pre class="nodeName" style="padding: 1px">
                                         &nbsp &nbsp No Node Selected
                                     </pre>
                                 </div>
@@ -293,30 +293,29 @@
                              ui-layout-container size = "75%">
                             <div ng-controller="graphCtrl">
                                 <div ng-if = "currentNodeName">
-                                    <pre class="nodeName" style="padding: 4px">
+                                    <pre class="nodeName" style="padding: 1px">
                                         &nbsp &nbsp {{currentNodeType}} &nbsp : &nbsp {{currentNodeName}} &nbsp
-                                             <button  ng-controller="executeCtrl"
-                                                      class="btn btn-default btn-xs pull-right"
-                                                      style="display: inline-block"
-                                                      ng-click="run()"
-                                                      title="Run program">
-                                                 Run
-                                             </button>
                                     </pre>
                                 </div>
 
                                 <div ng-if = "!currentNodeName">
-                                    <pre class="nodeName" style="padding: 4px">
+                                    <pre class="nodeName" style="padding: 1px">
                                         &nbsp &nbsp Graph
-                                        <button  ng-controller="executeCtrl"
-                                                class="btn btn-default btn-xs pull-right"
-                                                style="display: inline-block"
-                                                ng-click="run()"
-                                                title="Run program">
-                                            Run
-                                        </button>
                                     </pre>
                                 </div>
+
+                                <span ng-controller="executeCtrl"
+                                        style="white-space: nowrap;
+                                                position: absolute;
+                                                right: 10px;
+                                                top:2px;
+                                                display: inline-block">
+                                    <button class="btn btn-default btn-xs"
+                                            ng-click="run()"
+                                            title="Run program">
+                                        Run
+                                    </button>
+                                </span>
 
                                 <div ng-controller="znpController" class="znpController">
                                     <div style="    border: 1px solid #cccccc;
@@ -332,6 +331,7 @@
                                         </panzoom>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>

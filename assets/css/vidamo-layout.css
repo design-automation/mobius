@@ -24,7 +24,8 @@ body {
     padding-top: 2px;
     padding-bottom: 2px;
     padding-left: 10px;
-    background-color: #eee;
+   background:-webkit-gradient(linear, left bottom, left top, color-stop(0, #eee), color-stop(1, #fff));
+
 }
 
 .dropdown{
@@ -62,10 +63,10 @@ body {
 }
 
 .graph-area .buttons{
-    /*position: absolute;*/
-    /*bottom: 8px;*/
-    /*width: 100%;*/
-    /*text-align: center;*/
+    position: absolute;
+    bottom: 8px;
+    width: 100%;
+    text-align: center;
 }
 
 .graph-area .codeEditor{
@@ -175,8 +176,8 @@ right pane code area
     border-radius: 3px;
     font-size: 12px;
     font-family: Arial, sans-serif;
-    line-height: 1.92857143;
     background:-webkit-gradient(linear, left bottom, left top, color-stop(0, #eee), color-stop(1, #fff));
+    line-height: 1.92857143;
 }
 
 .code-area .buttons{
@@ -219,7 +220,7 @@ right pane code area
 .button-action{
     display: inline-block;
     position: absolute;
-    top: 5px;
+    top: 2px;
     width: 20%;
     right: 43%;
     margin: 0;
@@ -232,7 +233,7 @@ right pane code area
  .button-control{
     display: inline-block;
     position: absolute;
-    top: 5px;
+    top: 2px;
     width: 20%;
     right:21%;
  margin: 0;
