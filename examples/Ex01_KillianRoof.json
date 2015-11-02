@@ -13,7 +13,7 @@
                 }
             ],
             "type": "Standard",
-            "version": 1446438666715,
+            "version": 1446439153469,
             "overwrite": true
         },
         {
@@ -35,14 +35,14 @@
                 }
             ],
             "type": "Standard",
-            "version": 1446438667875,
+            "version": 1446439343227,
             "overwrite": true
         },
         {
             "id": 2,
             "name": "surface",
-            "x": 1970.8373859010767,
-            "y": 1974.1313192669509,
+            "x": 1971.8509038598072,
+            "y": 1972.1042833494898,
             "inputConnectors": [
                 {
                     "name": "crvs",
@@ -57,7 +57,7 @@
                 }
             ],
             "type": "Standard",
-            "version": 1446438758985,
+            "version": 1446439357901,
             "overwrite": true
         },
         {
@@ -79,7 +79,7 @@
                 }
             ],
             "type": "Standard",
-            "version": 1446438789757,
+            "version": 1446439358873,
             "overwrite": true
         }
     ],
@@ -129,7 +129,7 @@
             "method": "makeCurveByPoints",
             "parameters": [
                 {
-                    "value": "[[-40, 7, 0],[-20,2,0],[0, -7, 0],[20, -10, 0],[70, 2, 0]]",
+                    "value": "[[-40, 0, 0],[-20,-5,0],[0, -14, 0],[20, -17, 0],[70, -5, 0]]",
                     "type": "points",
                     "$$hashKey": "object:412"
                 },
@@ -575,7 +575,7 @@
             "title": "Data",
             "temp": "Parameter",
             "dataName": "heightOfKillian",
-            "dataValue": "30",
+            "dataValue": "27",
             "$$hashKey": "object:350"
         },
         {
@@ -601,7 +601,7 @@
             "title": "Data",
             "temp": "Parameter",
             "dataName": "v",
-            "dataValue": "10",
+            "dataValue": "30",
             "$$hashKey": "object:1181"
         }
     ],
