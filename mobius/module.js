@@ -1088,24 +1088,24 @@ var default_material_meshFromThree = new THREE.MeshLambertMaterial( {
 	wireframe: false,
 	shading: THREE.SmoothShading,
 	transparent: false,
-	color: 0x0066CC
+	color: 0x003399
 } );
 var default_material_meshFromVerbs = new THREE.MeshLambertMaterial( {
 	side: THREE.DoubleSide,
 	wireframe: false,
 	shading: THREE.SmoothShading,
 	transparent: false,
-	color: 0x999900
+	color: 0x003399
 } );
 var default_material_lineFromVerbs = new THREE.LineBasicMaterial({
 	side: THREE.DoubleSide,
 	linewidth: 100,
-	color: 0x999900
+	color: 0x003399
 });
 var default_material_lineFromThree = new THREE.LineBasicMaterial({
 	side: THREE.DoubleSide,
 	linewidth: 100,
-	color: 0x0066CC
+	color: 0x003399
 });
 var default_material_pointFromThree = new THREE.PointCloudMaterial( { size: 5, sizeAttenuation: false } );
 //

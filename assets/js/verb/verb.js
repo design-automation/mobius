@@ -6256,7 +6256,8 @@ var verb_eval_AdaptiveRefinementOptions = $hx_exports.core.AdaptiveRefinementOpt
 	this.refine = true;
 	this.maxDepth = 10;
 	this.minDepth = 0;
-	this.normTol = 2.5e-2;
+	this.normTol = 1;
+	//this.normTol = 2.5e-2;
 };
 $hxClasses["verb.eval.AdaptiveRefinementOptions"] = verb_eval_AdaptiveRefinementOptions;
 verb_eval_AdaptiveRefinementOptions.__name__ = ["verb","eval","AdaptiveRefinementOptions"];
