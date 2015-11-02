@@ -803,14 +803,6 @@ var VIDAMO = ( function (mod){
 		// var raw_matrix = mesh.matrix.elements;
 		// var mat = [];
 		// for(var i=0; i<16; i=i+4){
-			// var subArr=[raw_matrix[i], raw_matrix[i+1], raw_matrix[i+2], raw_matrix[i+3]];
-			// mat.push(subArr);
-		// }
-
-		// if it's verbs geometry, the geometry itself needs to be changed so that copies are accurate
-		// var raw_matrix = mesh.matrix.elements;
-		// var mat = [];
-		// for(var i=0; i<16; i=i+4){
 		// var subArr=[raw_matrix[i], raw_matrix[i+1], raw_matrix[i+2], raw_matrix[i+3]];
 		// mat.push(subArr);
 		// }
