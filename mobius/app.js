@@ -3,20 +3,23 @@
 //
 
 var vidamo = angular.module('vidamo',
-                            ['ui.layout',
-                            'ui.ace',
-                            'ui.bootstrap',
-                            'ui.select',
-                            'ngSanitize',
-                            'ui.tree',
-                            'ui.grid',
-                            'flowChart',
-                            'panzoom',
-                            'xeditable',
-                            'ui.bootstrap.contextMenu',
+                            [
+                                //'ngMaterial',
+                                'ui.layout',
+                                 'ui.ace',
+                                'ui.bootstrap',
+                                'ui.select',
+                                'ngSanitize',
+                                'ui.tree',
+                                'ui.grid',
+                                'flowChart',
+                                'panzoom',
+                                'xeditable',
+                                'ui.bootstrap.contextMenu',
                                 'ui.grid.resizeColumns',
                                 'ui.grid.autoResize',
-                            'cfp.hotkeys']);
+                                'cfp.hotkeys'
+                            ]);
 
     // Simple service to create a prompt.
     // todo replace with customizable one
@@ -33,7 +36,7 @@ var vidamo = angular.module('vidamo',
     // config for ui-select plugin
     vidamo.config(function(uiSelectConfig) {
         uiSelectConfig.theme = 'bootstrap';
-        uiSelectConfig.appendToBody = true;
+        uiSelectConfig.appendToBody = false;
     });
 
     // configuration of download files

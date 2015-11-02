@@ -18,11 +18,14 @@
     <link rel="stylesheet" href="assets/css/select.css">
     <link rel="stylesheet" href="assets/css/xeditable.css">
     <link rel="stylesheet" href="assets/css/hotkeys.css">
+    <link rel="stylesheet" href="assets/css/material.css">
     <link rel="stylesheet" href="assets/css/ui-grid/ui-grid.min.css">
+
+    <!--<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.css">-->
 
 </head>
 
-<body>
+<body class="md-body-2">
 <div>
     <!-- dropdown Menu -->
     <div ng-controller="menuCtrl" class = "menubar">
@@ -53,8 +56,20 @@
                     </a>
 
                     <ul class="dropdown-menu">
-                        <li><a ng-click="loadExample('SimpleKillianRoof.json')"> Killian Roof </a></li>
+                        <li><a ng-click="loadExample('Ex01_KillianRoof.json')"> Killian Roof </a></li>
+                        <li><a ng-click="loadExample('Ex02_ParametricBrickWall.json')"> Parametric Brick Wall </a></li>
+                        <li><a ng-click="loadExample('F2_Surface&CurvesPart1.json')"> Surface and Curves Part1 </a></li>
+                        <li><a ng-click="loadExample('F0_Surface&CurvesPart2.json')"> Surface and Curves Part2 </a></li>
+                        <li><a ng-click="loadExample('F3_Geometry_Part1.json')"> Geometry Part 1 </a></li>
+                        <li><a ng-click="loadExample('F4_Geometry_Part2.json')"> Geometry Part 2 </a></li>
+                        <li><a ng-click="loadExample('F5_SurfaceCurveAnalysisFunctions.json')"> Surface and Curves Analysis</a></li>
+                        <li><a ng-click="loadExample('F6_CSGOperations.json')"> Solid Operations</a></li>
+                        <li><a ng-click="loadExample('F7_ListOperations.json')"> List Operations</a></li>
+                        <li><a ng-click="loadExample('F8_GeneralFunctions.json')"> General Functions</a></li>
                     </ul>
+
+
+
                 </li>
             </ul>
         </span>
@@ -140,7 +155,7 @@
 
                             <div ng-controller="viewportCtrl">
 
-                                <span dropdown on-toggle="toggled(open)" style="left:10px;">
+                                <span dropdown on-toggle="toggled(open)" style="left:5px;top:10px">
 
                                  <button class="btn btn-default btn-xs" dropdown-toggle>
                                      {{viewportControl.currentCate}}
@@ -187,7 +202,7 @@
                                 <viewport control="viewportControl" id="threeViewport"></viewport>
 
                                 <div ng-if="showFullCode">
-                                    <div style="height: 100%;width: 100%;top:30px;left:0;position: absolute;"
+                                    <div style="height: 100%;width: 100%;top:35px;left:0;position: absolute;"
                                         ui-ace="{ mode: 'javascript',theme: 'tomorrow'}"
                                         ng-model="javascriptCode"
                                         readonly="{{true}}"
@@ -195,12 +210,12 @@
                                     </div>
                                 </div>
 
-                                <div ng-if="showData" style="height: 100%;width: 100%;left:0;position: absolute;">
+                                <div ng-if="showData" style="height: 100%;width: 100%;left:0;position: absolute;top:40px">
                                     <div ui-grid="gridOptions"
                                          class="grid"
                                          ui-grid-resize-columns
                                          ui-grid-auto-resize
-                                         style="height: 100%;width: 100%; bottom:100px">
+                                         style="height: 100%;width: 100%; bottom:100px;font-size: 12px">
                                     </div>
                                 </div>
 
@@ -210,9 +225,9 @@
 
                         <div ui-layout-container size = "15%" class="monitor">
                             <div ng-controller="consoleCtrl">
-                                 <pre class="nodeName" style="padding: 4px">
+                                 <pre class="nodeName" style="padding: 1px">
                                     &nbsp &nbsp Console
-                                    <button class="pull-right"
+                                    <button class="btn btn-default btn-xs pull-right"
                                             style="padding-top: 0;padding-bottom:0"
                                             id = "clear"
                                             ng-click="clearConsole()"> Clear </button>
@@ -241,18 +256,18 @@
 
                             <div ng-controller="procedureCtrl">
                                 <div ng-if = "currentNodeName">
-                                    <pre class="nodeName" style="padding: 4px">
+                                    <pre class="nodeName" style="padding: 1px">
                                         &nbsp &nbsp {{currentNodeType}} &nbsp : &nbsp {{currentNodeName}} &nbsp
                                     </pre>
                                 </div>
 
                                 <div ng-if = "!currentNodeName">
-                                    <pre class="nodeName" style="padding: 4px">
+                                    <pre class="nodeName" style="padding: 1px">
                                         &nbsp &nbsp No Node Selected
                                     </pre>
                                 </div>
 
-                                <div    ng-if = "currentNodeName"
+                                <div
                                         style="overflow: auto;
                                             position: absolute;
                                             height: 100%;
@@ -278,16 +293,29 @@
                              ui-layout-container size = "75%">
                             <div ng-controller="graphCtrl">
                                 <div ng-if = "currentNodeName">
-                                    <pre class="nodeName" style="padding: 4px">
+                                    <pre class="nodeName" style="padding: 1px">
                                         &nbsp &nbsp {{currentNodeType}} &nbsp : &nbsp {{currentNodeName}} &nbsp
                                     </pre>
                                 </div>
 
                                 <div ng-if = "!currentNodeName">
-                                    <pre class="nodeName" style="padding: 4px">
+                                    <pre class="nodeName" style="padding: 1px">
                                         &nbsp &nbsp Graph
                                     </pre>
                                 </div>
+
+                                <span ng-controller="executeCtrl"
+                                        style="white-space: nowrap;
+                                                position: absolute;
+                                                right: 10px;
+                                                top:2px;
+                                                display: inline-block">
+                                    <button class="btn btn-default btn-xs"
+                                            ng-click="run()"
+                                            title="Run program">
+                                        Run
+                                    </button>
+                                </span>
 
                                 <div ng-controller="znpController" class="znpController">
                                     <div style="    border: 1px solid #cccccc;
@@ -304,15 +332,6 @@
                                     </div>
                                 </div>
 
-                                <div class = "buttons">
-                                    <span ng-controller="executeCtrl">
-                                        <button class="btn btn-default btn-xs"
-                                                ng-click="run()"
-                                                title="Run program">
-                                            Run
-                                        </button>
-                                    </span>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -329,7 +348,6 @@
 <script type="application/javascript" src="assets/js/angular/angular.min.js"></script>
 <script type="text/javascript" src="assets/js/angular/angular-sanitize.js"></script>
 
-
 <!-- angular-ui -->
 <script type="application/javascript" src="assets/js/angular-ui/ui-layout/ui-layout.js"></script>
 <script src="assets/js/angular-ui/ui-bootstrap/ui-bootstrap-tpls-0.13.3.min.js"></script>
@@ -339,8 +357,6 @@
 <script type="text/javascript" src="assets/js/angular-ui/angular-prompt.js"></script>
 <script type="text/javascript" src="assets/js/angular-ui/ui-grid/ui-grid.min.js"></script>
 <script type="text/javascript" src="assets/js/angular-ui/hotkeys.js"></script>
-
-
 
 
 <!-- ace -->
@@ -415,6 +431,11 @@
 <!-- other -->
 <script src="mobius/module.js"></script>
 <script src="mobius/datastructure.js"></script>
+
+<!-- angular material-->
+<!--<script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.js"></script>-->
+<!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-animate.min.js"></script>-->
+<!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-aria.min.js"></script>-->
 
 
 </body>

@@ -116,6 +116,8 @@ vidamo.factory('nodeCollection', function () {
 
             nodes.push(newNode);
             localStorage.vidamoNodeTypes = JSON.stringify(nodes);
+
+            console.log(JSON.stringify(nodes));
         },
 
         // update node procedure content

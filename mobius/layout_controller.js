@@ -24,9 +24,6 @@ vidamo.controller('layoutCtrl',['$scope','hotkeys',
         $scope.graphWidth = $scope.graphSize +'%';
 
 
-
-
-
         // templates not in use
        $scope.procedureHTML = { name: 'procedureHTML.html', url: 'mobius/procedureHTML.html'} ;
 

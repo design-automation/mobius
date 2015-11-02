@@ -47,12 +47,13 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
             },0);
 
             consoleMsg.confirmMsg('newSceneCreated');
+            $rootScope.$broadcast('runNewScene');
         };
 
-        $scope.loadExample = function(){
+        $scope.loadExample = function(exampleFile){
             $http({
                 method: 'GET',
-                url: 'examples/simpleKillianRoof.json',
+                url: 'examples/' + exampleFile,
                 data: {},
                 transformResponse: function (data) {
                     // since example files is not standard .json and can't parse correctly by $http
@@ -82,6 +83,16 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                     generateCode.setInterfaceList(interfaceJsonObj);
                     consoleMsg.confirmMsg('exampleImport');
                     generateCode.generateCode();
+
+                    var scope = angular.element(document.getElementById('threeViewport')).scope();
+                    var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
+
+                    setTimeout(function(
+                    ){
+                        scope.$apply(function(){scope.viewportControl.refreshView();} );
+                        scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
+                        $rootScope.$broadcast('runNewScene');
+                    },0);
                 }
             );
         };
@@ -142,7 +153,9 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
             ){
                 scope.$apply(function(){scope.viewportControl.refreshView();} );
                 scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
+                $rootScope.$broadcast('runNewScene');
             },0);
+
         };
 
         // save json file for scene
@@ -196,10 +209,16 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                             nodeJsonObj = JSON.parse(nodeJsonString);
                             procedureJsonObj = JSON.parse(procedureJsonString);
                             interfaceJsonObj = JSON.parse(interfaceJsonString);
-                            var newNodeName = nodeJsonObj.name;
+                            var newNodeName = nodeJsonObj.type;
+
+                            console.log('1:  ', nodeJsonObj);
 
                             // install new imported node into nodeCollection
-                            nodeCollection.installNewNodeType(newNodeName, nodeJsonObj,procedureJsonObj,interfaceJsonObj);
+                            nodeCollection.installNewNodeType(newNodeName,
+                                                                nodeJsonObj.inputConnectors,
+                                                                nodeJsonObj.outputConnectors,
+                                                                procedureJsonObj,
+                                                                interfaceJsonObj);
 
                             consoleMsg.confirmMsg('nodeImport');
                         }else{

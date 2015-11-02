@@ -47,13 +47,13 @@
 
         (
         <!--parameters-->
-        <div ng-repeat="parameter in node.parameters" style="display: inline-block">
+        <div ng-repeat="parameter in node.parameters" style="display: inline-block" ng-class="{'last': $last}">
             &nbsp;
             <a data-nodrag href="#"
                editable-text="parameter.value"
                buttons="no"
                blur="submit">{{parameter.value || parameter.type}}</a>
-            &nbsp;
+            &nbsp; {{$last? '': ','}}
         </div>
         )
 
@@ -80,9 +80,9 @@
         <div ng-if="node.controlType === 'if' || node.controlType === 'else' " style="margin-left: -20px">
             <a data-nodrag ng-click="toggle(this)" >
                 <span
-                    class="fa"
-                    style="font-weight: 900; font-size: 17px;"
-                    ng-class="{
+                        class="fa"
+                        style="font-weight: 900; font-size: 17px;"
+                        ng-class="{
                               'fa-angle-right': collapsed,
                               'fa-angle-down': !collapsed
                                }">
@@ -153,4 +153,3 @@
     </div>
 
 </div>
-

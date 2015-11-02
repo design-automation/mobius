@@ -379,11 +379,13 @@ vidamo.controller('graphCtrl',[
         $scope.$on("renameSelected",function(){
             $timeout(function(){
                 var newName = prompt('Enter a new name:');
-                var renameObj = $scope.chartViewModel.renameSelected(newName);
-                if(renameObj.isConnector){
-                    // update version since connector changed
-                    var d = new Date();
-                    $scope.chartViewModel.nodes[renameObj.nodeIndex].data.version = d.getTime();
+                if(newName !== null && newName !== '') {
+                    var renameObj = $scope.chartViewModel.renameSelected(newName);
+                    if (renameObj.isConnector) {
+                        // update version since connector changed
+                        var d = new Date();
+                        $scope.chartViewModel.nodes[renameObj.nodeIndex].data.version = d.getTime();
+                    }
                 }
             }, 10);
         });
