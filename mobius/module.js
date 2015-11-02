@@ -64,6 +64,22 @@ var VIDAMO = ( function (mod){
 		return number.toFixed(digits);
 	};
 	
+	//
+	//
+	//
+	//
+	mod.getDotProduct = function( mat1, mat2 ){
+		return verb.core.Vec.dot(mat1, mat2);
+	};
+	
+	//
+	//
+	//
+	//
+	mod.getCrossProduct = function( mat1, mat2 ){
+		return verb.core.Vec.cross(mat1, mat2);
+	};
+	
 	/*
 	 * 
 	 * List Operations
@@ -782,6 +798,14 @@ var VIDAMO = ( function (mod){
 		mesh.translateX(shiftX);
 		mesh.translateY(shiftY);
 		mesh.translateZ(shiftZ);
+		
+		// if it's verbs geometry, the geometry itself needs to be changed so that copies are accurate
+		// var raw_matrix = mesh.matrix.elements;
+		// var mat = [];
+		// for(var i=0; i<16; i=i+4){
+			// var subArr=[raw_matrix[i], raw_matrix[i+1], raw_matrix[i+2], raw_matrix[i+3]];
+			// mat.push(subArr);
+		// }
 
 		return mObj;
 	};
