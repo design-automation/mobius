@@ -13,7 +13,7 @@
                 }
             ],
             "type": "Standard",
-            "version": 1446436223026,
+            "version": 1446438666715,
             "overwrite": true
         },
         {
@@ -35,7 +35,7 @@
                 }
             ],
             "type": "Standard",
-            "version": 1446436232715,
+            "version": 1446438667875,
             "overwrite": true
         },
         {
@@ -52,22 +52,22 @@
             ],
             "outputConnectors": [
                 {
-                    "name": "srf",
+                    "name": "mesh",
                     "value": ""
                 }
             ],
             "type": "Standard",
-            "version": 1446436209899,
+            "version": 1446438758985,
             "overwrite": true
         },
         {
             "id": 3,
             "name": "panels",
-            "x": 1971.344144880442,
+            "x": 1972.3576628391722,
             "y": 2034.6890173010938,
             "inputConnectors": [
                 {
-                    "name": "surface",
+                    "name": "mesh",
                     "value": "",
                     "connected": true
                 }
@@ -79,7 +79,7 @@
                 }
             ],
             "type": "Standard",
-            "version": 1446436164264,
+            "version": 1446438789757,
             "overwrite": true
         }
     ],
@@ -295,11 +295,9 @@
             ],
             "result": "srf",
             "$$hashKey": "object:4393"
-        }
-    ],
-    [
+        },
         {
-            "id": 3,
+            "id": 2,
             "title": "Action",
             "nodes": [],
             "type": "new",
@@ -307,24 +305,26 @@
             "method": "makeMeshBySubdivision",
             "parameters": [
                 {
-                    "value": "surface",
+                    "value": "srf",
                     "type": "mObj",
-                    "$$hashKey": "object:1299"
+                    "$$hashKey": "object:1457"
                 },
                 {
                     "value": "u",
                     "type": "ugrid",
-                    "$$hashKey": "object:1300"
+                    "$$hashKey": "object:1458"
                 },
                 {
                     "value": "v",
                     "type": "vgrid",
-                    "$$hashKey": "object:1301"
+                    "$$hashKey": "object:1459"
                 }
             ],
             "result": "mesh",
-            "$$hashKey": "object:1291"
-        },
+            "$$hashKey": "object:1449"
+        }
+    ],
+    [
         {
             "id": 2,
             "title": "Data",
@@ -356,129 +356,208 @@
                     "$$hashKey": "object:2677"
                 },
                 {
-                    "id": 2,
-                    "title": "Action",
-                    "nodes": [],
-                    "type": "new",
-                    "expression": "",
-                    "method": "makeLine",
-                    "parameters": [
-                        {
-                            "value": "vertice[0]",
-                            "type": "startPoint",
-                            "$$hashKey": "object:3118"
-                        },
-                        {
-                            "value": "vertice[2]",
-                            "type": "endPoint",
-                            "$$hashKey": "object:3119"
-                        }
-                    ],
-                    "result": "diag1",
-                    "$$hashKey": "object:3110"
-                },
-                {
-                    "id": 2,
-                    "title": "Action",
-                    "nodes": [],
-                    "type": "new",
-                    "expression": "",
-                    "method": "makeLine",
-                    "parameters": [
-                        {
-                            "value": "vertice[1]",
-                            "type": "startPoint",
-                            "$$hashKey": "object:3301"
-                        },
-                        {
-                            "value": "vertice[3]",
-                            "type": "endPoint",
-                            "$$hashKey": "object:3302"
-                        }
-                    ],
-                    "result": "diag2",
-                    "$$hashKey": "object:3293"
-                },
-                {
-                    "id": 2,
-                    "title": "Action",
-                    "nodes": [],
-                    "type": "new",
-                    "expression": "",
-                    "method": "makeTubeByLine",
-                    "parameters": [
-                        {
-                            "value": "diag1",
-                            "type": "mObj",
-                            "$$hashKey": "object:2944"
-                        }
-                    ],
-                    "result": "tube1",
-                    "$$hashKey": "object:2936"
-                },
-                {
-                    "id": 2,
-                    "title": "Action",
-                    "nodes": [],
-                    "type": "new",
-                    "expression": "",
-                    "method": "makeTubeByLine",
-                    "parameters": [
-                        {
-                            "value": "diag2",
-                            "type": "mObj",
-                            "$$hashKey": "object:3528"
-                        }
-                    ],
-                    "result": "tube2",
-                    "$$hashKey": "object:3520"
-                },
-                {
                     "id": 3,
+                    "title": "Data",
+                    "temp": "Parameter",
+                    "dataName": "seq",
+                    "dataValue": "[0,1]",
+                    "$$hashKey": "object:1241"
+                },
+                {
+                    "id": 4,
+                    "title": "Data",
+                    "nodes": [],
+                    "dataName": "rads",
+                    "dataValue": "[]",
+                    "type": "new",
+                    "$$hashKey": "object:1043"
+                },
+                {
+                    "id": 4,
+                    "title": "Control",
+                    "nodes": [
+                        {
+                            "id": 2,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "makeLine",
+                            "parameters": [
+                                {
+                                    "value": "vertice[index]",
+                                    "type": "startPoint",
+                                    "$$hashKey": "object:3118"
+                                },
+                                {
+                                    "value": "vertice[index+2]",
+                                    "type": "endPoint",
+                                    "$$hashKey": "object:3119"
+                                }
+                            ],
+                            "result": "diag",
+                            "$$hashKey": "object:3110"
+                        },
+                        {
+                            "id": 4,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "console.log(diag);",
+                            "method": "expression",
+                            "parameters": [],
+                            "$$hashKey": "object:1961"
+                        },
+                        {
+                            "id": 4,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "getLength",
+                            "parameters": [
+                                {
+                                    "value": "diag",
+                                    "type": "mObj",
+                                    "$$hashKey": "object:1040"
+                                }
+                            ],
+                            "result": "tubeLength",
+                            "$$hashKey": "object:1032"
+                        },
+                        {
+                            "id": 4,
+                            "title": "Data",
+                            "nodes": [],
+                            "dataName": "radius",
+                            "dataValue": "0.05*tubeLength",
+                            "type": "new",
+                            "$$hashKey": "object:1486"
+                        },
+                        {
+                            "id": 5,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "getSignificantDigits",
+                            "parameters": [
+                                {
+                                    "value": "radius",
+                                    "type": "number",
+                                    "$$hashKey": "object:514"
+                                },
+                                {
+                                    "value": "2",
+                                    "type": "digits",
+                                    "$$hashKey": "object:515"
+                                }
+                            ],
+                            "result": "radius",
+                            "$$hashKey": "object:506"
+                        },
+                        {
+                            "id": 4,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "addToList",
+                            "parameters": [
+                                {
+                                    "value": "rads",
+                                    "type": "list",
+                                    "$$hashKey": "object:1017"
+                                },
+                                {
+                                    "value": "radius",
+                                    "type": "object",
+                                    "$$hashKey": "object:1018"
+                                }
+                            ],
+                            "result": "d",
+                            "$$hashKey": "object:1009"
+                        },
+                        {
+                            "id": 4,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "makeTubeByLine",
+                            "parameters": [
+                                {
+                                    "value": "diag",
+                                    "type": "mObj",
+                                    "$$hashKey": "object:1679"
+                                },
+                                {
+                                    "value": "radius",
+                                    "type": "radius",
+                                    "$$hashKey": "object:1680"
+                                }
+                            ],
+                            "result": "tube",
+                            "$$hashKey": "object:1671"
+                        },
+                        {
+                            "id": 3,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "addToList",
+                            "parameters": [
+                                {
+                                    "value": "allPanels",
+                                    "type": "list",
+                                    "$$hashKey": "object:3724"
+                                },
+                                {
+                                    "value": "tube",
+                                    "type": "object",
+                                    "$$hashKey": "object:3725"
+                                }
+                            ],
+                            "result": "d",
+                            "$$hashKey": "object:3716"
+                        }
+                    ],
+                    "type": "new",
+                    "controlType": "for each",
+                    "dataName": "index",
+                    "forList": "seq",
+                    "$$hashKey": "object:1271"
+                },
+                {
+                    "id": 4,
                     "title": "Action",
                     "nodes": [],
                     "type": "new",
                     "expression": "",
-                    "method": "addToList",
+                    "method": "addData",
                     "parameters": [
                         {
-                            "value": "allPanels",
-                            "type": "list",
-                            "$$hashKey": "object:3724"
+                            "value": "polysurface",
+                            "type": "obj",
+                            "$$hashKey": "object:794"
                         },
                         {
-                            "value": "tube1",
-                            "type": "object",
-                            "$$hashKey": "object:3725"
+                            "value": "\"Tube Radius\"",
+                            "type": "dataName",
+                            "$$hashKey": "object:795"
+                        },
+                        {
+                            "value": "rads",
+                            "type": "dataValue",
+                            "$$hashKey": "object:796"
                         }
                     ],
                     "result": "d",
-                    "$$hashKey": "object:3716"
-                },
-                {
-                    "id": 3,
-                    "title": "Action",
-                    "nodes": [],
-                    "type": "new",
-                    "expression": "",
-                    "method": "addToList",
-                    "parameters": [
-                        {
-                            "value": "allPanels",
-                            "type": "list",
-                            "$$hashKey": "object:3913"
-                        },
-                        {
-                            "value": "tube2",
-                            "type": "object",
-                            "$$hashKey": "object:3914"
-                        }
-                    ],
-                    "result": "d",
-                    "$$hashKey": "object:3905"
+                    "$$hashKey": "object:786"
                 }
             ],
-            "type": "new",
+            "type": "assign",
             "controlType": "for each",
             "dataName": "polysurface",
             "forList": "mesh",
@@ -508,23 +587,23 @@
             "$$hashKey": "object:362"
         }
     ],
-    [],
     [
         {
             "id": 1,
             "title": "Data",
             "temp": "Parameter",
             "dataName": "u",
-            "dataValue": "20",
-            "$$hashKey": "object:1320"
+            "dataValue": "10",
+            "$$hashKey": "object:1169"
         },
         {
             "id": 2,
             "title": "Data",
             "temp": "Parameter",
             "dataName": "v",
-            "dataValue": "20",
-            "$$hashKey": "object:1332"
+            "dataValue": "10",
+            "$$hashKey": "object:1181"
         }
-    ]
+    ],
+    []
 ]

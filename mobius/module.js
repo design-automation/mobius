@@ -48,6 +48,22 @@ var VIDAMO = ( function (mod){
 		return 57.29*radians;
 	};
 	
+	//
+	//
+	//
+	//
+	mod.getAbsoluteValue = function( number ){
+		return Math.abs( number );
+	};
+	
+	//
+	//
+	//
+	//
+	mod.getSignificantDigits = function( number, digits){
+		return number.toFixed(digits);
+	};
+	
 	/*
 	 * 
 	 * List Operations
@@ -148,6 +164,7 @@ var VIDAMO = ( function (mod){
 		return valueList.length
 	};
 	
+	
 	/*
 	 *
 	 *	Geometry Analysis Functions
@@ -202,9 +219,9 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
-	mod.getLengthOfVector = function( vector ){
-		var vec = vector.geometry;
-		return vec.length();
+	mod.getLength = function( mObj ){
+		var geom = mObj.geometry;
+		return geom.length();
 	};
 	
 	
@@ -482,7 +499,7 @@ var VIDAMO = ( function (mod){
 	// Input: MobiusDataObject with NURBS geometry (line)
 	// Output: MobiusDataObject with NURBS geometry (cylinderical surface)
 	//
-	mod.makeTubeByLine = function( mObj ){
+	mod.makeTubeByLine = function( mObj, radius ){
 
 		var line = mObj.geometry;
 
@@ -491,7 +508,7 @@ var VIDAMO = ( function (mod){
 
 		var axis = [start[0] - end[0], start[1] - end[1], start[2] - end[2]]
 			, height = 1 //this is a multiplying factor to the axis vector
-			, radius = 0.1;
+			, radius = radius;
 
 		//construction of a perpendicular vector
 		var xaxis = [1, 1, 1];
