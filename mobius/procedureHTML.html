@@ -1,90 +1,185 @@
 <div class="code-area">
     <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
-        <div ui-layout-container >
+    <div ui-layout-container size = "25%">
             <div>
                 <div ng-if = "currentNodeName">
                     <pre class="nodeName" style="padding: 4px">
                         <span>
                             &nbsp &nbsp {{currentNodeType}} &nbsp : &nbsp {{currentNodeName}} &nbsp
                         </span>
-                        <a class="pull-right"
-                           style="display:inline-block; padding: 0;cursor: pointer "
-                           ng-click="hideProcedure()">
-                            <span style="font-weight: 400; font-size: 16px;line-height:1"> &times; </span>
-                        </a>
+                        <!--<a class="pull-right"-->
+                           <!--style="display:inline-block; padding: 0;cursor: pointer "-->
+                           <!--ng-click="hideProcedure()">-->
+                            <!--<span style="font-weight: 400; font-size: 16px;line-height:1"> &times; </span>-->
+                        <!--</a>-->
+                        <button id="button-argument"
+                                class="btn btn-default btn-xs pull-right"
+                                ng-click="newInterface('Parameter')"> Add Argument
+                        </button>
                     </pre>
                 </div>
 
                 <div ng-if = "!currentNodeName">
                     <pre class="nodeName" style="padding: 4px;">
                             &nbsp &nbsp No Node Selected
-                        <a class="pull-right btn btn-xs"
-                           style="display:inline-block; padding: 0;margin: 0;cursor: pointer"
-                           ng-click="hideProcedure()">
-                            <span style="font-weight: 400; font-size: 16px;line-height:1;"> &times; </span>
-                        </a>
+                        <!--<a class="pull-right btn btn-xs"-->
+                         <!--style="display:inline-block; padding: 0;margin: 0;cursor: pointer"-->
+                         <!--ng-click="hideProcedure()">-->
+                          <!--<span style="font-weight: 400; font-size: 16px;line-height:1;"> &times; </span>-->
+                        <!--</a>-->
+                        <button class="btn btn-default btn-xs pull-right" ng-click="newInterface('Parameter')">
+                            Add Argument
+                        </button>
+
+                       <!--<md-button class="md-raised pull-right" ng-click="newInterface('Parameter')"> Add Argument </md-button>-->
                     </pre>
                 </div>
             </div>
 
-
-            <!-- add to interface -->
-                <div class="tabArea" id="procedure"  ng-if = "currentNodeName">
-                    <!-- parameters -->
-                    <div ui-tree id="tree-root-parameter"
-                         style="padding-bottom:6px"
-                         data-nodrop-enabled="true">
-                        <div ui-tree-nodes="" ng-model="interface">
-                            <div ng-repeat="node in interface"
-                                 ui-tree-node
-                                 ng-include="'mobius/procedure/parameter_template.html'">
-                            </div>
-                        </div>
+        <div    id="argument"
+                style="    position: absolute;
+                        width: 100%;
+                        border-top: 1px solid #cccccc;
+                        border-left: 1px solid #cccccc;
+                        border-right: 1px solid #cccccc;
+                        border-radius: 4px;
+                        margin-top:1px;
+                        /*fixme css3*/
+                        height:  calc(100% - 30px);
+                        overflow: auto;">
+            <div ui-tree id="tree-root-parameter"
+                 style="padding-bottom:6px;"
+                 data-nodrop-enabled="true">
+                <div ui-tree-nodes="" ng-model="interface">
+                    <div ng-repeat="node in interface"
+                         ui-tree-node
+                         ng-include="'mobius/procedure/parameter_template.html'">
                     </div>
-
-                    <!-- procedure -->
-                    <div ui-tree id="tree-root-procedure" >
-                        <div ui-tree-nodes="" ng-model="data">
-                            <div ng-repeat="node in data"
-                                 ui-tree-node
-                                 ng-include="'mobius/procedure/procedure_template.html'">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class = "buttons" >
-                    <button id="button-parameter"
-                            class="btn btn-default btn-xs"
-                            ng-click="newInterface('Parameter')"> Add Argument</button>
-
-                    <button id="button-data"
-                            class="btn btn-default btn-xs"
-                            ng-click="newItem('Data')">Add Variable</button>
-
-                    <ui-select id="button-action"
-                               ng-model="method"
-                               style="display: inline-block;"
-                               on-select="newItem('Action',$select.selected)">
-                        <ui-select-match placeholder="Add Method">Add Method</ui-select-match>
-                        <ui-select-choices
-                                repeat="method as method in methods()| filter: $select.search">
-                            <span ng-bind-html="method| highlight: $select.search"></span>
-                        </ui-select-choices>
-                    </ui-select>
-
-                    <ui-select id="button-control"
-                               ng-model="controlType"
-                               style="display: inline-block;"
-                               on-select="newItem('Control',$select.selected)">
-                        <ui-select-match placeholder="Add Control">Add Control</ui-select-match>
-                        <ui-select-choices
-                                repeat="controlType in controlTypes| filter: $select.search">
-                            <span ng-bind-html="controlType| highlight: $select.search"></span>
-                        </ui-select-choices>
-                    </ui-select>
                 </div>
             </div>
+        </div>
+
+            <!--&lt;!&ndash; add to interface &ndash;&gt;-->
+            <!--<div class="tabArea" id="arguments"  ng-if = "currentNodeName">-->
+                <!--&lt;!&ndash; parameters &ndash;&gt;-->
+                <!--<div ui-tree id="tree-root-parameter"-->
+                     <!--style="padding-bottom:6px"-->
+                     <!--data-nodrop-enabled="true">-->
+                    <!--<div ui-tree-nodes="" ng-model="interface">-->
+                        <!--<div ng-repeat="node in interface"-->
+                             <!--ui-tree-node-->
+                             <!--ng-include="'mobius/procedure/parameter_template.html'">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!--&lt;!&ndash; procedure &ndash;&gt;-->
+                <!--<div ui-tree id="tree-root-procedure" >-->
+                    <!--<div ui-tree-nodes="" ng-model="data">-->
+                        <!--<div ng-repeat="node in data"-->
+                             <!--ui-tree-node-->
+                             <!--ng-include="'mobius/procedure/procedure_template.html'">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+
+
+        </div>
+
+        <div ui-layout-container >
+                <div ng-if = "currentNodeName">
+                    <pre class="nodeName" style="padding: 4px">
+                        <span>
+                            &nbsp &nbsp {{currentNodeType}} &nbsp : &nbsp {{currentNodeName}} &nbsp
+                        </span>
+                        <!--<a class="pull-right"-->
+                           <!--style="display:inline-block; padding: 0;cursor: pointer "-->
+                           <!--ng-click="hideProcedure()">-->
+                            <!--<span style="font-weight: 400; font-size: 16px;line-height:1"> &times; </span>-->
+                        <!--</a>-->
+                        <button class="btn btn-default btn-xs pull-right"
+                                    ng-click="newItem('Data')">Add Variable</button>
+
+                        <!--<ui-select id="button-action"-->
+                                   <!--ng-model="method"-->
+                                   <!--style="display: inline-block;"-->
+                                   <!--on-select="newItem('Action',$select.selected)"-->
+                                   <!--class="pull-right">-->
+                            <!--<ui-select-match placeholder="Add Function">Add Function</ui-select-match>-->
+                            <!--<ui-select-choices-->
+                                    <!--repeat="method as method in methods()| filter: $select.search">-->
+                                <!--<span ng-bind-html="method| highlight: $select.search"></span>-->
+                            <!--</ui-select-choices>-->
+                        <!--</ui-select>-->
+
+                        <!--<ui-select class="button-control"-->
+                                   <!--ng-model="controlType"-->
+                                   <!--style="display: inline-block;"-->
+                                   <!--on-select="newItem('Control',$select.selected)"-->
+                                   <!--class="pull-right">-->
+                            <!--<ui-select-match placeholder="Add Control">Add Control</ui-select-match>-->
+                            <!--<ui-select-choices-->
+                                    <!--repeat="controlType in controlTypes| filter: $select.search">-->
+                                <!--<span ng-bind-html="controlType| highlight: $select.search"></span>-->
+                            <!--</ui-select-choices>-->
+                        <!--</ui-select>-->
+                    </pre>
+                </div>
+
+                <div ng-if = "!currentNodeName">
+                    <pre class="nodeName" style="padding: 4px;">
+                            &nbsp &nbsp No Node Selected
+
+                        <!--<a class="pull-right btn btn-xs "-->
+                           <!--style="display:inline-block; padding: 0;margin: 0;cursor: pointer"-->
+                           <!--ng-click="hideProcedure()">-->
+                            <!--<span style="font-weight: 400; font-size: 16px;line-height:1;"> &times; </span>-->
+                        <!--</a>-->
+
+                        <button class="btn btn-default btn-xs pull-right"
+                                ng-click="newItem('Data')">Add Variable
+                        </button>
+                    </pre>
+                </div>
+
+                <div>
+                <ui-select ng-model="method"
+                           class="button-action"
+                           style=" position:absolute;display: inline-block;"
+                           on-select="newItem('Action',$select.selected)"
+                        >
+                    <ui-select-match placeholder="Add Function" >Add Function</ui-select-match>
+                    <ui-select-choices
+                            repeat="method as method in methods()| filter: $select.search">
+                        <span ng-bind-html="method| highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+
+                <ui-select ng-model="controlType" class="button-control"
+                           style=" display: inline-block;position:absolute;"
+                           on-select="newItem('Control',$select.selected)">
+                    <ui-select-match placeholder="Add Control">Add Control</ui-select-match>
+                    <ui-select-choices
+                            repeat="controlType in controlTypes| filter: $select.search">
+                        <span ng-bind-html="controlType| highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+                </div>
+
+            <div class="tabArea" id="procedure">
+                <!-- procedure -->
+                <div ui-tree id="tree-root-procedure" >
+                    <div ui-tree-nodes="" ng-model="data">
+                        <div ng-repeat="node in data"
+                             ui-tree-node
+                             ng-include="'mobius/procedure/procedure_template.html'">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div ui-layout-container size = "27px" class="monitor" >
 

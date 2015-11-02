@@ -18,11 +18,14 @@
     <link rel="stylesheet" href="assets/css/select.css">
     <link rel="stylesheet" href="assets/css/xeditable.css">
     <link rel="stylesheet" href="assets/css/hotkeys.css">
+    <link rel="stylesheet" href="assets/css/material.css">
     <link rel="stylesheet" href="assets/css/ui-grid/ui-grid.min.css">
+
+    <!--<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.css">-->
 
 </head>
 
-<body>
+<body class="md-body-2">
 <div>
     <!-- dropdown Menu -->
     <div ng-controller="menuCtrl" class = "menubar">
@@ -53,8 +56,20 @@
                     </a>
 
                     <ul class="dropdown-menu">
-                        <li><a ng-click="loadExample('SimpleKillianRoof.json')"> Killian Roof </a></li>
+                        <li><a ng-click="loadExample('Ex01_KillianRoof.json')"> Killian Roof </a></li>
+                        <li><a ng-click="loadExample('Ex02_ParametricBrickWall.json')"> Parametric Brick Wall </a></li>
+                        <li><a ng-click="loadExample('F2_Surface&CurvesPart1.json')"> Surface and Curves Part1 </a></li>
+                        <li><a ng-click="loadExample('F0_Surface&CurvesPart2.json')"> Surface and Curves Part2 </a></li>
+                        <li><a ng-click="loadExample('F3_Geometry_Part1.json')"> Geometry Part 1 </a></li>
+                        <li><a ng-click="loadExample('F4_Geometry_Part2.json')"> Geometry Part 2 </a></li>
+                        <li><a ng-click="loadExample('F5_SurfaceCurveAnalysisFunctions.json')"> Surface and Curves Analysis</a></li>
+                        <li><a ng-click="loadExample('F6_CSGOperations.json')"> Solid Operations</a></li>
+                        <li><a ng-click="loadExample('F7_ListOperations.json')"> List Operations</a></li>
+                        <li><a ng-click="loadExample('F8_GeneralFunctions.json')"> General Functions</a></li>
                     </ul>
+
+
+
                 </li>
             </ul>
         </span>
@@ -252,7 +267,7 @@
                                     </pre>
                                 </div>
 
-                                <div    ng-if = "currentNodeName"
+                                <div
                                         style="overflow: auto;
                                             position: absolute;
                                             height: 100%;
@@ -329,7 +344,6 @@
 <script type="application/javascript" src="assets/js/angular/angular.min.js"></script>
 <script type="text/javascript" src="assets/js/angular/angular-sanitize.js"></script>
 
-
 <!-- angular-ui -->
 <script type="application/javascript" src="assets/js/angular-ui/ui-layout/ui-layout.js"></script>
 <script src="assets/js/angular-ui/ui-bootstrap/ui-bootstrap-tpls-0.13.3.min.js"></script>
@@ -339,8 +353,6 @@
 <script type="text/javascript" src="assets/js/angular-ui/angular-prompt.js"></script>
 <script type="text/javascript" src="assets/js/angular-ui/ui-grid/ui-grid.min.js"></script>
 <script type="text/javascript" src="assets/js/angular-ui/hotkeys.js"></script>
-
-
 
 
 <!-- ace -->
@@ -415,6 +427,11 @@
 <!-- other -->
 <script src="mobius/module.js"></script>
 <script src="mobius/datastructure.js"></script>
+
+<!-- angular material-->
+<!--<script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.js"></script>-->
+<!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-animate.min.js"></script>-->
+<!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-aria.min.js"></script>-->
 
 
 </body>
