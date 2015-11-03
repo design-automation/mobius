@@ -67,3 +67,16 @@
     pointer-events:none;
     z-index:999;opacity:.8
 }
+
+.procedure-tree {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius:1px;
+}
+
+.tree-hover :hover{
+    margin: -1px;
+    background-color: #ddd;
+}
+
+

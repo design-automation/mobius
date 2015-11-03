@@ -125,8 +125,8 @@ vidamo.factory('generateCode', function () {
                         data.geomListCode += 'geomList.push({'
                                             + 'name:'
                                             + node_name +'.name,'
-                                            + 'value:'
-                                            + return_obj_name + ','
+                                            + 'value: angular.copy('
+                                            + return_obj_name + '),'
                                             + 'geom:[],'
                                             + 'geomData:[],'
                                             + 'topo:[]'
@@ -168,7 +168,7 @@ vidamo.factory('generateCode', function () {
                                 var connected_input_name = data.chartViewModel.connections[l].dest.data.name;
 
                                 data.javascriptCode +=  'var '
-                                    + connected_input_name +' = '
+                                    + connected_input_name +' ='
                                     + return_obj_name
                                     + '.'
                                     + output_port_name + ';\n';
