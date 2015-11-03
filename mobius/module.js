@@ -28,10 +28,6 @@ var VIDAMO = ( function (mod){
 		}
 	};
 
-	mod.showObject = function( object ){
-		return JSON.stringify(object);
-	};
-
 	//
 	//
 	//
@@ -469,13 +465,6 @@ var VIDAMO = ( function (mod){
 			return 'Invalid Input';
 	};
 
-	//
-	//
-	//
-	//
-	mod.getContourCurves = function( surface, countU, countV ){
-
-	};
 
 	//
 	// Input: MobiusDataObject with NURBS geometry, numeric values
@@ -594,6 +583,10 @@ var VIDAMO = ( function (mod){
 			return new MobiusDataObject( new THREE.Vector3(x, y, z));
 	};
 
+	//
+	//
+	//
+	//
 	mod.makePositionVectorsFromPoints = function( list_of_points ){
 		var mObjArr = [];
 		for(var i=0; i<list_of_points.length; i++){
@@ -603,10 +596,18 @@ var VIDAMO = ( function (mod){
 		return mObjArr;
 	};
 
+	//
+	//
+	//
+	//
 	mod.makeCircle = function(radius, segments){
 		return new MobiusDataObject( new THREE.CircleGeometry( radius, segments ));
 	};
 
+	//
+	//
+	//
+	//
 	mod.makeCylinder = function(radiusTop, radiusBottom, height, radiusSegments, heightSegments, openEnded ){
 		return new MobiusDataObject( new THREE.CylinderGeometry( radiusTop, radiusBottom, height, radiusSegments, heightSegments, openEnded ));
 	};
@@ -657,10 +658,10 @@ var VIDAMO = ( function (mod){
 		return new MobiusDataObject ( customShape );
 	};
 
-	//
-	// dir: {x:, y:, z:}
-	//
-	//
+	/**
+	 * @requires dir: {x:, y:, z:}
+	 *
+	 */
 	mod.extrudePolygon = function(mObj, thickness, bevel ){
 		//mObj has to have shape  :/
 		var shape = mObj.geometry;
@@ -769,10 +770,10 @@ var VIDAMO = ( function (mod){
 	mod.makeCopy = function(mObj, xCoord, yCoord, zCoord){
 		// needs to be optimized
 
-		// needs to cater to any kind of three.js object - mesh, lines, points - caters to just one right now
-		// copies with translations
-		if(mObj.geometry == undefined)
+		if( mObj.geometry == undefined ){
+			console.log("Non-Mobius passed to copy function");
 			return mObj;
+		}
 
 		var newCopy = new MobiusDataObject( mObj.geometry );
 
@@ -797,18 +798,11 @@ var VIDAMO = ( function (mod){
 
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
+
 		var mesh = mObj.extractGeometry();
 		mesh.translateX(shiftX);
 		mesh.translateY(shiftY);
 		mesh.translateZ(shiftZ);
-
-		// if it's verbs geometry, the geometry itself needs to be changed so that copies are accurate
-		// var raw_matrix = mesh.matrix.elements;
-		// var mat = [];
-		// for(var i=0; i<16; i=i+4){
-		// var subArr=[raw_matrix[i], raw_matrix[i+1], raw_matrix[i+2], raw_matrix[i+3]];
-		// mat.push(subArr);
-		// }
 
 		return mObj;
 	};
@@ -819,11 +813,12 @@ var VIDAMO = ( function (mod){
 	//
 	mod.moveObjectToPoint = function(mObj, xCoord, yCoord, zCoord){
 
-		//could be a face too
 
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
 		mObj.extractGeometry().position.set(xCoord, yCoord, zCoord);
+
+
 
 		return mObj;
 	};
@@ -833,6 +828,7 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	mod.scaleObject = function(mObj, scaleX, scaleY, scaleZ){
+
 
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
@@ -846,39 +842,12 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	mod.rotateObject = function(mObj, xAxis, yAxis, zAxis){
+
 		// angles taken in radians
 		var mesh = mObj.extractGeometry();
 		mesh.rotateX(xAxis);
 		mesh.rotateY(yAxis);
 		mesh.rotateZ(zAxis);
-	};
-
-	//
-	//
-	//
-	//
-	mod.rotateObjectAroundAxis = function( mObj, axisVector, radians ){
-		//mObj Axis is a vector3
-
-		//
-		// will have to do it through object 3D - make a default node instead??
-		// complicated
-		//
-
-		// Rotate an object around an axis in world space (the axis passes through the object's position)
-		var object = mObj.extractGeometry();
-		var axis = axisVector.geometry;
-
-		var rotWorldMatrix = new THREE.Matrix4();
-		rotWorldMatrix.makeRotationAxis(axis.normalize(), radians);
-
-		rotWorldMatrix.multiply(object.matrix);                // pre-multiply
-
-		object.matrix = rotWorldMatrix;
-
-		object.rotation.setFromRotationMatrix(object.matrix);
-
-		return mObj;
 	};
 
 	//

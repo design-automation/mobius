@@ -2,9 +2,9 @@
     "nodes": [
         {
             "id": 0,
-            "name": "StandardProfile",
-            "x": 1818.8096920915118,
-            "y": 1855.2963386058073,
+            "name": "base_curve",
+            "x": 1820.3299690296074,
+            "y": 1856.3098565645375,
             "inputConnectors": [],
             "outputConnectors": [
                 {
@@ -12,15 +12,15 @@
                     "value": ""
                 }
             ],
-            "type": "Curve",
-            "version": 0,
+            "type": "BaseCurve",
+            "version": 1446464506613,
             "overwrite": true
         },
         {
             "id": 1,
-            "name": "Curves",
-            "x": 1819.3164510708773,
-            "y": 1914.5871391915375,
+            "name": "cross_sections",
+            "x": 1819.8232100502423,
+            "y": 1916.107416129633,
             "inputConnectors": [
                 {
                     "name": "centralProfile",
@@ -34,15 +34,15 @@
                     "value": ""
                 }
             ],
-            "type": "Curves",
-            "version": 1446455560826,
+            "type": "CrossSections",
+            "version": 1446554064068,
             "overwrite": true
         },
         {
             "id": 2,
-            "name": "Lofting",
-            "x": 1819.3164510708768,
-            "y": 1975.3982167153633,
+            "name": "loft_surface",
+            "x": 1839.0800512661203,
+            "y": 1995.161816910607,
             "inputConnectors": [
                 {
                     "name": "crvs",
@@ -57,14 +57,14 @@
                 }
             ],
             "type": "LoftSurface",
-            "version": 0,
+            "version": 1446554098707,
             "overwrite": true
         },
         {
             "id": 3,
-            "name": "KillianRoof",
-            "x": 1819.823210050242,
-            "y": 2030.1281864868074,
+            "name": "killian_roof",
+            "x": 1840.600328204216,
+            "y": 2062.054002186816,
             "inputConnectors": [
                 {
                     "name": "mesh",
@@ -78,8 +78,8 @@
                     "value": ""
                 }
             ],
-            "type": "Panels",
-            "version": 0,
+            "type": "KillianRoof",
+            "version": 1446554100029,
             "overwrite": true
         }
     ],
@@ -158,7 +158,7 @@
                     "$$hashKey": "object:1342"
                 },
                 {
-                    "value": "numberOfCurves-1",
+                    "value": "num_curves - 1",
                     "type": "divisions",
                     "$$hashKey": "object:1343"
                 }
@@ -269,7 +269,7 @@
                             "$$hashKey": "object:1409"
                         },
                         {
-                            "value": "heightOfKillian-point[1]",
+                            "value": "height - point[1]",
                             "type": "radius",
                             "$$hashKey": "object:1410"
                         },
@@ -447,16 +447,6 @@
                             "title": "Action",
                             "nodes": [],
                             "type": "new",
-                            "expression": "console.log(diag);",
-                            "method": "expression",
-                            "parameters": [],
-                            "$$hashKey": "object:2037"
-                        },
-                        {
-                            "id": 4,
-                            "title": "Action",
-                            "nodes": [],
-                            "type": "new",
                             "expression": "",
                             "method": "getLength",
                             "parameters": [
@@ -618,7 +608,7 @@
             "id": 1,
             "title": "Data",
             "temp": "Parameter",
-            "dataName": "heightOfKillian",
+            "dataName": "height",
             "dataValue": "15",
             "$$hashKey": "object:1094"
         },
@@ -626,7 +616,7 @@
             "id": 2,
             "title": "Data",
             "temp": "Parameter",
-            "dataName": "numberOfCurves",
+            "dataName": "num_curves",
             "dataValue": "5",
             "$$hashKey": "object:1095"
         }
