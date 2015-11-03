@@ -33,7 +33,8 @@ body {
 }
 
 .dropdown-menu {
-    font-size: 13px !important;
+    font-size: 12px !important;
+    cursor: pointer;
 }
 
 /**************************
@@ -206,7 +207,6 @@ right pane code area
     bottom: 8px;
     width: 20%;
     left: 29.5%;
-
 }
 
 
@@ -241,6 +241,19 @@ right pane code area
  height: 24px !important;
  line-height: 1 !important;
  white-space: nowrap;
+}
+
+.button-variable{
+    display: inline-block;
+    position: absolute;
+    top: 2px;
+    width: 17%;
+    right:2%;
+    margin: 0;
+    font-size: 12px !important;
+    height: 24px !important;
+    line-height: 1 !important;
+    white-space: nowrap;
 }
 
 .code-area .codeEditor {

@@ -771,6 +771,9 @@ var VIDAMO = ( function (mod){
 
 		// needs to cater to any kind of three.js object - mesh, lines, points - caters to just one right now
 		// copies with translations
+		if(mObj.geometry == undefined)
+			return mObj;
+
 		var newCopy = new MobiusDataObject( mObj.geometry );
 
 		var newCopyMesh = newCopy.extractGeometry( mObj.extractGeometry().clone() );

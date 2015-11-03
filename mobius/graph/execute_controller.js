@@ -3,9 +3,11 @@
 //
 
 vidamo.controller('executeCtrl',['$scope','$rootScope','consoleMsg','generateCode','hotkeys',
-    function($scope,$rootScope,consoleMsg,generateCode,hotkeys) {
+    function($scope,$rootScope,consoleMsg,generateCode,hotkeys,usSpinnerService) {
 
         // one-way binding of generated javascript code
+
+        $scope.spin = false;
 
         $scope.$watch(function () { return generateCode.getJavascriptCode(); }, function () {
             $scope.javascriptCode = generateCode.getJavascriptCode();
@@ -43,29 +45,35 @@ vidamo.controller('executeCtrl',['$scope','$rootScope','consoleMsg','generateCod
             $scope.run();
         });
 
+
+
         $scope.run = function(){
 
             // clean output buffer
             $scope.outputs = [];
 
             setTimeout(function(){
-                    var scope = angular.element(document.getElementById('threeViewport')).scope();
+
+                var scope = angular.element(document.getElementById('threeViewport')).scope();
                     var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
 
                     scope.$apply(function(){scope.viewportControl.refreshView();} );
                     scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
-
             },0);
 
+
             try{
+
                 $scope.outputs = new Function(   $scope.javascriptCode
-                                                + $scope.geomListCode
-                                                + '\n return VIDAMO.dataConversion(geomList);')();
+                    + $scope.geomListCode
+                    + '\n return VIDAMO.dataConversion(geomList);')();
                 consoleMsg.runtimeMsg();
+
             }catch (e) {
                 consoleMsg.runtimeMsg(e.message);
                 throw(e);
             }
+
 
             // display in the viewport according to node selection
 
