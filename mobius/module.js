@@ -786,15 +786,7 @@ var VIDAMO = ( function (mod){
 
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
-		
-		// if geom is nurbs - nothing in the mesh gets changed -solve for data issues though
-		if( mObj.geometry instanceof verb.geom.NurbsCurve || mObj.geometry instanceof verb.geom.NurbsSurface){
-			var mat = [[1,0,0,shiftX],[0,1,0,shiftY],[0,0,1,shiftZ],[0,0,0,1]]
-			mObj.geometry = mObj.geometry.transform( mat );
-			mObj.geometryUpdated = true;
-			return mObj;
-		}
-		
+			
 		var mesh = mObj.extractGeometry();
 		mesh.translateX(shiftX);
 		mesh.translateY(shiftY);
@@ -809,17 +801,7 @@ var VIDAMO = ( function (mod){
 	//
 	mod.moveObjectToPoint = function(mObj, xCoord, yCoord, zCoord){
 
-		//could be a face too
-		if( mObj.geometry instanceof verb.geom.NurbsCurve || mObj.geometry instanceof verb.geom.NurbsSurface){
-			var centre = VIDAMO.getCentre(mObj);
-			
-			var transX = xCoord - centre[0];
-			var transY = xCoord - centre[0];
-			var transZ = xCoord - centre[0];
-			
-			return VIDAMO.shiftObject( mObj, transX, transY, transZ );
-		}
-		
+	
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
 		mObj.extractGeometry().position.set(xCoord, yCoord, zCoord);
@@ -835,14 +817,7 @@ var VIDAMO = ( function (mod){
 	//
 	mod.scaleObject = function(mObj, scaleX, scaleY, scaleZ){
 
-		// if geom is nurbs - nothing in the mesh gets changed -solve for data issues though
-		if( mObj.geometry instanceof verb.geom.NurbsCurve || mObj.geometry instanceof verb.geom.NurbsSurface){
-			var mat = [[scaleX,0,0,0],[0,scaleY,0,0],[0,0,scaleZ,0],[0,0,0,1]]
-			mObj.geometry = mObj.geometry.transform( mat );
-			mObj.geometryUpdated = true;
-			return mObj;
-		}
-		
+	
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
 		mObj.extractGeometry().scale.set(scaleX, scaleY, scaleZ);
@@ -855,16 +830,7 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	mod.rotateObject = function(mObj, xAxis, yAxis, zAxis){
-		
-		// if geom is nurbs - nothing in the mesh gets changed -solve for data issues though
-		// still left
-		if( mObj.geometry instanceof verb.geom.NurbsCurve || mObj.geometry instanceof verb.geom.NurbsSurface){
-			var mat = [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]
-			mObj.geometry = mObj.geometry.transform( mat );
-			mObj.geometryUpdated = true;
-			return mObj;
-		}
-		
+			
 		// angles taken in radians
 		var mesh = mObj.extractGeometry();
 		mesh.rotateX(xAxis);
