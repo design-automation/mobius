@@ -23,7 +23,7 @@
 	margin-top: 0;
 	right: 0;
 	z-index: 1;
-	box-shadow: 1px -2px 10px rgba(0,0,0,0.5);
+	box-shadow: 1px -1px 10px rgba(0,0,0,0.5);
 	background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #eee), color-stop(1, #fff))
 }
 
@@ -84,7 +84,7 @@
 
 #mobius a {
     text-decoration: none;
-	font-size:9px;
+	font-size:10px;
 	color: black
 }
 
@@ -95,12 +95,14 @@
 #content {
     left: 0;
     right: 0;
+	width: 985px;
     padding: 20px;
     font-size: 20px;
-    color: #555;
+    color: black;
 	font-family: Arial, sans-serif;
 	font-size: 12px;
 	background: #ddd;
+	text-align: justify;
 }
 
 #content a {
@@ -127,11 +129,20 @@
     font-size: 16px;
     padding-bottom: 0px;
     margin-bottom: 10px;
-	color:#222;
+	color:black;
 	margin:0 0 20px;
 }
 
 #content ul li {
+	font-weight: bold;
+    font-size: 12px;
+    padding-bottom: 0px;
+    margin-bottom: 10px;
+	color:#222;
+	margin:0 0 20px;
+}
+
+#content p ul li {
 	font-weight: bold;
     font-size: 12px;
     padding-bottom: 0px;
@@ -147,4 +158,15 @@
     margin-bottom: 0;
 	color:#555;
 	margin-left: 10px;
+}
+
+#content  p{
+	font-weight: normal;
+	font-size: 12px;
+    padding-bottom: 0px;
+    margin-bottom: 0;
+	color:#555;
+	margin-left: 10px;
+	padding: 2px;
+	line-height: 1.5;
 }

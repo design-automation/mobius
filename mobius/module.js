@@ -583,6 +583,10 @@ var VIDAMO = ( function (mod){
 			return new MobiusDataObject( new THREE.Vector3(x, y, z));
 	};
 
+	//
+	//
+	//
+	//
 	mod.makePositionVectorsFromPoints = function( list_of_points ){
 		var mObjArr = [];
 		for(var i=0; i<list_of_points.length; i++){
@@ -592,10 +596,18 @@ var VIDAMO = ( function (mod){
 		return mObjArr;
 	};
 
+	//
+	//
+	//
+	//
 	mod.makeCircle = function(radius, segments){
 		return new MobiusDataObject( new THREE.CircleGeometry( radius, segments ));
 	};
 
+	//
+	//
+	//
+	//
 	mod.makeCylinder = function(radiusTop, radiusBottom, height, radiusSegments, heightSegments, openEnded ){
 		return new MobiusDataObject( new THREE.CylinderGeometry( radiusTop, radiusBottom, height, radiusSegments, heightSegments, openEnded ));
 	};
@@ -646,10 +658,10 @@ var VIDAMO = ( function (mod){
 		return new MobiusDataObject ( customShape );
 	};
 
-	//
-	// dir: {x:, y:, z:}
-	//
-	//
+	/**
+	 * @requires dir: {x:, y:, z:}
+	 *
+	 */
 	mod.extrudePolygon = function(mObj, thickness, bevel ){
 		//mObj has to have shape  :/
 		var shape = mObj.geometry;
