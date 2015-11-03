@@ -894,29 +894,6 @@ var VIDAMO = ( function (mod){
 		else
 			console.log("Invalid Frame")
 	};
-
-	//
-	//
-	//
-	//
-	mod.makeFrame = function(){
-		return new MobiusDataObject( new THREE.Object3D() );
-	};
-	
-	//
-	//
-	//
-	//
-	mod.addToFrame = function( frame, object ){
-		var frameRef = frame.geometry
-		
-		if(frameRef instanceof THREE.Object3D){
-			
-			frameRef.add(object.extractGeometry());
-		}
-		else
-			console.log("Invalid Frame")
-	};
 	
 	//
 	//

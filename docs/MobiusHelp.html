@@ -20,10 +20,15 @@
                     <li><a href="MobiusHelp.html#mobiusDesc">What is Mobius?</a></li>
                     <li><a href="MobiusHelp.html#mobiusWorking">How does Mobius work?</a></li>                 
                     <li><a href="MobiusHelp.html#mobiusDataObject">What is a Mobius Object?</a></li>       
-					<li><a href="MobiusHelp.html#three">Geometry</a></li>					
+					<li><a href="MobiusHelp.html#three">Geometry</a>	
+						<ul>
+							<li><a href="MobiusHelp.html#geometry_creation">Making Geometry</a></li>
+							<li><a href="MobiusHelp.html#geometry_csg">CSG Operations</a></li>   
+							<li><a href="MobiusHelp.html#geometry_analysis">Analyzing Geometry</a></li>   
+						</ul></li>					
                     <li><a href="MobiusHelp.html#nurbs">Curves and Surfaces</a>
 						<ul>
-							<li><a href="MobiusHelp.html#nurbs_creation">Creating NURBS</a></li>
+							<li><a href="MobiusHelp.html#nurbs_creation">Making NURBS</a></li>
 							<li><a href="MobiusHelp.html#nurbs_analysis">Analyzing NURBS</a></li>   
 						</ul></li>
 					<li><a href="MobiusHelp.html#transformations">Transformations</a></li>
@@ -31,6 +36,7 @@
 						<ul>
 							<li><a href="MobiusHelp.html#general_maths">Mathematical Functions</a></li>
 							<li><a href="MobiusHelp.html#general_list">List Functions</a></li>   
+							<li><a href="MobiusHelp.html#general_display">Display Functions</a></li>  				
 						</ul></li>		
                     
                 </ul>
@@ -38,6 +44,7 @@
 
             <div id="content">
                 <h1 id="mobiusIntro">Mobius Introduction</h1>
+				<p> -- Intro -- </p>
 				
 				<h1 id="mobiusDesc">What is Mobius?</h2>
 				<p> --Mobius Description-- </p>
@@ -49,27 +56,179 @@
 				<p> -- MobiusDataObject -- </p>
 				
 				<h1 id="three">Geometry</h2>
+				<h2 id="geometry_creation">Making Geometry</h2>
 				<ul>
-					<li>
-				</ul>
-				
-				<h1 id="nurbs">Curves and Surfaces</h2>
-				
-				<h2 id="nurbs_creation">Creating NURBS</h2>
-				
-				<ul>
-					<li><h3>makeLine(startPoint, endPoint)</h3>
+					<li>makePositionVector(x, y, z)
 						<p> Input: Numeric Array </p>
 						<p> Output: MobiusDataObject with NURBS Geometry </p>
 						<p> Description: Creates a NURBS Line </p>
 						<p> Example: makeLine( [0, 0, 0], [10, 12, 14])</p>
 					</li>
 				
-					<li><h3>makeArc(centerPoint, xaxis, yaxis, radius, minAngle, maxAngle)</h3>
+					<li>makePositionVectorsFromPoints ( list_of_points )
+						<p> Input: Center Coordinates, xAxis, yAxis, radius, min & maxAngle in Radians</p>
+						<p> Output: MobiusDataObject with NURBS Geometry</p>
+						<p> Description: Creates a NURBS Arc </p>
+						<p> Example: makeArc([0,0,0], [1,0,0], [0,1,0], 12, 0, 3.14)</p>
+					</li>
+					
+					<li>makeCircle (radius, segments)
 						<p> Input: </p>
 						<p> Output: </p>
 						<p> Description: </p>
 						<p> Example: </p>
+					</li>
+					
+					<li>makePolyline (arrOfPoints)
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>makeBox (length, breadth, height)
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					
+					<li>makeSphere (radius)
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>makePolygonByPoints ( pointsXY )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>extrudePolygon (mObj, thickness, bevel )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>makeLathe ( points, segments )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>makePlane ( width, height )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>makePolyhedron ( verticesOfCube, indicesOfFaces )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>make2DRing ( innerRadius, outerRadius, segments )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>makeTetrahedron ( radius )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>makeTorus (radius, tube, radialSegments, tubularSegments)
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>makeTorusKnot ( radius, tube, radialSegments, tubularSegments )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>				
+				</ul>
+				
+				<h2 id="geometry_csg">CSG Operations</h2>
+				<ul>
+					<li>objectUnion( mObj1, mObj2 )
+						<p> Input: Numeric Array </p>
+						<p> Output: MobiusDataObject with NURBS Geometry </p>
+						<p> Description: Creates a NURBS Line </p>
+						<p> Example: makeLine( [0, 0, 0], [10, 12, 14])</p>
+					</li>
+				
+					<li>objectSubtract( mObj1, mObj2 )
+						<p> Input: Center Coordinates, xAxis, yAxis, radius, min & maxAngle in Radians</p>
+						<p> Output: MobiusDataObject with NURBS Geometry</p>
+						<p> Description: Creates a NURBS Arc </p>
+						<p> Example: makeArc([0,0,0], [1,0,0], [0,1,0], 12, 0, 3.14)</p>
+					</li>
+					
+					<li>objectIntersect( mObj1, mObj2 )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+				</ul>
+				
+				<h2 id="geometry_analysis">Analyzing Geometry</h2>
+				<ul>
+					<li>getCentre(mObj)
+						<p> Input: Numeric Array </p>
+						<p> Output: MobiusDataObject with NURBS Geometry </p>
+						<p> Description: Creates a NURBS Line </p>
+						<p> Example: makeLine( [0, 0, 0], [10, 12, 14])</p>
+					</li>
+				
+					<li>distanceBetweenTwoPoints( point1, point2)
+						<p> Input: Center Coordinates, xAxis, yAxis, radius, min & maxAngle in Radians</p>
+						<p> Output: MobiusDataObject with NURBS Geometry</p>
+						<p> Description: Creates a NURBS Arc </p>
+						<p> Example: makeArc([0,0,0], [1,0,0], [0,1,0], 12, 0, 3.14)</p>
+					</li>
+					
+					<li>getLength( mObj )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+				</ul>
+				
+				<h1 id="nurbs">Curves and Surfaces</h1>
+				
+				<h2 id="nurbs_creation">Making NURBS</h2>		
+				<ul>
+					<li>makeLine(startPoint, endPoint)
+						<p> Input: Numeric Array </p>
+						<p> Output: MobiusDataObject with NURBS Geometry </p>
+						<p> Description: Creates a NURBS Line </p>
+						<p> Example: makeLine( [0, 0, 0], [10, 12, 14])</p>
+					</li>
+				
+					<li>makeArc(centerPoint, xaxis, yaxis, radius, minAngle, maxAngle)
+						<p> Input: Center Coordinates, xAxis, yAxis, radius, min & maxAngle in Radians</p>
+						<p> Output: MobiusDataObject with NURBS Geometry</p>
+						<p> Description: Creates a NURBS Arc </p>
+						<p> Example: makeArc([0,0,0], [1,0,0], [0,1,0], 12, 0, 3.14)</p>
 					</li>
 					
 					<li>makeBezierCurve(points, weights)
@@ -181,34 +340,288 @@
 				</ul>
 				
 				<h2 id="nurbs_analysis">Analysing NURBS</h2>
-				<p>The library is split into four parts:</p>
+				<ul>
+					<li>getPointOnSurface( surface, u, v )
+						<p> Input: Numeric Array </p>
+						<p> Output: MobiusDataObject with NURBS Geometry </p>
+						<p> Description: Creates a NURBS Line </p>
+						<p> Example: makeLine( [0, 0, 0], [10, 12, 14])</p>
+					</li>
 				
-				<h1 id="transformations">Tranformations</h2>
-				<p>The library is split into four parts:</p>
+					<li>getPointOnCurve( curve, t )
+						<p> Input: Center Coordinates, xAxis, yAxis, radius, min & maxAngle in Radians</p>
+						<p> Output: MobiusDataObject with NURBS Geometry</p>
+						<p> Description: Creates a NURBS Arc </p>
+						<p> Example: makeArc([0,0,0], [1,0,0], [0,1,0], 12, 0, 3.14)</p>
+					</li>
+					
+					<li>divideCurveByEqualArcLength( curve, divisions )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>divideCurveByArcLength( curve, arcLength )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>getTangentAtCurveParameter( curve, t )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					
+					<li>getNormalAtSurfaceParameter( surface, u, v )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>makeMeshBySubdivision( mObj, ugrid, vgrid )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>makeTubeByLine( mObj, radius )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>getCornerPointsFromSurface( mObj )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>makePoint(x, y, z)
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+
+				</ul>
 				
-				<h1 id="general">General Functions</h2>
-				<p>The library is split into four parts:</p>
+				<h1 id="transformations">Tranformations</h1>
+				<ul>
+					<li>makeCopy(mObj, xCoord, yCoord, zCoord)
+						<p> Input: Numeric Array </p>
+						<p> Output: MobiusDataObject with NURBS Geometry </p>
+						<p> Description: Creates a NURBS Line </p>
+						<p> Example: makeLine( [0, 0, 0], [10, 12, 14])</p>
+					</li>
+				
+					<li>shiftObject(mObj, shiftX, shiftY, shiftZ)
+						<p> Input: Center Coordinates, xAxis, yAxis, radius, min & maxAngle in Radians</p>
+						<p> Output: MobiusDataObject with NURBS Geometry</p>
+						<p> Description: Creates a NURBS Arc </p>
+						<p> Example: makeArc([0,0,0], [1,0,0], [0,1,0], 12, 0, 3.14)</p>
+					</li>
+					
+					<li>moveObjectToPoint(mObj, xCoord, yCoord, zCoord)
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>scaleObject(mObj, scaleX, scaleY, scaleZ)
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>rotateObject(mObj, xAxis, yAxis, zAxis)
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					
+					<li>makeFrame()
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>orientObjectTowards( object, lookAtPoint )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>addToFrame( frame, object )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+				</ul>
+				
+				<h1 id="general">General Functions</h1>
 				
 				<h2 id="general_maths">Mathematical Functions</h2>
-				<p>The library is split into four parts:</p>
+				<ul>
+					<li>convertDegreesToRadians( degrees )
+						<p> Input: Numeric Array </p>
+						<p> Output: MobiusDataObject with NURBS Geometry </p>
+						<p> Description: Creates a NURBS Line </p>
+						<p> Example: makeLine( [0, 0, 0], [10, 12, 14])</p>
+					</li>
 				
+					<li>convertRadiansToDegrees( radians )
+						<p> Input: Center Coordinates, xAxis, yAxis, radius, min & maxAngle in Radians</p>
+						<p> Output: MobiusDataObject with NURBS Geometry</p>
+						<p> Description: Creates a NURBS Arc </p>
+						<p> Example: makeArc([0,0,0], [1,0,0], [0,1,0], 12, 0, 3.14)</p>
+					</li>
+					
+					<li>getAbsoluteValue( number )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>getSignificantDigits( number, digits)
+						<p> Input: Numeric Array </p>
+						<p> Output: MobiusDataObject with NURBS Geometry </p>
+						<p> Description: Creates a NURBS Line </p>
+						<p> Example: makeLine( [0, 0, 0], [10, 12, 14])</p>
+					</li>
+				
+					<li>getDotProduct( mat1, mat2 )
+						<p> Input: Center Coordinates, xAxis, yAxis, radius, min & maxAngle in Radians</p>
+						<p> Output: MobiusDataObject with NURBS Geometry</p>
+						<p> Description: Creates a NURBS Arc </p>
+						<p> Example: makeArc([0,0,0], [1,0,0], [0,1,0], 12, 0, 3.14)</p>
+					</li>
+					
+					<li>getCrossProduct( mat1, mat2 )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+				</ul>
+						
 				<h2 id="general_list">List Functions</h2>
-				<p>The library is split into four parts:</p>
+				<ul>
+					<li>makeSequence(start, end, stepSize)
+						<p> Input: Numeric Array </p>
+						<p> Output: MobiusDataObject with NURBS Geometry </p>
+						<p> Description: Creates a NURBS Line </p>
+						<p> Example: makeLine( [0, 0, 0], [10, 12, 14])</p>
+					</li>
+				
+					<li>addToList( list, object )
+						<p> Input: Center Coordinates, xAxis, yAxis, radius, min & maxAngle in Radians</p>
+						<p> Output: MobiusDataObject with NURBS Geometry</p>
+						<p> Description: Creates a NURBS Arc </p>
+						<p> Example: makeArc([0,0,0], [1,0,0], [0,1,0], 12, 0, 3.14)</p>
+					</li>
+					
+					<li>indexOfObject( list, object )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+
+					<li>removeIndexFromList( list, index )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+
+					<li>getMaxValue( valueList )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+
+					<li>getMinValue( valueList )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+
+					<li>sumList( valueList )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+
+					<li>averageList( valueList )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>					
+					
+					<li>rangeOfList( valueList )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+
+					<li>getListLength( valueList )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+						
+				</ul>
+				
+				<h2 id="general_display">Display Functions</h2>
+				<ul>	
+					<li>print (content)
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>addMaterial (obj, material_type, wireframe, color, transparent)
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>addData (obj, dataName, dataValue)
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+				</ul>
 
             </div>
         </div>
-	<script>
-		$(window).scroll(function(){
-		if ($(window).scrollTop() >= 200)
-		{
-			$("#index").css({position:'fixed',left:'0',top:'0'});
-		}
-		else
-		{
-			$("#index").css({position:'absolute',left:'0',top:'200px'});
-		}
-	});
-	</script>
     
 </body>
 </html>
