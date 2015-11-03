@@ -28,10 +28,6 @@ var VIDAMO = ( function (mod){
 		}
 	};
 
-	mod.showObject = function( object ){
-		return JSON.stringify(object);
-	};
-
 	//
 	//
 	//
@@ -761,7 +757,12 @@ var VIDAMO = ( function (mod){
 	//
 	mod.makeCopy = function(mObj, xCoord, yCoord, zCoord){
 		// needs to be optimized
-
+		
+		if( mObj.geometry == undefined ){
+			console.log("Non-Mobius passed to copy function");
+			return mObj;
+		}
+		
 		var newCopy = new MobiusDataObject( mObj.geometry );
 
 		var newCopyMesh = newCopy.extractGeometry( mObj.extractGeometry().clone() );
@@ -798,17 +799,6 @@ var VIDAMO = ( function (mod){
 		mesh.translateX(shiftX);
 		mesh.translateY(shiftY);
 		mesh.translateZ(shiftZ);
-<<<<<<< HEAD
-		
-		// if it's verbs geometry, the geometry itself needs to be changed so that copies are accurate
-		// var raw_matrix = mesh.matrix.elements;
-		// var mat = [];
-		// for(var i=0; i<16; i=i+4){
-		// var subArr=[raw_matrix[i], raw_matrix[i+1], raw_matrix[i+2], raw_matrix[i+3]];
-		// mat.push(subArr);
-		// }
-=======
->>>>>>> gh-pages
 
 		return mObj;
 	};
@@ -886,42 +876,6 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	//
-<<<<<<< HEAD
-	mod.rotateObjectAroundAxis = function( mObj, axisVector, radians ){
-		//mObj Axis is a vector3
-		
-		//
-		// will have to do it through object 3D - make a default node instead??
-		// complicated
-		//
-
-		//
-		// will have to do it through object 3D - make a default node instead??
-		// complicated
-		//
-
-		// Rotate an object around an axis in world space (the axis passes through the object's position)
-		var object = mObj.extractGeometry();
-		var axis = axisVector.geometry;
-
-		var rotWorldMatrix = new THREE.Matrix4();
-		rotWorldMatrix.makeRotationAxis(axis.normalize(), radians);
-
-		rotWorldMatrix.multiply(object.matrix);                // pre-multiply
-
-		object.matrix = rotWorldMatrix;
-
-		object.rotation.setFromRotationMatrix(object.matrix);
-
-		return mObj;
-	};
-
-	//
-	//
-	//
-	//
-=======
->>>>>>> gh-pages
 	mod.makeFrame = function(){
 		return new MobiusDataObject( new THREE.Object3D() );
 	};

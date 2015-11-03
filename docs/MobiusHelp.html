@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+        <title>Mobius 0.1.0</title>
+		<link href="mobiusHelpStyleSheet.css" rel="stylesheet" type="text/css">
+
+	<body id="body">
+
+        <div id="body">
+            <div id="index" class="sidebar">
+						<div id="mobius">
+							<div id="title>"<a href="http://phtj.github.io/mobius">Mobius</a></div>
+							<div id="version">v0.1.0</div>
+						<a href="http://github.com/phtj/mobius">View source on Github</a>
+						</div> 
+                
+				<ul>
+                    
+                    <li><a href="MobiusHelp.html#mobiusIntro">Mobius v0.1.0</a></li>
+                    <li><a href="MobiusHelp.html#mobiusDesc">What is Mobius?</a></li>
+                    <li><a href="MobiusHelp.html#mobiusWorking">How does Mobius work?</a></li>                 
+                    <li><a href="MobiusHelp.html#mobiusDataObject">What is a Mobius Object?</a></li>       
+					<li><a href="MobiusHelp.html#three">Geometry</a></li>					
+                    <li><a href="MobiusHelp.html#nurbs">Curves and Surfaces</a>
+						<ul>
+							<li><a href="MobiusHelp.html#nurbs_creation">Creating NURBS</a></li>
+							<li><a href="MobiusHelp.html#nurbs_analysis">Analyzing NURBS</a></li>   
+						</ul></li>
+					<li><a href="MobiusHelp.html#transformations">Transformations</a></li>
+					<li><a href="MobiusHelp.html#general">General Functions</a>
+						<ul>
+							<li><a href="MobiusHelp.html#general_maths">Mathematical Functions</a></li>
+							<li><a href="MobiusHelp.html#general_list">List Functions</a></li>   
+						</ul></li>		
+                    
+                </ul>
+            </div>
+
+            <div id="content">
+                <h1 id="mobiusIntro">Mobius Introduction</h1>
+				
+				<h1 id="mobiusDesc">What is Mobius?</h2>
+				<p> --Mobius Description-- </p>
+				
+				<h1 id="mobiusWorking">How does Mobius work?</h2>
+				<p> --Working-- </p>
+				
+				<h1 id="mobiusDataObject">What is a Mobius Data Object?</h2>
+				<p> -- MobiusDataObject -- </p>
+				
+				<h1 id="three">Geometry</h2>
+				<ul>
+					<li>
+				</ul>
+				
+				<h1 id="nurbs">Curves and Surfaces</h2>
+				
+				<h2 id="nurbs_creation">Creating NURBS</h2>
+				
+				<ul>
+					<li><h3>makeLine(startPoint, endPoint)</h3>
+						<p> Input: Numeric Array </p>
+						<p> Output: MobiusDataObject with NURBS Geometry </p>
+						<p> Description: Creates a NURBS Line </p>
+						<p> Example: makeLine( [0, 0, 0], [10, 12, 14])</p>
+					</li>
+				
+					<li><h3>makeArc(centerPoint, xaxis, yaxis, radius, minAngle, maxAngle)</h3>
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>makeBezierCurve(points, weights)
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>makeCircleBoundary(centerPoint,xaxis,yaxis,radius)
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>makeEllipse( centerPoint ,xaxis,yaxis )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					
+					<li>makeEllipseArc( centerPoint,xaxis,yaxis,minAngle,maxAngle )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>makeCurveByPoints( points, degree )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>makeCurveByKnotsControlPointsWeights(degree,knots,controlPoints,weights )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>makeSurfaceByKnotsControlPointsWeights( degreeU,degreeV,knotsU,knotsV,controlPoints,weights )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>makeSurfaceByCorners( point0, point1, point2, point3 )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>makeSurfaceByRevolution( mObj, centerPoint, axis, angle )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>makeSurfaceBySweep( mObjProfile, mObjRail)
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>makeSurfaceByLoft(listOfCurves, degree)
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>makeSurfaceByExtrusion( mObjProfile, direction)
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>makeSurfaceAsSphere(centrePoint, radius)
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>makeSurfaceAsCone( axis,xaxis,base,height,radius )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+					
+					<li>makeSurfaceAsCylinder( axis, xaxis, base, height, radius )
+						<p> Input: </p>
+						<p> Output: </p>
+						<p> Description: </p>
+						<p> Example: </p>
+					</li>
+				
+				</ul>
+				
+				<h2 id="nurbs_analysis">Analysing NURBS</h2>
+				<p>The library is split into four parts:</p>
+				
+				<h1 id="transformations">Tranformations</h2>
+				<p>The library is split into four parts:</p>
+				
+				<h1 id="general">General Functions</h2>
+				<p>The library is split into four parts:</p>
+				
+				<h2 id="general_maths">Mathematical Functions</h2>
+				<p>The library is split into four parts:</p>
+				
+				<h2 id="general_list">List Functions</h2>
+				<p>The library is split into four parts:</p>
+
+            </div>
+        </div>
+	<script>
+		$(window).scroll(function(){
+		if ($(window).scrollTop() >= 200)
+		{
+			$("#index").css({position:'fixed',left:'0',top:'0'});
+		}
+		else
+		{
+			$("#index").css({position:'absolute',left:'0',top:'200px'});
+		}
+	});
+	</script>
+    
+</body>
+</html>
