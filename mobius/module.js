@@ -1075,10 +1075,6 @@ var VIDAMO = ( function (mod){
 
 				geom.push(tempGeom0);
 				geomData.push(tempData0);
-				//for(var x = 0; x<tempGeom0.length; x++){
-				//	geom.push(tempGeom0[x]);
-				//	geomData.push(tempData0[x]);
-				//}
 			}
 			else if(obj instanceof  MobiusDataObject){
 				geom.push( obj.extractGeometry() );

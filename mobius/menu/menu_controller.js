@@ -15,6 +15,7 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
         // for export selected node
         $rootScope.$on("nodeIndex", function(event, message) {
             $scope.nodeIndex = message;
+            console.log($scope.nodeIndex );
         });
 
 
@@ -234,6 +235,10 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
         // export selected node
         // nodeType follows the original node name
         $scope.exportNode = function (){
+
+            if($scope.nodeIndex === undefined){
+                consoleMsg.errorMsg('noNode');
+            }
 
             var nodeJson = JSON.stringify(generateCode.getChartViewModel().nodes[$scope.nodeIndex].data, null, 4);
 

@@ -3,10 +3,12 @@
 
 
 
-<div ui-tree-handle class="tree-node tree-node-content">
+<div ui-tree-handle class="tree-node tree-node-content procedure-tree ">
+
+    <div class="tree-hover">
 
     <!--data procedure-->
-    <div ng-if="node.title === 'Data'" style="padding-left:20px " class="tree-node-content">
+    <div ng-if="node.title === 'Data'" style="padding-left:20px " class="tree-node-content  ">
         <a>
             <!--vairable name and value-->
             <a href="#" data-nodrag editable-text="node.dataName" blur="submit"  buttons="no" >
@@ -32,7 +34,7 @@
     </div>
 
     <!--action procedure-->
-    <div ng-if="node.title === 'Action' && node.method !== 'expression'" style="padding-left:20px" class="tree-node-content">
+    <div ng-if="node.title === 'Action' && node.method !== 'expression'" style="padding-left:20px" class="tree-node-content ">
         <!--return vairable-->
         <a href="#" data-nodrag buttons="no"
            blur="submit"
@@ -48,22 +50,21 @@
         (
         <!--parameters-->
         <div ng-repeat="parameter in node.parameters" style="display: inline-block" ng-class="{'last': $last}">
-            &nbsp;
             <a data-nodrag href="#"
                editable-text="parameter.value"
                buttons="no"
                blur="submit">{{parameter.value || parameter.type}}</a>
-            &nbsp; {{$last? '': ','}}
+            {{$last? '': ','}}&nbsp;
         </div>
         )
 
         <!--delete key-->
         <a class="pull-right btn btn-xs" data-nodrag ng-click="remove(this)" style="padding: 0;margin: 0" >
-            <span style="font-weight: 400; font-size: 16px;line-height:1" > &times; </span>
+            <span style="font-weight: 400; font-size: 16px;line-height:1; right:2px; position: absolute" > &times; </span>
         </a>
     </div>
 
-    <div ng-if="node.title === 'Action' && node.method === 'expression'" style="padding-left:20px" class="tree-node-content">
+    <div ng-if="node.title === 'Action' && node.method === 'expression'" style="padding-left:20px" class="tree-node-content ">
         <a data-nodrag href="#" editable-text="node.expression" buttons="no" blur="submit">
             {{ node.expression || 'expression' }}
         </a>
@@ -74,8 +75,9 @@
         </a>
     </div>
 
+
     <!--control procedure-->
-    <div ng-if="node.title === 'Control'"  class="tree-node-content">
+    <div ng-if="node.title === 'Control'"  class="tree-node-content ">
         <!--expand/collapse key-->
         <div ng-if="node.controlType === 'if' || node.controlType === 'else' " style="margin-left: -20px">
             <a data-nodrag ng-click="toggle(this)" >
@@ -145,6 +147,9 @@
         </a>
 
     </div>
+
+    </div>
+
 
     <div ui-tree-nodes=""  ng-model="node.nodes" ng-class="{hidden: collapsed}">
         <div ng-repeat="node in node.nodes"
