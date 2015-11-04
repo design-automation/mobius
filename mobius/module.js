@@ -28,10 +28,6 @@ var VIDAMO = ( function (mod){
 		}
 	};
 
-	mod.showObject = function( object ){
-		return JSON.stringify(object);
-	};
-
 	//
 	//
 	//
@@ -587,6 +583,10 @@ var VIDAMO = ( function (mod){
 			return new MobiusDataObject( new THREE.Vector3(x, y, z));
 	};
 
+	//
+	//
+	//
+	//
 	mod.makePositionVectorsFromPoints = function( list_of_points ){
 		var mObjArr = [];
 		for(var i=0; i<list_of_points.length; i++){
@@ -596,10 +596,18 @@ var VIDAMO = ( function (mod){
 		return mObjArr;
 	};
 
+	//
+	//
+	//
+	//
 	mod.makeCircle = function(radius, segments){
 		return new MobiusDataObject( new THREE.CircleGeometry( radius, segments ));
 	};
 
+	//
+	//
+	//
+	//
 	mod.makeCylinder = function(radiusTop, radiusBottom, height, radiusSegments, heightSegments, openEnded ){
 		return new MobiusDataObject( new THREE.CylinderGeometry( radiusTop, radiusBottom, height, radiusSegments, heightSegments, openEnded ));
 	};
@@ -650,10 +658,10 @@ var VIDAMO = ( function (mod){
 		return new MobiusDataObject ( customShape );
 	};
 
-	//
-	// dir: {x:, y:, z:}
-	//
-	//
+	/**
+	 * @requires dir: {x:, y:, z:}
+	 *
+	 */
 	mod.extrudePolygon = function(mObj, thickness, bevel ){
 		//mObj has to have shape  :/
 		var shape = mObj.geometry;
@@ -762,6 +770,11 @@ var VIDAMO = ( function (mod){
 	mod.makeCopy = function(mObj, xCoord, yCoord, zCoord){
 		// needs to be optimized
 
+		if( mObj.geometry == undefined ){
+			console.log("Non-Mobius passed to copy function");
+			return mObj;
+		}
+
 		var newCopy = new MobiusDataObject( mObj.geometry );
 
 		var newCopyMesh = newCopy.extractGeometry( mObj.extractGeometry().clone() );
@@ -769,7 +782,7 @@ var VIDAMO = ( function (mod){
 		newCopyMesh.position.x = xCoord;
 		newCopyMesh.position.y = yCoord;
 		newCopyMesh.position.z = zCoord;
-		
+
 		newCopyMesh.is_mObj = true;
 
 		return newCopy; //needs to be sorted out
@@ -785,15 +798,7 @@ var VIDAMO = ( function (mod){
 
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
-		
-		// if geom is nurbs - nothing in the mesh gets changed -solve for data issues though
-		if( mObj.geometry instanceof verb.geom.NurbsCurve || mObj.geometry instanceof verb.geom.NurbsSurface){
-			var mat = [[1,0,0,shiftX],[0,1,0,shiftY],[0,0,1,shiftZ],[0,0,0,1]]
-			mObj.geometry = mObj.geometry.transform( mat );
-			mObj.geometryUpdated = true;
-			return mObj;
-		}
-		
+
 		var mesh = mObj.extractGeometry();
 		mesh.translateX(shiftX);
 		mesh.translateY(shiftY);
@@ -808,21 +813,11 @@ var VIDAMO = ( function (mod){
 	//
 	mod.moveObjectToPoint = function(mObj, xCoord, yCoord, zCoord){
 
-		//could be a face too
-		if( mObj.geometry instanceof verb.geom.NurbsCurve || mObj.geometry instanceof verb.geom.NurbsSurface){
-			var centre = VIDAMO.getCentre(mObj);
-			
-			var transX = xCoord - centre[0];
-			var transY = xCoord - centre[0];
-			var transZ = xCoord - centre[0];
-			
-			return VIDAMO.shiftObject( mObj, transX, transY, transZ );
-		}
-		
+
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
 		mObj.extractGeometry().position.set(xCoord, yCoord, zCoord);
-		
+
 
 
 		return mObj;
@@ -834,14 +829,7 @@ var VIDAMO = ( function (mod){
 	//
 	mod.scaleObject = function(mObj, scaleX, scaleY, scaleZ){
 
-		// if geom is nurbs - nothing in the mesh gets changed -solve for data issues though
-		if( mObj.geometry instanceof verb.geom.NurbsCurve || mObj.geometry instanceof verb.geom.NurbsSurface){
-			var mat = [[scaleX,0,0,0],[0,scaleY,0,0],[0,0,scaleZ,0],[0,0,0,1]]
-			mObj.geometry = mObj.geometry.transform( mat );
-			mObj.geometryUpdated = true;
-			return mObj;
-		}
-		
+
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
 		mObj.extractGeometry().scale.set(scaleX, scaleY, scaleZ);
@@ -854,16 +842,7 @@ var VIDAMO = ( function (mod){
 	//
 	//
 	mod.rotateObject = function(mObj, xAxis, yAxis, zAxis){
-		
-		// if geom is nurbs - nothing in the mesh gets changed -solve for data issues though
-		// still left
-		if( mObj.geometry instanceof verb.geom.NurbsCurve || mObj.geometry instanceof verb.geom.NurbsSurface){
-			var mat = [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]
-			mObj.geometry = mObj.geometry.transform( mat );
-			mObj.geometryUpdated = true;
-			return mObj;
-		}
-		
+
 		// angles taken in radians
 		var mesh = mObj.extractGeometry();
 		mesh.rotateX(xAxis);
