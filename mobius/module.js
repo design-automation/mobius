@@ -75,6 +75,7 @@ var VIDAMO = ( function (mod){
 	mod.getCrossProduct = function( mat1, mat2 ){
 		return verb.core.Vec.cross(mat1, mat2);
 	};
+	
 
 	/*
 	 *
@@ -768,24 +769,35 @@ var VIDAMO = ( function (mod){
 	// Note - modifies the convertedGeometry Mesh - needs to update topology if already created and re-link the data associated
 	//
 	mod.makeCopy = function(mObj, xCoord, yCoord, zCoord){
-		// needs to be optimized
 
+		// for output cloning
 		if( mObj.geometry == undefined ){
 			console.log("Non-Mobius passed to copy function");
 			return mObj;
 		}
+		
+		var new_mObj = new MobiusDataObject( mObj.geometry );
+		
+		// attach data
+		if(mObj.data != undefined)
+			VIDAMO.addData(new_mObj, mObj.data);
 
-		var newCopy = new MobiusDataObject( mObj.geometry );
-
-		var newCopyMesh = newCopy.extractGeometry( mObj.extractGeometry().clone() );
-
-		newCopyMesh.position.x = xCoord;
-		newCopyMesh.position.y = yCoord;
-		newCopyMesh.position.z = zCoord;
-
-		newCopyMesh.is_mObj = true;
-
-		return newCopy; //needs to be sorted out
+		// if verbs object, has to be copied and translated
+		if(mObj.geometry instanceof verb.geom.NurbsCurve || mObj.geometry instanceof verb.geom.NurbsSurface){
+			
+			var new_mObj = new MobiusDataObject( mObj.geometry );
+			VIDAMO.moveObjectToPoint(new_mObj, xCoord, yCoord, zCoord);
+			
+		}else{
+				// only required if it's a three.js object - to get the transformations on it
+				var new_mObjMesh = new_mObj.extractGeometry( mObj.extractGeometry().clone() ); // sets the extractGeometry according to the original object
+				new_mObjMesh.position.x = xCoord;
+				new_mObjMesh.position.y = yCoord;
+				new_mObjMesh.position.z = zCoord;
+				new_mObjMesh.is_mObj = true; // because the mesh is not regenerated - and clone doesn't clone own properties - fix this later
+		}
+		
+		return new_mObj; //needs to be sorted out
 	};
 
 	//
@@ -799,12 +811,24 @@ var VIDAMO = ( function (mod){
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
 
-		var mesh = mObj.extractGeometry();
-		mesh.translateX(shiftX);
-		mesh.translateY(shiftY);
-		mesh.translateZ(shiftZ);
-
-		return mObj;
+		if(mObj.geometry instanceof verb.geom.NurbsCurve || mObj.geometry instanceof verb.geom.NurbsSurface){
+			var geometry = mObj.geometry; 
+			var mat = [ [1,0,0, shiftX],
+							[0,1,0,shiftY],
+								[0,0,1, shiftZ],
+									[0,0,0,1]
+						];
+			var transformedGeometry = geometry.transform( mat );
+			mObj.geometry = transformedGeometry; 
+			mObj.geometryUpdated = true;
+		}else{
+				var mesh = mObj.extractGeometry();
+			mesh.translateX(shiftX);
+			mesh.translateY(shiftY);
+			mesh.translateZ(shiftZ);
+		}
+		
+		//return mObj;
 	};
 
 	//
@@ -816,11 +840,22 @@ var VIDAMO = ( function (mod){
 
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
-		mObj.extractGeometry().position.set(xCoord, yCoord, zCoord);
+		
+		if(mObj.geometry instanceof verb.geom.NurbsCurve || mObj.geometry instanceof verb.geom.NurbsSurface){
+			
+			var orCenter = VIDAMO.getCentre(mObj);
+			
+			// translation required
+			var target = [xCoord, yCoord, zCoord];
+			var tx = target[0] - orCenter[0];
+			var ty = target[1] - orCenter[1];
+			var tz = target[2] - orCenter[2]; console.log(tx, ty, tz);
+			
+			VIDAMO.shiftObject( mObj, tx, ty, tz );		
+		} else
+			mObj.extractGeometry().position.set(xCoord, yCoord, zCoord);	
 
-
-
-		return mObj;
+		//return mObj;
 	};
 
 	//
@@ -829,12 +864,29 @@ var VIDAMO = ( function (mod){
 	//
 	mod.scaleObject = function(mObj, scaleX, scaleY, scaleZ){
 
-
+		
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
-		mObj.extractGeometry().scale.set(scaleX, scaleY, scaleZ);
+		if(mObj.geometry instanceof verb.geom.NurbsCurve || mObj.geometry instanceof verb.geom.NurbsSurface){
+			var geom = mObj.geometry;
+			var centre = VIDAMO.getCentre(mObj);
+			
+			var mat = [ [scaleX, 0, 0, 0],
+							[0,scaleY,0,0],
+								[0,0,scaleZ,0],
+									[0,0,0,1]
+						];
+			
+			mObj.geometry = geom.transform(mat);
+			
+			// shift to original centre point
+			VIDAMO.moveObjectToPoint(mObj, centre[0], centre[1], centre[2]);
+			
+			mObj.geometryUpdated = true;
+		}else
+			mObj.extractGeometry().scale.set(scaleX, scaleY, scaleZ);
 
-		return mObj;
+		//return mObj;
 	};
 
 	//
