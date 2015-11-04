@@ -11,10 +11,12 @@ var VIDAMO = ( function (mod){
 	 *
 	 */
 
-	//
-	// Input: String
-	// Output: NULL, prints to console
-	//
+	/**
+	 * Prints to console
+	 * @constructor
+	 * @param {string} title - The title of the book.
+	 * @param {string} author - The author of the book.
+	 */
 	mod.print = function(content){
 		// try to find vidamo web app, if found print in vidamo console
 
@@ -895,11 +897,44 @@ var VIDAMO = ( function (mod){
 	//
 	mod.rotateObject = function(mObj, xAxis, yAxis, zAxis){
 
-		// angles taken in radians
-		var mesh = mObj.extractGeometry();
-		mesh.rotateX(xAxis);
-		mesh.rotateY(yAxis);
-		mesh.rotateZ(zAxis);
+		if(mObj.geometry instanceof verb.geom.NurbsCurve || mObj.geometry instanceof verb.geom.NurbsSurface){
+			var geom = mObj.geometry;
+			var centre = VIDAMO.getCentre(mObj);
+			
+			var mat_x = [ [1, 0, 0, 0],
+							[0,	Math.cos(xAxis), -Math.sin(xAxis),0],
+								[0,	Math.sin(xAxis), Math.cos(xAxis),0],
+									[0,0,0,1]
+						];
+						
+			var mat_y = [ [Math.cos(yAxis), 0, Math.sin(yAxis), 0],
+							[0,1,0,0],
+								[-Math.sin(yAxis), 0, Math.cos(yAxis),0],
+									[0,0,0,1]
+						];
+						
+			var mat_z = [ [Math.cos(zAxis), -Math.sin(zAxis), 0, 0],
+							[Math.sin(zAxis),	Math.cos(zAxis),0,	0],
+								[0,	0,	1,	0],
+									[0,	0,	0,	1]
+						];
+			
+			geom = geom.transform(mat_x);
+			geom = geom.transform(mat_y);
+			geom = geom.transform(mat_z);
+			mObj.geometry = geom;
+			
+			// shift to original centre point
+			VIDAMO.moveObjectToPoint(mObj, centre[0], centre[1], centre[2]);
+			
+			mObj.geometryUpdated = true;
+		}else{
+				// angles taken in radians
+				var mesh = mObj.extractGeometry();
+				mesh.rotateX(xAxis);
+				mesh.rotateY(yAxis);
+				mesh.rotateZ(zAxis);
+		}
 	};
 
 	//
