@@ -108,7 +108,6 @@ angular.module('flowChart', ['dragging'] )
 	];
 
 	$scope.deleteSelected = function(evt){
-		console.log("xxx")
 		//if(evt.KeyCode === ){
 		//	$scope.$emit("deleteSelected"); // -> graph controller
 		//}
@@ -287,6 +286,7 @@ angular.module('flowChart', ['dragging'] )
 
         // make sure double click not on node/connection
         // todo
+
 
         // update zoom factor
         $rootScope.$on("Update", function(event, message) {
@@ -493,7 +493,6 @@ angular.module('flowChart', ['dragging'] )
 					var nodeIndex = chart.handleNodeRightClicked(node, evt.ctrlKey);
 				}
 				// @ vidamo let controller know the current node
-				console.log("node ",nodeIndex," selected");
 				$scope.$emit("nodeIndex", nodeIndex);
 
 			}
@@ -506,9 +505,6 @@ angular.module('flowChart', ['dragging'] )
 	$scope.nodeDoubleClick = function(evt){
 		document.getElementById("node-creator").style.display = "none";
 		$scope.$emit("editProcedure"); // -> graph controller
-
-		console.log("it is dbl clicked!")
-
 	};
 
 	//

@@ -21,18 +21,17 @@
     <link rel="stylesheet" href="assets/css/material.css">
     <link rel="stylesheet" href="assets/css/ui-grid/ui-grid.min.css">
 
-    <!--<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.css">-->
 
 </head>
 
 <body>
 <div>
+
     <!-- dropdown Menu -->
     <div ng-controller="menuCtrl" class = "menubar">
         <span dropdown on-toggle="toggled(open)">
             <a style="color: #000" href dropdown-toggle>  File |</a>
             <ul class="dropdown-menu">
-                <!--todo new: refresh? -->
                 <li>
                     <a href="" ng-click="newScene()"> New Scene</a>
                 </li>
@@ -133,10 +132,14 @@
                     <a href="https://github.com/phtj/vidamo" target="_blank"> Github Repo </a>
                 </li>
                 <li>
-                    <a href ng-click=" toggleCheatSheet();"> Hotkeys </a>
+                    <a ng-click=" toggleCheatSheet();"> Hotkeys </a>
+                </li>
+                <li>
+                    <a href="doc/MobiusHelp.html" target="_blank"> Docs </a>
                 </li>
             </ul>
         </span>
+        <span style="position:absolute;right:10px;top:5px;font-size: 12px;color:#555"> Mobius v0.1</span>
     </div>
 
     <!-- resizable layout -->
@@ -228,7 +231,7 @@
                                  <pre class="nodeName" style="padding: 1px">
                                     &nbsp &nbsp Console
                                     <button class="btn btn-default btn-xs pull-right"
-                                            style="padding-top: 0;padding-bottom:0"
+                                            style="padding-top: 0;padding-bottom:0;right:10px"
                                             id = "clear"
                                             ng-click="clearConsole()"> Clear </button>
                                 </pre>
@@ -315,6 +318,13 @@
                                             title="Run program">
                                         Run
                                     </button>
+
+                                        <span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner"
+                                                style="position: absolute;
+                                                left:50%;
+                                                z-index: 999999999999999999999">
+                                        </span>
+
                                 </span>
 
                                 <div ng-controller="znpController" class="znpController">
@@ -359,7 +369,6 @@
 <script type="text/javascript" src="assets/js/angular-ui/hotkeys.js"></script>
 
 
-<!-- ace -->
 <script type="text/javascript" src="assets/js/angular-ui/ui-ace/ui-ace.js"></script>
 <script type="text/javascript" src="assets/js/packages/ace-builds/src-min-noconflict/ace.js"></script>
 
@@ -431,11 +440,6 @@
 <!-- other -->
 <script src="mobius/module.js"></script>
 <script src="mobius/datastructure.js"></script>
-
-<!-- angular material-->
-<!--<script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.js"></script>-->
-<!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-animate.min.js"></script>-->
-<!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-aria.min.js"></script>-->
 
 
 </body>

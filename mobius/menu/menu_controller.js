@@ -15,7 +15,6 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
         // for export selected node
         $rootScope.$on("nodeIndex", function(event, message) {
             $scope.nodeIndex = message;
-            console.log($scope.nodeIndex );
         });
 
 
@@ -211,8 +210,6 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                             procedureJsonObj = JSON.parse(procedureJsonString);
                             interfaceJsonObj = JSON.parse(interfaceJsonString);
                             var newNodeName = nodeJsonObj.type;
-
-                            console.log('1:  ', nodeJsonObj);
 
                             // install new imported node into nodeCollection
                             nodeCollection.installNewNodeType(newNodeName,

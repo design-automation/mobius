@@ -148,7 +148,7 @@ vidamo.controller('graphCtrl',[
 
         // listen to the graph, when a node is clicked, update the visual procedure/ code/ interface accordions
          $scope.$on("nodeIndex", function(event, message) {
-             console.log(message);
+
 
              if($scope.nodeIndex !== message && message !== undefined){
                 // on change of node selection, update
@@ -221,8 +221,15 @@ vidamo.controller('graphCtrl',[
 
             // prompt for name of new node and validate
             $timeout(function(){
-                var nodeName = prompt('Enter a name for new node:', 'node' + $scope.nextNodeId);
-                if (!isValidName(nodeName)) {return;}
+
+                var tempIndex = 0;
+                for(var i =0; i < $scope.chartViewModel.nodes.length; i++){
+                    if($scope.chartViewModel.nodes[i].data.type === type){
+                        tempIndex ++;
+                    }
+                }
+
+                var nodeName = type + tempIndex;
 
                 // update node name, node id and location
                 var newNodeDataModel = {};
@@ -263,9 +270,12 @@ vidamo.controller('graphCtrl',[
         // create and install a new node type
         $scope.createNewNodeType = function (){
             // prompt for name of new type and validate
-            var newTypeName = prompt('Enter a node for new type:');
+            var newTypeName = prompt('Enter a name for new type:');
 
-            if (!isValidName(newTypeName)) {return;}
+            if (!isValidName(newTypeName)) {
+                consoleMsg.errorMsg('invalidName');
+                return;}
+
             if ($scope.nodeTypes().indexOf(newTypeName) >= 0 ){
                 consoleMsg.errorMsg('dupName');
                 return;
@@ -502,7 +512,6 @@ vidamo.controller('graphCtrl',[
 
         $scope.$on('deselectAll',function(){
             $scope.chartViewModel.deselectAll();
-            console.log('ref')
             var scope = angular.element(document.getElementById('threeViewport')).scope();
             var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
 

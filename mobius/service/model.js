@@ -168,10 +168,10 @@ vidamo.factory('generateCode', function () {
                                 var connected_input_name = data.chartViewModel.connections[l].dest.data.name;
 
                                 data.javascriptCode +=  'var '
-                                    + connected_input_name +' ='
+                                    + connected_input_name +' = VIDAMO.makeCopy('
                                     + return_obj_name
                                     + '.'
-                                    + output_port_name + ';\n';
+                                    + output_port_name + ',0,0,0);\n';
                             }
                         }
                     }
