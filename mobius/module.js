@@ -13,9 +13,8 @@ var VIDAMO = ( function (mod){
 
 	/**
 	 * Prints to console
-	 * @constructor
-	 * @param {string} title - The title of the book.
-	 * @param {string} author - The author of the book.
+	 * @param {string} content - Message to be printed on the console
+	 * @returns {null}
 	 */
 	mod.print = function(content){
 		// try to find vidamo web app, if found print in vidamo console
@@ -30,6 +29,13 @@ var VIDAMO = ( function (mod){
 		}
 	};
 
+	/**
+	 * Converts RGB values into Hex color code
+	 * @param {int} red - Value between 0-255 for red color
+	 * @param {int} green - Value between 0-255 for green color
+	 * @param {int} blue - Value between 0-255 for blue color
+	 * @returns {string} - HexValue
+	 */
 	mod.rgbToHex = function(red, green, blue){
 		
 		return '0x'+toHex(red)+toHex(green)+toHex(blue);
@@ -43,50 +49,59 @@ var VIDAMO = ( function (mod){
 		}
 	};
 	
-	//
-	//
-	//
-	//
+	/**
+	 * Converts degrees into radians
+	 * @param {float} degree - Degrees to be converted
+	 * @returns {float} 
+	 */
 	mod.convertDegreesToRadians = function( degrees ){
 		return 0.01745*degrees;
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * Converts radians into degrees
+	 * @param {float} radians - Radians to be converted
+	 * @returns {float} 
+	 */
 	mod.convertRadiansToDegrees = function( radians ){
 		return 57.29*radians;
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * Returns absolute (positive) value of a number
+	 * @param {float} number  
+	 * @returns {float} Positive value
+	 */
 	mod.getAbsoluteValue = function( number ){
 		return Math.abs( number );
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * Returns value of a number upto significant digits
+	 * @param {float} number  - Number
+	 * @param {int} number  - Number of significant digits needed
+	 * @returns {float} 
+	 */
 	mod.getSignificantDigits = function( number, digits){
 		return number.toFixed(digits);
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * Computes dot product of two matrices
+	 * @param {array} mat1  - Matrix 1
+	 * @param {array} mat2  - Matrix 2
+	 * @returns {float} 
+	 */
 	mod.getDotProduct = function( mat1, mat2 ){
 		return verb.core.Vec.dot(mat1, mat2);
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * Computes cross product of two matrices
+	 * @param {array} mat1  - Matrix 1
+	 * @param {array} mat2  - Matrix 2
+	 * @returns {array} 
+	 */
 	mod.getCrossProduct = function( mat1, mat2 ){
 		return verb.core.Vec.cross(mat1, mat2);
 	};
@@ -98,10 +113,13 @@ var VIDAMO = ( function (mod){
 	 *
 	 */
 
-	//
-	// Input: Numeric
-	// Output: Number Array
-	//
+	/**
+	 * Returns a number sequence in the form of an array
+	 * @param {float or int} start  - Starting value of the sequence
+	 * @param {float or int} end  - Ending value of the sequence
+	 * @param {float or int} stepSize  - Increment or Decrement value to get to the 'end' value from the 'start' value
+	 * @returns {array} 
+	 */
 	mod.makeSequence = function(start, end, stepSize){
 
 		var arr = [];
@@ -110,35 +128,41 @@ var VIDAMO = ( function (mod){
 		return arr;
 	};
 
-	//
-	// Input: Array, Object
-	// Output: Modified Array
-	//
+	/**
+	 * Adds an element to a list
+	 * @param {array} list  - List to which an element needs to be pushed
+	 * @param {array element} object - Element to be pushed into the list
+	 * @returns {null} 
+	 */
 	mod.addToList = function( list, object ){
-		return list.push( object );
+		list.push( object );
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * Finds the index of the first occurence of an array element. 
+	 * @param {array} list  - List in which an element needs to be searched
+	 * @param {array element} object - Element to be searched for
+	 * @returns {int} Returns -1 if the element doesn't exist in array. 
+	 */
 	mod.indexOfObject = function( list, object ){
 		return list.indexOf( object );
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * Removes an array element from a list by it's index number
+	 * @param {array} list  - List in which an element needs to be removed
+	 * @param {int} index - Index to be removed
+	 * @returns {null} 
+	 */
 	mod.removeIndexFromList = function( list, index ){
 		list.splice(index, 1);
-		return list;
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * Gets the maximum value in a numeric array
+	 * @param {array} valueList - List from which maximum value is required
+	 * @returns {float / int} 
+	 */
 	mod.getMaxValue = function( valueList ){
 		var maxValue = valueList[0];
 		for(var i=0; i<valueList.length; i++)
@@ -146,10 +170,11 @@ var VIDAMO = ( function (mod){
 		return maxValue;
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * Gets the minimum value in a numeric array
+	 * @param {array} valueList - List from which minimum value is required
+	 * @returns {float / int} 
+	 */
 	mod.getMinValue = function( valueList ){
 		var minValue = valueList[0];
 		for(var i=0; i<valueList.length; i++)
@@ -157,10 +182,11 @@ var VIDAMO = ( function (mod){
 		return minValue;
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * Gets the sum of a numeric array
+	 * @param {array} valueList - List which is to be summed
+	 * @returns {float / int} 
+	 */
 	mod.sumList = function( valueList ){
 		var sum = 0;
 		for(var i=0; i<valueList.length; i++)
@@ -168,26 +194,29 @@ var VIDAMO = ( function (mod){
 		return sum;
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * Gets the avaerage of a numeric array
+	 * @param {array} valueList - List which is to be averaged
+	 * @returns {float / int} 
+	 */
 	mod.averageList = function( valueList ){
 		return VIDAMO.sumList( valueList )/ valueList.length;
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * Returns the span of the list - the difference between the maximum and the minimum value in the list
+	 * @param {array} valueList - List which is to be analyzed
+	 * @returns {float / int} 
+	 */
 	mod.rangeOfList = function( valueList ){
 		return VIDAMO.getMaxValue( valueList ) - VIDAMO.getMinValue( valueList );
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * Returns the length of the list 
+	 * @param {array} valueList - List which is to be analyzed
+	 * @returns {int} 
+	 */
 	mod.getListLength = function( valueList ){
 		return valueList.length
 	};
@@ -199,10 +228,11 @@ var VIDAMO = ( function (mod){
 	 *
 	 */
 
-	//
-	//
-	//
-	//
+	/**
+	 * Returns the centre of a NURBS Curve, NURBS Surface or a 3D Geometry
+	 * @param {array} mObj - MobiusDataObject containing Nurbs Geometry or 3D Geometry
+	 * @returns {array} Point - [x, y, z]
+	 */
 	mod.getCentre = function(mObj){
 		//calculate centre based on what kind of object
 		var geometry = mObj.geometry;
@@ -217,10 +247,11 @@ var VIDAMO = ( function (mod){
 			return "Invalid Input"
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * Returns the distance between two points or position vectors
+	 * @param {point / MobiusDataObject} point - [x, y , z] or MobiusDataObject with PositionVector
+	 * @returns {float} Distance 
+	 */
 	mod.distanceBetweenTwoPoints = function( point1, point2){
 		var deltaX, deltaY, deltaZ;
 
@@ -243,10 +274,11 @@ var VIDAMO = ( function (mod){
 		return distance;
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * Returns the length of a MobiusDataObject containing a PositionVector or a NURBS Curve
+	 * @param {MobiusDataObject} mObj - PositionVector or NURBS Curve
+	 * @returns {float} Length 
+	 */
 	mod.getLength = function( mObj ){
 		var geom = mObj.geometry;
 		return geom.length();
@@ -260,10 +292,12 @@ var VIDAMO = ( function (mod){
 	 *
 	 */
 
-	//
-	// Input: Number Array
-	// Output: MobiusDataObject with NURBS geometry
-	//
+	/**
+	 * Returns a MobiusDataObject containing a NURBS Curve
+	 * @param {array} startPoint - Starting point of the line in [x,y,z] format
+	 * @param {array} endPoint - Ending point of the line in [x,y,z] format	 
+	 * @returns {MobiusDataObject}  - NURBS Curve
+	 */
 	mod.makeLine = function(startPoint, endPoint){
 		// input variations
 		// start, end could be a vector3 - has to be converted into an array
@@ -271,104 +305,145 @@ var VIDAMO = ( function (mod){
 		return new MobiusDataObject( new verb.geom.Line(startPoint, endPoint) );
 	};
 
-	//
-	// Input: Numeric and Numeric Array Input
-	// Output: MobiusDataObject with NURBS geometry
-	//
+	/**
+	 * Returns a MobiusDataObject containing a NURBS Curve
+	 * @param {array} centerPoint - Centre point of the Arc in [x,y,z] format
+	 * @param {array} xaxis - Direction of X-Axis of the Arc in [x,y,z] format 
+	 * @param {array} yaxis - Direction of Y-Axis of the Arc in [x,y,z] format 
+	 * @param {array} radius - Radius of the Arc
+	 * @param {float} minAngle - Minimum Angle in Radians
+	 * @param {float} maxAngle - Maximum Angle in Radians
+	 * @returns {MobiusDataObject}  - NURBS Curve
+	 */
 	mod.makeArc = function(centerPoint, xaxis, yaxis, radius, minAngle, maxAngle){
 		// input variations
 		// center, axis and yaxis could be vector3
 		return new MobiusDataObject( new verb.geom.Arc(centerPoint,xaxis,yaxis,radius,minAngle,maxAngle) );
 	};
 
-	//
-	// Input: Numeric and Numeric Array Input
-	// Output: MobiusDataObject with NURBS geometry
-	//
+	/**
+	 * Returns a MobiusDataObject containing a NURBS Curve
+	 * @param {array} points - Array of Control Points for the Bezier Curve ( [[x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4], ...] )
+	 * @param {array} weights - Weights
+	 * @returns {MobiusDataObject}  - NURBS Curve
+	 */
 	mod.makeBezierCurve = function(points, weights){
 		// points could be vector3
 		return new MobiusDataObject( new verb.geom.BezierCurve(points, weights) );
 	};
 
-	//
-	// Input: Numeric and Numeric Array Input
-	// Output: MobiusDataObject with NURBS geometry
-	//
+	/**
+	 * Returns a MobiusDataObject containing a NURBS Curve
+	 * @param {array} centerPoint - Centre point of the Circle in [x,y,z] format
+	 * @param {array} xaxis - Direction of X-Axis of the Circle in [x,y,z] format 
+	 * @param {array} yaxis - Direction of Y-Axis of the Circle in [x,y,z] format 
+	 * @param {array} radius - Radius of the Arc
+	 * @returns {MobiusDataObject}  - NURBS Curve
+	 */
 	mod.makeCircleBoundary = function(centerPoint,xaxis,yaxis,radius){
 		return new MobiusDataObject( new verb.geom.Circle(centerPoint,xaxis,yaxis,radius) );
 	};
 
-	//
-	// Input: Numeric and Numeric Array Input [centre], [xaxis], [yaxis]
-	// Output: MobiusDataObject with NURBS geometry
-	//
+	/**
+	 * Returns a MobiusDataObject containing a NURBS Curve
+	 * @param {array} centerPoint - Centre point of the Ellipse in [x,y,z] formats
+	 * @param {array} xaxis - Direction of X-Axis of the Ellipse in [x,y,z] format; Length of this vector determines length of x-Axis of ellipse;
+	 * @param {array} yaxis - Direction of Y-Axis of the Ellipse in [x,y,z] format; Length of this vector determines length of y-Axis of ellipse;
+	 * @returns {MobiusDataObject}  - NURBS Curve
+	 */
 	mod.makeEllipse = function ( centerPoint ,xaxis,yaxis ){
 		return new MobiusDataObject( new verb.geom.Ellipse( centerPoint,xaxis,yaxis ) );
 	};
 
-	//
-	// Input: Numeric and Numeric Array Input
-	// Output: MobiusDataObject with NURBS geometry
-	//
+	/**
+	 * Returns a MobiusDataObject containing a NURBS Curve
+	 * @param {array} centerPoint - Centre point of the EllipseArc in [x,y,z] formats
+	 * @param {array} xaxis - Direction of X-Axis of the EllipseArc in [x,y,z] format; Length of this vector determines length of x-Axis of ellipse;
+	 * @param {array} yaxis - Direction of Y-Axis of the EllipseArc in [x,y,z] format; Length of this vector determines length of y-Axis of ellipse;
+	 * @param {float} minAngle - Minimum Angle in Radians
+	 * @param {float} maxAngle - Maximum Angle in Radians
+	 * @returns {MobiusDataObject}  - NURBS Curve
+	 */
 	mod.makeEllipseArc = function ( centerPoint,xaxis,yaxis,minAngle,maxAngle ){
 		return new MobiusDataObject( new verb.geom.EllipseArc( centerPoint,xaxis,yaxis,minAngle,maxAngle ) );
 	};
 
-	//
-	// Input: Numeric and Numeric Array Input
-	// Output: MobiusDataObject with NURBS geometry
-	//
+	/**
+	 * Returns a MobiusDataObject containing a NURBS Curve
+	 * @param {array} points - Array of points through which the curve passes ( [[x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4], ...] )
+	 * @param {int} degree - Degree of the Curve
+	 * @returns {MobiusDataObject}  - NURBS Curve
+	 */
 	mod.makeCurveByPoints = function( points, degree ){
 		return new MobiusDataObject( new verb.geom.NurbsCurve.byPoints( points, degree ) );
 	};
 
-	//
-	// Input: Numeric and Numeric Array Input
-	// Output: MobiusDataObject with NURBS geometry
-	//
+	/**
+	 * Returns a MobiusDataObject containing a NURBS Curve
+	 * @param {int} degree - Degree of the Curve
+	 * @param {array} knots - Knots
+	 * @param {array} controlPoints - Array of points through which the curve passes ( [[x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4], ...] )
+	 * @param {array} weights - Weights
+	 * @returns {MobiusDataObject}  - NURBS Curve
+	 */
 	mod.makeCurveByKnotsControlPointsWeights = function ( degree,knots,controlPoints,weights ){
 		return new MobiusDataObject( new verb.geom.NurbsCurve.byKnotsControlPointsWeights( degree,knots,controlPoints,weights ) );
 	};
 
-	//
-	// Input: Numeric and Numeric Array Input
-	// Output: MobiusDataObject with NURBS geometry
-	//
+	/**
+	 * Returns a MobiusDataObject containing a NURBS Surface
+	 * @param {int} degreeU - DegreeU of the Surface
+	 * @param {int} degreeV - DegreeV of the Surface
+	 * @param {array} knotsU - Knots in U Direction
+	 * @param {array} knotsV - Knots in V Direction
+	 * @param {array} controlPoints - Array of points through which the curve passes ( [[x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4], ...] )
+	 * @param {array} weights - Weights
+	 * @returns {MobiusDataObject}  - NURBS Surface
+	 */
 	mod.makeSurfaceByKnotsControlPointsWeights = function ( degreeU,degreeV,knotsU,knotsV,controlPoints,weights ){
 		return new MobiusDataObject( new verb.geom.NurbsSurface.byKnotsControlPointsWeights( degreeU,degreeV,knotsU,knotsV,controlPoints,weights ) );
 	};
 
-	//
-	// Input: Numeric and Numeric Array Input
-	// Output: MobiusDataObject with NURBS geometry
-	//
+	/**
+	 * Returns a MobiusDataObject containing a NURBS Surface
+	 * @param {array} point - Corner points in [x,y,z] format
+	 * @returns {MobiusDataObject}  - NURBS Surface
+	 */
 	mod.makeSurfaceByCorners = function ( point0, point1, point2, point3 ){
 		return new MobiusDataObject( new verb.geom.NurbsSurface.byCorners ( point0,point1,point2,point3 ) );
 	};
 
-	//
-	// Input: MobiusDataObject, Numeric Input
-	// Output: MobiusDataObject with NURBS geometry
-	//
+	/**
+	 * Returns a MobiusDataObject containing a NURBS Surface
+	 * @param {MobiusDataObject} mObj - MobiusDataObject with NURBS Curve Geometry
+	 * @param {array} centerPoint - CentrePoint in [x,y,z] format
+	 * @param {array} axis - Axis of revolution in [x,y,z] format	 
+	 * @param {float} angle - Angle of revolution in radians
+	 * @returns {MobiusDataObject}  - NURBS Surface
+	 */
 	mod.makeSurfaceByRevolution = function ( mObj, centerPoint, axis, angle ){
 		var profile = mObj.geometry;
 		return new MobiusDataObject( new verb.geom.RevolvedSurface( profile, centerPoint, axis, angle )  );
 	};
 
-	//
-	// Input: MobiusDataObjects with NURBS geometry
-	// Output: MobiusDataObject with NURBS geometry
-	//
+	/**
+	 * Returns a MobiusDataObject containing a NURBS Surface
+	 * @param {MobiusDataObject} mObj - MobiusDataObject with NURBS Curve Geometry
+	 * @param {MobiusDataObject} mObj - MobiusDataObject with NURBS Curve Geometry
+	 * @returns {MobiusDataObject}  - NURBS Surface
+	 */
 	mod.makeSurfaceBySweep = function ( mObjProfile, mObjRail){
 		var profile = mObjProfile.geometry;
 		var rail = mObjRail.geometry;
 		return new MobiusDataObject( new verb.geom.SweptSurface ( profile, rail ) );
 	};
 
-	//
-	// Input: Array of MobiusDataObjects with NURBS geometry
-	// Output: MobiusDataObject with NURBS geometry
-	//
+	/**
+	 * Returns a MobiusDataObject containing a NURBS Surface
+	 * @param {array} listOfCurves - Array of MobiusDataObject with NURBS Curve Geometry
+	 * @param {int} degree - Degree of the Surface
+	 * @returns {MobiusDataObject}  - NURBS Surface
+	 */
 	mod.makeSurfaceByLoft = function(listOfCurves, degree){
 		var deg = degree || 3;
 		var curves = [];
@@ -377,43 +452,60 @@ var VIDAMO = ( function (mod){
 		return new MobiusDataObject( new verb.geom.NurbsSurface.byLoftingCurves( curves, deg ) );
 	};
 
-	//
-	// Input: MobiusDataObjects with NURBS geometry, direction Numeric Array
-	// Output: MobiusDataObject with NURBS geometry
-	//
+	/**
+	 * Returns a MobiusDataObject containing a NURBS Surface
+	 * @param {MobiusDataObject} mObjProfile - Array of MobiusDataObject with NURBS Curve Geometry
+	 * @param {array} direction - Direction of Sweep in [x,y,z] format	 
+	 * @returns {MobiusDataObject}  - NURBS Surface
+	 */
 	mod.makeSurfaceByExtrusion = function ( mObjProfile, direction){
 		var profile = mObjProfile.geometry;
 		return new MobiusDataObject( new verb.geom.ExtrudedSurface( profile, direction ) );
 	};
 
-	//
-	// Input: Numeric
-	// Output: MobiusDataObject with NURBS geometry
-	//
+	/**
+	 * Returns a MobiusDataObject containing a NURBS Surface
+	 * @param {array} centrePoint - CentrePoint in [x,y,z] format	
+	 * @param {float} radius - Radius of the Sphere 	 
+	 * @returns {MobiusDataObject}  - NURBS Surface
+	 */
 	mod.makeSurfaceAsSphere = function(centrePoint, radius){
 		return new MobiusDataObject( new verb.geom.SphericalSurface(centrePoint, radius) );
 	};
 
-	//
-	// Input: Numeric
-	// Output: MobiusDataObject with NURBS geometry
-	//
+	/**
+	 * Returns a MobiusDataObject containing a NURBS Surface
+	 * @param {array} axis - Axis Direction of the cone in [x,y,z] format
+	 * @param {array} xaxis - Direction of x-axis of cone in [x,y,z] format
+	 * @param {float} base - Radius of cone base
+	 * @param {float} height - Height of the cone
+	 * @param {float} radius - Radius of cone
+	 * @returns {MobiusDataObject}  - NURBS Surface
+	 */
 	mod.makeSurfaceAsCone = function( axis,xaxis,base,height,radius ){
 		return new MobiusDataObject( new verb.geom.ConicalSurface( axis,xaxis,base,height,radius ) );
 	};
 
-	//
-	// Input: Numeric
-	// Output: MobiusDataObject with NURBS geometry
-	//
+	/**
+	 * Returns a MobiusDataObject containing a NURBS Surface
+	 * @param {array} axis - Axis Direction of the cylinder in [x,y,z] format
+	 * @param {array} xaxis - Direction of x-axis of cylinder in [x,y,z] format
+	 * @param {float} base - Radius of cylinder base
+	 * @param {float} height - Height of the cylinder
+	 * @param {float} radius - Radius of cylinder
+	 * @returns {MobiusDataObject}  - NURBS Surface
+	 */
 	mod.makeSurfaceAsCylinder = function ( axis, xaxis, base, height, radius ){
 		return new MobiusDataObject( new verb.geom.CylindricalSurface( axis,xaxis,base,height,radius ) );
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * Returns a point on the surface at the given parameter values
+	 * @param {MobiusDataObject} surface - MobiusDataObject with NURBS Surface
+	 * @param {int} u - Parameter in u-direction
+	 * @param {int} v - Parameter in v-direction
+	 * @returns {array} point [x,y,z]
+	 */
 	mod.getPointOnSurface = function( surface, u, v ){
 		var srf = surface.geometry;
 		if(srf instanceof verb.geom.NurbsSurface)
@@ -422,10 +514,12 @@ var VIDAMO = ( function (mod){
 			return "Invalid Input"
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * Returns a point on the curve at the given parameter value
+	 * @param {MobiusDataObject} curve - MobiusDataObject with NURBS Curve
+	 * @param {int} t - Parameter in u-direction
+	 * @returns {array} point [x,y,z]
+	 */
 	mod.getPointOnCurve = function( curve, t ){
 		var crv = curve.geometry;
 		if( crv instanceof verb.geom.NurbsCurve)
@@ -434,10 +528,12 @@ var VIDAMO = ( function (mod){
 			return "Invalid Input"
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * Returns an array of 't' values which divide the curve equally
+	 * @param {MobiusDataObject} curve - MobiusDataObject with NURBS Curve
+	 * @param {int} divisons - Number of divisions in which the curve should be divided
+	 * @returns {array} curve parameters [t1, t2, t3 ...]
+	 */
 	mod.divideCurveByEqualArcLength = function( curve, divisions ){
 		var crv = curve.geometry;
 		var points = crv.divideByEqualArcLength( divisions )
@@ -446,10 +542,12 @@ var VIDAMO = ( function (mod){
 		return points;
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * Returns an array of 't' values which divide the curve by length
+	 * @param {MobiusDataObject} curve - MobiusDataObject with NURBS Curve
+	 * @param {float} arcLength - Length 
+	 * @returns {array} curve parameters [t1, t2, t3 ...]
+	 */
 	mod.divideCurveByArcLength = function( curve, arcLength ){
 		var crv = curve.geometry;
 		var points = crv.divideByArcLength( arcLength )
@@ -458,9 +556,12 @@ var VIDAMO = ( function (mod){
 		return points; //convert these into vector points
 	};
 
-	//
-	//
-	//
+	/**
+	 * Returns a tangent on the curve at the given parameter value
+	 * @param {MobiusDataObject} curve - MobiusDataObject with NURBS Curve
+	 * @param {int} t - Parameter in u-direction
+	 * @returns {array} tangent [x,y,z]
+	 */
 	mod.getTangentAtCurveParameter = function( curve, t ){
 		var crv = curve.geometry;
 		if( crv instanceof verb.geom.NurbsCurve)
@@ -469,10 +570,13 @@ var VIDAMO = ( function (mod){
 			return 'Invalid Input';
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * Returns a tangent on the surface at the given parameter values
+	 * @param {MobiusDataObject} surface - MobiusDataObject with NURBS Surface
+	 * @param {int} u - Parameter in u-direction
+	 * @param {int} v - Parameter in v-direction
+	 * @returns {array} tangent [x,y,z]
+	 */
 	mod.getNormalAtSurfaceParameter = function( surface, u, v ){
 		var srf = surface.geometry;
 		if(srf instanceof verb.geom.NurbsSurface)
