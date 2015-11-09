@@ -94,7 +94,7 @@ angular.module('ui.layout', [])
               // broadcast an event that resize happened (debounced to 50ms)
               if(debounceEvent) $timeout.cancel(debounceEvent);
               debounceEvent = $timeout(function() {
-                $scope.$broadcast('ui.layout.resize', beforeContainer, afterContainer);
+                $scope.$emit('ui.layout.resize', beforeContainer, afterContainer);
                 debounceEvent = null;
               }, 50);
             }
@@ -403,7 +403,7 @@ angular.module('ui.layout', [])
             }
           }
         });
-        $scope.$broadcast('ui.layout.toggle', c);
+        $scope.$emit('ui.layout.toggle', c);
 
         return c.collapsed;
       };
@@ -448,7 +448,8 @@ angular.module('ui.layout', [])
             if(prevContainer) prevContainer.size -= (c.actualSize + endDiff);
           }
         });
-        $scope.$broadcast('ui.layout.toggle', c);
+        $scope.$emit('ui.layout.toggle', c);
+
 
         return c.collapsed;
       };

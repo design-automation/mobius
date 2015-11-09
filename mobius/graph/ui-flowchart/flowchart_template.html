@@ -41,14 +41,14 @@
     ng-mousedown="nodeMouseDown($event, node)"
     ng-attr-transform="translate({{node.x()}}, {{node.y()}})"
     >
-    <rect 
+    <rect
       ng-attr-class="{{node.selected() && 'selected-node-rect' || (node == mouseOverNode && 'mouseover-node-rect' || 'node-rect')}}"
       ry="7"
       rx="7"
-      x="0" 
-      y="0" 
-      ng-attr-width="{{node.width()}}" 
-      ng-attr-height="{{node.height()}}" 
+      x="0"
+      y="0"
+      ng-attr-width="{{node.width()}}"
+      ng-attr-height="{{node.height()}}"
       fill="url(#nodeBackgroundGradient)"
       context-menu="nodeMenuOptions"
       ng-dblclick ="nodeDoubleClick($event)"
@@ -81,7 +81,7 @@
 
         <text
                 ng-attr-x="{{node.width()/2}}"
-                ng-attr-y="{{node.height()/2}}"
+                ng-attr-y="{{-node.height()/3}}"
                 text-anchor="middle"
                 alignment-baseline="middle"
                 class = "connector-text">
@@ -103,9 +103,10 @@
             ng-attr-cy="{{connector.y()}}"
             context-menu="connectorMenuOptions"
             />
+
       <text
         ng-attr-x="{{node.width()/2}}"
-        ng-attr-y="{{node.height()/2}}"
+        ng-attr-y="{{4*node.height()/3}}"
         text-anchor="middle"
         alignment-baseline="middle"
         class = "connector-text"
@@ -115,7 +116,6 @@
     </g>
   </g>
 
-  <g>
     <g
       ng-repeat="connection in chart.connections"
       class="connection"
@@ -133,20 +133,19 @@
         <circle
             ng-attr-class="{{connection.selected() && 'selected-connection-endpoint' || (connection == mouseOverConnection && 'mouseover-connection-endpoint' || 'connection-endpoint')}}"
             r="3"
-            ng-attr-cx="{{connection.sourceCoordX()}}" 
-            ng-attr-cy="{{connection.sourceCoordY()}}" 
+            ng-attr-cx="{{connection.sourceCoordX()}}"
+            ng-attr-cy="{{connection.sourceCoordY()}}"
             >
         </circle>
 
         <circle
             ng-attr-class="{{connection.selected() && 'selected-connection-endpoint' || (connection == mouseOverConnection && 'mouseover-connection-endpoint' || 'connection-endpoint')}}"
             r="3"
-            ng-attr-cx="{{connection.destCoordX()}}" 
-            ng-attr-cy="{{connection.destCoordY()}}" 
+            ng-attr-cx="{{connection.destCoordX()}}"
+            ng-attr-cy="{{connection.destCoordY()}}"
             >
         </circle>
     </g>
-  </g>
 
   <g
     ng-if="draggingConnection"

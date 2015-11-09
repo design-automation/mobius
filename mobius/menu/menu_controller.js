@@ -2,8 +2,8 @@
 // Controller for menubar
 //
 
-vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','generateCode','nodeCollection','$http','hotkeys',
-    function($scope,$rootScope,$timeout,consoleMsg,generateCode,nodeCollection,$http,hotkeys){
+vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','generateCode','nodeCollection','$http','hotkeys','$mdDialog',
+    function($scope,$rootScope,$timeout,consoleMsg,generateCode,nodeCollection,$http,hotkeys,$mdDialog){
 
         // store json url
         $scope.sceneUrl= '';
@@ -17,37 +17,47 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
             $scope.nodeIndex = message;
         });
 
-
         // create new scene
 
-        $scope.newScene = function(){
-            // prompt user to save the current scene
-            if (confirm("Save the current scene before you create a new scene?") === true) {
-                setTimeout(function(){
-                    document.getElementById('saveSceneJson').click()
-                },0);
-            }
+        $scope.newScene = function () {
 
-            // reset procedure / interface / graph and refresh viewport
-            generateCode.setChartViewModel(new flowchart.ChartViewModel({
-                    "nodes": [],
-                    "connections": []
-                }
-            ));
-            generateCode.setDataList([]);
-            generateCode.setInterfaceList([]);
+            $mdDialog.show({
+                controller: DialogController,
+                templateUrl: 'mobius/template/newScene_dialog.tmpl.html',
+                parent: angular.element(document.body),
+                //targetEvent: ev,
+                clickOutsideToClose:false
+            })
+                .then(function(answer) {
+                    if(answer === 'save'){
+                        setTimeout(function(){
+                            document.getElementById('saveSceneJson').click()
+                        },0);
+                    }
 
-            var scope = angular.element(document.getElementById('threeViewport')).scope();
-            var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
+                    // reset procedure / interface / graph and refresh viewport
+                    generateCode.setChartViewModel(new flowchart.ChartViewModel({
+                            "nodes": [],
+                            "connections": []
+                        }
+                    ));
+                    generateCode.setDataList([]);
+                    generateCode.setInterfaceList([]);
 
-            setTimeout(function(
-            ){
-                scope.$apply(function(){scope.viewportControl.refreshView();} );
-                scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
-            },0);
+                    var scope = angular.element(document.getElementById('threeViewport')).scope();
+                    var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
 
-            consoleMsg.confirmMsg('newSceneCreated');
-            $rootScope.$broadcast('runNewScene');
+                    setTimeout(function(
+                    ){
+                        scope.$apply(function(){scope.viewportControl.refreshView();} );
+                        scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
+                    },0);
+
+                    consoleMsg.confirmMsg('newSceneCreated');
+                    $rootScope.$broadcast('runNewScene');
+
+                },
+                function() {});
         };
 
         $scope.loadExample = function(exampleFile){
