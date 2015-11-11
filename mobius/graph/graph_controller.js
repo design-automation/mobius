@@ -10,7 +10,11 @@ vidamo.controller('graphCtrl',[
                     'generateCode',
                     'nodeCollection',
                     'prompt',
-    function($scope,$timeout,consoleMsg,hotkeys,generateCode,nodeCollection,prompt) {
+                    '$mdDialog',
+    function($scope,$timeout,consoleMsg,hotkeys,generateCode,nodeCollection,prompt,$mdDialog) {
+
+
+        // temp holder for name input
 
         hotkeys.add({
             combo: 'ctrl+a',
@@ -157,16 +161,18 @@ vidamo.controller('graphCtrl',[
                 $scope.currentNodeType = $scope.chartViewModel.nodes[$scope.nodeIndex].data.type;
                 displayGeometry();
             }else if(message === undefined){
-                $scope.nodeIndex = message;
+                 $scope.nodeIndex = message;
                 $scope.currentNodeName = '';
-                $scope.$emit("hideProcedure");
+
+                 $scope.$emit("editProcedure",false);
 
                  var scope = angular.element(document.getElementById('threeViewport')).scope();
                  var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
 
                  scope.$apply(function(){scope.viewportControl.refreshView();} );
                  scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
-            }
+
+             }
 
              function displayGeometry(){
 
@@ -387,17 +393,24 @@ vidamo.controller('graphCtrl',[
 
 
         $scope.$on("renameSelected",function(){
-            $timeout(function(){
-                var newName = prompt('Enter a new name:');
-                if(newName !== null && newName !== '' && isValidName(newName)) {
-                    var renameObj = $scope.chartViewModel.renameSelected(newName);
-                    if (renameObj.isConnector) {
-                        // update version since connector changed
-                        var d = new Date();
-                        $scope.chartViewModel.nodes[renameObj.nodeIndex].data.version = d.getTime();
-                    }
-                }
-            }, 10);
+            $mdDialog.show({
+                    controller: DialogController,
+                    templateUrl: 'mobius/template/inputName_dialog.tmpl.html',
+                    parent: angular.element(document.body),
+                    clickOutsideToClose:false
+                })
+                .then(function(newName) {
+                    $timeout(function(){
+                        if(newName !== null && newName !== '' && isValidName(newName)) {
+                            var renameObj = $scope.chartViewModel.renameSelected(newName);
+                            if (renameObj.isConnector) {
+                                // update version since connector changed
+                                var d = new Date();
+                                $scope.chartViewModel.nodes[renameObj.nodeIndex].data.version = d.getTime();
+                            }
+                        }
+                    }, 10);
+                });
         });
 
 

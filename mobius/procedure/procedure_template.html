@@ -33,6 +33,35 @@
 
     </div>
 
+
+    <!--output procedure-->
+    <div ng-if="node.title === 'Output'" style="padding-left:20px " class="tree-node-content  ">
+
+        Output
+        <a>
+            <!--Output name and value-->
+            <a href="#" data-nodrag editable-text="node.dataName" blur="submit"  buttons="no" >
+                {{ node.dataName || 'name' }}
+            </a>
+            =
+            <a data-nodrag href="#" editable-text="node.dataValue" buttons="no" blur="submit">
+                {{ node.dataValue || 'value' }}
+            </a>
+        </a>
+
+        <!--delete key-->
+        <a class="pull-right btn btn-xs" data-nodrag ng-click="remove(this)" style="padding: 0;margin: 0" >
+            <span style="font-weight: 400; font-size: 16px;line-height:1" > &times; </span>
+        </a>
+
+        <div ui-tree-nodes=""  ng-model="node.nodes" ng-class="{hidden: collapsed}">
+            <div ng-repeat="node in node.nodes"
+                 ui-tree-node ng-include="'vidamo/template/procedure.html'">
+            </div>
+        </div>
+
+    </div>
+
     <!--action procedure-->
     <div ng-if="node.title === 'Action' && node.method !== 'expression'" style="padding-left:20px" class="tree-node-content ">
         <!--return vairable-->

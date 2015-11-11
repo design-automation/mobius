@@ -313,11 +313,6 @@ angular.module('flowChart', ['dragging'] )
 
 		if(evt.which == 1){
 			$scope.chart.deselectAll();
-		//	setTimeout(
-		//		function(){
-		//			$scope.$emit("nodeIndex",false);
-		//		},0
-		//);
 
 			//
             // @ vidamo toggle new node dropdown
@@ -350,7 +345,7 @@ angular.module('flowChart', ['dragging'] )
 						x: startPoint.x*(1/$scope.scaleFactor ),
 						y: startPoint.y*(1/$scope.scaleFactor ),
 						width: 0,
-						height: 0,
+						height: 0
 					};
 				},
 
