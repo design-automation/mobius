@@ -586,10 +586,13 @@ var VIDAMO = ( function (mod){
 	};
 
 
-	//
-	// Input: MobiusDataObject with NURBS geometry, numeric values
-	// Output: Array of MobiusDataObject with NURBS geometry (four point surface)
-	//
+	/**
+	 * Subdivides a surface into smaller surfaces
+	 * @param {MobiusDataObject} surface - MobiusDataObject with NURBS Surface
+	 * @param {int} ugrid - Divisions in u-direction
+	 * @param {int} vgrid - Divisions in v-direction
+	 * @returns {array} Array of MobiusDataObjects with NURBS Surfaces
+	 */
 	mod.makeMeshBySubdivision = function( mObj, ugrid, vgrid ){
 
 		var surface = mObj.geometry;
@@ -620,10 +623,12 @@ var VIDAMO = ( function (mod){
 			return "Invalid Input"
 	};
 
-	//
-	// Input: MobiusDataObject with NURBS geometry (line)
-	// Output: MobiusDataObject with NURBS geometry (cylinderical surface)
-	//
+	/**
+	 * Creates a tube of a given radius, from a given line
+	 * @param {MobiusDataObject} line - MobiusDataObject with NURBS Line
+	 * @param {float} radius - Radius of the tube
+	 * @returns {MobiusDataObject} MobiusDataObject with NURBS Surface
+	 */
 	mod.makeTubeByLine = function( mObj, radius ){
 
 		var line = mObj.geometry;
@@ -662,10 +667,11 @@ var VIDAMO = ( function (mod){
 		return new MobiusDataObject( tube );
 	};
 
-	//
-	// Input: MobiusDataObject with NURBS geometry (surface)
-	// Output: Numeric Array of Points
-	//
+	/**
+	 * Gives the corner points of a surface
+	 * @param {MobiusDataObject} surface - MobiusDataObject with NURBS Surface
+	 * @returns {array} Array of Points [ [corner1], [corner2], [corner3], [corner4] ], where corner is of form - [x, y, z]
+	 */
 	mod.getCornerPointsFromSurface = function( mObj ){
 
 		var polygon = mObj.geometry;
@@ -677,10 +683,13 @@ var VIDAMO = ( function (mod){
 			polygon.point(0,1)]
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * Makes a point from the coordinates
+	 * @param {float} x - X Coordinate of the point
+	 * @param {float} y - Y Coordinate of the point
+	 * @param {float} z - Z Coordinate of the point
+	 * @returns {array} Point of form - [x, y, z]
+	 */
 	mod.makePoint = function(x, y, z){
 		return [x, y, z];
 	};
@@ -692,10 +701,13 @@ var VIDAMO = ( function (mod){
 	 *
 	 */
 
-	//
-	//	Input: Numeric Input
-	//	Outout: MobiusDataObject with Three.js geometry
-	//
+	/**
+	 * Creates a vector for a point
+	 * @param {float} x - X Coordinate of the point OR {array} [x,y,z] - Point form
+	 * @param {float} y - Y Coordinate of the point
+	 * @param {float} z - Z Coordinate of the point
+	 * @returns {MobiusDataObject} Containing vector from origin to point
+	 */
 	mod.makePositionVector = function(x, y, z){
 		if(x.constructor === Array && y == undefined && z == undefined)
 			return new MobiusDataObject( new THREE.Vector3( x[0], x[1], x[2] ));
@@ -703,10 +715,11 @@ var VIDAMO = ( function (mod){
 			return new MobiusDataObject( new THREE.Vector3(x, y, z));
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * Returns an array of position vectors from an array of points
+	 * @param {array} list_of_points - Array of points of form - [ [ point1 ], [ point2 ], [ point3 ] ... ] where points are of form [x, y, z]
+	 * @returns {array} Array of MobiusDataObjects containing position vectors
+	 */
 	mod.makePositionVectorsFromPoints = function( list_of_points ){
 		var mObjArr = [];
 		for(var i=0; i<list_of_points.length; i++){
@@ -716,26 +729,35 @@ var VIDAMO = ( function (mod){
 		return mObjArr;
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * Creates a circle of a given radius and resolution
+	 * @param {float} radius - Radius of the circle
+	 * @param {int} segments - Number of segments 
+	 * @returns {MobiusDataObject} MobiusDataObject containing CircleGeometry
+	 */
 	mod.makeCircle = function(radius, segments){
 		return new MobiusDataObject( new THREE.CircleGeometry( radius, segments ));
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * Creates a cylinder
+	 * @param {float} radiusTop - Radius of the top of the cylinder
+	 * @param {float} radiusBottom - Radius of the bottom of the cylinder
+	 * @param {float} height - Height of the cylinder
+	 * @param {float} radiusSegments - Segments in the radius of the cylinder
+	 * @param {float} heightSegments - Segments in the height of the cylinder
+	 * @param {boolean} openEnded - True or False value - if the cylinder is open at the ends
+	 * @returns {MobiusDataObject} MobiusDataObject with CylinderGeometry
+	 */
 	mod.makeCylinder = function(radiusTop, radiusBottom, height, radiusSegments, heightSegments, openEnded ){
 		return new MobiusDataObject( new THREE.CylinderGeometry( radiusTop, radiusBottom, height, radiusSegments, heightSegments, openEnded ));
 	};
 
-	//
-	// Input:
-	//
-	//
+	/**
+	 * Creates a polyline from an array of points
+	 * @param {array} arrOfPoints - Array of points of the form - [[x,y,z], [x,y,z], [x,y,z], [x,y,z] ...]
+	 * @returns {MobiusDataObject} MobiusDataObject with Polyline (Vertice Geometry)
+	 */
 	mod.makePolyline = function(arrOfPoints){
 		var pline = new THREE.Geometry();
 
@@ -746,26 +768,31 @@ var VIDAMO = ( function (mod){
 	};
 
 
-	//
-	// Input: Numeric Input
-	// Output: MobiusDataObject with Three.js geometry
-	//
+	/**
+	 * Creates a box from the length, breadth and height
+	 * @param {float} length - Length of the box
+	 * @param {float} breadth - Breadth of the box
+	 * @param {float} height - Height of the box
+	 * @returns {MobiusDataObject} MobiusDataObject with BoxGeometry
+	 */
 	mod.makeBox = function(length, breadth, height){
 		return new MobiusDataObject ( new THREE.BoxGeometry( length, breadth, height ) ) ;
 	};
 
-	//
-	// Input: Numeric Input
-	// Output: MobiusDataObject with Three.js geometry
-	//
+	/**
+	 * Creates a Sphere of a given radius
+	 * @param {radius} length - Length of the box
+	 * @returns {MobiusDataObject} MobiusDataObject with SphereGeometry
+	 */
 	mod.makeSphere = function(radius){
 		return new MobiusDataObject ( new THREE.SphereGeometry( radius , 32, 32) ) ;
 	};
 
-	//	points need to be defined anti-clockwise
-	//
-	//
-	//
+	/**
+	 * Creates a polygon from 2D points
+	 * @param {array} pointsXY - Array of 2D Points of form - [ [x,y], [x,y], [x,y], [x,y] ...]
+	 * @returns {MobiusDataObject} MobiusDataObject with ShapeGeometry
+	 */
 	mod.makePolygonByPoints = function( pointsXY ){
 
 		// shape creation
@@ -779,28 +806,45 @@ var VIDAMO = ( function (mod){
 	};
 
 	/**
-	 * @requires dir: {x:, y:, z:}
-	 *
+	 * Creates an extrusion from a polygon
+	 * @param {MobiusDataObject} mObj - MobiusDataObject containing ShapeGeometry
+	 * @param {float} thickness - Amount of extrusion
+	 * @param {boolean} bevel - True or False for bevel or not
+	 * @param {MobiusDataObject} direction -  MobiusDataObject containing Position Vector for direction of extrusion or containing 3D Curve
+	 * @returns {MobiusDataObject} MobiusDataObject with ExtrudeGeometry
 	 */
-	mod.extrudePolygon = function(mObj, thickness, bevel ){
+	mod.extrudePolygon = function(mObj, thickness, bevel, direction ){
 		//mObj has to have shape  :/
 		var shape = mObj.geometry;
+		//var direction = direction.geometry; 
 
 		if( shape instanceof THREE.Shape ){
-			var extrudeSettings = { amount: thickness, bevelEnabled: bevel, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
-			geometry = new THREE.ExtrudeGeometry( shape, extrudeSettings );
-
-			/*
-			 // applying shear matrix according to extrude in direction specified
-			 var matrix = new THREE.Matrix4();
-			 var Syx = dir.x / dir.y,
-			 Syz = dir.z / dir.y;
-			 matrix.set(   1,   Syx,   0,   0,
-			 0,     1,   0,   0,
-			 0,   Syz,   1,   0,
-			 0,     0,   0,   1  );
-			 geometry.applyMatrix( matrix ); */
-
+			var extrudeSettings = { amount: thickness, 
+									bevelEnabled: bevel, 
+									bevelSegments: 2, 
+									steps: 2, 
+									bevelSize: 1, 
+									bevelThickness: 1 };
+			var geometry = new THREE.ExtrudeGeometry( shape, extrudeSettings );
+			
+			// shear method - inaccurate results
+			// if(direction != undefined){ console.log("inside direction", direction);
+				 //applying shear matrix according to extrude in direction specified
+				 // var matrix = new THREE.Matrix4();
+				 // var Syx = direction.x / direction.y,
+				 // Syz = direction.z / direction.y;
+				 // matrix.set(   1,   Syx,   0,   0,
+				 // 0,     1,   0,   0,
+				 // 0,   Syz,   1,   0,
+				 // 0,     0,   0,   1  );
+				 // geometry.applyMatrix( matrix ); 
+			// }
+			
+			// path method - object has to be centred about origin for the extrusion to work correctly - rotation is going to be arbitary
+			
+			
+			
+			
 			return new MobiusDataObject( geometry );
 		}
 		else
@@ -808,10 +852,12 @@ var VIDAMO = ( function (mod){
 
 	};
 
-	//
-	// Array of vector3 : points
-	//
-	//
+	/**
+	 * Creates a Lathe from an array of points
+	 * @param {array} points - Array of Points of form - [ [x,y,z], [x,y,z], [x,y,z], [x,y,z] ...]
+	 * @param {int} segments - Number of segments in the Lathe
+	 * @returns {MobiusDataObject} MobiusDataObject with LatheGeometry
+	 */
 	mod.makeLathe = function( points, segments ){
 		var pts = [];
 		for(var i=0; i<points.length; i++)
@@ -819,58 +865,72 @@ var VIDAMO = ( function (mod){
 		return new MobiusDataObject( new THREE.LatheGeometry( pts, segments ) );
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * Creates a plane from the width and height
+	 * @param {float} width - Width of the plane
+	 * @param {float} height - Height of the plane
+	 * @returns {MobiusDataObject} MobiusDataObject with PlaneGeometry
+	 */
 	mod.makePlane = function( width, height ){
 		return new MobiusDataObject( new THREE.PlaneGeometry( width, height, 1) );
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * 
+	 * @param {float} 
+	 * @param {float} 
+	 * @returns {MobiusDataObject} 
+	 */
 	mod.makePolyhedron = function( verticesOfCube, indicesOfFaces ){
 		return new MobiusDataObject( new THREE.PolyhedronGeometry( verticesOfCube, indicesOfFaces, 6, 2 ) );
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * 
+	 * @param {float} 
+	 * @param {float} 
+	 * @returns {MobiusDataObject} 
+	 */
 	mod.make2DRing = function( innerRadius, outerRadius, segments ){
 		return new MobiusDataObject( new THREE.RingGeometry( innerRadius, outerRadius, segments ) );
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * 
+	 * @param {float} 
+	 * @param {float} 
+	 * @returns {MobiusDataObject} 
+	 */
 	mod.makeTetrahedron = function( radius ){
 		return new MobiusDataObject( new THREE.TetrahedronGeometry( radius ) );
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * 
+	 * @param {float} 
+	 * @param {float} 
+	 * @returns {MobiusDataObject} 
+	 */
 	mod.makeTorus = function(radius, tube, radialSegments, tubularSegments){
 		return new MobiusDataObject( new THREE.TorusGeometry( radius, tube, radialSegments, tubularSegments ) );
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * 
+	 * @param {float} 
+	 * @param {float} 
+	 * @returns {MobiusDataObject} 
+	 */
 	mod.makeTorusKnot = function( radius, tube, radialSegments, tubularSegments ){
 		return new MobiusDataObject( new THREE.TorusKnotGeometry(radius, tube, radialSegments, tubularSegments) );
 	};
 
-	//
-	//
-	//
-	//
+	/**
+	 * 
+	 * @param {float} 
+	 * @param {float} 
+	 * @returns {MobiusDataObject} 
+	 */
 	mod.getPointFromPositionVector = function( positionVector ){
 		var pos = positionVector.geometry;
 		return [ pos.x, pos.y, pos.z ];
