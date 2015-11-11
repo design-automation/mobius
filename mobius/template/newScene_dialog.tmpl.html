@@ -1,0 +1,29 @@
+
+<md-dialog>
+    <form>
+        <md-dialog-content style="max-width:800px;max-height:810px; ">
+            <!--<div class="md-dialog-content">-->
+                <!--<md-input-container flex="">-->
+                    <!--<label>First name</label>-->
+                    <!--<input ng-model="user.firstName">-->
+                <!--</md-input-container>-->
+            <!--</div>-->
+
+            Do you want to save current scene first?
+        </md-dialog-content>
+
+        <div class="md-actions" layout="row">
+            <md-button ng-click="answer('save')">
+                yes
+            </md-button>
+            <span flex></span>
+
+            <md-button ng-click="answer('not save')">
+                no
+            </md-button>
+            <md-button ng-click="cancel()" style="margin-right:20px;" >
+                cancel
+            </md-button>
+        </div>
+    </form>
+</md-dialog>

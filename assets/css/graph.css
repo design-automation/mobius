@@ -36,16 +36,18 @@ CSS For ui-flowchart [left pane graph area]
  }
 .connector-text{
 	visibility: hidden;
+	font-size: 10px;
 }
 .connector:hover > .connector-text {
 	visibility: visible;
+	font-size: 10px;
 }
 
 
 .selected-connector-circle {
 	fill: white;
 	stroke: red;
-	stroke-width: 3;
+	stroke-width: 2;
 }
 
 
@@ -58,19 +60,19 @@ Style for connections.
 
 .connection-line {
 	stroke: #555555;
-	stroke-width: 3;
+	stroke-width: 2.5;
 	fill: transparent;
 }	
 
 .mouseover-connection-line {
 	stroke: gray;
-	stroke-width: 6;
+	stroke-width: 3;
 	fill: transparent;
 }	
 
 .selected-connection-line {
 	stroke: red;
-	stroke-width: 4;
+	stroke-width: 3;
 	fill: transparent;
 }	
 

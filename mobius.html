@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="assets/css/material.css">
     <link rel="stylesheet" href="assets/css/ui-grid/ui-grid.min.css">
 
-
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.css">
 </head>
 
 <body>
@@ -33,7 +33,7 @@
             <a style="color: #000" href dropdown-toggle>  File |</a>
             <ul class="dropdown-menu">
                 <li>
-                    <a href="" ng-click="newScene()"> New Scene</a>
+                    <a href="" ng-click="newScene($event)"> New Scene</a>
                 </li>
 
                 <li>
@@ -146,12 +146,13 @@
     <div ui-layout style="margin: 2px;
                         border:1px solid #aaaaaa;
                         border-radius: 4px;
-                        top: 23px;">
+                        top: 23px;"
+            id="layout">
         <div ng-controller="layoutCtrl">
             <div class="layout-area" ui-layout="{flow : 'column'}" ng-controller="procedureCtrl">
 
                 <!-- 3D view area  -->
-                <div class=" view-area" ui-layout-container size={{viewportWidth}}>
+                <div class=" view-area" ui-layout-container size={{viewportWidth}} id="viewport">
                     <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
                         <!-- threejs editor view port -->
                         <div ui-layout-container size = "85%" style="z-index: 0">
@@ -248,11 +249,12 @@
                 <ng-include  ng-if="displayProcedure"
                              ui-layout-container
                              size={{procedureWidth}}
-                             src = "procedureHTML.url">
+                             src = "procedureHTML.url"
+                        id="procedure">
                 </ng-include>
 
                 <!-- graph area -->
-                <div class="graph-area" ui-layout-container  size={{graphWidth}}>
+                <div class="graph-area" ui-layout-container  size={{graphWidth}} id="graph">
 
                     <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
                         <div ui-layout-container size = "25%">
@@ -422,6 +424,7 @@
 <script src="mobius/viewport/console_controller.js"></script>
 <script src="mobius/viewport/viewport_controller.js"></script>
 <script src="mobius/layout_controller.js"></script>
+<script src="mobius/template/dialog_controller.js"></script>
 
 <!-- directives -->
 <script src="mobius/graph/contextMenu_directive.js"></script>
@@ -440,6 +443,11 @@
 <!-- other -->
 <script src="mobius/module.js"></script>
 <script src="mobius/datastructure.js"></script>
+
+<!--angular material-->
+<script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-animate.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-aria.min.js"></script>
 
 
 </body>

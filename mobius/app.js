@@ -18,7 +18,8 @@ var vidamo = angular.module('vidamo',
                                 'ui.bootstrap.contextMenu',
                                 'ui.grid.resizeColumns',
                                 'ui.grid.autoResize',
-                                'cfp.hotkeys'
+                                'cfp.hotkeys',
+                                'ngMaterial'
                             ]);
 
     // Simple service to create a prompt.
@@ -48,13 +49,6 @@ var vidamo = angular.module('vidamo',
         }
     ]);
 
-    vidamo.service('browser', ['$window', function($window) {
-
-        return function() {
-
-
-        }
-    }]);
 
     // fixme not in use anymore
     // recursively searching by id
@@ -127,6 +121,8 @@ var vidamo = angular.module('vidamo',
             result = [];
         return result;
     }
+
+
 
     checkBrowser();
 

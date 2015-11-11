@@ -10,63 +10,76 @@ vidamo.controller('layoutCtrl',['$scope','hotkeys',
             }
         });
 
+        // templates not in use
+        $scope.procedureHTML = { name: 'procedureHTML.html', url: 'mobius/procedureHTML.html'} ;
+
+        $scope.bodySize =   document.getElementById('layout').offsetWidth;
+
+        $scope.$on('ui.layout.resize', function(){
+            $scope.viewportSize = document.getElementById('viewport').offsetWidth;
+            if(document.getElementById('procedure') !== null){
+                $scope.procedureSize = document.getElementById('procedure').offsetWidth;
+            }
+            $scope.graphSize = document.getElementById('graph').offsetWidth;
+
+            $scope.viewportWidth = $scope.viewportSize +'px';
+            $scope.procedureWidth = $scope.procedureSize +'px';
+            $scope.graphWidth = $scope.graphSize +'px';
+        });
+
+
+        // fixme
+        $scope.$on('ui.layout.toggle', function(){
+            $scope.viewportSize = document.getElementById('viewport').offsetWidth;
+            if(document.getElementById('procedure') !== null){
+                $scope.procedureSize = document.getElementById('procedure').offsetWidth;
+            }
+            $scope.graphSize = document.getElementById('graph').offsetWidth;
+
+            $scope.viewportWidth = $scope.viewportSize +'px';
+            $scope.procedureWidth = $scope.procedureSize +'px';
+            $scope.graphWidth = $scope.graphSize +'px';
+
+        });
 
         // toggle procedure
         $scope.displayProcedure = false;
 
         // initial layout
-        $scope.viewportSize = 75;
+        $scope.viewportSize = $scope.bodySize * 0.75;
         $scope.procedureSize = 0;
-        $scope.graphSize = 25;
+        $scope.graphSize = $scope.bodySize * 0.25;
 
-        $scope.viewportWidth = $scope.viewportSize +'%';
-        $scope.procedureWidth = $scope.procedureSize +'%';
-        $scope.graphWidth = $scope.graphSize +'%';
+        $scope.viewportWidth = $scope.viewportSize +'px';
+        $scope.procedureWidth = $scope.procedureSize +'px';
+        $scope.graphWidth = $scope.graphSize +'px';
 
 
-        // templates not in use
-       $scope.procedureHTML = { name: 'procedureHTML.html', url: 'mobius/procedureHTML.html'} ;
+        $scope.$on('editProcedure', function(evt,message){
+            if(message === false || $scope.displayProcedure === true){
+                    $scope.displayProcedure = false;
+                    $scope.viewportSize += $scope.procedureSize;
+                    $scope.procedureSize = 0;
+            }
+            else if($scope.displayProcedure === false){
 
-        $scope.$on('editProcedure', function(){
-            if($scope.displayProcedure === false){
                 $scope.displayProcedure = true;
-                if($scope.viewportSize > 25){
-                    $scope.viewportSize -= 25;
-                    $scope.procedureSize = 25;
+                if($scope.viewportSize > $scope.bodySize * 0.25){
+
+                    $scope.viewportSize -= $scope.bodySize * 0.25;
+                    $scope.procedureSize += $scope.bodySize * 0.25;
                 }
-                else if($scope.graphWidth > 25){
-                      $scope.graphSize -= 25;
-                    $scope.procedureSize = 25;
+                else if($scope.graphSize > $scope.bodySize * 0.25){
+
+                      $scope.graphSize -= $scope.bodySize * 0.25;
+                    $scope.procedureSize = $scope.bodySize * 0.25;
                 }
-            }else{
-                $scope.displayProcedure = false;
-                $scope.viewportSize += $scope.procedureSize;
             }
 
-            $scope.viewportWidth = $scope.viewportSize +'%';
-            $scope.procedureWidth = $scope.procedureSize +'%';
-            $scope.graphWidth = $scope.graphSize +'%';
+            $scope.viewportWidth = $scope.viewportSize +'px';
+            $scope.procedureWidth = $scope.procedureSize +'px';
+            $scope.graphWidth = $scope.graphSize +'px';
 
         });
-
-        $scope.$on('hideProcedure', function(){
-            if($scope.displayProcedure === true){
-                $scope.displayProcedure = false;
-                $scope.viewportSize += $scope.procedureSize;
-
-                $scope.viewportWidth = $scope.viewportSize +'%';
-                $scope.procedureWidth = $scope.procedureSize +'%';
-                $scope.graphWidth = $scope.graphSize +'%';
-            }
-        });
-
-        $scope.hideProcedure =  function(){
-            $scope.displayProcedure = false;
-            $scope.viewportSize += $scope.procedureSize;
-
-            $scope.viewportWidth = $scope.viewportSize +'%';
-            $scope.procedureWidth = $scope.procedureSize +'%';
-            $scope.graphWidth = $scope.graphSize +'%';
-        };
 
     }]);

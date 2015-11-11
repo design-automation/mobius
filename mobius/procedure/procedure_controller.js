@@ -12,6 +12,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         $scope.items = [{name:"xxx"},{name:'aaa'}];
 
 
+
         $scope.autoScroll = function(){
             var procedureDiv = document.getElementById("procedure");
             procedureDiv.scrollTop = procedureDiv.scrollHeight;
@@ -129,7 +130,9 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
             else if(message === undefined){
                 $scope.nodeIndex = message;
                 $scope.currentNodeName = '';
-                $scope.$emit("hideProcedure");
+                $scope.$emit("editProcedure",false);
+
+                //setTimeout(function(){$scope.$emit("editProcedure")},0);
             }
         });
 
@@ -204,6 +207,8 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                         'forList',
                         'inputConnectors',
                         'outputConnectors']
+                }else if(n['title'] === 'Output'){
+                    var props = ['id', 'title','type','dataName','dataValue'];
                 }
 
 
@@ -340,7 +345,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         $scope.newItem = function(cate,subCate) {
 
             try{
-                if(cate == 'Data'){
+                if(cate === 'Data'){
                     $scope.data.push({
                         id: $scope.data.length  + 1,
                         title:  'Data',
@@ -350,7 +355,19 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                         // create new variable or assign value to existing variable
                         type:undefined
                     });
-                } else if(cate == 'Action'){
+                }
+
+                else if(cate === 'Output'){
+                    $scope.data.push({
+                        id:$scope.data.length + 1,
+                        title: 'Output',
+                        dataName: undefined,
+                        dataValue:undefined,
+                        type:undefined
+                    });
+                }
+
+                else if(cate === 'Action'){
                     var parameters = [];
                     var result;
                     var expression;
@@ -392,7 +409,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                     }
                 );
 
-                } else if(cate == 'Control'){
+                } else if(cate === 'Control'){
                     switch(subCate){
                         case 'for each':
                             $scope.data.push({
