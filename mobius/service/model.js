@@ -274,21 +274,23 @@ vidamo.factory('generateCode', function () {
                     // define return items according to output port
                     var num_output_ports = data.chartViewModel.nodes[i].outputConnectors.length;
 
-                    if(num_output_ports){
-
-                        for(var k = 0; k < num_output_ports; k++){
-                            data.innerCodeList[i] += '    var '
-                                + data.chartViewModel.nodes[i].outputConnectors[k].data.name
-                                + ';\n';
-                        }
-
-                        data.innerCodeList[i] +=  '\n';
-                    }
+                    //if(num_output_ports){
+                    //    for(var k = 0; k < num_output_ports; k++){
+                    //        data.innerCodeList[i] += '    var '
+                    //            + data.chartViewModel.nodes[i].outputConnectors[k].data.name
+                    //            + ';\n';
+                    //    }
+                    //    data.innerCodeList[i] +=  '\n';
+                    //}
 
                     // inner function content
                     for (var j = 0; j < data.dataList[i].length; j++) {
 
                         // data procedure
+
+                        if(data.dataList[i][j].title === 'Output'){
+                            procedure_output(data.dataList[i][j], i, false);
+                        }
 
                         if (data.dataList[i][j].title == "Data") {
                             procedure_data(data.dataList[i][j], i, false);
@@ -355,6 +357,27 @@ vidamo.factory('generateCode', function () {
                     }
                 }
             }
+
+            // output procedure
+            function procedure_output(procedure,nodeIndex,fromLoop){
+                if(fromLoop){
+                    var intentation = '    ';
+                }else{
+                    var intentation = '';
+                }
+
+                var codeBlock = '';
+
+                if(procedure.title == "Output"){
+                     codeBlock = intentation + "    " + "var "
+                            + procedure.name
+                            + " = "
+                            + procedure.dataValue + ";\n";
+
+                        data.innerCodeList[nodeIndex] += codeBlock;
+                }
+            }
+
 
             // action procedure
              function procedure_action(procedure,nodeIndex,fromLoop){

@@ -25,6 +25,7 @@ angular.module('ui.bootstrap.contextMenu', [])
                 if (item === null) {
                     $li.addClass('divider');
                 } else {
+                    console.log(item)
                     var $a = $('<a>');
                     $a.attr({ tabindex: '-1', href: '#' });
                     var text = typeof item[0] == 'string' ? item[0] : item[0].call($scope, $scope, event, model);
@@ -80,6 +81,7 @@ angular.module('ui.bootstrap.contextMenu', [])
                 event.stopPropagation();
                 $scope.$apply(function () {
                     event.preventDefault();
+                    console.log(attrs.contextMenu);
                     var options = $scope.$eval(attrs.contextMenu);
                     var model = $scope.$eval(attrs.model);
                     if (options instanceof Array) {
