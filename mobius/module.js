@@ -789,7 +789,7 @@ var VIDAMO = ( function (mod){
 	};
 
 	/**
-	 * Creates a polygon from 2D points
+	 * Creates a polygon from 2D points - points have to be specified in anticlockwise direction
 	 * @param {array} pointsXY - Array of 2D Points of form - [ [x,y], [x,y], [x,y], [x,y] ...]
 	 * @returns {MobiusDataObject} MobiusDataObject with ShapeGeometry
 	 */
