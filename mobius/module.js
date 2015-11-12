@@ -810,13 +810,16 @@ var VIDAMO = ( function (mod){
 	 * @param {MobiusDataObject} mObj - MobiusDataObject containing ShapeGeometry
 	 * @param {float} thickness - Amount of extrusion
 	 * @param {boolean} bevel - True or False for bevel or not
-	 * @param {MobiusDataObject} direction -  MobiusDataObject containing Position Vector for direction of extrusion or containing 3D Curve
+	 * @param {array} pathPoints -  Array of points of form [[x, y, z], [x, y, z] [x, y, z], ...] which specifies the path along which the polygon has to be extruded
 	 * @returns {MobiusDataObject} MobiusDataObject with ExtrudeGeometry
 	 */
-	mod.extrudePolygon = function(mObj, thickness, bevel, direction ){
+	mod.extrudePolygon = function(mObj, thickness, bevel, pathPoints ){
+
 		//mObj has to have shape  :/
 		var shape = mObj.geometry;
-		//var direction = direction.geometry; 
+		
+		pathPoints = pathPoints || [];
+
 
 		if( shape instanceof THREE.Shape ){
 			var extrudeSettings = { amount: thickness, 
@@ -825,6 +828,22 @@ var VIDAMO = ( function (mod){
 									steps: 2, 
 									bevelSize: 1, 
 									bevelThickness: 1 };
+			
+			// path method - object has to be centred about origin for the extrusion to work correctly - rotation is going to be arbitary
+			if(pathPoints.length){
+				var path;
+				if(pathPoints.length == 2){
+					// it's a line
+					path = new THREE.LineCurve3(new THREE.Vector3( pathPoints[0][0], pathPoints[0][1], pathPoints[0][2]), 
+												new THREE.Vector3( pathPoints[1][0], pathPoints[1][1], pathPoints[1][2]));
+				} else{
+					//path is a curve
+					path = new THREE.Curve(); 
+				}
+				
+				extrudeSettings.extrudePath = path;
+			}
+				
 			var geometry = new THREE.ExtrudeGeometry( shape, extrudeSettings );
 			
 			// shear method - inaccurate results
@@ -839,12 +858,7 @@ var VIDAMO = ( function (mod){
 				 // 0,     0,   0,   1  );
 				 // geometry.applyMatrix( matrix ); 
 			// }
-			
-			// path method - object has to be centred about origin for the extrusion to work correctly - rotation is going to be arbitary
-			
-			
-			
-			
+
 			return new MobiusDataObject( geometry );
 		}
 		else
@@ -1393,7 +1407,7 @@ var convertGeomToThreeMesh = function( geom ){
 		if( singleDataObject instanceof THREE.Mesh  || singleDataObject instanceof THREE.Object3D ){
 			return singleDataObject;
 		}
-		else if(singleDataObject instanceof THREE.Geometry){
+		else if(singleDataObject instanceof THREE.Geometry || singleDataObject instanceof THREE.Curve){
 			// if faces > 0 - it's a mesh
 			if(singleDataObject.faces.length)
 				return new THREE.Mesh( singleDataObject, default_material_meshFromThree || singleDataObject.material );
