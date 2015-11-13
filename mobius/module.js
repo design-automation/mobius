@@ -303,6 +303,8 @@ var VIDAMO = ( function (mod){
 		// start, end could be a vector3 - has to be converted into an array
 
 		return new MobiusDataObject( new verb.geom.Line(startPoint, endPoint) );
+		
+		// topology : curve class
 	};
 
 	/**
@@ -319,6 +321,8 @@ var VIDAMO = ( function (mod){
 		// input variations
 		// center, axis and yaxis could be vector3
 		return new MobiusDataObject( new verb.geom.Arc(centerPoint,xaxis,yaxis,radius,minAngle,maxAngle) );
+		
+		// topology : curve class
 	};
 
 	/**
@@ -330,6 +334,8 @@ var VIDAMO = ( function (mod){
 	mod.makeBezierCurve = function(points, weights){
 		// points could be vector3
 		return new MobiusDataObject( new verb.geom.BezierCurve(points, weights) );
+		
+		// topology : curve class
 	};
 
 	/**
@@ -342,6 +348,8 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.makeCircleBoundary = function(centerPoint,xaxis,yaxis,radius){
 		return new MobiusDataObject( new verb.geom.Circle(centerPoint,xaxis,yaxis,radius) );
+		
+		// topology : curve class
 	};
 
 	/**
@@ -353,6 +361,8 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.makeEllipse = function ( centerPoint ,xaxis,yaxis ){
 		return new MobiusDataObject( new verb.geom.Ellipse( centerPoint,xaxis,yaxis ) );
+		
+		// topology : curve class
 	};
 
 	/**
@@ -366,6 +376,8 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.makeEllipseArc = function ( centerPoint,xaxis,yaxis,minAngle,maxAngle ){
 		return new MobiusDataObject( new verb.geom.EllipseArc( centerPoint,xaxis,yaxis,minAngle,maxAngle ) );
+		
+		// topology : curve class
 	};
 
 	/**
@@ -605,7 +617,7 @@ var VIDAMO = ( function (mod){
 			//for uv lines
 			for(var i=0; i <= ugrid; i++){
 				for(var seg=0; seg <= vgrid; seg++)
-					gridPoints.push(surface.point(i*uincr, seg*vincr));
+					gridPoints.push(surface.point(i*uincr, seg*vincr)); console.log(surface.point(i*uincr, seg*vincr));
 			}
 
 			// creation of polygons from the gridPoints
@@ -983,8 +995,6 @@ var VIDAMO = ( function (mod){
 
 		// if verbs object, has to be copied and translated
 		if(mObj.geometry instanceof verb.geom.NurbsCurve || mObj.geometry instanceof verb.geom.NurbsSurface){
-			
-			var new_mObj = new MobiusDataObject( mObj.geometry );
 			VIDAMO.moveObjectToPoint(new_mObj, xCoord, yCoord, zCoord);
 			
 		}else{
