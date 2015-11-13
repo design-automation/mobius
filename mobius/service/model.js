@@ -171,7 +171,7 @@ vidamo.factory('generateCode', function () {
                                     + connected_input_name +' = VIDAMO.makeCopy('
                                     + return_obj_name
                                     + '.'
-                                    + output_port_name + ',0,0,0);\n';
+                                    + output_port_name + ',undefined,undefined,undefined);\n';
                             }
                         }
                     }

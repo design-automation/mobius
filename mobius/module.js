@@ -617,7 +617,7 @@ var VIDAMO = ( function (mod){
 			//for uv lines
 			for(var i=0; i <= ugrid; i++){
 				for(var seg=0; seg <= vgrid; seg++)
-					gridPoints.push(surface.point(i*uincr, seg*vincr)); console.log(surface.point(i*uincr, seg*vincr));
+					gridPoints.push(surface.point(i*uincr, seg*vincr));
 			}
 
 			// creation of polygons from the gridPoints
@@ -995,8 +995,8 @@ var VIDAMO = ( function (mod){
 
 		// if verbs object, has to be copied and translated
 		if(mObj.geometry instanceof verb.geom.NurbsCurve || mObj.geometry instanceof verb.geom.NurbsSurface){
-			VIDAMO.moveObjectToPoint(new_mObj, xCoord, yCoord, zCoord);
-			
+			if(xCoord != undefined && yCoord != undefined && zCoord != undefined)
+				VIDAMO.moveObjectToPoint(new_mObj, xCoord, yCoord, zCoord);
 		}else{
 				// only required if it's a three.js object - to get the transformations on it
 				var new_mObjMesh = new_mObj.extractGeometry( mObj.extractGeometry().clone() ); // sets the extractGeometry according to the original object
@@ -1066,7 +1066,7 @@ var VIDAMO = ( function (mod){
 			var target = [xCoord, yCoord, zCoord];
 			var tx = target[0] - orCenter[0];
 			var ty = target[1] - orCenter[1];
-			var tz = target[2] - orCenter[2]; console.log(tx, ty, tz);
+			var tz = target[2] - orCenter[2]; 
 			
 			VIDAMO.shiftObject( mObj, tx, ty, tz );		
 		} else
