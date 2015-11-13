@@ -388,6 +388,8 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.makeCurveByPoints = function( points, degree ){
 		return new MobiusDataObject( new verb.geom.NurbsCurve.byPoints( points, degree ) );
+		
+		// topology : curve class
 	};
 
 	/**
@@ -400,6 +402,8 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.makeCurveByKnotsControlPointsWeights = function ( degree,knots,controlPoints,weights ){
 		return new MobiusDataObject( new verb.geom.NurbsCurve.byKnotsControlPointsWeights( degree,knots,controlPoints,weights ) );
+		
+		// topology : curve class
 	};
 
 	/**
@@ -414,6 +418,9 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.makeSurfaceByKnotsControlPointsWeights = function ( degreeU,degreeV,knotsU,knotsV,controlPoints,weights ){
 		return new MobiusDataObject( new verb.geom.NurbsSurface.byKnotsControlPointsWeights( degreeU,degreeV,knotsU,knotsV,controlPoints,weights ) );
+		
+		// topology : single surface - cant be exploded
+		// brep : face -> surface (1); edges -> boundaries (4) ; vertex -> corner points (4)
 	};
 
 	/**
@@ -423,6 +430,9 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.makeSurfaceByCorners = function ( point0, point1, point2, point3 ){
 		return new MobiusDataObject( new verb.geom.NurbsSurface.byCorners ( point0,point1,point2,point3 ) );
+		
+		// topology : single surface - cant be exploded
+		// brep : face -> surface (1); edges -> boundaries (4) ; vertex -> corner points (4)
 	};
 
 	/**
@@ -436,6 +446,9 @@ var VIDAMO = ( function (mod){
 	mod.makeSurfaceByRevolution = function ( mObj, centerPoint, axis, angle ){
 		var profile = mObj.geometry;
 		return new MobiusDataObject( new verb.geom.RevolvedSurface( profile, centerPoint, axis, angle )  );
+		
+		// topology : single surface - cant be exploded
+		// brep : face -> surface (1); edges -> boundaries (4) ; vertex -> corner points (4) - if incomplete circle, else one boundary, one vertex
 	};
 
 	/**
@@ -448,6 +461,9 @@ var VIDAMO = ( function (mod){
 		var profile = mObjProfile.geometry;
 		var rail = mObjRail.geometry;
 		return new MobiusDataObject( new verb.geom.SweptSurface ( profile, rail ) );
+		
+		// topology : single surface - cant be exploded
+		// brep : face -> surface (1); edges -> boundaries (4) ; vertex -> corner points (4)
 	};
 
 	/**
@@ -462,6 +478,9 @@ var VIDAMO = ( function (mod){
 		for(var c=0; c<listOfCurves.length; c++)
 			curves.push(listOfCurves[c].geometry); demoC = curves;
 		return new MobiusDataObject( new verb.geom.NurbsSurface.byLoftingCurves( curves, deg ) );
+		
+		// topology : single surface - cant be exploded
+		// brep : face -> surface (1); edges -> boundaries (4) ; vertex -> corner points (4)
 	};
 
 	/**
@@ -473,6 +492,9 @@ var VIDAMO = ( function (mod){
 	mod.makeSurfaceByExtrusion = function ( mObjProfile, direction){
 		var profile = mObjProfile.geometry;
 		return new MobiusDataObject( new verb.geom.ExtrudedSurface( profile, direction ) );
+		
+		// topology : single surface - cant be exploded
+		// brep : face -> surface (1); edges -> boundaries (4) ; vertex -> corner points (4)
 	};
 
 	/**
@@ -483,6 +505,10 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.makeSurfaceAsSphere = function(centrePoint, radius){
 		return new MobiusDataObject( new verb.geom.SphericalSurface(centrePoint, radius) );
+		
+		// topology : single surface - cant be exploded
+		// brep : face -> surface (1); edges -> arc (1) ; vertex -> corner point (1)
+		// revolution surface - will contain the same details
 	};
 
 	/**
