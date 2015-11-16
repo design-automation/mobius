@@ -3,40 +3,25 @@
 // Not open to editing by module developer
 //
 
+var mObj = function( type ){
+	var type = type;
+	
+	this.getType = function(){
+		return type;
+	}
+}
 
-var MobiusDataObject = function( geometry, topology ){
-
-    //
-    // public property - native geometry stored in the data object
-    //
-    this.geometry = geometry;
-	this.geometryUpdated = false;
-	this.topology = topology; 
+var mObj.geom = function( geometry ){
+	
+	mObj.call('geometry');
+	
+	var geometry = geometry; 
+	var geometryTransformed = false;
 	
     //
     // private variables to store convertedGeometry and topology
     //
     var convertedGeometry = undefined;
-
-	
-    
-    // Adding topology variables to the main object - for direct access to the user
-    
-    // for (var property in TOPOLOGY.topoDef) {
-        // Object.defineProperty(this, property, {
-            // get: function(){
-                // if(this.geometry instanceof TOPOLOGY.Topology)
-                    // topology = this.geometry;
-                // else if (topology == undefined){
-                    // if(convertedGeometry == undefined)
-                        // convertedGeometry = this.extractGeometry();
-                    // topology = threeToTopology( convertedGeometry );
-                // }
-                // return topology[property]; // returning a topology object - not a MobiusObject - will not work if it's the final output or with other geometric functions
-            // },
-            // set: undefined
-        // });
-    // }
 
     //
     // Functions used by Mobius or Module for the different viewers
@@ -128,4 +113,86 @@ var MobiusDataObject = function( geometry, topology ){
         }
         return dataTable;
     }
+	
+	this.setGeometry = function( new_geometry ){
+		geometry = new_geometry;
+		console.log('geometry changed');
+	}
+	
+	this.getGeometry = function(){
+		return geometry;
+	}
+	
+	this.geometryTransformed = function)(){
+		geometryTransformed = true;
+	}
+	
+	this.setData = function(){
+		
+	}
+	
+	this.getData = function(){
+		
+	}
+	
+}
+
+var mObj.geom.Curve = function( geometry ){
+	
+	mObj.geom.call( this, geometry );
+	
+	var topology = {
+		vertices: [ geometry.point(0), geometry.point(1) ],
+		edges: geometry,
+		faces: NULL
+	}
+	
+	this.getTopology = function(){
+		return topology;
+	}
+	
+	this.setTopology = function(){
+		//set topology
+	}
+	
+}
+
+var mObj.geom.Surface = function( geometry ){
+	
+	mObj.geom.call( this, geometry );
+	
+	var topology = {
+		vertices: [ geometry.point(0,0), geometry.point(0,1), geometry(1,1), geometry(1,0) ],
+		edges: geometry.boundaries(),
+		faces: NULL
+	}
+	
+	this.getTopology = function(){
+		return topology;
+	}
+	
+	this.setTopology = function(){
+		//set topology
+	}
+}
+
+var mObj.geom.Solid = function( geometry ){
+	
+	mObj.geom.call( this, geometry );
+	
+	// explode into different surfaces and compute the topology
+	// var topology = {
+		// vertices: [ geometry.point(0,0), geometry.point(0,1), geometry(1,1), geometry(1,0) ],
+		// edges: geometry.boundaries(),
+		// faces: NULL
+	// }
+	
+	this.getTopology = function(){
+		return topology;
+	}
+	
+	this.setTopology = function(){
+		//set topology
+	}
+	
 }
