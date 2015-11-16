@@ -208,7 +208,9 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                         'inputConnectors',
                         'outputConnectors']
                 }else if(n['title'] === 'Output'){
-                    var props = ['id', 'title','type','name','dataValue','uuid'];
+                    var props = ['id', 'title','type','name','dataValue'];
+                }else if(n['title']==='Input'){
+                    var props = ['id','title','type','name','dataValue','connected']
                 }
 
 
@@ -338,7 +340,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
             var newConnectionViewModels = [];
 
             for(var i = 0; i < $scope.chartViewModel.data.nodes[$scope.nodeIndex].outputConnectors.length; i ++){
-                if($scope.chartViewModel.data.nodes[$scope.nodeIndex].outputConnectors[i] !== scope.$modelValue){
+                if($scope.chartViewModel.nodes[$scope.nodeIndex].outputConnectors[i].data !== scope.$modelValue){
                     newOutputConnectorDataModels.push($scope.chartViewModel.nodes[$scope.nodeIndex].outputConnectors[i].data);
                 }else{
                     var deletedOutputConnectors = {
@@ -371,6 +373,50 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
             $scope.chartViewModel.data.connections = newConnectionDataModels;
 
             scope.remove();
+        };
+
+
+        $scope.removeInput = function(scope) {
+
+            var newInputConnectorDataModels = [];
+            var newConnectionDataModels = [];
+            var newConnectionViewModels = [];
+
+            for(var i = 0; i < $scope.chartViewModel.data.nodes[$scope.nodeIndex].inputConnectors.length; i ++){
+
+                if($scope.chartViewModel.nodes[$scope.nodeIndex].inputConnectors[i].data !== scope.$modelValue){
+                    newInputConnectorDataModels.push($scope.chartViewModel.nodes[$scope.nodeIndex].inputConnectors[i].data);
+                }else{
+                    var deletedInputConnectors = {
+                        nodeId: $scope.chartViewModel.nodes[$scope.nodeIndex].data.id,
+                        inputConnectorIndex:
+                            $scope.chartViewModel.nodes[$scope.nodeIndex].inputConnectors.indexOf(
+                                $scope.chartViewModel.nodes[$scope.nodeIndex].inputConnectors[i]
+                            )
+                    };
+                }
+            }
+
+            $scope.chartViewModel.data.nodes[$scope.nodeIndex].inputConnectors = [];
+            $scope.chartViewModel.nodes[$scope.nodeIndex].inputConnectors = [];
+
+            for(var newInputIndex = 0; newInputIndex < newInputConnectorDataModels.length; newInputIndex++){
+                $scope.chartViewModel.nodes[$scope.nodeIndex].addInputConnector(newInputConnectorDataModels[newInputIndex]);
+            }
+
+
+            for(var j = 0; j < $scope.chartViewModel.connections.length; j++){
+                if(!(deletedInputConnectors.nodeId === $scope.chartViewModel.connections[j].data.dest.nodeID &&
+                    deletedInputConnectors.inputConnectorIndex === $scope.chartViewModel.connections[j].data.dest.connectorIndex)){
+                    newConnectionViewModels.push($scope.chartViewModel.connections[j]);
+                    newConnectionDataModels.push($scope.chartViewModel.connections[j].data);
+                }
+            }
+
+            $scope.chartViewModel.connections = newConnectionViewModels;
+            $scope.chartViewModel.data.connections = newConnectionDataModels;
+            scope.remove();
+
         };
 
         $scope.remove = function(scope){
@@ -408,7 +454,6 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                     };
 
                     $scope.data.push(outputObj);
-
 
                     $scope.chartViewModel.nodes[$scope.nodeIndex].addOutputConnector(outputObj);
                 }
@@ -515,17 +560,33 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         $scope.newInterface = function(cate) {
 
             try{
-                if(cate == 'Parameter'){
-                    $scope.interface.push({
-                        id: $scope.interface.length  + 1,
-                        title:  'Data',
-                        temp: 'Parameter',
+                if(cate === 'Input'){
 
-                        dataName:undefined,
-                        dataValue:undefined
+                    var inputObj = {
+                        id:$scope.interface.length + 1,
+                        title: 'Input',
+                        name: undefined,
+                        connected:false,
+                        dataValue:undefined,
+                        type:undefined
+                    };
 
-                    });
+                    $scope.interface.push(
+                        //{
+                        //    id: $scope.interface.length  + 1,
+                        //    title:  'Data',
+                        //    temp: 'Parameter',
+                        //
+                        //    dataName:undefined,
+                        //    dataValue:undefined
+                        //}
+                        inputObj
+                    );
+
+                    $scope.chartViewModel.nodes[$scope.nodeIndex].addInputConnector(inputObj);
+
                 }
+
             }
             catch(err){
                 consoleMsg.errorMsg('noNode');

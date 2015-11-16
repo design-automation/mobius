@@ -1,0 +1,191 @@
+//
+// Mobius Graph Add Node/Type controller
+//
+
+vidamo.controller('newNodeCtrl',[
+    '$scope',
+    '$timeout',
+    'consoleMsg',
+    'hotkeys',
+    'generateCode',
+    'nodeCollection',
+    'prompt',
+    '$mdDialog',
+    function($scope,$timeout,consoleMsg,hotkeys,generateCode,nodeCollection,prompt,$mdDialog) {
+
+        $scope.functionCodeList = [];
+        // synchronization with vidamo application data pool
+
+        // inner function code for procedures
+        $scope.innerCodeList = generateCode.getInnerCodeList();
+        $scope.$watch('innerCodeList', function () {
+            generateCode.setInnerCodeList($scope.innerCodeList);
+        },true);
+        $scope.$watch(function () { return generateCode.getInnerCodeList(); }, function () {
+            $scope.innerCodeList = generateCode.getInnerCodeList();
+        },true);
+
+        // outer function code for procedures
+        $scope.outerCodeList = generateCode.getOuterCodeList();
+        $scope.$watch('outerCodeList', function () {
+            generateCode.setOuterCodeList($scope.outerCodeList);
+        },true);
+        $scope.$watch(function () { return generateCode.getOuterCodeList(); }, function () {
+            $scope.outerCodeList = generateCode.getOuterCodeList();
+        },true);
+
+        // procedure data list
+        $scope.dataList = generateCode.getDataList();
+        $scope.$watch('dataList', function () {
+            generateCode.setDataList($scope.dataList);
+        },true);
+        $scope.$watch(function () { return generateCode.getDataList(); }, function () {
+            $scope.dataList = generateCode.getDataList();
+        },true);
+
+        // interface data list
+
+        $scope.interfaceList= generateCode.getInterfaceList();
+        $scope.$watch('interfaceList', function () {
+            generateCode.setInterfaceList($scope.interfaceList);
+        },true);
+        $scope.$watch(function () { return generateCode.getInterfaceList(); }, function () {
+            $scope.interfaceList= generateCode.getInterfaceList();
+        },true);
+
+        // graph flowchart view model
+        // pass by reference
+        // watch chartViewModel.data instead of chartViewModel to prevent stack limit exceeded
+        $scope.chartViewModel= generateCode.getChartViewModel();
+        $scope.$watch('chartViewModel.data', function () {
+            generateCode.generateCode();
+        },true);
+
+        $scope.$watch(function () { return generateCode.getChartViewModel(); }, function () {
+            if(generateCode.getChartViewModel() !== $scope.chartViewModel){
+                $scope.chartViewModel= generateCode.getChartViewModel();
+            }
+        });
+
+        // synchronization with node collection
+        // new node type
+        $scope.nodeTypes = function(){
+            return nodeCollection.getNodeTypes();
+        };
+
+        // for generate node name
+        $scope.nextNodeId = 0;
+
+        // currently selected node ID
+        $scope.nodeIndex = '';
+
+        // currently selected node name
+        $scope.currentNodeName = '';
+        $scope.currentNodeType = '';
+
+
+        // verify the function name
+        // fixme replace eval with regex
+        function isValidName(inputName) {
+            if(inputName){
+                var testString =  'function ' + inputName  + '(){};';
+
+                try{
+                    eval(testString);
+                }
+                catch(err){
+                    consoleMsg.errorMsg('invalidName');
+                    return false;
+                }
+                return true;
+            }else{
+                consoleMsg.errorMsg('invalidName');
+                return false;
+            }
+        }
+
+
+        // Add a new node to the chart.
+        // todo integrate with fancy prompt
+
+        $scope.addNewNode = function (type) {
+            if(type === 'create new type'){
+                // install new node type and update type
+                type = $scope.createNewNodeType();
+                if(!type){
+                    return;
+                }
+            }
+
+            // prompt for name of new node and validate
+            $timeout(function(){
+
+                var tempIndex = 0;
+                for(var i =0; i < $scope.chartViewModel.nodes.length; i++){
+                    if($scope.chartViewModel.nodes[i].data.type === type){
+                        tempIndex ++;
+                    }
+                }
+
+                var nodeName = type + tempIndex;
+
+                // update node name, node id and location
+                var newNodeDataModel = {};
+                newNodeDataModel.id = $scope.chartViewModel.nodes.length;
+                newNodeDataModel.name = nodeName;
+                newNodeDataModel.x = 1900;
+                newNodeDataModel.y = 2100;
+                newNodeDataModel.inputConnectors = nodeCollection.getInputConnectors(type);
+                newNodeDataModel.outputConnectors = nodeCollection.getOutputConnectors(type);
+                newNodeDataModel.type = type;
+                newNodeDataModel.version = 0;
+                newNodeDataModel.overwrite = nodeCollection.getOverwrite(type);
+
+                // when new node added, increase the number of procedure list by one
+                $scope.dataList.push(nodeCollection.getProcedureDataModel(type));
+
+                // when new node added, add new code block
+                $scope.innerCodeList.push('//\n' + '// To generate code, create nodes & procedures and run!\n' + '//\n');
+                $scope.outerCodeList.push('//\n' + '// To generate code, create nodes & procedures and run!\n' + '//\n');
+
+                // when new node added, increase the number of interface list by one
+                $scope.interfaceList.push(nodeCollection.getInterfaceDataModel(type));
+
+                // todo interface code list
+
+                // add new node data model to view model
+
+                $scope.chartViewModel.addNode(newNodeDataModel);
+
+                // clean dropdown menu -> flowchart directive
+                $scope.$emit('cleanGraph');
+
+                $scope.nextNodeId++;
+            },100);
+
+        };
+
+        // create and install a new node type
+        $scope.createNewNodeType = function (){
+            // prompt for name of new type and validate
+            var newTypeName = prompt('Enter a name for new type:');
+
+            if (!isValidName(newTypeName)) {
+                consoleMsg.errorMsg('invalidName');
+                return;}
+
+            if ($scope.nodeTypes().indexOf(newTypeName) >= 0 ){
+                consoleMsg.errorMsg('dupName');
+                return;
+            }
+
+            var newProcedureDataModel =  [];
+            var newInterfaceDataModel = [];
+
+            nodeCollection.installNewNodeType(newTypeName,newProcedureDataModel,newInterfaceDataModel);
+
+            return newTypeName;
+        };
+
+
+    }]);

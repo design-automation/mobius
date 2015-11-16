@@ -372,3 +372,7 @@ right pane code area
 .ui-select-bootstrap .ui-select-toggle>.caret {
 display: none;
 }
+
+.position-fixed {
+    position: fixed;
+}

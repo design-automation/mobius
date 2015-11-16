@@ -3,7 +3,7 @@
 // code generation module
 //
 
-vidamo.factory('generateCode', function () {
+vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
 
     // vidamo application data pool
 
@@ -11,6 +11,7 @@ vidamo.factory('generateCode', function () {
         nodes: [],
         connections: []
     };
+
 
     var outputGeom = [];
 
@@ -21,10 +22,21 @@ vidamo.factory('generateCode', function () {
         outerCodeList:[],
         dataList:[],
         interfaceList:[],
-        chartViewModel: new flowchart.ChartViewModel(chartDataModel)
+        chartViewModel: new flowchart.ChartViewModel(chartDataModel),
+        nodeIndex:undefined
     };
 
+    // todo refactor nodeindexing direct $watch from graph controller and procedure controller
+    $rootScope.$on("nodeIndex", function(event, message) {
+        data.nodeIndex = message;
+    });
+
+
     return {
+        getNodeIndex: function(){
+            return data.nodeIndex;
+        },
+
         getOutputGeom: function(){
             return outputGeom;
         },
@@ -171,7 +183,7 @@ vidamo.factory('generateCode', function () {
                                     + connected_input_name +' = VIDAMO.makeCopy('
                                     + return_obj_name
                                     + '.'
-                                    + output_port_name + ',0,0,0);\n';
+                                    + output_port_name + ',undefined,undefined,undefined);\n';
                             }
                         }
                     }
@@ -195,15 +207,16 @@ vidamo.factory('generateCode', function () {
 
                     var num_input_ports = data.chartViewModel.nodes[i].inputConnectors.length;
 
-                    if(data.chartViewModel.nodes[i].inputConnectors.length){
-
+                    if(num_input_ports){
                         for(var k = 0; k < num_input_ports; k++){
 
-                            if( k != num_input_ports-1){
-                                data.outerCodeList[i] += data.chartViewModel.nodes[i].inputConnectors[k].data.name + ',';
-                            }
-                            else{
-                                data.outerCodeList[i] += data.chartViewModel.nodes[i].inputConnectors[k].data.name;
+                            if(data.chartViewModel.nodes[i].inputConnectors[k].data.connected === true){
+                                if( k != num_input_ports-1){
+                                    data.outerCodeList[i] += data.chartViewModel.nodes[i].inputConnectors[k].data.name + ',';
+                                }
+                                else{
+                                    data.outerCodeList[i] += data.chartViewModel.nodes[i].inputConnectors[k].data.name;
+                                }
                             }
                         }
 
@@ -217,13 +230,16 @@ vidamo.factory('generateCode', function () {
                     // todo assign or create new variable
                     for(var j = 0; j < data.interfaceList[i].length;j++){
 
-                        // creating new parameters
-                        var codeBlock = "    " + "var "
-                            + data.interfaceList[i][j].dataName
-                            + " = "
-                            + data.interfaceList[i][j].dataValue + ";\n";
+                        if(data.interfaceList[i][j].connected === false){
+                            // creating new parameters
+                            var codeBlock = "    " + "var "
+                                + data.interfaceList[i][j].name
+                                + " = "
+                                + data.interfaceList[i][j].dataValue + ";\n";
 
-                        data.outerCodeList[i] += codeBlock;
+                            data.outerCodeList[i] += codeBlock;
+                        }
+
                     }
 
                     // code for invoking inner function
@@ -235,7 +251,7 @@ vidamo.factory('generateCode', function () {
                     data.outerCodeList[i] += '    return ' + data.chartViewModel.nodes[i].data.type + identifier + '(';
 
                     for(var j = 0; j < data.interfaceList[i].length; j++){
-                        data.outerCodeList[i] += data.interfaceList[i][j].dataName;
+                        data.outerCodeList[i] += data.interfaceList[i][j].name;
                         if(j !=  data.interfaceList[i].length-1){
                             data.outerCodeList[i] += ', '
                         }
@@ -262,7 +278,7 @@ vidamo.factory('generateCode', function () {
                     data.innerCodeList[i] += 'function ' + data.chartViewModel.nodes[i].data.type + identifier + '( ';
 
                     for (var j = 0; j < data.interfaceList[i].length; j++) {
-                        data.innerCodeList[i] += data.interfaceList[i][j].dataName;
+                        data.innerCodeList[i] += data.interfaceList[i][j].name;
                         if (j != data.interfaceList[i].length - 1) {
                             data.innerCodeList[i] += ', '
                         }
@@ -468,4 +484,4 @@ vidamo.factory('generateCode', function () {
             }
         }
     };
-});
+}]);

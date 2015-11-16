@@ -137,6 +137,8 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                         procedureJsonObj = JSON.parse(procedureJsonString);
                         interfaceJsonObj = JSON.parse(interfaceJsonString);
 
+                        // fixme input/output should be link by reference
+
                         // update the graph
                         generateCode.setChartViewModel(new flowchart.ChartViewModel(graphJsonObj));
 
@@ -145,6 +147,41 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
 
                         // update the interface
                         generateCode.setInterfaceList(interfaceJsonObj);
+
+                        // dynamically link input and output from graph and procedure
+                        for(var i =0; i < generateCode.getChartViewModel().nodes.length; i++){
+                            for(var j = 0 ; j < generateCode.getChartViewModel().nodes[i].outputConnectors.length; j++ ){
+                                for(var k = 0; k < generateCode.getDataList()[i].length; k++){
+                                    if(generateCode.getDataList()[i][k].title === 'Output'){
+                                        if(generateCode.getChartViewModel().nodes[i].outputConnectors[j].data.name
+                                            === generateCode.getDataList()[i][k].name ){
+                                            generateCode.getChartViewModel().nodes[i].outputConnectors[j].data =
+                                                generateCode.getDataList()[i][k];
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+
+                        for(var i =0; i < generateCode.getChartViewModel().nodes.length; i++) {
+                            for (var j = 0; j < generateCode.getChartViewModel().nodes[i].inputConnectors.length; j++) {
+                                for (var k = 0; k < generateCode.getInterfaceList()[i].length; k++) {
+                                    if (generateCode.getInterfaceList()[i][k].title === 'Input') {
+                                        if (generateCode.getChartViewModel().nodes[i].inputConnectors[j].data.name
+                                            === generateCode.getInterfaceList()[i][k].name) {
+                                            generateCode.getChartViewModel().nodes[i].inputConnectors[j].data =
+                                                generateCode.getInterfaceList()[i][k];
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        console.log(generateCode.getChartViewModel())
+                        console.log(generateCode.getDataList())
+                        console.log(generateCode.getInterfaceList())
+
 
                         consoleMsg.confirmMsg('sceneImport');
                     }else{

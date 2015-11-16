@@ -535,9 +535,10 @@ var flowchart = {
 			debug.assertObjectValid(destConnector);
 
 			// @ mobius : flag for input connector is connected
+			// fixme
+			//sourceConnector.data.connected = true;
 			destConnector.data.connected = true;
 
-			console.log(destConnector);
 
 			var connectionsDataModel = this.data.connections;
 			if (!connectionsDataModel) {
@@ -1044,6 +1045,8 @@ var flowchart = {
 						if(deletedOutputConnectors[i].nodeId === connection.data.source.nodeID &&
 							deletedOutputConnectors[i].outputConnectorIndex === connection.data.source.connectorIndex){
 							flag = false;
+							this.findInputConnector(connection.data.dest.nodeID,connection.data.dest.connectorIndex)
+									.data.connected=false;
 						}
 					}
 
@@ -1051,6 +1054,10 @@ var flowchart = {
 						newConnectionViewModels.push(connection);
 						newConnectionDataModels.push(connection.data);
 					}
+				}else{
+					// set the connected of dest connector of deleted connection to false
+					this.findInputConnector(connection.data.dest.nodeID,connection.data.dest.connectorIndex)
+							.data.connected=false;
 				}
 			}
 
