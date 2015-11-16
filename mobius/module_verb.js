@@ -675,9 +675,9 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.makeMeshBySubdivision = function( mObj, ugrid, vgrid ){
 
-		var surface = mObj.getGeometry(); 
+		var srf = mObj.getGeometry(); 
 		
-		if(surface instanceof verb.geom.NurbsSurface){
+		if(srf instanceof verb.geom.NurbsSurface){
 			var div_surfaces = [], gridPoints = [];
 			var uincr = 1/ugrid;
 			var vincr = 1/vgrid;
@@ -685,14 +685,14 @@ var VIDAMO = ( function (mod){
 			//for uv lines
 			for(var i=0; i <= ugrid; i++){
 				for(var seg=0; seg <= vgrid; seg++)
-					gridPoints.push(surface.point(i*uincr, seg*vincr)); 
+					gridPoints.push(srf.point(i*uincr, seg*vincr)); 
 			}
 
 			// creation of polygons from the gridPoints
 			for(var i=0; i< gridPoints.length-vgrid-2; i++){
 				if((i+vgrid+2)%(vgrid+1) != 0 || i==0){
 					// construction of the verbs four point surface
-					var mbObj = new mObj.geom.Surface( new verb.geom.NurbsSurface.byCorners(gridPoints[i], gridPoints[i+1],  gridPoints[i+vgrid+2], gridPoints[i+vgrid+1]) );
+					var mbObj =  new mObj.geom.Surface( new verb.geom.NurbsSurface.byCorners(gridPoints[i], gridPoints[i+1],  gridPoints[i+vgrid+2], gridPoints[i+vgrid+1]) );
 					div_surfaces.push(mbObj); 
 				}
 			}
