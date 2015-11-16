@@ -235,7 +235,7 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.getCentre = function(mObj){
 		//calculate centre based on what kind of object
-		var geometry = mObj.geometry;
+		var geometry = mObj.getGeometry();
 
 		if(geometry instanceof verb.geom.NurbsCurve)
 			return geometry.point(0.5);
@@ -267,7 +267,7 @@ var VIDAMO = ( function (mod){
 	 * @returns {float} Length 
 	 */
 	mod.getLength = function( mObj ){
-		var geom = mObj.geometry;
+		var geom = mObj.getGeometry();
 		return geom.length();
 	};
 
@@ -312,7 +312,7 @@ var VIDAMO = ( function (mod){
 	mod.makeArc = function(centerPoint, xaxis, yaxis, radius, minAngle, maxAngle){
 		// input variations
 		// center, axis and yaxis could be vector3
-		return new mObj.geom.Curve( verb.geom.Arc(centerPoint,xaxis,yaxis,radius,minAngle,maxAngle) ) ;
+		return new mObj.geom.Curve( new verb.geom.Arc(centerPoint,xaxis,yaxis,radius,minAngle,maxAngle) ) ;
 
 	};
 
@@ -454,7 +454,7 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.makeSurfaceByLoft = function(listOfCurves, degree){
 		var deg = degree || 3;
-		var curves = [];
+		var curves = []; l = listOfCurves;
 		for(var c=0; c<listOfCurves.length; c++)
 			curves.push(listOfCurves[c].getGeometry()); 
 		return new mObj.geom.Surface( new verb.geom.NurbsSurface.byLoftingCurves( curves, deg ) ) ;
@@ -519,8 +519,12 @@ var VIDAMO = ( function (mod){
 	 * @param {float} radius - Radius of cylinder
 	 * @returns {MobiusDataObject}  - NURBS Surface
 	 */
-	mod.makeCylinder = function ( axis, xaxis, base, height, radius ){
-		return new mObj.geom.Surface( new verb.geom.CylindricalSurface( axis,xaxis,base,height,radius )) ) ;
+	mod.makeCylinder = function ( axis, xaxis, base, height, radius, capped ){
+		if(capped){
+			//return a solid			
+		}
+		else
+			return new mObj.geom.Surface( new verb.geom.CylindricalSurface( axis,xaxis,base,height,radius ))  ;
 	};
 	
 	//
@@ -583,7 +587,7 @@ var VIDAMO = ( function (mod){
 	 * @returns {array} point [x,y,z]
 	 */
 	mod.getPointOnSurface = function( surface, u, v ){
-		var srf = surface.geometry;
+		var srf = surface.getGeometry();
 		if(srf instanceof verb.geom.NurbsSurface)
 			return srf.point( u, v );
 		else
@@ -597,7 +601,7 @@ var VIDAMO = ( function (mod){
 	 * @returns {array} point [x,y,z]
 	 */
 	mod.getPointOnCurve = function( curve, t ){
-		var crv = curve.geometry;
+		var crv = curve.getGeometry();
 		if( crv instanceof verb.geom.NurbsCurve)
 			return crv.point( t );
 		else
@@ -611,7 +615,7 @@ var VIDAMO = ( function (mod){
 	 * @returns {array} curve parameters [t1, t2, t3 ...]
 	 */
 	mod.divideCurveByEqualArcLength = function( curve, divisions ){
-		var crv = curve.geometry;
+		var crv = curve.getGeometry();
 		var points = crv.divideByEqualArcLength( divisions )
 			.map(function(u){ return ( u.u ); } );
 
@@ -625,7 +629,7 @@ var VIDAMO = ( function (mod){
 	 * @returns {array} curve parameters [t1, t2, t3 ...]
 	 */
 	mod.divideCurveByArcLength = function( curve, arcLength ){
-		var crv = curve.geometry;
+		var crv = curve.getGeometry();
 		var points = crv.divideByArcLength( arcLength )
 			.map(function(u){ return ( u.u ); } );
 
@@ -639,7 +643,7 @@ var VIDAMO = ( function (mod){
 	 * @returns {array} tangent [x,y,z]
 	 */
 	mod.getTangentAtCurveParameter = function( curve, t ){
-		var crv = curve.geometry;
+		var crv = curve.getGeometry();
 		if( crv instanceof verb.geom.NurbsCurve)
 			return crv.tangent(t);
 		else
@@ -654,7 +658,7 @@ var VIDAMO = ( function (mod){
 	 * @returns {array} tangent [x,y,z]
 	 */
 	mod.getNormalAtSurfaceParameter = function( surface, u, v ){
-		var srf = surface.geometry;
+		var srf = surface.getGeometry();
 		if(srf instanceof verb.geom.NurbsSurface)
 			return srf.normal( u, v);
 		else
@@ -671,8 +675,8 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.makeMeshBySubdivision = function( mObj, ugrid, vgrid ){
 
-		var surface = mObj.geometry;
-
+		var surface = mObj.getGeometry(); 
+		
 		if(surface instanceof verb.geom.NurbsSurface){
 			var div_surfaces = [], gridPoints = [];
 			var uincr = 1/ugrid;
@@ -681,15 +685,15 @@ var VIDAMO = ( function (mod){
 			//for uv lines
 			for(var i=0; i <= ugrid; i++){
 				for(var seg=0; seg <= vgrid; seg++)
-					gridPoints.push(surface.point(i*uincr, seg*vincr));
+					gridPoints.push(surface.point(i*uincr, seg*vincr)); 
 			}
 
 			// creation of polygons from the gridPoints
 			for(var i=0; i< gridPoints.length-vgrid-2; i++){
 				if((i+vgrid+2)%(vgrid+1) != 0 || i==0){
 					// construction of the verbs four point surface
-					var mbObj = new MobiusDataObject( new verb.geom.NurbsSurface.byCorners(gridPoints[i], gridPoints[i+1],  gridPoints[i+vgrid+2], gridPoints[i+vgrid+1]) )
-					div_surfaces.push(mbObj)
+					var mbObj = new mObj.geom.Surface( new verb.geom.NurbsSurface.byCorners(gridPoints[i], gridPoints[i+1],  gridPoints[i+vgrid+2], gridPoints[i+vgrid+1]) );
+					div_surfaces.push(mbObj); 
 				}
 			}
 
@@ -707,7 +711,7 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.makeTubeByLine = function( mObj, radius ){
 
-		var line = mObj.geometry;
+		var line = mObj.getGeometry();
 
 		var start = line.start();
 		var end = line.end();
@@ -750,7 +754,7 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.getCornerPointsFromSurface = function( mObj ){
 
-		var polygon = mObj.geometry;
+		var polygon = mObj.getGeometry();
 
 		return [
 			polygon.point(0,0),
@@ -787,24 +791,27 @@ var VIDAMO = ( function (mod){
 	mod.makeCopy = function(mObj, xCoord, yCoord, zCoord){
 
 		// for output cloning
-		if( mObj.geometry == undefined ){
+		if( mObj.getGeometry == undefined ){
 			console.log("Non-Mobius passed to copy function");
 			return mObj;
 		}
 		
-		var new_mObj = new MobiusDataObject( mObj.geometry );
+		var clone = new Object();
+		return Object.assign( clone, mObj );
+		
+		// var new_mObj = new MobiusDataObject( mObj.getGeometry() );
 		
 		// attach data
-		if(mObj.data != undefined)
-			VIDAMO.addData(new_mObj, mObj.data);
+		// if(mObj.data != undefined)
+			// VIDAMO.addData(new_mObj, mObj.data);
 
 		// if verbs object, has to be copied and translated
-		if(mObj.geometry instanceof verb.geom.NurbsCurve || mObj.geometry instanceof verb.geom.NurbsSurface){
-			if(xCoord != undefined && yCoord != undefined && zCoord != undefined)
-				VIDAMO.moveObjectToPoint(new_mObj, xCoord, yCoord, zCoord);
-		}
+		// if(mObj.getGeometry() instanceof verb.geom.NurbsCurve || mObj.getGeometry() instanceof verb.geom.NurbsSurface){
+			// if(xCoord != undefined && yCoord != undefined && zCoord != undefined)
+				// VIDAMO.moveObjectToPoint(new_mObj, xCoord, yCoord, zCoord);
+		// }
 		
-		return new_mObj; //needs to be sorted out
+		// return new_mObj; //needs to be sorted out
 	};
 
 	/**
@@ -1041,7 +1048,7 @@ var VIDAMO = ( function (mod){
 				geom.push(tempGeom0);
 				geomData.push(tempData0);
 			}
-			else if(obj instanceof  MobiusDataObject){
+			else if(obj instanceof  mObj.geom.Curve || obj instanceof mObj.geom.Surface){ console.log('render');
 				geom.push( obj.extractGeometry() );
 				geomData.push( obj.extractData() );
 			}else{
@@ -1112,29 +1119,7 @@ var convertGeomToThreeMesh = function( geom ){
 	// internal function
 	convertToThree = function(singleDataObject){
 
-		if( singleDataObject instanceof THREE.Mesh  || singleDataObject instanceof THREE.Object3D ){
-			return singleDataObject;
-		}
-		else if(singleDataObject instanceof THREE.Geometry || singleDataObject instanceof THREE.Curve){
-			// if faces > 0 - it's a mesh
-			if(singleDataObject.faces.length)
-				return new THREE.Mesh( singleDataObject, default_material_meshFromThree || singleDataObject.material );
-			else
-				return new THREE.Line( singleDataObject, default_material_lineFromThree || singleDataObject.material ) // else line
-		}
-		else if(singleDataObject instanceof THREE.Vector3){
-			var dotGeometry = new THREE.Geometry();
-			dotGeometry.vertices.push(singleDataObject);
-			return new THREE.PointCloud( dotGeometry, default_material_pointFromThree || singleDataObject.material );
-		}
-		else if(singleDataObject instanceof THREE.Shape){
-			var geometry = new THREE.ShapeGeometry( singleDataObject );
-			var mesh = new THREE.Mesh( geometry, default_material_meshFromThree || singleDataObject.material );
-			return mesh;
-		}
-		else if(singleDataObject instanceof ThreeBSP)
-			return new THREE.Mesh( singleDataObject.toGeometry(), default_material_meshFromThree );
-		else if( singleDataObject instanceof verb.geom.NurbsSurface ){
+		if( singleDataObject instanceof verb.geom.NurbsSurface ){
 
 			var geometry = singleDataObject.toThreeGeometry();
 
@@ -1159,10 +1144,9 @@ var convertGeomToThreeMesh = function( geom ){
 	}
 
 	var rawResult = convertToThree( geom );
-	var optimizedResult = /*changeLOD(0.2, */rawResult//); // run polychop on this and reduce the number of faces needs for the desired level of LOD
-
-	optimizedResult.is_mObj = true;
-	return optimizedResult;
+	
+	rawResult.is_mObj = true;
+	return rawResult;
 }
 
 //

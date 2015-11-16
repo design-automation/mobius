@@ -11,12 +11,13 @@ var mObj = function( type ){
 	}
 }
 
-var mObj.geom = function( geometry ){
+mObj.geom = function( geometry ){
 	
 	mObj.call('geometry');
-	
+
 	var geometry = geometry; 
 	var geometryTransformed = false;
+	var topology = undefined;
 	
     //
     // private variables to store convertedGeometry and topology
@@ -35,9 +36,9 @@ var mObj.geom = function( geometry ){
         // if setGeom is given, set the convertedGeom to that
         if(setGeom == undefined){
             // if undefined, defines it and saves it
-            if(convertedGeometry == undefined || this.geometryUpdated == true){
-				this.geometryUpdated = false;
-				convertedGeometry = convertGeomToThreeMesh(this.geometry);
+            if(convertedGeometry == undefined || geometryTransformed == true){
+				geometryTransformed = false;
+				convertedGeometry = convertGeomToThreeMesh( geometry );
 			}
 
             // if material has been assigned to this data object, assigns the same material to the converted geometry
@@ -123,7 +124,7 @@ var mObj.geom = function( geometry ){
 		return geometry;
 	}
 	
-	this.geometryTransformed = function)(){
+	this.geometryTransformed = function(){
 		geometryTransformed = true;
 	}
 	
@@ -137,15 +138,16 @@ var mObj.geom = function( geometry ){
 	
 }
 
-var mObj.geom.Curve = function( geometry ){
+mObj.geom.Curve = function( geometry ){
 	
-	mObj.geom.call( this, geometry );
+	mObj.geom.call( this, geometry ); 
 	
+	/*
 	var topology = {
 		vertices: [ geometry.point(0), geometry.point(1) ],
 		edges: geometry,
-		faces: NULL
-	}
+		faces: 'null'
+	} */
 	
 	this.getTopology = function(){
 		return topology;
@@ -157,15 +159,15 @@ var mObj.geom.Curve = function( geometry ){
 	
 }
 
-var mObj.geom.Surface = function( geometry ){
+mObj.geom.Surface = function( geometry ){
 	
 	mObj.geom.call( this, geometry );
 	
-	var topology = {
-		vertices: [ geometry.point(0,0), geometry.point(0,1), geometry(1,1), geometry(1,0) ],
-		edges: geometry.boundaries(),
-		faces: NULL
-	}
+	// var topology = {
+		// vertices: [ geometry.point(0,0), geometry.point(0,1), geometry(1,1), geometry(1,0) ],
+		// edges: geometry.boundaries(),
+		// faces: NULL
+	// }
 	
 	this.getTopology = function(){
 		return topology;
@@ -176,7 +178,7 @@ var mObj.geom.Surface = function( geometry ){
 	}
 }
 
-var mObj.geom.Solid = function( geometry ){
+mObj.geom.Solid = function( geometry ){
 	
 	mObj.geom.call( this, geometry );
 	
