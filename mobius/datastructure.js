@@ -3,38 +3,40 @@
 // Not open to editing by module developer
 //
 
-var MobiusDataObject = function( geometry ){
+
+var MobiusDataObject = function( geometry, topology ){
 
     //
     // public property - native geometry stored in the data object
     //
     this.geometry = geometry;
 	this.geometryUpdated = false;
-
+	this.topology = topology; 
+	
     //
     // private variables to store convertedGeometry and topology
     //
-    var topology = undefined;
     var convertedGeometry = undefined;
 
-    //
+	
+    
     // Adding topology variables to the main object - for direct access to the user
-    //
-    for (var property in TOPOLOGY.topoDef) {
-        Object.defineProperty(this, property, {
-            get: function(){
-                if(this.geometry instanceof TOPOLOGY.Topology)
-                    topology = this.geometry;
-                else if (topology == undefined){
-                    if(convertedGeometry == undefined)
-                        convertedGeometry = this.extractGeometry();
-                    topology = threeToTopology( convertedGeometry );
-                }
-                return topology[property]; // returning a topology object - not a MobiusObject - will not work if it's the final output or with other geometric functions
-            },
-            set: undefined
-        });
-    }
+    
+    // for (var property in TOPOLOGY.topoDef) {
+        // Object.defineProperty(this, property, {
+            // get: function(){
+                // if(this.geometry instanceof TOPOLOGY.Topology)
+                    // topology = this.geometry;
+                // else if (topology == undefined){
+                    // if(convertedGeometry == undefined)
+                        // convertedGeometry = this.extractGeometry();
+                    // topology = threeToTopology( convertedGeometry );
+                // }
+                // return topology[property]; // returning a topology object - not a MobiusObject - will not work if it's the final output or with other geometric functions
+            // },
+            // set: undefined
+        // });
+    // }
 
     //
     // Functions used by Mobius or Module for the different viewers
