@@ -18,12 +18,14 @@ var mObj = function( type ){
 
 // mObj Geometry Class
 // geometry is stored in geometry format native to module
-mObj.geom = function( geometry, material ){
+var mObj_geom = function( geometry, material ){
 	
 	mObj.call(this, 'geometry');
 
 	var geometry = geometry; 
     var material = material;
+
+    var self = this;
 
     var data = undefined;
 
@@ -37,7 +39,7 @@ mObj.geom = function( geometry, material ){
         threeTopology = undefined;
 
         // recompute topology
-        topology = computeTopology( geometry );
+        topology = computeTopology( self );
 
         //
         // expose topology to the user
@@ -51,9 +53,6 @@ mObj.geom = function( geometry, material ){
 
         }
     }
-
-    // topology is always computed 
-    update();
 
     //
     // Functions used by Mobius or Module for the different viewers
@@ -172,10 +171,13 @@ mObj.geom = function( geometry, material ){
         if( threeGeometry )
             threeGeometry.material = new_material;
     }
+
+    // topology is always computed 
+    update();
 	
 }
 
-mObj.geom.Curve = function( geometry ){
+var mObj_geom_Curve = function( geometry ){
 	
     var defaultCurveMaterial = new THREE.LineBasicMaterial({
     side: THREE.DoubleSide,
@@ -183,11 +185,11 @@ mObj.geom.Curve = function( geometry ){
     color: 0x003399
     });
 	
-    mObj.geom.call( this, geometry, defaultCurveMaterial ); 
+    mObj_geom.call( this, geometry, defaultCurveMaterial ); 
 	
 }
 
-mObj.geom.Surface = function( geometry ){
+var mObj_geom_Surface = function( geometry ){
 	
     var defaultSurfaceMaterial = new THREE.MeshLambertMaterial( {
     side: THREE.DoubleSide,
@@ -197,11 +199,11 @@ mObj.geom.Surface = function( geometry ){
     color: 0x003399
     } );
 
-	mObj.geom.call( this, geometry, defaultSurfaceMaterial );
+	mObj_geom.call( this, geometry, defaultSurfaceMaterial );
 
 }
 
-mObj.geom.Solid = function( geometry ){
+var mObj_geom_Solid = function( geometry ){
 	
     var defaultSolidMaterial = new THREE.MeshLambertMaterial( {
     side: THREE.DoubleSide,
@@ -211,6 +213,6 @@ mObj.geom.Solid = function( geometry ){
     color: 0xCC0000
     } );
 
-	mObj.geom.call( this, geometry, defaultSolidMaterial );
+	mObj_geom.call( this, geometry, defaultSolidMaterial );
 
 }
