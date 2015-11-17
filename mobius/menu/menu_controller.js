@@ -153,8 +153,8 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                             for(var j = 0 ; j < generateCode.getChartViewModel().nodes[i].outputConnectors.length; j++ ){
                                 for(var k = 0; k < generateCode.getDataList()[i].length; k++){
                                     if(generateCode.getDataList()[i][k].title === 'Output'){
-                                        if(generateCode.getChartViewModel().nodes[i].outputConnectors[j].data.name
-                                            === generateCode.getDataList()[i][k].name ){
+                                        if(generateCode.getChartViewModel().nodes[i].outputConnectors[j].data.id
+                                            === generateCode.getDataList()[i][k].id ){
                                             generateCode.getChartViewModel().nodes[i].outputConnectors[j].data =
                                                 generateCode.getDataList()[i][k];
                                         }
@@ -168,8 +168,8 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                             for (var j = 0; j < generateCode.getChartViewModel().nodes[i].inputConnectors.length; j++) {
                                 for (var k = 0; k < generateCode.getInterfaceList()[i].length; k++) {
                                     if (generateCode.getInterfaceList()[i][k].title === 'Input') {
-                                        if (generateCode.getChartViewModel().nodes[i].inputConnectors[j].data.name
-                                            === generateCode.getInterfaceList()[i][k].name) {
+                                        if (generateCode.getChartViewModel().nodes[i].inputConnectors[j].data.id
+                                            === generateCode.getInterfaceList()[i][k].id) {
                                             generateCode.getChartViewModel().nodes[i].inputConnectors[j].data =
                                                 generateCode.getInterfaceList()[i][k];
                                         }
@@ -177,11 +177,6 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                                 }
                             }
                         }
-
-                        console.log(generateCode.getChartViewModel())
-                        console.log(generateCode.getDataList())
-                        console.log(generateCode.getInterfaceList())
-
 
                         consoleMsg.confirmMsg('sceneImport');
                     }else{

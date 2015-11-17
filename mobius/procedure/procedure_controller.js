@@ -335,6 +335,8 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         //
 
         $scope.removeOutput = function(scope) {
+            scope.remove();
+
             var newOutputConnectorDataModels = [];
             var newConnectionDataModels = [];
             var newConnectionViewModels = [];
@@ -369,14 +371,32 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                 }
             }
 
+            // fixme update connector index and source/dest in connections
+            // fixme update connector index and source/dest in connections
+            for(var m = 0; m < $scope.chartViewModel.connections.length; m++){
+
+                var sourceDecreaseIn = 0;
+
+                if($scope.chartViewModel.connections[m].data.source.nodeID === deletedOutputConnectors.nodeId){
+                    if($scope.chartViewModel.connections[m].data.source.connectorIndex >
+                        deletedOutputConnectors.outputConnectorIndex){
+                        sourceDecreaseIn ++;
+                    }
+                }
+
+                $scope.chartViewModel.connections[m].data.source.connectorIndex -= sourceDecreaseIn;
+                $scope.chartViewModel.connections[m].source = $scope.chartViewModel.findOutputConnector(
+                    $scope.chartViewModel.connections[m].data.source.nodeID,
+                    $scope.chartViewModel.connections[m].data.source.connectorIndex);
+            }
+
             $scope.chartViewModel.connections = newConnectionViewModels;
             $scope.chartViewModel.data.connections = newConnectionDataModels;
-
-            scope.remove();
         };
 
 
         $scope.removeInput = function(scope) {
+            scope.remove();
 
             var newInputConnectorDataModels = [];
             var newConnectionDataModels = [];
@@ -413,10 +433,29 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                 }
             }
 
+            // fixme update connector index and source/dest in connections
+            for(var m = 0; m < $scope.chartViewModel.connections.length; m++){
+
+                var destDecreaseIn = 0;
+
+                if($scope.chartViewModel.connections[m].data.dest.nodeID === deletedInputConnectors.nodeId){
+                    if($scope.chartViewModel.connections[m].data.dest.connectorIndex >
+                        deletedInputConnectors.inputConnectorIndex){
+                        destDecreaseIn ++;
+                    }
+                }
+
+                $scope.chartViewModel.connections[m].data.dest.connectorIndex -= destDecreaseIn;
+                $scope.chartViewModel.connections[m].dest = $scope.chartViewModel.findInputConnector(
+                    $scope.chartViewModel.connections[m].data.dest.nodeID,
+                    $scope.chartViewModel.connections[m].data.dest.connectorIndex);
+            }
+
             $scope.chartViewModel.connections = newConnectionViewModels;
             $scope.chartViewModel.data.connections = newConnectionDataModels;
-            scope.remove();
 
+            $scope.chartViewModel.connections = newConnectionViewModels;
+            $scope.chartViewModel.data.connections = newConnectionDataModels;
         };
 
         $scope.remove = function(scope){

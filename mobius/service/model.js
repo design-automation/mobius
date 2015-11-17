@@ -156,11 +156,18 @@ vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
                     for (var m = 0; m < input_port_num; m++) {
 
                         var input_port_name = data.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.name;
-                        if(m != input_port_num-1){
-                            data.javascriptCode += input_port_name + ',';
+
+                        if(data.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.connected === true){
+                            if(m != input_port_num-1){
+                                data.javascriptCode += input_port_name + ',';
+                            }
+                            else{
+                                data.javascriptCode += input_port_name;
+                            }
                         }
-                        else{
-                            data.javascriptCode += input_port_name;
+
+                        if( data.javascriptCode.slice(-1) === ','){
+                            data.javascriptCode = data.javascriptCode.substring(0, data.javascriptCode.length - 1);
                         }
 
                     }
@@ -168,6 +175,7 @@ vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
                     data.javascriptCode +=  ");\n";
 
                     // extract items from return through label
+                    // fixme name duplication or undefined name
                     for(var m =0; m < output_port_num; m++){
 
                         var output_port_node_id = data.chartViewModel.nodes[sortedOrder[n]].data.id;
@@ -175,7 +183,7 @@ vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
 
                         for (var l = 0; l < data.chartViewModel.connections.length; l++) {
 
-                            if (output_port_name == data.chartViewModel.connections[l].source.name()
+                            if (output_port_name === data.chartViewModel.connections[l].source.name()
                                 &&         output_port_node_id === data.chartViewModel.connections[l].data.source.nodeID) {
                                 var connected_input_name = data.chartViewModel.connections[l].dest.data.name;
 
@@ -218,6 +226,10 @@ vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
                                     data.outerCodeList[i] += data.chartViewModel.nodes[i].inputConnectors[k].data.name;
                                 }
                             }
+                        }
+
+                        if(data.outerCodeList[i].slice(-1) === ','){
+                            data.outerCodeList[i] =  data.outerCodeList[i].substring(0, data.outerCodeList[i].length - 1);
                         }
 
                         data.outerCodeList[i] += '){\n'
