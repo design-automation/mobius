@@ -337,7 +337,7 @@ vidamo.directive('viewport', function factory() {
                 }
                 // update the data table viewport
                 if(singleGeomDataObject.length !== 0){
-                    //scope.internalControl.geometryData = scope.internalControl.geometryData.concat(singleGeomDataObject);
+                    scope.internalControl.geometryData = scope.internalControl.geometryData.concat(singleGeomDataObject);
                 }
                 else{
                     console.log("Vidamo doesn't recognise this type!");

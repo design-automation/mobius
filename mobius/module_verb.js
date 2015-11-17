@@ -294,7 +294,7 @@ var VIDAMO = ( function (mod){
 		// input variations
 		// start, end could be a vector3 - has to be converted into an array
 	
-		return new mObj_geom.Curve( new verb.geom.Line(startPoint, endPoint) );
+		return new mObj_geom_Curve( new verb.geom.Line(startPoint, endPoint) );
 		
 		// topology : curve class
 	};
@@ -312,7 +312,7 @@ var VIDAMO = ( function (mod){
 	mod.makeArc = function(centerPoint, xaxis, yaxis, radius, minAngle, maxAngle){
 		// input variations
 		// center, axis and yaxis could be vector3
-		return new mObj_geom.Curve( new verb.geom.Arc(centerPoint,xaxis,yaxis,radius,minAngle,maxAngle) ) ;
+		return new mObj_geom_Curve( new verb.geom.Arc(centerPoint,xaxis,yaxis,radius,minAngle,maxAngle) ) ;
 
 	};
 
@@ -323,7 +323,7 @@ var VIDAMO = ( function (mod){
 	 * @returns {MobiusDataObject}  - NURBS Curve
 	 */
 	mod.makeBezierCurve = function(points, weights){
-		return new mObj_geom.Curve( new verb.geom.BezierCurve(points, weights) ) 
+		return new mObj_geom_Curve( new verb.geom.BezierCurve(points, weights) ) 
 	};
 
 	/**
@@ -335,7 +335,7 @@ var VIDAMO = ( function (mod){
 	 * @returns {MobiusDataObject}  - NURBS Curve
 	 */
 	mod.makeCircleBoundary = function(centerPoint,xaxis,yaxis,radius){
-		return new mObj_geom.Curve( new verb.geom.Circle(centerPoint,xaxis,yaxis,radius) ) 
+		return new mObj_geom_Curve( new verb.geom.Circle(centerPoint,xaxis,yaxis,radius) ) 
 	};
 
 	/**
@@ -347,7 +347,7 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.makeEllipse = function ( centerPoint ,xaxis,yaxis ){
 
-		return new mObj_geom.Curve( new verb.geom.Ellipse( centerPoint,xaxis,yaxis ) ) 
+		return new mObj_geom_Curve( new verb.geom.Ellipse( centerPoint,xaxis,yaxis ) ) 
 		
 	};
 
@@ -361,7 +361,7 @@ var VIDAMO = ( function (mod){
 	 * @returns {MobiusDataObject}  - NURBS Curve
 	 */
 	mod.makeEllipseArc = function ( centerPoint,xaxis,yaxis,minAngle,maxAngle ){
-		return new mObj_geom.Curve( new verb.geom.EllipseArc( centerPoint,xaxis,yaxis,minAngle,maxAngle ) ) 
+		return new mObj_geom_Curve( new verb.geom.EllipseArc( centerPoint,xaxis,yaxis,minAngle,maxAngle ) ) 
 		// topology : curve class
 	};
 
@@ -372,7 +372,7 @@ var VIDAMO = ( function (mod){
 	 * @returns {MobiusDataObject}  - NURBS Curve
 	 */
 	mod.makeCurveByPoints = function( points, degree ){
-		return new mObj_geom.Curve( new verb.geom.NurbsCurve.byPoints( points, degree ) ) ;
+		return new mObj_geom_Curve( new verb.geom.NurbsCurve.byPoints( points, degree ) ) ;
 	};
 
 	/**
@@ -384,7 +384,7 @@ var VIDAMO = ( function (mod){
 	 * @returns {MobiusDataObject}  - NURBS Curve
 	 */
 	mod.makeCurveByKnotsControlPointsWeights = function ( degree,knots,controlPoints,weights ){
-		return new mObj_geom.Curve( new verb.geom.NurbsCurve.byKnotsControlPointsWeights( degree,knots,controlPoints,weights ) ) ;
+		return new mObj_geom_Curve( new verb.geom.NurbsCurve.byKnotsControlPointsWeights( degree,knots,controlPoints,weights ) ) ;
 		// topology : curve class
 	};
 
@@ -400,7 +400,7 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.makeSurfaceByKnotsControlPointsWeights = function ( degreeU,degreeV,knotsU,knotsV,controlPoints,weights ){
 		
-		return new mObj_geom.Surface( new verb.geom.NurbsSurface.byKnotsControlPointsWeights( degreeU,degreeV,knotsU,knotsV,controlPoints,weights ) ) ;
+		return new mObj_geom_Surface( new verb.geom.NurbsSurface.byKnotsControlPointsWeights( degreeU,degreeV,knotsU,knotsV,controlPoints,weights ) ) ;
 		// topology : single surface - cant be exploded
 		// brep : face -> surface (1); edges -> boundaries (4) ; vertex -> corner points (4)
 	};
@@ -411,7 +411,7 @@ var VIDAMO = ( function (mod){
 	 * @returns {MobiusDataObject}  - NURBS Surface
 	 */
 	mod.makeSurfaceByCorners = function ( point0, point1, point2, point3 ){
-		return new mObj_geom.Surface( new verb.geom.NurbsSurface.byCorners ( point0,point1,point2,point3 ) ) ;
+		return new mObj_geom_Surface( new verb.geom.NurbsSurface.byCorners ( point0,point1,point2,point3 ) ) ;
 		// topology : single surface - cant be exploded
 		// brep : face -> surface (1); edges -> boundaries (4) ; vertex -> corner points (4)
 	};
@@ -426,7 +426,7 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.makeSurfaceByRevolution = function ( mobiusGeometry, centerPoint, axis, angle ){
 		var profile = mobiusGeometry.getGeometry();
-		return new mObj_geom.Surface( new verb.geom.RevolvedSurface( profile, centerPoint, axis, angle ) ) ;
+		return new mObj_geom_Surface( new verb.geom.RevolvedSurface( profile, centerPoint, axis, angle ) ) ;
 	
 		// topology : single surface - cant be exploded
 		// brep : face -> surface (1); edges -> boundaries (4) ; vertex -> corner points (4) - if incomplete circle, else one boundary, one vertex
@@ -441,7 +441,7 @@ var VIDAMO = ( function (mod){
 	mod.makeSurfaceBySweep = function ( mObjProfile, mObjRail){
 		var profile = mObjProfile.getGeometry();
 		var rail = mObjRail.getGeometry();
-		return new mObj_geom.Surface( new verb.geom.SweptSurface ( profile, rail ) ) ;
+		return new mObj_geom_Surface( new verb.geom.SweptSurface ( profile, rail ) ) ;
 		// topology : single surface - cant be exploded
 		// brep : face -> surface (1); edges -> boundaries (4) ; vertex -> corner points (4)
 	};
@@ -457,7 +457,7 @@ var VIDAMO = ( function (mod){
 		var curves = []; l = listOfCurves;
 		for(var c=0; c<listOfCurves.length; c++)
 			curves.push(listOfCurves[c].getGeometry()); 
-		return new mObj_geom.Surface( new verb.geom.NurbsSurface.byLoftingCurves( curves, deg ) ) ;
+		return new mObj_geom_Surface( new verb.geom.NurbsSurface.byLoftingCurves( curves, deg ) ) ;
 		
 		// topology : single surface - cant be exploded
 		// brep : face -> surface (1); edges -> boundaries (4) ; vertex -> corner points (4)
@@ -471,7 +471,7 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.makeSurfaceByExtrusion = function ( mObjProfile, direction){
 		var profile = mObjProfile.getGeometry();
-		return new mObj_geom.Surface(  new verb.geom.ExtrudedSurface( profile, direction ) ) ;
+		return new mObj_geom_Surface(  new verb.geom.ExtrudedSurface( profile, direction ) ) ;
 		
 		// topology : single surface - cant be exploded
 		// brep : face -> surface (1); edges -> boundaries (4) ; vertex -> corner points (4)
@@ -491,7 +491,7 @@ var VIDAMO = ( function (mod){
 	 * @returns {MobiusDataObject}  - NURBS Surface
 	 */
 	mod.makeSphere = function(centrePoint, radius){
-		return new mObj_geom.Surface(  new verb.geom.SphericalSurface(centrePoint, radius) ) ;
+		return new mObj_geom_Surface(  new verb.geom.SphericalSurface(centrePoint, radius) ) ;
 		// topology : single surface - cant be exploded
 		// brep : face -> surface (1); edges -> arc (1) ; vertex -> corner point (1)
 		// revolution surface - will contain the same details
@@ -507,7 +507,7 @@ var VIDAMO = ( function (mod){
 	 * @returns {MobiusDataObject}  - NURBS Surface
 	 */
 	mod.makeCone = function( axis,xaxis,base,height,radius ){
-		return new mObj_geom.Surface( new verb.geom.ConicalSurface( axis,xaxis,base,height,radius ) ) ;
+		return new mObj_geom_Surface( new verb.geom.ConicalSurface( axis,xaxis,base,height,radius ) ) ;
 	};
 
 	/**
@@ -524,7 +524,7 @@ var VIDAMO = ( function (mod){
 			//return a solid			
 		}
 		else
-			return new mObj_geom.Surface( new verb.geom.CylindricalSurface( axis,xaxis,base,height,radius ))  ;
+			return new mObj_geom_Surface( new verb.geom.CylindricalSurface( axis,xaxis,base,height,radius ))  ;
 	};
 	
 	//
@@ -551,7 +551,7 @@ var VIDAMO = ( function (mod){
 		
 		allSurface = [topFace, bottomFace, frontFace, backFace, rightFace, leftFace];
 		
-		return new mObj_geom.Solid( allSurfaces );
+		return new mObj_geom_Solid( allSurfaces );
 	};
 
 	/**
@@ -692,7 +692,7 @@ var VIDAMO = ( function (mod){
 			for(var i=0; i< gridPoints.length-vgrid-2; i++){
 				if((i+vgrid+2)%(vgrid+1) != 0 || i==0){
 					// construction of the verbs four point surface
-					var mbObj =  new mObj_geom.Surface( new verb.geom.NurbsSurface.byCorners(gridPoints[i], gridPoints[i+1],  gridPoints[i+vgrid+2], gridPoints[i+vgrid+1]) );
+					var mbObj =  new mObj_geom_Surface( new verb.geom.NurbsSurface.byCorners(gridPoints[i], gridPoints[i+1],  gridPoints[i+vgrid+2], gridPoints[i+vgrid+1]) );
 					div_surfaces.push(mbObj); 
 				}
 			}
@@ -744,7 +744,7 @@ var VIDAMO = ( function (mod){
 
 		var tube = new verb.geom.CylindricalSurface( axis, xaxis, end, height, radius );
 
-		return new mObj_geom.Surface( tube );
+		return new mObj_geom_Surface( tube );
 	};
 
 	/**
@@ -989,13 +989,13 @@ var VIDAMO = ( function (mod){
 		// decide on topology heirarchy also - if edge gets a property, do the vertices also get the same property?
 		if(obj.constructor === Array){
 			for(var i=0; i<obj.length; i++){
-				if(obj[i].getData == undefined)
+				if(obj[i].getData() == undefined)
 					var new_data = {};
 					new_data[dataName] = dataValue;
 					obj[i].setData( new_data );
 			}
 		} else{
-			if(obj.getData == undefined)
+			if(obj.getData() == undefined)
 				var new_data = {};
 				new_data[dataName] = dataValue;
 				obj.setData( new_data );
@@ -1048,11 +1048,11 @@ var VIDAMO = ( function (mod){
 				geom.push(tempGeom0);
 				geomData.push(tempData0);
 			}
-			else if(obj instanceof  mObj_geom.Curve || 
-					obj instanceof mObj_geom.Surface ||
-					obj instanceof mObj_geom.Solid ){ 
+			else if(obj instanceof  mObj_geom_Curve || 
+					obj instanceof mObj_geom_Surface ||
+					obj instanceof mObj_geom_Solid ){ 
 				geom.push( obj.extractThreeGeometry() );
-				//geomData.push( obj.extractData() );
+				geomData.push( obj.extractData() );
 			}else{
 				for(var key in obj){
 					extract(obj[key],geom,geomData);
@@ -1141,11 +1141,11 @@ var computeTopology = function( mObj ){
 	if(geom instanceof verb.geom.NurbsCurve){
 		topology.vertices = [ geom.point(0) , geom.point(1) ];
 		topology.edges = this;
-		topology.faces = null;
+		topology.faces = [];
 	}	
 	else if(geom instanceof verb.geom.NurbsSurface){
 		topology.vertices = [geom.point(0,0), geom.point(1,0), geom.point(1,1), geom.point(0,1)];
-		topology.edges = geom.boundaries().map( function( boundary ) { return new mObj_geom.Curve( boundary )} );
+		topology.edges = geom.boundaries().map( function( boundary ) { return new mObj_geom_Curve( boundary )} );
 		topology.faces = this;
 
 	}	
