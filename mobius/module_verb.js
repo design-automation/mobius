@@ -1051,7 +1051,7 @@ var VIDAMO = ( function (mod){
 			else if(obj instanceof  mObj_geom_Curve || 
 					obj instanceof mObj_geom_Surface ||
 					obj instanceof mObj_geom_Solid ){ 
-				geom.push( obj.extractThreeGeometry() );
+				geom.push( obj.extractTopology() );
 				geomData.push( obj.extractData() );
 			}else{
 				for(var key in obj){
@@ -1126,7 +1126,31 @@ var convertGeomToThree = function( geom ){
 //
 var convertTopoToThree = function( topology ){
 
-	// convert vertices, edges, faces with numbers
+	var topo = new THREE.Object3D();
+	
+	// convert vertices
+	var topoPointMaterial = new THREE.PointCloudMaterial( { size: 15, sizeAttenuation: false } );
+	var dotGeometry = new THREE.Geometry();
+	for(var v = 0; v < topology.vertices.length; v++)
+		dotGeometry.vertices.push( new THREE.Vector3(v[0], v[1], v[2]) );
+	var allVertices = new THREE.PointCloud( dotGeometry, topoPointMaterial );
+	topo.add(allVertices);
+
+ 	/*
+	// convert edges
+	for(var e = 0; e < topology.edges.length; e++){ console.log('this is a face', f);
+		var edge = convertGeomToThree(e.getGeometry());
+		topo.add(edge);
+	}
+
+	// convert faces
+	for(var f = 0; f < topology.faces.length; f++){ console.log('this is a face', f);
+		var face = convertGeomToThree(f.getGeometry());
+		topo.add(face);
+	} */
+
+	return topo;
+
 }
 
 //
