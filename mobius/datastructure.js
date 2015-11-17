@@ -3,26 +3,49 @@
 // Not open to editing by module developer
 //
 
+// Main mObj Class definition
+// mObj maybe geometry, ifcModel, data / charts etc
 var mObj = function( type ){
-	var type = type;
 	
+    var type = type;
+	
+    this.is_mObj = true; 
+
 	this.getType = function(){
 		return type;
 	}
 }
 
-mObj.geom = function( geometry ){
+// mObj Geometry Class
+// geometry is stored in geometry format native to module
+mObj.geom = function( geometry, material ){
 	
 	mObj.call('geometry');
 
 	var geometry = geometry; 
-	var geometryTransformed = false;
-	var topology = undefined;
 	
+    // observing geometry for changes
+    Object.observe(obj, function(changes) {
+         
+         console.log(changes[0]);
+         if(changes[0].type == 'update' && changes[0].name == 'geometry'){
+            // set cached threeGeometry and threeTopology to undefined
+            threeGeometry = undefined;
+            threeTopology = undefined;
+
+            // recompute topology
+            topology = computeTopology( this );
+         }
+    });
+	
+    var topology = undefined;
+    var material = material;
+
     //
-    // private variables to store convertedGeometry and topology
+    // cached conversion of geometry to three.js
     //
-    var convertedGeometry = undefined;
+    var threeGeometry = undefined;
+    var threeTopology = undefined;
 
     //
     // Functions used by Mobius or Module for the different viewers
@@ -31,45 +54,40 @@ mObj.geom = function( geometry ){
     //
     // Converts the geometry of the MobiusDataObject - to three.js Mesh by calling a bridging function 'convertGeomtoThreeMesh' in the module
     //
-    this.extractGeometry = function( setGeom ){
+    this.extractThreeGeometry = function( ){
 
-        // if setGeom is given, set the convertedGeom to that
-        if(setGeom == undefined){
-            // if undefined, defines it and saves it
-            if(convertedGeometry == undefined || geometryTransformed == true){
-				geometryTransformed = false;
-				convertedGeometry = convertGeomToThreeMesh( geometry );
-			}
+        // if threeGeometry hasn't been computed before or native geometry has been transformed so that new conversion is required
+        // the function defines it and caches it
+        if(threeGeometry == undefined || geometryTransformed == true){
+		     geometryTransformed = false;
+			 threeGeometry = convertGeomToThree( geometry );  // calls a function in the module to convert native geom into accepted three format
+		}
 
-            // if material has been assigned to this data object, assigns the same material to the converted geometry
-            if(this.material)
-                convertedGeometry.material = this.material;
-        }
-        else{
-            convertedGeometry = setGeom;
-        }
+        // if material has been assigned to this data object, assigns the same material to the converted geometry
+        if(material)
+            threeGeometry.material = material;
 
-        return convertedGeometry;
+        return threeGeometry;
     }
 
 
     //
-    // Gets a three.js 3D Object with a Topological representation from the convertedGeometry (three.js mesh) - extracts the three.js mesh firstChild
-    // Uses 'threeToTopology' bridging function defined in the module
-    //
+    // Converts the topology defined in native elements to three.js format
     this.extractTopology = function(){
-        // convert topology into three.js objects with numbers and return
 
-        // incase the topology is user-defined - it should display the user-defined topology
-        // if topology has not be computed before, computes and saves
-        if(topology == undefined){
-            if(this.geometry instanceof TOPOLOGY.Topology){
-                topology = this.geometry;
-            }
-            else
-                topology = threeToTopology( this.extractGeometry() );
+        // if threeGeometry hasn't been computed before or native geometry has been transformed so that new conversion is required
+        // the function defines it and caches it
+        if(threeTopology == undefined || geometryTransformed == true){
+             geometryTransformed = false;
+             topology = computeNativeTopology( this );
+             threeTopology = convertTopoToThree( topology );  // calls a function in the module to convert native geom into accepted three format
         }
-        return displayTopologyInThree( topology );
+
+        // if material has been assigned to this data object, assigns the same material to the converted geometry
+        if(material)
+            threeGeometry.material = material;
+
+        return threeTopology;
     }
 
     //
@@ -115,86 +133,105 @@ mObj.geom = function( geometry ){
         return dataTable;
     }
 	
+
+    //
+    // expose topology to the user
+    // 
+    if(topology){
+        
+        for(var property in topology)
+            if(topology.hasOwnProperty( property ))
+                this[property] = this.topology[property];
+        }
+
+    }
+
+
+    //
+    // get & set functions
+    //
+    this.getGeometry = function(){
+        return geometry;
+    }
+
 	this.setGeometry = function( new_geometry ){
 		geometry = new_geometry;
 		console.log('geometry changed');
 	}
 	
-	this.getGeometry = function(){
-		return geometry;
-	}
-	
 	this.geometryTransformed = function(){
 		geometryTransformed = true;
 	}
-	
-	this.setData = function(){
-		
-	}
+
+
+    this.getTopology = function(){
+        return topology;
+    }
+    
+    this.setTopology = function( native_topology ){
+        topology = native_topology; // inherited topology parameter
+    }
 	
 	this.getData = function(){
 		
 	}
 	
+	this.setData = function(){
+		
+	}
+
+    this.getMaterial = function(){
+
+    }
+
+    this.setMaterial = function( material ){
+
+        if(threeGeometry == undefined)
+            this.extractThreeGeometry();
+        threeGeometry.material = material; 
+        console.log("new material set")
+    }
+	
 }
 
 mObj.geom.Curve = function( geometry ){
 	
-	mObj.geom.call( this, geometry ); 
+    var defaultCurveMaterial = new THREE.LineBasicMaterial({
+    side: THREE.DoubleSide,
+    linewidth: 100,
+    color: 0x003399
+    });
 	
-	/*
-	var topology = {
-		vertices: [ geometry.point(0), geometry.point(1) ],
-		edges: geometry,
-		faces: 'null'
-	} */
-	
-	this.getTopology = function(){
-		return topology;
-	}
-	
-	this.setTopology = function(){
-		//set topology
-	}
+    mObj.geom.call( this, geometry, defaultCurveMaterial ); 
+	topology = computeTopology( this );
 	
 }
 
 mObj.geom.Surface = function( geometry ){
 	
-	mObj.geom.call( this, geometry );
-	
-	// var topology = {
-		// vertices: [ geometry.point(0,0), geometry.point(0,1), geometry(1,1), geometry(1,0) ],
-		// edges: geometry.boundaries(),
-		// faces: NULL
-	// }
-	
-	this.getTopology = function(){
-		return topology;
-	}
-	
-	this.setTopology = function(){
-		//set topology
-	}
+    var defaultSurfaceMaterial = new THREE.MeshLambertMaterial( {
+    side: THREE.DoubleSide,
+    wireframe: false,
+    shading: THREE.SmoothShading,
+    transparent: false,
+    color: 0x003399
+    } );
+
+	mObj.geom.call( this, geometry, defaultSurfaceMaterial );
+    topology = computeTopology( this );
+
 }
 
 mObj.geom.Solid = function( geometry ){
 	
-	mObj.geom.call( this, geometry );
-	
-	// explode into different surfaces and compute the topology
-	// var topology = {
-		// vertices: [ geometry.point(0,0), geometry.point(0,1), geometry(1,1), geometry(1,0) ],
-		// edges: geometry.boundaries(),
-		// faces: NULL
-	// }
-	
-	this.getTopology = function(){
-		return topology;
-	}
-	
-	this.setTopology = function(){
-		//set topology
-	}
-	
+    var defaultSolidMaterial = new THREE.MeshLambertMaterial( {
+    side: THREE.DoubleSide,
+    wireframe: false,
+    shading: THREE.SmoothShading,
+    transparent: false,
+    color: 0xCC0000
+    } );
+
+	mObj.geom.call( this, geometry, defaultSolidMaterial );
+    topology = computeTopology( this );
 }
