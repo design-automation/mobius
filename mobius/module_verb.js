@@ -1048,8 +1048,10 @@ var VIDAMO = ( function (mod){
 				geom.push(tempGeom0);
 				geomData.push(tempData0);
 			}
-			else if(obj instanceof  mObj.geom.Curve || obj instanceof mObj.geom.Surface){ console.log('render');
-				geom.push( obj.extractGeometry() );
+			else if(obj instanceof  mObj.geom.Curve || 
+					obj instanceof mObj.geom.Surface ||
+					obj instanceof mObj.geom.Solid ){ 
+				geom.push( obj.extractThreeGeometry() );
 				geomData.push( obj.extractData() );
 			}else{
 				for(var key in obj){
@@ -1064,6 +1066,12 @@ var VIDAMO = ( function (mod){
 	return mod;
 
 })(window.VIDAMO || {});
+
+
+
+
+
+
 
 
 /*
@@ -1082,12 +1090,6 @@ var VIDAMO = ( function (mod){
 //	Function names should remain the same
 //
 
-//
-//	Default Material Definitions
-//
-
-
-
 
 //
 //	Function to convert module geometry into three.js Mesh geometry
@@ -1098,25 +1100,10 @@ var convertGeomToThree = function( geom ){
 	// internal function
 	convertToThree = function(singleDataObject){
 
-		if( singleDataObject instanceof verb.geom.NurbsSurface ){
-
-			var geometry = singleDataObject.toThreeGeometry();
-
-			if ( singleDataObject.material )
-				return ( new THREE.Mesh( geometry, singleDataObject.material ) );
-			else
-				return ( new THREE.Mesh( geometry, default_material_meshFromVerbs ) );
-
-		}
-		else if( singleDataObject instanceof verb.geom.NurbsCurve ){
-
-			var geometry = singleDataObject.toThreeGeometry();
-
-			if ( singleDataObject.material )
-				return ( new THREE.Line( geometry, singleDataObject.material ) );
-			else
-				return ( new THREE.Line( geometry, default_material_lineFromVerbs ) );
-		}
+		if( singleDataObject instanceof verb.geom.NurbsSurface )
+			return ( new THREE.Mesh( singleDataObject.toThreeGeometry() ) );
+		else if( singleDataObject instanceof verb.geom.NurbsCurve )
+			return ( new THREE.Line( singleDataObject.toThreeGeometry() ) );
 		else if(singleDataObject instanceof verb.geom.Point){
 
 			var default_material_pointFromThree = new THREE.PointCloudMaterial( { size: 5, sizeAttenuation: false } );
@@ -1145,25 +1132,26 @@ var convertTopoToThree = function( topology ){
 //
 //	Takes native geometry ( geometry from module ) and converts it into native topology - edges, faces, vertices
 //
-var computeTopology = function( mobiusObject ){
+var computeTopology = function( geom ){
 	
-	var geom = mobiusObject.getGeometry();
 	var topology = {};
 
 
-	if(mobiusObject instanceof mObj.geom.Curve){
-		topology.vertices = [geom.point(0), geom.point(1)];
-		topology.edges = geom;
+	if(geom instanceof verb.geom.NurbsCurve){
+		topology.vertices = [ geom.point(0) , geom.point(1) ];
+		topology.edges = new mObj.geom.Curve( geom );
 		topology.faces = null;
 	}	
-	else if(mobiusObject instanceof mObj.geom.Surface){
+	else if(geom instanceof verb.geom.NurbsSurface){
 		topology.vertices = [geom.point(0,0), geom.point(1,0), geom.point(1,1), geom.point(0,1)];
 		topology.edges = geom.boundaries();
 		topology.faces = geom;
 	}	
-	else if(mobiusObject instanceof mObj.geom.Solid){
+	else if(mobiusObject instanceof Array){
 
-	}	
+	}
+	else
+		topology = undefined;	
 
 	return topology;
 }
