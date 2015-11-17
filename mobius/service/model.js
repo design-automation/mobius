@@ -165,11 +165,10 @@ vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
                                 data.javascriptCode += input_port_name;
                             }
                         }
+                    }
 
-                        if( data.javascriptCode.slice(-1) === ','){
-                            data.javascriptCode = data.javascriptCode.substring(0, data.javascriptCode.length - 1);
-                        }
-
+                    if( data.javascriptCode.slice(-1) === ','){
+                        data.javascriptCode = data.javascriptCode.substring(0, data.javascriptCode.length - 1);
                     }
 
                     data.javascriptCode +=  ");\n";
