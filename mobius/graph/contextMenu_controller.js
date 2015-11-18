@@ -29,20 +29,24 @@ vidamo.controller('nodeMenuCtrl',['$scope','$rootScope','generateCode',
         };
 
         $scope.checkDupOutput  = function(output){
-            var outputs = $scope.chartViewModel.nodes[$scope.nodeIndex].data.outputConnectors;
-            for(var i = 0; i < outputs.length; i++){
-                if(outputs[i].name === output.name){
-                    return false;
+            if($scope.chartViewModel.nodes[$scope.nodeIndex] !== undefined){
+                var outputs = $scope.chartViewModel.nodes[$scope.nodeIndex].data.outputConnectors;
+                for(var i = 0; i < outputs.length; i++){
+                    if(outputs[i].name === output.name){
+                        return false;
+                    }
                 }
             }
             return true;
         };
 
         $scope.checkDupInput  = function(input){
-            var inputs = $scope.chartViewModel.nodes[$scope.nodeIndex].data.inputConnectors;
-            for(var i = 0; i < inputs.length; i++){
-                if(inputs[i].name === input.name){
-                    return false;
+            if($scope.chartViewModel.nodes[$scope.nodeIndex] !== undefined){
+                var inputs = $scope.chartViewModel.nodes[$scope.nodeIndex].data.inputConnectors;
+                for(var i = 0; i < inputs.length; i++){
+                    if(inputs[i].name === input.name){
+                        return false;
+                    }
                 }
             }
             return true;
