@@ -1,0 +1,496 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "node0",
+            "x": 1987.3070527304455,
+            "y": 2003.26996058045,
+            "inputConnectors": [
+                {
+                    "name": "curve",
+                    "value": "",
+                    "connected": true
+                },
+                {
+                    "name": "divisions",
+                    "value": ""
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "name": "frms",
+                    "value": ""
+                }
+            ],
+            "type": "CurveFrames",
+            "version": 0,
+            "overwrite": true
+        },
+        {
+            "id": 1,
+            "name": "curve",
+            "x": 1990.347606606637,
+            "y": 1870.4991079867636,
+            "inputConnectors": [],
+            "outputConnectors": [
+                {
+                    "name": "crv",
+                    "value": ""
+                }
+            ],
+            "type": "Standard",
+            "version": 1446369248226,
+            "overwrite": true
+        },
+        {
+            "id": 2,
+            "name": "splitcurve",
+            "x": 1989.8408476272716,
+            "y": 1938.911570201068,
+            "inputConnectors": [
+                {
+                    "name": "curve",
+                    "value": "",
+                    "connected": true
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "name": "divs",
+                    "value": "",
+                    "connected": true
+                },
+                {
+                    "name": "crv",
+                    "value": ""
+                }
+            ],
+            "type": "Standard",
+            "version": 1446369249243,
+            "overwrite": true
+        },
+        {
+            "id": 3,
+            "name": "node2",
+            "x": 2036.9694327082384,
+            "y": 2060.0269662693545,
+            "inputConnectors": [],
+            "outputConnectors": [
+                {
+                    "name": "box",
+                    "value": ""
+                }
+            ],
+            "type": "Standard",
+            "version": 1446369242319,
+            "overwrite": true
+        },
+        {
+            "id": 4,
+            "name": "node3",
+            "x": 1986.800293751081,
+            "y": 2119.8245258344496,
+            "inputConnectors": [
+                {
+                    "name": "crvframes",
+                    "value": "",
+                    "connected": true
+                },
+                {
+                    "name": "box",
+                    "value": "",
+                    "connected": true
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "name": "out0",
+                    "value": ""
+                }
+            ],
+            "type": "Standard2x1",
+            "version": 1446369232912,
+            "overwrite": true
+        }
+    ],
+    "connections": [
+        {
+            "source": {
+                "nodeID": 2,
+                "connectorIndex": 0
+            },
+            "dest": {
+                "nodeID": 0,
+                "connectorIndex": 1
+            }
+        },
+        {
+            "source": {
+                "nodeID": 0,
+                "connectorIndex": 0
+            },
+            "dest": {
+                "nodeID": 4,
+                "connectorIndex": 0
+            }
+        },
+        {
+            "source": {
+                "nodeID": 3,
+                "connectorIndex": 0
+            },
+            "dest": {
+                "nodeID": 4,
+                "connectorIndex": 1
+            }
+        },
+        {
+            "source": {
+                "nodeID": 1,
+                "connectorIndex": 0
+            },
+            "dest": {
+                "nodeID": 2,
+                "connectorIndex": 0
+            }
+        },
+        {
+            "source": {
+                "nodeID": 2,
+                "connectorIndex": 1
+            },
+            "dest": {
+                "nodeID": 0,
+                "connectorIndex": 0
+            }
+        }
+    ]
+}
+
+//procedure json
+[
+    [
+        {
+            "id": 2,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "frms",
+            "dataValue": "[]",
+            "type": "new",
+            "$$hashKey": "object:4083"
+        },
+        {
+            "id": 1,
+            "title": "Control",
+            "nodes": [
+                {
+                    "id": 3,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "expression": "",
+                    "method": "makeFrame",
+                    "parameters": [],
+                    "result": "frame",
+                    "$$hashKey": "object:4388"
+                },
+                {
+                    "id": 3,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "expression": "",
+                    "method": "getPointOnCurve",
+                    "parameters": [
+                        {
+                            "value": "curve",
+                            "type": "curve",
+                            "$$hashKey": "object:4917"
+                        },
+                        {
+                            "value": "t",
+                            "type": "t",
+                            "$$hashKey": "object:4918"
+                        }
+                    ],
+                    "result": "point",
+                    "$$hashKey": "object:4909"
+                },
+                {
+                    "id": 2,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "expression": "",
+                    "method": "getTangentAtCurveParameter",
+                    "parameters": [
+                        {
+                            "value": "curve",
+                            "type": "curve",
+                            "$$hashKey": "object:2798"
+                        },
+                        {
+                            "value": "t",
+                            "type": "t",
+                            "$$hashKey": "object:2799"
+                        }
+                    ],
+                    "result": "tangent",
+                    "$$hashKey": "object:2790"
+                },
+                {
+                    "id": 3,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "expression": "",
+                    "method": "moveObjectToPoint",
+                    "parameters": [
+                        {
+                            "value": "frame",
+                            "type": "mObj",
+                            "$$hashKey": "object:4580"
+                        },
+                        {
+                            "value": "point[0]",
+                            "type": "xCoord",
+                            "$$hashKey": "object:4581"
+                        },
+                        {
+                            "value": "point[1]",
+                            "type": "yCoord",
+                            "$$hashKey": "object:4582"
+                        },
+                        {
+                            "value": "point[2]",
+                            "type": "zCoord",
+                            "$$hashKey": "object:4583"
+                        }
+                    ],
+                    "result": "d",
+                    "$$hashKey": "object:4572"
+                },
+                {
+                    "id": 2,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "expression": "",
+                    "method": "orientObjectTowards",
+                    "parameters": [
+                        {
+                            "value": "frame",
+                            "type": "object",
+                            "$$hashKey": "object:4060"
+                        },
+                        {
+                            "value": "tangent",
+                            "type": "lookAtPoint",
+                            "$$hashKey": "object:4061"
+                        }
+                    ],
+                    "result": "d",
+                    "$$hashKey": "object:4052"
+                },
+                {
+                    "id": 3,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "expression": "",
+                    "method": "addToList",
+                    "parameters": [
+                        {
+                            "value": "frms",
+                            "type": "list",
+                            "$$hashKey": "object:5113"
+                        },
+                        {
+                            "value": "frame",
+                            "type": "object",
+                            "$$hashKey": "object:5114"
+                        }
+                    ],
+                    "result": "d",
+                    "$$hashKey": "object:5105"
+                }
+            ],
+            "type": "assign",
+            "controlType": "for each",
+            "dataName": "t",
+            "forList": "divisions",
+            "$$hashKey": "object:2611"
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "makeCurveByPoints",
+            "parameters": [
+                {
+                    "value": "[[40, 0, -20], [10, 0,-5], [3,0,10], [-25, 0, -3], [-40, 0, -15]]",
+                    "type": "points",
+                    "$$hashKey": "object:1892"
+                },
+                {
+                    "value": "3",
+                    "type": "degree",
+                    "$$hashKey": "object:1893"
+                }
+            ],
+            "result": "crv",
+            "$$hashKey": "object:1884"
+        }
+    ],
+    [
+        {
+            "id": 2,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "divideCurveByEqualArcLength",
+            "parameters": [
+                {
+                    "value": "curve",
+                    "type": "curve",
+                    "$$hashKey": "object:417"
+                },
+                {
+                    "value": "10",
+                    "type": "divisions",
+                    "$$hashKey": "object:418"
+                }
+            ],
+            "result": "divs",
+            "$$hashKey": "object:409"
+        },
+        {
+            "id": 2,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "crv",
+            "dataValue": "curve",
+            "type": "new",
+            "$$hashKey": "object:730"
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "makeBox",
+            "parameters": [
+                {
+                    "value": "2",
+                    "type": "length",
+                    "$$hashKey": "object:878"
+                },
+                {
+                    "value": "2",
+                    "type": "breadth",
+                    "$$hashKey": "object:879"
+                },
+                {
+                    "value": "2",
+                    "type": "height",
+                    "$$hashKey": "object:880"
+                }
+            ],
+            "result": "box",
+            "$$hashKey": "object:870"
+        }
+    ],
+    [
+        {
+            "id": 2,
+            "title": "Control",
+            "nodes": [
+                {
+                    "id": 2,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "assign",
+                    "expression": "",
+                    "method": "makeCopy",
+                    "parameters": [
+                        {
+                            "value": "box",
+                            "type": "mObj",
+                            "$$hashKey": "object:2460"
+                        },
+                        {
+                            "value": "0",
+                            "type": "xCoord",
+                            "$$hashKey": "object:2461"
+                        },
+                        {
+                            "value": "0",
+                            "type": "yCoord",
+                            "$$hashKey": "object:2462"
+                        },
+                        {
+                            "value": "0",
+                            "type": "zCoord",
+                            "$$hashKey": "object:2463"
+                        }
+                    ],
+                    "result": "copy",
+                    "$$hashKey": "object:2452"
+                },
+                {
+                    "id": 1,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "expression": "",
+                    "method": "addToFrame",
+                    "parameters": [
+                        {
+                            "value": "frame",
+                            "type": "frame",
+                            "$$hashKey": "object:2255"
+                        },
+                        {
+                            "value": "copy",
+                            "type": "object",
+                            "$$hashKey": "object:2256"
+                        }
+                    ],
+                    "result": "d",
+                    "$$hashKey": "object:2247"
+                }
+            ],
+            "type": "assign",
+            "controlType": "for each",
+            "dataName": "frame",
+            "forList": "crvframes",
+            "$$hashKey": "object:2265"
+        },
+        {
+            "id": 2,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "out0",
+            "dataValue": "crvframes",
+            "type": "assign",
+            "$$hashKey": "object:7757"
+        }
+    ]
+]
+
+//interface json
+[
+    [],
+    [],
+    [],
+    [],
+    []
+]
