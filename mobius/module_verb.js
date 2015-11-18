@@ -1129,25 +1129,27 @@ var convertTopoToThree = function( topology ){
 	var topo = new THREE.Object3D();
 	
 	// convert vertices
-	var topoPointMaterial = new THREE.PointCloudMaterial( { size: 15, sizeAttenuation: false } );
-	var dotGeometry = new THREE.Geometry();
-	for(var v = 0; v < topology.vertices.length; v++)
-		dotGeometry.vertices.push( new THREE.Vector3(v[0], v[1], v[2]) );
-	var allVertices = new THREE.PointCloud( dotGeometry, topoPointMaterial );
+	var topoPointMaterial = new THREE.PointsMaterial( { size: 5, sizeAttenuation: false, color:0xCC3333 } );
+	var dotGeometry = new THREE.Geometry(); console.log(topology);
+	for(var v = 0; v < topology.vertices.length; v++){
+		var vertex = topology.vertices[v]
+		dotGeometry.vertices.push( new THREE.Vector3(vertex[0], vertex[1], vertex[2]) );
+	}
+	var allVertices = new THREE.Points( dotGeometry, topoPointMaterial );
 	topo.add(allVertices);
 
- 	/*
+ 	
 	// convert edges
 	for(var e = 0; e < topology.edges.length; e++){ console.log('this is a face', f);
-		var edge = convertGeomToThree(e.getGeometry());
+		var edge = convertGeomToThree(topology.edges[e].getGeometry());
 		topo.add(edge);
 	}
 
 	// convert faces
 	for(var f = 0; f < topology.faces.length; f++){ console.log('this is a face', f);
-		var face = convertGeomToThree(f.getGeometry());
+		var face = convertGeomToThree(topology.faces[f].getGeometry());
 		topo.add(face);
-	} */
+	} 
 
 	return topo;
 
@@ -1164,14 +1166,13 @@ var computeTopology = function( mObj ){
 
 	if(geom instanceof verb.geom.NurbsCurve){
 		topology.vertices = [ geom.point(0) , geom.point(1) ];
-		topology.edges = this;
+		topology.edges = mObj;
 		topology.faces = [];
 	}	
 	else if(geom instanceof verb.geom.NurbsSurface){
 		topology.vertices = [geom.point(0,0), geom.point(1,0), geom.point(1,1), geom.point(0,1)];
 		topology.edges = geom.boundaries().map( function( boundary ) { return new mObj_geom_Curve( boundary )} );
-		topology.faces = this;
-
+		topology.faces = mObj;
 	}	
 	else if(mobiusObject instanceof Array){
 
