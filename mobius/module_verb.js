@@ -696,8 +696,7 @@ var VIDAMO = ( function (mod){
 					div_surfaces.push(mbObj); 
 				}
 			}
-
-			return div_surfaces
+			return new mObj_geom_Solid( div_surfaces );
 		}
 		else
 			return "Invalid Input"
@@ -790,6 +789,13 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.makeCopy = function(mObj, xCoord, yCoord, zCoord){
 
+		if(mObj instanceof Array){
+			var newcopy = [];
+			for(var obj=0; obj < mObj.length; obj++)
+				newcopy.push(VIDAMO.makeCopy(mObj[obj], xCoord, yCoord, zCoord));	
+			return newcopy;
+		}
+
 		// for output cloning
 		if( mObj.getGeometry == undefined ){
 			console.log("Non-Mobius passed to copy function");
@@ -828,6 +834,11 @@ var VIDAMO = ( function (mod){
 
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
+		if(mObj instanceof Array){
+			for(var obj=0; obj < mObj.length; obj++)
+				VIDAMO.shiftObject(mObj[obj], shiftX, shiftY, shiftZ);	
+		}
+
 		var geometry = mObj.getGeometry(); 
 		if(geometry instanceof verb.geom.NurbsCurve || geometry instanceof verb.geom.NurbsSurface){
 
@@ -856,7 +867,11 @@ var VIDAMO = ( function (mod){
 
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
-		
+		if(mObj instanceof Array){
+			for(var obj=0; obj < mObj.length; obj++)
+				VIDAMO.moveObjectToPoint(mObj[obj], xCoord, yCoord, zCoord);	
+		}
+
 		if(mObj.getGeometry() instanceof verb.geom.NurbsCurve || mObj.getGeometry() instanceof verb.geom.NurbsSurface){
 			
 			var orCenter = VIDAMO.getCentre(mObj);
@@ -880,7 +895,12 @@ var VIDAMO = ( function (mod){
 	 * @returns Null
 	 */
 	mod.scaleObject = function(mObj, scaleX, scaleY, scaleZ){
-			
+
+		if(mObj instanceof Array){
+			for(var obj=0; obj < mObj.length; obj++)
+				VIDAMO.scaleObject(mObj[obj], scaleX, scaleY, scaleZ);	
+		}
+
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
 		var geom = mObj.getGeometry();
@@ -911,6 +931,11 @@ var VIDAMO = ( function (mod){
 	 * @returns Null
 	 */
 	mod.rotateObject = function(mObj, xAxis, yAxis, zAxis){
+
+		if(mObj instanceof Array){
+			for(var obj=0; obj < mObj.length; obj++)
+				VIDAMO.rotateObject(mObj[obj], xAxis, yAxis, zAxis);	
+		}
 
 		var geom = mObj.getGeometry();
 		if(geom instanceof verb.geom.NurbsCurve || geom instanceof verb.geom.NurbsSurface){
@@ -1002,6 +1027,15 @@ var VIDAMO = ( function (mod){
 		}
 	};
 
+	//
+	//
+	//	topotesting functions
+	//
+	//
+	mod.showTopo = function( mObj, topoElement ){
+		return mObj[topoElement];
+	};
+
 
 	//Could be shifted to MobiusSide
 
@@ -1015,47 +1049,52 @@ var VIDAMO = ( function (mod){
 					if (data[i].value[m].constructor !== Array) {
 						extract(data[i].value[m],
 							data[i].geom,
-							data[i].geomData);
+							data[i].geomData,
+							data[i].topo);
 					}
 					else {
 						var tempGeom = [];
 						var tempData = [];
+						var tempTopo = []
 
 						for (var n = 0; n < data[i].value[m].length; n++) {
 
 							extract(data[i].value[m][n],
 								tempGeom,
-								tempData);
+								tempData,
+								tempTopo);
 						}
 						data[i].geom.push(tempGeom);
 						data[i].geomData.push(tempData);
+						data[i].topo.push(tempTopo);
 					}
-					console.log(data[i].geom);
-
 				}
 			}
 		}
 
-		function extract (obj,geom,geomData){
+		function extract (obj,geom,geomData,topo){
 			if(obj.constructor === Array){
 				var tempGeom0 = [];
 				var tempData0 = [];
+				var tempTopo0 = [];
 
 				for(var k = 0; k < obj.length ; k++){
-					extract(obj[k],tempGeom0,tempData0);
+					extract(obj[k],tempGeom0,tempData0,tempTopo0);
 				}
 
 				geom.push(tempGeom0);
 				geomData.push(tempData0);
+				topo.push(tempTopo0);
 			}
 			else if(obj instanceof  mObj_geom_Curve || 
 					obj instanceof mObj_geom_Surface ||
 					obj instanceof mObj_geom_Solid ){ 
-				geom.push( obj.extractTopology() );
+				geom.push( obj.extractThreeGeometry() );
 				geomData.push( obj.extractData() );
+				topo.push(obj.extractTopology());
 			}else{
 				for(var key in obj){
-					extract(obj[key],geom,geomData);
+					extract(obj[key],geom,geomData,topo);
 				}
 			}
 		}
@@ -1104,12 +1143,11 @@ var convertGeomToThree = function( geom ){
 			return ( new THREE.Mesh( singleDataObject.toThreeGeometry() ) );
 		else if( singleDataObject instanceof verb.geom.NurbsCurve )
 			return ( new THREE.Line( singleDataObject.toThreeGeometry() ) );
-		else if(singleDataObject instanceof verb.geom.Point){
-
-			var default_material_pointFromThree = new THREE.PointCloudMaterial( { size: 5, sizeAttenuation: false } );
+		else if(singleDataObject instanceof Array){
+			// means it is a point
 			var dotGeometry = new THREE.Geometry();
 			dotGeometry.vertices.push( new THREE.Vector3(singleDataObject[0], singleDataObject[1], singleDataObject[2]) );
-			return new THREE.PointCloud( dotGeometry, default_material_pointFromThree );
+			return new THREE.PointCloud( dotGeometry );
 		}
 		else {
 			console.log("Module doesnt recognise either!", singleDataObject);
@@ -1130,9 +1168,9 @@ var convertTopoToThree = function( topology ){
 	
 	// convert vertices
 	var topoPointMaterial = new THREE.PointsMaterial( { size: 5, sizeAttenuation: false, color:0xCC3333 } );
-	var dotGeometry = new THREE.Geometry(); console.log(topology);
+	var dotGeometry = new THREE.Geometry(); 
 	for(var v = 0; v < topology.vertices.length; v++){
-		var vertex = topology.vertices[v]
+		var vertex = topology.vertices[v].getGeometry();
 		dotGeometry.vertices.push( new THREE.Vector3(vertex[0], vertex[1], vertex[2]) );
 	}
 	var allVertices = new THREE.Points( dotGeometry, topoPointMaterial );
@@ -1178,17 +1216,25 @@ var computeTopology = function( mObj ){
 	var topology = {};
 
 
-	if(geom instanceof verb.geom.NurbsCurve){
-		topology.vertices = [ geom.point(0) , geom.point(1) ];
-		topology.edges = [mObj];
+	if(mObj instanceof mObj_geom_Vertex){
+		topology.vertices = [];
+		topology.edges = [];
+		topology.faces = [];
+	}
+	else if(mObj instanceof mObj_geom_Curve){
+		topology.vertices = [ new mObj_geom_Vertex(geom.point(0)) , new mObj_geom_Vertex(geom.point(1)) ];
+		topology.edges = [ mObj ];
 		topology.faces = [];
 	}	
-	else if(geom instanceof verb.geom.NurbsSurface){
-		topology.vertices = [geom.point(0,0), geom.point(1,0), geom.point(1,1), geom.point(0,1)];
+	else if(mObj instanceof mObj_geom_Surface){
+		topology.vertices = [ new mObj_geom_Vertex(geom.point(0,0)), 
+								 new mObj_geom_Vertex(geom.point(1,0)), 
+									 new mObj_geom_Vertex(geom.point(1,1)), 
+										 new mObj_geom_Vertex(geom.point(0,1))];
 		topology.edges = geom.boundaries().map( function( boundary ) { return new mObj_geom_Curve( boundary )} );
 		topology.faces = [mObj];
 	}	
-	else if(geom instanceof Array){
+	else if(mObj instanceof mObj_geom_Solid){
 		// means it is a solid - collection of surfaces
 		topology.vertices = [];
 		topology.edges = [];
@@ -1206,3 +1252,4 @@ var computeTopology = function( mObj ){
 
 	return topology;
 }
+

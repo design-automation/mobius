@@ -47,7 +47,7 @@ var mObj_geom = function( geometry, material ){
         if(topology){  
             for(var property in topology){ 
                 if(topology.hasOwnProperty( property ))
-                    this[property] = topology[property];
+                    self[property] = topology[property];
             }
 
         }
@@ -115,7 +115,7 @@ var mObj_geom = function( geometry, material ){
             if (data != undefined){
                 for(var property in data){
                     var jsonObject = {
-                        'attachedTo' : 'Object',
+                        'attachedTo' : self,
                         'Property' : property,
                         'Value' : data[property]
                     };
@@ -126,20 +126,21 @@ var mObj_geom = function( geometry, material ){
             // generalized - irrespective of topology object configuration
             for(topoElement in topology){
                 if(topology.hasOwnProperty(topoElement)){
-                    for( var index=0; index < topology[topoElement].length; index++){
-                        if (topology[topoElement][index].data != undefined){
-                            for(var property in topology[topoElement][index].data){
+                    for( var index=0; index < topology[topoElement].length; index++){ 
+                        var topoData = topology[topoElement][index].getData(); 
+                        if (topoData != undefined){
+                            for( var property in topoData ){
                                 var jsonObject = {
                                     'attachedTo' : topoElement+index,
                                     'Property' : property,
-                                    'Value' : topology[topoElement][index].data[property]
+                                    'Value' : topoData[property]
                                 };
                                 dataTable.push(jsonObject);
                             }
                         }
                     }
                 }
-            }
+            } 
         }
         return dataTable;
     }
@@ -183,6 +184,12 @@ var mObj_geom = function( geometry, material ){
     // topology is always computed 
     update();
 	
+}
+
+var mObj_geom_Vertex = function( geometry ){
+   var defaultVertexMaterial = new THREE.PointsMaterial( { size: 5, sizeAttenuation: false } );
+    
+    mObj_geom.call( this, geometry, defaultVertexMaterial ); 
 }
 
 var mObj_geom_Curve = function( geometry ){
