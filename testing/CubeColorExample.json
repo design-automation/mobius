@@ -1,0 +1,294 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "cube0",
+            "x": 2040.263366074112,
+            "y": 2160.3652441836684,
+            "inputConnectors": [],
+            "outputConnectors": [
+                {
+                    "name": "out0",
+                    "value": ""
+                }
+            ],
+            "type": "cube",
+            "version": 1446689008993,
+            "overwrite": true
+        }
+    ],
+    "connections": []
+}
+
+//procedure json
+[
+    [
+        {
+            "id": 2,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "out0",
+            "dataValue": "[]",
+            "type": "new",
+            "$$hashKey": "object:403"
+        },
+        {
+            "id": 1,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "makeSequence",
+            "parameters": [
+                {
+                    "value": "-50",
+                    "type": "start",
+                    "$$hashKey": "object:393"
+                },
+                {
+                    "value": "50",
+                    "type": "end",
+                    "$$hashKey": "object:394"
+                },
+                {
+                    "value": "20",
+                    "type": "stepSize",
+                    "$$hashKey": "object:395"
+                }
+            ],
+            "result": "seq",
+            "$$hashKey": "object:385"
+        },
+        {
+            "id": 4,
+            "title": "Control",
+            "nodes": [
+                {
+                    "id": 3,
+                    "title": "Control",
+                    "nodes": [
+                        {
+                            "id": 5,
+                            "title": "Control",
+                            "nodes": [
+                                {
+                                    "id": 4,
+                                    "title": "Action",
+                                    "nodes": [],
+                                    "type": "assign",
+                                    "expression": "",
+                                    "method": "distanceBetweenTwoPoints",
+                                    "parameters": [
+                                        {
+                                            "value": "[100,100,100]",
+                                            "type": "point1",
+                                            "$$hashKey": "object:481"
+                                        },
+                                        {
+                                            "value": "[x,y,z]",
+                                            "type": "point2",
+                                            "$$hashKey": "object:482"
+                                        }
+                                    ],
+                                    "result": "dist",
+                                    "$$hashKey": "object:473"
+                                },
+                                {
+                                    "id": 4,
+                                    "title": "Data",
+                                    "nodes": [],
+                                    "dataName": "dim",
+                                    "dataValue": "500/dist",
+                                    "type": "assign",
+                                    "$$hashKey": "object:514"
+                                },
+                                {
+                                    "id": 4,
+                                    "title": "Action",
+                                    "nodes": [],
+                                    "type": "assign",
+                                    "expression": "",
+                                    "method": "makeBox",
+                                    "parameters": [
+                                        {
+                                            "value": "dim",
+                                            "type": "length",
+                                            "$$hashKey": "object:695"
+                                        },
+                                        {
+                                            "value": "dim",
+                                            "type": "breadth",
+                                            "$$hashKey": "object:696"
+                                        },
+                                        {
+                                            "value": "dim",
+                                            "type": "height",
+                                            "$$hashKey": "object:697"
+                                        }
+                                    ],
+                                    "result": "box",
+                                    "$$hashKey": "object:687"
+                                },
+                                {
+                                    "id": 4,
+                                    "title": "Action",
+                                    "nodes": [],
+                                    "type": "assign",
+                                    "expression": "",
+                                    "method": "moveObjectToPoint",
+                                    "parameters": [
+                                        {
+                                            "value": "box",
+                                            "type": "mObj",
+                                            "$$hashKey": "object:1088"
+                                        },
+                                        {
+                                            "value": "x",
+                                            "type": "xCoord",
+                                            "$$hashKey": "object:1089"
+                                        },
+                                        {
+                                            "value": "y",
+                                            "type": "yCoord",
+                                            "$$hashKey": "object:1090"
+                                        },
+                                        {
+                                            "value": "z",
+                                            "type": "zCoord",
+                                            "$$hashKey": "object:1091"
+                                        }
+                                    ],
+                                    "result": "d",
+                                    "$$hashKey": "object:1080"
+                                },
+                                {
+                                    "id": 4,
+                                    "title": "Control",
+                                    "nodes": [
+                                        {
+                                            "id": "3if",
+                                            "title": "Control",
+                                            "controlType": "if",
+                                            "nodes": [
+                                                {
+                                                    "id": 4,
+                                                    "title": "Action",
+                                                    "nodes": [],
+                                                    "type": "assign",
+                                                    "expression": "clr = \"rgb(\"+Math.abs(20+x)+\",\"+Math.abs(20+y)+\",\"+Math.abs(20+z)+\")\";",
+                                                    "method": "expression",
+                                                    "parameters": [],
+                                                    "$$hashKey": "object:1933"
+                                                },
+                                                {
+                                                    "id": 4,
+                                                    "title": "Action",
+                                                    "nodes": [],
+                                                    "type": "assign",
+                                                    "expression": "",
+                                                    "method": "addMaterial",
+                                                    "parameters": [
+                                                        {
+                                                            "value": "box",
+                                                            "type": "obj",
+                                                            "$$hashKey": "object:715"
+                                                        },
+                                                        {
+                                                            "value": "\"MeshBasicMaterial\"",
+                                                            "type": "material_type",
+                                                            "$$hashKey": "object:716"
+                                                        },
+                                                        {
+                                                            "value": "false",
+                                                            "type": "wireframe",
+                                                            "$$hashKey": "object:717"
+                                                        },
+                                                        {
+                                                            "value": "new THREE.Color(clr)",
+                                                            "type": "color",
+                                                            "$$hashKey": "object:718"
+                                                        },
+                                                        {
+                                                            "value": "false",
+                                                            "type": "transparent",
+                                                            "$$hashKey": "object:719"
+                                                        }
+                                                    ],
+                                                    "result": "d",
+                                                    "$$hashKey": "object:707"
+                                                }
+                                            ],
+                                            "ifExpression": "(z < 0) || (y<0) || (x<0)",
+                                            "$$hashKey": "object:1964"
+                                        },
+                                        {
+                                            "id": "3else",
+                                            "title": "Control",
+                                            "controlType": "else",
+                                            "nodes": [],
+                                            "$$hashKey": "object:1965"
+                                        }
+                                    ],
+                                    "controlType": "if else",
+                                    "type": "assign",
+                                    "$$hashKey": "object:1958"
+                                },
+                                {
+                                    "id": 4,
+                                    "title": "Action",
+                                    "nodes": [],
+                                    "type": "assign",
+                                    "expression": "",
+                                    "method": "addToList",
+                                    "parameters": [
+                                        {
+                                            "value": "out0",
+                                            "type": "list",
+                                            "$$hashKey": "object:894"
+                                        },
+                                        {
+                                            "value": "box",
+                                            "type": "object",
+                                            "$$hashKey": "object:895"
+                                        }
+                                    ],
+                                    "result": "d",
+                                    "$$hashKey": "object:886"
+                                }
+                            ],
+                            "type": "new",
+                            "controlType": "for each",
+                            "dataName": "z",
+                            "forList": "seq",
+                            "$$hashKey": "object:472"
+                        }
+                    ],
+                    "type": "new",
+                    "controlType": "for each",
+                    "dataName": "y",
+                    "forList": "seq",
+                    "$$hashKey": "object:441"
+                }
+            ],
+            "type": "assign",
+            "controlType": "for each",
+            "dataName": "x",
+            "forList": "seq",
+            "$$hashKey": "object:457"
+        }
+    ]
+]
+
+//interface json
+[
+    [
+        {
+            "id": 1,
+            "title": "Data",
+            "temp": "Parameter",
+            "dataName": "orDim",
+            "dataValue": "200",
+            "$$hashKey": "object:1124"
+        }
+    ]
+]
