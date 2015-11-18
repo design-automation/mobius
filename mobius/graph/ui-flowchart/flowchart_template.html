@@ -34,7 +34,9 @@
     <rect x="0" y="0"
           height="4000" width="4000"
           ng-dblclick ="doubleClick($event)"
-          style="stroke-width:1; stroke:black; fill:url(#dots-4-11);" />
+          style="stroke-width:1; stroke:black; fill:url(#dots-4-11);overflow: hidden"
+          class="position-fixed"
+    />
 
     <g
     ng-repeat="node in chart.nodes"
@@ -50,7 +52,8 @@
       ng-attr-width="{{node.width()}}"
       ng-attr-height="{{node.height()}}"
       fill="url(#nodeBackgroundGradient)"
-      context-menu="nodeMenuOptions"
+      context-menu
+      data-target="menu-node"
       ng-dblclick ="nodeDoubleClick($event)"
             >
     </rect>
@@ -59,7 +62,8 @@
         <text
           ng-attr-x="{{node.width()+3}}"
           y="23"
-          context-menu="nodeMenuOptions"
+          context-menu
+          data-target="menu-node"
           >
           {{node.name()}}
         </text>
@@ -76,7 +80,8 @@
             ng-attr-r="{{connectorSize}}"
             ng-attr-cx="{{connector.x()}}"
             ng-attr-cy="{{connector.y()}}"
-            context-menu="connectorMenuOptions"
+            context-menu
+            data-target="menu-connector"
         />
 
         <text
@@ -101,7 +106,8 @@
             ng-attr-r="{{connectorSize}}"
             ng-attr-cx="{{connector.x()}}"
             ng-attr-cy="{{connector.y()}}"
-            context-menu="connectorMenuOptions"
+            context-menu
+            data-target="menu-connector"
             />
 
       <text
@@ -120,7 +126,8 @@
       ng-repeat="connection in chart.connections"
       class="connection"
       ng-mousedown="connectionMouseDown($event, connection)"
-      context-menu="connectionMenuOptions"
+      context-menu
+      data-target="menu-connection"
       >
         <path
           ng-attr-class="{{connection.selected() && 'selected-connection-line' || (connection == mouseOverConnection && 'mouseover-connection-line' || 'connection-line')}}"
@@ -193,15 +200,15 @@
         ng-attr-height="{{dbClickMenu.height}}"
     >
         <body xmlns="http://www.w3.org/1999/xhtml">
-            <div ng-controller="graphCtrl" id = "node-creator" style="width:180px; ">
-                    <ui-select ng-model="type.selected"
+            <div ng-controller="newNodeCtrl" id = "node-creator" style="width:180px; ">
+                <ui-select ng-model="type.selected"
                                append-to-body = "true"
                                on-select="addNewNode(this.type.selected)">
                     <ui-select-match placeholder="New node" >{{$select.selected}}</ui-select-match>
                     <ui-select-choices repeat="type in nodeTypes()| filter: $select.search">
                         <span ng-bind-html="type| highlight: $select.search"></span>
                     </ui-select-choices>
-                        </ui-select>
+                </ui-select>
             </div>
         </body>
     </foreignObject>
