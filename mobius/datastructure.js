@@ -65,8 +65,17 @@ var mObj_geom = function( geometry, material ){
 
         // if threeGeometry hasn't been computed before or native geometry has been transformed so that new conversion is required
         // the function defines it and caches it
-        if( threeGeometry == undefined )
-			 threeGeometry = convertGeomToThree( geometry );  // calls a function in the module to convert native geom into accepted three format
+        if( threeGeometry == undefined ){
+            if( geometry instanceof Array){
+                var threeGeometry = new THREE.Object3D(); 
+                for(var srf=0; srf < geometry.length; srf++){
+                    var geom = geometry[srf];
+                    threeGeometry.add( geom.extractThreeGeometry() ); 
+                }
+            }else
+                threeGeometry = convertGeomToThree( geometry );  // calls a function in the module to convert native geom into accepted three format
+        }
+			 
 
         // if material has been assigned to this data object, assigns the same material to the converted geometry
         if(material)

@@ -540,16 +540,16 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.makeBox = function( centrePoint, length, breadth, height){
 		
-		var allSurfaces = [];
+		var allSurfaces = []; 
 		
 		var topFace = VIDAMO.makeSurfaceByCorners([length/2, height/2, breadth/2],[length/2, height/2, -breadth/2],[-length/2, height/2, -breadth/2],[-length/2, height/2, breadth/2]);
 		var bottomFace = VIDAMO.makeSurfaceByCorners([length/2, -height/2, breadth/2],[length/2, -height/2, -breadth/2],[-length/2, -height/2, -breadth/2],[-length/2, -height/2, breadth/2]);
-		var frontFace = VIDAMO.makeSurfaceByCorners([-length/2, -height/2, breadth/2],[length/2, -height/2, breadth/2],[ length/2, height/2, breadth/2],[ length/2, height/2, breadth/2]);
-		var backFace = VIDAMO.makeSurfaceByCorners([-length/2, -height/2, -breadth/2],[length/2, -height/2, -breadth/2],[ length/2, height/2, -breadth/2],[ length/2, height/2, -breadth/2]);
+		var frontFace = VIDAMO.makeSurfaceByCorners([-length/2, -height/2, breadth/2],[length/2, -height/2, breadth/2],[ length/2, height/2, breadth/2],[ -length/2, height/2, breadth/2]);
+		var backFace = VIDAMO.makeSurfaceByCorners([-length/2, -height/2, -breadth/2],[length/2, -height/2, -breadth/2],[ length/2, height/2, -breadth/2],[ -length/2, height/2, -breadth/2]);
 		var rightFace = VIDAMO.makeSurfaceByCorners([length/2, -height/2, breadth/2],[length/2, -height/2, -breadth/2],[length/2, height/2, -breadth/2],[length/2, height/2, breadth/2]);
 		var leftFace = VIDAMO.makeSurfaceByCorners([-length/2, -height/2, breadth/2],[-length/2, -height/2, -breadth/2],[-length/2, height/2, -breadth/2],[-length/2, height/2, breadth/2]);
 		
-		allSurface = [topFace, bottomFace, frontFace, backFace, rightFace, leftFace];
+		allSurfaces = [topFace, bottomFace, frontFace, backFace, leftFace, rightFace];
 		
 		return new mObj_geom_Solid( allSurfaces );
 	};
@@ -1051,7 +1051,7 @@ var VIDAMO = ( function (mod){
 			else if(obj instanceof  mObj_geom_Curve || 
 					obj instanceof mObj_geom_Surface ||
 					obj instanceof mObj_geom_Solid ){ 
-				geom.push( obj.extractTopology() );
+				geom.push( obj.extractThreeGeometry() );
 				geomData.push( obj.extractData() );
 			}else{
 				for(var key in obj){
@@ -1174,8 +1174,18 @@ var computeTopology = function( mObj ){
 		topology.edges = geom.boundaries().map( function( boundary ) { return new mObj_geom_Curve( boundary )} );
 		topology.faces = mObj;
 	}	
-	else if(mobiusObject instanceof Array){
+	else if(geom instanceof Array){
+		// means it is a solid - collection of surfaces
+		topology.vertices = [];
+		topology.edges = [];
+		topology.faces = [];
 
+		for(var srf=0; srf < geom.length; srf++){
+			var subTopo = computeTopology(geom[srf]);
+			topology.faces.concat(subTopo.faces);
+			topology.edges.concat(subTopo.edges);
+			topology.vertices.concat(subTopo.vertices);		
+		}
 	}
 	else
 		topology = undefined;	
