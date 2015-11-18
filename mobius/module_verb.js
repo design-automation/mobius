@@ -789,21 +789,37 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.makeCopy = function(mObj, xCoord, yCoord, zCoord){
 
-		if(mObj instanceof Array){
+		/*	if(mObj instanceof Array){
 			var newcopy = [];
 			for(var obj=0; obj < mObj.length; obj++)
 				newcopy.push(VIDAMO.makeCopy(mObj[obj], xCoord, yCoord, zCoord));	
 			return newcopy;
-		}
+		}*/
 
 		// for output cloning
 		if( mObj.getGeometry == undefined ){
 			console.log("Non-Mobius passed to copy function");
 			return mObj;
 		}
+
+		// fix: make this into one line code with 'eval'
+		var newcopy;
+		if(mObj instanceof mObj_geom_Vertex)
+			newcopy = new mObj_geom_Vertex( mObj.getGeometry() );
+		else if(mObj instanceof mObj_geom_Curve)
+			newcopy = new mObj_geom_Curve( mObj.getGeometry() );
+		else if(mObj instanceof mObj_geom_Surface)
+			newcopy = new mObj_geom_Surface( mObj.getGeometry() );
+		else if(mObj instanceof mObj_geom_Solid)
+			newcopy = new mObj_geom_Solid( mObj.getGeometry() );
+
+		newcopy.setData( mObj.getData() );
+		newcopy.setMaterial( mObj.getMaterial() );
+
+		return newcopy;
 		
-		var clone = new Object();
-		return Object.assign( clone, mObj );
+/*		var clone = new Object();
+		return Object.assign( clone, mObj );*/
 		
 		// var new_mObj = new MobiusDataObject( mObj.getGeometry() );
 		
@@ -1187,6 +1203,8 @@ var convertTopoToThree = function( topology ){
 		var edge = convertGeomToThree(topology.edges[e].getGeometry());
 		edge.material = topoEdgeMaterial;
 		topo.add(edge);
+
+
 	}
 
 	// convert faces
@@ -1201,6 +1219,8 @@ var convertTopoToThree = function( topology ){
 		var face = convertGeomToThree(topology.faces[f].getGeometry());
 		face.material = topoSurfaceMaterial;
 		topo.add(face);
+
+		//addNumber( "FaceNumber"+f, face);
 	} 
 
 	return topo;
@@ -1253,3 +1273,67 @@ var computeTopology = function( mObj ){
 	return topology;
 }
 
+
+/*function addNumber( indexNumber, pos ){
+	var numberText = document.createElement('div');
+	numberText.style.position = 'absolute';
+	//text2.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
+	numberText.style.width = 100;
+	numberText.style.height = 100;
+	numberText.innerHTML = indexNumber;
+	numberText.style.top = pos.x; console.log(pos.geometry.vertices[0]);
+	numberText.style.left = pos.y;
+	document.body.appendChild(numberText);
+}
+
+function positionByWorld(element, keepInBounds, pointGenerator) {
+  var canvasStyle = window.getComputedStyle(theCanvas,null);
+  var canvasWidth = parseInt(canvasStyle.width, 10);
+  var canvasHeight = parseInt(canvasStyle.height, 10);
+
+  var elemStyle = window.getComputedStyle(element, null);
+  var elemWidth = parseInt(elemStyle.width, 10);
+  var elemHeight = parseInt(elemStyle.height, 10);
+
+  var slx = Infinity;
+  var sly = Infinity;
+  var shx = -Infinity;
+  var shy = -Infinity;
+  var toScreenPoint = vec4.create();
+
+  pointGenerator(function (x, y, z, w) {
+    toScreenPoint[0] = x;
+    toScreenPoint[1] = y;
+    toScreenPoint[2] = z;
+    toScreenPoint[3] = w;
+    renderer.transformPoint(toScreenPoint);
+    toScreenPoint[0] /= toScreenPoint[3];
+    toScreenPoint[1] /= toScreenPoint[3];
+    toScreenPoint[2] /= toScreenPoint[3];
+    if (toScreenPoint[3] > 0) {
+      slx = Math.min(slx, toScreenPoint[0]);
+      shx = Math.max(shx, toScreenPoint[0]);
+      sly = Math.min(sly, toScreenPoint[1]);
+      shy = Math.max(shy, toScreenPoint[1]);
+    }
+  });
+
+  if (shx > -1 && shy > -1 && slx < 1 && sly < 1 /* visible ) {
+    // convert to screen
+    /*
+    slx = (slx + 1) / 2 * canvasWidth;
+    //shx = (shx + 1) / 2 * canvasWidth;
+    //sly = (sly + 1) / 2 * canvasHeight;
+    shy = (shy + 1) / 2 * canvasHeight;
+    if (keepInBounds) {
+      slx = Math.max(0, Math.min(canvasWidth - elemWidth, slx));
+      shy = Math.max(0, Math.min(canvasHeight - elemHeight, shy));
+    }
+    element.style.left   = slx + "px";
+    element.style.bottom = shy + "px";
+  } else {
+    element.style.left   = canvasWidth + "px";
+  }
+}*/
+
+var TOPOLOGY_DEF = { vertices: [], edges: [], faces: [] };

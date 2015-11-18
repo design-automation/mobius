@@ -5,7 +5,7 @@
 
 // Main mObj Class definition
 // mObj maybe geometry, ifcModel, data / charts etc
-var mObj = function( type ){
+var mObj = function mObj( type ){
 	
     var type = type;
 	
@@ -18,7 +18,7 @@ var mObj = function( type ){
 
 // mObj Geometry Class
 // geometry is stored in geometry format native to module
-var mObj_geom = function( geometry, material ){
+var mObj_geom = function mObj_geom( geometry, material ){
 	
 	mObj.call(this, 'geometry');
 
@@ -28,8 +28,9 @@ var mObj_geom = function( geometry, material ){
     var self = this;
 
     var data = undefined;
+    var topology = undefined;
 
-    var topology, threeGeometry, threeTopology;
+    var threeGeometry, threeTopology;
 
     //
     // update function when some property of the object changes
@@ -37,20 +38,19 @@ var mObj_geom = function( geometry, material ){
     var update = function(){
         threeGeometry = undefined;
         threeTopology = undefined;
+    }
 
-        // recompute topology
-        topology = computeTopology( self );
-
-        //
-        // expose topology to the user
-        // 
-        if(topology){  
-            for(var property in topology){ 
-                if(topology.hasOwnProperty( property ))
-                    self[property] = topology[property];
-            }
-
-        }
+    // needs a TOPOLOGY_DEF
+    for(var property in TOPOLOGY_DEF){     
+        Object.defineProperty(self, property, {
+            get: function() {
+                    if( topology == undefined ){
+                        topology = computeTopology(self); 
+                    }
+                    return topology[property]; 
+            },
+            set: undefined
+        });
     }
 
     //
@@ -92,6 +92,9 @@ var mObj_geom = function( geometry, material ){
 
         // if threeGeometry hasn't been computed before or native geometry has been transformed so that new conversion is required
         // the function defines it and caches it
+        if(topology == undefined)
+            topology = computeTopology(self);
+
         if( threeTopology == undefined )
              threeTopology = convertTopoToThree( topology );  // calls a function in the module to convert native geom into accepted three format
 
@@ -159,6 +162,8 @@ var mObj_geom = function( geometry, material ){
 	}
 
     this.getTopology = function(){
+        if(topology == undefined)
+            topology = computeTopology();
         return topology;
     }
     
@@ -186,13 +191,13 @@ var mObj_geom = function( geometry, material ){
 	
 }
 
-var mObj_geom_Vertex = function( geometry ){
+var mObj_geom_Vertex = function mObj_geom_Vertex( geometry ){
    var defaultVertexMaterial = new THREE.PointsMaterial( { size: 5, sizeAttenuation: false } );
     
     mObj_geom.call( this, geometry, defaultVertexMaterial ); 
 }
-
-var mObj_geom_Curve = function( geometry ){
+ 
+var mObj_geom_Curve = function mObj_geom_Curve( geometry ){
 	
     var defaultCurveMaterial = new THREE.LineBasicMaterial({
     side: THREE.DoubleSide,
@@ -204,7 +209,7 @@ var mObj_geom_Curve = function( geometry ){
 	
 }
 
-var mObj_geom_Surface = function( geometry ){
+var mObj_geom_Surface = function mObj_geom_Surface( geometry ){
 	
     var defaultSurfaceMaterial = new THREE.MeshLambertMaterial( {
     side: THREE.DoubleSide,
@@ -218,7 +223,7 @@ var mObj_geom_Surface = function( geometry ){
 
 }
 
-var mObj_geom_Solid = function( geometry ){
+var mObj_geom_Solid = function mObj_geom_Solid( geometry ){
 	
     var defaultSolidMaterial = new THREE.MeshLambertMaterial( {
     side: THREE.DoubleSide,
@@ -231,3 +236,5 @@ var mObj_geom_Solid = function( geometry ){
 	mObj_geom.call( this, geometry, defaultSolidMaterial );
 
 }
+
+
