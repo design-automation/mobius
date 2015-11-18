@@ -137,7 +137,6 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                         procedureJsonObj = JSON.parse(procedureJsonString);
                         interfaceJsonObj = JSON.parse(interfaceJsonString);
 
-                        // fixme input/output should be link by reference
 
                         // update the graph
                         generateCode.setChartViewModel(new flowchart.ChartViewModel(graphJsonObj));
@@ -219,6 +218,7 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
 
 
         // import pre-defined node
+        // fixme potentially malfunction since input and output are not dynamically linked
         $scope.importNode = function (files) {
 
             var jsonString;

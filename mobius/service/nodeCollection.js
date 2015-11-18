@@ -1,16 +1,9 @@
-//
 // data pool for node types
-//
-
-// todo
-// 4. file system implementation
 
 vidamo.factory('nodeCollection', function () {
 
     var nodes= [];
     var defaultNodes = [{
-
-        // this should be the future template
         // node type name
         nodeType:'create new type',
         // node type

@@ -157,6 +157,38 @@ vidamo.controller('newNodeCtrl',[
 
                 $scope.chartViewModel.addNode(newNodeDataModel);
 
+                // dynamically link input and output from graph and procedure
+                for(var i =0; i < $scope.chartViewModel.nodes.length; i++){
+                    for(var j = 0 ; j < $scope.chartViewModel.nodes[i].outputConnectors.length; j++ ){
+                        for(var k = 0; k < $scope.dataList[i].length; k++){
+                            if($scope.dataList[i][k].title === 'Output'){
+                                if($scope.chartViewModel.nodes[i].outputConnectors[j].data.id
+                                    === $scope.dataList[i][k].id ){
+                                    $scope.chartViewModel.nodes[i].outputConnectors[j].data =
+                                        $scope.dataList[i][k];
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+                for(var i =0; i < $scope.chartViewModel.nodes.length; i++) {
+                    for (var j = 0; j < $scope.chartViewModel.nodes[i].inputConnectors.length; j++) {
+                        for (var k = 0; k <  $scope.interfaceList[i].length; k++) {
+                            if ($scope.interfaceList[i][k].title === 'Input') {
+
+
+                                if ($scope.chartViewModel.nodes[i].inputConnectors[j].data.id
+                                    === $scope.interfaceList[i][k].id) {
+                                    $scope.chartViewModel.nodes[i].inputConnectors[j].data =
+                                        $scope.interfaceList[i][k];
+                                }
+                            }
+                        }
+                    }
+                }
+
                 // clean dropdown menu -> flowchart directive
                 $scope.$emit('cleanGraph');
 

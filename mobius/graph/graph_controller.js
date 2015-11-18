@@ -2,8 +2,6 @@
 // VIDAMO Left Graph controller
 //
 
-// fixme refactor: delete unused and duplicated node/type adding code
-
 vidamo.controller('graphCtrl',[
                     '$scope',
                     '$timeout',
@@ -213,87 +211,7 @@ vidamo.controller('graphCtrl',[
 
          });
 
-        // Add a new node to the chart.
-        // todo integrate with fancy prompt
 
-        $scope.addNewNode = function (type) {
-            if(type === 'create new type'){
-                // install new node type and update type
-                type = $scope.createNewNodeType();
-                if(!type){
-                    return;
-                }
-            }
-
-            // prompt for name of new node and validate
-            $timeout(function(){
-
-                var tempIndex = 0;
-                for(var i =0; i < $scope.chartViewModel.nodes.length; i++){
-                    if($scope.chartViewModel.nodes[i].data.type === type){
-                        tempIndex ++;
-                    }
-                }
-
-                var nodeName = type + tempIndex;
-
-                // update node name, node id and location
-                var newNodeDataModel = {};
-                newNodeDataModel.id = $scope.chartViewModel.nodes.length;
-                newNodeDataModel.name = nodeName;
-                newNodeDataModel.x = 1900;
-                newNodeDataModel.y = 2100;
-                newNodeDataModel.inputConnectors = nodeCollection.getInputConnectors(type);
-                newNodeDataModel.outputConnectors = nodeCollection.getOutputConnectors(type);
-                newNodeDataModel.type = type;
-                newNodeDataModel.version = 0;
-                newNodeDataModel.overwrite = nodeCollection.getOverwrite(type);
-
-                // when new node added, increase the number of procedure list by one
-                $scope.dataList.push(nodeCollection.getProcedureDataModel(type));
-
-                // when new node added, add new code block
-                $scope.innerCodeList.push('//\n' + '// To generate code, create nodes & procedures and run!\n' + '//\n');
-                $scope.outerCodeList.push('//\n' + '// To generate code, create nodes & procedures and run!\n' + '//\n');
-
-                // when new node added, increase the number of interface list by one
-                $scope.interfaceList.push(nodeCollection.getInterfaceDataModel(type));
-
-                // todo interface code list
-
-                // add new node data model to view model
-
-                $scope.chartViewModel.addNode(newNodeDataModel);
-
-                // clean dropdown menu -> flowchart directive
-                $scope.$emit('cleanGraph');
-
-                $scope.nextNodeId++;
-            },100);
-
-        };
-
-        // create and install a new node type
-        $scope.createNewNodeType = function (){
-            // prompt for name of new type and validate
-            var newTypeName = prompt('Enter a name for new type:');
-
-            if (!isValidName(newTypeName)) {
-                consoleMsg.errorMsg('invalidName');
-                return;}
-
-            if ($scope.nodeTypes().indexOf(newTypeName) >= 0 ){
-                consoleMsg.errorMsg('dupName');
-                return;
-            }
-
-            var newProcedureDataModel =  [];
-            var newInterfaceDataModel = [];
-
-            nodeCollection.installNewNodeType(newTypeName,newProcedureDataModel,newInterfaceDataModel);
-
-            return newTypeName;
-        };
 
         // Add an input connector to selected nodes.
         $scope.$on("newInputConnector",function (event,connectorModel) {
