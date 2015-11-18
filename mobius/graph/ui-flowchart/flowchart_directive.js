@@ -107,11 +107,6 @@ angular.module('flowChart', ['dragging'] )
 		}]
 	];
 
-	$scope.deleteSelected = function(evt){
-		//if(evt.KeyCode === ){
-		//	$scope.$emit("deleteSelected"); // -> graph controller
-		//}
-	};
 
     // menu for right click on connector
     $scope.connectorMenuOptions = [

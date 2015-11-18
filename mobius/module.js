@@ -1390,8 +1390,6 @@ var VIDAMO = ( function (mod){
 						data[i].geom.push(tempGeom);
 						data[i].geomData.push(tempData);
 					}
-					console.log(data[i].geom);
-
 				}
 			}
 		}

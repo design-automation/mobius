@@ -1,4 +1,4 @@
-<!--vidamo-->
+<!-- mobius -->
 <!-- procedure template -->
 
 
@@ -40,8 +40,8 @@
         Output
         <a>
             <!--Output name and value-->
-            <a href="#" data-nodrag editable-text="node.dataName" blur="submit"  buttons="no" >
-                {{ node.dataName || 'name' }}
+            <a href="#" data-nodrag editable-text="node.name" blur="submit"  buttons="no" >
+                {{ node.name || 'name' }}
             </a>
             =
             <a data-nodrag href="#" editable-text="node.dataValue" buttons="no" blur="submit">
@@ -50,7 +50,7 @@
         </a>
 
         <!--delete key-->
-        <a class="pull-right btn btn-xs" data-nodrag ng-click="remove(this)" style="padding: 0;margin: 0" >
+        <a class="pull-right btn btn-xs" data-nodrag ng-click="removeOutput(this)" style="padding: 0;margin: 0" >
             <span style="font-weight: 400; font-size: 16px;line-height:1" > &times; </span>
         </a>
 

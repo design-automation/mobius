@@ -7,7 +7,7 @@
     <div style="padding-left:20px " class="tree-node-content">
         <!--vairable name-->
         <a>
-            <a href="#" data-nodrag editable-text="node.dataName" buttons="no">{{ node.dataName || 'name' }}</a>
+            <a href="#" data-nodrag editable-text="node.name" buttons="no">{{ node.name || 'name' }}</a>
             <!--=-->
             <!--<a data-nodrag href="#" editable-text="node.dataValue" buttons="no">{{ node.dataValue || 'value' }}</a>-->
         </a>
@@ -24,7 +24,7 @@
         <!--</div>-->
 
         <!--delete key-->
-        <a class="pull-right btn btn-xs" data-nodrag ng-click="remove(this)" style="padding: 0;margin: 0" >
+        <a class="pull-right btn btn-xs" data-nodrag ng-click="removeInput(this)" style="padding: 0;margin: 0" >
             <span style="font-weight: 400; font-size: 16px;line-height:1" > &times; </span>
         </a>
 

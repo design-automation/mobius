@@ -99,7 +99,7 @@ vidamo.controller('graphCtrl',[
 
         $scope.outputGeom =[];
 
-        // fixme shall it be watching true ?????
+        // fixme shall it be watching true
         $scope.$watch(function () { return generateCode.getOutputGeom(); }, function () {
             $scope.outputGeom = generateCode.getOutputGeom();
         });
@@ -122,13 +122,13 @@ vidamo.controller('graphCtrl',[
 
 
         // Setup the data-model for the chart.
-        var chartDataModel = {
-            nodes: [],
-            connections: []
-        };
+        //var chartDataModel = {
+        //    nodes: [],
+        //    connections: []
+        //};
 
         // Create the view-model for the chart and attach to the scope.
-        $scope.chartViewModel = new flowchart.ChartViewModel(chartDataModel);
+        //$scope.chartViewModel = new flowchart.ChartViewModel(chartDataModel);
 
         // verify the function name
         // fixme replace eval with regex
@@ -152,8 +152,6 @@ vidamo.controller('graphCtrl',[
 
         // listen to the graph, when a node is clicked, update the visual procedure/ code/ interface accordions
          $scope.$on("nodeIndex", function(event, message) {
-
-
              if($scope.nodeIndex !== message && message !== undefined){
                 // on change of node selection, update
                 $scope.nodeIndex = message;
@@ -213,98 +211,18 @@ vidamo.controller('graphCtrl',[
 
          });
 
-        // Add a new node to the chart.
-        // todo integrate with fancy prompt
 
-        $scope.addNewNode = function (type) {
-            if(type === 'create new type'){
-                // install new node type and update type
-                type = $scope.createNewNodeType();
-                if(!type){
-                    return;
-                }
-            }
-
-            // prompt for name of new node and validate
-            $timeout(function(){
-
-                var tempIndex = 0;
-                for(var i =0; i < $scope.chartViewModel.nodes.length; i++){
-                    if($scope.chartViewModel.nodes[i].data.type === type){
-                        tempIndex ++;
-                    }
-                }
-
-                var nodeName = type + tempIndex;
-
-                // update node name, node id and location
-                var newNodeDataModel = {};
-                newNodeDataModel.id = $scope.chartViewModel.nodes.length;
-                newNodeDataModel.name = nodeName;
-                newNodeDataModel.x = 1900;
-                newNodeDataModel.y = 2100;
-                newNodeDataModel.inputConnectors = nodeCollection.getInputConnectors(type);
-                newNodeDataModel.outputConnectors = nodeCollection.getOutputConnectors(type);
-                newNodeDataModel.type = type;
-                newNodeDataModel.version = 0;
-                newNodeDataModel.overwrite = nodeCollection.getOverwrite(type);
-
-                // when new node added, increase the number of procedure list by one
-                $scope.dataList.push(nodeCollection.getProcedureDataModel(type));
-
-                // when new node added, add new code block
-                $scope.innerCodeList.push('//\n' + '// To generate code, create nodes & procedures and run!\n' + '//\n');
-                $scope.outerCodeList.push('//\n' + '// To generate code, create nodes & procedures and run!\n' + '//\n');
-
-                // when new node added, increase the number of interface list by one
-                $scope.interfaceList.push(nodeCollection.getInterfaceDataModel(type));
-
-                // todo interface code list
-
-                // add new node data model to view model
-
-                $scope.chartViewModel.addNode(newNodeDataModel);
-
-                // clean dropdown menu -> flowchart directive
-                $scope.$emit('cleanGraph');
-
-                $scope.nextNodeId++;
-            },100);
-
-        };
-
-        // create and install a new node type
-        $scope.createNewNodeType = function (){
-            // prompt for name of new type and validate
-            var newTypeName = prompt('Enter a name for new type:');
-
-            if (!isValidName(newTypeName)) {
-                consoleMsg.errorMsg('invalidName');
-                return;}
-
-            if ($scope.nodeTypes().indexOf(newTypeName) >= 0 ){
-                consoleMsg.errorMsg('dupName');
-                return;
-            }
-
-            var newProcedureDataModel =  [];
-            var newInterfaceDataModel = [];
-
-            nodeCollection.installNewNodeType(newTypeName,newProcedureDataModel,newInterfaceDataModel);
-
-            return newTypeName;
-        };
 
         // Add an input connector to selected nodes.
-        $scope.$on("newInputConnector",function () {
+        $scope.$on("newInputConnector",function (event,connectorModel) {
             try{
-                $timeout(function(){
-                    var connectorName = prompt("Enter a connector name:", "in"
-                        + $scope.chartViewModel.nodes[$scope.nodeIndex].inputConnectors.length
-                        + '_'
-                        + $scope.chartViewModel.nodes[$scope.nodeIndex].data.name);
+                //$timeout(function(){
+                //    var connectorName = prompt("Enter a connector name:", "in"
+                //        + $scope.chartViewModel.nodes[$scope.nodeIndex].inputConnectors.length
+                //        + '_'
+                //        + $scope.chartViewModel.nodes[$scope.nodeIndex].data.name);
 
-                    if (!isValidName(connectorName)) {
+                    if (!isValidName(connectorModel.name)) {
                         return;
                     }
 
@@ -313,17 +231,14 @@ vidamo.controller('graphCtrl',[
                     for (var i = 0; i < selectedNodes.length; ++i) {
                         var node = selectedNodes[i];
 
-                        node.addInputConnector({
-                            name: connectorName,
-                            value:''
-                        });
+                        node.addInputConnector(connectorModel);
                     }
 
                     // update version fixme
                     var d = new Date();
                     $scope.chartViewModel.nodes[$scope.nodeIndex].data.version = d.getTime();
 
-                },100);
+                //},100);
             }
             catch(err){
                 consoleMsg.errorMsg('noNode');
@@ -336,14 +251,14 @@ vidamo.controller('graphCtrl',[
 
         // Add an output connector to selected nodes.
 
-        $scope.$on("newOutputConnector",function () {
+        $scope.$on("newOutputConnector",function (event,connectorModel) {
 
             try{
-                $timeout(function(){
-                    var connectorName = prompt("Enter a connector name:", "out"
-                        + $scope.chartViewModel.nodes[$scope.nodeIndex].outputConnectors.length);
+                //$timeout(function(){
+                //    var connectorName = prompt("Enter a connector name:", "out"
+                //        + $scope.chartViewModel.nodes[$scope.nodeIndex].outputConnectors.length);
 
-                    if (!isValidName(connectorName)) {
+                    if (!isValidName(connectorModel.name)) {
                         return;
                     }
 
@@ -351,12 +266,9 @@ vidamo.controller('graphCtrl',[
 
                     for (var i = 0; i < selectedNodes.length; ++i) {
                         var node = selectedNodes[i];
-                        node.addOutputConnector({
-                            name: connectorName,
-                            value: ""
-                        });
+                        node.addOutputConnector(connectorModel);
                     }
-                },100);
+                //},100);
 
 
                 // update version fixme

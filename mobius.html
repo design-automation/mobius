@@ -25,7 +25,7 @@
 </head>
 
 <body>
-<div>
+<div >
 
     <!-- dropdown Menu -->
     <div ng-controller="menuCtrl" class = "menubar">
@@ -66,9 +66,6 @@
                         <li><a ng-click="loadExample('F7_ListOperations.json')"> List Operations</a></li>
                         <li><a ng-click="loadExample('F8_GeneralFunctions.json')"> General Functions</a></li>
                     </ul>
-
-
-
                 </li>
             </ul>
         </span>
@@ -147,7 +144,7 @@
                         border:1px solid #aaaaaa;
                         border-radius: 4px;
                         top: 23px;"
-            id="layout">
+                        id="layout">
         <div ng-controller="layoutCtrl">
             <div class="layout-area" ui-layout="{flow : 'column'}" ng-controller="procedureCtrl">
 
@@ -205,12 +202,28 @@
 
                                 <viewport control="viewportControl" id="threeViewport"></viewport>
 
+                                <!--<div ng-controller="graphCtrl">-->
+                                <!--<textarea-->
+                                <!--style="width: 100%; height: 100%;-->
+                                <!--padding-top: 8px;-->
+                                <!--padding-left: 8px;-->
+                                <!--padding-right: 8px;-->
+                                <!--padding-bottom: 20px;-->
+                                <!--font-size: 12px;-->
+                                <!--overflow: auto;-->
+                                <!--position: absolute;"-->
+                                <!--chart-json-edit-->
+                                <!--view-model="chartViewModel">-->
+                                <!--</textarea>-->
+                                <!--</div>-->
+
+
                                 <div ng-if="showFullCode">
                                     <div style="height: 100%;width: 100%;top:35px;left:0;position: absolute;"
                                         ui-ace="{ mode: 'javascript',theme: 'tomorrow'}"
                                         ng-model="javascriptCode"
                                         readonly="{{true}}"
-                                        ng-controller="graphCtrl">
+                                        ng-controller="codeCtrl">
                                     </div>
                                 </div>
 
@@ -294,7 +307,6 @@
 
                         <!-- pan & zoom field -->
                         <div mouse-capture
-
                              ui-layout-container size = "75%">
                             <div ng-controller="graphCtrl">
                                 <div ng-if = "currentNodeName">
@@ -343,15 +355,80 @@
                                         </panzoom>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
+<div ng-controller="nodeMenuCtrl">
+            <div class="dropdown position-fixed " id="menu-node" >
+                <ul class="dropdown-menu">
+                    <li class="dropdown-submenu">
+                        <a> Add Input </a>
+                        <ul class="dropdown-menu" >
+                            <li ng-repeat="input in inputs"
+                                ng-if="input.title ==='Input' && checkDupInput(input)"
+                                ng-click="addInputConnector(input)">
+                                <a> {{input.name}}</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown-submenu" >
+                        <a> Add Output </a>
+                        <ul class="dropdown-menu ">
+                            <li ng-repeat="procedure in procedures"
+                                ng-if="procedure.title ==='Output' && checkDupOutput(procedure)"
+                                ng-click="addOutputConnector(procedure)"
+                            >
+                                <a> {{procedure.name}}</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li><a ng-click="delete()"> Delete </a></li>
+
+                    <li><a ng-click="rename()"> Rename </a></li>
+
+                    <li><a ng-click="saveAsNew()"> Save as new type</a></li>
+
+                    <li><a ng-click="overwrite()"> Overwrite original type</a></li>
+
+                    <li><a ng-click="editProcedure()"> Edit procedure</a></li>
+
+                </ul>
+            </div>
+
+            <div class="dropdown position-fixed " id="menu-connector" >
+                <ul class="dropdown-menu">
+                    <li>
+                        <a ng-click="delete()"> Delete </a>
+                    </li>
+
+                    <li>
+                        <a ng-click="rename()"> Rename </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="dropdown position-fixed " id="menu-connection" >
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="" ng-click="delete()"> Delete </a>
+                    </li>
+                </ul>
+            </div>
+
+</div>
+
     </div>
 </div>
+
+
+
+
 
 <!-- jquery -->
 <script type="text/javascript" src="assets/js/jquery/jquery-1.11.1.js"></script>
@@ -359,6 +436,7 @@
 <!-- angularJs -->
 <script type="application/javascript" src="assets/js/angular/angular.min.js"></script>
 <script type="text/javascript" src="assets/js/angular/angular-sanitize.js"></script>
+<script type="application/javascript" src="//code.angularjs.org/1.4.4/angular-route.js"></script>
 
 <!-- angular-ui -->
 <script type="application/javascript" src="assets/js/angular-ui/ui-layout/ui-layout.js"></script>
@@ -366,21 +444,20 @@
 <script type="text/javascript" src="mobius/procedure/angular-ui-tree.js"></script>
 <script type="text/javascript" src="assets/js/angular-ui/ui-select/select.js"></script>
 <script type="text/javascript" src="assets/js/angular-ui/angular-xeditable/xeditable.js"></script>
-<script type="text/javascript" src="assets/js/angular-ui/angular-prompt.js"></script>
 <script type="text/javascript" src="assets/js/angular-ui/ui-grid/ui-grid.min.js"></script>
 <script type="text/javascript" src="assets/js/angular-ui/hotkeys.js"></script>
-
+<script type="text/javascript" src="mobius/graph/ng-context-menu.js"></script>
 
 <script type="text/javascript" src="assets/js/angular-ui/ui-ace/ui-ace.js"></script>
 <script type="text/javascript" src="assets/js/packages/ace-builds/src-min-noconflict/ace.js"></script>
 
 <!-- flowchart -->
-<script src="mobius/graph/ui-flowchart/debug.js" type="text/javascript"></script>
 <script src="mobius/graph/ui-flowchart/svg_class.js" type="text/javascript"></script>
 <script src="mobius/graph/ui-flowchart/mouse_capture_service.js" type="text/javascript"></script>
 <script src="mobius/graph/ui-flowchart/dragging_service.js" type="text/javascript"></script>
 <script src="mobius/graph/ui-flowchart/flowchart_viewmodel.js" type="text/javascript"></script>
 <script src="mobius/graph/ui-flowchart/flowchart_directive.js" type="text/javascript"></script>
+<script src="mobius/graph/ui-flowchart/debug.js" type="text/javascript"></script>
 
 <!-- zoom and pan -->
 <script src="assets/js/packages/hamsterjs/hamster.js"></script>
@@ -425,9 +502,11 @@
 <script src="mobius/viewport/viewport_controller.js"></script>
 <script src="mobius/layout_controller.js"></script>
 <script src="mobius/template/dialog_controller.js"></script>
+<script src="mobius/graph/addNewNode_Controller.js"></script>
+<script src="mobius/viewport/code_controller.js"></script>
+
 
 <!-- directives -->
-<script src="mobius/graph/contextMenu_directive.js"></script>
 <script src="mobius/viewport/viewport_directive.js"></script>
 <script src="mobius/viewport/topoViewport_directive.js"></script>
 
@@ -449,6 +528,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-animate.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-aria.min.js"></script>
+
+<script src="mobius/graph/contextMenu_controller.js"></script>
+
 
 
 </body>
