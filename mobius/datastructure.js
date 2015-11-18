@@ -44,9 +44,8 @@ var mObj_geom = function( geometry, material ){
         //
         // expose topology to the user
         // 
-        if(topology){
-            
-            for(var property in topology){
+        if(topology){  
+            for(var property in topology){ 
                 if(topology.hasOwnProperty( property ))
                     this[property] = topology[property];
             }

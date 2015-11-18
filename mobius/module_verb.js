@@ -1051,7 +1051,7 @@ var VIDAMO = ( function (mod){
 			else if(obj instanceof  mObj_geom_Curve || 
 					obj instanceof mObj_geom_Surface ||
 					obj instanceof mObj_geom_Solid ){ 
-				geom.push( obj.extractThreeGeometry() );
+				geom.push( obj.extractTopology() );
 				geomData.push( obj.extractData() );
 			}else{
 				for(var key in obj){
@@ -1140,14 +1140,28 @@ var convertTopoToThree = function( topology ){
 
  	
 	// convert edges
-	for(var e = 0; e < topology.edges.length; e++){ console.log('this is a face', f);
+	var topoEdgeMaterial = new THREE.LineBasicMaterial({
+							    side: THREE.DoubleSide,
+							    linewidth: 100,
+							    color: 0x003366
+							    });
+	for(var e = 0; e < topology.edges.length; e++){ 
 		var edge = convertGeomToThree(topology.edges[e].getGeometry());
+		edge.material = topoEdgeMaterial;
 		topo.add(edge);
 	}
 
 	// convert faces
-	for(var f = 0; f < topology.faces.length; f++){ console.log('this is a face', f);
+	var topoSurfaceMaterial = new THREE.MeshLambertMaterial( {
+									    side: THREE.DoubleSide,
+									    wireframe: false,
+									    shading: THREE.SmoothShading,
+									    transparent: false,
+									    color: 0x6666FF
+									    } );
+	for(var f = 0; f < topology.faces.length; f++){ 
 		var face = convertGeomToThree(topology.faces[f].getGeometry());
+		face.material = topoSurfaceMaterial;
 		topo.add(face);
 	} 
 
@@ -1166,13 +1180,13 @@ var computeTopology = function( mObj ){
 
 	if(geom instanceof verb.geom.NurbsCurve){
 		topology.vertices = [ geom.point(0) , geom.point(1) ];
-		topology.edges = mObj;
+		topology.edges = [mObj];
 		topology.faces = [];
 	}	
 	else if(geom instanceof verb.geom.NurbsSurface){
 		topology.vertices = [geom.point(0,0), geom.point(1,0), geom.point(1,1), geom.point(0,1)];
 		topology.edges = geom.boundaries().map( function( boundary ) { return new mObj_geom_Curve( boundary )} );
-		topology.faces = mObj;
+		topology.faces = [mObj];
 	}	
 	else if(geom instanceof Array){
 		// means it is a solid - collection of surfaces
@@ -1181,10 +1195,10 @@ var computeTopology = function( mObj ){
 		topology.faces = [];
 
 		for(var srf=0; srf < geom.length; srf++){
-			var subTopo = computeTopology(geom[srf]);
-			topology.faces.concat(subTopo.faces);
-			topology.edges.concat(subTopo.edges);
-			topology.vertices.concat(subTopo.vertices);		
+			var subTopo = computeTopology(geom[srf]); 
+			topology.faces = topology.faces.concat(subTopo.faces); 
+			topology.edges = topology.edges.concat(subTopo.edges);
+			topology.vertices = topology.vertices.concat(subTopo.vertices);		
 		}
 	}
 	else
