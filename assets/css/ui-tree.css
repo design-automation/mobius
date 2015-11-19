@@ -75,7 +75,6 @@
 }
 
 .tree-hover :hover{
-    margin: -1px;
     background-color: #ddd;
 }
 
