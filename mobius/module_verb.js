@@ -574,6 +574,46 @@ var VIDAMO = ( function (mod){
 		
 	};
 
+	mod.makeSolidByExtrusion = function( surface, extrusionVector ){
+		var bottomSurface = surface;
+		var topSurface = VIDAMO.makeCopy( bottomSurface, undefined, undefined, undefined);
+		VIDAMO.shiftObject(topSurface, extrusionVector[0], extrusionVector[1], extrusionVector[2]);
+
+		var solid = [ bottomSurface, topSurface ];
+		// join boundary points of the two surfaces
+		var edges = bottomSurface.getGeometry().boundaries(); console.log(bottomSurface);
+		for(var e=0; e < edges.length; e++ ){
+			var edge = edges[e];
+			var srf = new mObj_geom_Surface(  new verb.geom.ExtrudedSurface( edge, extrusionVector ) );
+			solid.push(srf);
+		}
+			
+
+		/*		// make the sides by connecting the corresponding points on the edges
+		var boundariesOfTop = topSurface.getGeometry().boundaries();
+		var boundariesOfBottom = bottomSurface.getGeometry().boundaries();
+
+		for(var b=0; b < boundariesOfTop.length; b++){
+			//divide the boundary
+			var bottomEdge = boundariesOfBottom[b];
+			var topEdge = boundariesOfTop[b];
+
+			var divParam = topEdge.divideByEqualArcLength(2); // parameter (4) will define the accuracy of the side profile
+			for(var param=0; param < divParam.length-1; param++){
+				var cp1 = topEdge.point( divParam[ param ] );
+				var cp2 = topEdge.point( divParam[ param + 1 ] );
+				var cp3 = bottomEdge.point( divParam[ param + 1 ] );
+				var cp4 = bottomEdge.point( divParam[ param ] );
+
+				var sideSrf = VIDAMO.makeSurfaceByCorners( cp1, cp2, cp3, cp4);
+				solid.push( sideSrf );
+			}
+		}*/
+
+		console.log(solid);
+		return new mObj_geom_Solid( solid );
+	};
+
 	//
 	// Analysis Functions
 	//
@@ -615,7 +655,9 @@ var VIDAMO = ( function (mod){
 	 * @returns {array} curve parameters [t1, t2, t3 ...]
 	 */
 	mod.divideCurveByEqualArcLength = function( curve, divisions ){
-		var crv = curve.getGeometry();
+		var crv = curve;
+		if( crv.getGeometry != undefined )
+		 	crv = curve.getGeometry();
 		var points = crv.divideByEqualArcLength( divisions )
 			.map(function(u){ return ( u.u ); } );
 
@@ -629,7 +671,9 @@ var VIDAMO = ( function (mod){
 	 * @returns {array} curve parameters [t1, t2, t3 ...]
 	 */
 	mod.divideCurveByArcLength = function( curve, arcLength ){
-		var crv = curve.getGeometry();
+		var crv = curve;
+		if( crv.getGeometry != undefined )
+			crv = curve.getGeometry();
 		var points = crv.divideByArcLength( arcLength )
 			.map(function(u){ return ( u.u ); } );
 
@@ -643,7 +687,9 @@ var VIDAMO = ( function (mod){
 	 * @returns {array} tangent [x,y,z]
 	 */
 	mod.getTangentAtCurveParameter = function( curve, t ){
-		var crv = curve.getGeometry();
+		var crv = curve;
+		if( crv.getGeometry != undefined )
+			crv = curve.getGeometry();
 		if( crv instanceof verb.geom.NurbsCurve)
 			return crv.tangent(t);
 		else
@@ -1266,6 +1312,12 @@ var computeTopology = function( mObj ){
 			topology.edges = topology.edges.concat(subTopo.edges);
 			topology.vertices = topology.vertices.concat(subTopo.vertices);		
 		}
+
+		// remove clones - doesn't do well with the edges :/
+		topology.vertices = removeClonesInList( topology.vertices );
+		topology.edges = removeClonesInList( topology.edges );
+		topology.faces = removeClonesInList( topology.faces ); console.log(topology);
+
 	}
 	else
 		topology = undefined;	
@@ -1274,66 +1326,34 @@ var computeTopology = function( mObj ){
 }
 
 
-/*function addNumber( indexNumber, pos ){
-	var numberText = document.createElement('div');
-	numberText.style.position = 'absolute';
-	//text2.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
-	numberText.style.width = 100;
-	numberText.style.height = 100;
-	numberText.innerHTML = indexNumber;
-	numberText.style.top = pos.x; console.log(pos.geometry.vertices[0]);
-	numberText.style.left = pos.y;
-	document.body.appendChild(numberText);
-}
-
-function positionByWorld(element, keepInBounds, pointGenerator) {
-  var canvasStyle = window.getComputedStyle(theCanvas,null);
-  var canvasWidth = parseInt(canvasStyle.width, 10);
-  var canvasHeight = parseInt(canvasStyle.height, 10);
-
-  var elemStyle = window.getComputedStyle(element, null);
-  var elemWidth = parseInt(elemStyle.width, 10);
-  var elemHeight = parseInt(elemStyle.height, 10);
-
-  var slx = Infinity;
-  var sly = Infinity;
-  var shx = -Infinity;
-  var shy = -Infinity;
-  var toScreenPoint = vec4.create();
-
-  pointGenerator(function (x, y, z, w) {
-    toScreenPoint[0] = x;
-    toScreenPoint[1] = y;
-    toScreenPoint[2] = z;
-    toScreenPoint[3] = w;
-    renderer.transformPoint(toScreenPoint);
-    toScreenPoint[0] /= toScreenPoint[3];
-    toScreenPoint[1] /= toScreenPoint[3];
-    toScreenPoint[2] /= toScreenPoint[3];
-    if (toScreenPoint[3] > 0) {
-      slx = Math.min(slx, toScreenPoint[0]);
-      shx = Math.max(shx, toScreenPoint[0]);
-      sly = Math.min(sly, toScreenPoint[1]);
-      shy = Math.max(shy, toScreenPoint[1]);
-    }
-  });
-
-  if (shx > -1 && shy > -1 && slx < 1 && sly < 1 /* visible ) {
-    // convert to screen
-    /*
-    slx = (slx + 1) / 2 * canvasWidth;
-    //shx = (shx + 1) / 2 * canvasWidth;
-    //sly = (sly + 1) / 2 * canvasHeight;
-    shy = (shy + 1) / 2 * canvasHeight;
-    if (keepInBounds) {
-      slx = Math.max(0, Math.min(canvasWidth - elemWidth, slx));
-      shy = Math.max(0, Math.min(canvasHeight - elemHeight, shy));
-    }
-    element.style.left   = slx + "px";
-    element.style.bottom = shy + "px";
-  } else {
-    element.style.left   = canvasWidth + "px";
-  }
-}*/
-
 var TOPOLOGY_DEF = { vertices: [], edges: [], faces: [] };
+
+
+//
+// function to remove clones
+//
+//
+var removeClonesInList = function( list ){
+		var newArray = [];
+		
+		for(var v=0; v < list.length; v++){
+			
+			var thisObject = JSON.stringify( list[v].getGeometry() ); 
+			var duplicate = false;
+			
+			for(nextV=v+1; nextV < list.length; nextV++){
+			
+				var nextObject = JSON.stringify( list[nextV].getGeometry() ); 
+			
+				if( thisObject == nextObject ){
+					duplicate = true; 
+					break;
+				}
+			}
+			
+			if( !duplicate )
+				newArray.push(list[v]);
+		}
+
+		return newArray;
+}

@@ -41,13 +41,14 @@ var mObj_geom = function mObj_geom( geometry, material ){
     }
 
     // needs a TOPOLOGY_DEF
-    for(var property in TOPOLOGY_DEF){     
+    for(var property in TOPOLOGY_DEF){    
         Object.defineProperty(self, property, {
-            get: function() {
+            get: function(property) {
                     if( topology == undefined ){
                         topology = computeTopology(self); 
                     }
-                    return topology[property]; 
+                    console.log(property);
+                    topology[property]; 
             },
             set: undefined
         });
