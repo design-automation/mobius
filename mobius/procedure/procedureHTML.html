@@ -5,7 +5,7 @@
                 <div ng-if = "currentNodeName">
                     <pre class="nodeName" style="padding: 1px">
                         <span>
-                            &nbsp &nbsp {{currentNodeType}} &nbsp : &nbsp {{currentNodeName}} &nbsp
+                            &nbsp &nbsp {{currentNodeType}}  {{currentNodeVersion}} : &nbsp {{currentNodeName}} &nbsp
                         </span>
                     </pre>
                 </div>
@@ -21,7 +21,7 @@
                 </button>
             </div>
 
-            <div    id="argument"
+            <div    id="argument-area"
                     style="    position: absolute;
                             width: 100%;
                             border-top: 1px solid #cccccc;
@@ -29,7 +29,6 @@
                             border-right: 1px solid #cccccc;
                             border-radius: 4px;
                             margin-top:1px;
-                            /*fixme css3*/
                             height:  calc(100% - 30px);
                             overflow: auto;">
                 <div ui-tree id="tree-root-parameter"
@@ -46,10 +45,11 @@
         </div>
 
         <div ui-layout-container >
+            <div>
                 <div ng-if = "currentNodeName">
                     <pre class="nodeName" style="padding: 1px">
                         <span>
-                            &nbsp &nbsp {{currentNodeType}} &nbsp : &nbsp {{currentNodeName}} &nbsp
+                            &nbsp &nbsp {{currentNodeType}} {{currentNodeVersion}} : &nbsp {{currentNodeName}} &nbsp
                         </span>
 
                     </pre>
@@ -92,10 +92,10 @@
                 <button class="btn btn-default btn-xs pull-right button-variable"
                         ng-click="newItem('Data')">Variable
                 </button>
+            </div>
 
 
-
-            <div class="tabArea" id="procedure">
+            <div class="tabArea" id="procedure-area">
                 <!-- procedure -->
                 <div ui-tree id="tree-root-procedure" >
                     <div ui-tree-nodes="" ng-model="data">

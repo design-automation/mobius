@@ -157,6 +157,7 @@ vidamo.controller('graphCtrl',[
                 $scope.nodeIndex = message;
                 $scope.currentNodeName = $scope.chartViewModel.nodes[$scope.nodeIndex].data.name;
                 $scope.currentNodeType = $scope.chartViewModel.nodes[$scope.nodeIndex].data.type;
+                 $scope.currentNodeVersion = $scope.chartViewModel.nodes[$scope.nodeIndex].data.version === 0?'':'*';
                 displayGeometry();
             }else if(message === undefined){
                  $scope.nodeIndex = message;

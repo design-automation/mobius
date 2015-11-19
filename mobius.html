@@ -275,7 +275,7 @@
                             <div ng-controller="procedureCtrl">
                                 <div ng-if = "currentNodeName">
                                     <pre class="nodeName" style="padding: 1px">
-                                        &nbsp &nbsp {{currentNodeType}} &nbsp : &nbsp {{currentNodeName}} &nbsp
+                                        &nbsp &nbsp {{currentNodeType}} {{currentNodeVersion}} : &nbsp {{currentNodeName}} &nbsp
                                     </pre>
                                 </div>
 
@@ -311,7 +311,7 @@
                             <div ng-controller="graphCtrl">
                                 <div ng-if = "currentNodeName">
                                     <pre class="nodeName" style="padding: 1px">
-                                        &nbsp &nbsp {{currentNodeType}} &nbsp : &nbsp {{currentNodeName}} &nbsp
+                                        &nbsp &nbsp {{currentNodeType}} {{currentNodeVersion}} : &nbsp {{currentNodeName}} &nbsp
                                     </pre>
                                 </div>
 
@@ -366,7 +366,7 @@
             <div class="dropdown position-fixed " id="menu-node" >
                 <ul class="dropdown-menu">
                     <li class="dropdown-submenu">
-                        <a> Add Input </a>
+                        <a> Show Input </a>
                         <ul class="dropdown-menu" >
                             <li ng-repeat="input in inputs"
                                 ng-if="input.title ==='Input' && checkDupInput(input)"
@@ -377,7 +377,7 @@
                     </li>
 
                     <li class="dropdown-submenu" >
-                        <a> Add Output </a>
+                        <a> Show Output </a>
                         <ul class="dropdown-menu ">
                             <li ng-repeat="procedure in procedures"
                                 ng-if="procedure.title ==='Output' && checkDupOutput(procedure)"
@@ -404,7 +404,7 @@
             <div class="dropdown position-fixed " id="menu-connector" >
                 <ul class="dropdown-menu">
                     <li>
-                        <a ng-click="delete()"> Delete </a>
+                        <a ng-click="delete()"> Hide </a>
                     </li>
 
                     <li>
