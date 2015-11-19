@@ -111,15 +111,37 @@ vidamo.controller('newNodeCtrl',[
         $scope.addNewNode = function (type) {
             if(type === 'create new type'){
                 // install new node type and update type
-                type = $scope.createNewNodeType();
-                if(!type){
-                    return;
-                }
+                $mdDialog.show({
+                    controller: DialogController,
+                    templateUrl: 'mobius/template/inputName_dialog.tmpl.html',
+                    parent: angular.element(document.body),
+                    clickOutsideToClose:false
+                }).then(function(newTypeName){
+                    if (!isValidName(newTypeName)) {
+                        consoleMsg.errorMsg('invalidName');
+                        return;}
+
+                    if ($scope.nodeTypes().indexOf(newTypeName) >= 0 ){
+                        consoleMsg.errorMsg('dupName');
+                        return;
+                    }
+
+                    var newProcedureDataModel =  [];
+                    var newInterfaceDataModel = [];
+
+                    nodeCollection.installNewNodeType(newTypeName,newProcedureDataModel,newInterfaceDataModel);
+                    if(newTypeName !== undefined){
+                        type = newTypeName;
+                    }
+
+                    addNode(type);
+                });
+            }else{
+                addNode(type);
             }
 
-            // prompt for name of new node and validate
-            $timeout(function(){
-
+            function addNode(type){
+                // add node to graph
                 var tempIndex = 0;
                 for(var i =0; i < $scope.chartViewModel.nodes.length; i++){
                     if($scope.chartViewModel.nodes[i].data.type === type){
@@ -193,31 +215,6 @@ vidamo.controller('newNodeCtrl',[
                 $scope.$emit('cleanGraph');
 
                 $scope.nextNodeId++;
-            },100);
-
-        };
-
-        // create and install a new node type
-        $scope.createNewNodeType = function (){
-            // prompt for name of new type and validate
-            var newTypeName = prompt('Enter a name for new type:');
-
-            if (!isValidName(newTypeName)) {
-                consoleMsg.errorMsg('invalidName');
-                return;}
-
-            if ($scope.nodeTypes().indexOf(newTypeName) >= 0 ){
-                consoleMsg.errorMsg('dupName');
-                return;
             }
-
-            var newProcedureDataModel =  [];
-            var newInterfaceDataModel = [];
-
-            nodeCollection.installNewNodeType(newTypeName,newProcedureDataModel,newInterfaceDataModel);
-
-            return newTypeName;
         };
-
-
     }]);
