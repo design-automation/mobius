@@ -40,19 +40,65 @@ var mObj_geom = function mObj_geom( geometry, material ){
         threeTopology = undefined;
     }
 
-    // needs a TOPOLOGY_DEF
-    for(var property in TOPOLOGY_DEF){    
-        Object.defineProperty(self, property, {
-            get: function(property) {
-                    if( topology == undefined ){
-                        topology = computeTopology(self); 
-                    }
-                    console.log(property);
-                    topology[property]; 
-            },
+     //
+    // get & set functions
+    //
+    this.getGeometry = function(){
+        return geometry;
+    }
+
+    this.setGeometry = function( new_geometry ){
+        geometry = new_geometry;
+        update( true );
+    }
+
+    this.getTopology = function(){
+        if(topology == undefined)
+            topology = computeTopology( self );
+        return topology;
+    }
+    
+    this.getData = function(){
+        return data;
+    }
+    
+    this.setData = function( new_data ){
+        data = new_data;
+    }
+
+    this.getMaterial = function(){
+        return material;
+    }
+
+    this.setMaterial = function( new_material ){
+
+        material = new_material;
+        if( threeGeometry )
+            threeGeometry.material = new_material;
+        update();
+    }
+
+    // needs a TOPOLOGY_DEF - make dynamic later  
+        // self[property] = self.getTopology()[property];
+        Object.defineProperty(this, "vertices", {
+            get: function(){ 
+                    return this.getTopology()[ "vertices" ];
+                },
             set: undefined
         });
-    }
+                Object.defineProperty(this, "edges", {
+                        get: function(){ 
+                                return this.getTopology()[ "edges" ];
+                            },
+                        set: undefined
+                    });
+                            Object.defineProperty(this, "faces", {
+                                    get: function(){ 
+                                            return this.getTopology()[ "faces" ];
+                                        },
+                                    set: undefined
+                                });
+
 
     //
     // Functions used by Mobius or Module for the different viewers
@@ -150,42 +196,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
     }
 
 
-    //
-    // get & set functions
-    //
-    this.getGeometry = function(){
-        return geometry;
-    }
-
-	this.setGeometry = function( new_geometry ){
-		geometry = new_geometry;
-        update( true );
-	}
-
-    this.getTopology = function(){
-        if(topology == undefined)
-            topology = computeTopology();
-        return topology;
-    }
-    
-	this.getData = function(){
-		return data;
-	}
-	
-	this.setData = function( new_data ){
-		data = new_data;
-	}
-
-    this.getMaterial = function(){
-        return material;
-    }
-
-    this.setMaterial = function( new_material ){
-
-        material = new_material;
-        if( threeGeometry )
-            threeGeometry.material = new_material;
-    }
+   
 
     // topology is always computed 
     update();

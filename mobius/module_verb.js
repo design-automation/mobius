@@ -1036,7 +1036,8 @@ var VIDAMO = ( function (mod){
 			side: THREE.DoubleSide
 		};
 		var material = new THREE[material_type](option);
-		if(obj.constructor === Array){
+		
+		if(obj.constructor === Array || obj instanceof mObj_geom_Solid){ console.log("solid found");
 			for(var i=0; i<obj.length; i++)
 				obj[i].setMaterial(material);
 		}else
@@ -1288,20 +1289,20 @@ var computeTopology = function( mObj ){
 		topology.faces = [];
 
 		for(var srf=0; srf < geom.length; srf++){
-			var subTopo = computeTopology(geom[srf]); 
-			topology.faces = topology.faces.concat(subTopo.faces); 
-			topology.edges = topology.edges.concat(subTopo.edges);
-			topology.vertices = topology.vertices.concat(subTopo.vertices);		
+			var surfaceTopo = geom[srf].getTopology(); 
+			topology.vertices = topology.vertices.concat(surfaceTopo.vertices); 
+			topology.edges = topology.edges.concat(surfaceTopo.edges);
+			topology.faces = topology.faces.concat(surfaceTopo.faces);		
 		}
 
 		// remove clones - doesn't do well with the edges :/
 		topology.vertices = removeClonesInList( topology.vertices );
 		topology.edges = removeClonesInList( topology.edges );
-		topology.faces = removeClonesInList( topology.faces ); console.log(topology);
-
+		topology.faces = removeClonesInList( topology.faces ); 
 	}
 	else
 		topology = undefined;	
+
 
 	return topology;
 }
@@ -1318,7 +1319,7 @@ var removeClonesInList = function( list ){
 		var newArray = [];
 		
 		for(var v=0; v < list.length; v++){
-			
+
 			var thisObject = JSON.stringify( list[v].getGeometry() ); 
 			var duplicate = false;
 			
