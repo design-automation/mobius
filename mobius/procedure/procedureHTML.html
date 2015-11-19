@@ -1,6 +1,6 @@
 <div class="code-area">
     <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
-    <div ui-layout-container size = "25%">
+        <div ui-layout-container size = "25%">
             <div>
                 <div ng-if = "currentNodeName">
                     <pre class="nodeName" style="padding: 1px">
@@ -16,39 +16,33 @@
                     </pre>
                 </div>
 
-                <button class="btn btn-default btn-xs pull-right button-input" ng-click="newInterface('Parameter')">
+                <button class="btn btn-default btn-xs pull-right button-input" ng-click="newInterface('Input')">
                     Input
                 </button>
             </div>
 
-        <div    id="argument"
-                style="    position: absolute;
-                        width: 100%;
-                        border-top: 1px solid #cccccc;
-                        border-left: 1px solid #cccccc;
-                        border-right: 1px solid #cccccc;
-                        border-radius: 4px;
-                        margin-top:1px;
-                        /*fixme css3*/
-                        height:  calc(100% - 30px);
-                        overflow: auto;">
-            <div ui-tree id="tree-root-parameter"
-                 style="padding-bottom:6px;"
-                 data-nodrop-enabled="true">
-                <div ui-tree-nodes="" ng-model="interface">
-                    <div ng-repeat="node in interface"
-                         ui-tree-node
-                         ng-include="'mobius/procedure/parameter_template.html'">
+            <div    id="argument"
+                    style="    position: absolute;
+                            width: 100%;
+                            border-top: 1px solid #cccccc;
+                            border-left: 1px solid #cccccc;
+                            border-right: 1px solid #cccccc;
+                            border-radius: 4px;
+                            margin-top:1px;
+                            /*fixme css3*/
+                            height:  calc(100% - 30px);
+                            overflow: auto;">
+                <div ui-tree id="tree-root-parameter"
+                     style="padding-bottom:6px;"
+                     data-nodrop-enabled="true">
+                    <div ui-tree-nodes="" ng-model="interface">
+                        <div ng-repeat="node in interface"
+                             ui-tree-node
+                             ng-include="'mobius/procedure/parameter_template.html'">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-
-
-
-
-
         </div>
 
         <div ui-layout-container >
@@ -64,8 +58,6 @@
                 <div ng-if = "!currentNodeName">
                     <pre class="nodeName" style="padding: 1px;">
                             &nbsp &nbsp No Node Selected
-
-
                     </pre>
                 </div>
 

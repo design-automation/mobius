@@ -57,7 +57,7 @@
                 }
             ],
             "type": "LoftSurface",
-            "version": 1446554098707,
+            "version": 1447833975307,
             "overwrite": true
         },
         {
@@ -79,7 +79,7 @@
                 }
             ],
             "type": "KillianRoof",
-            "version": 1446554100029,
+            "version": 1447833944941,
             "overwrite": true
         }
     ],
@@ -379,6 +379,15 @@
             "$$hashKey": "object:1975"
         },
         {
+            "id": 3,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "meshfaces",
+            "dataValue": "mesh.faces",
+            "type": "new",
+            "$$hashKey": "object:901"
+        },
+        {
             "id": 1,
             "title": "Control",
             "nodes": [
@@ -391,7 +400,7 @@
                     "method": "getCornerPointsFromSurface",
                     "parameters": [
                         {
-                            "value": "polysurface",
+                            "value": "face",
                             "type": "mObj",
                             "$$hashKey": "object:2024"
                         }
@@ -572,7 +581,7 @@
                     "method": "addData",
                     "parameters": [
                         {
-                            "value": "polysurface",
+                            "value": "face",
                             "type": "obj",
                             "$$hashKey": "object:2061"
                         },
@@ -593,8 +602,8 @@
             ],
             "type": "assign",
             "controlType": "for each",
-            "dataName": "polysurface",
-            "forList": "mesh",
+            "dataName": "face",
+            "forList": "meshfaces",
             "$$hashKey": "object:1976"
         }
     ]

@@ -11,7 +11,7 @@ vidamo.controller('layoutCtrl',['$scope','hotkeys',
         });
 
         // templates not in use
-        $scope.procedureHTML = { name: 'procedureHTML.html', url: 'mobius/procedureHTML.html'} ;
+        $scope.procedureHTML = { name: 'procedureHTML.html', url: 'mobius/procedure/procedureHTML.html'} ;
 
         $scope.bodySize =   document.getElementById('layout').offsetWidth;
 

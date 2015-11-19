@@ -15,11 +15,13 @@ var vidamo = angular.module('vidamo',
                                 'flowChart',
                                 'panzoom',
                                 'xeditable',
-                                'ui.bootstrap.contextMenu',
+                                //'ui.bootstrap.contextMenu',
                                 'ui.grid.resizeColumns',
                                 'ui.grid.autoResize',
                                 'cfp.hotkeys',
-                                'ngMaterial'
+                                'ngMaterial',
+                                'ngRoute',
+                                'ng-context-menu'
                             ]);
 
     // Simple service to create a prompt.

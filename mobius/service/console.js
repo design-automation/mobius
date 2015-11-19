@@ -39,7 +39,8 @@ vidamo.factory('consoleMsg', function () {
                     case 'invalidFileType':printMsg = 'Error: File type is not Json.';break;
                     case 'noNode':printMsg = 'No node selected.';break;
                     case 'invalidName':printMsg = 'invalidName.';break;
-                    case 'dupName':printMsg = 'The node type name is duplicated..';break;
+                    case 'dupName':printMsg = 'The node type name is duplicated.';break;
+                    case 'notWritable': printMsg = 'This node is not overwrittable.';break;
                 }
 
                 printMsg = timeMsg() + ":" + printMsg;

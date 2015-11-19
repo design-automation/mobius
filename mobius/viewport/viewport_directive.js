@@ -336,7 +336,6 @@ vidamo.directive('viewport', function factory() {
                     scene.add(singleGeomObject);
                 }
                 // update the data table viewport
-
                 if(singleGeomDataObject.length !== 0){
                     scope.internalControl.geometryData = scope.internalControl.geometryData.concat(singleGeomDataObject);
                 }

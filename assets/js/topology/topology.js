@@ -348,70 +348,71 @@ TOPOLOGY.createFromGeometry = function( geometry )
     // initialize topology
     var topo = new TOPOLOGY.Topology();
 
-    // add vertices
-    for (var vertexIndex = 0; vertexIndex < geometry.vertices.length; vertexIndex++)
-    {
-        var v = new TOPOLOGY.Vertex( {ID: vertexIndex, vector3: geometry.vertices[vertexIndex].clone() } );
-        topo.add(v);
-    }
+	/* According to three.js 
+    // for (var vertexIndex = 0; vertexIndex < geometry.vertices.length; vertexIndex++)
+    // {
+        // var v = new TOPOLOGY.Vertex( {ID: vertexIndex, vector3: geometry.vertices[vertexIndex].clone() } );
+        // topo.add(v);
+    // }
 
-    // add faces, link vertex-face IDs
-    for (var faceIndex = 0; faceIndex < geometry.faces.length; faceIndex++)
-    {
-        var face = geometry.faces[faceIndex];
-        var vertexData = [ face['a'], face['b'], face['c'] ];
-        if (face instanceof THREE.Face4)
-            vertexData.push( face['d'] );
+    add faces, link vertex-face IDs
+    // for (var faceIndex = 0; faceIndex < geometry.faces.length; faceIndex++)
+    // {
+        // var face = geometry.faces[faceIndex];
+        // var vertexData = [ face['a'], face['b'], face['c'] ];
+        // if (face instanceof THREE.Face4)
+            // vertexData.push( face['d'] );
 
-        var f = new TOPOLOGY.Face( {ID: faceIndex} );
-        topo.add(f);
-        topo.addIncidenceData( "face", faceIndex, "vertex", vertexData );
-    }
+        // var f = new TOPOLOGY.Face( {ID: faceIndex} );
+        // topo.add(f);
+        // topo.addIncidenceData( "face", faceIndex, "vertex", vertexData );
+    // }
 
-    // add edges, incidence data for vertex-edge and edge-face IDs
-    for (var faceIndex = 0; faceIndex < geometry.faces.length; faceIndex++)
-    {
-        var edgeArray = [];
+    add edges, incidence data for vertex-edge and edge-face IDs
+    // for (var faceIndex = 0; faceIndex < geometry.faces.length; faceIndex++)
+    // {
+        // var edgeArray = [];
 
-        var face = geometry.faces[faceIndex];
-        // indices of vertices on the face
-        var iva = face['a'];
-        var ivb = face['b'];
-        var ivc = face['c'];
+        // var face = geometry.faces[faceIndex];
+        indices of vertices on the face
+        // var iva = face['a'];
+        // var ivb = face['b'];
+        // var ivc = face['c'];
 
-        edgeArray.push( [iva,ivb] );
-        edgeArray.push( [ivb,ivc] );
+        // edgeArray.push( [iva,ivb] );
+        // edgeArray.push( [ivb,ivc] );
 
-        if (face instanceof THREE.Face3)
-        {
-            edgeArray.push( [ivc,iva] );
-        }
-        else // THREE.Face4
-        {
-            var ivd = face['d'];
-            edgeArray.push( [ivc,ivd] );
-            edgeArray.push( [ivd,iva] );
-        }
+        // if (face instanceof THREE.Face3)
+        // {
+            // edgeArray.push( [ivc,iva] );
+        // }
+        // else // THREE.Face4
+        // {
+            // var ivd = face['d'];
+            // edgeArray.push( [ivc,ivd] );
+            // edgeArray.push( [ivd,iva] );
+        // }
 
-        // add edges to topology, if not already present
-        for (var j = 0; j < edgeArray.length; j++)
-        {
-            var edgeVertices = edgeArray[j];
-            var edgeIndex = topo.edgeIDWithVertices(edgeVertices[0], edgeVertices[1]);
+        add edges to topology, if not already present
+        // for (var j = 0; j < edgeArray.length; j++)
+        // {
+            // var edgeVertices = edgeArray[j];
+            // var edgeIndex = topo.edgeIDWithVertices(edgeVertices[0], edgeVertices[1]);
 
-            if ( edgeIndex == -1 ) // not already present
-            {
-                edge = topo.create("edge");
-                edgeIndex = edge.ID;
-                topo.addIncidenceData( "edge", edgeIndex, "vertex", edgeVertices );
-            }
+            // if ( edgeIndex == -1 ) // not already present
+            // {
+                // edge = topo.create("edge");
+                // edgeIndex = edge.ID;
+                // topo.addIncidenceData( "edge", edgeIndex, "vertex", edgeVertices );
+            // }
 
-            topo.addIncidenceData( "edge", edgeIndex, "face", faceIndex );
-        }
+            // topo.addIncidenceData( "edge", edgeIndex, "face", faceIndex );
+        // }
 
-    } // finished adding edges to topology
+    // } // finished adding edges to topology
 
-    topo.computeCenters();
+    // topo.computeCenters(); */
+	
     return topo;
 }
 ///////////////////////////////////////////////////////////////////////////////
