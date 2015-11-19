@@ -8,12 +8,16 @@
             "inputConnectors": [],
             "outputConnectors": [
                 {
+                    "id": 2,
+                    "title": "Output",
                     "name": "profile",
-                    "value": ""
+                    "dataValue": "profile",
+                    "type": "new",
+                    "$$hashKey": "object:542"
                 }
             ],
             "type": "BaseCurve",
-            "version": 1446464506613,
+            "version": 1447845081276,
             "overwrite": true
         },
         {
@@ -23,19 +27,41 @@
             "y": 1916.107416129633,
             "inputConnectors": [
                 {
+                    "id": 1,
+                    "title": "Input",
                     "name": "centralProfile",
-                    "value": "",
-                    "connected": true
+                    "connected": true,
+                    "$$hashKey": "object:663"
+                },
+                {
+                    "id": 2,
+                    "title": "Input",
+                    "name": "num_curves",
+                    "connected": false,
+                    "dataValue": "5",
+                    "$$hashKey": "object:677"
+                },
+                {
+                    "id": 3,
+                    "title": "Input",
+                    "name": "height",
+                    "connected": false,
+                    "dataValue": "15",
+                    "$$hashKey": "object:711"
                 }
             ],
             "outputConnectors": [
                 {
+                    "id": 4,
+                    "title": "Output",
                     "name": "crvs",
-                    "value": ""
+                    "dataValue": "[]",
+                    "type": "new",
+                    "$$hashKey": "object:732"
                 }
             ],
             "type": "CrossSections",
-            "version": 1446554064068,
+            "version": 1447844995591,
             "overwrite": true
         },
         {
@@ -45,19 +71,39 @@
             "y": 1995.161816910607,
             "inputConnectors": [
                 {
+                    "id": 1,
+                    "title": "Input",
                     "name": "crvs",
-                    "value": "",
-                    "connected": true
+                    "connected": true,
+                    "$$hashKey": "object:785"
+                },
+                {
+                    "id": 2,
+                    "title": "Input",
+                    "name": "u",
+                    "connected": false,
+                    "$$hashKey": "object:799"
+                },
+                {
+                    "id": 3,
+                    "title": "Input",
+                    "name": "v",
+                    "connected": false,
+                    "$$hashKey": "object:813"
                 }
             ],
             "outputConnectors": [
                 {
+                    "id": 3,
+                    "title": "Output",
                     "name": "mesh",
-                    "value": ""
+                    "dataValue": "",
+                    "type": "new",
+                    "$$hashKey": "object:834"
                 }
             ],
             "type": "LoftSurface",
-            "version": 1447833975307,
+            "version": 1447845025858,
             "overwrite": true
         },
         {
@@ -67,19 +113,25 @@
             "y": 2062.054002186816,
             "inputConnectors": [
                 {
+                    "id": 1,
+                    "title": "Input",
                     "name": "mesh",
-                    "value": "",
-                    "connected": true
+                    "connected": true,
+                    "$$hashKey": "object:989"
                 }
             ],
             "outputConnectors": [
                 {
+                    "id": 4,
+                    "title": "Output",
                     "name": "allPanels",
-                    "value": ""
+                    "dataValue": "[]",
+                    "type": "new",
+                    "$$hashKey": "object:1006"
                 }
             ],
             "type": "KillianRoof",
-            "version": 1447833944941,
+            "version": 1447845070484,
             "overwrite": true
         }
     ],
@@ -141,6 +193,14 @@
             ],
             "result": "profile",
             "$$hashKey": "object:1288"
+        },
+        {
+            "id": 2,
+            "title": "Output",
+            "name": "profile",
+            "dataValue": "profile",
+            "type": "new",
+            "$$hashKey": "object:542"
         }
     ],
     [
@@ -167,13 +227,12 @@
             "$$hashKey": "object:1306"
         },
         {
-            "id": 3,
-            "title": "Data",
-            "nodes": [],
-            "dataName": "crvs",
+            "id": 4,
+            "title": "Output",
+            "name": "crvs",
             "dataValue": "[]",
             "type": "new",
-            "$$hashKey": "object:1307"
+            "$$hashKey": "object:732"
         },
         {
             "id": 4,
@@ -310,7 +369,7 @@
                     "$$hashKey": "object:1357"
                 }
             ],
-            "type": "assign",
+            "type": "new",
             "controlType": "for each",
             "dataName": "t",
             "forList": "divisions",
@@ -339,6 +398,14 @@
             ],
             "result": "srf",
             "$$hashKey": "object:1926"
+        },
+        {
+            "id": 3,
+            "title": "Output",
+            "name": "mesh",
+            "dataValue": "",
+            "type": "new",
+            "$$hashKey": "object:834"
         },
         {
             "id": 2,
@@ -370,13 +437,12 @@
     ],
     [
         {
-            "id": 2,
-            "title": "Data",
-            "nodes": [],
-            "dataName": "allPanels",
+            "id": 4,
+            "title": "Output",
+            "name": "allPanels",
             "dataValue": "[]",
             "type": "new",
-            "$$hashKey": "object:1975"
+            "$$hashKey": "object:1006"
         },
         {
             "id": 3,
@@ -600,7 +666,7 @@
                     "$$hashKey": "object:1994"
                 }
             ],
-            "type": "assign",
+            "type": "new",
             "controlType": "for each",
             "dataName": "face",
             "forList": "meshfaces",
@@ -615,38 +681,58 @@
     [
         {
             "id": 1,
-            "title": "Data",
-            "temp": "Parameter",
-            "dataName": "height",
-            "dataValue": "15",
-            "$$hashKey": "object:1094"
+            "title": "Input",
+            "name": "centralProfile",
+            "connected": true,
+            "$$hashKey": "object:663"
         },
         {
             "id": 2,
-            "title": "Data",
-            "temp": "Parameter",
-            "dataName": "num_curves",
+            "title": "Input",
+            "name": "num_curves",
+            "connected": false,
             "dataValue": "5",
-            "$$hashKey": "object:1095"
+            "$$hashKey": "object:677"
+        },
+        {
+            "id": 3,
+            "title": "Input",
+            "name": "height",
+            "connected": false,
+            "dataValue": "15",
+            "$$hashKey": "object:711"
         }
     ],
     [
         {
             "id": 1,
-            "title": "Data",
-            "temp": "Parameter",
-            "dataName": "u",
-            "dataValue": "10",
-            "$$hashKey": "object:1008"
+            "title": "Input",
+            "name": "crvs",
+            "connected": true,
+            "$$hashKey": "object:785"
         },
         {
             "id": 2,
-            "title": "Data",
-            "temp": "Parameter",
-            "dataName": "v",
-            "dataValue": "30",
-            "$$hashKey": "object:1009"
+            "title": "Input",
+            "name": "u",
+            "connected": false,
+            "$$hashKey": "object:799"
+        },
+        {
+            "id": 3,
+            "title": "Input",
+            "name": "v",
+            "connected": false,
+            "$$hashKey": "object:813"
         }
     ],
-    []
+    [
+        {
+            "id": 1,
+            "title": "Input",
+            "name": "mesh",
+            "connected": true,
+            "$$hashKey": "object:989"
+        }
+    ]
 ]
