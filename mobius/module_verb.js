@@ -406,6 +406,20 @@ var VIDAMO = ( function (mod){
 	};
 
 	/**
+	 *
+	 *@param
+	 *@returns
+	 */
+	mod.makeCircle = function( centrePoint, radius ){
+
+		var deg = 2;
+		var knots = [0, 0, 0, 1, 1, 1];
+		var controlPoints = [[10,0,0], [10,0,10], [0,0,10]];
+		var weights = [0.7, 1, 0.7];
+		return new mObj_geom_Surface( new verb.geom.NurbsSurface.byKnotsControlPointsWeights( deg,deg,knots,knots,controlPoints,weights ) ) ;
+	};
+
+	/**
 	 * Returns a MobiusDataObject containing a NURBS Surface
 	 * @param {array} point - Corner points in [x,y,z] format
 	 * @returns {MobiusDataObject}  - NURBS Surface
@@ -564,16 +578,6 @@ var VIDAMO = ( function (mod){
 		
 	};	
 
-	/**
-	 * Returns a MobiusDataObject containing a NURBS Surface
-	 * @param {array} axis - Axis Direction of the cylinder in [x,y,z] format
-	 * @param {array} xaxis - Direction of x-axis of cylinder in [x,y,z] format
-	 * @returns {MobiusDataObject}  - NURBS Surface
-	 */	
-	mod.makeBRep = function( arrayOfSurfaces ){
-		
-	};
-
 	mod.makeSolidByExtrusion = function( surface, extrusionVector ){
 		var bottomSurface = surface;
 		var topSurface = VIDAMO.makeCopy( bottomSurface, undefined, undefined, undefined);
@@ -587,30 +591,7 @@ var VIDAMO = ( function (mod){
 			var srf = new mObj_geom_Surface(  new verb.geom.ExtrudedSurface( edge, extrusionVector ) );
 			solid.push(srf);
 		}
-			
 
-		/*		// make the sides by connecting the corresponding points on the edges
-		var boundariesOfTop = topSurface.getGeometry().boundaries();
-		var boundariesOfBottom = bottomSurface.getGeometry().boundaries();
-
-		for(var b=0; b < boundariesOfTop.length; b++){
-			//divide the boundary
-			var bottomEdge = boundariesOfBottom[b];
-			var topEdge = boundariesOfTop[b];
-
-			var divParam = topEdge.divideByEqualArcLength(2); // parameter (4) will define the accuracy of the side profile
-			for(var param=0; param < divParam.length-1; param++){
-				var cp1 = topEdge.point( divParam[ param ] );
-				var cp2 = topEdge.point( divParam[ param + 1 ] );
-				var cp3 = bottomEdge.point( divParam[ param + 1 ] );
-				var cp4 = bottomEdge.point( divParam[ param ] );
-
-				var sideSrf = VIDAMO.makeSurfaceByCorners( cp1, cp2, cp3, cp4);
-				solid.push( sideSrf );
-			}
-		}*/
-
-		console.log(solid);
 		return new mObj_geom_Solid( solid );
 	};
 
