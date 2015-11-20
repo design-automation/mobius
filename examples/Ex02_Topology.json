@@ -62,6 +62,20 @@
                     },
                     "color": "#000000",
                     "$$hashKey": "object:1785"
+                },
+                {
+                    "id": 5,
+                    "title": "Input",
+                    "name": "material",
+                    "connected": false,
+                    "dataValue": " \"MeshBasicMaterial\"",
+                    "option": {
+                        "name": "dropdown",
+                        "$$hashKey": "object:656"
+                    },
+                    "color": "#000000",
+                    "menuOptionText": "\"MeshNormalMaterial\",\"MeshLambertMaterial\", \"MeshBasicMaterial\"",
+                    "$$hashKey": "object:626"
                 }
             ],
             "outputConnectors": [
@@ -75,7 +89,7 @@
                 }
             ],
             "type": "EXTRUSION",
-            "version": 1448003108625,
+            "version": 1448007815373,
             "overwrite": true
         }
     ],
@@ -342,7 +356,7 @@
                                             "$$hashKey": "object:3456"
                                         },
                                         {
-                                            "value": "\"MeshLambertMaterial\"",
+                                            "value": "material",
                                             "type": "material_type",
                                             "$$hashKey": "object:3457"
                                         },
@@ -472,6 +486,20 @@
             },
             "color": "#000000",
             "$$hashKey": "object:1785"
+        },
+        {
+            "id": 5,
+            "title": "Input",
+            "name": "material",
+            "connected": false,
+            "dataValue": " \"MeshBasicMaterial\"",
+            "option": {
+                "name": "dropdown",
+                "$$hashKey": "object:656"
+            },
+            "color": "#000000",
+            "menuOptionText": "\"MeshNormalMaterial\",\"MeshLambertMaterial\", \"MeshBasicMaterial\"",
+            "$$hashKey": "object:626"
         }
     ]
 ]
