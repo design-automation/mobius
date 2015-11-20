@@ -75,7 +75,9 @@ var mObj_geom = function mObj_geom( geometry, material ){
         material = new_material;
         if( threeGeometry )
             threeGeometry.material = new_material;
-        update();
+        else
+            update();
+        console.log("Material updated");
     }
 
     // needs a TOPOLOGY_DEF - make dynamic later  
@@ -112,21 +114,27 @@ var mObj_geom = function mObj_geom( geometry, material ){
         // if threeGeometry hasn't been computed before or native geometry has been transformed so that new conversion is required
         // the function defines it and caches it
         if( threeGeometry == undefined ){
+            
+            // means it is a solid
             if( geometry instanceof Array){
                 var threeGeometry = new THREE.Object3D(); 
                 for(var srf=0; srf < geometry.length; srf++){
                     var geom = geometry[srf];
-                    threeGeometry.add( geom.extractThreeGeometry() ); 
+                    var exGeom = geom.extractThreeGeometry();
+                    if(material)
+                        exGeom.material = material;
+                    threeGeometry.add( exGeom ); 
                 }
-            }else
+            }else{
                 threeGeometry = convertGeomToThree( geometry );  // calls a function in the module to convert native geom into accepted three format
+                if(material)
+                    threeGeometry.material = material;
+            }
+                
         }
 			 
 
         // if material has been assigned to this data object, assigns the same material to the converted geometry
-        if(material)
-            threeGeometry.material = material;
-
         threeGeometry.is_mObj = true;
 
         return threeGeometry;
@@ -242,7 +250,7 @@ var mObj_geom_Solid = function mObj_geom_Solid( geometry ){
     wireframe: false,
     shading: THREE.SmoothShading,
     transparent: false,
-    color: 0xCC0000
+    color: 0xCC6600
     } );
 
 	mObj_geom.call( this, geometry, defaultSolidMaterial );

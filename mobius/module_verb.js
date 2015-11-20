@@ -1037,11 +1037,7 @@ var VIDAMO = ( function (mod){
 		};
 		var material = new THREE[material_type](option);
 		
-		if(obj.constructor === Array || obj instanceof mObj_geom_Solid){ console.log("solid found");
-			for(var i=0; i<obj.length; i++)
-				obj[i].setMaterial(material);
-		}else
-			obj.setMaterial(material);
+		obj.setMaterial(material);
 
 		return obj;
 	};
