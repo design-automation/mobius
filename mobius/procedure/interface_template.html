@@ -26,11 +26,21 @@
            e-min = "{{node.min}}"
            e-step="{{node.step}}">{{ node.dataValue || 'value' }}</a>
 
-
         <input ng-if =" node.option.name === 'color picker'"
             data-nodrag
                ng-model="node.color"
             type="color" />
+
+        <a ng-if =" node.option.name === 'dropdown'"
+           data-nodrag
+           href="#"
+           blur="submit"
+           buttons="no"
+           editable-select="node.dataValue"
+           e-ng-options="option for option in menuOptions(node.menuOptionText)">
+            {{ node.dataValue || 'value' }}
+        </a>
+
     </div>
 
     <div ui-tree-nodes=""  ng-model="node.nodes" ng-class="{hidden: collapsed}">
