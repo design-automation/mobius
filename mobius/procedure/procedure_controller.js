@@ -603,7 +603,8 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                         option:{
                             name:'none'
                         },
-                        color:'#000000'
+                        color:'#000000',
+                        menuOptionText:undefined
                     };
 
                     $scope.interface.push(
@@ -628,5 +629,13 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                                    {name:'slider'},
                                    {name:'dropdown'},
                                    {name:'color picker'}];
+
+        $scope.menuOptions = function (menuOptionText) {
+            if(menuOptionText){
+                return menuOptionText.split(",");
+            }else{
+                return [];
+            }
+        }
 
     }]);
