@@ -8,28 +8,32 @@
     <!--data procedure-->
     <div style="padding-left:20px " class="tree-node-content">
         <!--vairable name-->
+        name:
         <a>
             <a href="#" data-nodrag editable-text="node.name" buttons="no">{{ node.name || 'name' }}</a>
         </a>
 
+        &nbsp;option:
+
         <a href="#" data-nodrag editable-select="node.option" buttons="no" e-ng-options="option.name for option in interfaceOptions">
-            {{ showOptions(node.option) }}
+            {{node.option.name}}
         </a>
 
-        <div ng-if="node.option.name === 'slider'">
+        <span ng-if="node.option.name === 'slider'">
+            &nbsp;min:
             <a>
                 <a href="#" data-nodrag editable-text="node.min" buttons="no">{{ node.min || 'min' }}</a>
             </a>
+            &nbsp;max:
             <a>
                 <a href="#" data-nodrag editable-text="node.max" buttons="no">{{ node.max || 'max' }}</a>
             </a>
+            &nbsp;step:
             <a>
                 <a href="#" data-nodrag editable-text="node.step" buttons="no">{{ node.step || 'step' }}</a>
             </a>
-            <a>
-                <a href="#" data-nodrag editable-text="node.default" buttons="no">{{ node.default || 'default' }}</a>
-            </a>
-        </div>
+        </span>
+
 
 
         <!--delete key-->

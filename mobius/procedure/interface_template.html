@@ -21,8 +21,17 @@
            href="#"
            blur="submit"
            buttons="no"
-           editable-range="node.range"
-           e-step="5">{{ node.range || 'empty' }}</a></div>
+           editable-range="node.dataValue"
+           e-max = "{{node.max}}"
+           e-min = "{{node.min}}"
+           e-step="{{node.step}}">{{ node.dataValue || 'value' }}</a>
+
+
+        <input ng-if =" node.option.name === 'color picker'"
+            data-nodrag
+               ng-model="node.color"
+            type="color" />
+    </div>
 
     <div ui-tree-nodes=""  ng-model="node.nodes" ng-class="{hidden: collapsed}">
             <div ng-repeat="node in node.nodes"

@@ -603,7 +603,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                         option:{
                             name:'none'
                         },
-                        range:0,
+                        color:'#000000'
                     };
 
                     $scope.interface.push(
@@ -624,10 +624,9 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         // interface design options
         // todo
 
-        $scope.interfaceOptions = [{name:'none'},{name:'slider'}];
+        $scope.interfaceOptions = [{name:'none'},
+                                   {name:'slider'},
+                                   {name:'dropdown'},
+                                   {name:'color picker'}];
 
-        $scope.showOptions = function(nodeOption) {
-            var selected = $filter('filter')($scope.interfaceOptions, {name:nodeOption});
-            return  selected.length? selected[0].name:'option';
-        };
     }]);
