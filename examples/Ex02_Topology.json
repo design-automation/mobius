@@ -11,16 +11,57 @@
                     "title": "Input",
                     "name": "u",
                     "connected": false,
-                    "dataValue": "15",
-                    "$$hashKey": "object:3183"
+                    "dataValue": "6",
+                    "option": {
+                        "name": "slider",
+                        "$$hashKey": "object:618"
+                    },
+                    "color": "#000000",
+                    "$$hashKey": "object:561",
+                    "min": "3",
+                    "max": "10",
+                    "step": "1"
                 },
                 {
                     "id": 2,
                     "title": "Input",
                     "name": "v",
                     "connected": false,
-                    "dataValue": "15",
-                    "$$hashKey": "object:3190"
+                    "dataValue": "8",
+                    "option": {
+                        "name": "slider",
+                        "$$hashKey": "object:618"
+                    },
+                    "color": "#000000",
+                    "$$hashKey": "object:583",
+                    "min": "3",
+                    "max": "10",
+                    "step": "1"
+                },
+                {
+                    "id": 3,
+                    "title": "Input",
+                    "name": "color",
+                    "connected": false,
+                    "option": {
+                        "name": "color picker",
+                        "$$hashKey": "object:620"
+                    },
+                    "color": "#275909",
+                    "$$hashKey": "object:671"
+                },
+                {
+                    "id": 4,
+                    "title": "Input",
+                    "name": "alt",
+                    "connected": false,
+                    "dataValue": "true",
+                    "option": {
+                        "name": "none",
+                        "$$hashKey": "object:617"
+                    },
+                    "color": "#000000",
+                    "$$hashKey": "object:1785"
                 }
             ],
             "outputConnectors": [
@@ -34,7 +75,7 @@
                 }
             ],
             "type": "EXTRUSION",
-            "version": 1447993169141,
+            "version": 1448003108625,
             "overwrite": true
         }
     ],
@@ -243,7 +284,7 @@
                     "title": "Data",
                     "nodes": [],
                     "dataName": "extrudeHeight",
-                    "dataValue": "3",
+                    "dataValue": "centre[1]",
                     "type": "new",
                     "$$hashKey": "object:2755"
                 },
@@ -268,6 +309,15 @@
                     ],
                     "result": "ex",
                     "$$hashKey": "object:2477"
+                },
+                {
+                    "id": 8,
+                    "title": "Data",
+                    "nodes": [],
+                    "dataName": "alt",
+                    "dataValue": "!alt",
+                    "type": "new",
+                    "$$hashKey": "object:1739"
                 },
                 {
                     "id": 8,
@@ -302,7 +352,7 @@
                                             "$$hashKey": "object:3458"
                                         },
                                         {
-                                            "value": "0x9999FF",
+                                            "value": "color",
                                             "type": "color",
                                             "$$hashKey": "object:3459"
                                         },
@@ -316,7 +366,7 @@
                                     "$$hashKey": "object:3443"
                                 }
                             ],
-                            "ifExpression": "centre[1] < 0",
+                            "ifExpression": "alt",
                             "$$hashKey": "object:648"
                         },
                         {
@@ -371,16 +421,57 @@
             "title": "Input",
             "name": "u",
             "connected": false,
-            "dataValue": "15",
-            "$$hashKey": "object:3183"
+            "dataValue": "6",
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:618"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:561",
+            "min": "3",
+            "max": "10",
+            "step": "1"
         },
         {
             "id": 2,
             "title": "Input",
             "name": "v",
             "connected": false,
-            "dataValue": "15",
-            "$$hashKey": "object:3190"
+            "dataValue": "8",
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:618"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:583",
+            "min": "3",
+            "max": "10",
+            "step": "1"
+        },
+        {
+            "id": 3,
+            "title": "Input",
+            "name": "color",
+            "connected": false,
+            "option": {
+                "name": "color picker",
+                "$$hashKey": "object:620"
+            },
+            "color": "#275909",
+            "$$hashKey": "object:671"
+        },
+        {
+            "id": 4,
+            "title": "Input",
+            "name": "alt",
+            "connected": false,
+            "dataValue": "true",
+            "option": {
+                "name": "none",
+                "$$hashKey": "object:617"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:1785"
         }
     ]
 ]
