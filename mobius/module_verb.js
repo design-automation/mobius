@@ -491,6 +491,7 @@ var VIDAMO = ( function (mod){
 		// brep : face -> surface (1); edges -> boundaries (4) ; vertex -> corner points (4)
 	};
 
+
 	
 	//
 	// Surface Functions - Applications
@@ -539,6 +540,17 @@ var VIDAMO = ( function (mod){
 		}
 		else
 			return new mObj_geom_Surface( new verb.geom.CylindricalSurface( axis,xaxis,base,height,radius ))  ;
+	};
+
+	mod.makeTorus = function( centrePoint, innerRadius, torusRadius ){
+
+		// surface by revolution
+		var circle = VIDAMO.makeCircleBoundary( [torusRadius + innerRadius, 0, 0] , [1,0,0], [0,1,0] , torusRadius );
+		var rail = VIDAMO.makeCircleBoundary( [0, 0, 0] , [1,0,0], [0,0,1] , torusRadius+innerRadius );
+		var surface = VIDAMO.makeSurfaceBySweep( circle, rail );
+		VIDAMO.moveObjectToPoint(surface, centrePoint[0], centrePoint[1], centrePoint[2]);
+
+		return surface;
 	};
 	
 	//
