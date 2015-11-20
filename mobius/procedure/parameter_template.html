@@ -1,27 +1,40 @@
 <!-- mobius -->
 <!-- parameter (argumnent) template -->
 
+<!--todo interface designer-->
+
 <div ui-tree-handle class="tree-node tree-node-content procedure-tree">
 
     <!--data procedure-->
     <div style="padding-left:20px " class="tree-node-content">
         <!--vairable name-->
+        name:
         <a>
             <a href="#" data-nodrag editable-text="node.name" buttons="no">{{ node.name || 'name' }}</a>
-            <!--=-->
-            <!--<a data-nodrag href="#" editable-text="node.dataValue" buttons="no">{{ node.dataValue || 'value' }}</a>-->
         </a>
 
-        <!--<div class="btn-group" uib-dropdown is-open="status.isopen">-->
-            <!--<button id="single-button" type="button" class="btn" uib-dropdown-toggle ng-disabled="disabled">-->
-                 <!--<span class="caret"></span>-->
-            <!--</button>-->
-            <!--<ul class="uib-dropdown-menu" role="menu" aria-labelledby="single-button">-->
-                <!--<li role="menuitem"><a href="#">none</a></li>-->
-                <!--<li class="divider"></li>-->
-                <!--<li role="menuitem"><a href="#">slider</a></li>-->
-            <!--</ul>-->
-        <!--</div>-->
+        &nbsp;option:
+
+        <a href="#" data-nodrag editable-select="node.option" buttons="no" e-ng-options="option.name for option in interfaceOptions">
+            {{node.option.name}}
+        </a>
+
+        <span ng-if="node.option.name === 'slider'">
+            &nbsp;min:
+            <a>
+                <a href="#" data-nodrag editable-text="node.min" buttons="no">{{ node.min || 'min' }}</a>
+            </a>
+            &nbsp;max:
+            <a>
+                <a href="#" data-nodrag editable-text="node.max" buttons="no">{{ node.max || 'max' }}</a>
+            </a>
+            &nbsp;step:
+            <a>
+                <a href="#" data-nodrag editable-text="node.step" buttons="no">{{ node.step || 'step' }}</a>
+            </a>
+        </span>
+
+
 
         <!--delete key-->
         <a class="pull-right btn btn-xs" data-nodrag ng-click="removeInput(this)" style="padding: 0;margin: 0" >

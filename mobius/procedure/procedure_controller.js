@@ -7,17 +7,6 @@
 vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg','generateCode','nodeCollection',
     function($scope,$rootScope,$filter,consoleMsg,generateCode,nodeCollection) {
 
-        $scope.selectedItem = null;
-        $scope.searchText = '';
-        $scope.items = [{name:"xxx"},{name:'aaa'}];
-
-
-
-        $scope.autoScroll = function(){
-            var procedureDiv = document.getElementById("procedure");
-            procedureDiv.scrollTop = procedureDiv.scrollHeight;
-        };
-
         $scope.functionCodeList =[];
 
         // toggle code view
@@ -118,6 +107,8 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
                 $scope.currentNodeName = $scope.chartViewModel.nodes[$scope.nodeIndex].data.name;
                 $scope.currentNodeType = $scope.chartViewModel.nodes[$scope.nodeIndex].data.type;
+                $scope.currentNodeVersion = $scope.chartViewModel.nodes[$scope.nodeIndex].data.version === 0?'':'*';
+
 
                 // update the procedure tab
 
@@ -590,12 +581,13 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
             catch(err){
                 consoleMsg.errorMsg('noNode');
             }
-
-            setTimeout(function(){$scope.autoScroll();},0);
+            var procedureDiv = document.getElementById("procedure-area");
+            setTimeout(function(){
+                procedureDiv.scrollTop = procedureDiv.scrollHeight;},0);
         };
 
+        // todo seperate interface as another controller
         // add new item in interface
-
         $scope.newInterface = function(cate) {
 
             try{
@@ -607,31 +599,34 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                         name: undefined,
                         connected:false,
                         dataValue:undefined,
-                        type:undefined
+                        type:undefined,
+                        option:{
+                            name:'none'
+                        },
+                        color:'#000000'
                     };
 
                     $scope.interface.push(
-                        //{
-                        //    id: $scope.interface.length  + 1,
-                        //    title:  'Data',
-                        //    temp: 'Parameter',
-                        //
-                        //    dataName:undefined,
-                        //    dataValue:undefined
-                        //}
                         inputObj
                     );
 
                     $scope.chartViewModel.nodes[$scope.nodeIndex].addInputConnector(inputObj);
-
                 }
-
             }
             catch(err){
                 consoleMsg.errorMsg('noNode');
             }
 
-            var argumentDiv = document.getElementById("argument");
+            var argumentDiv = document.getElementById("argument-area");
             setTimeout(function(){argumentDiv.scrollTop = argumentDiv.scrollHeight;},0);
         };
+
+        // interface design options
+        // todo
+
+        $scope.interfaceOptions = [{name:'none'},
+                                   {name:'slider'},
+                                   {name:'dropdown'},
+                                   {name:'color picker'}];
+
     }]);
