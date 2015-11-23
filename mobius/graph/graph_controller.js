@@ -163,7 +163,7 @@ vidamo.controller('graphCtrl',[
                  $scope.nodeIndex = message;
                 $scope.currentNodeName = '';
 
-                 $scope.$emit("editProcedure",false);
+                // $scope.$emit("editProcedure",false);
 
                  var scope = angular.element(document.getElementById('threeViewport')).scope();
                  var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
@@ -291,9 +291,14 @@ vidamo.controller('graphCtrl',[
 
             if(deletedObj.deletedNodeIds.length === 0){
                 // update version since connector changed
+                // fixme case in which only connection changed
                 var d = new Date();
                 $scope.chartViewModel.nodes[deletedObj.nodeIndex].data.version = d.getTime();
             }else{
+
+                $scope.$emit('clearProcedure');
+                $scope.currentNodeName = '';
+
                 for(var i = deletedObj.deletedNodeIds.length -1; i >= 0 ; i--){
                     // update scene data structure
                     $scope.dataList.splice(deletedObj.deletedNodeIds[i],1);

@@ -9,6 +9,8 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
         $scope.functionCodeList =[];
 
+
+
         // toggle code view
         $scope.codeContent = '';
         $scope.toggleCodeContent = function(content){
@@ -99,9 +101,15 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
             return expression.concat(func_props);
         };
 
+        $scope.$on("clearProcedure", function(){
+            $scope.data  = [];
+            $scope.interface = [];
+            $scope.currentNodeName = '';
+            $scope.currentNodeType = '';
+        });
 
         // listen to the graph, when a node is clicked, update the procedure/ interface tabs
-        $rootScope.$on("nodeIndex", function(event, message) {
+        $scope.$on("nodeIndex", function(event, message) {
             if($scope.nodeIndex !== message && message !== undefined){
                 $scope.nodeIndex = message;
 
@@ -111,19 +119,19 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
 
                 // update the procedure tab
-
                 $scope.data  = $scope.dataList[$scope.nodeIndex];
 
                 // update the interface tab
-
                 $scope.interface = $scope.interfaceList[$scope.nodeIndex];
             }
             else if(message === undefined){
                 $scope.nodeIndex = message;
                 $scope.currentNodeName = '';
-                $scope.$emit("editProcedure",false);
 
-                //setTimeout(function(){$scope.$emit("editProcedure")},0);
+                $scope.data  = [];
+                $scope.interface = [];
+
+                //$scope.$emit("editProcedure",false);
             }
         });
 
@@ -148,7 +156,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         function updateVersion(){
             // compare current node procedure to original node type procedure
             // if change, update version
-            if($scope.nodeIndex !== ''){
+            if($scope.nodeIndex !== undefined && $scope.nodeIndex !== ''){
                 var currentType = $scope.chartViewModel.nodes[$scope.nodeIndex].data.type;
 
                 var currentProcedure = $scope.data;
