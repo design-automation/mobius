@@ -467,46 +467,48 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         // new parameter / procedure items
         $scope.newItem = function(cate,subCate) {
 
-            var selectedPos = undefined;
-            var selectedParent = undefined;
-            var insertPos = undefined;
-            var insertIndex = undefined;
+            try{
+                // finding adding position
+                var selectedPos = undefined;
+                var selectedParent = undefined;
+                var insertPos = undefined;
+                var insertIndex = undefined;
 
-            function findSelected (tree){
+                function findSelected (tree){
 
-                for(var i = 0; i < tree.length; i++ ){
-                    if(tree[i].selected === true){
-                        selectedPos  = tree[i];
-                        selectedParent = tree;
-                    }else if(tree[i].nodes){
-                        findSelected(tree[i].nodes)
+                    for(var i = 0; i < tree.length; i++ ){
+                        if(tree[i].selected === true){
+                            selectedPos  = tree[i];
+                            selectedParent = tree;
+                        }else if(tree[i].nodes){
+                            findSelected(tree[i].nodes)
+                        }
                     }
                 }
-            }
 
-            findSelected($scope.data);
+                findSelected($scope.data);
 
-            if(selectedPos !== undefined){
-                if(selectedPos.title === 'Data' ||
-                    selectedPos.title === 'Output' ||
-                    selectedPos.title === 'Action' ||
-                    (selectedPos.title === 'Control' && selectedPos.controlType === 'if else')){
-                    // insert below the select
-                    insertIndex = selectedParent.indexOf(selectedPos) + 1;
+                if(selectedPos !== undefined){
+                    if(selectedPos.title === 'Data' ||
+                        selectedPos.title === 'Output' ||
+                        selectedPos.title === 'Action' ||
+                        (selectedPos.title === 'Control' && selectedPos.controlType === 'if else')){
+                        // insert below the select
+                        insertIndex = selectedParent.indexOf(selectedPos) + 1;
+                    }
+                    else if((selectedPos.title === 'Control' && selectedPos.controlType === 'if') ||
+                        (selectedPos.title === 'Control' && selectedPos.controlType === 'else') ||
+                        (selectedPos.title === 'Control' && selectedPos.controlType === 'for each')){
+                        // insert inside the selected
+                        insertPos = selectedPos.nodes;
+                    }
                 }
-                else if((selectedPos.title === 'Control' && selectedPos.controlType === 'if') ||
-                    (selectedPos.title === 'Control' && selectedPos.controlType === 'else') ||
-                    (selectedPos.title === 'Control' && selectedPos.controlType === 'for each')){
-                    // insert inside the selected
-                    insertPos = selectedPos.nodes;
+                else{
+                    // no procedure is selected
+                    insertPos = $scope.data;
                 }
-            }
-            else{
-                // no procedure is selected
-                insertPos = $scope.data;
-            }
 
-            try{
+                // adding
                 if(cate === 'Data'){
                     var dataObj = {
                         id: $scope.data.length  + 1,
