@@ -80,26 +80,17 @@ var mObj_geom = function mObj_geom( geometry, material ){
         console.log("Material updated");
     }
 
-    // needs a TOPOLOGY_DEF - make dynamic later  
-        // self[property] = self.getTopology()[property];
-        Object.defineProperty(this, "vertices", {
-            get: function(){ 
-                    return this.getTopology()[ "vertices" ];
-                },
-            set: undefined
+    // Dynamic Topology !
+   for(var property in TOPOLOGY_DEF){
+       
+        var propFunc = new Function( 'return this.getTopology()["' + property + '"];' );
+       
+        Object.defineProperty(this, property,  {
+                get: propFunc,
+                set: undefined
         });
-                Object.defineProperty(this, "edges", {
-                        get: function(){ 
-                                return this.getTopology()[ "edges" ];
-                            },
-                        set: undefined
-                    });
-                            Object.defineProperty(this, "faces", {
-                                    get: function(){ 
-                                            return this.getTopology()[ "faces" ];
-                                        },
-                                    set: undefined
-                                });
+   }
+
 
 
     //

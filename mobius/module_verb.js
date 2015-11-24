@@ -1305,7 +1305,7 @@ var computeTopology = function( mObj ){
 }
 
 
-var TOPOLOGY_DEF = { vertices: [], edges: [], faces: [] };
+var TOPOLOGY_DEF = {"vertices":[], "edges":[], "faces":[]}
 
 
 //
