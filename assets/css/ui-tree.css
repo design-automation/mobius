@@ -62,6 +62,7 @@
     line-height:20px
 }
 
+
 .angular-ui-tree-drag{
     position:absolute;
     pointer-events:none;
@@ -74,7 +75,7 @@
     border-radius:1px;
 }
 
-.tree-hover :hover{
+.node-selected {
     background-color: #ddd;
 }
 

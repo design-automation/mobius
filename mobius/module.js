@@ -1,8 +1,11 @@
-//
-// VIDAMO module, open for editing by Module Developer
-//
+/**
+ * Mobius Module
+ *
+ *  @module open to edit
+ */
 
-var VIDAMO = ( function (mod){
+
+( function (mod){
 
 	/*
 	 *

@@ -245,8 +245,14 @@ vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
                             // creating new parameters
                             var codeBlock = "    " + "var "
                                 + data.interfaceList[i][j].name
-                                + " = "
-                                + data.interfaceList[i][j].dataValue + ";\n";
+                                + " = ";
+                            if(data.interfaceList[i][j].option.name === 'color picker'){
+                                var color = "'" + data.interfaceList[i][j].color + "' ;\n" ;
+                                codeBlock += color.replace('#','0x').replace("'",'').replace("'",'')
+                            }
+                            else{
+                                codeBlock += data.interfaceList[i][j].dataValue + ";\n";
+                            }
 
                             data.outerCodeList[i] += codeBlock;
                         }
