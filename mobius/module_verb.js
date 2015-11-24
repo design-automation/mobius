@@ -552,7 +552,7 @@ var VIDAMO = ( function (mod){
 	 * @param {array} axis - Axis Direction of the cylinder in [x,y,z] format
 	 * @param {array} xaxis - Direction of x-axis of cylinder in [x,y,z] format
 	 * @returns {MobiusDataObject}  - NURBS Surface
-	 */
+	 
 	mod.makeBox = function( centrePoint, length, breadth, height){
 		
 		var allSurfaces = []; 
@@ -565,9 +565,16 @@ var VIDAMO = ( function (mod){
 		var leftFace = VIDAMO.makeSurfaceByCorners([-length/2, -height/2, breadth/2],[-length/2, -height/2, -breadth/2],[-length/2, height/2, -breadth/2],[-length/2, height/2, breadth/2]);
 		
 		allSurfaces = [topFace, bottomFace, frontFace, backFace, leftFace, rightFace];
+
+		var vertices = topFace.vertices.concat(bottomFace.vertices);
+		var edges = topFace.edges.concat(bottomFace.edge);
+		var faces = allSurfaces;
+		var topology = { vertices: vertices, 
+						 edges: edges, 
+						 faces: faces }; console.log(topology);
 		
-		return new mObj_geom_Solid( allSurfaces );
-	};
+		return new mObj_geom_Solid( allSurfaces, undefined, topology );
+	}; */
 
 	/**
 	 * Returns a MobiusDataObject containing a NURBS Surface

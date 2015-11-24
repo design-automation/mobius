@@ -54,7 +54,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
 
     this.getTopology = function(){
         if(topology == undefined)
-            topology = computeTopology( self );
+            topology = computeTopology( self );       
         return topology;
     }
     
@@ -205,18 +205,18 @@ var mObj_geom = function mObj_geom( geometry, material ){
 var mObj_geom_Vertex = function mObj_geom_Vertex( geometry ){
    var defaultVertexMaterial = new THREE.PointsMaterial( { size: 5, sizeAttenuation: false } );
     
-    mObj_geom.call( this, geometry, defaultVertexMaterial ); 
+    mObj_geom.call( this, geometry, defaultVertexMaterial  ); 
 }
  
 var mObj_geom_Curve = function mObj_geom_Curve( geometry ){
-	
+    
     var defaultCurveMaterial = new THREE.LineBasicMaterial({
     side: THREE.DoubleSide,
     linewidth: 100,
     color: 0x003399
     });
 	
-    mObj_geom.call( this, geometry, defaultCurveMaterial ); 
+    mObj_geom.call( this, geometry, defaultCurveMaterial  ); 
 	
 }
 
@@ -230,11 +230,11 @@ var mObj_geom_Surface = function mObj_geom_Surface( geometry ){
     color: 0x003399
     } );
 
-	mObj_geom.call( this, geometry, defaultSurfaceMaterial );
+	mObj_geom.call( this, geometry, defaultSurfaceMaterial  );
 
 }
 
-var mObj_geom_Solid = function mObj_geom_Solid( geometry ){
+var mObj_geom_Solid = function mObj_geom_Solid( geometry){
 	
     var defaultSolidMaterial = new THREE.MeshLambertMaterial( {
     side: THREE.DoubleSide,
