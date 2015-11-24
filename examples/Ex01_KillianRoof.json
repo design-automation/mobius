@@ -16,21 +16,25 @@
                 }
             ],
             "type": "base_curve",
-            "version": 0,
+            "version": 1448337142077,
             "overwrite": true
         },
         {
             "id": 1,
             "name": "cross_section0",
-            "x": 1833.5057024931032,
-            "y": 2120.3312848138157,
+            "x": 1817.2894151534163,
+            "y": 2108.1690693090504,
             "inputConnectors": [
                 {
                     "id": 1,
                     "title": "Input",
                     "name": "centralProfile",
                     "connected": true,
-                    "$$hashKey": "object:174"
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "$$hashKey": "object:644"
                 },
                 {
                     "id": 2,
@@ -38,15 +42,31 @@
                     "name": "num_curves",
                     "connected": false,
                     "dataValue": "5",
-                    "$$hashKey": "object:175"
+                    "option": {
+                        "name": "slider",
+                        "$$hashKey": "object:729"
+                    },
+                    "color": "#000000",
+                    "$$hashKey": "object:666",
+                    "min": "1",
+                    "max": "10",
+                    "step": "1"
                 },
                 {
                     "id": 3,
                     "title": "Input",
                     "name": "height",
                     "connected": false,
-                    "dataValue": "15",
-                    "$$hashKey": "object:176"
+                    "dataValue": "20",
+                    "option": {
+                        "name": "slider",
+                        "$$hashKey": "object:729"
+                    },
+                    "color": "#000000",
+                    "$$hashKey": "object:688",
+                    "min": "0",
+                    "max": "50",
+                    "step": "5"
                 }
             ],
             "outputConnectors": [
@@ -56,25 +76,31 @@
                     "name": "crvs",
                     "dataValue": "[]",
                     "type": "new",
-                    "$$hashKey": "object:184"
+                    "$$hashKey": "object:184",
+                    "connected": true
                 }
             ],
             "type": "cross_section",
-            "version": 1447905035434,
+            "version": 1448337382702,
             "overwrite": true
         },
         {
             "id": 2,
             "name": "killian_roof0",
-            "x": 1844.9473700740834,
-            "y": 2271.337542555598,
+            "x": 1818.595903147092,
+            "y": 2242.4522807317803,
             "inputConnectors": [
                 {
                     "id": 1,
                     "title": "Input",
                     "name": "mesh",
                     "connected": true,
-                    "$$hashKey": "object:409"
+                    "option": {
+                        "name": "none",
+                        "$$hashKey": "object:728"
+                    },
+                    "color": "#000000",
+                    "$$hashKey": "object:5791"
                 }
             ],
             "outputConnectors": [
@@ -85,48 +111,60 @@
                     "dataValue": "[]",
                     "type": "new",
                     "$$hashKey": "object:529"
-                },
-                {
-                    "id": 4,
-                    "title": "Output",
-                    "name": "data",
-                    "dataValue": "mesh",
-                    "type": "new",
-                    "$$hashKey": "object:3043"
                 }
             ],
             "type": "killian_roof",
-            "version": 1447905252542,
+            "version": 1448337422629,
             "overwrite": true
         },
         {
             "id": 3,
             "name": "loft_surface0",
-            "x": 1816.5688672296315,
-            "y": 2198.364249527007,
+            "x": 1818.0891441677275,
+            "y": 2178.6006493317636,
             "inputConnectors": [
                 {
                     "id": 1,
                     "title": "Input",
-                    "name": "u",
-                    "connected": false,
-                    "dataValue": "10",
-                    "$$hashKey": "object:928"
+                    "name": "crvs",
+                    "connected": true,
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "$$hashKey": "object:4417"
                 },
                 {
                     "id": 2,
                     "title": "Input",
-                    "name": "v",
+                    "name": "u",
                     "connected": false,
-                    "dataValue": "30",
-                    "$$hashKey": "object:948"
+                    "dataValue": "15",
+                    "option": {
+                        "name": "slider",
+                        "$$hashKey": "object:729"
+                    },
+                    "color": "#000000",
+                    "$$hashKey": "object:4439",
+                    "min": "3",
+                    "max": "15",
+                    "step": "1"
                 },
                 {
                     "id": 3,
                     "title": "Input",
-                    "name": "crvs",
-                    "connected": true,
-                    "$$hashKey": "object:1783"
+                    "name": "v",
+                    "connected": false,
+                    "dataValue": "15",
+                    "option": {
+                        "name": "slider",
+                        "$$hashKey": "object:729"
+                    },
+                    "color": "#000000",
+                    "$$hashKey": "object:4461",
+                    "min": "3",
+                    "max": "15",
+                    "step": "1"
                 }
             ],
             "outputConnectors": [
@@ -135,11 +173,12 @@
                     "title": "Output",
                     "name": "mesh",
                     "type": "new",
-                    "$$hashKey": "object:1207"
+                    "$$hashKey": "object:1207",
+                    "connected": true
                 }
             ],
             "type": "loft_surface",
-            "version": 0,
+            "version": 1448337426155,
             "overwrite": true
         }
     ],
@@ -161,7 +200,7 @@
             },
             "dest": {
                 "nodeID": 3,
-                "connectorIndex": 2
+                "connectorIndex": 0
             }
         },
         {
@@ -699,7 +738,11 @@
             "title": "Input",
             "name": "centralProfile",
             "connected": true,
-            "$$hashKey": "object:174"
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:644"
         },
         {
             "id": 2,
@@ -707,15 +750,31 @@
             "name": "num_curves",
             "connected": false,
             "dataValue": "5",
-            "$$hashKey": "object:175"
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:729"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:666",
+            "min": "1",
+            "max": "10",
+            "step": "1"
         },
         {
             "id": 3,
             "title": "Input",
             "name": "height",
             "connected": false,
-            "dataValue": "15",
-            "$$hashKey": "object:176"
+            "dataValue": "20",
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:729"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:688",
+            "min": "0",
+            "max": "50",
+            "step": "5"
         }
     ],
     [
@@ -724,32 +783,57 @@
             "title": "Input",
             "name": "mesh",
             "connected": true,
-            "$$hashKey": "object:409"
+            "option": {
+                "name": "none",
+                "$$hashKey": "object:728"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:5791"
         }
     ],
     [
         {
             "id": 1,
             "title": "Input",
-            "name": "u",
-            "connected": false,
-            "dataValue": "10",
-            "$$hashKey": "object:928"
+            "name": "crvs",
+            "connected": true,
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:4417"
         },
         {
             "id": 2,
             "title": "Input",
-            "name": "v",
+            "name": "u",
             "connected": false,
-            "dataValue": "30",
-            "$$hashKey": "object:948"
+            "dataValue": "15",
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:729"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:4439",
+            "min": "3",
+            "max": "15",
+            "step": "1"
         },
         {
             "id": 3,
             "title": "Input",
-            "name": "crvs",
-            "connected": true,
-            "$$hashKey": "object:1783"
+            "name": "v",
+            "connected": false,
+            "dataValue": "15",
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:729"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:4461",
+            "min": "3",
+            "max": "15",
+            "step": "1"
         }
     ]
 ]
