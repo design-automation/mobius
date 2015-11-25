@@ -105,6 +105,24 @@ var VIDAMO = ( function (mod){
 	mod.getCrossProduct = function( mat1, mat2 ){
 		return verb.core.Vec.cross(mat1, mat2);
 	};
+
+	/**
+	 * Computes unit vector
+	 * @param {array} vector  - Matrix 
+	 * @returns {array} 
+	 */
+	mod.getUnitVector = function( vector ){
+		return verb.core.Vec.normalized( vector )
+	}
+
+	/**
+	 * Computes unit vector
+	 * @param {array} vector  - Matrix 
+	 * @returns {array} 
+	 */
+	mod.multipleVector = function( factor, vector ){
+		return [ factor*vector[0], factor*vector[1], factor*vector[2] ] ;
+	}
 	
 
 	/*
