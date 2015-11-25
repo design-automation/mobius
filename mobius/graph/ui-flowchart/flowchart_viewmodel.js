@@ -647,16 +647,16 @@ var flowchart = {
             //
             // iterate through the nodes and print out the input and output of each node
             //
-            console.log("========================== test msg ===========================");
-            for(var i=0; i < this.nodes.length; i++){
-                console.log("node id: ", this.nodes[i].data.id);
+            //console.log("========================== test msg ===========================");
+            //for(var i=0; i < this.nodes.length; i++){
+               // console.log("node id: ", this.nodes[i].data.id);
                 //for(var input=0; input < this.nodes[i].data.inputConnectors.length;input++){
                 //    //console.log("inputs: ", this.nodes[i].data.inputConnectors[input].value)
                 //}
                 //for(var output=0; output < this.nodes[i].data.outputConnectors.length;output++){
                 //    //console.log("outputs: ", this.nodes[i].data.outputConnectors[output].value)
                 //}
-            }
+            //}
 		}
 
 		//

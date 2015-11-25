@@ -1,13 +1,10 @@
 <!--vidamo-->
 <!-- interface template -->
 
-<!--todo interface designer-->
-
 <div ui-tree-handle class="tree-node tree-node-content"  style="background-color: white">
 
     <!-- parameter presentation-->
     <div style="padding-left:20px " class="tree-node-content">
-
         {{ node.name || 'undefined' }}
         &nbsp;:&nbsp;
         <a ng-if =" node.option.name === 'none'"
@@ -16,15 +13,23 @@
            buttons="no"
            blur="submit">{{ node.dataValue || 'value' }}</a>
 
-        <a ng-if =" node.option.name === 'slider'"
-           data-nodrag
-           href="#"
-           blur="submit"
-           buttons="no"
-           editable-range="node.dataValue"
-           e-max = "{{node.max}}"
-           e-min = "{{node.min}}"
-           e-step="{{node.step}}">{{ node.dataValue || 'value' }}</a>
+        <span ng-if =" node.option.name === 'slider'">
+            <a data-nodrag href="#"
+               editable-text="node.dataValue"
+               buttons="no"
+               blur="submit">{{ node.dataValue || 'value' }}
+            </a>
+
+            <input
+               style="width: 55%; display:inline-block"
+                type="range"
+                data-nodrag
+                ng-model="node.dataValue"
+                max = "{{node.max}}"
+                min = "{{node.min}}"
+                step="{{node.step}}">
+            </input>
+        </span>
 
         <input ng-if =" node.option.name === 'color picker'"
             data-nodrag

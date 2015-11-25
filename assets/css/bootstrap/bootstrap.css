@@ -260,6 +260,9 @@ th {
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
           box-sizing: border-box;
+  /* @mobius hack to disable blue glow in procedure when focused*/
+  -webkit-box-shadow: none;
+  outline: -webkit-focus-ring-color auto 0px;
 }
 *:before,
 *:after {

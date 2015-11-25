@@ -291,7 +291,8 @@
                                             border: 1px solid #cccccc;
                                             border-radius: 4px;
                                             margin-top:1px">
-                                    <div ui-tree id="tree-root-interface" >
+                                    <div ui-tree id="tree-root-interface"
+                                         data-nodrop-enabled="true">
                                         <div ui-tree-nodes="" ng-model="interface">
                                             <div ng-repeat="node in interface"
                                                  ui-tree-node
@@ -331,11 +332,11 @@
                                         Run
                                     </button>
 
-                                        <span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner"
-                                                style="position: absolute;
-                                                left:50%;
-                                                z-index: 999999999999999999999">
-                                        </span>
+                                        <!--<span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner"-->
+                                                <!--style="position: absolute;-->
+                                                <!--left:50%;-->
+                                                <!--z-index: 999999999999999999999">-->
+                                        <!--</span>-->
 
                                 </span>
 

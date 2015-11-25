@@ -99,9 +99,16 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
             return expression.concat(func_props);
         };
 
+        $scope.$on("clearProcedure", function(){
+            $scope.nodeIndex = undefined;
+            $scope.data  = undefined;
+            $scope.interface = undefined;
+            $scope.currentNodeName = '';
+            $scope.currentNodeType = '';
+        });
 
         // listen to the graph, when a node is clicked, update the procedure/ interface tabs
-        $rootScope.$on("nodeIndex", function(event, message) {
+        $scope.$on("nodeIndex", function(event, message) {
             if($scope.nodeIndex !== message && message !== undefined){
                 $scope.nodeIndex = message;
 
@@ -109,21 +116,20 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                 $scope.currentNodeType = $scope.chartViewModel.nodes[$scope.nodeIndex].data.type;
                 $scope.currentNodeVersion = $scope.chartViewModel.nodes[$scope.nodeIndex].data.version === 0?'':'*';
 
-
                 // update the procedure tab
-
                 $scope.data  = $scope.dataList[$scope.nodeIndex];
 
                 // update the interface tab
-
                 $scope.interface = $scope.interfaceList[$scope.nodeIndex];
             }
             else if(message === undefined){
                 $scope.nodeIndex = message;
                 $scope.currentNodeName = '';
-                $scope.$emit("editProcedure",false);
 
-                //setTimeout(function(){$scope.$emit("editProcedure")},0);
+                $scope.data  = undefined;
+                $scope.interface = undefined;
+
+                //$scope.$emit("editProcedure",false);
             }
         });
 
@@ -148,7 +154,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         function updateVersion(){
             // compare current node procedure to original node type procedure
             // if change, update version
-            if($scope.nodeIndex !== ''){
+            if($scope.nodeIndex !== undefined && $scope.nodeIndex !== ''){
                 var currentType = $scope.chartViewModel.nodes[$scope.nodeIndex].data.type;
 
                 var currentProcedure = $scope.data;
@@ -461,8 +467,49 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         $scope.newItem = function(cate,subCate) {
 
             try{
+                // finding adding position
+                var selectedPos = undefined;
+                var selectedParent = undefined;
+                var insertPos = undefined;
+                var insertIndex = undefined;
+
+                function findSelected (tree){
+
+                    for(var i = 0; i < tree.length; i++ ){
+                        if(tree[i].selected === true){
+                            selectedPos  = tree[i];
+                            selectedParent = tree;
+                        }else if(tree[i].nodes){
+                            findSelected(tree[i].nodes)
+                        }
+                    }
+                }
+
+                findSelected($scope.data);
+
+                if(selectedPos !== undefined){
+                    if(selectedPos.title === 'Data' ||
+                        selectedPos.title === 'Output' ||
+                        selectedPos.title === 'Action' ||
+                        (selectedPos.title === 'Control' && selectedPos.controlType === 'if else')){
+                        // insert below the select
+                        insertIndex = selectedParent.indexOf(selectedPos) + 1;
+                    }
+                    else if((selectedPos.title === 'Control' && selectedPos.controlType === 'if') ||
+                        (selectedPos.title === 'Control' && selectedPos.controlType === 'else') ||
+                        (selectedPos.title === 'Control' && selectedPos.controlType === 'for each')){
+                        // insert inside the selected
+                        insertPos = selectedPos.nodes;
+                    }
+                }
+                else{
+                    // no procedure is selected
+                    insertPos = $scope.data;
+                }
+
+                // adding
                 if(cate === 'Data'){
-                    $scope.data.push({
+                    var dataObj = {
                         id: $scope.data.length  + 1,
                         title:  'Data',
                         nodes: [],
@@ -470,7 +517,13 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                         dataValue:undefined,
                         // create new variable or assign value to existing variable
                         type:undefined
-                    });
+                    };
+
+                    if(insertIndex !== undefined){
+                        selectedParent.splice(insertIndex,0,dataObj);
+                    }else{
+                        insertPos.push(dataObj);
+                    }
                 }
 
                 else if(cate === 'Output'){
@@ -483,7 +536,11 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                         type:undefined
                     };
 
-                    $scope.data.push(outputObj);
+                    if(insertIndex !== undefined){
+                        selectedParent.splice(insertIndex,0,outputObj);
+                    }else{
+                        insertPos.push(outputObj);
+                    }
 
                     $scope.chartViewModel.nodes[$scope.nodeIndex].addOutputConnector(outputObj);
                 }
@@ -508,50 +565,46 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                         }
                     }
 
-                    $scope.data.push({
+                    var actionObj = {
                         id: $scope.data.length  + 1,
                         title:  'Action',
                         nodes: [],
                         type:undefined,
                         expression:'',
-
-                        // method name
                         method:subCate,
-
-                        // method's arguments
                         parameters:parameters,
-
-                        // method's return value
                         result:result,
-
-                        // if the method is get data from input port, use following two as holder
-
                         dataName:undefined
+                    };
+
+                    if(insertIndex !== undefined){
+                        selectedParent.splice(insertIndex,0,actionObj);
+                    }else{
+                        insertPos.push(actionObj);
                     }
-                );
 
                 } else if(cate === 'Control'){
                     switch(subCate){
                         case 'for each':
-                            $scope.data.push({
+                            var forObj ={
                                 id: $scope.data.length  + 1,
                                 title:  'Control',
                                 nodes: [],
-                                // assign or create new
                                 type:undefined,
-
-                                // control type
                                 controlType: subCate,
-
-                                // for each
                                 dataName:undefined,
                                 forList:undefined
+                            };
 
-                            });
+                            if(insertIndex !== undefined){
+                                selectedParent.splice(insertIndex,0,forObj);
+                            }else{
+                                insertPos.push(forObj);
+                            }
                             break;
 
                         case 'if else':
-                            $scope.data.push({
+                            var ifObj = {
                                 id: $scope.data.length  + 1,
                                 title:  'Control',
                                 nodes: [
@@ -573,7 +626,13 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
                                 controlType: subCate
 
-                            });
+                            };
+
+                            if(insertIndex !== undefined){
+                                selectedParent.splice(insertIndex,0,ifObj);
+                            }else{
+                                insertPos.push(ifObj);
+                            }
                             break;
                     }
                 }
@@ -623,8 +682,6 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         };
 
         // interface design options
-        // todo
-
         $scope.interfaceOptions = [{name:'none'},
                                    {name:'slider'},
                                    {name:'dropdown'},

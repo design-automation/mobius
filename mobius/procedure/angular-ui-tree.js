@@ -435,20 +435,18 @@
               // by default, we check the 'data-nodrop-enabled' attribute in `ui-tree-nodes`
               // and the 'max-depth' attribute in `ui-tree` or `ui-tree-nodes`.
               // the method can be overrided
+              // prevent accept if tag and else tag
               callbacks.accept = function (sourceNodeScope, destNodesScope, destIndex) {
-                return !(destNodesScope.nodropEnabled || destNodesScope.outOfDepth(sourceNodeScope));
+                  if(sourceNodeScope.$modelValue.controlType === 'if' ||
+                      sourceNodeScope.$modelValue.controlType === 'else'){
+                    return false;
+                  }else{
+                      return !(destNodesScope.nodropEnabled || destNodesScope.outOfDepth(sourceNodeScope));
+                  }
               };
 
-              //
-              // @ vidamo prevent if tag and else tag from dragging
-              //
               callbacks.beforeDrag = function (sourceNodeScope) {
-                if(sourceNodeScope.$modelValue.controlType === 'if' ||
-                    sourceNodeScope.$modelValue.controlType === 'else'){
-                  return false;
-                }else{
-                  return true;
-                }
+                return true;
               };
 
               callbacks.removed = function (node) {
@@ -472,16 +470,16 @@
               };
 
               //
-              // @ vidamo prevent nodes go into
-              //                  data/action node
-              //                  if else node
+              // prevent nodes go into
+              //         data/action node
+              //         if else node
               //
               callbacks.beforeDrop = function (event) {
                 if(event.dest.nodesScope.$parent.$modelValue){
                   if(event.dest.nodesScope.$parent.$modelValue.title === 'Data'
                       || event.dest.nodesScope.$parent.$modelValue.title === 'Action'
                       || event.dest.nodesScope.$parent.$modelValue.controlType === 'if else'){
-                    event.source.nodeScope.$$apply = false;
+                      event.source.nodeScope.$$apply = false;
                   }
                 }
               };
@@ -590,6 +588,7 @@
                 attrs.$set('collapsed', val);
               });
 
+
               dragStart = function (e) {
                 if (!hasTouch && (e.button == 2 || e.which == 3)) {
                   // disable right click
@@ -599,7 +598,25 @@
                   return;
                 }
 
-                // the element which is clicked.
+                // hack: deselect all the items
+                  function deselect(tree){
+                    if(tree){
+                        for(var i = 0; i < tree.length ; i++){
+                            tree[i].selected = false;
+                            if(tree[i].nodes){
+                                deselect(tree[i].nodes);
+                            }
+                        }
+                    }
+                      return;
+                  }
+
+                  deselect(scope.$nodesScope.$modelValue);
+
+                // hack select the clicked item
+                scope.$modelValue.selected = true;
+
+
                 var eventElm = angular.element(e.target),
                     eventScope = eventElm.scope(),
                     cloneElm = element.clone(),
