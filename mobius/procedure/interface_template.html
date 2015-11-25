@@ -1,6 +1,7 @@
 <!--vidamo-->
 <!-- interface template -->
 
+
 <div ui-tree-handle class="tree-node tree-node-content"  style="background-color: white">
 
     <!-- parameter presentation-->
@@ -12,6 +13,8 @@
            editable-text="node.dataValue"
            buttons="no"
            blur="submit">{{ node.dataValue || 'value' }}</a>
+
+
 
         <span ng-if =" node.option.name === 'slider'">
             <a data-nodrag href="#"
@@ -57,5 +60,3 @@
     </div>
 
 </div>
-
-

@@ -116,6 +116,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                 $scope.currentNodeType = $scope.chartViewModel.nodes[$scope.nodeIndex].data.type;
                 $scope.currentNodeVersion = $scope.chartViewModel.nodes[$scope.nodeIndex].data.version === 0?'':'*';
 
+
                 // update the procedure tab
                 $scope.data  = $scope.dataList[$scope.nodeIndex];
 
@@ -682,6 +683,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         };
 
         // interface design options
+
         $scope.interfaceOptions = [{name:'none'},
                                    {name:'slider'},
                                    {name:'dropdown'},
