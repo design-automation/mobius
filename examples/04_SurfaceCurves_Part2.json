@@ -4,16 +4,21 @@
             "id": 0,
             "name": "node0",
             "x": 1954.6210985613898,
-            "y": 2007.3240324153724,
+            "y": 2005.8037554772766,
             "inputConnectors": [],
             "outputConnectors": [
                 {
+                    "id": 16,
+                    "title": "Output",
                     "name": "out0",
-                    "value": ""
+                    "dataValue": "[crv, srf1, srfByRev, srfBySwp, cyl]",
+                    "type": "new",
+                    "$$hashKey": "object:568",
+                    "selected": true
                 }
             ],
             "type": "verbs",
-            "version": 1446113862702,
+            "version": 1448443773023,
             "overwrite": true
         }
     ],
@@ -53,7 +58,8 @@
                 }
             ],
             "result": "crv",
-            "$$hashKey": "object:287"
+            "$$hashKey": "object:287",
+            "selected": false
         },
         {
             "id": 2,
@@ -95,7 +101,8 @@
                 }
             ],
             "result": "srf1",
-            "$$hashKey": "object:384"
+            "$$hashKey": "object:384",
+            "selected": false
         },
         {
             "id": 3,
@@ -127,7 +134,8 @@
                 }
             ],
             "result": "srfByRev",
-            "$$hashKey": "object:487"
+            "$$hashKey": "object:487",
+            "selected": false
         },
         {
             "id": 8,
@@ -149,7 +157,8 @@
                 }
             ],
             "result": "prof",
-            "$$hashKey": "object:1254"
+            "$$hashKey": "object:1254",
+            "selected": false
         },
         {
             "id": 9,
@@ -171,7 +180,8 @@
                 }
             ],
             "result": "rail",
-            "$$hashKey": "object:1407"
+            "$$hashKey": "object:1407",
+            "selected": false
         },
         {
             "id": 4,
@@ -193,81 +203,51 @@
                 }
             ],
             "result": "srfBySwp",
-            "$$hashKey": "object:587"
+            "$$hashKey": "object:587",
+            "selected": false
         },
         {
-            "id": 5,
+            "id": 16,
             "title": "Action",
             "nodes": [],
             "type": "new",
             "expression": "",
-            "method": "makeSurfaceAsCone",
+            "method": "makeCylinder",
             "parameters": [
                 {
                     "value": "[-1,0,0]",
                     "type": "axis",
-                    "$$hashKey": "object:691"
+                    "$$hashKey": "object:3809"
                 },
                 {
                     "value": "[0,0,1]",
                     "type": "xaxis",
-                    "$$hashKey": "object:692"
-                },
-                {
-                    "value": "[16, 0, 1]",
-                    "type": "base",
-                    "$$hashKey": "object:693"
-                },
-                {
-                    "value": "16",
-                    "type": "height",
-                    "$$hashKey": "object:694"
-                },
-                {
-                    "value": "2",
-                    "type": "radius",
-                    "$$hashKey": "object:695"
-                }
-            ],
-            "result": "cone",
-            "$$hashKey": "object:683"
-        },
-        {
-            "id": 6,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "makeSurfaceAsCylinder",
-            "parameters": [
-                {
-                    "value": "[-1,0,0]",
-                    "type": "axis",
-                    "$$hashKey": "object:790"
-                },
-                {
-                    "value": "[0,0,1]",
-                    "type": "xaxis",
-                    "$$hashKey": "object:791"
+                    "$$hashKey": "object:3810"
                 },
                 {
                     "value": "[8,0,1]",
                     "type": "base",
-                    "$$hashKey": "object:792"
+                    "$$hashKey": "object:3811"
                 },
                 {
                     "value": "16",
                     "type": "height",
-                    "$$hashKey": "object:793"
+                    "$$hashKey": "object:3812"
                 },
                 {
                     "value": "2",
                     "type": "radius",
-                    "$$hashKey": "object:794"
+                    "$$hashKey": "object:3813"
+                },
+                {
+                    "value": "false",
+                    "type": "capped",
+                    "$$hashKey": "object:3814"
                 }
             ],
             "result": "cyl",
-            "$$hashKey": "object:782"
+            "$$hashKey": "object:3796",
+            "selected": false
         },
         {
             "id": 10,
@@ -299,7 +279,8 @@
                 }
             ],
             "result": "d",
-            "$$hashKey": "object:636"
+            "$$hashKey": "object:636",
+            "selected": false
         },
         {
             "id": 11,
@@ -331,7 +312,8 @@
                 }
             ],
             "result": "d",
-            "$$hashKey": "object:821"
+            "$$hashKey": "object:821",
+            "selected": false
         },
         {
             "id": 12,
@@ -363,112 +345,17 @@
                 }
             ],
             "result": "d",
-            "$$hashKey": "object:1021"
+            "$$hashKey": "object:1021",
+            "selected": false
         },
         {
-            "id": 13,
-            "title": "Action",
-            "nodes": [],
+            "id": 16,
+            "title": "Output",
+            "name": "out0",
+            "dataValue": "[crv, srf1, srfByRev, srfBySwp, cyl]",
             "type": "new",
-            "expression": "",
-            "method": "rotateObject",
-            "parameters": [
-                {
-                    "value": "cone",
-                    "type": "mObj",
-                    "$$hashKey": "object:1229"
-                },
-                {
-                    "value": "0",
-                    "type": "xAxis",
-                    "$$hashKey": "object:1230"
-                },
-                {
-                    "value": "0",
-                    "type": "yAxis",
-                    "$$hashKey": "object:1231"
-                },
-                {
-                    "value": "33/7",
-                    "type": "zAxis",
-                    "$$hashKey": "object:1232"
-                }
-            ],
-            "result": "d",
-            "$$hashKey": "object:1221"
-        },
-        {
-            "id": 15,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "shiftObject",
-            "parameters": [
-                {
-                    "value": "cone",
-                    "type": "mObj",
-                    "$$hashKey": "object:2585"
-                },
-                {
-                    "value": "0",
-                    "type": "shiftX",
-                    "$$hashKey": "object:2586"
-                },
-                {
-                    "value": "32",
-                    "type": "shiftY",
-                    "$$hashKey": "object:2587"
-                },
-                {
-                    "value": "0",
-                    "type": "shiftZ",
-                    "$$hashKey": "object:2588"
-                }
-            ],
-            "result": "d",
-            "$$hashKey": "object:2577"
-        },
-        {
-            "id": 14,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "moveObjectToPoint",
-            "parameters": [
-                {
-                    "value": "cone",
-                    "type": "mObj",
-                    "$$hashKey": "object:1728"
-                },
-                {
-                    "value": "0",
-                    "type": "xCoord",
-                    "$$hashKey": "object:1729"
-                },
-                {
-                    "value": "24",
-                    "type": "yCoord",
-                    "$$hashKey": "object:1730"
-                },
-                {
-                    "value": "0",
-                    "type": "zCoord",
-                    "$$hashKey": "object:1731"
-                }
-            ],
-            "result": "d",
-            "$$hashKey": "object:1720"
-        },
-        {
-            "id": 7,
-            "title": "Data",
-            "nodes": [],
-            "dataName": "out0",
-            "dataValue": "[crv, srf1, srfByRev, srfBySwp, cone, cyl]",
-            "type": "new",
-            "$$hashKey": "object:805"
+            "$$hashKey": "object:568",
+            "selected": true
         }
     ]
 ]
