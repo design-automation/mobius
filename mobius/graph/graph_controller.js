@@ -289,9 +289,8 @@ vidamo.controller('graphCtrl',[
         $scope.$on("deleteSelected", function (){
             var deletedObj = $scope.chartViewModel.deleteSelected();
 
-            if(deletedObj.deletedNodeIds.length === 0){
+            if(deletedObj.deletedNodeIds.length === 0 && deletedObj.nodeIndex !== undefined){
                 // update version since connector changed
-                // fixme case in which only connection changed
                 var d = new Date();
                 $scope.chartViewModel.nodes[deletedObj.nodeIndex].data.version = d.getTime();
             }else{
