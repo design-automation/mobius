@@ -49,6 +49,7 @@ vidamo.controller('executeCtrl',['$scope','$rootScope','consoleMsg','generateCod
 
         $scope.run = function(){
 
+
             // clean output buffer
             $scope.outputs = [];
 

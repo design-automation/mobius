@@ -380,3 +380,14 @@ display: none;
 .position-fixed {
     position: fixed;
 }
+
+/*selectize */
+
+.selectize-dropdown {
+    line-height: 10px !important;
+    font-size: 12px !important;;
+}
+
+.selectize-input {
+    padding: 3px 3px !important;;
+}

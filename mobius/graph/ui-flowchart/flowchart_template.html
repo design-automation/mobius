@@ -199,18 +199,17 @@
         ng-attr-width="{{dbClickMenu.width}}"
         ng-attr-height="{{dbClickMenu.height}}"
     >
-        <body xmlns="http://www.w3.org/1999/xhtml">
             <div ng-controller="newNodeCtrl" id = "node-creator" style="width:180px; ">
                 <ui-select ng-model="type.selected"
+                           id = "node-dropdown"
+                           theme="selectize"
                            focus-on='SetFocus'
-                               append-to-body = "true"
-                               on-select="addNewNode(this.type.selected)">
-                    <ui-select-match  id = "node-dropdown" placeholder="New node" >{{$select.selected}}</ui-select-match>
+                           on-select="addNewNode(this.type.selected)">
+                    <ui-select-match   placeholder="New node" >New node</ui-select-match>
                     <ui-select-choices repeat="type in nodeTypes()| filter: $select.search">
                         <span ng-bind-html="type| highlight: $select.search"></span>
                     </ui-select-choices>
                 </ui-select>
             </div>
-        </body>
     </foreignObject>
 </svg>
