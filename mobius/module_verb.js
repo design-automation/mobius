@@ -105,6 +105,24 @@ var VIDAMO = ( function (mod){
 	mod.getCrossProduct = function( mat1, mat2 ){
 		return verb.core.Vec.cross(mat1, mat2);
 	};
+
+	/**
+	 * Computes unit vector
+	 * @param {array} vector  - Matrix 
+	 * @returns {array} 
+	 */
+	mod.getUnitVector = function( vector ){
+		return verb.core.Vec.normalized( vector )
+	}
+
+	/**
+	 * Computes unit vector
+	 * @param {array} vector  - Matrix 
+	 * @returns {array} 
+	 */
+	mod.multipleVector = function( factor, vector ){
+		return [ factor*vector[0], factor*vector[1], factor*vector[2] ] ;
+	}
 	
 
 	/*
@@ -406,6 +424,20 @@ var VIDAMO = ( function (mod){
 	};
 
 	/**
+	 *
+	 *@param
+	 *@returns
+	 */
+	mod.makeCircle = function( centrePoint, radius ){
+
+		var deg = 2;
+		var knots = [0, 0, 0, 1, 1, 1];
+		var controlPoints = [[10,0,0], [10,0,10], [0,0,10]];
+		var weights = [0.7, 1, 0.7];
+		return new mObj_geom_Surface( new verb.geom.NurbsSurface.byKnotsControlPointsWeights( deg,deg,knots,knots,controlPoints,weights ) ) ;
+	};
+
+	/**
 	 * Returns a MobiusDataObject containing a NURBS Surface
 	 * @param {array} point - Corner points in [x,y,z] format
 	 * @returns {MobiusDataObject}  - NURBS Surface
@@ -477,6 +509,7 @@ var VIDAMO = ( function (mod){
 		// brep : face -> surface (1); edges -> boundaries (4) ; vertex -> corner points (4)
 	};
 
+
 	
 	//
 	// Surface Functions - Applications
@@ -537,7 +570,7 @@ var VIDAMO = ( function (mod){
 	 * @param {array} axis - Axis Direction of the cylinder in [x,y,z] format
 	 * @param {array} xaxis - Direction of x-axis of cylinder in [x,y,z] format
 	 * @returns {MobiusDataObject}  - NURBS Surface
-	 */
+	 
 	mod.makeBox = function( centrePoint, length, breadth, height){
 		
 		var allSurfaces = []; 
@@ -550,9 +583,16 @@ var VIDAMO = ( function (mod){
 		var leftFace = VIDAMO.makeSurfaceByCorners([-length/2, -height/2, breadth/2],[-length/2, -height/2, -breadth/2],[-length/2, height/2, -breadth/2],[-length/2, height/2, breadth/2]);
 		
 		allSurfaces = [topFace, bottomFace, frontFace, backFace, leftFace, rightFace];
+
+		var vertices = topFace.vertices.concat(bottomFace.vertices);
+		var edges = topFace.edges.concat(bottomFace.edge);
+		var faces = allSurfaces;
+		var topology = { vertices: vertices, 
+						 edges: edges, 
+						 faces: faces }; console.log(topology);
 		
-		return new mObj_geom_Solid( allSurfaces );
-	};
+		return new mObj_geom_Solid( allSurfaces, undefined, topology );
+	}; */
 
 	/**
 	 * Returns a MobiusDataObject containing a NURBS Surface
@@ -564,14 +604,21 @@ var VIDAMO = ( function (mod){
 		
 	};	
 
-	/**
-	 * Returns a MobiusDataObject containing a NURBS Surface
-	 * @param {array} axis - Axis Direction of the cylinder in [x,y,z] format
-	 * @param {array} xaxis - Direction of x-axis of cylinder in [x,y,z] format
-	 * @returns {MobiusDataObject}  - NURBS Surface
-	 */	
-	mod.makeBRep = function( arrayOfSurfaces ){
-		
+	mod.makeSolidByExtrusion = function( surface, extrusionVector ){
+		var bottomSurface = surface;
+		var topSurface = VIDAMO.makeCopy( bottomSurface, undefined, undefined, undefined);
+		VIDAMO.shiftObject(topSurface, extrusionVector[0], extrusionVector[1], extrusionVector[2]);
+
+		var solid = [ bottomSurface, topSurface ];
+		// join boundary points of the two surfaces
+		var edges = bottomSurface.getGeometry().boundaries(); console.log(bottomSurface);
+		for(var e=0; e < edges.length; e++ ){
+			var edge = edges[e];
+			var srf = new mObj_geom_Surface(  new verb.geom.ExtrudedSurface( edge, extrusionVector ) );
+			solid.push(srf);
+		}
+
+		return new mObj_geom_Solid( solid );
 	};
 
 	//
@@ -615,7 +662,9 @@ var VIDAMO = ( function (mod){
 	 * @returns {array} curve parameters [t1, t2, t3 ...]
 	 */
 	mod.divideCurveByEqualArcLength = function( curve, divisions ){
-		var crv = curve.getGeometry();
+		var crv = curve;
+		if( crv.getGeometry != undefined )
+		 	crv = curve.getGeometry();
 		var points = crv.divideByEqualArcLength( divisions )
 			.map(function(u){ return ( u.u ); } );
 
@@ -629,7 +678,9 @@ var VIDAMO = ( function (mod){
 	 * @returns {array} curve parameters [t1, t2, t3 ...]
 	 */
 	mod.divideCurveByArcLength = function( curve, arcLength ){
-		var crv = curve.getGeometry();
+		var crv = curve;
+		if( crv.getGeometry != undefined )
+			crv = curve.getGeometry();
 		var points = crv.divideByArcLength( arcLength )
 			.map(function(u){ return ( u.u ); } );
 
@@ -643,7 +694,9 @@ var VIDAMO = ( function (mod){
 	 * @returns {array} tangent [x,y,z]
 	 */
 	mod.getTangentAtCurveParameter = function( curve, t ){
-		var crv = curve.getGeometry();
+		var crv = curve;
+		if( crv.getGeometry != undefined )
+			crv = curve.getGeometry();
 		if( crv instanceof verb.geom.NurbsCurve)
 			return crv.tangent(t);
 		else
@@ -1009,11 +1062,8 @@ var VIDAMO = ( function (mod){
 			side: THREE.DoubleSide
 		};
 		var material = new THREE[material_type](option);
-		if(obj.constructor === Array){
-			for(var i=0; i<obj.length; i++)
-				obj[i].setMaterial(material);
-		}else
-			obj.setMaterial(material);
+		
+		obj.setMaterial(material);
 
 		return obj;
 	};
@@ -1261,79 +1311,53 @@ var computeTopology = function( mObj ){
 		topology.faces = [];
 
 		for(var srf=0; srf < geom.length; srf++){
-			var subTopo = computeTopology(geom[srf]); 
-			topology.faces = topology.faces.concat(subTopo.faces); 
-			topology.edges = topology.edges.concat(subTopo.edges);
-			topology.vertices = topology.vertices.concat(subTopo.vertices);		
+			var surfaceTopo = geom[srf].getTopology(); 
+			topology.vertices = topology.vertices.concat(surfaceTopo.vertices); 
+			topology.edges = topology.edges.concat(surfaceTopo.edges);
+			topology.faces = topology.faces.concat(surfaceTopo.faces);		
 		}
+
+		// remove clones - doesn't do well with the edges :/
+		topology.vertices = removeClonesInList( topology.vertices );
+		topology.edges = removeClonesInList( topology.edges );
+		topology.faces = removeClonesInList( topology.faces ); 
 	}
 	else
 		topology = undefined;	
+
 
 	return topology;
 }
 
 
-/*function addNumber( indexNumber, pos ){
-	var numberText = document.createElement('div');
-	numberText.style.position = 'absolute';
-	//text2.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
-	numberText.style.width = 100;
-	numberText.style.height = 100;
-	numberText.innerHTML = indexNumber;
-	numberText.style.top = pos.x; console.log(pos.geometry.vertices[0]);
-	numberText.style.left = pos.y;
-	document.body.appendChild(numberText);
+var TOPOLOGY_DEF = {"vertices":[], "edges":[], "faces":[]}
+
+
+//
+// function to remove clones
+//
+//
+var removeClonesInList = function( list ){
+		var newArray = [];
+		
+		for(var v=0; v < list.length; v++){
+
+			var thisObject = JSON.stringify( list[v].getGeometry() ); 
+			var duplicate = false;
+			
+			for(nextV=v+1; nextV < list.length; nextV++){
+			
+				var nextObject = JSON.stringify( list[nextV].getGeometry() ); 
+			
+				if( thisObject == nextObject ){
+					duplicate = true; 
+					break;
+				}
+			}
+			
+			if( !duplicate )
+				newArray.push(list[v]);
+		}
+
+		return newArray;
 }
-
-function positionByWorld(element, keepInBounds, pointGenerator) {
-  var canvasStyle = window.getComputedStyle(theCanvas,null);
-  var canvasWidth = parseInt(canvasStyle.width, 10);
-  var canvasHeight = parseInt(canvasStyle.height, 10);
-
-  var elemStyle = window.getComputedStyle(element, null);
-  var elemWidth = parseInt(elemStyle.width, 10);
-  var elemHeight = parseInt(elemStyle.height, 10);
-
-  var slx = Infinity;
-  var sly = Infinity;
-  var shx = -Infinity;
-  var shy = -Infinity;
-  var toScreenPoint = vec4.create();
-
-  pointGenerator(function (x, y, z, w) {
-    toScreenPoint[0] = x;
-    toScreenPoint[1] = y;
-    toScreenPoint[2] = z;
-    toScreenPoint[3] = w;
-    renderer.transformPoint(toScreenPoint);
-    toScreenPoint[0] /= toScreenPoint[3];
-    toScreenPoint[1] /= toScreenPoint[3];
-    toScreenPoint[2] /= toScreenPoint[3];
-    if (toScreenPoint[3] > 0) {
-      slx = Math.min(slx, toScreenPoint[0]);
-      shx = Math.max(shx, toScreenPoint[0]);
-      sly = Math.min(sly, toScreenPoint[1]);
-      shy = Math.max(shy, toScreenPoint[1]);
-    }
-  });
-
-  if (shx > -1 && shy > -1 && slx < 1 && sly < 1 /* visible ) {
-    // convert to screen
-    /*
-    slx = (slx + 1) / 2 * canvasWidth;
-    //shx = (shx + 1) / 2 * canvasWidth;
-    //sly = (sly + 1) / 2 * canvasHeight;
-    shy = (shy + 1) / 2 * canvasHeight;
-    if (keepInBounds) {
-      slx = Math.max(0, Math.min(canvasWidth - elemWidth, slx));
-      shy = Math.max(0, Math.min(canvasHeight - elemHeight, shy));
-    }
-    element.style.left   = slx + "px";
-    element.style.bottom = shy + "px";
-  } else {
-    element.style.left   = canvasWidth + "px";
-  }
-}*/
-
-var TOPOLOGY_DEF = { vertices: [], edges: [], faces: [] };

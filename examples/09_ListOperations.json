@@ -6,14 +6,9 @@
             "x": 1955.3812370304377,
             "y": 2004.7902375185463,
             "inputConnectors": [],
-            "outputConnectors": [
-                {
-                    "name": "out0",
-                    "value": ""
-                }
-            ],
+            "outputConnectors": [],
             "type": "Standard",
-            "version": 1446109460554,
+            "version": 1448444135040,
             "overwrite": true
         }
     ],

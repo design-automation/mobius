@@ -13,7 +13,7 @@
                 }
             ],
             "type": "verbs",
-            "version": 1446111503570,
+            "version": 1448443328497,
             "overwrite": true
         }
     ],
@@ -43,7 +43,8 @@
                 }
             ],
             "result": "line",
-            "$$hashKey": "object:287"
+            "$$hashKey": "object:287",
+            "selected": false
         },
         {
             "id": 2,
@@ -85,7 +86,8 @@
                 }
             ],
             "result": "arc",
-            "$$hashKey": "object:375"
+            "$$hashKey": "object:375",
+            "selected": false
         },
         {
             "id": 3,
@@ -107,7 +109,8 @@
                 }
             ],
             "result": "bcurve",
-            "$$hashKey": "object:473"
+            "$$hashKey": "object:473",
+            "selected": false
         },
         {
             "id": 4,
@@ -139,7 +142,8 @@
                 }
             ],
             "result": "circ",
-            "$$hashKey": "object:561"
+            "$$hashKey": "object:561",
+            "selected": false
         },
         {
             "id": 5,
@@ -166,7 +170,8 @@
                 }
             ],
             "result": "ellipse",
-            "$$hashKey": "object:657"
+            "$$hashKey": "object:657",
+            "selected": false
         },
         {
             "id": 6,
@@ -203,7 +208,8 @@
                 }
             ],
             "result": "eArc",
-            "$$hashKey": "object:749"
+            "$$hashKey": "object:749",
+            "selected": false
         },
         {
             "id": 7,
@@ -220,7 +226,8 @@
                 }
             ],
             "result": "crv",
-            "$$hashKey": "object:847"
+            "$$hashKey": "object:847",
+            "selected": false
         },
         {
             "id": 10,
@@ -252,29 +259,31 @@
                 }
             ],
             "result": "srf3",
-            "$$hashKey": "object:1168"
+            "$$hashKey": "object:1168",
+            "selected": false
         },
         {
-            "id": 15,
+            "id": 11,
             "title": "Action",
             "nodes": [],
             "type": "new",
             "expression": "",
-            "method": "makeSurfaceAsSphere",
+            "method": "makeSphere",
             "parameters": [
                 {
                     "value": "[40,0,40]",
-                    "type": "centre",
-                    "$$hashKey": "object:2369"
+                    "type": "centrePoint",
+                    "$$hashKey": "object:2870"
                 },
                 {
                     "value": "11",
                     "type": "radius",
-                    "$$hashKey": "object:2370"
+                    "$$hashKey": "object:2871"
                 }
             ],
             "result": "sp",
-            "$$hashKey": "object:2361"
+            "$$hashKey": "object:2857",
+            "selected": true
         },
         {
             "id": 18,
@@ -283,202 +292,8 @@
             "dataName": "out0",
             "dataValue": "[line, arc, bcurve, circ, ellipse, eArc, crv, srf3, sp]",
             "type": "new",
-            "$$hashKey": "object:2669"
-        },
-        {
-            "id": 11,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "getPointOnSurface",
-            "parameters": [
-                {
-                    "value": "srf3",
-                    "type": "surface",
-                    "$$hashKey": "object:499"
-                },
-                {
-                    "value": "0.5",
-                    "type": "u",
-                    "$$hashKey": "object:500"
-                },
-                {
-                    "value": "0.5",
-                    "type": "v",
-                    "$$hashKey": "object:501"
-                }
-            ],
-            "result": "srfPnt",
-            "$$hashKey": "object:491"
-        },
-        {
-            "id": 16,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "print",
-            "parameters": [
-                {
-                    "value": "srfPnt",
-                    "type": "content",
-                    "$$hashKey": "object:1365"
-                }
-            ],
-            "$$hashKey": "object:1359"
-        },
-        {
-            "id": 12,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "getPointOnCurve",
-            "parameters": [
-                {
-                    "value": "eArc",
-                    "type": "curve",
-                    "$$hashKey": "object:659"
-                },
-                {
-                    "value": "0.5",
-                    "type": "t",
-                    "$$hashKey": "object:660"
-                }
-            ],
-            "result": "crvPnt",
-            "$$hashKey": "object:651"
-        },
-        {
-            "id": 17,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "print",
-            "parameters": [
-                {
-                    "value": "crvPnt",
-                    "type": "content",
-                    "$$hashKey": "object:1456"
-                }
-            ],
-            "$$hashKey": "object:1450"
-        },
-        {
-            "id": 13,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "getTangentAtCurveParameter",
-            "parameters": [
-                {
-                    "value": "eArc",
-                    "type": "curve",
-                    "$$hashKey": "object:814"
-                },
-                {
-                    "value": "0.5",
-                    "type": "t",
-                    "$$hashKey": "object:815"
-                }
-            ],
-            "result": "tangent",
-            "$$hashKey": "object:806"
-        },
-        {
-            "id": 18,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "print",
-            "parameters": [
-                {
-                    "value": "tangent",
-                    "type": "content",
-                    "$$hashKey": "object:1622"
-                }
-            ],
-            "$$hashKey": "object:1616"
-        },
-        {
-            "id": 14,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "getNormalAtSurfaceParameter",
-            "parameters": [
-                {
-                    "value": "srf3",
-                    "type": "surface",
-                    "$$hashKey": "object:971"
-                },
-                {
-                    "value": "0.5",
-                    "type": "u",
-                    "$$hashKey": "object:972"
-                },
-                {
-                    "value": "0.5",
-                    "type": "v",
-                    "$$hashKey": "object:973"
-                }
-            ],
-            "result": "normal",
-            "$$hashKey": "object:963"
-        },
-        {
-            "id": 19,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "print",
-            "parameters": [
-                {
-                    "value": "normal",
-                    "type": "content",
-                    "$$hashKey": "object:1712"
-                }
-            ],
-            "$$hashKey": "object:1706"
-        },
-        {
-            "id": 15,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "getCornerPointsFromSurface",
-            "parameters": [
-                {
-                    "value": "srf3",
-                    "type": "mObj",
-                    "$$hashKey": "object:1130"
-                }
-            ],
-            "result": "corners",
-            "$$hashKey": "object:1122"
-        },
-        {
-            "id": 20,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "print",
-            "parameters": [
-                {
-                    "value": "corners",
-                    "type": "content",
-                    "$$hashKey": "object:1862"
-                }
-            ],
-            "$$hashKey": "object:1856"
+            "$$hashKey": "object:2669",
+            "selected": false
         }
     ]
 ]

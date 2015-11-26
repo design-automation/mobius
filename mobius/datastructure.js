@@ -40,18 +40,58 @@ var mObj_geom = function mObj_geom( geometry, material ){
         threeTopology = undefined;
     }
 
-    // needs a TOPOLOGY_DEF
-    for(var property in TOPOLOGY_DEF){     
-        Object.defineProperty(self, property, {
-            get: function() {
-                    if( topology == undefined ){
-                        topology = computeTopology(self); 
-                    }
-                    return topology[property]; 
-            },
-            set: undefined
-        });
+     //
+    // get & set functions
+    //
+    this.getGeometry = function(){
+        return geometry;
     }
+
+    this.setGeometry = function( new_geometry ){
+        geometry = new_geometry;
+        update( true );
+    }
+
+    this.getTopology = function(){
+        if(topology == undefined)
+            topology = computeTopology( self );       
+        return topology;
+    }
+    
+    this.getData = function(){
+        return data;
+    }
+    
+    this.setData = function( new_data ){
+        data = new_data;
+    }
+
+    this.getMaterial = function(){
+        return material;
+    }
+
+    this.setMaterial = function( new_material ){
+
+        material = new_material;
+        if( threeGeometry )
+            threeGeometry.material = new_material;
+        else
+            update();
+        console.log("Material updated");
+    }
+
+    // Dynamic Topology !
+   for(var property in TOPOLOGY_DEF){
+       
+        var propFunc = new Function( 'return this.getTopology()["' + property + '"];' );
+       
+        Object.defineProperty(this, property,  {
+                get: propFunc,
+                set: undefined
+        });
+   }
+
+
 
     //
     // Functions used by Mobius or Module for the different viewers
@@ -65,21 +105,27 @@ var mObj_geom = function mObj_geom( geometry, material ){
         // if threeGeometry hasn't been computed before or native geometry has been transformed so that new conversion is required
         // the function defines it and caches it
         if( threeGeometry == undefined ){
+            
+            // means it is a solid
             if( geometry instanceof Array){
                 var threeGeometry = new THREE.Object3D(); 
                 for(var srf=0; srf < geometry.length; srf++){
                     var geom = geometry[srf];
-                    threeGeometry.add( geom.extractThreeGeometry() ); 
+                    var exGeom = geom.extractThreeGeometry();
+                    if(material)
+                        exGeom.material = material;
+                    threeGeometry.add( exGeom ); 
                 }
-            }else
+            }else{
                 threeGeometry = convertGeomToThree( geometry );  // calls a function in the module to convert native geom into accepted three format
+                if(material)
+                    threeGeometry.material = material;
+            }
+                
         }
 			 
 
         // if material has been assigned to this data object, assigns the same material to the converted geometry
-        if(material)
-            threeGeometry.material = material;
-
         threeGeometry.is_mObj = true;
 
         return threeGeometry;
@@ -149,42 +195,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
     }
 
 
-    //
-    // get & set functions
-    //
-    this.getGeometry = function(){
-        return geometry;
-    }
-
-	this.setGeometry = function( new_geometry ){
-		geometry = new_geometry;
-        update( true );
-	}
-
-    this.getTopology = function(){
-        if(topology == undefined)
-            topology = computeTopology();
-        return topology;
-    }
-    
-	this.getData = function(){
-		return data;
-	}
-	
-	this.setData = function( new_data ){
-		data = new_data;
-	}
-
-    this.getMaterial = function(){
-        return material;
-    }
-
-    this.setMaterial = function( new_material ){
-
-        material = new_material;
-        if( threeGeometry )
-            threeGeometry.material = new_material;
-    }
+   
 
     // topology is always computed 
     update();
@@ -194,18 +205,18 @@ var mObj_geom = function mObj_geom( geometry, material ){
 var mObj_geom_Vertex = function mObj_geom_Vertex( geometry ){
    var defaultVertexMaterial = new THREE.PointsMaterial( { size: 5, sizeAttenuation: false } );
     
-    mObj_geom.call( this, geometry, defaultVertexMaterial ); 
+    mObj_geom.call( this, geometry, defaultVertexMaterial  ); 
 }
  
 var mObj_geom_Curve = function mObj_geom_Curve( geometry ){
-	
+    
     var defaultCurveMaterial = new THREE.LineBasicMaterial({
     side: THREE.DoubleSide,
     linewidth: 100,
     color: 0x003399
     });
 	
-    mObj_geom.call( this, geometry, defaultCurveMaterial ); 
+    mObj_geom.call( this, geometry, defaultCurveMaterial  ); 
 	
 }
 
@@ -219,18 +230,18 @@ var mObj_geom_Surface = function mObj_geom_Surface( geometry ){
     color: 0x003399
     } );
 
-	mObj_geom.call( this, geometry, defaultSurfaceMaterial );
+	mObj_geom.call( this, geometry, defaultSurfaceMaterial  );
 
 }
 
-var mObj_geom_Solid = function mObj_geom_Solid( geometry ){
+var mObj_geom_Solid = function mObj_geom_Solid( geometry){
 	
     var defaultSolidMaterial = new THREE.MeshLambertMaterial( {
     side: THREE.DoubleSide,
     wireframe: false,
     shading: THREE.SmoothShading,
     transparent: false,
-    color: 0xCC0000
+    color: 0xCC6600
     } );
 
 	mObj_geom.call( this, geometry, defaultSolidMaterial );
