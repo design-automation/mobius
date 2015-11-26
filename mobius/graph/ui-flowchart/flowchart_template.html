@@ -202,9 +202,10 @@
         <body xmlns="http://www.w3.org/1999/xhtml">
             <div ng-controller="newNodeCtrl" id = "node-creator" style="width:180px; ">
                 <ui-select ng-model="type.selected"
+                           focus-on='SetFocus'
                                append-to-body = "true"
                                on-select="addNewNode(this.type.selected)">
-                    <ui-select-match placeholder="New node" >{{$select.selected}}</ui-select-match>
+                    <ui-select-match  id = "node-dropdown" placeholder="New node" >{{$select.selected}}</ui-select-match>
                     <ui-select-choices repeat="type in nodeTypes()| filter: $select.search">
                         <span ng-bind-html="type| highlight: $select.search"></span>
                     </ui-select-choices>

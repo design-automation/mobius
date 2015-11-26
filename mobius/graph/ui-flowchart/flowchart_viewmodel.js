@@ -1039,7 +1039,6 @@ var flowchart = {
 
 					var flag = true;
 
-					// connected node is not deleted
 					for(var i = 0; i < deletedInputConnectors.length; i ++){
 						if(deletedInputConnectors[i].nodeId === connection.data.dest.nodeID &&
 							deletedInputConnectors[i].inputConnectorIndex === connection.data.dest.connectorIndex){
@@ -1051,6 +1050,7 @@ var flowchart = {
 						if(deletedOutputConnectors[j].nodeId === connection.data.source.nodeID &&
 							deletedOutputConnectors[j].outputConnectorIndex === connection.data.source.connectorIndex){
 							flag = false;
+							// connection will be deleted, so reset the current connected input connector
 							this.findInputConnector(connection.data.dest.nodeID,connection.data.dest.connectorIndex)
 									.data.connected=false;
 						}
@@ -1070,29 +1070,19 @@ var flowchart = {
 				}
 			}
 
+			// Update nodes
+			this.nodes = newNodeViewModels;
+			this.data.nodes = newNodeDataModels;
 
-			//
-            // @ vidamo
-			// todo rethink of the id/ sort/ update implementation
-			//
+			// update connections
+			this.connections = newConnectionViewModels;
+			this.data.connections = newConnectionDataModels;
 
-			// Update the node index
-            for(var i = 0; i < this.nodes.length ;i++){
 
-				var decreaseIn = 0;
-
-				for(j = 0; j <deletedNodeIds.length; j++){
-					if(this.nodes[i].data.id > deletedNodeIds[j]){
-						decreaseIn ++;
-					}
-				}
-
-				this.nodes[i].data.id = this.nodes[i].data.id - decreaseIn;
-            }
 
 
 			//
-			// @ vidamo update the connection id for connectors
+			// @ mobius update the connection id for connectors
 			//
 
 			for(var i = 0; i < this.connections.length; i++){
@@ -1126,6 +1116,22 @@ var flowchart = {
 				}
 			}
 
+
+			// Update the node index
+			for(var i = 0; i < this.nodes.length ;i++){
+
+				var decreaseIn = 0;
+
+				for(j = 0; j <deletedNodeIds.length; j++){
+					if(this.nodes[i].data.id > deletedNodeIds[j]){
+						decreaseIn ++;
+					}
+				}
+
+				this.nodes[i].data.id = this.nodes[i].data.id - decreaseIn;
+			}
+
+
 			//
 			// @ vidamo update the connection id for nodes
 			//
@@ -1154,15 +1160,8 @@ var flowchart = {
 				this.connections[i].data.dest.nodeID = this.connections[i].data.dest.nodeID - destDecreaseIn;
 			}
 
-
-			// Update nodes and connections.
-			this.nodes = newNodeViewModels;
-			this.data.nodes = newNodeDataModels;
-			this.connections = newConnectionViewModels;
-			this.data.connections = newConnectionDataModels;
-
 			//
-			// @ vidamo
+			// @ mobius
 			//
 			// update edgeList for topological sort
 			edgeList = [];
