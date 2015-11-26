@@ -61,6 +61,33 @@ vidamo.controller('nodeMenuCtrl',['$scope','$rootScope','generateCode',
             return true;
         };
 
+        $scope.disableAddInput = function(){
+            if($scope.inputs){
+                for(var i = 0; i < $scope.inputs.length; i++){
+                    if($scope.checkDupInput($scope.inputs[i])){
+                        return true;
+                    }
+                }
+                return false;
+            }else{
+                return false;
+            }
+        };
+
+        $scope.disableAddOutput = function(){
+            if($scope.procedures){
+                for(var i = 0; i < $scope.procedures.length; i++){
+                    if($scope.checkDupOutput($scope.procedures[i])){
+                        return true;
+                    }
+                }
+                return false;
+            }else{
+                return false;
+            }
+
+        };
+
         $scope.checkDupInput  = function(input){
             if($scope.chartViewModel.nodes[$scope.nodeIndex] !== undefined){
                 var inputs = $scope.chartViewModel.nodes[$scope.nodeIndex].data.inputConnectors;

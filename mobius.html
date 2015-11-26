@@ -369,7 +369,7 @@
                 <ul class="dropdown-menu">
                     <li class="dropdown-submenu">
                         <a> Show Input </a>
-                        <ul class="dropdown-menu" >
+                        <ul class="dropdown-menu" ng-if="disableAddInput()">
                             <li ng-repeat="input in inputs"
                                 ng-if="input.title ==='Input' && checkDupInput(input)"
                                 ng-click="addInputConnector(input)">
@@ -380,7 +380,7 @@
 
                     <li class="dropdown-submenu" >
                         <a> Show Output </a>
-                        <ul class="dropdown-menu ">
+                        <ul class="dropdown-menu " ng-if="disableAddOutput()">
                             <li ng-repeat="procedure in procedures"
                                 ng-if="procedure.title ==='Output' && checkDupOutput(procedure)"
                                 ng-click="addOutputConnector(procedure)"
