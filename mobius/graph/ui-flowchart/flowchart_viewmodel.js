@@ -1116,10 +1116,6 @@ var flowchart = {
 				}
 			}
 
-			//
-			// @ vidamo
-			// todo rethink of the id/ sort/ update implementation
-			//
 
 			// Update the node index
 			for(var i = 0; i < this.nodes.length ;i++){

@@ -38,31 +38,31 @@ vidamo.controller('graphCtrl',[
         // synchronization with vidamo application data pool
 
         // generated javascript code
-        $scope.javascriptCode = generateCode.getJavascriptCode();
-        $scope.$watch('javascriptCode', function () {
-            generateCode.setJavascriptCode($scope.javascriptCode);
-        },true);
-        $scope.$watch(function () { return generateCode.getJavascriptCode(); }, function () {
-            $scope.javascriptCode = generateCode.getJavascriptCode();
-        },true);
+        //$scope.javascriptCode = generateCode.getJavascriptCode();
+        //$scope.$watch('javascriptCode', function () {
+        //    generateCode.setJavascriptCode($scope.javascriptCode);
+        //},true);
+        //$scope.$watch(function () { return generateCode.getJavascriptCode(); }, function () {
+        //    $scope.javascriptCode = generateCode.getJavascriptCode();
+        //},true);
 
         // inner function code for procedures
-        $scope.innerCodeList = generateCode.getInnerCodeList();
-        $scope.$watch('innerCodeList', function () {
-            generateCode.setInnerCodeList($scope.innerCodeList);
-        },true);
-        $scope.$watch(function () { return generateCode.getInnerCodeList(); }, function () {
-            $scope.innerCodeList = generateCode.getInnerCodeList();
-        },true);
+        //$scope.innerCodeList = generateCode.getInnerCodeList();
+        //$scope.$watch('innerCodeList', function () {
+        //    generateCode.setInnerCodeList($scope.innerCodeList);
+        //},true);
+        //$scope.$watch(function () { return generateCode.getInnerCodeList(); }, function () {
+        //    $scope.innerCodeList = generateCode.getInnerCodeList();
+        //},true);
 
         // outer function code for procedures
-        $scope.outerCodeList = generateCode.getOuterCodeList();
-        $scope.$watch('outerCodeList', function () {
-            generateCode.setOuterCodeList($scope.outerCodeList);
-        },true);
-        $scope.$watch(function () { return generateCode.getOuterCodeList(); }, function () {
-            $scope.outerCodeList = generateCode.getOuterCodeList();
-        },true);
+        //$scope.outerCodeList = generateCode.getOuterCodeList();
+        //$scope.$watch('outerCodeList', function () {
+        //    generateCode.setOuterCodeList($scope.outerCodeList);
+        //},true);
+        //$scope.$watch(function () { return generateCode.getOuterCodeList(); }, function () {
+        //    $scope.outerCodeList = generateCode.getOuterCodeList();
+        //},true);
 
         // procedure data list
         $scope.dataList = generateCode.getDataList();
@@ -99,7 +99,6 @@ vidamo.controller('graphCtrl',[
 
         $scope.outputGeom =[];
 
-        // fixme shall it be watching true
         $scope.$watch(function () { return generateCode.getOutputGeom(); }, function () {
             $scope.outputGeom = generateCode.getOutputGeom();
         });
@@ -301,8 +300,8 @@ vidamo.controller('graphCtrl',[
                 for(var i = deletedObj.deletedNodeIds.length -1; i >= 0 ; i--){
                     // update scene data structure
                     $scope.dataList.splice(deletedObj.deletedNodeIds[i],1);
-                    $scope.innerCodeList.splice(deletedObj.deletedNodeIds[i],1);
-                    $scope.outerCodeList.splice(deletedObj.deletedNodeIds[i],1);
+                    //$scope.innerCodeList.splice(deletedObj.deletedNodeIds[i],1);
+                    //$scope.outerCodeList.splice(deletedObj.deletedNodeIds[i],1);
                     $scope.interfaceList.splice(deletedObj.deletedNodeIds[i],1);
                 }
             }

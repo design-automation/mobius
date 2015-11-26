@@ -6,9 +6,30 @@
 vidamo.controller('nodeMenuCtrl',['$scope','$rootScope','generateCode',
     function($scope,$rootScope,generateCode) {
 
+        // procedure data list
         $scope.dataList = generateCode.getDataList();
-        $scope.interfaceList = generateCode.getInterfaceList();
+
+        $scope.$watch(function () { return generateCode.getDataList(); }, function () {
+            $scope.dataList = generateCode.getDataList();
+        },true);
+
+        // interface data list
+
+        $scope.interfaceList= generateCode.getInterfaceList();
+
+        $scope.$watch(function () { return generateCode.getInterfaceList(); }, function () {
+            $scope.interfaceList= generateCode.getInterfaceList();
+        },true);
+
+        // graph flowchart view model
         $scope.chartViewModel= generateCode.getChartViewModel();
+
+        $scope.$watch(function () { return generateCode.getChartViewModel(); }, function () {
+            if(generateCode.getChartViewModel() !== $scope.chartViewModel){
+                $scope.chartViewModel= generateCode.getChartViewModel();
+            }
+        });
+
 
         $scope.$watch(function () {
             return generateCode.getNodeIndex();

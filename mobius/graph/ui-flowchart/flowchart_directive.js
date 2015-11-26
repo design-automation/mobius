@@ -279,6 +279,8 @@ angular.module('flowChart', ['dragging'] )
 	//
 	$scope.doubleClick = function(evt){
 
+		//$scope.$broadcast('SetFocus');
+
         // make sure double click not on node/connection
         // todo
 
@@ -295,6 +297,13 @@ angular.module('flowChart', ['dragging'] )
 
 		// enable dropdown
 		document.getElementById("node-creator").style.display = "inline-block";
+
+		var ele = document.getElementById("node-dropdown");
+
+		setTimeout(function(){
+			console.log(angular.element(ele).find('input'))
+			angular.element(ele).find('input').click();
+		},0);
 
         // node location
         $scope.chart.newPos.x = dBclickPoint.x * (1/$scope.scaleFactor);
