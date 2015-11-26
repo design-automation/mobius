@@ -253,9 +253,12 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.getCentre = function(mObj){
 		//calculate centre based on what kind of object
-		var geometry = mObj.getGeometry();
+		var geometry = mObj.getGeometry();  
 
-		if(geometry instanceof verb.geom.NurbsCurve)
+		if(geometry.center != undefined){
+			return geometry.center();
+		}
+		else if(geometry instanceof verb.geom.NurbsCurve)
 			return geometry.point(0.5);
 		else if(geometry instanceof verb.geom.NurbsSurface)
 			return geometry.point(0.5, 0.5);
@@ -570,35 +573,6 @@ var VIDAMO = ( function (mod){
 	 * @param {array} axis - Axis Direction of the cylinder in [x,y,z] format
 	 * @param {array} xaxis - Direction of x-axis of cylinder in [x,y,z] format
 	 * @returns {MobiusDataObject}  - NURBS Surface
-	 
-	mod.makeBox = function( centrePoint, length, breadth, height){
-		
-		var allSurfaces = []; 
-		
-		var topFace = VIDAMO.makeSurfaceByCorners([length/2, height/2, breadth/2],[length/2, height/2, -breadth/2],[-length/2, height/2, -breadth/2],[-length/2, height/2, breadth/2]);
-		var bottomFace = VIDAMO.makeSurfaceByCorners([length/2, -height/2, breadth/2],[length/2, -height/2, -breadth/2],[-length/2, -height/2, -breadth/2],[-length/2, -height/2, breadth/2]);
-		var frontFace = VIDAMO.makeSurfaceByCorners([-length/2, -height/2, breadth/2],[length/2, -height/2, breadth/2],[ length/2, height/2, breadth/2],[ -length/2, height/2, breadth/2]);
-		var backFace = VIDAMO.makeSurfaceByCorners([-length/2, -height/2, -breadth/2],[length/2, -height/2, -breadth/2],[ length/2, height/2, -breadth/2],[ -length/2, height/2, -breadth/2]);
-		var rightFace = VIDAMO.makeSurfaceByCorners([length/2, -height/2, breadth/2],[length/2, -height/2, -breadth/2],[length/2, height/2, -breadth/2],[length/2, height/2, breadth/2]);
-		var leftFace = VIDAMO.makeSurfaceByCorners([-length/2, -height/2, breadth/2],[-length/2, -height/2, -breadth/2],[-length/2, height/2, -breadth/2],[-length/2, height/2, breadth/2]);
-		
-		allSurfaces = [topFace, bottomFace, frontFace, backFace, leftFace, rightFace];
-
-		var vertices = topFace.vertices.concat(bottomFace.vertices);
-		var edges = topFace.edges.concat(bottomFace.edge);
-		var faces = allSurfaces;
-		var topology = { vertices: vertices, 
-						 edges: edges, 
-						 faces: faces }; console.log(topology);
-		
-		return new mObj_geom_Solid( allSurfaces, undefined, topology );
-	}; */
-
-	/**
-	 * Returns a MobiusDataObject containing a NURBS Surface
-	 * @param {array} axis - Axis Direction of the cylinder in [x,y,z] format
-	 * @param {array} xaxis - Direction of x-axis of cylinder in [x,y,z] format
-	 * @returns {MobiusDataObject}  - NURBS Surface
 	 */	
 	mod.makeTube = function( centrePoint, innerRadius, outerRadius, height){
 		
@@ -869,24 +843,14 @@ var VIDAMO = ( function (mod){
 		newcopy.setData( mObj.getData() );
 		newcopy.setMaterial( mObj.getMaterial() );
 
+		// if verbs object, has to be copied and translated
+		if(xCoord != undefined && yCoord != undefined && zCoord != undefined){
+			VIDAMO.moveObjectToPoint(new_mObj, xCoord, yCoord, zCoord);
+		}
+			
+
 		return newcopy;
 		
-/*		var clone = new Object();
-		return Object.assign( clone, mObj );*/
-		
-		// var new_mObj = new MobiusDataObject( mObj.getGeometry() );
-		
-		// attach data
-		// if(mObj.data != undefined)
-			// VIDAMO.addData(new_mObj, mObj.data);
-
-		// if verbs object, has to be copied and translated
-		// if(mObj.getGeometry() instanceof verb.geom.NurbsCurve || mObj.getGeometry() instanceof verb.geom.NurbsSurface){
-			// if(xCoord != undefined && yCoord != undefined && zCoord != undefined)
-				// VIDAMO.moveObjectToPoint(new_mObj, xCoord, yCoord, zCoord);
-		// }
-		
-		// return new_mObj; //needs to be sorted out
 	};
 
 	/**
@@ -908,17 +872,21 @@ var VIDAMO = ( function (mod){
 				VIDAMO.shiftObject(mObj[obj], shiftX, shiftY, shiftZ);	
 		}
 
-		var geometry = mObj.getGeometry(); 
-		if(geometry instanceof verb.geom.NurbsCurve || geometry instanceof verb.geom.NurbsSurface){
-
-			var mat = [ [1,0,0, shiftX],
+		var geom = mObj.getGeometry();
+		
+		var mat = [ [1,0,0, shiftX],
 							[0,1,0,shiftY],
 								[0,0,1, shiftZ],
 									[0,0,0,1]
 						];
-			var transformedGeometry = geometry.transform( mat );
-			mObj.setGeometry(transformedGeometry); 
+		var transformedGeometry = geom.transform( mat );
+		
+		if(geom.center != undefined){ 
+			var centre = VIDAMO.getCentre( mObj );
+			transformedGeometry.center = function(){ return [ centre[0]+shiftX, centre[1]+shiftY, centre[2]+shiftZ ] }
 		}
+				
+		mObj.setGeometry( transformedGeometry ); 
 		
 		//return mObj;
 	};
@@ -940,19 +908,16 @@ var VIDAMO = ( function (mod){
 			for(var obj=0; obj < mObj.length; obj++)
 				VIDAMO.moveObjectToPoint(mObj[obj], xCoord, yCoord, zCoord);	
 		}
-
-		if(mObj.getGeometry() instanceof verb.geom.NurbsCurve || mObj.getGeometry() instanceof verb.geom.NurbsSurface){
+	
+		var orCenter = VIDAMO.getCentre(mObj);
 			
-			var orCenter = VIDAMO.getCentre(mObj);
-			
-			// translation required
-			var target = [xCoord, yCoord, zCoord];
-			var tx = target[0] - orCenter[0];
-			var ty = target[1] - orCenter[1];
-			var tz = target[2] - orCenter[2]; 
-			
-			VIDAMO.shiftObject( mObj, tx, ty, tz );		
-		}
+		// translation required
+		var target = [xCoord, yCoord, zCoord];
+		var tx = target[0] - orCenter[0];
+		var ty = target[1] - orCenter[1];
+		var tz = target[2] - orCenter[2]; 
+		
+		VIDAMO.shiftObject( mObj, tx, ty, tz );		
 	};
 
 	/**
@@ -973,22 +938,15 @@ var VIDAMO = ( function (mod){
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
 		var geom = mObj.getGeometry();
-		if(geom instanceof verb.geom.NurbsCurve || geom instanceof verb.geom.NurbsSurface){
-
-			var centre = VIDAMO.getCentre(mObj);
 			
-			var mat = [ [scaleX, 0, 0, 0],
+		var mat = [ [scaleX, 0, 0, 0],
 							[0,scaleY,0,0],
 								[0,0,scaleZ,0],
 									[0,0,0,1]
-						];
+					];
 			
-			mObj.setGeometry(  geom.transform(mat) );
-			
-			// shift to original centre point
-			VIDAMO.moveObjectToPoint(mObj, centre[0], centre[1], centre[2]);
-
-		}
+		var transformedGeometry = geom.transform(mat);
+		mObj.setGeometry( transformedGeometry );
 	};
 
 	/**
@@ -1029,11 +987,14 @@ var VIDAMO = ( function (mod){
 									[0,	0,	0,	1]
 						];
 			
-			geom = geom.transform(mat_x);
-			geom = geom.transform(mat_y);
-			geom = geom.transform(mat_z);
+			var transformedGeometry = geom.transform(mat_x).transform(mat_y).transform(mat_z);
+
+			// if the object is scaled, the object centre remains the same and needs to be redefined
+			if(geom.center != undefined)
+				transformedGeometry.center = function(){ return VIDAMO.getCentre( mObj ) }
+
 			mObj.setGeometry( geom );
-			
+		
 			// shift to original centre point
 			VIDAMO.moveObjectToPoint(mObj, centre[0], centre[1], centre[2]);
 		}
@@ -1055,7 +1016,7 @@ var VIDAMO = ( function (mod){
 	 * @param {boolean} transparent - 'True' if transparency is required. 
 	 * @returns null
 	 */
-	mod.addMaterial = function(obj, material_type, wireframe, color, transparent){
+	mod.addMaterial = function(obj, material_type, wireframe, color_hex, transparent){
 		var option = {	wireframe: wireframe,
 			color: color,
 			transparent: transparent,
@@ -1092,16 +1053,6 @@ var VIDAMO = ( function (mod){
 				obj.setData( new_data );
 		}
 	};
-
-	//
-	//
-	//	topotesting functions
-	//
-	//
-	mod.showTopo = function( mObj, topoElement ){
-		return mObj[topoElement];
-	};
-
 
 	//Could be shifted to MobiusSide
 
