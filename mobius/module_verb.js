@@ -255,9 +255,8 @@ var VIDAMO = ( function (mod){
 		//calculate centre based on what kind of object
 		var geometry = mObj.getGeometry();  
 
-		if(geometry.center != undefined){
+		if(geometry.center != undefined)
 			return geometry.center();
-		}
 		else if(geometry instanceof verb.geom.NurbsCurve)
 			return geometry.point(0.5);
 		else if(geometry instanceof verb.geom.NurbsSurface)
@@ -281,6 +280,18 @@ var VIDAMO = ( function (mod){
 		var distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
 		return distance;
 	};
+
+
+	/**
+	 * Returns the distance between two points or position vectors
+	 * @param {point / MobiusDataObject} point - [x, y , z] or MobiusDataObject with PositionVector
+	 * @returns {float} Distance 
+	 */
+	mod.getMidPoint = function( point1, point2){
+		return [ (point1[0] + point2[0])/2, (point1[1] + point2[1])/2, (point1[2] + point2[2])/2 ];
+	};	
+
+
 
 	/**
 	 * Returns the length of a MobiusDataObject containing a PositionVector or a NURBS Curve
@@ -427,20 +438,6 @@ var VIDAMO = ( function (mod){
 	};
 
 	/**
-	 *
-	 *@param
-	 *@returns
-	 */
-	mod.makeCircle = function( centrePoint, radius ){
-
-		var deg = 2;
-		var knots = [0, 0, 0, 1, 1, 1];
-		var controlPoints = [[10,0,0], [10,0,10], [0,0,10]];
-		var weights = [0.7, 1, 0.7];
-		return new mObj_geom_Surface( new verb.geom.NurbsSurface.byKnotsControlPointsWeights( deg,deg,knots,knots,controlPoints,weights ) ) ;
-	};
-
-	/**
 	 * Returns a MobiusDataObject containing a NURBS Surface
 	 * @param {array} point - Corner points in [x,y,z] format
 	 * @returns {MobiusDataObject}  - NURBS Surface
@@ -511,6 +508,19 @@ var VIDAMO = ( function (mod){
 		// topology : single surface - cant be exploded
 		// brep : face -> surface (1); edges -> boundaries (4) ; vertex -> corner points (4)
 	};
+
+
+	/**
+	 *
+	 *@param
+	 *@returns
+	 */
+	mod.makeCircle = function( centrePoint, radius ){
+
+		var radialLine = VIDAMO.makeLine( centrePoint, [centrePoint[0]+radius, centrePoint[1], centrePoint[2]] );
+		return VIDAMO.makeSurfaceByRevolution( radialLine, centrePoint, [0,1,0] );
+	};
+
 
 
 	
@@ -593,6 +603,10 @@ var VIDAMO = ( function (mod){
 		}
 
 		return new mObj_geom_Solid( solid );
+	};
+
+	mod.makeSolidBySurfaces = function( array_of_surfaces ){
+		return new mObj_geom_Solid( array_of_surfaces );
 	};
 
 	//
@@ -845,7 +859,7 @@ var VIDAMO = ( function (mod){
 
 		// if verbs object, has to be copied and translated
 		if(xCoord != undefined && yCoord != undefined && zCoord != undefined){
-			VIDAMO.moveObjectToPoint(new_mObj, xCoord, yCoord, zCoord);
+			VIDAMO.moveObjectToPoint(newcopy, xCoord, yCoord, zCoord);
 		}
 			
 
@@ -993,7 +1007,7 @@ var VIDAMO = ( function (mod){
 			if(geom.center != undefined)
 				transformedGeometry.center = function(){ return VIDAMO.getCentre( mObj ) }
 
-			mObj.setGeometry( geom );
+			mObj.setGeometry( transformedGeometry );
 		
 			// shift to original centre point
 			VIDAMO.moveObjectToPoint(mObj, centre[0], centre[1], centre[2]);
@@ -1269,7 +1283,7 @@ var computeTopology = function( mObj ){
 		}
 
 		// remove clones - doesn't do well with the edges :/
-		topology.vertices = removeClonesInList( topology.vertices );
+		topology.vertices = removeClonesInList( topology.vertices ); 
 		topology.edges = removeClonesInList( topology.edges );
 		topology.faces = removeClonesInList( topology.faces ); 
 	}
@@ -1293,16 +1307,36 @@ var removeClonesInList = function( list ){
 		
 		for(var v=0; v < list.length; v++){
 
-			var thisObject = JSON.stringify( list[v].getGeometry() ); 
+			var thisObject = list[v].getGeometry() ; 
 			var duplicate = false;
-			
+			console.log(thisObject);
 			for(nextV=v+1; nextV < list.length; nextV++){
 			
-				var nextObject = JSON.stringify( list[nextV].getGeometry() ); 
-			
-				if( thisObject == nextObject ){
-					duplicate = true; 
-					break;
+				var nextObject = list[nextV].getGeometry() ; 
+
+				if(thisObject._data != undefined)
+					thisObject = thisObject._data;
+				if (nextObject._data != undefined)		
+					nextObject = nextObject._data; 
+
+				if( thisObject.constructor.name == "Array" ){ 
+					if( JSON.stringify( thisObject ) == JSON.stringify( nextObject ) ){
+						duplicate = true; console.log(thisObject);
+						break; 
+					}
+				}else{
+						for(property in thisObject){
+							if(thisObject.hasOwnProperty(property)){ 
+								if(thisObject[property] != nextObject[property]){
+									duplicate = false; 
+									break;
+								}
+								else
+									duplicate = true;	
+							}
+						}
+					if(!duplicate)
+						break;	
 				}
 			}
 			
