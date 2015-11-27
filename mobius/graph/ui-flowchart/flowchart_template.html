@@ -85,8 +85,8 @@
         />
 
         <text
-                ng-attr-x="{{node.width()/2}}"
-                ng-attr-y="{{-node.height()/3}}"
+                ng-attr-x="{{connector.x()}}"
+                ng-attr-y="{{connector.y()-13}}"
                 text-anchor="middle"
                 alignment-baseline="middle"
                 class = "connector-text">
@@ -111,8 +111,8 @@
             />
 
       <text
-        ng-attr-x="{{node.width()/2}}"
-        ng-attr-y="{{4*node.height()/3}}"
+        ng-attr-x="{{connector.x()}}"
+        ng-attr-y="{{connector.y()+13}}"
         text-anchor="middle"
         alignment-baseline="middle"
         class = "connector-text"

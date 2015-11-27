@@ -136,9 +136,6 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
 
         // watch change of procedure data tree, if change update the flattenData, update version
-        $scope.$watch('interfaceList',function(){
-            generateCode.generateCode();
-        },true);
 
         $scope.$watch('data',function(){
             updateVersion();
@@ -147,7 +144,9 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         } , true);
 
 
-        $scope.$watch('interfaceList',function(){
+
+        $scope.$watch('interface',function(){
+            updateVersion();
             generateCode.generateCode();
             flattenData();
         },true);
@@ -159,14 +158,22 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                 var currentType = $scope.chartViewModel.nodes[$scope.nodeIndex].data.type;
 
                 var currentProcedure = $scope.data;
-                var typeProcedure = nodeCollection.getProcedureDataModel(currentType);
+                var currentInterface = $scope.interface;
 
-                if(!angular.equals(currentProcedure,typeProcedure)){
+                var typeProcedure = nodeCollection.getProcedureDataModel(currentType);
+                var typeInterface = nodeCollection.getInterfaceDataModel(currentType);
+
+                if(!angular.equals(currentProcedure,typeProcedure) ||
+                    !angular.equals(currentInterface,typeInterface) ){
                     var d = new Date();
                     $scope.chartViewModel.nodes[$scope.nodeIndex].data.version = d.getTime();
                 }
+
+
+                $scope.currentNodeVersion = $scope.chartViewModel.nodes[$scope.nodeIndex].data.version === 0?'':'*';
             }
         }
+
         function flattenData(){
             // flatten the procedure three for data searching
             var i, l,

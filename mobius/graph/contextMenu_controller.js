@@ -85,7 +85,6 @@ vidamo.controller('nodeMenuCtrl',['$scope','$rootScope','generateCode',
             }else{
                 return false;
             }
-
         };
 
         $scope.checkDupInput  = function(input){

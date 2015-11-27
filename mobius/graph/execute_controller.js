@@ -42,13 +42,13 @@ vidamo.controller('executeCtrl',['$scope','$rootScope','consoleMsg','generateCod
 
 
         $rootScope.$on('runNewScene',function(){
-            $scope.run();
+            consoleMsg.execMsg().then(function(){
+                    $scope.run();
+                })
         });
 
 
-
         $scope.run = function(){
-
 
             // clean output buffer
             $scope.outputs = [];
@@ -64,7 +64,6 @@ vidamo.controller('executeCtrl',['$scope','$rootScope','consoleMsg','generateCod
 
 
             try{
-
                 $scope.outputs = new Function(   $scope.javascriptCode
                     + $scope.geomListCode
                     + '\n return VIDAMO.dataConversion(geomList);')();
