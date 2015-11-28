@@ -98,7 +98,7 @@
                 }
             ],
             "type": "allCurvePoints",
-            "version": 1448697460212,
+            "version": 1448698511781,
             "overwrite": true
         },
         {
@@ -118,32 +118,6 @@
                     "color": "#000000",
                     "$$hashKey": "object:6893",
                     "selected": false
-                },
-                {
-                    "id": 2,
-                    "title": "Input",
-                    "name": "amplitude",
-                    "connected": false,
-                    "dataValue": "5",
-                    "option": {
-                        "name": "none"
-                    },
-                    "color": "#000000",
-                    "$$hashKey": "object:15105",
-                    "selected": false
-                },
-                {
-                    "id": 3,
-                    "title": "Input",
-                    "name": "frequency",
-                    "connected": false,
-                    "dataValue": "5",
-                    "option": {
-                        "name": "none"
-                    },
-                    "color": "#000000",
-                    "$$hashKey": "object:17991",
-                    "selected": true
                 }
             ],
             "outputConnectors": [
@@ -158,7 +132,7 @@
                 }
             ],
             "type": "createCylPoints",
-            "version": 1448697241539,
+            "version": 1448701209721,
             "overwrite": true
         },
         {
@@ -225,7 +199,7 @@
                 }
             ],
             "type": "spiral",
-            "version": 1448697246475,
+            "version": 1448698440405,
             "overwrite": true
         },
         {
@@ -272,7 +246,7 @@
                 }
             ],
             "type": "tubes",
-            "version": 1448697325456,
+            "version": 1448698500085,
             "overwrite": true
         }
     ],
@@ -725,33 +699,6 @@
                     "selected": false
                 },
                 {
-                    "id": 3,
-                    "title": "Action",
-                    "nodes": [],
-                    "expression": "",
-                    "method": "makeSequence",
-                    "parameters": [
-                        {
-                            "value": "0",
-                            "type": "start",
-                            "$$hashKey": "object:8729"
-                        },
-                        {
-                            "value": "360*frequency*height",
-                            "type": "end",
-                            "$$hashKey": "object:8730"
-                        },
-                        {
-                            "value": "360*frequency*height/ (n)",
-                            "type": "stepSize",
-                            "$$hashKey": "object:8731"
-                        }
-                    ],
-                    "result": "angleSeq",
-                    "$$hashKey": "object:8716",
-                    "selected": false
-                },
-                {
                     "id": 4,
                     "title": "Control",
                     "nodes": [
@@ -840,7 +787,7 @@
             "dataName": "seq",
             "forList": "allSeq",
             "$$hashKey": "object:2072",
-            "selected": false
+            "selected": true
         }
     ],
     [
@@ -1243,7 +1190,7 @@
             "title": "Input",
             "name": "num_of_spirals",
             "connected": false,
-            "dataValue": "5",
+            "dataValue": "15",
             "option": {
                 "name": "slider",
                 "$$hashKey": "object:822"
@@ -1284,32 +1231,6 @@
             },
             "color": "#000000",
             "$$hashKey": "object:6893",
-            "selected": false
-        },
-        {
-            "id": 2,
-            "title": "Input",
-            "name": "amplitude",
-            "connected": false,
-            "dataValue": "30",
-            "option": {
-                "name": "none"
-            },
-            "color": "#000000",
-            "$$hashKey": "object:15105",
-            "selected": true
-        },
-        {
-            "id": 3,
-            "title": "Input",
-            "name": "frequency",
-            "connected": false,
-            "dataValue": "5",
-            "option": {
-                "name": "none"
-            },
-            "color": "#000000",
-            "$$hashKey": "object:17991",
             "selected": false
         }
     ],

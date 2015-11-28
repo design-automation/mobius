@@ -98,7 +98,7 @@
                 }
             ],
             "type": "allCurvePoints",
-            "version": 1448698511781,
+            "version": 1448701455005,
             "overwrite": true
         },
         {
@@ -118,6 +118,40 @@
                     "color": "#000000",
                     "$$hashKey": "object:6893",
                     "selected": false
+                },
+                {
+                    "id": 2,
+                    "title": "Input",
+                    "name": "amplitude",
+                    "connected": false,
+                    "dataValue": "3",
+                    "option": {
+                        "name": "slider",
+                        "$$hashKey": "object:5265"
+                    },
+                    "color": "#000000",
+                    "$$hashKey": "object:1658",
+                    "selected": true,
+                    "min": "1",
+                    "max": "15",
+                    "step": "1"
+                },
+                {
+                    "id": 3,
+                    "title": "Input",
+                    "name": "frequency",
+                    "connected": false,
+                    "dataValue": "1.2",
+                    "option": {
+                        "name": "slider",
+                        "$$hashKey": "object:5265"
+                    },
+                    "color": "#000000",
+                    "$$hashKey": "object:1681",
+                    "selected": false,
+                    "min": "0",
+                    "max": "5",
+                    "step": "0.2"
                 }
             ],
             "outputConnectors": [
@@ -132,7 +166,7 @@
                 }
             ],
             "type": "createCylPoints",
-            "version": 1448698598731,
+            "version": 1448701420282,
             "overwrite": true
         },
         {
@@ -166,7 +200,7 @@
                 }
             ],
             "type": "convertCylToCartesian",
-            "version": 1448697243614,
+            "version": 1448699010693,
             "overwrite": true
         },
         {
@@ -199,7 +233,7 @@
                 }
             ],
             "type": "spiral",
-            "version": 1448698440405,
+            "version": 1448699009197,
             "overwrite": true
         },
         {
@@ -246,7 +280,7 @@
                 }
             ],
             "type": "tubes",
-            "version": 1448698500085,
+            "version": 1448701425499,
             "overwrite": true
         }
     ],
@@ -726,6 +760,34 @@
                     "selected": false
                 },
                 {
+                    "id": 3,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "expression": "",
+                    "method": "makeSequence",
+                    "parameters": [
+                        {
+                            "value": "0",
+                            "type": "start",
+                            "$$hashKey": "object:1924"
+                        },
+                        {
+                            "value": "360*n*frequency",
+                            "type": "end",
+                            "$$hashKey": "object:1925"
+                        },
+                        {
+                            "value": "360*frequency",
+                            "type": "stepSize",
+                            "$$hashKey": "object:1926"
+                        }
+                    ],
+                    "result": "sinusoid",
+                    "$$hashKey": "object:1910",
+                    "selected": false
+                },
+                {
                     "id": 4,
                     "title": "Control",
                     "nodes": [
@@ -733,8 +795,17 @@
                             "id": 3,
                             "title": "Data",
                             "nodes": [],
+                            "dataName": "sin_variation",
+                            "dataValue": "amplitude*Math.sin(sinusoid[index])",
+                            "$$hashKey": "object:2817",
+                            "selected": false
+                        },
+                        {
+                            "id": 3,
+                            "title": "Data",
+                            "nodes": [],
                             "dataName": "r",
-                            "dataValue": "seq[0][index]",
+                            "dataValue": "seq[0][index] + sin_variation",
                             "$$hashKey": "object:1597",
                             "selected": false
                         },
@@ -814,7 +885,7 @@
             "dataName": "seq",
             "forList": "allSeq",
             "$$hashKey": "object:2072",
-            "selected": false
+            "selected": true
         }
     ],
     [
@@ -1149,7 +1220,7 @@
             "title": "Input",
             "name": "r0",
             "connected": false,
-            "dataValue": "30",
+            "dataValue": "10",
             "option": {
                 "name": "slider",
                 "$$hashKey": "object:822"
@@ -1200,14 +1271,14 @@
             "title": "Input",
             "name": "n",
             "connected": false,
-            "dataValue": "7",
+            "dataValue": "19",
             "option": {
                 "name": "slider",
                 "$$hashKey": "object:822"
             },
             "color": "#000000",
             "$$hashKey": "object:933",
-            "selected": false,
+            "selected": true,
             "min": "5",
             "max": "20",
             "step": "1"
@@ -1217,14 +1288,14 @@
             "title": "Input",
             "name": "num_of_spirals",
             "connected": false,
-            "dataValue": "15",
+            "dataValue": "28",
             "option": {
                 "name": "slider",
                 "$$hashKey": "object:822"
             },
             "color": "#000000",
             "$$hashKey": "object:682",
-            "selected": true,
+            "selected": false,
             "min": "3",
             "max": "50",
             "step": "1"
@@ -1234,7 +1305,7 @@
             "title": "Input",
             "name": "turns",
             "connected": false,
-            "dataValue": "1",
+            "dataValue": "0.3",
             "option": {
                 "name": "slider",
                 "$$hashKey": "object:5550"
@@ -1259,6 +1330,40 @@
             "color": "#000000",
             "$$hashKey": "object:6893",
             "selected": false
+        },
+        {
+            "id": 2,
+            "title": "Input",
+            "name": "amplitude",
+            "connected": false,
+            "dataValue": "3",
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:5265"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:1658",
+            "selected": true,
+            "min": "1",
+            "max": "15",
+            "step": "1"
+        },
+        {
+            "id": 3,
+            "title": "Input",
+            "name": "frequency",
+            "connected": false,
+            "dataValue": "1.2",
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:5265"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:1681",
+            "selected": false,
+            "min": "0",
+            "max": "5",
+            "step": "0.2"
         }
     ],
     [
