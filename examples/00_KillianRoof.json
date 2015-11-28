@@ -16,7 +16,7 @@
                 }
             ],
             "type": "base_curve",
-            "version": 1448337142077,
+            "version": 1448700175712,
             "overwrite": true
         },
         {
@@ -81,7 +81,7 @@
                 }
             ],
             "type": "cross_section",
-            "version": 1448337382702,
+            "version": 1448700177502,
             "overwrite": true
         },
         {
@@ -114,7 +114,7 @@
                 }
             ],
             "type": "killian_roof",
-            "version": 1448337422629,
+            "version": 1448700211648,
             "overwrite": true
         },
         {
@@ -178,7 +178,7 @@
                 }
             ],
             "type": "loft_surface",
-            "version": 1448337426155,
+            "version": 1448700185990,
             "overwrite": true
         }
     ],
@@ -429,7 +429,8 @@
             "name": "allPanels",
             "dataValue": "[]",
             "type": "new",
-            "$$hashKey": "object:529"
+            "$$hashKey": "object:529",
+            "selected": false
         },
         {
             "id": 2,
@@ -438,29 +439,13 @@
             "dataName": "meshfaces",
             "dataValue": "mesh.faces",
             "type": "new",
-            "$$hashKey": "object:530"
+            "$$hashKey": "object:530",
+            "selected": false
         },
         {
             "id": 3,
             "title": "Control",
             "nodes": [
-                {
-                    "id": 6,
-                    "title": "Action",
-                    "nodes": [],
-                    "type": "new",
-                    "expression": "",
-                    "method": "getCornerPointsFromSurface",
-                    "parameters": [
-                        {
-                            "value": "face",
-                            "type": "mObj",
-                            "$$hashKey": "object:623"
-                        }
-                    ],
-                    "result": "vertice",
-                    "$$hashKey": "object:576"
-                },
                 {
                     "id": 4,
                     "title": "Data",
@@ -468,7 +453,8 @@
                     "dataName": "seq",
                     "dataValue": "[0,1]",
                     "type": "new",
-                    "$$hashKey": "object:577"
+                    "$$hashKey": "object:577",
+                    "selected": false
                 },
                 {
                     "id": 5,
@@ -477,7 +463,8 @@
                     "dataName": "rads",
                     "dataValue": "[]",
                     "type": "new",
-                    "$$hashKey": "object:578"
+                    "$$hashKey": "object:578",
+                    "selected": false
                 },
                 {
                     "id": 4,
@@ -492,18 +479,19 @@
                             "method": "makeLine",
                             "parameters": [
                                 {
-                                    "value": "vertice[index]",
+                                    "value": "face.vertices[index]",
                                     "type": "startPoint",
                                     "$$hashKey": "object:717"
                                 },
                                 {
-                                    "value": "vertice[index+2]",
+                                    "value": "face.vertices[index+2]",
                                     "type": "endPoint",
                                     "$$hashKey": "object:718"
                                 }
                             ],
                             "result": "diag",
-                            "$$hashKey": "object:645"
+                            "$$hashKey": "object:645",
+                            "selected": false
                         },
                         {
                             "id": 5,
@@ -520,7 +508,8 @@
                                 }
                             ],
                             "result": "tubeLength",
-                            "$$hashKey": "object:646"
+                            "$$hashKey": "object:646",
+                            "selected": false
                         },
                         {
                             "id": 4,
@@ -529,7 +518,8 @@
                             "dataName": "radius",
                             "dataValue": "0.02*tubeLength",
                             "type": "new",
-                            "$$hashKey": "object:647"
+                            "$$hashKey": "object:647",
+                            "selected": false
                         },
                         {
                             "id": 4,
@@ -551,7 +541,8 @@
                                 }
                             ],
                             "result": "radius",
-                            "$$hashKey": "object:648"
+                            "$$hashKey": "object:648",
+                            "selected": false
                         },
                         {
                             "id": 4,
@@ -573,7 +564,8 @@
                                 }
                             ],
                             "result": "d",
-                            "$$hashKey": "object:649"
+                            "$$hashKey": "object:649",
+                            "selected": false
                         },
                         {
                             "id": 4,
@@ -595,7 +587,8 @@
                                 }
                             ],
                             "result": "tube",
-                            "$$hashKey": "object:650"
+                            "$$hashKey": "object:650",
+                            "selected": false
                         },
                         {
                             "id": 4,
@@ -617,14 +610,16 @@
                                 }
                             ],
                             "result": "d",
-                            "$$hashKey": "object:2407"
+                            "$$hashKey": "object:2407",
+                            "selected": false
                         }
                     ],
                     "type": "new",
                     "controlType": "for each",
                     "dataName": "index",
                     "forList": "seq",
-                    "$$hashKey": "object:579"
+                    "$$hashKey": "object:579",
+                    "selected": false
                 },
                 {
                     "id": 4,
@@ -651,14 +646,16 @@
                         }
                     ],
                     "result": "d",
-                    "$$hashKey": "object:580"
+                    "$$hashKey": "object:580",
+                    "selected": false
                 }
             ],
             "type": "assign",
             "controlType": "for each",
             "dataName": "face",
             "forList": "meshfaces",
-            "$$hashKey": "object:531"
+            "$$hashKey": "object:531",
+            "selected": true
         },
         {
             "id": 4,
@@ -666,7 +663,8 @@
             "name": "data",
             "dataValue": "mesh",
             "type": "new",
-            "$$hashKey": "object:3043"
+            "$$hashKey": "object:3043",
+            "selected": false
         }
     ],
     [
@@ -742,7 +740,8 @@
                 "name": "none"
             },
             "color": "#000000",
-            "$$hashKey": "object:644"
+            "$$hashKey": "object:644",
+            "selected": false
         },
         {
             "id": 2,
@@ -758,7 +757,8 @@
             "$$hashKey": "object:666",
             "min": "1",
             "max": "10",
-            "step": "1"
+            "step": "1",
+            "selected": false
         },
         {
             "id": 3,
@@ -774,7 +774,8 @@
             "$$hashKey": "object:688",
             "min": "0",
             "max": "50",
-            "step": "5"
+            "step": "5",
+            "selected": true
         }
     ],
     [

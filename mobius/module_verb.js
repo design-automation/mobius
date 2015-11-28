@@ -281,6 +281,12 @@ var VIDAMO = ( function (mod){
 	 * @returns {float} Distance 
 	 */
 	mod.distanceBetweenTwoPoints = function( point1, point2){
+
+		if( point1.getGeometry != undefined )
+			point1 = point1.getGeometry();
+		if( point2.getGeometry != undefined )
+			point2 = point2.getGeometry();
+				 
 		var deltaX, deltaY, deltaZ;
 
 		deltaX = point1[0] - point2[0];
@@ -298,6 +304,12 @@ var VIDAMO = ( function (mod){
 	 * @returns {float} Distance 
 	 */
 	mod.getMidPoint = function( point1, point2){
+
+		if( point1.getGeometry != undefined )
+			point1 = point1.getGeometry();
+		if( point2.getGeometry != undefined )
+			point2 = point2.getGeometry();
+
 		return [ (point1[0] + point2[0])/2, (point1[1] + point2[1])/2, (point1[2] + point2[2])/2 ];
 	};	
 
@@ -339,6 +351,11 @@ var VIDAMO = ( function (mod){
 	mod.makeLine = function(startPoint, endPoint){
 		// input variations
 		// start, end could be a vector3 - has to be converted into an array
+
+		if( startPoint.getGeometry != undefined )
+			startPoint = startPoint.getGeometry();
+		if( endPoint.getGeometry != undefined )
+			endPoint = endPoint.getGeometry();
 	
 		return new mObj_geom_Curve( new verb.geom.Line(startPoint, endPoint) );
 		
@@ -358,6 +375,9 @@ var VIDAMO = ( function (mod){
 	mod.makeArc = function(centerPoint, xaxis, yaxis, radius, minAngle, maxAngle){
 		// input variations
 		// center, axis and yaxis could be vector3
+		if( centerPoint.getGeometry != undefined )
+			centerPoint = centerPoint.getGeometry();
+
 		return new mObj_geom_Curve( new verb.geom.Arc(centerPoint,xaxis,yaxis,radius,minAngle,maxAngle) ) ;
 
 	};
@@ -369,6 +389,14 @@ var VIDAMO = ( function (mod){
 	 * @returns {MobiusDataObject}  - NURBS Curve
 	 */
 	mod.makeBezierCurve = function(points, weights){
+
+		points = points.map( function(p){ 
+								
+								if(p.getGeometry != undefined) 
+									return p.getGeometry(); 
+								else 
+									return p; } )
+
 		return new mObj_geom_Curve( new verb.geom.BezierCurve(points, weights) ) 
 	};
 
@@ -381,6 +409,10 @@ var VIDAMO = ( function (mod){
 	 * @returns {MobiusDataObject}  - NURBS Curve
 	 */
 	mod.makeCircleBoundary = function(centerPoint,xaxis,yaxis,radius){
+
+		if( centerPoint.getGeometry != undefined )
+			centerPoint = centerPoint.getGeometry();
+
 		return new mObj_geom_Curve( new verb.geom.Circle(centerPoint,xaxis,yaxis,radius) ) 
 	};
 
@@ -392,6 +424,9 @@ var VIDAMO = ( function (mod){
 	 * @returns {MobiusDataObject}  - NURBS Curve
 	 */
 	mod.makeEllipse = function ( centerPoint ,xaxis,yaxis ){
+
+		if( centerPoint.getGeometry != undefined )
+			centerPoint = centerPoint.getGeometry();
 
 		return new mObj_geom_Curve( new verb.geom.Ellipse( centerPoint,xaxis,yaxis ) ) 
 		
@@ -407,6 +442,11 @@ var VIDAMO = ( function (mod){
 	 * @returns {MobiusDataObject}  - NURBS Curve
 	 */
 	mod.makeEllipseArc = function ( centerPoint,xaxis,yaxis,minAngle,maxAngle ){
+
+		if( centerPoint.getGeometry != undefined )
+			centerPoint = centerPoint.getGeometry();
+
+
 		return new mObj_geom_Curve( new verb.geom.EllipseArc( centerPoint,xaxis,yaxis,minAngle,maxAngle ) ) 
 		// topology : curve class
 	};
@@ -418,6 +458,14 @@ var VIDAMO = ( function (mod){
 	 * @returns {MobiusDataObject}  - NURBS Curve
 	 */
 	mod.makeCurveByPoints = function( points, degree ){
+
+		points = points.map( function(p){ 
+								
+								if(p.getGeometry != undefined) 
+									return p.getGeometry(); 
+								else 
+									return p; } )
+
 		return new mObj_geom_Curve( new verb.geom.NurbsCurve.byPoints( points, degree ) ) ;
 	};
 
@@ -430,6 +478,14 @@ var VIDAMO = ( function (mod){
 	 * @returns {MobiusDataObject}  - NURBS Curve
 	 */
 	mod.makeCurveByKnotsControlPointsWeights = function ( degree,knots,controlPoints,weights ){
+
+		controlPoints = controlPoints.map( function(p){ 
+								
+								if(p.getGeometry != undefined) 
+									return p.getGeometry(); 
+								else 
+									return p; } )
+
 		return new mObj_geom_Curve( new verb.geom.NurbsCurve.byKnotsControlPointsWeights( degree,knots,controlPoints,weights ) ) ;
 		// topology : curve class
 	};
@@ -446,6 +502,13 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.makeSurfaceByKnotsControlPointsWeights = function ( degreeU,degreeV,knotsU,knotsV,controlPoints,weights ){
 		
+		controlPoints = controlPoints.map( function(p){ 
+								
+								if(p.getGeometry != undefined) 
+									return p.getGeometry(); 
+								else 
+									return p; } )
+
 		return new mObj_geom_Surface( new verb.geom.NurbsSurface.byKnotsControlPointsWeights( degreeU,degreeV,knotsU,knotsV,controlPoints,weights ) ) ;
 		// topology : single surface - cant be exploded
 		// brep : face -> surface (1); edges -> boundaries (4) ; vertex -> corner points (4)
@@ -457,6 +520,16 @@ var VIDAMO = ( function (mod){
 	 * @returns {MobiusDataObject}  - NURBS Surface
 	 */
 	mod.makeSurfaceByCorners = function ( point0, point1, point2, point3 ){
+
+		if( point0.getGeometry != undefined )
+			point0 = point0.getGeometry();
+		if( point1.getGeometry != undefined )
+			point1 = point1.getGeometry();
+		if( point2.getGeometry != undefined )
+			point2 = point2.getGeometry();
+		if( point3.getGeometry != undefined )
+			point3 = point3.getGeometry();
+
 		return new mObj_geom_Surface( new verb.geom.NurbsSurface.byCorners ( point0,point1,point2,point3 ) ) ;
 		// topology : single surface - cant be exploded
 		// brep : face -> surface (1); edges -> boundaries (4) ; vertex -> corner points (4)
@@ -471,6 +544,10 @@ var VIDAMO = ( function (mod){
 	 * @returns {MobiusDataObject}  - NURBS Surface
 	 */
 	mod.makeSurfaceByRevolution = function ( mobiusGeometry, centerPoint, axis, angle ){
+
+		if( centerPoint.getGeometry != undefined )
+			centerPoint = centerPoint.getGeometry();
+
 		var profile = mobiusGeometry.getGeometry();
 		return new mObj_geom_Surface( new verb.geom.RevolvedSurface( profile, centerPoint, axis, angle ) ) ;
 	
@@ -531,6 +608,9 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.makeCircle = function( centrePoint, radius ){
 
+		if( centerPoint.getGeometry != undefined )
+			centerPoint = centerPoint.getGeometry();
+
 		var radialLine = VIDAMO.makeLine( centrePoint, [centrePoint[0]+radius, centrePoint[1], centrePoint[2]] );
 		return VIDAMO.makeSurfaceByRevolution( radialLine, centrePoint, [0,1,0] );
 	};
@@ -551,6 +631,10 @@ var VIDAMO = ( function (mod){
 	 * @returns {MobiusDataObject}  - NURBS Surface
 	 */
 	mod.makeSphere = function(centrePoint, radius){
+
+		if( centerPoint.getGeometry != undefined )
+			centerPoint = centerPoint.getGeometry();
+					
 		return new mObj_geom_Surface(  new verb.geom.SphericalSurface(centrePoint, radius) ) ;
 		// topology : single surface - cant be exploded
 		// brep : face -> surface (1); edges -> arc (1) ; vertex -> corner point (1)
