@@ -145,11 +145,11 @@ var VIDAMO = ( function (mod){
 			arr.push(start);
 		}
 		else if(start > end && stepSize < 0){
-			for(var i = start; i >= end; i = i + stepSize)
+			for(var i = start; i > end; i = i + stepSize)
 				arr.push(i);
 		} 
 		else{
-			for(var i = start; i <= end; i = i + stepSize)
+			for(var i = start; i < end; i = i + stepSize)
 				arr.push(i);
 		}
 
@@ -1117,7 +1117,7 @@ var VIDAMO = ( function (mod){
 			}
 		}
 
-		function extract (obj,geom,geomData,topo){
+		function extract (obj,geom,geomData,topo){ 				
 			if(obj.constructor === Array){
 				var tempGeom0 = [];
 				var tempData0 = [];
