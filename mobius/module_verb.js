@@ -120,8 +120,8 @@ var VIDAMO = ( function (mod){
 	 * @param {array} vector  - Matrix 
 	 * @returns {array} 
 	 */
-	mod.multipleVector = function( factor, vector ){
-		return [ factor*vector[0], factor*vector[1], factor*vector[2] ] ;
+	mod.multiplyArray = function( factor, array ){
+		return [ factor*array[0], factor*array[1], factor*array[2] ] ;
 	}
 	
 
@@ -141,8 +141,18 @@ var VIDAMO = ( function (mod){
 	mod.makeSequence = function(start, end, stepSize){
 
 		var arr = [];
-		for(var i = start; i <= end; i = i + stepSize)
-			arr.push(i);
+		if( start == end ){
+			arr.push(start);
+		}
+		else if(start > end && stepSize < 0){
+			for(var i = start; i >= end; i = i + stepSize)
+				arr.push(i);
+		} 
+		else{
+			for(var i = start; i <= end; i = i + stepSize)
+				arr.push(i);
+		}
+
 		return arr;
 	};
 
@@ -299,8 +309,12 @@ var VIDAMO = ( function (mod){
 	 * @returns {float} Length 
 	 */
 	mod.getLength = function( mObj ){
-		var geom = mObj.getGeometry();
-		return geom.length();
+
+		if( mObj.constructor.name == "Array")
+			return mObj.length;
+		else if( mObj.getGeometry().length != undefined){
+			return mObj.getGeometry().length();
+		}
 	};
 
 
@@ -1032,7 +1046,7 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.addMaterial = function(obj, material_type, wireframe, color_hex, transparent){
 		var option = {	wireframe: wireframe,
-			color: color,
+			color: color_hex,
 			transparent: transparent,
 			side: THREE.DoubleSide
 		};
@@ -1283,9 +1297,9 @@ var computeTopology = function( mObj ){
 		}
 
 		// remove clones - doesn't do well with the edges :/
-		topology.vertices = removeClonesInList( topology.vertices ); 
+/*		topology.vertices = removeClonesInList( topology.vertices ); 
 		topology.edges = removeClonesInList( topology.edges );
-		topology.faces = removeClonesInList( topology.faces ); 
+		topology.faces = removeClonesInList( topology.faces ); */
 	}
 	else
 		topology = undefined;	
@@ -1309,7 +1323,7 @@ var removeClonesInList = function( list ){
 
 			var thisObject = list[v].getGeometry() ; 
 			var duplicate = false;
-			console.log(thisObject);
+			//console.log(thisObject);
 			for(nextV=v+1; nextV < list.length; nextV++){
 			
 				var nextObject = list[nextV].getGeometry() ; 

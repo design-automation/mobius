@@ -52,7 +52,7 @@
                 }
             ],
             "type": "surf_rev",
-            "version": 1448436063863,
+            "version": 1448691322468,
             "overwrite": true
         },
         {
@@ -120,7 +120,7 @@
                 }
             ],
             "type": "curve",
-            "version": 1448428687077,
+            "version": 1448691319228,
             "overwrite": true
         },
         {
@@ -183,7 +183,7 @@
                 }
             ],
             "type": "mesh",
-            "version": 1448436068396,
+            "version": 1448691323821,
             "overwrite": true
         },
         {
@@ -227,7 +227,7 @@
                 }
             ],
             "type": "vase",
-            "version": 1448436069157,
+            "version": 1448691346816,
             "overwrite": true
         }
     ],
@@ -382,7 +382,8 @@
             "name": "vase",
             "dataValue": "[]",
             "type": "new",
-            "$$hashKey": "object:7388"
+            "$$hashKey": "object:7388",
+            "selected": false
         },
         {
             "id": 4,
@@ -391,7 +392,8 @@
             "dataName": "odd",
             "dataValue": "false",
             "type": "new",
-            "$$hashKey": "object:1644"
+            "$$hashKey": "object:1644",
+            "selected": false
         },
         {
             "id": 2,
@@ -431,7 +433,8 @@
                                         }
                                     ],
                                     "result": "exVector",
-                                    "$$hashKey": "object:1678"
+                                    "$$hashKey": "object:1678",
+                                    "selected": false
                                 },
                                 {
                                     "id": 3,
@@ -448,29 +451,30 @@
                                         }
                                     ],
                                     "result": "exV",
-                                    "$$hashKey": "object:883"
+                                    "$$hashKey": "object:883",
+                                    "selected": false
                                 },
                                 {
                                     "id": 4,
                                     "title": "Action",
                                     "nodes": [],
-                                    "type": "new",
                                     "expression": "",
-                                    "method": "multipleVector",
+                                    "method": "multiplyArray",
                                     "parameters": [
                                         {
                                             "value": "thickness",
                                             "type": "factor",
-                                            "$$hashKey": "object:1325"
+                                            "$$hashKey": "object:1264"
                                         },
                                         {
                                             "value": "exV",
-                                            "type": "vector",
-                                            "$$hashKey": "object:1326"
+                                            "type": "array",
+                                            "$$hashKey": "object:1265"
                                         }
                                     ],
                                     "result": "extrudeBy",
-                                    "$$hashKey": "object:1312"
+                                    "$$hashKey": "object:1251",
+                                    "selected": false
                                 },
                                 {
                                     "id": 3,
@@ -492,7 +496,8 @@
                                         }
                                     ],
                                     "result": "ex",
-                                    "$$hashKey": "object:1446"
+                                    "$$hashKey": "object:1446",
+                                    "selected": false
                                 },
                                 {
                                     "id": 3,
@@ -514,7 +519,8 @@
                                         }
                                     ],
                                     "result": "a",
-                                    "$$hashKey": "object:1921"
+                                    "$$hashKey": "object:1921",
+                                    "selected": false
                                 },
                                 {
                                     "id": 3,
@@ -523,11 +529,13 @@
                                     "dataName": "odd",
                                     "dataValue": "false",
                                     "type": "new",
-                                    "$$hashKey": "object:1456"
+                                    "$$hashKey": "object:1456",
+                                    "selected": false
                                 }
                             ],
                             "ifExpression": "odd == true",
-                            "$$hashKey": "object:1290"
+                            "$$hashKey": "object:1290",
+                            "selected": true
                         },
                         {
                             "id": "2else",
@@ -541,22 +549,26 @@
                                     "dataName": "odd",
                                     "dataValue": "true",
                                     "type": "new",
-                                    "$$hashKey": "object:1610"
+                                    "$$hashKey": "object:1610",
+                                    "selected": false
                                 }
                             ],
-                            "$$hashKey": "object:1291"
+                            "$$hashKey": "object:1291",
+                            "selected": false
                         }
                     ],
                     "controlType": "if else",
                     "type": "new",
-                    "$$hashKey": "object:1280"
+                    "$$hashKey": "object:1280",
+                    "selected": false
                 }
             ],
             "type": "new",
             "controlType": "for each",
             "dataName": "face",
             "forList": "mesh.faces",
-            "$$hashKey": "object:1245"
+            "$$hashKey": "object:1245",
+            "selected": false
         }
     ]
 ]
