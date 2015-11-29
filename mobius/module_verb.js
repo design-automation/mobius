@@ -120,8 +120,8 @@ var VIDAMO = ( function (mod){
 	 * @param {array} vector  - Matrix 
 	 * @returns {array} 
 	 */
-	mod.multipleVector = function( factor, vector ){
-		return [ factor*vector[0], factor*vector[1], factor*vector[2] ] ;
+	mod.multiplyArray = function( factor, array ){
+		return [ factor*array[0], factor*array[1], factor*array[2] ] ;
 	}
 	
 
@@ -141,8 +141,18 @@ var VIDAMO = ( function (mod){
 	mod.makeSequence = function(start, end, stepSize){
 
 		var arr = [];
-		for(var i = start; i <= end; i = i + stepSize)
-			arr.push(i);
+		if( start == end ){
+			arr.push(start);
+		}
+		else if(start > end && stepSize < 0){
+			for(var i = start; i > end; i = i + stepSize)
+				arr.push(i);
+		} 
+		else{
+			for(var i = start; i < end; i = i + stepSize)
+				arr.push(i);
+		}
+
 		return arr;
 	};
 
@@ -253,9 +263,11 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.getCentre = function(mObj){
 		//calculate centre based on what kind of object
-		var geometry = mObj.getGeometry();
+		var geometry = mObj.getGeometry();  
 
-		if(geometry instanceof verb.geom.NurbsCurve)
+		if(geometry.center != undefined)
+			return geometry.center();
+		else if(geometry instanceof verb.geom.NurbsCurve)
 			return geometry.point(0.5);
 		else if(geometry instanceof verb.geom.NurbsSurface)
 			return geometry.point(0.5, 0.5);
@@ -269,6 +281,12 @@ var VIDAMO = ( function (mod){
 	 * @returns {float} Distance 
 	 */
 	mod.distanceBetweenTwoPoints = function( point1, point2){
+
+		if( point1.getGeometry != undefined )
+			point1 = point1.getGeometry();
+		if( point2.getGeometry != undefined )
+			point2 = point2.getGeometry();
+				 
 		var deltaX, deltaY, deltaZ;
 
 		deltaX = point1[0] - point2[0];
@@ -279,14 +297,36 @@ var VIDAMO = ( function (mod){
 		return distance;
 	};
 
+
+	/**
+	 * Returns the distance between two points or position vectors
+	 * @param {point / MobiusDataObject} point - [x, y , z] or MobiusDataObject with PositionVector
+	 * @returns {float} Distance 
+	 */
+	mod.getMidPoint = function( point1, point2){
+
+		if( point1.getGeometry != undefined )
+			point1 = point1.getGeometry();
+		if( point2.getGeometry != undefined )
+			point2 = point2.getGeometry();
+
+		return [ (point1[0] + point2[0])/2, (point1[1] + point2[1])/2, (point1[2] + point2[2])/2 ];
+	};	
+
+
+
 	/**
 	 * Returns the length of a MobiusDataObject containing a PositionVector or a NURBS Curve
 	 * @param {MobiusDataObject} mObj - NURBS Curve
 	 * @returns {float} Length 
 	 */
 	mod.getLength = function( mObj ){
-		var geom = mObj.getGeometry();
-		return geom.length();
+
+		if( mObj.constructor.name == "Array")
+			return mObj.length;
+		else if( mObj.getGeometry().length != undefined){
+			return mObj.getGeometry().length();
+		}
 	};
 
 
@@ -311,6 +351,11 @@ var VIDAMO = ( function (mod){
 	mod.makeLine = function(startPoint, endPoint){
 		// input variations
 		// start, end could be a vector3 - has to be converted into an array
+
+		if( startPoint.getGeometry != undefined )
+			startPoint = startPoint.getGeometry();
+		if( endPoint.getGeometry != undefined )
+			endPoint = endPoint.getGeometry();
 	
 		return new mObj_geom_Curve( new verb.geom.Line(startPoint, endPoint) );
 		
@@ -330,6 +375,9 @@ var VIDAMO = ( function (mod){
 	mod.makeArc = function(centerPoint, xaxis, yaxis, radius, minAngle, maxAngle){
 		// input variations
 		// center, axis and yaxis could be vector3
+		if( centerPoint.getGeometry != undefined )
+			centerPoint = centerPoint.getGeometry();
+
 		return new mObj_geom_Curve( new verb.geom.Arc(centerPoint,xaxis,yaxis,radius,minAngle,maxAngle) ) ;
 
 	};
@@ -341,6 +389,14 @@ var VIDAMO = ( function (mod){
 	 * @returns {MobiusDataObject}  - NURBS Curve
 	 */
 	mod.makeBezierCurve = function(points, weights){
+
+		points = points.map( function(p){ 
+								
+								if(p.getGeometry != undefined) 
+									return p.getGeometry(); 
+								else 
+									return p; } )
+
 		return new mObj_geom_Curve( new verb.geom.BezierCurve(points, weights) ) 
 	};
 
@@ -353,6 +409,10 @@ var VIDAMO = ( function (mod){
 	 * @returns {MobiusDataObject}  - NURBS Curve
 	 */
 	mod.makeCircleBoundary = function(centerPoint,xaxis,yaxis,radius){
+
+		if( centerPoint.getGeometry != undefined )
+			centerPoint = centerPoint.getGeometry();
+
 		return new mObj_geom_Curve( new verb.geom.Circle(centerPoint,xaxis,yaxis,radius) ) 
 	};
 
@@ -364,6 +424,9 @@ var VIDAMO = ( function (mod){
 	 * @returns {MobiusDataObject}  - NURBS Curve
 	 */
 	mod.makeEllipse = function ( centerPoint ,xaxis,yaxis ){
+
+		if( centerPoint.getGeometry != undefined )
+			centerPoint = centerPoint.getGeometry();
 
 		return new mObj_geom_Curve( new verb.geom.Ellipse( centerPoint,xaxis,yaxis ) ) 
 		
@@ -379,6 +442,11 @@ var VIDAMO = ( function (mod){
 	 * @returns {MobiusDataObject}  - NURBS Curve
 	 */
 	mod.makeEllipseArc = function ( centerPoint,xaxis,yaxis,minAngle,maxAngle ){
+
+		if( centerPoint.getGeometry != undefined )
+			centerPoint = centerPoint.getGeometry();
+
+
 		return new mObj_geom_Curve( new verb.geom.EllipseArc( centerPoint,xaxis,yaxis,minAngle,maxAngle ) ) 
 		// topology : curve class
 	};
@@ -390,6 +458,14 @@ var VIDAMO = ( function (mod){
 	 * @returns {MobiusDataObject}  - NURBS Curve
 	 */
 	mod.makeCurveByPoints = function( points, degree ){
+
+		points = points.map( function(p){ 
+								
+								if(p.getGeometry != undefined) 
+									return p.getGeometry(); 
+								else 
+									return p; } )
+
 		return new mObj_geom_Curve( new verb.geom.NurbsCurve.byPoints( points, degree ) ) ;
 	};
 
@@ -402,6 +478,14 @@ var VIDAMO = ( function (mod){
 	 * @returns {MobiusDataObject}  - NURBS Curve
 	 */
 	mod.makeCurveByKnotsControlPointsWeights = function ( degree,knots,controlPoints,weights ){
+
+		controlPoints = controlPoints.map( function(p){ 
+								
+								if(p.getGeometry != undefined) 
+									return p.getGeometry(); 
+								else 
+									return p; } )
+
 		return new mObj_geom_Curve( new verb.geom.NurbsCurve.byKnotsControlPointsWeights( degree,knots,controlPoints,weights ) ) ;
 		// topology : curve class
 	};
@@ -418,23 +502,16 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.makeSurfaceByKnotsControlPointsWeights = function ( degreeU,degreeV,knotsU,knotsV,controlPoints,weights ){
 		
+		controlPoints = controlPoints.map( function(p){ 
+								
+								if(p.getGeometry != undefined) 
+									return p.getGeometry(); 
+								else 
+									return p; } )
+
 		return new mObj_geom_Surface( new verb.geom.NurbsSurface.byKnotsControlPointsWeights( degreeU,degreeV,knotsU,knotsV,controlPoints,weights ) ) ;
 		// topology : single surface - cant be exploded
 		// brep : face -> surface (1); edges -> boundaries (4) ; vertex -> corner points (4)
-	};
-
-	/**
-	 *
-	 *@param
-	 *@returns
-	 */
-	mod.makeCircle = function( centrePoint, radius ){
-
-		var deg = 2;
-		var knots = [0, 0, 0, 1, 1, 1];
-		var controlPoints = [[10,0,0], [10,0,10], [0,0,10]];
-		var weights = [0.7, 1, 0.7];
-		return new mObj_geom_Surface( new verb.geom.NurbsSurface.byKnotsControlPointsWeights( deg,deg,knots,knots,controlPoints,weights ) ) ;
 	};
 
 	/**
@@ -443,6 +520,16 @@ var VIDAMO = ( function (mod){
 	 * @returns {MobiusDataObject}  - NURBS Surface
 	 */
 	mod.makeSurfaceByCorners = function ( point0, point1, point2, point3 ){
+
+		if( point0.getGeometry != undefined )
+			point0 = point0.getGeometry();
+		if( point1.getGeometry != undefined )
+			point1 = point1.getGeometry();
+		if( point2.getGeometry != undefined )
+			point2 = point2.getGeometry();
+		if( point3.getGeometry != undefined )
+			point3 = point3.getGeometry();
+
 		return new mObj_geom_Surface( new verb.geom.NurbsSurface.byCorners ( point0,point1,point2,point3 ) ) ;
 		// topology : single surface - cant be exploded
 		// brep : face -> surface (1); edges -> boundaries (4) ; vertex -> corner points (4)
@@ -457,6 +544,10 @@ var VIDAMO = ( function (mod){
 	 * @returns {MobiusDataObject}  - NURBS Surface
 	 */
 	mod.makeSurfaceByRevolution = function ( mobiusGeometry, centerPoint, axis, angle ){
+
+		if( centerPoint.getGeometry != undefined )
+			centerPoint = centerPoint.getGeometry();
+
 		var profile = mobiusGeometry.getGeometry();
 		return new mObj_geom_Surface( new verb.geom.RevolvedSurface( profile, centerPoint, axis, angle ) ) ;
 	
@@ -510,6 +601,22 @@ var VIDAMO = ( function (mod){
 	};
 
 
+	/**
+	 *
+	 *@param
+	 *@returns
+	 */
+	mod.makeCircle = function( centrePoint, radius ){
+
+		if( centerPoint.getGeometry != undefined )
+			centerPoint = centerPoint.getGeometry();
+
+		var radialLine = VIDAMO.makeLine( centrePoint, [centrePoint[0]+radius, centrePoint[1], centrePoint[2]] );
+		return VIDAMO.makeSurfaceByRevolution( radialLine, centrePoint, [0,1,0] );
+	};
+
+
+
 	
 	//
 	// Surface Functions - Applications
@@ -524,6 +631,10 @@ var VIDAMO = ( function (mod){
 	 * @returns {MobiusDataObject}  - NURBS Surface
 	 */
 	mod.makeSphere = function(centrePoint, radius){
+
+		if( centerPoint.getGeometry != undefined )
+			centerPoint = centerPoint.getGeometry();
+					
 		return new mObj_geom_Surface(  new verb.geom.SphericalSurface(centrePoint, radius) ) ;
 		// topology : single surface - cant be exploded
 		// brep : face -> surface (1); edges -> arc (1) ; vertex -> corner point (1)
@@ -570,35 +681,6 @@ var VIDAMO = ( function (mod){
 	 * @param {array} axis - Axis Direction of the cylinder in [x,y,z] format
 	 * @param {array} xaxis - Direction of x-axis of cylinder in [x,y,z] format
 	 * @returns {MobiusDataObject}  - NURBS Surface
-	 
-	mod.makeBox = function( centrePoint, length, breadth, height){
-		
-		var allSurfaces = []; 
-		
-		var topFace = VIDAMO.makeSurfaceByCorners([length/2, height/2, breadth/2],[length/2, height/2, -breadth/2],[-length/2, height/2, -breadth/2],[-length/2, height/2, breadth/2]);
-		var bottomFace = VIDAMO.makeSurfaceByCorners([length/2, -height/2, breadth/2],[length/2, -height/2, -breadth/2],[-length/2, -height/2, -breadth/2],[-length/2, -height/2, breadth/2]);
-		var frontFace = VIDAMO.makeSurfaceByCorners([-length/2, -height/2, breadth/2],[length/2, -height/2, breadth/2],[ length/2, height/2, breadth/2],[ -length/2, height/2, breadth/2]);
-		var backFace = VIDAMO.makeSurfaceByCorners([-length/2, -height/2, -breadth/2],[length/2, -height/2, -breadth/2],[ length/2, height/2, -breadth/2],[ -length/2, height/2, -breadth/2]);
-		var rightFace = VIDAMO.makeSurfaceByCorners([length/2, -height/2, breadth/2],[length/2, -height/2, -breadth/2],[length/2, height/2, -breadth/2],[length/2, height/2, breadth/2]);
-		var leftFace = VIDAMO.makeSurfaceByCorners([-length/2, -height/2, breadth/2],[-length/2, -height/2, -breadth/2],[-length/2, height/2, -breadth/2],[-length/2, height/2, breadth/2]);
-		
-		allSurfaces = [topFace, bottomFace, frontFace, backFace, leftFace, rightFace];
-
-		var vertices = topFace.vertices.concat(bottomFace.vertices);
-		var edges = topFace.edges.concat(bottomFace.edge);
-		var faces = allSurfaces;
-		var topology = { vertices: vertices, 
-						 edges: edges, 
-						 faces: faces }; console.log(topology);
-		
-		return new mObj_geom_Solid( allSurfaces, undefined, topology );
-	}; */
-
-	/**
-	 * Returns a MobiusDataObject containing a NURBS Surface
-	 * @param {array} axis - Axis Direction of the cylinder in [x,y,z] format
-	 * @param {array} xaxis - Direction of x-axis of cylinder in [x,y,z] format
-	 * @returns {MobiusDataObject}  - NURBS Surface
 	 */	
 	mod.makeTube = function( centrePoint, innerRadius, outerRadius, height){
 		
@@ -619,6 +701,10 @@ var VIDAMO = ( function (mod){
 		}
 
 		return new mObj_geom_Solid( solid );
+	};
+
+	mod.makeSolidBySurfaces = function( array_of_surfaces ){
+		return new mObj_geom_Solid( array_of_surfaces );
 	};
 
 	//
@@ -869,24 +955,14 @@ var VIDAMO = ( function (mod){
 		newcopy.setData( mObj.getData() );
 		newcopy.setMaterial( mObj.getMaterial() );
 
+		// if verbs object, has to be copied and translated
+		if(xCoord != undefined && yCoord != undefined && zCoord != undefined){
+			VIDAMO.moveObjectToPoint(newcopy, xCoord, yCoord, zCoord);
+		}
+			
+
 		return newcopy;
 		
-/*		var clone = new Object();
-		return Object.assign( clone, mObj );*/
-		
-		// var new_mObj = new MobiusDataObject( mObj.getGeometry() );
-		
-		// attach data
-		// if(mObj.data != undefined)
-			// VIDAMO.addData(new_mObj, mObj.data);
-
-		// if verbs object, has to be copied and translated
-		// if(mObj.getGeometry() instanceof verb.geom.NurbsCurve || mObj.getGeometry() instanceof verb.geom.NurbsSurface){
-			// if(xCoord != undefined && yCoord != undefined && zCoord != undefined)
-				// VIDAMO.moveObjectToPoint(new_mObj, xCoord, yCoord, zCoord);
-		// }
-		
-		// return new_mObj; //needs to be sorted out
 	};
 
 	/**
@@ -908,17 +984,21 @@ var VIDAMO = ( function (mod){
 				VIDAMO.shiftObject(mObj[obj], shiftX, shiftY, shiftZ);	
 		}
 
-		var geometry = mObj.getGeometry(); 
-		if(geometry instanceof verb.geom.NurbsCurve || geometry instanceof verb.geom.NurbsSurface){
-
-			var mat = [ [1,0,0, shiftX],
+		var geom = mObj.getGeometry();
+		
+		var mat = [ [1,0,0, shiftX],
 							[0,1,0,shiftY],
 								[0,0,1, shiftZ],
 									[0,0,0,1]
 						];
-			var transformedGeometry = geometry.transform( mat );
-			mObj.setGeometry(transformedGeometry); 
+		var transformedGeometry = geom.transform( mat );
+		
+		if(geom.center != undefined){ 
+			var centre = VIDAMO.getCentre( mObj );
+			transformedGeometry.center = function(){ return [ centre[0]+shiftX, centre[1]+shiftY, centre[2]+shiftZ ] }
 		}
+				
+		mObj.setGeometry( transformedGeometry ); 
 		
 		//return mObj;
 	};
@@ -940,19 +1020,16 @@ var VIDAMO = ( function (mod){
 			for(var obj=0; obj < mObj.length; obj++)
 				VIDAMO.moveObjectToPoint(mObj[obj], xCoord, yCoord, zCoord);	
 		}
-
-		if(mObj.getGeometry() instanceof verb.geom.NurbsCurve || mObj.getGeometry() instanceof verb.geom.NurbsSurface){
+	
+		var orCenter = VIDAMO.getCentre(mObj);
 			
-			var orCenter = VIDAMO.getCentre(mObj);
-			
-			// translation required
-			var target = [xCoord, yCoord, zCoord];
-			var tx = target[0] - orCenter[0];
-			var ty = target[1] - orCenter[1];
-			var tz = target[2] - orCenter[2]; 
-			
-			VIDAMO.shiftObject( mObj, tx, ty, tz );		
-		}
+		// translation required
+		var target = [xCoord, yCoord, zCoord];
+		var tx = target[0] - orCenter[0];
+		var ty = target[1] - orCenter[1];
+		var tz = target[2] - orCenter[2]; 
+		
+		VIDAMO.shiftObject( mObj, tx, ty, tz );		
 	};
 
 	/**
@@ -973,22 +1050,15 @@ var VIDAMO = ( function (mod){
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
 		var geom = mObj.getGeometry();
-		if(geom instanceof verb.geom.NurbsCurve || geom instanceof verb.geom.NurbsSurface){
-
-			var centre = VIDAMO.getCentre(mObj);
 			
-			var mat = [ [scaleX, 0, 0, 0],
+		var mat = [ [scaleX, 0, 0, 0],
 							[0,scaleY,0,0],
 								[0,0,scaleZ,0],
 									[0,0,0,1]
-						];
+					];
 			
-			mObj.setGeometry(  geom.transform(mat) );
-			
-			// shift to original centre point
-			VIDAMO.moveObjectToPoint(mObj, centre[0], centre[1], centre[2]);
-
-		}
+		var transformedGeometry = geom.transform(mat);
+		mObj.setGeometry( transformedGeometry );
 	};
 
 	/**
@@ -1029,11 +1099,14 @@ var VIDAMO = ( function (mod){
 									[0,	0,	0,	1]
 						];
 			
-			geom = geom.transform(mat_x);
-			geom = geom.transform(mat_y);
-			geom = geom.transform(mat_z);
-			mObj.setGeometry( geom );
-			
+			var transformedGeometry = geom.transform(mat_x).transform(mat_y).transform(mat_z);
+
+			// if the object is scaled, the object centre remains the same and needs to be redefined
+			if(geom.center != undefined)
+				transformedGeometry.center = function(){ return VIDAMO.getCentre( mObj ) }
+
+			mObj.setGeometry( transformedGeometry );
+		
 			// shift to original centre point
 			VIDAMO.moveObjectToPoint(mObj, centre[0], centre[1], centre[2]);
 		}
@@ -1055,9 +1128,9 @@ var VIDAMO = ( function (mod){
 	 * @param {boolean} transparent - 'True' if transparency is required. 
 	 * @returns null
 	 */
-	mod.addMaterial = function(obj, material_type, wireframe, color, transparent){
+	mod.addMaterial = function(obj, material_type, wireframe, color_hex, transparent){
 		var option = {	wireframe: wireframe,
-			color: color,
+			color: color_hex,
 			transparent: transparent,
 			side: THREE.DoubleSide
 		};
@@ -1092,16 +1165,6 @@ var VIDAMO = ( function (mod){
 				obj.setData( new_data );
 		}
 	};
-
-	//
-	//
-	//	topotesting functions
-	//
-	//
-	mod.showTopo = function( mObj, topoElement ){
-		return mObj[topoElement];
-	};
-
 
 	//Could be shifted to MobiusSide
 
@@ -1138,7 +1201,7 @@ var VIDAMO = ( function (mod){
 			}
 		}
 
-		function extract (obj,geom,geomData,topo){
+		function extract (obj,geom,geomData,topo){ 				
 			if(obj.constructor === Array){
 				var tempGeom0 = [];
 				var tempData0 = [];
@@ -1318,9 +1381,9 @@ var computeTopology = function( mObj ){
 		}
 
 		// remove clones - doesn't do well with the edges :/
-		topology.vertices = removeClonesInList( topology.vertices );
+/*		topology.vertices = removeClonesInList( topology.vertices ); 
 		topology.edges = removeClonesInList( topology.edges );
-		topology.faces = removeClonesInList( topology.faces ); 
+		topology.faces = removeClonesInList( topology.faces ); */
 	}
 	else
 		topology = undefined;	
@@ -1342,16 +1405,36 @@ var removeClonesInList = function( list ){
 		
 		for(var v=0; v < list.length; v++){
 
-			var thisObject = JSON.stringify( list[v].getGeometry() ); 
+			var thisObject = list[v].getGeometry() ; 
 			var duplicate = false;
-			
+			//console.log(thisObject);
 			for(nextV=v+1; nextV < list.length; nextV++){
 			
-				var nextObject = JSON.stringify( list[nextV].getGeometry() ); 
-			
-				if( thisObject == nextObject ){
-					duplicate = true; 
-					break;
+				var nextObject = list[nextV].getGeometry() ; 
+
+				if(thisObject._data != undefined)
+					thisObject = thisObject._data;
+				if (nextObject._data != undefined)		
+					nextObject = nextObject._data; 
+
+				if( thisObject.constructor.name == "Array" ){ 
+					if( JSON.stringify( thisObject ) == JSON.stringify( nextObject ) ){
+						duplicate = true; console.log(thisObject);
+						break; 
+					}
+				}else{
+						for(property in thisObject){
+							if(thisObject.hasOwnProperty(property)){ 
+								if(thisObject[property] != nextObject[property]){
+									duplicate = false; 
+									break;
+								}
+								else
+									duplicate = true;	
+							}
+						}
+					if(!duplicate)
+						break;	
 				}
 			}
 			
