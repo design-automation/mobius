@@ -106,6 +106,16 @@ var VIDAMO = ( function (mod){
 		return verb.core.Vec.cross(mat1, mat2);
 	};
 
+	mod.getAngleBetweenVectors = function( vector1, vector2 ){
+		var dotP = VIDAMO.getDotProduct( vector1,  vector2 );
+		var cos_t = dotP / (VIDAMO.getLengthOfVector( vector1 ) * VIDAMO.getLengthOfVector( vector2 ) );
+		return Math.cosh(cos_t);
+	};
+
+	mod.getLengthOfVector = function ( vector ){
+		return Math.sqrt( vector[0]*vector[0] + vector[1]*vector[1] + vector[2]*vector[2] );
+	};
+
 	/**
 	 * Computes unit vector
 	 * @param {array} vector  - Matrix 
@@ -165,6 +175,25 @@ var VIDAMO = ( function (mod){
 	mod.addToList = function( list, object ){
 		list.push( object );
 	};
+
+	/**
+	 * Adds to the list
+	 * @param {array} list  - List to which an element needs to be pushed
+	 * @param {array element} object - Element to be pushed into the list
+	 * @returns null
+	 */
+	mod.appendToList = function( list, object ){
+		
+		// this method would require return value - not in sync with addToList
+		//return list.concat(object);		
+		if( object.constructor.name == "Array"){
+			object.map( function(t){
+				list.push(t);
+			});
+		}
+
+	};
+
 
 	/**
 	 * Finds the index of the first occurence of an array element. 
@@ -322,7 +351,7 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.getLength = function( mObj ){
 
-		if( mObj.constructor.name == "Array")
+		if( mObj.constructor.name == "Array") // what if it's a vector
 			return mObj.length;
 		else if( mObj.getGeometry().length != undefined){
 			return mObj.getGeometry().length();
@@ -926,7 +955,7 @@ var VIDAMO = ( function (mod){
 	 * @param {float} zCoord - z-coordinate of the point where the clone appears
 	 * @returns {MobiusDataObject} Cloned object
 	 */
-	mod.makeCopy = function(mObj, xCoord, yCoord, zCoord){
+	mod.makeCopy = function(mObj){
 
 		/*	if(mObj instanceof Array){
 			var newcopy = [];
@@ -956,9 +985,9 @@ var VIDAMO = ( function (mod){
 		newcopy.setMaterial( mObj.getMaterial() );
 
 		// if verbs object, has to be copied and translated
-		if(xCoord != undefined && yCoord != undefined && zCoord != undefined){
+/*		if(xCoord != undefined && yCoord != undefined && zCoord != undefined){
 			VIDAMO.moveObjectToPoint(newcopy, xCoord, yCoord, zCoord);
-		}
+		}*/
 			
 
 		return newcopy;
@@ -979,9 +1008,13 @@ var VIDAMO = ( function (mod){
 
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
+		if (mObj instanceof mObj_geom_Solid)
+			mObj = mObj.getGeometry();
+
 		if(mObj instanceof Array){
 			for(var obj=0; obj < mObj.length; obj++)
 				VIDAMO.shiftObject(mObj[obj], shiftX, shiftY, shiftZ);	
+			return;
 		}
 
 		var geom = mObj.getGeometry();
@@ -1013,12 +1046,14 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.moveObjectToPoint = function(mObj, xCoord, yCoord, zCoord){
 
-
+		if (mObj instanceof mObj_geom_Solid)
+			mObj = mObj.getGeometry();
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
 		if(mObj instanceof Array){
 			for(var obj=0; obj < mObj.length; obj++)
 				VIDAMO.moveObjectToPoint(mObj[obj], xCoord, yCoord, zCoord);	
+			return;
 		}
 	
 		var orCenter = VIDAMO.getCentre(mObj);
@@ -1042,9 +1077,13 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.scaleObject = function(mObj, scaleX, scaleY, scaleZ){
 
+		if (mObj instanceof mObj_geom_Solid)
+			mObj = mObj.getGeometry();
+
 		if(mObj instanceof Array){
 			for(var obj=0; obj < mObj.length; obj++)
 				VIDAMO.scaleObject(mObj[obj], scaleX, scaleY, scaleZ);	
+			return;
 		}
 
 		// if extractGeometry is called again, the translations would  be lost ..
@@ -1071,9 +1110,13 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.rotateObject = function(mObj, xAxis, yAxis, zAxis){
 
+		if (mObj instanceof mObj_geom_Solid)
+			mObj = mObj.getGeometry();
+
 		if(mObj instanceof Array){
 			for(var obj=0; obj < mObj.length; obj++)
 				VIDAMO.rotateObject(mObj[obj], xAxis, yAxis, zAxis);	
+			return;
 		}
 
 		var geom = mObj.getGeometry();
@@ -1112,6 +1155,105 @@ var VIDAMO = ( function (mod){
 		}
 	};
 
+	mod.rotateObjectAboutAxis = function( mObj, axis, angle ){
+
+/*		var end_point = [ axis[0]+point[0], axis[1]+point[1], axis[2]+point[2] ];
+		var unit_vector = VIDAMO.getUnitVector( axis );
+
+		var d = Math.sqrt( unit_vector[1]*unit_vector[1] + unit_vector[2]*unit_vector[2] );
+		var rx = Math.cosh( unit_vector[2]/d );
+		var ry = Math.cosh( d ); 
+
+		var origin = VIDAMO.getCentre(mObj);
+		// shift the object to base of the axis
+		VIDAMO.moveObjectToPoint( mObj, point[0], point[1], point[2]);
+
+
+		// rotate the object so y matches up to axis - store this angle
+		VIDAMO.rotateObject( mObj, rx, ry, angle );
+
+		// perform transformations
+
+		// rotate opposite to angle previous
+		VIDAMO.rotateObject( mObj, 0, -ry, 0 );
+		VIDAMO.rotateObject( mObj, -rx, 0, 0 );
+
+		// perform opposite translation
+		VIDAMO.moveObjectToPoint( mObj, origin[0], origin[1], origin[2]);*/
+		if (mObj instanceof mObj_geom_Solid)
+			mObj = mObj.getGeometry();
+
+		if(mObj instanceof Array){
+			for(var obj=0; obj < mObj.length; obj++)
+				VIDAMO.rotateObjectAboutAxis(mObj[obj], axis, angle );	
+			return;
+		}
+
+		var geom = mObj.getGeometry();
+		if(geom instanceof verb.geom.NurbsCurve || geom instanceof verb.geom.NurbsSurface){
+
+			var centre = VIDAMO.getCentre(mObj);
+
+			var cost = Math.cos( angle );
+			var sint = Math.sin( angle );
+			var axis = VIDAMO.getUnitVector(axis); 
+
+			var mat = [ [ cost + axis[0]*axis[0]*( 1 - cost ) , axis[0]*axis[1]*( 1 - cost ) - axis[2]*sint, axis[0]*axis[2]*( 1 - cost ) + axis[1]*sint, 0],
+							[ axis[0]*axis[1]*( 1 - cost ) + axis[2]*sint,	cost + axis[1]*axis[1]*( 1 - cost ), axis[1]*axis[2]*( 1 - cost ) - axis[0]*sint,0],
+								[ axis[2]*axis[0]*( 1 - cost ) - axis[1]*sint,	axis[2]*axis[1]*( 1 - cost ) + axis[0]*sint, cost + axis[2]*axis[2]*( 1 - cost ),0],
+									[0,0,0,1]
+						];
+						
+			
+			var transformedGeometry = geom.transform( mat );
+
+			// if the object is scaled, the object centre remains the same and needs to be redefined
+			if(geom.center != undefined)
+				transformedGeometry.center = function(){ return VIDAMO.getCentre( mObj ) } // bug - tranform the centre too - if the object is rotated
+
+			mObj.setGeometry( transformedGeometry );
+		
+			// shift to original centre point
+			//VIDAMO.moveObjectToPoint(mObj, centre[0], centre[1], centre[2]);
+		}
+	
+	};
+
+	mod.reflectObjectThroughPlane = function( mObj, planeABC ){
+
+		if (mObj instanceof mObj_geom_Solid)
+			mObj = mObj.getGeometry();
+
+		if(mObj instanceof Array){
+			for(var obj=0; obj < mObj.length; obj++)
+				VIDAMO.rotateObjectAboutAxis(mObj[obj], axis, angle );	
+			return;
+		}
+
+		var geom = mObj.getGeometry();
+		if(geom instanceof verb.geom.NurbsCurve || geom instanceof verb.geom.NurbsSurface){
+
+			var a = planeABC[0]; 
+			var b = planeABC[1];
+			var c = planeABC[2];
+			var d = planeABC[3];
+
+			var mat = [ [ 1-2*a*a, -2*a*b, -2*a*c , 0],
+							[ -2*a*b, 1-2*b*b, -2*b*c, 0],
+								[ -2*a*c, -2*b*c, 1-2*c*c, 0],
+									[0,0,0,1]
+						];
+						
+			
+			var transformedGeometry = geom.transform( mat );
+
+			mObj.setGeometry( transformedGeometry );
+		
+			// shift to original centre point
+			//VIDAMO.moveObjectToPoint(mObj, centre[0], centre[1], centre[2]);
+		}
+	
+	};
 
 	/*
 	 *	Data Functions
