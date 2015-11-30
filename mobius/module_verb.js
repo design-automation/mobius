@@ -106,6 +106,16 @@ var VIDAMO = ( function (mod){
 		return verb.core.Vec.cross(mat1, mat2);
 	};
 
+	mod.getAngleBetweenVectors = function( vector1, vector2 ){
+		var dotP = VIDAMO.getDotProduct( vector1,  vector2 );
+		var cos_t = dotP / (VIDAMO.getLengthOfVector( vector1 ) * VIDAMO.getLengthOfVector( vector2 ) );
+		return Math.cosh(cos_t);
+	};
+
+	mod.getLengthOfVector = function ( vector ){
+		return Math.sqrt( vector[0]*vector[0] + vector[1]*vector[1] + vector[2]*vector[2] );
+	};
+
 	/**
 	 * Computes unit vector
 	 * @param {array} vector  - Matrix 
@@ -341,7 +351,7 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.getLength = function( mObj ){
 
-		if( mObj.constructor.name == "Array")
+		if( mObj.constructor.name == "Array") // what if it's a vector
 			return mObj.length;
 		else if( mObj.getGeometry().length != undefined){
 			return mObj.getGeometry().length();
@@ -1186,8 +1196,8 @@ var VIDAMO = ( function (mod){
 
 			var cost = Math.cos( angle );
 			var sint = Math.sin( angle );
-			axis = VIDAMO.getUnitVector(axis); console.log(axis);
-			
+			var axis = VIDAMO.getUnitVector(axis); 
+
 			var mat = [ [ cost + axis[0]*axis[0]*( 1 - cost ) , axis[0]*axis[1]*( 1 - cost ) - axis[2]*sint, axis[0]*axis[2]*( 1 - cost ) + axis[1]*sint, 0],
 							[ axis[0]*axis[1]*( 1 - cost ) + axis[2]*sint,	cost + axis[1]*axis[1]*( 1 - cost ), axis[1]*axis[2]*( 1 - cost ) - axis[0]*sint,0],
 								[ axis[2]*axis[0]*( 1 - cost ) - axis[1]*sint,	axis[2]*axis[1]*( 1 - cost ) + axis[0]*sint, cost + axis[2]*axis[2]*( 1 - cost ),0],
@@ -1199,7 +1209,7 @@ var VIDAMO = ( function (mod){
 
 			// if the object is scaled, the object centre remains the same and needs to be redefined
 			if(geom.center != undefined)
-				transformedGeometry.center = function(){ return VIDAMO.getCentre( mObj ) }
+				transformedGeometry.center = function(){ return VIDAMO.getCentre( mObj ) } // bug - tranform the centre too - if the object is rotated
 
 			mObj.setGeometry( transformedGeometry );
 		
@@ -1209,6 +1219,41 @@ var VIDAMO = ( function (mod){
 	
 	};
 
+	mod.reflectObjectThroughPlane = function( mObj, planeABC ){
+
+		if (mObj instanceof mObj_geom_Solid)
+			mObj = mObj.getGeometry();
+
+		if(mObj instanceof Array){
+			for(var obj=0; obj < mObj.length; obj++)
+				VIDAMO.rotateObjectAboutAxis(mObj[obj], axis, angle );	
+			return;
+		}
+
+		var geom = mObj.getGeometry();
+		if(geom instanceof verb.geom.NurbsCurve || geom instanceof verb.geom.NurbsSurface){
+
+			var a = planeABC[0]; 
+			var b = planeABC[1];
+			var c = planeABC[2];
+			var d = planeABC[3];
+
+			var mat = [ [ 1-2*a*a, -2*a*b, -2*a*c , 0],
+							[ -2*a*b, 1-2*b*b, -2*b*c, 0],
+								[ -2*a*c, -2*b*c, 1-2*c*c, 0],
+									[0,0,0,1]
+						];
+						
+			
+			var transformedGeometry = geom.transform( mat );
+
+			mObj.setGeometry( transformedGeometry );
+		
+			// shift to original centre point
+			//VIDAMO.moveObjectToPoint(mObj, centre[0], centre[1], centre[2]);
+		}
+	
+	};
 
 	/*
 	 *	Data Functions
