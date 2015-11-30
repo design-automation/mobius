@@ -29,6 +29,29 @@ CSS For ui-flowchart [left pane graph area]
     stroke-width: 2;
 }
 
+.func-connector-circle {
+	fill: white;
+	stroke: #777777;
+	stroke-width: 2;
+	stroke-dasharray:5,1;
+}
+
+.mouseover-func-connector-circle {
+	fill: white;
+	stroke: #777777;
+	stroke-width: 3;
+	stroke-dasharray:5,1;
+
+}
+
+.selected-func-connector-circle {
+	fill: white;
+	stroke: red;
+	stroke-width: 2;
+	stroke-dasharray:5,1;
+}
+
+
 .mouseover-connector-circle {
 	 fill: white;
 	 stroke: #777777;
@@ -51,6 +74,8 @@ CSS For ui-flowchart [left pane graph area]
 }
 
 
+
+
 /*
 Style for connections.
 */
@@ -62,19 +87,41 @@ Style for connections.
 	stroke: #555555;
 	stroke-width: 2.5;
 	fill: transparent;
-}	
+}
+
+.func-connection-line {
+	stroke: #555555;
+	stroke-width: 2.5;
+	fill: transparent;
+	stroke-dasharray:3,1;
+
+}
 
 .mouseover-connection-line {
 	stroke: gray;
 	stroke-width: 3;
 	fill: transparent;
-}	
+}
+
+.mouseover-func-connection-line {
+	stroke: gray;
+	stroke-width: 3;
+	fill: transparent;
+	stroke-dasharray:3,1;
+}
 
 .selected-connection-line {
 	stroke: red;
 	stroke-width: 3;
 	fill: transparent;
-}	
+}
+
+.selected-func-connection-line {
+	stroke: red;
+	stroke-width: 3;
+	fill: transparent;
+	stroke-dasharray:3,1;
+}
 
 .connection-endpoint {
 	fill: #555555;

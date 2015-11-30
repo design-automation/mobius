@@ -203,7 +203,6 @@
 
                                 <viewport control="viewportControl" id="threeViewport"></viewport>
 
-                                <!--<div ng-controller="graphCtrl">-->
                                 <!--<textarea-->
                                 <!--style="width: 100%; height: 100%;-->
                                 <!--padding-top: 8px;-->
@@ -216,7 +215,6 @@
                                 <!--chart-json-edit-->
                                 <!--view-model="chartViewModel">-->
                                 <!--</textarea>-->
-                                <!--</div>-->
 
 
                                 <div ng-if="showFullCode">
@@ -390,6 +388,8 @@
                         </ul>
                     </li>
 
+                    <li ng-if="checkDupFunc()"><a ng-click="addFunctionOutput()"> Show Function output </a></li>
+
                     <li><a ng-click="delete()"> Delete </a></li>
 
                     <li><a ng-click="rename()"> Rename </a></li>
@@ -409,9 +409,9 @@
                         <a ng-click="delete()"> Hide </a>
                     </li>
 
-                    <li>
-                        <a ng-click="rename()"> Rename </a>
-                    </li>
+                    <!--<li>-->
+                        <!--<a ng-click="rename()"> Rename </a>-->
+                    <!--</li>-->
                 </ul>
             </div>
 

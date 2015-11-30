@@ -302,7 +302,8 @@ vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
                     }
 
                     data.innerCodeList[i] += ' ){\n';
-
+                    data.innerCodeList[i] += '    var FUNC_OUTPUT = ';
+                    data.innerCodeList[i] += data.chartViewModel.nodes[i].data.type + identifier + ';\n';
 
                     // define return items according to output port
                     var num_output_ports = data.chartViewModel.nodes[i].outputConnectors.length;

@@ -258,16 +258,16 @@ vidamo.controller('graphCtrl',[
                 //    var connectorName = prompt("Enter a connector name:", "out"
                 //        + $scope.chartViewModel.nodes[$scope.nodeIndex].outputConnectors.length);
 
-                    if (!isValidName(connectorModel.name)) {
-                        return;
-                    }
+                if (!isValidName(connectorModel.name)) {
+                    return;
+                }
 
-                    var selectedNodes = $scope.chartViewModel.getSelectedNodes();
+                var selectedNodes = $scope.chartViewModel.getSelectedNodes();
 
-                    for (var i = 0; i < selectedNodes.length; ++i) {
-                        var node = selectedNodes[i];
-                        node.addOutputConnector(connectorModel);
-                    }
+                for (var i = 0; i < selectedNodes.length; ++i) {
+                    var node = selectedNodes[i];
+                    node.addOutputConnector(connectorModel);
+                }
                 //},100);
 
 

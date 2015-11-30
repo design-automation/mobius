@@ -319,8 +319,6 @@ vidamo.directive('viewport', function factory() {
                         }
                     }
                 }
-
-                console.log('scene:   ',scene);
             };
 
             //
