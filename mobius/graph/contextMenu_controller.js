@@ -49,16 +49,67 @@ vidamo.controller('nodeMenuCtrl',['$scope','$rootScope','generateCode',
             $rootScope.$broadcast("newOutputConnector",model)
         };
 
+        $scope.addFunctionOutput = function(){
+            var model = {
+                    id:'999',
+                    title: 'Output',
+                    name: 'FUNC_OUTPUT',
+                    dataValue:undefined,
+                    type:undefined
+            }
+
+            $rootScope.$broadcast("newOutputConnector",model)
+        };
+
         $scope.checkDupOutput  = function(output){
             if($scope.chartViewModel.nodes[$scope.nodeIndex] !== undefined){
                 var outputs = $scope.chartViewModel.nodes[$scope.nodeIndex].data.outputConnectors;
+                    for(var i = 0; i < outputs.length; i++){
+                        if(outputs[i].name === output.name && outputs[i].name !== 'FUNC_OUTPUT'){
+                            return false;
+                        }
+                    }
+                }
+            return true;
+        };
+
+        $scope.checkDupFunc  = function(){
+            if($scope.chartViewModel.nodes[$scope.nodeIndex] !== undefined){
+                var outputs = $scope.chartViewModel.nodes[$scope.nodeIndex].data.outputConnectors;
                 for(var i = 0; i < outputs.length; i++){
-                    if(outputs[i].name === output.name){
+                    if(outputs[i].name === 'FUNC_OUTPUT'){
                         return false;
                     }
                 }
             }
             return true;
+        };
+
+
+        $scope.disableAddInput = function(){
+            if($scope.inputs){
+                for(var i = 0; i < $scope.inputs.length; i++){
+                    if($scope.checkDupInput($scope.inputs[i])){
+                        return true;
+                    }
+                }
+                return false;
+            }else{
+                return false;
+            }
+        };
+
+        $scope.disableAddOutput = function(){
+            if($scope.procedures){
+                for(var i = 0; i < $scope.procedures.length; i++){
+                    if($scope.checkDupOutput($scope.procedures[i])){
+                        return true;
+                    }
+                }
+                return false;
+            }else{
+                return false;
+            }
         };
 
         $scope.checkDupInput  = function(input){

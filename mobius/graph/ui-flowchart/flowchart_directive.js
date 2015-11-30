@@ -74,7 +74,8 @@ angular.module('flowChart', ['dragging'] )
 //
 // Controller for the flowchart directive.
 //
-.controller('FlowChartController', ['$scope', 'dragging', '$element','$rootScope', function FlowChartController ($scope, dragging, $element,$rootScope) {
+.controller('FlowChartController', ['$scope', 'dragging', '$element','$rootScope','$timeout',
+	function FlowChartController ($scope, dragging, $element,$rootScope,$timeout) {
 
     //
 	// @ vidamo for context menu
@@ -279,7 +280,6 @@ angular.module('flowChart', ['dragging'] )
 	//
 	$scope.doubleClick = function(evt){
 
-		//$scope.$broadcast('SetFocus');
 
         // make sure double click not on node/connection
         // todo
@@ -295,19 +295,22 @@ angular.module('flowChart', ['dragging'] )
 		$scope.dbClickMenu.x = dBclickPoint.x * (1/$scope.scaleFactor) 	- (90-90/$scope.scaleFactor);
 		$scope.dbClickMenu.y = dBclickPoint.y *(1/$scope.scaleFactor );
 
-		// enable dropdown
 		document.getElementById("node-creator").style.display = "inline-block";
-
-		var ele = document.getElementById("node-dropdown");
-
-		setTimeout(function(){
-			console.log(angular.element(ele).find('input'))
-			angular.element(ele).find('input').click();
-		},0);
 
         // node location
         $scope.chart.newPos.x = dBclickPoint.x * (1/$scope.scaleFactor);
         $scope.chart.newPos.y = $scope.dbClickMenu.y;
+
+		// enable dropdown
+		var ele = document.getElementById("node-dropdown");
+
+		setTimeout(function(){
+			angular.element(ele).find('input').click();
+			$(ele).find('input').click()
+			$('#node-dropdown').find('input').click();
+		},0);
+
+		$scope.$broadcast('SetFocus');
 	};
 
 	// Called on mouse down in the chart.

@@ -85,8 +85,8 @@
         />
 
         <text
-                ng-attr-x="{{node.width()/2}}"
-                ng-attr-y="{{-node.height()/3}}"
+                ng-attr-x="{{connector.x()}}"
+                ng-attr-y="{{connector.y()-13}}"
                 text-anchor="middle"
                 alignment-baseline="middle"
                 class = "connector-text">
@@ -101,6 +101,7 @@
       class="connector"
       >
     <circle
+            ng-if="connector.data.name !== 'FUNC_OUTPUT'"
             ng-attr-class="{{connector.selected() && 'selected-connector-circle' ||
                     (connector == mouseOverConnector && 'mouseover-connector-circle' || 'connector-circle')}}"
             ng-attr-r="{{connectorSize}}"
@@ -110,9 +111,22 @@
             data-target="menu-connector"
             />
 
+
+    <circle
+            ng-if="connector.data.name === 'FUNC_OUTPUT'"
+            ng-attr-class="{{connector.selected() && 'selected-func-connector-circle' ||
+                (connector == mouseOverConnector && 'mouseover-func-connector-circle' || 'func-connector-circle')}}"
+            ng-attr-r="{{connectorSize}}"
+            ng-attr-cx="{{connector.x()}}"
+            ng-attr-cy="{{connector.y()}}"
+            context-menu
+            data-target="menu-connector"
+    />
+
+
       <text
-        ng-attr-x="{{node.width()/2}}"
-        ng-attr-y="{{4*node.height()/3}}"
+        ng-attr-x="{{connector.x()}}"
+        ng-attr-y="{{connector.y()+13}}"
         text-anchor="middle"
         alignment-baseline="middle"
         class = "connector-text"
@@ -130,6 +144,7 @@
       data-target="menu-connection"
       >
         <path
+          ng-if="connection.source.name() !== 'FUNC_OUTPUT'"
           ng-attr-class="{{connection.selected() && 'selected-connection-line' || (connection == mouseOverConnection && 'mouseover-connection-line' || 'connection-line')}}"
           ng-attr-d="M {{connection.sourceCoordX()}}, {{connection.sourceCoordY()}}
                      C {{connection.sourceTangentX()}}, {{connection.sourceTangentY()}}
@@ -137,6 +152,17 @@
                        {{connection.destCoordX()}}, {{connection.destCoordY()}}"
           >
         </path>
+
+        <path
+                ng-if="connection.source.name() === 'FUNC_OUTPUT'"
+                ng-attr-class="{{connection.selected() && 'selected-func-connection-line' || (connection == mouseOverConnection && 'mouseover-func-connection-line' || 'func-connection-line')}}"
+                ng-attr-d="M {{connection.sourceCoordX()}}, {{connection.sourceCoordY()}}
+                     C {{connection.sourceTangentX()}}, {{connection.sourceTangentY()}}
+                       {{connection.destTangentX()}}, {{connection.destTangentY()}}
+                       {{connection.destCoordX()}}, {{connection.destCoordY()}}"
+        >
+        </path>
+
         <circle
             ng-attr-class="{{connection.selected() && 'selected-connection-endpoint' || (connection == mouseOverConnection && 'mouseover-connection-endpoint' || 'connection-endpoint')}}"
             r="3"
@@ -199,18 +225,17 @@
         ng-attr-width="{{dbClickMenu.width}}"
         ng-attr-height="{{dbClickMenu.height}}"
     >
-        <body xmlns="http://www.w3.org/1999/xhtml">
             <div ng-controller="newNodeCtrl" id = "node-creator" style="width:180px; ">
                 <ui-select ng-model="type.selected"
+                           id = "node-dropdown"
+                           theme="selectize"
                            focus-on='SetFocus'
-                               append-to-body = "true"
-                               on-select="addNewNode(this.type.selected)">
-                    <ui-select-match  id = "node-dropdown" placeholder="New node" >{{$select.selected}}</ui-select-match>
+                           on-select="addNewNode(this.type.selected)">
+                    <ui-select-match   placeholder="New node" >New node</ui-select-match>
                     <ui-select-choices repeat="type in nodeTypes()| filter: $select.search">
                         <span ng-bind-html="type| highlight: $select.search"></span>
                     </ui-select-choices>
                 </ui-select>
             </div>
-        </body>
     </foreignObject>
 </svg>

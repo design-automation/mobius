@@ -136,9 +136,6 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
 
         // watch change of procedure data tree, if change update the flattenData, update version
-        $scope.$watch('interfaceList',function(){
-            generateCode.generateCode();
-        },true);
 
         $scope.$watch('data',function(){
             updateVersion();
@@ -147,7 +144,9 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         } , true);
 
 
-        $scope.$watch('interfaceList',function(){
+
+        $scope.$watch('interface',function(){
+            updateVersion();
             generateCode.generateCode();
             flattenData();
         },true);
@@ -159,14 +158,22 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                 var currentType = $scope.chartViewModel.nodes[$scope.nodeIndex].data.type;
 
                 var currentProcedure = $scope.data;
-                var typeProcedure = nodeCollection.getProcedureDataModel(currentType);
+                var currentInterface = $scope.interface;
 
-                if(!angular.equals(currentProcedure,typeProcedure)){
+                var typeProcedure = nodeCollection.getProcedureDataModel(currentType);
+                var typeInterface = nodeCollection.getInterfaceDataModel(currentType);
+
+                if(!angular.equals(currentProcedure,typeProcedure) ||
+                    !angular.equals(currentInterface,typeInterface) ){
                     var d = new Date();
                     $scope.chartViewModel.nodes[$scope.nodeIndex].data.version = d.getTime();
                 }
+
+
+                $scope.currentNodeVersion = $scope.chartViewModel.nodes[$scope.nodeIndex].data.version === 0?'':'*';
             }
         }
+
         function flattenData(){
             // flatten the procedure three for data searching
             var i, l,
@@ -254,6 +261,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         // observing all procedures, if dataName duplicated, change type to 'assign'
         // indicating assign value to existing variable instead of creating new variable
         //
+        // fixme type checking is broken, could be bug from code generation part
         $scope.checkDupDataName = function(){
             for(var i in $scope.flattenData){
 
@@ -369,7 +377,6 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                 }
             }
 
-            // fixme update connector index and source/dest in connections
             // fixme update connector index and source/dest in connections
             for(var m = 0; m < $scope.chartViewModel.connections.length; m++){
 
@@ -531,8 +538,26 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
                     var outputObj = {
                         id:$scope.data.length + 1,
-                        title: 'Output',
-                        name: undefined,
+                        title: 'Output'
+                        //name: undefined,
+                        //dataValue:undefined,
+                        //type:undefined
+                    };
+
+                    if(insertIndex !== undefined){
+                        selectedParent.splice(insertIndex,0,outputObj);
+                    }else{
+                        insertPos.push(outputObj);
+                    }
+
+                    $scope.chartViewModel.nodes[$scope.nodeIndex].addOutputConnector(outputObj);
+                }
+                // todo update node flatten func
+                else if(cate === "Function"){
+                    var functionObj = {
+                        id:$scope.data.length + 1,
+                        title: 'Function',
+                        name: 'FUNC_OUTPUT',
                         dataValue:undefined,
                         type:undefined
                     };

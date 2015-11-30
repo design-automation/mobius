@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="assets/css/hotkeys.css">
     <link rel="stylesheet" href="assets/css/material.css">
     <link rel="stylesheet" href="assets/css/ui-grid/ui-grid.min.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css">
 
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.css">
 </head>
@@ -204,7 +205,6 @@
 
                                 <viewport control="viewportControl" id="threeViewport"></viewport>
 
-                                <!--<div ng-controller="graphCtrl">-->
                                 <!--<textarea-->
                                 <!--style="width: 100%; height: 100%;-->
                                 <!--padding-top: 8px;-->
@@ -217,7 +217,6 @@
                                 <!--chart-json-edit-->
                                 <!--view-model="chartViewModel">-->
                                 <!--</textarea>-->
-                                <!--</div>-->
 
 
                                 <div ng-if="showFullCode">
@@ -314,7 +313,7 @@
                             <div ng-controller="graphCtrl">
                                 <div ng-if = "currentNodeName">
                                     <pre class="nodeName" style="padding: 1px">
-                                        &nbsp &nbsp {{currentNodeType}} {{currentNodeVersion}} : &nbsp {{currentNodeName}} &nbsp
+                                        &nbsp &nbsp {{currentNodeName}} &nbsp
                                     </pre>
                                 </div>
 
@@ -370,7 +369,7 @@
                 <ul class="dropdown-menu">
                     <li class="dropdown-submenu">
                         <a> Show Input </a>
-                        <ul class="dropdown-menu" >
+                        <ul class="dropdown-menu" ng-if="disableAddInput()">
                             <li ng-repeat="input in inputs"
                                 ng-if="input.title ==='Input' && checkDupInput(input)"
                                 ng-click="addInputConnector(input)">
@@ -381,7 +380,7 @@
 
                     <li class="dropdown-submenu" >
                         <a> Show Output </a>
-                        <ul class="dropdown-menu ">
+                        <ul class="dropdown-menu " ng-if="disableAddOutput()">
                             <li ng-repeat="procedure in procedures"
                                 ng-if="procedure.title ==='Output' && checkDupOutput(procedure)"
                                 ng-click="addOutputConnector(procedure)"
@@ -390,6 +389,8 @@
                             </li>
                         </ul>
                     </li>
+
+                    <li ng-if="checkDupFunc()"><a ng-click="addFunctionOutput()"> Show Function output </a></li>
 
                     <li><a ng-click="delete()"> Delete </a></li>
 
@@ -410,9 +411,9 @@
                         <a ng-click="delete()"> Hide </a>
                     </li>
 
-                    <li>
-                        <a ng-click="rename()"> Rename </a>
-                    </li>
+                    <!--<li>-->
+                        <!--<a ng-click="rename()"> Rename </a>-->
+                    <!--</li>-->
                 </ul>
             </div>
 
@@ -507,6 +508,7 @@
 <script src="mobius/template/dialog_controller.js"></script>
 <script src="mobius/graph/addNewNode_Controller.js"></script>
 <script src="mobius/viewport/code_controller.js"></script>
+<script src="mobius/graph/contextMenu_controller.js"></script>
 
 
 <!-- directives -->
@@ -532,7 +534,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-animate.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-aria.min.js"></script>
 
-<script src="mobius/graph/contextMenu_controller.js"></script>
 
 
 

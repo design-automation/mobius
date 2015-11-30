@@ -1,4 +1,4 @@
-vidamo.factory('consoleMsg', function () {
+vidamo.factory('consoleMsg', function ($q) {
 
     function autoScroll(){
         var consoleDiv = document.getElementById("log");
@@ -57,6 +57,16 @@ vidamo.factory('consoleMsg', function () {
                     document.getElementById('log').innerHTML += "<div style='color: green'> " + printMsg + "</div>";
                 }
                 autoScroll();
+            },
+        execMsg:
+            function(){
+                return new Promise(function (resolve){
+                    printMsg = timeMsg() + ":" + 'Executing ... Please wait ...' +".";
+                    document.getElementById('log').innerHTML += "<div style='color: green'> " + printMsg + "</div>"
+                    setTimeout(function(){
+                        resolve(true);
+                    },100);
+                });
             }
     }
 
