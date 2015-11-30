@@ -167,6 +167,25 @@ var VIDAMO = ( function (mod){
 	};
 
 	/**
+	 * Adds to the list
+	 * @param {array} list  - List to which an element needs to be pushed
+	 * @param {array element} object - Element to be pushed into the list
+	 * @returns null
+	 */
+	mod.appendToList = function( list, object ){
+		
+		// this method would require return value - not in sync with addToList
+		//return list.concat(object);		
+		if( object.constructor.name == "Array"){
+			object.map( function(t){
+				list.push(t);
+			});
+		}
+
+	};
+
+
+	/**
 	 * Finds the index of the first occurence of an array element. 
 	 * @param {array} list  - List in which an element needs to be searched
 	 * @param {array element} object - Element to be searched for
@@ -979,6 +998,9 @@ var VIDAMO = ( function (mod){
 
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
+		if (mObj instanceof mObj_geom_Solid)
+			mObj = mObj.getGeometry();
+
 		if(mObj instanceof Array){
 			for(var obj=0; obj < mObj.length; obj++)
 				VIDAMO.shiftObject(mObj[obj], shiftX, shiftY, shiftZ);	
@@ -1013,7 +1035,8 @@ var VIDAMO = ( function (mod){
 	 */
 	mod.moveObjectToPoint = function(mObj, xCoord, yCoord, zCoord){
 
-
+		if (mObj instanceof mObj_geom_Solid)
+			mObj = mObj.getGeometry();
 		// if extractGeometry is called again, the translations would  be lost ..
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
 		if(mObj instanceof Array){
@@ -1041,6 +1064,9 @@ var VIDAMO = ( function (mod){
 	 * @returns Null
 	 */
 	mod.scaleObject = function(mObj, scaleX, scaleY, scaleZ){
+
+		if (mObj instanceof mObj_geom_Solid)
+			mObj = mObj.getGeometry();
 
 		if(mObj instanceof Array){
 			for(var obj=0; obj < mObj.length; obj++)
@@ -1070,6 +1096,9 @@ var VIDAMO = ( function (mod){
 	 * @returns Null
 	 */
 	mod.rotateObject = function(mObj, xAxis, yAxis, zAxis){
+
+		if (mObj instanceof mObj_geom_Solid)
+			mObj = mObj.getGeometry();
 
 		if(mObj instanceof Array){
 			for(var obj=0; obj < mObj.length; obj++)
@@ -1110,6 +1139,69 @@ var VIDAMO = ( function (mod){
 			// shift to original centre point
 			VIDAMO.moveObjectToPoint(mObj, centre[0], centre[1], centre[2]);
 		}
+	};
+
+	mod.rotateObjectAboutAxis = function( mObj, axis, angle ){
+
+/*		var end_point = [ axis[0]+point[0], axis[1]+point[1], axis[2]+point[2] ];
+		var unit_vector = VIDAMO.getUnitVector( axis );
+
+		var d = Math.sqrt( unit_vector[1]*unit_vector[1] + unit_vector[2]*unit_vector[2] );
+		var rx = Math.cosh( unit_vector[2]/d );
+		var ry = Math.cosh( d ); 
+
+		var origin = VIDAMO.getCentre(mObj);
+		// shift the object to base of the axis
+		VIDAMO.moveObjectToPoint( mObj, point[0], point[1], point[2]);
+
+
+		// rotate the object so y matches up to axis - store this angle
+		VIDAMO.rotateObject( mObj, rx, ry, angle );
+
+		// perform transformations
+
+		// rotate opposite to angle previous
+		VIDAMO.rotateObject( mObj, 0, -ry, 0 );
+		VIDAMO.rotateObject( mObj, -rx, 0, 0 );
+
+		// perform opposite translation
+		VIDAMO.moveObjectToPoint( mObj, origin[0], origin[1], origin[2]);*/
+		if (mObj instanceof mObj_geom_Solid)
+			mObj = mObj.getGeometry();
+		
+		if(mObj instanceof Array){
+			for(var obj=0; obj < mObj.length; obj++)
+				VIDAMO.rotateObjectAboutAxis(mObj[obj], axis, angle );	
+		}
+
+		var geom = mObj.getGeometry();
+		if(geom instanceof verb.geom.NurbsCurve || geom instanceof verb.geom.NurbsSurface){
+
+			var centre = VIDAMO.getCentre(mObj);
+
+			var cost = Math.cos( angle );
+			var sint = Math.sin( angle );
+			var axis = VIDAMO.getUnitVector(axis);
+			
+			var mat = [ [ cost + axis[0]*axis[0]( 1 - cost ) , axis[0]*axis[1]( 1 - cost ) - axis[2]*sint, 0, 0],
+							[0,	Math.cos(xAxis), -Math.sin(xAxis),0],
+								[0,	Math.sin(xAxis), Math.cos(xAxis),0],
+									[0,0,0,1]
+						];
+						
+			
+			var transformedGeometry = geom.transform( mat );
+
+			// if the object is scaled, the object centre remains the same and needs to be redefined
+			if(geom.center != undefined)
+				transformedGeometry.center = function(){ return VIDAMO.getCentre( mObj ) }
+
+			mObj.setGeometry( transformedGeometry );
+		
+			// shift to original centre point
+			VIDAMO.moveObjectToPoint(mObj, centre[0], centre[1], centre[2]);
+		}
+	
 	};
 
 

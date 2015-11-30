@@ -1,0 +1,89 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "node0",
+            "x": 1954.6210985613898,
+            "y": 2005.8037554772766,
+            "inputConnectors": [],
+            "outputConnectors": [
+                {
+                    "id": 16,
+                    "title": "Output",
+                    "name": "out0",
+                    "dataValue": "[crv, srf1, srfByRev, srfBySwp, cyl]",
+                    "type": "new",
+                    "$$hashKey": "object:568",
+                    "selected": true
+                }
+            ],
+            "type": "verbs",
+            "version": 1448526230575,
+            "overwrite": true
+        }
+    ],
+    "connections": []
+}
+
+//procedure json
+[
+    [
+        {
+            "id": 2,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "makeSurfaceByKnotsControlPointsWeights",
+            "parameters": [
+                {
+                    "value": "1",
+                    "type": "degreeU",
+                    "$$hashKey": "object:392"
+                },
+                {
+                    "value": "1",
+                    "type": "degreeV",
+                    "$$hashKey": "object:393"
+                },
+                {
+                    "value": "[0,0,1,2,2]",
+                    "type": "knotsU",
+                    "$$hashKey": "object:394"
+                },
+                {
+                    "value": "[0,0,1,2,2]",
+                    "type": "knotsV",
+                    "$$hashKey": "object:395"
+                },
+                {
+                    "value": "[ [ [0,0,0], [10,0,0], [20,0,0] ] , [ [0,0,-10], [10,0,-10], [20,0,-10] ], [ [0,0,-20], [10,0,-20], [30,0,-20] ]]",
+                    "type": "controlPoints",
+                    "$$hashKey": "object:396"
+                },
+                {
+                    "value": "undefined",
+                    "type": "weights",
+                    "$$hashKey": "object:397"
+                }
+            ],
+            "result": "srf1",
+            "$$hashKey": "object:384",
+            "selected": true
+        },
+        {
+            "id": 16,
+            "title": "Output",
+            "name": "out0",
+            "dataValue": "srf1",
+            "type": "new",
+            "$$hashKey": "object:568",
+            "selected": false
+        }
+    ]
+]
+
+//interface json
+[
+    []
+]
