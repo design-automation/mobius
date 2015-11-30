@@ -945,7 +945,7 @@ var VIDAMO = ( function (mod){
 	 * @param {float} zCoord - z-coordinate of the point where the clone appears
 	 * @returns {MobiusDataObject} Cloned object
 	 */
-	mod.makeCopy = function(mObj, xCoord, yCoord, zCoord){
+	mod.makeCopy = function(mObj){
 
 		/*	if(mObj instanceof Array){
 			var newcopy = [];
@@ -975,9 +975,9 @@ var VIDAMO = ( function (mod){
 		newcopy.setMaterial( mObj.getMaterial() );
 
 		// if verbs object, has to be copied and translated
-		if(xCoord != undefined && yCoord != undefined && zCoord != undefined){
+/*		if(xCoord != undefined && yCoord != undefined && zCoord != undefined){
 			VIDAMO.moveObjectToPoint(newcopy, xCoord, yCoord, zCoord);
-		}
+		}*/
 			
 
 		return newcopy;
@@ -1004,6 +1004,7 @@ var VIDAMO = ( function (mod){
 		if(mObj instanceof Array){
 			for(var obj=0; obj < mObj.length; obj++)
 				VIDAMO.shiftObject(mObj[obj], shiftX, shiftY, shiftZ);	
+			return;
 		}
 
 		var geom = mObj.getGeometry();
@@ -1042,6 +1043,7 @@ var VIDAMO = ( function (mod){
 		if(mObj instanceof Array){
 			for(var obj=0; obj < mObj.length; obj++)
 				VIDAMO.moveObjectToPoint(mObj[obj], xCoord, yCoord, zCoord);	
+			return;
 		}
 	
 		var orCenter = VIDAMO.getCentre(mObj);
@@ -1071,6 +1073,7 @@ var VIDAMO = ( function (mod){
 		if(mObj instanceof Array){
 			for(var obj=0; obj < mObj.length; obj++)
 				VIDAMO.scaleObject(mObj[obj], scaleX, scaleY, scaleZ);	
+			return;
 		}
 
 		// if extractGeometry is called again, the translations would  be lost ..
@@ -1103,6 +1106,7 @@ var VIDAMO = ( function (mod){
 		if(mObj instanceof Array){
 			for(var obj=0; obj < mObj.length; obj++)
 				VIDAMO.rotateObject(mObj[obj], xAxis, yAxis, zAxis);	
+			return;
 		}
 
 		var geom = mObj.getGeometry();
@@ -1168,10 +1172,11 @@ var VIDAMO = ( function (mod){
 		VIDAMO.moveObjectToPoint( mObj, origin[0], origin[1], origin[2]);*/
 		if (mObj instanceof mObj_geom_Solid)
 			mObj = mObj.getGeometry();
-		
+
 		if(mObj instanceof Array){
 			for(var obj=0; obj < mObj.length; obj++)
 				VIDAMO.rotateObjectAboutAxis(mObj[obj], axis, angle );	
+			return;
 		}
 
 		var geom = mObj.getGeometry();
@@ -1181,11 +1186,11 @@ var VIDAMO = ( function (mod){
 
 			var cost = Math.cos( angle );
 			var sint = Math.sin( angle );
-			var axis = VIDAMO.getUnitVector(axis);
+			axis = VIDAMO.getUnitVector(axis); console.log(axis);
 			
-			var mat = [ [ cost + axis[0]*axis[0]( 1 - cost ) , axis[0]*axis[1]( 1 - cost ) - axis[2]*sint, 0, 0],
-							[0,	Math.cos(xAxis), -Math.sin(xAxis),0],
-								[0,	Math.sin(xAxis), Math.cos(xAxis),0],
+			var mat = [ [ cost + axis[0]*axis[0]*( 1 - cost ) , axis[0]*axis[1]*( 1 - cost ) - axis[2]*sint, axis[0]*axis[2]*( 1 - cost ) + axis[1]*sint, 0],
+							[ axis[0]*axis[1]*( 1 - cost ) + axis[2]*sint,	cost + axis[1]*axis[1]*( 1 - cost ), axis[1]*axis[2]*( 1 - cost ) - axis[0]*sint,0],
+								[ axis[2]*axis[0]*( 1 - cost ) - axis[1]*sint,	axis[2]*axis[1]*( 1 - cost ) + axis[0]*sint, cost + axis[2]*axis[2]*( 1 - cost ),0],
 									[0,0,0,1]
 						];
 						
@@ -1199,7 +1204,7 @@ var VIDAMO = ( function (mod){
 			mObj.setGeometry( transformedGeometry );
 		
 			// shift to original centre point
-			VIDAMO.moveObjectToPoint(mObj, centre[0], centre[1], centre[2]);
+			//VIDAMO.moveObjectToPoint(mObj, centre[0], centre[1], centre[2]);
 		}
 	
 	};
