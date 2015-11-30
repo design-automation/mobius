@@ -39,7 +39,7 @@
 	 * @param {int} blue - Value between 0-255 for blue color
 	 * @returns {string} - HexValue
 	 */
-	mod.rgbToHex = function(red, green, blue){
+/*	mod.rgbToHex = function(red, green, blue){
 		
 		return '0x'+toHex(red)+toHex(green)+toHex(blue);
 			
@@ -50,7 +50,7 @@
 			 return "0123456789ABCDEF".charAt((n-n%16)/16)
 				  + "0123456789ABCDEF".charAt(n%16);
 		}
-	};
+	};*/
 	
 	/**
 	 * Converts degrees into radians
