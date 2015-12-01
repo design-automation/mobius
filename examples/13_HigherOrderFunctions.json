@@ -24,14 +24,14 @@
                 }
             ],
             "type": "spiral0",
-            "version": 1448961240039,
+            "version": 1448962546257,
             "overwrite": true
         },
         {
             "id": 1,
             "name": "radial_copy0",
             "x": 2049.2708925856464,
-            "y": 2384.5266295047977,
+            "y": 2386.5536654222583,
             "inputConnectors": [
                 {
                     "id": 1,
@@ -62,7 +62,7 @@
                     "title": "Input",
                     "name": "num_copies",
                     "connected": false,
-                    "dataValue": "16",
+                    "dataValue": "20",
                     "option": {
                         "name": "slider",
                         "$$hashKey": "object:848"
@@ -87,21 +87,21 @@
                 }
             ],
             "type": "radial_copy0",
-            "version": 1448961617947,
+            "version": 1448962547674,
             "overwrite": true
         },
         {
             "id": 2,
             "name": "curve0",
             "x": 2047.8647507645896,
-            "y": 2178.101808461451,
+            "y": 2180.128844378912,
             "inputConnectors": [
                 {
                     "id": 1,
                     "title": "Input",
                     "name": "topRadius",
                     "connected": false,
-                    "dataValue": "12",
+                    "dataValue": "15",
                     "option": {
                         "name": "slider",
                         "$$hashKey": "object:848"
@@ -152,7 +152,7 @@
                     "title": "Input",
                     "name": "angle",
                     "connected": false,
-                    "dataValue": "720",
+                    "dataValue": "270",
                     "option": {
                         "name": "slider",
                         "$$hashKey": "object:848"
@@ -169,7 +169,7 @@
                     "title": "Input",
                     "name": "num_points",
                     "connected": false,
-                    "dataValue": "15",
+                    "dataValue": "10",
                     "option": {
                         "name": "slider",
                         "$$hashKey": "object:848"
@@ -206,7 +206,7 @@
                 }
             ],
             "type": "curve",
-            "version": 1448961615426,
+            "version": 1448962544494,
             "overwrite": true
         },
         {
@@ -233,7 +233,7 @@
                 }
             ],
             "type": "spiral03",
-            "version": 1448961265089,
+            "version": 1448962545162,
             "overwrite": true
         },
         {
@@ -285,7 +285,7 @@
                 }
             ],
             "type": "pipe",
-            "version": 1448961612667,
+            "version": 1448962541194,
             "overwrite": true
         },
         {
@@ -320,7 +320,7 @@
                 }
             ],
             "type": "reflect",
-            "version": 1448961576352,
+            "version": 1448962542681,
             "overwrite": true
         }
     ],
@@ -745,9 +745,9 @@
             "title": "Data",
             "nodes": [],
             "dataName": "freq",
-            "dataValue": "0.70",
+            "dataValue": "0.75",
             "type": "new",
-            "selected": false,
+            "selected": true,
             "$$hashKey": "object:9201"
         },
         {
@@ -900,7 +900,7 @@
             "controlType": "for each",
             "dataName": "i",
             "forList": "seq",
-            "selected": true,
+            "selected": false,
             "$$hashKey": "object:9205"
         },
         {
@@ -1033,7 +1033,7 @@
             "method": "reflectObjectAboutPlane",
             "parameters": [
                 {
-                    "value": "geom",
+                    "value": "ref_geom",
                     "type": "mObj",
                     "$$hashKey": "object:668"
                 },
@@ -1043,7 +1043,7 @@
                     "$$hashKey": "object:669"
                 },
                 {
-                    "value": "[1,0,0]",
+                    "value": "[0,0,1]",
                     "type": "normalVector",
                     "$$hashKey": "object:670"
                 }
@@ -1176,7 +1176,7 @@
             "title": "Input",
             "name": "num_copies",
             "connected": false,
-            "dataValue": "16",
+            "dataValue": "20",
             "option": {
                 "name": "slider",
                 "$$hashKey": "object:848"
@@ -1195,7 +1195,7 @@
             "title": "Input",
             "name": "topRadius",
             "connected": false,
-            "dataValue": "12",
+            "dataValue": "15",
             "option": {
                 "name": "slider",
                 "$$hashKey": "object:848"
@@ -1246,7 +1246,7 @@
             "title": "Input",
             "name": "angle",
             "connected": false,
-            "dataValue": "720",
+            "dataValue": "270",
             "option": {
                 "name": "slider",
                 "$$hashKey": "object:848"
@@ -1263,7 +1263,7 @@
             "title": "Input",
             "name": "num_points",
             "connected": false,
-            "dataValue": "15",
+            "dataValue": "10",
             "option": {
                 "name": "slider",
                 "$$hashKey": "object:848"
