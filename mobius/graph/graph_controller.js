@@ -308,6 +308,11 @@ vidamo.controller('graphCtrl',[
         });
 
 
+        $scope.$on('clearProcedure', function(){
+            $scope.currentNodeName = '';
+
+        });
+
         $scope.$on("renameSelected",function(){
             $mdDialog.show({
                     controller: DialogController,

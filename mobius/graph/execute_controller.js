@@ -66,7 +66,7 @@ vidamo.controller('executeCtrl',['$scope','$rootScope','consoleMsg','generateCod
             try{
                 $scope.outputs = new Function(   $scope.javascriptCode
                     + $scope.geomListCode
-                    + '\n return VIDAMO.dataConversion(geomList);')();
+                    + '\n return MOBIUS.dataConversion(geomList);')();
                 consoleMsg.runtimeMsg();
 
             }catch (e) {
@@ -110,7 +110,6 @@ vidamo.controller('executeCtrl',['$scope','$rootScope','consoleMsg','generateCod
                     }
                 }
             },0);
-
         }
     }]);
 

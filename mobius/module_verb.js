@@ -2,7 +2,7 @@
  *	Module, with verb.js
  */
  
-var VIDAMO = ( function (mod){	
+var MOBIUS = ( function (mod){	
 
 	/*
 	 *
@@ -11,722 +11,43 @@ var VIDAMO = ( function (mod){
 	 *
 	 */
 
-	/**
-	 * Prints to console
-	 * @param {string} content - Message to be printed on the console
-	 * @returns {null}
-	 */
-	mod.print = function(content){
-		// try to find vidamo web app, if found print in vidamo console
-
-		this.content = content;
-
-		try{
-			var logString = "<div style='color: green;'>" + this.content + '</div>';
-			document.getElementById('log').innerHTML += logString;
-		}catch(err){
-			console.log('warnning: vidamo web app not connected.');
-		}
-	};
-
-	/**
-	 * Converts RGB values into Hex color code
-	 * @param {int} red - Value between 0-255 for red color
-	 * @param {int} green - Value between 0-255 for green color
-	 * @param {int} blue - Value between 0-255 for blue color
-	 * @returns {string} - HexValue
-	 */
-	mod.rgbToHex = function(red, green, blue){
-		
-		return '0x'+toHex(red)+toHex(green)+toHex(blue);
-			
-		function toHex(n) {
-			 n = parseInt(n,10);
-			 if (isNaN(n)) return "00";
-			 n = Math.max(0,Math.min(n,255));
-			 return "0123456789ABCDEF".charAt((n-n%16)/16)
-				  + "0123456789ABCDEF".charAt(n%16);
-		}
-	};
-	
-	/**
-	 * Converts degrees into radians
-	 * @param {float} degree - Degrees to be converted
-	 * @returns {float} 
-	 */
-	mod.convertDegreesToRadians = function( degrees ){
-		return 0.01745*degrees;
-	};
-
-	/**
-	 * Converts radians into degrees
-	 * @param {float} radians - Radians to be converted
-	 * @returns {float} 
-	 */
-	mod.convertRadiansToDegrees = function( radians ){
-		return 57.29*radians;
-	};
-
-	/**
-	 * Returns absolute (positive) value of a number
-	 * @param {float} number  
-	 * @returns {float} Positive value
-	 */
-	mod.getAbsoluteValue = function( number ){
-		return Math.abs( number );
-	};
-
-	/**
-	 * Returns value of a number upto significant digits
-	 * @param {float} number  - Number
-	 * @param {int} number  - Number of significant digits needed
-	 * @returns {float} 
-	 */
-	mod.getSignificantDigits = function( number, digits ){
-		return number.toFixed(digits);
-	};
-
-	/**
-	 * Computes dot product of two matrices
-	 * @param {array} mat1  - Matrix 1
-	 * @param {array} mat2  - Matrix 2
-	 * @returns {float} 
-	 */
-	mod.getDotProduct = function( mat1, mat2 ){
-		return verb.core.Vec.dot(mat1, mat2);
-	};
-
-	/**
-	 * Computes cross product of two matrices
-	 * @param {array} mat1  - Matrix 1
-	 * @param {array} mat2  - Matrix 2
-	 * @returns {array} 
-	 */
-	mod.getCrossProduct = function( mat1, mat2 ){
-		return verb.core.Vec.cross(mat1, mat2);
-	};
-
-	/**
-	 * Computes angle between two vectors
-	 * @param {array} vector1  - Vector 1 in [x, y, z] format
-	 * @param {array} vector2  - Vector 2 in [x, y, z] format
-	 * @returns {float} radians
-	 */
-	mod.getAngleBetweenVectors = function( vector1, vector2 ){
-		var dotP = VIDAMO.getDotProduct( vector1,  vector2 );
-		var cos_t = dotP / (VIDAMO.getLengthOfVector( vector1 ) * VIDAMO.getLengthOfVector( vector2 ) );
-		return Math.cosh(cos_t);
-	};
-
-	/**
-	 * Computes length of the vector
-	 * @param {array} vector  - Vector in [x, y, z] format
-	 * @returns {float} length
-	 */
-	mod.getLengthOfVector = function ( vector ){
-		return Math.sqrt( vector[0]*vector[0] + vector[1]*vector[1] + vector[2]*vector[2] );
-	};
-
-	/**
-	 * Computes unit vector
-	 * @param {array} vector  - Vector in [x, y, z] format
-	 * @returns {array} Unit Vector
-	 */
-	mod.getUnitVector = function( vector ){
-		return verb.core.Vec.normalized( vector )
-	}
-
-	/**
-	 * Multiples a vector with a factor
-	 * @param {float / int } factor - Value to be multiplied
-	 * @param {array} vector  - Vector in [x, y, z] format 
-	 * @returns {array} 
-	 */
-	mod.multiplyArray = function( factor, array ){
-		return [ factor*array[0], factor*array[1], factor*array[2] ] ;
-	}
-	
-
-	/*
-	 *
-	 * List Operations
-	 *
-	 */
-
-	/**
-	 * Returns a number sequence in the form of an array
-	 * @param {float or int} start  - Starting value of the sequence
-	 * @param {float or int} end  - Ending value of the sequence (not included in the sequence)
-	 * @param {float or int} stepSize  - Increment or Decrement value to get to the 'end' value from the 'start' value
-	 * @returns {array} 
-	 */
-	mod.makeSequence = function(start, end, stepSize){
-
-		var arr = [];
-		if( start == end ){
-			arr.push(start);
-		}
-		else if(start > end && stepSize < 0){
-			for(var i = start; i > end; i = i + stepSize)
-				arr.push(i);
-		} 
-		else{
-			for(var i = start; i < end; i = i + stepSize)
-				arr.push(i);
-		}
-
-		return arr;
-	};
-
-	/**
-	 * Adds an element to a list
-	 * @param {array} list  - List to which an element needs to be pushed
-	 * @param {array element} object - Element to be pushed into the list
-	 * @returns {null} 
-	 */
-	mod.addToList = function( list, object ){
-		list.push( object );
-	};
-
-	/**
-	 * Appends to the list
-	 * @param {array} list  - List to which an element needs to be appeneded
-	 * @param {array} object - Elements to be pushed into the list
-	 * @returns null
-	 */
-	mod.appendToList = function( list, object ){
-		
-		// this method would require return value - not in sync with addToList
-		//return list.concat(object);		
-		if( object.constructor.name == "Array"){
-			object.map( function(t){
-				list.push(t);
-			});
-		}
-
-	};
-
-
-	/**
-	 * Finds the index of the first occurence of an array element. 
-	 * @param {array} list  - List in which an element needs to be searched
-	 * @param {array element} object - Element to be searched for
-	 * @returns {int} Returns -1 if the element doesn't exist in array. 
-	 */
-	mod.indexOfObject = function( list, object ){
-		return list.indexOf( object );
-	};
-
-	/**
-	 * Removes an array element from a list by it's index number
-	 * @param {array} list  - List in which an element needs to be removed
-	 * @param {int} index - Index to be removed
-	 * @returns {null} 
-	 */
-	mod.removeIndexFromList = function( list, index ){
-		list.splice(index, 1);
-	};
-
-	/**
-	 * Gets the maximum value in a numeric array
-	 * @param {array} valueList - List from which maximum value is required
-	 * @returns {float / int} 
-	 */
-	mod.getMaxValue = function( valueList ){
-		var maxValue = valueList[0];
-		for(var i=0; i<valueList.length; i++)
-			maxValue = Math.max(maxValue, valueList[i]);
-		return maxValue;
-	};
-
-	/**
-	 * Gets the minimum value in a numeric array
-	 * @param {array} valueList - List from which minimum value is required
-	 * @returns {float / int} 
-	 */
-	mod.getMinValue = function( valueList ){
-		var minValue = valueList[0];
-		for(var i=0; i<valueList.length; i++)
-			minValue = Math.min(minValue, valueList[i]);
-		return minValue;
-	};
-
-	/**
-	 * Gets the sum of a numeric array
-	 * @param {array} valueList - List which is to be summed
-	 * @returns {float / int} 
-	 */
-	mod.sumList = function( valueList ){
-		var sum = 0;
-		for(var i=0; i<valueList.length; i++)
-			sum += valueList[i];
-		return sum;
-	};
-
-	/**
-	 * Gets the avaerage of a numeric array
-	 * @param {array} valueList - List which is to be averaged
-	 * @returns {float / int} 
-	 */
-	mod.averageList = function( valueList ){
-		return VIDAMO.sumList( valueList )/ valueList.length;
-	};
-
-	/**
-	 * Returns the span of the list - the difference between the maximum and the minimum value in the list
-	 * @param {array} valueList - List which is to be analyzed
-	 * @returns {float / int} 
-	 */
-	mod.rangeOfList = function( valueList ){
-		return VIDAMO.getMaxValue( valueList ) - VIDAMO.getMinValue( valueList );
-	};
-
-	/**
-	 * Returns the length of the list 
-	 * @param {array} valueList - List which is to be analyzed
-	 * @returns {int} 
-	 */
-	mod.getListLength = function( valueList ){
-		return valueList.length
-	};
-
-
-	/*
-	 *
-	 *	Geometry Analysis Functions
-	 *
-	 */
-
-	/**
-	 * Returns the centre of a NURBS Curve, NURBS Surface or geometry for which centre is defined
-	 * @param {array} mObj - Mobius object
-	 * @returns {array} Point - [x, y, z]
-	 */
-	mod.getCentre = function(mObj){
-		//calculate centre based on what kind of object
-		var geometry = mObj.getGeometry();  
-
-		if(geometry.center != undefined)
-			return geometry.center();
-		else if(geometry instanceof verb.geom.NurbsCurve)
-			return geometry.point(0.5);
-		else if(geometry instanceof verb.geom.NurbsSurface)
-			return geometry.point(0.5, 0.5);
-		else
-			return "Invalid Input"
-	};
-
-	/**
-	 * Returns the distance between two points or vertices
-	 * @param {point / vertex} point - [x, y, z] or vertex object
-	 * @returns {float} Distance 
-	 */
-	mod.distanceBetweenTwoPoints = function( point1, point2){
-
-		if( point1.getGeometry != undefined )
-			point1 = point1.getGeometry();
-		if( point2.getGeometry != undefined )
-			point2 = point2.getGeometry();
-				 
-		var deltaX, deltaY, deltaZ;
-
-		deltaX = point1[0] - point2[0];
-		deltaY = point1[1] - point2[1];
-		deltaZ = point1[2] - point2[2];
-
-		var distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
-		return distance;
-	};
-
-
-	/**
-	 * Returns the mid-point between two points
-	 * @param {point / vertex} point - [x, y , z] or Vertex
-	 * @returns {float} Distance 
-	 */
-	mod.getMidPoint = function( point1, point2){
-
-		if( point1.getGeometry != undefined )
-			point1 = point1.getGeometry();
-		if( point2.getGeometry != undefined )
-			point2 = point2.getGeometry();
-
-		return [ (point1[0] + point2[0])/2, (point1[1] + point2[1])/2, (point1[2] + point2[2])/2 ];
-	};	
-
-
-
-	/**
-	 * Returns the length of an object
-	 * @param {MobiusObject} mObj -  
-	 * @returns {float} Length 
-	 */
-	mod.getLength = function( mObj ){
-
-		if( mObj.getGeometry().length != undefined){
-			return mObj.getGeometry().length();
-		}
-	};
-
-
-	/*
-	 *
-	 * Verbs Functions
-	 * Input - according to requirements, Output - mobiusobject with NURBS Geometry
-	 *
-	 */
-	
-	//
-	//	Curve Functions
 	//
 	//
-	
-	/**
-	 * Returns a Mobius Curve object
-	 * @param {array} startPoint - Starting point of the line in [x,y,z] format or Vertex Object
-	 * @param {array} endPoint - Ending point of the line in [x,y,z] format	or Vertex Object
-	 * @returns {MobiusObject}  - NURBS Curve
-	 */
-	mod.makeLine = function(startPoint, endPoint){
-		// input variations
-		// start, end could be a vector3 - has to be converted into an array
-
-		if( startPoint.getGeometry != undefined )
-			startPoint = startPoint.getGeometry();
-		if( endPoint.getGeometry != undefined )
-			endPoint = endPoint.getGeometry();
-	
-		return new mObj_geom_Curve( new verb.geom.Line(startPoint, endPoint) );
-		
-		// topology : curve class
-	};
-
-	/**
-	 * Returns a mobiusobject containing a NURBS Curve
-	 * @param {array} centerPoint - Centre point of the Arc in [x,y,z] format or Vertex Object
-	 * @param {array} xaxis - Direction of X-Axis of the Arc in [x,y,z] format 
-	 * @param {array} yaxis - Direction of Y-Axis of the Arc in [x,y,z] format 
-	 * @param {array} radius - Radius of the Arc
-	 * @param {float} minAngle - Minimum Angle in Radians
-	 * @param {float} maxAngle - Maximum Angle in Radians
-	 * @returns {mobiusobject}  - NURBS Curve
-	 */
-	mod.makeArc = function(centerPoint, xaxis, yaxis, radius, minAngle, maxAngle){
-		// input variations
-		// center, axis and yaxis could be vector3
-		if( centerPoint.getGeometry != undefined )
-			centerPoint = centerPoint.getGeometry();
-
-		return new mObj_geom_Curve( new verb.geom.Arc(centerPoint,xaxis,yaxis,radius,minAngle,maxAngle) ) ;
-
-	};
-
-	/**
-	 * Returns a mobiusobject containing a NURBS Curve
-	 * @param {array} points - Array of Control Points for the Bezier Curve ( [[x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4], ...] or Vertices )
-	 * @param {array} weights - Weights
-	 * @returns {mobiusobject}  - NURBS Curve
-	 */
-	mod.makeBezierCurve = function(points, weights){
-
-		points = points.map( function(p){ 
-								
-								if(p.getGeometry != undefined) 
-									return p.getGeometry(); 
-								else 
-									return p; } )
-
-		return new mObj_geom_Curve( new verb.geom.BezierCurve(points, weights) ) 
-	};
-
-	/**
-	 * Returns a mobiusobject containing a NURBS Curve
-	 * @param {array} centerPoint - Centre point of the Circle in [x,y,z] format or Vertex Object
-	 * @param {array} xaxis - Direction of X-Axis of the Circle in [x,y,z] format 
-	 * @param {array} yaxis - Direction of Y-Axis of the Circle in [x,y,z] format 
-	 * @param {array} radius - Radius of the Arc
-	 * @returns {mobiusobject}  - NURBS Curve
-	 */
-	mod.makeCircleBoundary = function(centerPoint,xaxis,yaxis,radius){
-
-		if( centerPoint.getGeometry != undefined )
-			centerPoint = centerPoint.getGeometry();
-
-		return new mObj_geom_Curve( new verb.geom.Circle(centerPoint,xaxis,yaxis,radius) ) 
-	};
-
-	/**
-	 * Returns a mobiusobject containing a NURBS Curve
-	 * @param {array} centerPoint - Centre point of the Ellipse in [x,y,z] formats or Vertex Object
-	 * @param {array} xaxis - Direction of X-Axis of the Ellipse in [x,y,z] format; Length of this vector determines length of x-Axis of ellipse;
-	 * @param {array} yaxis - Direction of Y-Axis of the Ellipse in [x,y,z] format; Length of this vector determines length of y-Axis of ellipse;
-	 * @returns {mobiusobject}  - NURBS Curve
-	 */
-	mod.makeEllipse = function ( centerPoint ,xaxis,yaxis ){
-
-		if( centerPoint.getGeometry != undefined )
-			centerPoint = centerPoint.getGeometry();
-
-		return new mObj_geom_Curve( new verb.geom.Ellipse( centerPoint,xaxis,yaxis ) ) 
-		
-	};
-
-	/**
-	 * Returns a mobiusobject containing a NURBS Curve
-	 * @param {array} centerPoint - Centre point of the EllipseArc in [x,y,z] formats or Vertex Object
-	 * @param {array} xaxis - Direction of X-Axis of the EllipseArc in [x,y,z] format; Length of this vector determines length of x-Axis of ellipse;
-	 * @param {array} yaxis - Direction of Y-Axis of the EllipseArc in [x,y,z] format; Length of this vector determines length of y-Axis of ellipse;
-	 * @param {float} minAngle - Minimum Angle in Radians
-	 * @param {float} maxAngle - Maximum Angle in Radians
-	 * @returns {mobiusobject}  - NURBS Curve
-	 */
-	mod.makeEllipseArc = function ( centerPoint,xaxis,yaxis,minAngle,maxAngle ){
-
-		if( centerPoint.getGeometry != undefined )
-			centerPoint = centerPoint.getGeometry();
-
-
-		return new mObj_geom_Curve( new verb.geom.EllipseArc( centerPoint,xaxis,yaxis,minAngle,maxAngle ) ) 
-		// topology : curve class
-	};
-
-	/**
-	 * Returns a mobiusobject containing a NURBS Curve
-	 * @param {array} points - Array of points / vertices through which the curve passes ( [[x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4], ...] )
-	 * @param {int} degree - Degree of the Curve
-	 * @returns {mobiusobject}  - NURBS Curve
-	 */
-	mod.makeCurveByPoints = function( points, degree ){
-
-		points = points.map( function(p){ 
-								
-								if(p.getGeometry != undefined) 
-									return p.getGeometry(); 
-								else 
-									return p; } )
-
-		return new mObj_geom_Curve( new verb.geom.NurbsCurve.byPoints( points, degree ) ) ;
-	};
-
-	/**
-	 * Returns a mobiusobject containing a NURBS Curve
-	 * @param {int} degree - Degree of the Curve
-	 * @param {array} knots - Knots
-	 * @param {array} controlPoints - Array of points / vertices through which the curve passes ( [[x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4], ...] )
-	 * @param {array} weights - Weights
-	 * @returns {mobiusobject}  - NURBS Curve
-	 */
-	mod.makeCurveByKnotsControlPointsWeights = function ( degree,knots,controlPoints,weights ){
-
-		controlPoints = controlPoints.map( function(p){ 
-								
-								if(p.getGeometry != undefined) 
-									return p.getGeometry(); 
-								else 
-									return p; } )
-
-		return new mObj_geom_Curve( new verb.geom.NurbsCurve.byKnotsControlPointsWeights( degree,knots,controlPoints,weights ) ) ;
-		// topology : curve class
-	};
-
-	/**
-	 * Returns a mobiusobject containing a NURBS Surface
-	 * @param {int} degreeU - DegreeU of the Surface
-	 * @param {int} degreeV - DegreeV of the Surface
-	 * @param {array} knotsU - Knots in U Direction
-	 * @param {array} knotsV - Knots in V Direction
-	 * @param {array} controlPoints - Array of points / vertices through which the curve passes ( [[x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4], ...] )
-	 * @param {array} weights - Weights
-	 * @returns {mobiusobject}  - NURBS Surface
-	 */
-	mod.makeSurfaceByKnotsControlPointsWeights = function ( degreeU,degreeV,knotsU,knotsV,controlPoints,weights ){
-		
-		controlPoints = controlPoints.map( function(p){ 
-								
-								if(p.getGeometry != undefined) 
-									return p.getGeometry(); 
-								else 
-									return p; } )
-
-		return new mObj_geom_Surface( new verb.geom.NurbsSurface.byKnotsControlPointsWeights( degreeU,degreeV,knotsU,knotsV,controlPoints,weights ) ) ;
-		// topology : single surface - cant be exploded
-		// brep : face -> surface (1); edges -> boundaries (4) ; vertex -> corner points (4)
-	};
-
-	/**
-	 * Returns a mobiusobject containing a NURBS Surface
-	 * @param {array} point - Corner points in [x,y,z] format / Vertex Objects
-	 * @returns {mobiusobject}  - NURBS Surface
-	 */
-	mod.makeSurfaceByCorners = function ( point0, point1, point2, point3 ){
-
-		if( point0.getGeometry != undefined )
-			point0 = point0.getGeometry();
-		if( point1.getGeometry != undefined )
-			point1 = point1.getGeometry();
-		if( point2.getGeometry != undefined )
-			point2 = point2.getGeometry();
-		if( point3.getGeometry != undefined )
-			point3 = point3.getGeometry();
-
-		return new mObj_geom_Surface( new verb.geom.NurbsSurface.byCorners ( point0,point1,point2,point3 ) ) ;
-		// topology : single surface - cant be exploded
-		// brep : face -> surface (1); edges -> boundaries (4) ; vertex -> corner points (4)
-	};
-
-	/**
-	 * Returns a mobiusobject containing a NURBS Surface
-	 * @param {mobiusobject} mObj - mobiusobject with NURBS Curve Geometry
-	 * @param {array} centerPoint - CentrePoint in [x,y,z] format or Vertex Object
-	 * @param {array} axis - Axis of revolution in [x,y,z] format	 
-	 * @param {float} angle - Angle of revolution in radians
-	 * @returns {mobiusobject}  - NURBS Surface
-	 */
-	mod.makeSurfaceByRevolution = function ( mobiusGeometry, centerPoint, axis, angle ){
-
-		if( centerPoint.getGeometry != undefined )
-			centerPoint = centerPoint.getGeometry();
-
-		var profile = mobiusGeometry.getGeometry();
-		return new mObj_geom_Surface( new verb.geom.RevolvedSurface( profile, centerPoint, axis, angle ) ) ;
-	
-		// topology : single surface - cant be exploded
-		// brep : face -> surface (1); edges -> boundaries (4) ; vertex -> corner points (4) - if incomplete circle, else one boundary, one vertex
-	};
-
-	/**
-	 * Returns a mobiusobject containing a NURBS Surface
-	 * @param {mobiusobject} mObj - mobiusobject with NURBS Curve Geometry
-	 * @param {mobiusobject} mObj - mobiusobject with NURBS Curve Geometry
-	 * @returns {mobiusobject}  - NURBS Surface
-	 */
-	mod.makeSurfaceBySweep = function ( mObjProfile, mObjRail){
-		var profile = mObjProfile.getGeometry();
-		var rail = mObjRail.getGeometry();
-		return new mObj_geom_Surface( new verb.geom.SweptSurface ( profile, rail ) ) ;
-		// topology : single surface - cant be exploded
-		// brep : face -> surface (1); edges -> boundaries (4) ; vertex -> corner points (4)
-	};
-
-	/**
-	 * Returns a mobiusobject containing a NURBS Surface
-	 * @param {array} listOfCurves - Array of mobiusobject with NURBS Curve Geometry
-	 * @param {int} degree - Degree of the Surface
-	 * @returns {mobiusobject}  - NURBS Surface
-	 */
-	mod.makeSurfaceByLoft = function(listOfCurves, degree){
-		var deg = degree || 3;
-		var curves = []; l = listOfCurves;
-		for(var c=0; c<listOfCurves.length; c++)
-			curves.push(listOfCurves[c].getGeometry()); 
-		return new mObj_geom_Surface( new verb.geom.NurbsSurface.byLoftingCurves( curves, deg ) ) ;
-		
-		// topology : single surface - cant be exploded
-		// brep : face -> surface (1); edges -> boundaries (4) ; vertex -> corner points (4)
-	};
-
-	/**
-	 * Returns a mobiusobject containing a NURBS Surface
-	 * @param {mobiusobject} mObjProfile - Array of mobiusobject with NURBS Curve Geometry
-	 * @param {array} direction - Direction of Sweep in [x,y,z] format	 
-	 * @returns {mobiusobject}  - NURBS Surface
-	 */
-	mod.makeSurfaceByExtrusion = function ( mObjProfile, direction){
-		var profile = mObjProfile.getGeometry();
-		return new mObj_geom_Surface(  new verb.geom.ExtrudedSurface( profile, direction ) ) ;
-		
-		// topology : single surface - cant be exploded
-		// brep : face -> surface (1); edges -> boundaries (4) ; vertex -> corner points (4)
-	};
-
-
-	/*
-	 * Returns a mobiusobject containing a NURBS Surface
-	 * @param {mobiusobject} mObjProfile - Array of mobiusobject with NURBS Curve Geometry
-	 * @param {array} direction - Direction of Sweep in [x,y,z] format	 
-	 * @returns {mobiusobject}  - NURBS Surface
-	 
-	mod.makeCircle = function( centrePoint, radius ){
-
-		if( centerPoint.getGeometry != undefined )
-			centerPoint = centerPoint.getGeometry();
-
-		var radialLine = VIDAMO.makeLine( centrePoint, [centrePoint[0]+radius, centrePoint[1], centrePoint[2]] );
-		return VIDAMO.makeSurfaceByRevolution( radialLine, centrePoint, [0,1,0] );
-	};
-	*/
-
-
-
-	
-	//
-	// Surface Functions - Applications
+	// frame functions
 	//
 	//
+	mod.frm = {}; 
 	
-	
-	/**
-	 * Returns a mobiusobject containing a NURBS Surface
-	 * @param {array} centrePoint - CentrePoint in [x,y,z] format or Vertex Object	 
-	 * @param {float} radius - Radius of the Sphere 	 
-	 * @returns {mobiusobject}  - NURBS Surface
-	 */
-	mod.makeSphere = function(centrePoint, radius){
+	mod.frm.byXYPoints = function(origin, xPoint, yPoint){
+	            
+	};
+	        
+	mod.frm.byXZPoints = function(origin, xPoint, zPoint){
 
-		if( centerPoint.getGeometry != undefined )
-			centerPoint = centerPoint.getGeometry();
-					
-		return new mObj_geom_Surface(  new verb.geom.SphericalSurface(centrePoint, radius) ) ;
-		// topology : single surface - cant be exploded
-		// brep : face -> surface (1); edges -> arc (1) ; vertex -> corner point (1)
-		// revolution surface - will contain the same details
 	};
 
-	/**
-	 * Returns a mobiusobject containing a NURBS Surface
-	 * @param {array} axis - Axis Direction of the cone in [x,y,z] format
-	 * @param {array} xaxis - Direction of x-axis of cone in [x,y,z] format
-	 * @param {float} base - Radius of cone base
-	 * @param {float} height - Height of the cone
-	 * @param {float} radius - Radius of cone
-	 * @returns {mobiusobject}  - NURBS Surface
-	 */
-	mod.makeCone = function( axis,xaxis,base,height,radius ){
-		return new mObj_geom_Surface( new verb.geom.ConicalSurface( axis,xaxis,base,height,radius ) ) ;
+	mod.frm.byYZPoints = function(origin, yPoint, zPoint){
+
 	};
 
-	/**
-	 * Returns a mobiusobject containing a NURBS Surface
-	 * @param {array} axis - Axis Direction of the cylinder in [x,y,z] format
-	 * @param {array} xaxis - Direction of x-axis of cylinder in [x,y,z] format
-	 * @param {float} base - Radius of cylinder base
-	 * @param {float} height - Height of the cylinder
-	 * @param {float} radius - Radius of cylinder
-	 * @returns {mobiusobject}  - NURBS Surface
-	 */
-	mod.makeCylinder = function ( axis, xaxis, base, height, radius, capped ){
-		if(capped){
-			//return a solid			
-		}
-		else
-			return new mObj_geom_Surface( new verb.geom.CylindricalSurface( axis,xaxis,base,height,radius ))  ;
-	};
-	
-	//
-	//	Solid Functions
-	//
-	//
-	
-	/**
-	 * Returns a mobiusobject containing a NURBS Surface
-	 * @param {array} axis - Axis Direction of the cylinder in [x,y,z] format
-	 * @param {array} xaxis - Direction of x-axis of cylinder in [x,y,z] format
-	 * @returns {mobiusobject}  - NURBS Surface
-	 
-	mod.makeTube = function( centrePoint, innerRadius, outerRadius, height){
-		
-	};	*/
+	mod.frm.byXYAxes = function(origin, xAxis, yAxis){
 
+	};
+
+	mod.frm.byXZAxes = function(origin, xAxis, zAxis){
+
+	};
+
+	mod.frm.byYZAxes = function(origin, yAxis, zAxis){
+
+	};
+
+	//
+	//
+	// solid functions
+	//
+	//
+	mod.sld = {};
 
 	/**
 	 * Returns a mobiusobject containing a solid (array of surfaces)
@@ -734,7 +55,8 @@ var VIDAMO = ( function (mod){
 	 * @param {array} extrusion vector - Direction of extrusion in [x, y, z] format
 	 * @returns {mobiusobject}  - Solid
 	 */
-	mod.makeSolidByExtrusion = function( surface, extrusionVector ){
+	mod.sld.byExtrusion = function(surface, frame, xDistance, yDistance, zDistance){
+
 		var bottomSurface = surface;
 		var topSurface = VIDAMO.makeCopy( bottomSurface, undefined, undefined, undefined);
 		VIDAMO.shiftObject(topSurface, extrusionVector[0], extrusionVector[1], extrusionVector[2]);
@@ -749,115 +71,213 @@ var VIDAMO = ( function (mod){
 		}
 
 		return new mObj_geom_Solid( solid );
+
+	};
+
+	mod.sld.bySurfaces = function (listOfSurfaces){
+		return new mObj_geom_Solid( listOfSurfaces );
+	};
+
+	//
+	//
+	// surface functions
+	//
+	//
+	mod.srf = {};
+
+	/**
+	 * Returns a mobiusobject containing a NURBS Surface
+	 * @param {int} degreeU - DegreeU of the Surface
+	 * @param {int} degreeV - DegreeV of the Surface
+	 * @param {array} knotsU - Knots in U Direction
+	 * @param {array} knotsV - Knots in V Direction
+	 * @param {array} controlPoints - Array of points / vertices through which the curve passes ( [[x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4], ...] )
+	 * @param {array} weights - Weights
+	 * @returns {mobiusobject}  - NURBS Surface
+	 */
+	mod.srf.nurbsByData = function ( degreeU,degreeV,knotsU,knotsV,controlPoints,weights ){
+		
+		var controlPoints = controlPoints.map( function(p){ 
+								
+								if(p.getGeometry != undefined) 
+									return p.getGeometry(); 
+								else 
+									return p; } )
+
+		return new mObj_geom_Surface( new verb.geom.NurbsSurface.byKnotsControlPointsWeights( degreeU,degreeV,knotsU,knotsV,controlPoints,weights ) ) ;
 	};
 
 
 	/**
-	 * Returns a mobiusobject containing a solid (array of surfaces)
-	 * @param {array} array_of_surfaces - Mobius Solid Object
-	 * @returns {mobiusobject}  - Solid
+	 * Returns a mobiusobject containing a NURBS Surface
+	 * @param {array} point - Corner points in [x,y,z] format / Vertex Objects
+	 * @returns {mobiusobject}  - NURBS Surface
 	 */
-	mod.makeSolidBySurfaces = function( array_of_surfaces ){
-		return new mObj_geom_Solid( array_of_surfaces );
+	mod.srf.nurbsByCorners = function ( cornerpoints ){
+
+		var point0 = cornerpoints[0];
+		var point1 = cornerpoints[1];
+		var point2 = cornerpoints[2];
+		var point3 = cornerpoints[3];
+
+		if( point0.getGeometry != undefined )
+			point0 = point0.getGeometry();
+		if( point1.getGeometry != undefined )
+			point1 = point1.getGeometry();
+		if( point2.getGeometry != undefined )
+			point2 = point2.getGeometry();
+		if( point3.getGeometry != undefined )
+			point3 = point3.getGeometry();
+
+		return new mObj_geom_Surface( new verb.geom.NurbsSurface.byCorners ( point0,point1,point2,point3 ) ) ;
 	};
 
-	//
-	// Analysis Functions
-	//
-	//
+	/**
+	 * Returns a mobiusobject containing a NURBS Surface
+	 * @param {mobiusobject} mObjProfile - Array of mobiusobject with NURBS Curve Geometry
+	 * @param {array} direction - Direction of Sweep in [x,y,z] format	 
+	 * @returns {mobiusobject}  - NURBS Surface
+	 */
+	mod.srf.nurbsByExtrusion  = function(curve, direction){
+
+		var profile = curve.getGeometry();
+		return new mObj_geom_Surface(  new verb.geom.ExtrudedSurface( profile, direction ) ) ;
+
+	};
+
+	/**
+	 * Returns a mobiusobject containing a NURBS Surface
+	 * @param {array} listOfCurves - Array of mobiusobject with NURBS Curve Geometry
+	 * @param {int} degree - Degree of the Surface
+	 * @returns {mobiusobject}  - NURBS Surface
+	 */
+	mod.srf.nurbsByLoft = function(listOfCurves, degree){
+
+		var deg = degree || 3;
+		var curves = []; 
+		
+		for(var c=0; c<listOfCurves.length; c++)
+			curves.push(listOfCurves[c].getGeometry()); 
+
+		return new mObj_geom_Surface( new verb.geom.NurbsSurface.byLoftingCurves( curves, deg ) ) ;
+		
+	};
+
+	/**
+	 * Returns a mobiusobject containing a NURBS Surface
+	 * @param {mobiusobject} mObj - mobiusobject with NURBS Curve Geometry
+	 * @param {array} centerPoint - CentrePoint in [x,y,z] format or Vertex Object
+	 * @param {array} axis - Axis of revolution in [x,y,z] format	 
+	 * @param {float} angle - Angle of revolution in radians
+	 * @returns {mobiusobject}  - NURBS Surface
+	 */
+	mod.srf.nurbsByRevolution = function(sectionCurve, centrePoint, axis, angle){
+
+		if( centerPoint.getGeometry != undefined )
+			centerPoint = centerPoint.getGeometry();
+
+		var profile = sectionCurve.getGeometry();
+		
+		return new mObj_geom_Surface( new verb.geom.RevolvedSurface( profile, centerPoint, axis, angle ) ) ;
+
+	};
+
+	/**
+	 * Returns a mobiusobject containing a NURBS Surface
+	 * @param {mobiusobject} mObj - mobiusobject with NURBS Curve Geometry
+	 * @param {mobiusobject} mObj - mobiusobject with NURBS Curve Geometry
+	 * @returns {mobiusobject}  - NURBS Surface
+	 */
+	mod.srf.nurbsBySweep = function( sectionCurve, railCurve ){
+		
+		var profile = secionCurve.getGeometry();
+		var rail = railCurve.getGeometry();
+		
+		return new mObj_geom_Surface( new verb.geom.SweptSurface ( profile, rail ) ) ;
+		
+	};
+
+	/**
+	 * Returns a mobiusobject containing a NURBS Surface
+	 * @param {array} centrePoint - CentrePoint in [x,y,z] format or Vertex Object	 
+	 * @param {float} radius - Radius of the Sphere 	 
+	 * @returns {mobiusobject}  - NURBS Surface
+	 */
+	mod.srf.nurbsSphere = function(frame, radius){
+
+		if( centerPoint.getGeometry != undefined )
+			centerPoint = centerPoint.getGeometry();
+					
+		return new mObj_geom_Surface(  new verb.geom.SphericalSurface(centrePoint, radius) ) ;
+
+	};
+
+	/**
+	 * Returns a mobiusobject containing a NURBS Surface
+	 * @param {array} axis - Axis Direction of the cone in [x,y,z] format
+	 * @param {array} xaxis - Direction of x-axis of cone in [x,y,z] format
+	 * @param {float} base - Radius of cone base
+	 * @param {float} height - Height of the cone
+	 * @param {float} radius - Radius of cone
+	 * @returns {mobiusobject}  - NURBS Surface
+	 */
+	mod.srf.nurbsCone = function(frame, height, radius1, radius2){
+		
+		return new mObj_geom_Surface( new verb.geom.ConicalSurface( axis,xaxis,base,height,radius ) ) ;
 	
+	};
+
+	mod.srf.nurbsPipe = function(centreCurve, radius){
+
+	};
+
+	mod.srf.uvGridByNumber = function(surface, uSegments, vSegments, method){
+
+	};
+
+	mod.srf.uvGridByDistance = function(surface, uDistance, vDistance, method){
+
+	};
+
 	/**
-	 * Returns a point on the surface at the given parameter values
+	 * Returns a point or list of points on the surface at the given parameter values
 	 * @param {mobiusobject} surface - mobiusobject with NURBS Surface
 	 * @param {int} u - Parameter in u-direction
 	 * @param {int} v - Parameter in v-direction
 	 * @returns {array} point [x,y,z]
 	 */
-	mod.getPointOnSurface = function( surface, u, v ){
-		var srf = surface.getGeometry();
-		if(srf instanceof verb.geom.NurbsSurface)
-			return srf.point( u, v );
+	mod.srf.getPoints = function(surface, uvList){
+		
+		var srf = surface.getGeometry();		
+
+		if(uvList.constructor.name == "Array"){
+
+			var points = uvList.map( function(p){
+				return mobj_geom_Vertex( srf.point( p[0], p[1] ) );
+			})
+			
+			return points;
+		}
 		else
-			return "Invalid Input"
+			return mobj_geom_Vertex( srf.point( u, v ) );
+
 	};
 
-	/**
-	 * Returns a point on the curve at the given parameter value
-	 * @param {mobiusobject} curve - mobiusobject with NURBS Curve
-	 * @param {int} t - Parameter in u-direction
-	 * @returns {array} point [x,y,z]
-	 */
-	mod.getPointOnCurve = function( curve, t ){
-		var crv = curve.getGeometry();
-		if( crv instanceof verb.geom.NurbsCurve)
-			return crv.point( t );
-		else
-			return "Invalid Input"
+	mod.srf.getFrames = function( surface, uvList ){
+
 	};
 
-	/**
-	 * Returns an array of 't' values which divide the curve equally
-	 * @param {mobiusobject} curve - mobiusobject with NURBS Curve
-	 * @param {int} divisons - Number of divisions in which the curve should be divided
-	 * @returns {array} curve parameters [t1, t2, t3 ...]
-	 */
-	mod.divideCurveByEqualArcLength = function( curve, divisions ){
-		var crv = curve;
-		if( crv.getGeometry != undefined )
-		 	crv = curve.getGeometry();
-		var points = crv.divideByEqualArcLength( divisions )
-			.map(function(u){ return ( u.u ); } );
+	mod.srf.getNormals = function( surface, uvList ){
 
-		return points;
 	};
 
-	/**
-	 * Returns an array of 't' values which divide the curve by length
-	 * @param {mobiusobject} curve - mobiusobject with NURBS Curve
-	 * @param {float} arcLength - Length 
-	 * @returns {array} curve parameters [t1, t2, t3 ...]
-	 */
-	mod.divideCurveByArcLength = function( curve, arcLength ){
-		var crv = curve;
-		if( crv.getGeometry != undefined )
-			crv = curve.getGeometry();
-		var points = crv.divideByArcLength( arcLength )
-			.map(function(u){ return ( u.u ); } );
+	mod.srf.getTangents = function( surface, uvList ){
 
-		return points; //convert these into vector points
+	}; 
+ 
+	mod.srf.getIsoCurves = function( surface, uvList ){
+
 	};
-
-	/**
-	 * Returns a tangent on the curve at the given parameter value
-	 * @param {mobiusobject} curve - mobiusobject with NURBS Curve
-	 * @param {int} t - Parameter in u-direction
-	 * @returns {array} tangent [x,y,z]
-	 */
-	mod.getTangentAtCurveParameter = function( curve, t ){
-		var crv = curve;
-		if( crv.getGeometry != undefined )
-			crv = curve.getGeometry();
-		if( crv instanceof verb.geom.NurbsCurve)
-			return crv.tangent(t);
-		else
-			return 'Invalid Input';
-	};
-
-	/**
-	 * Returns a tangent on the surface at the given parameter values
-	 * @param {mobiusobject} surface - mobiusobject with NURBS Surface
-	 * @param {int} u - Parameter in u-direction
-	 * @param {int} v - Parameter in v-direction
-	 * @returns {array} tangent [x,y,z]
-	 */
-	mod.getNormalAtSurfaceParameter = function( surface, u, v ){
-		var srf = surface.getGeometry();
-		if(srf instanceof verb.geom.NurbsSurface)
-			return srf.normal( u, v);
-		else
-			return 'Invalid Input';
-	};
-
 
 	/**
 	 * Subdivides a surface into smaller surfaces
@@ -866,8 +286,8 @@ var VIDAMO = ( function (mod){
 	 * @param {int} vgrid - Divisions in v-direction
 	 * @returns {array} Array of mobiusobjects with NURBS Surfaces
 	 */
-	mod.makeMeshBySubdivision = function( mObj, ugrid, vgrid ){
-
+	mod.srf.divide = function(surface, uvGrid, method){
+		
 		var srf = mObj.getGeometry(); 
 		
 		if(srf instanceof verb.geom.NurbsSurface){
@@ -895,107 +315,361 @@ var VIDAMO = ( function (mod){
 			return "Invalid Input"
 	};
 
+	mod.srf.carve = function(surface, uv1, uv2, hole){
+
+	};
+
+
+	//
+	//
+	// Curves
+	//
+	//
+	mod.crv = {};
+
 	/**
-	 * Creates a tube of a given radius, from a given line
-	 * @param {mobiusobject} line - mobiusobject with NURBS Line
-	 * @param {float} radius - Radius of the tube
-	 * @returns {mobiusobject} mobiusobject with NURBS Surface
+	 * Returns a mobiusobject containing a NURBS Curve
+	 * @param {int} degree - Degree of the Curve
+	 * @param {array} knots - Knots
+	 * @param {array} controlPoints - Array of points / vertices through which the curve passes ( [[x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4], ...] )
+	 * @param {array} weights - Weights
+	 * @returns {mobiusobject}  - NURBS Curve
 	 */
-	mod.makeTubeByLine = function( mObj, radius ){
+	mod.crv.nurbsByData = function(degree, knots, controlPoints, weights){
 
-		var line = mObj.getGeometry();
+		controlPoints = controlPoints.map( function(p){ 
+								
+								if(p.getGeometry != undefined) 
+									return p.getGeometry(); 
+								else 
+									return p; } )
 
-		var start = line.start();
-		var end = line.end();
+		return new mObj_geom_Curve( new verb.geom.NurbsCurve.byKnotsControlPointsWeights( degree,knots,controlPoints,weights ) ) ;
 
-		var axis = [start[0] - end[0], start[1] - end[1], start[2] - end[2]]
-			, height = 1 //this is a multiplying factor to the axis vector
-			, radius = radius;
+	};
 
-		//construction of a perpendicular vector
-		var xaxis = [1, 1, 1];
-		if(axis[0] * axis[1] * axis[2] != 0)
-			xaxis = [ -axis[1]/axis[0], 1, 0]
-		else if(axis.reduce(function(n, val) {
-				return n + (val === 0);
-			}, 0) > 1)
-			xaxis = [0, 0, 0]
-		else{
-			//is there a better way??
-			var flag = 0
-			xaxis[axis.indexOf(0)] = 0
-			for(var i=0; i < 3; i++){
-				if(xaxis[i] == 0)
-					continue;
-				else if(!flag)
-					flag = axis[i]
-				else
-					xaxis[i] = -(flag/axis[i])
-			}
+
+	/**
+	 * Returns a mobiusobject containing a NURBS Curve
+	 * @param {array} points - Array of points / vertices through which the curve passes ( [[x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4], ...] )
+	 * @param {int} degree - Degree of the Curve
+	 * @returns {mobiusobject}  - NURBS Curve
+	 */
+	mod.crv.nurbsByPoints = function(points, degree, weights){
+
+		points = points.map( function(p){ 
+								
+								if(p.getGeometry != undefined) 
+									return p.getGeometry(); 
+								else 
+									return p; } )
+
+		return new mObj_geom_Curve( new verb.geom.NurbsCurve.byPoints( points, degree ) ) ;
+	};
+
+	/**
+	 * Returns a mobiusobject containing a NURBS Curve
+	 * @param {array} points - Array of Control Points for the Bezier Curve ( [[x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4], ...] or Vertices )
+	 * @param {array} weights - Weights
+	 * @returns {mobiusobject}  - NURBS Curve
+	 */
+	mod.crv.bezierByPoints = function(points, weights) {
+
+		var points = points.map( function(p){ 
+								
+								if(p.getGeometry != undefined) 
+									return p.getGeometry(); 
+								else 
+									return p; } )
+
+		return new mObj_geom_Curve( new verb.geom.BezierCurve(points, weights) ) 
+	};
+
+
+	/**
+	 * Returns a mobiusobject containing a NURBS Curve
+	 * @param {array} centerPoint - Centre point of the Arc in [x,y,z] format or Vertex Object
+	 * @param {array} xaxis - Direction of X-Axis of the Arc in [x,y,z] format 
+	 * @param {array} yaxis - Direction of Y-Axis of the Arc in [x,y,z] format 
+	 * @param {array} radius - Radius of the Arc
+	 * @param {float} minAngle - Minimum Angle in Radians
+	 * @param {float} maxAngle - Maximum Angle in Radians
+	 * @returns {mobiusobject}  - NURBS Curve
+	 */
+	mod.crv.arc = function(frame, radius, minAngle, maxAngle){
+		// input variations
+		// center, axis and yaxis could be vector3
+		if( centerPoint.getGeometry != undefined )
+			centerPoint = centerPoint.getGeometry();
+
+		return new mObj_geom_Curve( new verb.geom.Arc(centerPoint,xaxis,yaxis,radius,minAngle,maxAngle) ) ;
+
+	};
+
+	mod.crv.arcByPointsSOE = function(startPoint, onArcPoint, endPoint){
+
+	};
+
+	mod.crv.arcByPointsCSE = function(centrePoint, startPoint, endPoint){
+
+	};
+
+	/**
+	 * Returns a mobiusobject containing a NURBS Curve
+	 * @param {array} centerPoint - Centre point of the Circle in [x,y,z] format or Vertex Object
+	 * @param {array} xaxis - Direction of X-Axis of the Circle in [x,y,z] format 
+	 * @param {array} yaxis - Direction of Y-Axis of the Circle in [x,y,z] format 
+	 * @param {array} radius - Radius of the Arc
+	 * @returns {mobiusobject}  - NURBS Curve
+	 */
+	mod.crv.circleBoundary = function(frame, radius){
+
+		if( centerPoint.getGeometry != undefined )
+			centerPoint = centerPoint.getGeometry();
+
+		return new mObj_geom_Curve( new verb.geom.Circle(centerPoint,xaxis,yaxis,radius) ) 
+	};
+
+	/**
+	 * Returns a mobiusobject containing a NURBS Curve
+	 * @param {array} centerPoint - Centre point of the Ellipse in [x,y,z] formats or Vertex Object
+	 * @param {array} xaxis - Direction of X-Axis of the Ellipse in [x,y,z] format; Length of this vector determines length of x-Axis of ellipse;
+	 * @param {array} yaxis - Direction of Y-Axis of the Ellipse in [x,y,z] format; Length of this vector determines length of y-Axis of ellipse;
+	 * @returns {mobiusobject}  - NURBS Curve
+	 */
+	mod.crv.ellipse = function(frame, xRadius, yRadius) {
+
+		if( centerPoint.getGeometry != undefined )
+			centerPoint = centerPoint.getGeometry();
+
+		return new mObj_geom_Curve( new verb.geom.Ellipse( centerPoint,xaxis,yaxis ) ) 
+		
+	};
+
+	/**
+	 * Returns a mobiusobject containing a NURBS Curve
+	 * @param {array} centerPoint - Centre point of the EllipseArc in [x,y,z] formats or Vertex Object
+	 * @param {array} xaxis - Direction of X-Axis of the EllipseArc in [x,y,z] format; Length of this vector determines length of x-Axis of ellipse;
+	 * @param {array} yaxis - Direction of Y-Axis of the EllipseArc in [x,y,z] format; Length of this vector determines length of y-Axis of ellipse;
+	 * @param {float} minAngle - Minimum Angle in Radians
+	 * @param {float} maxAngle - Maximum Angle in Radians
+	 * @returns {mobiusobject}  - NURBS Curve
+	 */
+	mod.crv.ellipseArc = function(frame, xRadius, yRadius, minAngle, maxAngle){
+
+		if( centerPoint.getGeometry != undefined )
+			centerPoint = centerPoint.getGeometry();
+
+
+		return new mObj_geom_Curve( new verb.geom.EllipseArc( centerPoint,xaxis,yaxis,minAngle,maxAngle ) ) 
+	};
+
+
+	/**
+	 * Returns a Mobius Curve object
+	 * @param {array} startPoint - Starting point of the line in [x,y,z] format or Vertex Object
+	 * @param {array} endPoint - Ending point of the line in [x,y,z] format	or Vertex Object
+	 * @returns {MobiusObject}  - NURBS Curve
+	 */
+	mod.crv.line = function(startPoint, endPoint){
+
+		if( startPoint.getGeometry != undefined )
+			startPoint = startPoint.getGeometry();
+		if( endPoint.getGeometry != undefined )
+			endPoint = endPoint.getGeometry();
+	
+		return new mObj_geom_Curve( new verb.geom.Line(startPoint, endPoint) );
+
+	};
+
+	mod.crv.tListByNumber = function(curve, numPoints, method){
+
+	};
+
+	mod.crv.tListByDistance = function(curve, distance, method){
+
+	};
+
+	mod.crv.getPoints = function(curve, tList){
+		
+		var crv = curve.getGeometry();		
+
+		if(tList.constructor.name == "Array"){
+
+			var points = tList.map( function( t ){
+				return mobj_geom_Vertex( curve.point( t ) );
+			})
+			
+			return points;
 		}
-
-		var tube = new verb.geom.CylindricalSurface( axis, xaxis, end, height, radius );
-
-		return new mObj_geom_Surface( tube );
+		else
+			return mobj_geom_Vertex( curve.point( t ) );
+	
 	};
 
-	/**
-	 * Gives the corner points of a surface
-	 * @param {mobiusobject} surface - mobiusobject with NURBS Surface
-	 * @returns {array} Array of Points [ [corner1], [corner2], [corner3], [corner4] ], where corner is of form - [x, y, z]
-	 */
-	mod.getCornerPointsFromSurface = function( mObj ){
+	mod.crv.getFrames = function(curve, tList, upVector){
 
-		var polygon = mObj.getGeometry();
+	};
+	
+	mod.crv.getTangents = function(curve, tList){
+	
+		var crv = curve.getGeometry();		
 
-		return [
-			polygon.point(0,0),
-			polygon.point(1,0),
-			polygon.point(1,1),
-			polygon.point(0,1)]
+		if(tList.constructor.name == "Array"){
+
+			var points = tList.map( function( t ){
+				return mobj_geom_Vertex( curve.tangent( t ) );
+			})
+			
+			return points;
+		}
+		else
+			return mobj_geom_Vertex( curve.tangent( t ) );
+
 	};
 
-	/**
-	 * Makes a point from the coordinates
-	 * @param {float} x - X Coordinate of the point
-	 * @param {float} y - Y Coordinate of the point
-	 * @param {float} z - Z Coordinate of the point
-	 * @returns {array} Point of form - [x, y, z]
-	 */
-	mod.makePoint = function(x, y, z){
+	mod.crv.carve = function(curve, t1, t2, hole){
+
+	}; 
+
+	mod.crv.divide = function(curve, tList){
+
+	};
+
+	mod.crv.convertToPolyline = function(curve, tList){
+
+	};
+
+	//
+	//
+	// Points
+	//
+	//
+	mod.pnt = {};
+
+	mod.pnt.byCoords = function(x, y, z){
 		return [x, y, z];
+	}
+
+	/**
+	 * Returns the mid-point between two points
+	 * @param {point / vertex} point - [x, y , z] or Vertex
+	 * @returns {float} Distance 
+	 */
+	mod.pnt.midPoint = function(point1, point2){
+
+		if( point1.getGeometry != undefined )
+			point1 = point1.getGeometry();
+		if( point2.getGeometry != undefined )
+			point2 = point2.getGeometry();
+
+		return [ (point1[0] + point2[0])/2, (point1[1] + point2[1])/2, (point1[2] + point2[2])/2 ];
+	};	
+
+
+	/**
+	 * Returns the distance between two points or vertices
+	 * @param {point / vertex} point - [x, y, z] or vertex object
+	 * @returns {float} Distance 
+	 */
+	mod.pnt.distance = function(point1, point2){
+
+		if( point1.getGeometry != undefined )
+			point1 = point1.getGeometry();
+		if( point2.getGeometry != undefined )
+			point2 = point2.getGeometry();
+				 
+		var deltaX, deltaY, deltaZ;
+
+		deltaX = point1[0] - point2[0];
+		deltaY = point1[1] - point2[1];
+		deltaZ = point1[2] - point2[2];
+
+		var distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
+		return distance;
+	};
+
+	//
+	//
+	//	Vector functions
+	//
+	//
+	mod.vec= {};
+
+	mod.vec.byCoords = function(x, y, z){
+
 	};
 
 	/**
-	 * Makes a vertex from a point
-	 * @param {array} point - Point in [x, y, z] format
-	 * @returns {array} Mobius Vertex Object
+	 * Computes angle between two vectors
+	 * @param {array} vector1  - Vector 1 in [x, y, z] format
+	 * @param {array} vector2  - Vector 2 in [x, y, z] format
+	 * @returns {float} radians
 	 */
-	mod.makeVertex = function( point ){
-		return [x, y, z];
+	mod.vec.angle = function(vector1, vector2){
+		var dotP = VIDAMO.getDotProduct( vector1,  vector2 );
+		var cos_t = dotP / (VIDAMO.getLengthOfVector( vector1 ) * VIDAMO.getLengthOfVector( vector2 ) );
+		return Math.cosh(cos_t);
 	};
 
-	/*
-	 *
-	 *	Transformation Functions
-	 *
+	/**
+	 * Computes length of the vector
+	 * @param {array} vector  - Vector in [x, y, z] format
+	 * @returns {float} length
 	 */
+	mod.vec.length = function(vector){
+		return Math.sqrt( vector[0]*vector[0] + vector[1]*vector[1] + vector[2]*vector[2] );
+	};
+
+	/**
+	 * Makes a copy of the vector and sets the length
+	 * @param {float / int } factor - Value to be multiplied
+	 * @param {array} vector  - Vector in [x, y, z] format 
+	 * @returns {array} 
+	 */
+	mod.vec.resize = function(vector, length){
+
+		var unitV = verb.core.Vec.normalized( vector );
+		return [ length*unitV[0], length*unitV[1], length*unitV[2] ] ;
+	};
+
+
+	/**
+	 * Makes a copy of the vector and sets the length
+	 * @param {float / int } factor - Value to be multiplied
+	 * @param {array} vector  - Vector in [x, y, z] format 
+	 * @returns {array} 
+	 */
+	mod.vec.scale = function(vector, factor){
+
+		return [ factor*vector[0], factor*vector[1], factor*vector[2] ] ;
+	}
+
+
+	/**
+	 * Computes unit vector
+	 * @param {array} vector  - Vector in [x, y, z] format
+	 * @returns {array} Unit Vector
+	 */
+	mod.vec.normalize = function(vector){
+		return verb.core.Vec.normalized( vector );
+	}
+
+
+	//
+	//
+	//	Objects
+	//
+	//
+	mod.obj = {};
 
 	/**
 	 * Creates a unique copy of the object with the same geometry, transformations, material and data at the same location
 	 * @param {mobiusobject} mObj - Object to be cloned
 	 * @returns {mobiusobject} Cloned object
 	 */
-	mod.makeCopy = function(mObj){
+	mod.obj.copy = function( object ){
 
-		/*	if(mObj instanceof Array){
-			var newcopy = [];
-			for(var obj=0; obj < mObj.length; obj++)
-				newcopy.push(VIDAMO.makeCopy(mObj[obj], xCoord, yCoord, zCoord));	
-			return newcopy;
-		}*/
-
-		// for output cloning
 		if( mObj.getGeometry == undefined ){
 			console.log("Non-Mobius passed to copy function");
 			return mObj;
@@ -1013,212 +687,140 @@ var VIDAMO = ( function (mod){
 			newcopy = new mObj_geom_Solid( mObj.getGeometry() );
 
 		newcopy.setData( mObj.getData() );
-		newcopy.setMaterial( mObj.getMaterial() );
-
-		// if verbs object, has to be copied and translated
-/*		if(xCoord != undefined && yCoord != undefined && zCoord != undefined){
-			VIDAMO.moveObjectToPoint(newcopy, xCoord, yCoord, zCoord);
-		}*/
-			
+		newcopy.setMaterial( mObj.getMaterial() );	
 
 		return newcopy;
 		
 	};
 
 	/**
-	 * Shifts the object relative to its current position
-	 * @param {mobiusobject} mObj - Object to be moved
-	 * @param {float} shiftX - Distance to be moved in x-direction
-	 * @param {float} shiftY - Distance to be moved in y-direction
-	 * @param {float} shiftZ - Distance to be moved in z-direction
-	 * @returns Null
+	 * Adds material to an object
+	 * @param {mobiusobject} obj - Object to which material is to be added
+	 * @param {String} material_type - "MeshBasicMaterial", "MeshNormalMaterial", "MeshLambertMaterial", "LineBasicMaterial" etc... 
+	 * @param {boolean} wireframe - 'True' if wireframe is required. 
+	 * @param {hexCode} color - Hex Code of the color
+	 * @param {boolean} transparent - 'True' if transparency is required. 
+	 * @returns null
 	 */
-	mod.shiftObject = function(mObj, shiftX, shiftY, shiftZ){
-
-		// could be a face too
-
-		// if extractGeometry is called again, the translations would  be lost ..
-		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
-		if (mObj instanceof mObj_geom_Solid)
-			mObj = mObj.getGeometry();
-
-		if(mObj instanceof Array){
-			for(var obj=0; obj < mObj.length; obj++)
-				VIDAMO.shiftObject(mObj[obj], shiftX, shiftY, shiftZ);	
-			return;
-		}
-
-		var geom = mObj.getGeometry();
+	mod.obj.addMaterial = function(obj, material_type, wireframe, color_hex, transparent){
+		var option = {	
+			wireframe: wireframe,
+			color: color_hex,
+			transparent: transparent,
+			side: THREE.DoubleSide
+		};
+		var material = new THREE[material_type](option);
 		
-		var mat = [ [1,0,0, shiftX],
-							[0,1,0,shiftY],
-								[0,0,1, shiftZ],
-									[0,0,0,1]
-						];
-		var transformedGeometry = geom.transform( mat );
-		
-		if(geom.center != undefined){ 
-			var centre = VIDAMO.getCentre( mObj );
-			transformedGeometry.center = function(){ return [ centre[0]+shiftX, centre[1]+shiftY, centre[2]+shiftZ ] }
-		}
-				
-		mObj.setGeometry( transformedGeometry ); 
-		
-		//return mObj;
+		obj.setMaterial(material);
+
+		return obj;
 	};
 
 	/**
-	 * Moves the centre of the object to a target point
-	 * @param {mobiusobject} mObj - Object to be moved
-	 * @param {float} xCoord - x-coordinate of the target point where the clone appears
-	 * @param {float} yCoord - y-coordinate of the target point where the clone appears
-	 * @param {float} zCoord - z-coordinate of the target point where the clone appears
-	 * @returns Null
+	 * Adds data to an object
+	 * @param {mobiusobject} obj - Object to which data is to be added
+	 * @param {String} dataName - Name of the property
+	 * @param {String / int / object ... } dataValue - Value of the property
+	 * @returns null
 	 */
-	mod.moveObjectToPoint = function(mObj, xCoord, yCoord, zCoord){
+	mod.obj.addData = function(obj, dataName, dataValue){
 
-		if (mObj instanceof mObj_geom_Solid)
-			mObj = mObj.getGeometry();
-		// if extractGeometry is called again, the translations would  be lost ..
-		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
-		if(mObj instanceof Array){
-			for(var obj=0; obj < mObj.length; obj++)
-				VIDAMO.moveObjectToPoint(mObj[obj], xCoord, yCoord, zCoord);	
-			return;
+		// decide on topology heirarchy also - if edge gets a property, do the vertices also get the same property?
+		if(obj.constructor === Array){
+			for(var i=0; i<obj.length; i++){
+				if(obj[i].getData() == undefined)
+					var new_data = {};
+					new_data[dataName] = dataValue;
+					obj[i].setData( new_data );
+			}
+		} else{
+			if(obj.getData() == undefined)
+				var new_data = {};
+				new_data[dataName] = dataValue;
+				obj.setData( new_data );
 		}
-	
-		var orCenter = VIDAMO.getCentre(mObj);
-			
-		// translation required
-		var target = [xCoord, yCoord, zCoord];
-		var tx = target[0] - orCenter[0];
-		var ty = target[1] - orCenter[1];
-		var tz = target[2] - orCenter[2]; 
-		
-		VIDAMO.shiftObject( mObj, tx, ty, tz );		
 	};
 
 	/**
-	 * Scales the object along different axes
-	 * @param {mobiusobject} mObj - Object to be scaled
-	 * @param {float} scaleX - Scaling-factor along the x-direction; Should be set to '1' if no scaling is required.
-	 * @param {float} scaleY - Scaling-factor along the y-direction; Should be set to '1' if no scaling is required.
-	 * @param {float} scaleZ - Scaling-factor along the z-direction; Should be set to '1' if no scaling is required.
-	 * @returns Null
+	 * Returns the centre of a NURBS Curve, NURBS Surface or geometry for which centre is defined
+	 * @param {array} mObj - Mobius object
+	 * @returns {array} Point - [x, y, z]
 	 */
-	mod.scaleObject = function(mObj, scaleX, scaleY, scaleZ){
+	mod.obj.getCentre = function(object){
+		//calculate centre based on what kind of object
+		var geometry = mObj.getGeometry();  
 
-		if (mObj instanceof mObj_geom_Solid)
-			mObj = mObj.getGeometry();
-
-		if(mObj instanceof Array){
-			for(var obj=0; obj < mObj.length; obj++)
-				VIDAMO.scaleObject(mObj[obj], scaleX, scaleY, scaleZ);	
-			return;
-		}
-
-		// if extractGeometry is called again, the translations would  be lost ..
-		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
-		var geom = mObj.getGeometry();
-			
-		var mat = [ [scaleX, 0, 0, 0],
-							[0,scaleY,0,0],
-								[0,0,scaleZ,0],
-									[0,0,0,1]
-					];
-			
-		var transformedGeometry = geom.transform(mat);
-		mObj.setGeometry( transformedGeometry );
+		if(geometry.center != undefined)
+			return geometry.center();
+		else if(geometry instanceof verb.geom.NurbsCurve)
+			return geometry.point(0.5);
+		else if(geometry instanceof verb.geom.NurbsSurface)
+			return geometry.point(0.5, 0.5);
+		else
+			return "Invalid Input"
 	};
 
+
+	//
+	//
+	//	Transformation functions
+	//
+	//
+	mod.trn = {};
+
 	/**
-	 * Rotates the object about different axes
-	 * @param {mobiusobject} mObj - Object to be rotated
-	 * @param {float} xAxis - Angle (in Radians) about x-axis
-	 * @param {float} yAxis - Angle (in Radians) about y-axis
-	 * @param {float} zAxis - Angle (in Radians) about z-axis
+	 * Reflects the object about the XY plane of the frame
+	 * @param {mobiusobject} mObj - Object to be reflected
+	 * @param {array} planeABC - Parameters A, B, C, D from the plane equation (Ax+By+Cz-D=0) as an array  
+	 * @param {radians} angle - Angle (in Radians) about y-axis
 	 * @returns Null
 	 */
-	mod.rotateObject = function(mObj, xAxis, yAxis, zAxis){
+	mod.trn.reflect = function(object, frame, copy){
 
 		if (mObj instanceof mObj_geom_Solid)
 			mObj = mObj.getGeometry();
 
 		if(mObj instanceof Array){
 			for(var obj=0; obj < mObj.length; obj++)
-				VIDAMO.rotateObject(mObj[obj], xAxis, yAxis, zAxis);	
+				VIDAMO.rotateObjectAboutAxis(mObj[obj], axis, angle );	
 			return;
 		}
 
 		var geom = mObj.getGeometry();
 		if(geom instanceof verb.geom.NurbsCurve || geom instanceof verb.geom.NurbsSurface){
 
-			var centre = VIDAMO.getCentre(mObj);
-			
-			var mat_x = [ [1, 0, 0, 0],
-							[0,	Math.cos(xAxis), -Math.sin(xAxis),0],
-								[0,	Math.sin(xAxis), Math.cos(xAxis),0],
-									[0,0,0,1]
-						];
-						
-			var mat_y = [ [Math.cos(yAxis), 0, Math.sin(yAxis), 0],
-							[0,1,0,0],
-								[-Math.sin(yAxis), 0, Math.cos(yAxis),0],
-									[0,0,0,1]
-						];
-						
-			var mat_z = [ [Math.cos(zAxis), -Math.sin(zAxis), 0, 0],
-							[Math.sin(zAxis),	Math.cos(zAxis),0,	0],
-								[0,	0,	1,	0],
-									[0,	0,	0,	1]
-						];
-			
-			var transformedGeometry = geom.transform(mat_x).transform(mat_y).transform(mat_z);
+			var a = normalVector[0]; 
+			var b = normalVector[1];
+			var c = normalVector[2];
+			var d = normalVector[0]*pointOnPlane[0] + normalVector[1]*pointOnPlane[1] + normalVector[2]*pointOnPlane[2];
 
-			// if the object is scaled, the object centre remains the same and needs to be redefined
-			if(geom.center != undefined)
-				transformedGeometry.center = function(){ return VIDAMO.getCentre( mObj ) }
+			var mat = [ [ 1-2*a*a, -2*a*b, -2*a*c , 0],
+							[ -2*a*b, 1-2*b*b, -2*b*c, 0],
+								[ -2*a*c, -2*b*c, 1-2*c*c, 0],
+									[0,0,0,1]
+						];
+						
+			
+			var transformedGeometry = geom.transform( mat );
 
 			mObj.setGeometry( transformedGeometry );
 		
 			// shift to original centre point
-			VIDAMO.moveObjectToPoint(mObj, centre[0], centre[1], centre[2]);
+			//VIDAMO.moveObjectToPoint(mObj, centre[0], centre[1], centre[2]);
 		}
-	}
+	
+	};
 
 
 	/**
-	 * Rotates the object about a  give axis
+	 * Rotates the object about the axes of the frame. 
 	 * @param {mobiusobject} mObj - Object to be rotated
 	 * @param {array} axis - Axis in [x, y, z] format
 	 * @param {radians} angle - Angle (in Radians) about y-axis
 	 * @returns Null
 	 */
-	mod.rotateObjectAboutAxis = function( mObj, axis, angle ){
+	mod.trn.rotate = function(object, frame, angleX, angleY, angleZ, copy){
 
-/*		var end_point = [ axis[0]+point[0], axis[1]+point[1], axis[2]+point[2] ];
-		var unit_vector = VIDAMO.getUnitVector( axis );
-
-		var d = Math.sqrt( unit_vector[1]*unit_vector[1] + unit_vector[2]*unit_vector[2] );
-		var rx = Math.cosh( unit_vector[2]/d );
-		var ry = Math.cosh( d ); 
-
-		var origin = VIDAMO.getCentre(mObj);
-		// shift the object to base of the axis
-		VIDAMO.moveObjectToPoint( mObj, point[0], point[1], point[2]);
-
-
-		// rotate the object so y matches up to axis - store this angle
-		VIDAMO.rotateObject( mObj, rx, ry, angle );
-
-		// perform transformations
-
-		// rotate opposite to angle previous
-		VIDAMO.rotateObject( mObj, 0, -ry, 0 );
-		VIDAMO.rotateObject( mObj, -rx, 0, 0 );
-
-		// perform opposite translation
-		VIDAMO.moveObjectToPoint( mObj, origin[0], origin[1], origin[2]);*/
 		if (mObj instanceof mObj_geom_Solid)
 			mObj = mObj.getGeometry();
 
@@ -1258,148 +860,369 @@ var VIDAMO = ( function (mod){
 	
 	};
 
+
 	/**
-	 * Reflects the object about a given plane
-	 * @param {mobiusobject} mObj - Object to be reflected
-	 * @param {array} planeABC - Parameters A, B, C, D from the plane equation (Ax+By+Cz-D=0) as an array  
-	 * @param {radians} angle - Angle (in Radians) about y-axis
+	 * Scales the object along different axes
+	 * @param {mobiusobject} mObj - Object to be scaled
+	 * @param {float} scaleX - Scaling-factor along the x-direction; Should be set to '1' if no scaling is required.
+	 * @param {float} scaleY - Scaling-factor along the y-direction; Should be set to '1' if no scaling is required.
+	 * @param {float} scaleZ - Scaling-factor along the z-direction; Should be set to '1' if no scaling is required.
 	 * @returns Null
 	 */
-	mod.reflectObjectThroughPlane = function( mObj, planeABC ){
+	mod.trn.scale = function(object, frame, scaleX, scaleY, scaleZ, copy) {
 
 		if (mObj instanceof mObj_geom_Solid)
 			mObj = mObj.getGeometry();
 
 		if(mObj instanceof Array){
 			for(var obj=0; obj < mObj.length; obj++)
-				VIDAMO.rotateObjectAboutAxis(mObj[obj], axis, angle );	
+				VIDAMO.scaleObject(mObj[obj], scaleX, scaleY, scaleZ);	
 			return;
 		}
 
+		// if extractGeometry is called again, the translations would  be lost ..
+		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
 		var geom = mObj.getGeometry();
-		if(geom instanceof verb.geom.NurbsCurve || geom instanceof verb.geom.NurbsSurface){
-
-			var a = planeABC[0]; 
-			var b = planeABC[1];
-			var c = planeABC[2];
-			var d = planeABC[3];
-
-			var mat = [ [ 1-2*a*a, -2*a*b, -2*a*c , 0],
-							[ -2*a*b, 1-2*b*b, -2*b*c, 0],
-								[ -2*a*c, -2*b*c, 1-2*c*c, 0],
-									[0,0,0,1]
-						];
-						
 			
-			var transformedGeometry = geom.transform( mat );
+		var mat = [ [scaleX, 0, 0, 0],
+							[0,scaleY,0,0],
+								[0,0,scaleZ,0],
+									[0,0,0,1]
+					];
+			
+		var transformedGeometry = geom.transform(mat);
+		mObj.setGeometry( transformedGeometry );
 
-			mObj.setGeometry( transformedGeometry );
-		
-			// shift to original centre point
-			//VIDAMO.moveObjectToPoint(mObj, centre[0], centre[1], centre[2]);
-		}
-	
 	};
 
 	/**
-	 * Reflects the object about a given plane
-	 * @param {mobiusobject} mObj - Object to be reflected
-	 * @param {array} planeABC - Parameters A, B, C, D from the plane equation (Ax+By+Cz-D=0) as an array  
-	 * @param {radians} angle - Angle (in Radians) about y-axis
+	 * Shifts the object relative to its current position
+	 * @param {mobiusobject} mObj - Object to be moved
+	 * @param {float} shiftX - Distance to be moved in x-direction
+	 * @param {float} shiftY - Distance to be moved in y-direction
+	 * @param {float} shiftZ - Distance to be moved in z-direction
 	 * @returns Null
 	 */
-	mod.reflectObjectAboutPlane = function( mObj, pointOnPlane, normalVector ){
+	mod.trn.shift = function(object, frame, shiftX, shiftY, shiftZ, copy){
 
 		if (mObj instanceof mObj_geom_Solid)
 			mObj = mObj.getGeometry();
 
 		if(mObj instanceof Array){
 			for(var obj=0; obj < mObj.length; obj++)
-				VIDAMO.rotateObjectAboutAxis(mObj[obj], axis, angle );	
+				VIDAMO.shiftObject(mObj[obj], shiftX, shiftY, shiftZ);	
 			return;
 		}
 
 		var geom = mObj.getGeometry();
-		if(geom instanceof verb.geom.NurbsCurve || geom instanceof verb.geom.NurbsSurface){
-
-			var a = normalVector[0]; 
-			var b = normalVector[1];
-			var c = normalVector[2];
-			var d = normalVector[0]*pointOnPlane[0] + normalVector[1]*pointOnPlane[1] + normalVector[2]*pointOnPlane[2];
-
-			var mat = [ [ 1-2*a*a, -2*a*b, -2*a*c , 0],
-							[ -2*a*b, 1-2*b*b, -2*b*c, 0],
-								[ -2*a*c, -2*b*c, 1-2*c*c, 0],
+		
+		var mat = [ [1,0,0, shiftX],
+							[0,1,0,shiftY],
+								[0,0,1, shiftZ],
 									[0,0,0,1]
 						];
-						
-			
-			var transformedGeometry = geom.transform( mat );
-
-			mObj.setGeometry( transformedGeometry );
+		var transformedGeometry = geom.transform( mat );
 		
-			// shift to original centre point
-			//VIDAMO.moveObjectToPoint(mObj, centre[0], centre[1], centre[2]);
+		if(geom.center != undefined){ 
+			var centre = VIDAMO.getCentre( mObj );
+			transformedGeometry.center = function(){ return [ centre[0]+shiftX, centre[1]+shiftY, centre[2]+shiftZ ] }
 		}
+				
+		mObj.setGeometry( transformedGeometry ); 
+		
+	};
+
+
+	/**
+	 * Moves the centre of the object to a target point
+	 * @param {mobiusobject} mObj - Object to be moved
+	 * @param {float} xCoord - x-coordinate of the target point where the clone appears
+	 * @param {float} yCoord - y-coordinate of the target point where the clone appears
+	 * @param {float} zCoord - z-coordinate of the target point where the clone appears
+	 * @returns Null
+	 */
+	mod.trn.move = function(object, point , copy){
+
+		if (mObj instanceof mObj_geom_Solid)
+			mObj = mObj.getGeometry();
+		// if extractGeometry is called again, the translations would  be lost ..
+		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
+		if(mObj instanceof Array){
+			for(var obj=0; obj < mObj.length; obj++)
+				VIDAMO.moveObjectToPoint(mObj[obj], xCoord, yCoord, zCoord);	
+			return;
+		}
+	
+		var orCenter = VIDAMO.getCentre(mObj);
+			
+		// translation required
+		var target = [xCoord, yCoord, zCoord];
+		var tx = target[0] - orCenter[0];
+		var ty = target[1] - orCenter[1];
+		var tz = target[2] - orCenter[2]; 
+		
+		VIDAMO.shiftObject( mObj, tx, ty, tz );		
+	};
+
+
+	//
+	//
+	// Matrix operations
+	//
+	//
+	mod.mtx = {};
+
+	/**
+	 * Computes dot product of two matrices
+	 * @param {array} mat1  - Matrix 1
+	 * @param {array} mat2  - Matrix 2
+	 * @returns {float} 
+	 */
+	mod.mtx.dot = function( matrix1, matrix2 ){
+		return verb.core.Vec.dot(matrix1, matrix2);
+	};
+
+	/**
+	 * Computes cross product of two matrices
+	 * @param {array} mat1  - Matrix 1
+	 * @param {array} mat2  - Matrix 2
+	 * @returns {array} 
+	 */
+	mod.mtx.cross = function( matrix1, matrix2 ){
+		return verb.core.Vec.cross(matrix1, matrix2);
+	};
+
+	//
+	//
+	// Lists
+	//
+	//
+	mod.lst = {};
+
+
+	/**
+	 * Returns the length of the list 
+	 * @param {array} valueList - List which is to be analyzed
+	 * @returns {int} 
+	 */
+	mod.lst.length = function(list){
+		return valueList.length
+	};
+
+	/**
+	 * Finds the index of the first occurence of an array element. 
+	 * @param {array} list  - List in which an element needs to be searched
+	 * @param {array element} object - Element to be searched for
+	 * @returns {int} Returns -1 if the element doesn't exist in array. 
+	 */
+	mod.lst.find = function(list, item){
+		return list.indexOf( item );
+	};
+
+	mod.lst.append = function(list, itemOrList, unpack){
+
+		if( itemOrList.constructor.name == "Array"){
+			itemOrList.map( function(t){
+				list.push(t);
+			});
+		}
+		else 
+			list.push(itemOrList);
+
+	};
+
+	mod.lst.prepend = function(list, itemOrList, unpack){
+
+	};
+
+	/**
+	 * Removes an array element from a list by it's index number
+	 * @param {array} list  - List in which an element needs to be removed
+	 * @param {int} index - Index to be removed
+	 * @returns {null} 
+	 */
+	mod.lst.remove = function(list, index) {
+		list.splice(index, 1);
+	};
+
+
+	/**
+	 * Returns a number sequence in the form of an array
+	 * @param {float or int} start  - Starting value of the sequence
+	 * @param {float or int} end  - Ending value of the sequence (not included in the sequence)
+	 * @param {float or int} stepSize  - Increment or Decrement value to get to the 'end' value from the 'start' value
+	 * @returns {array} 
+	 */
+	mod.lst.sequence = function(start, end, stepSize){
+
+		var arr = [];
+		if( start == end ){
+			arr.push(start);
+		}
+		else if(start > end && stepSize < 0){
+			for(var i = start; i > end; i = i + stepSize)
+				arr.push(i);
+		} 
+		else{
+			for(var i = start; i < end; i = i + stepSize)
+				arr.push(i);
+		}
+
+		return arr;
+	};
+
+	//
+	//
+	// Numeric lists
+	//
+	//
+
+	/**
+	 * Gets the avaerage of a numeric array
+	 * @param {array} valueList - List which is to be averaged
+	 * @returns {float / int} 
+	 */
+	mod.lst.average = function(numericList){
+		return VIDAMO.sumList( valueList )/ valueList.length;
+	};
+
+
+	/**
+	 * Gets the minimum value in a numeric array
+	 * @param {array} valueList - List from which minimum value is required
+	 * @returns {float / int} 
+	 */
+	mod.lst.min = function(numericList){
+		
+		var minValue = valueList[0];
+		
+		for(var i=0; i<valueList.length; i++)
+			minValue = Math.min(minValue, valueList[i]);
+		
+		return minValue;
 	
 	};
 
-	/*
-	 *	Data Functions
-	 *	Input: mobiusobject or Topology Object; Output: Modified Object
-	 *
+	/**
+	 * Gets the maximum value in a numeric array
+	 * @param {array} valueList - List from which maximum value is required
+	 * @returns {float / int} 
 	 */
+	mod.lst.max = function(numericList){
+		
+		var maxValue = valueList[0];
+		
+		for(var i=0; i<valueList.length; i++)
+			maxValue = Math.max(maxValue, valueList[i]);
+		
+		return maxValue;
+	
+	};
+
 
 	/**
-	 * Adds material to an object
-	 * @param {mobiusobject} obj - Object to which material is to be added
-	 * @param {String} material_type - "MeshBasicMaterial", "MeshNormalMaterial", "MeshLambertMaterial", "LineBasicMaterial" etc... 
-	 * @param {boolean} wireframe - 'True' if wireframe is required. 
-	 * @param {hexCode} color - Hex Code of the color
-	 * @param {boolean} transparent - 'True' if transparency is required. 
-	 * @returns null
+	 * Gets the sum of a numeric array
+	 * @param {array} valueList - List which is to be summed
+	 * @returns {float / int} 
 	 */
-	mod.addMaterial = function(obj, material_type, wireframe, color_hex, transparent){
-		var option = {	
-			wireframe: wireframe,
-			color: color_hex,
-			transparent: transparent,
-			side: THREE.DoubleSide
-		};
-		var material = new THREE[material_type](option);
+	mod.lst.sum = function(numericList){
 		
-		obj.setMaterial(material);
-
-		return obj;
+		var sum = 0;
+		
+		for(var i=0; i<valueList.length; i++)
+			sum += valueList[i];
+		
+		return sum;
+	
 	};
 
 	/**
-	 * Adds data to an object
-	 * @param {mobiusobject} obj - Object to which data is to be added
-	 * @param {String} dataName - Name of the property
-	 * @param {String / int / object ... } dataValue - Value of the property
-	 * @returns null
+	 * Returns the span of the list - the difference between the maximum and the minimum value in the list
+	 * @param {array} valueList - List which is to be analyzed
+	 * @returns {float / int} 
 	 */
-	mod.addData = function(obj, dataName, dataValue){
+	mod.lst.range = function(numericList){
+		
+		return VIDAMO.getMaxValue( valueList ) - VIDAMO.getMinValue( valueList );
+	
+	};
 
-		// decide on topology heirarchy also - if edge gets a property, do the vertices also get the same property?
-		if(obj.constructor === Array){
-			for(var i=0; i<obj.length; i++){
-				if(obj[i].getData() == undefined)
-					var new_data = {};
-					new_data[dataName] = dataValue;
-					obj[i].setData( new_data );
-			}
-		} else{
-			if(obj.getData() == undefined)
-				var new_data = {};
-				new_data[dataName] = dataValue;
-				obj.setData( new_data );
+
+	//
+	//
+	// Misc functions
+	//
+	//
+	mod.msc = {};
+
+	/**
+	 * Converts degrees into radians
+	 * @param {float} degree - Degrees to be converted
+	 * @returns {float} 
+	 */
+	mod.msc.degToRad = function(degree){
+		return 0.01745*degrees;
+	};
+
+	/**
+	 * Converts radians into degrees
+	 * @param {float} radians - Radians to be converted
+	 * @returns {float} 
+	 */
+	mod.msc.radToDeg = function(radians){
+		return 57.29*radians;
+	};
+
+	/**
+	 * Converts RGB values into Hex color code
+	 * @param {int} red - Value between 0-255 for red color
+	 * @param {int} green - Value between 0-255 for green color
+	 * @param {int} blue - Value between 0-255 for blue color
+	 * @returns {string} - HexValue
+	 */
+	mod.msc.rgbToHex = function(red, green, blue){
+		
+		return '0x'+toHex(red)+toHex(green)+toHex(blue);
+			
+		function toHex(n) {
+			 n = parseInt(n,10);
+			 if (isNaN(n)) return "00";
+			 n = Math.max(0,Math.min(n,255));
+			 return "0123456789ABCDEF".charAt((n-n%16)/16)
+				  + "0123456789ABCDEF".charAt(n%16);
+		}
+	};
+	
+	/**
+	 * Returns value of a number upto significant digits
+	 * @param {float} number  - Number
+	 * @param {int} number  - Number of significant digits needed
+	 * @returns {float} 
+	 */
+	mod.msc.sigDig = function(number, number){
+		return number.toFixed(digits);
+	};
+
+	/**
+	 * Prints to console
+	 * @param {string} content - Message to be printed on the console
+	 * @returns {null}
+	 */
+	mod.msc.print = function(content){
+		// try to find vidamo web app, if found print in vidamo console
+
+		this.content = content;
+
+		try{
+			var logString = "<div style='color: green;'>" + this.content + '</div>';
+			document.getElementById('log').innerHTML += logString;
+		}catch(err){
+			console.log('warnning: vidamo web app not connected.');
 		}
 	};
 
-	//Could be shifted to MobiusSide
 
+	// data conversion module
 	mod.dataConversion = function(data){
 
 		for(var i = 0; i < data.length; i++) {
@@ -1410,52 +1233,43 @@ var VIDAMO = ( function (mod){
 					if (data[i].value[m].constructor !== Array) {
 						extract(data[i].value[m],
 							data[i].geom,
-							data[i].geomData,
-							data[i].topo);
+							data[i].geomData);
 					}
 					else {
 						var tempGeom = [];
 						var tempData = [];
-						var tempTopo = []
 
 						for (var n = 0; n < data[i].value[m].length; n++) {
 
 							extract(data[i].value[m][n],
 								tempGeom,
-								tempData,
-								tempTopo);
+								tempData);
 						}
 						data[i].geom.push(tempGeom);
 						data[i].geomData.push(tempData);
-						data[i].topo.push(tempTopo);
 					}
 				}
 			}
 		}
 
-		function extract (obj,geom,geomData,topo){ 				
+		function extract (obj,geom,geomData){
 			if(obj.constructor === Array){
 				var tempGeom0 = [];
 				var tempData0 = [];
-				var tempTopo0 = [];
 
 				for(var k = 0; k < obj.length ; k++){
-					extract(obj[k],tempGeom0,tempData0,tempTopo0);
+					extract(obj[k],tempGeom0,tempData0);
 				}
 
 				geom.push(tempGeom0);
 				geomData.push(tempData0);
-				topo.push(tempTopo0);
 			}
-			else if(obj instanceof  mObj_geom_Curve || 
-					obj instanceof mObj_geom_Surface ||
-					obj instanceof mObj_geom_Solid ){ 
-				geom.push( obj.extractThreeGeometry() );
+			else if(obj instanceof  MobiusDataObject){
+				geom.push( obj.extractGeometry() );
 				geomData.push( obj.extractData() );
-				topo.push(obj.extractTopology());
 			}else{
 				for(var key in obj){
-					extract(obj[key],geom,geomData,topo);
+					extract(obj[key],geom,geomData);
 				}
 			}
 		}
@@ -1465,13 +1279,7 @@ var VIDAMO = ( function (mod){
 
 	return mod;
 
-})(window.VIDAMO || {});
-
-
-
-
-
-
+})(window.MOBIUS || {});
 
 
 /*
