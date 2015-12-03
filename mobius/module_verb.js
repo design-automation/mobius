@@ -19,27 +19,56 @@ var MOBIUS = ( function (mod){
 	mod.frm = {}; 
 	
 	mod.frm.byXYPoints = function(origin, xPoint, yPoint){
-	            
+	    
+		var xaxis = [xPoint[0]-origin[0], xPoint[1]-origin[1], xPoint[2]-origin[2]];
+		var yaxis = [yPoint[0]-origin[0], yPoint[1]-origin[1], yPoint[2]-origin[2]];
+
+		return [origin, xaxis, yaxis];
+
 	};
 	        
-	mod.frm.byXZPoints = function(origin, xPoint, zPoint){
+	mod.frm.byXZPoints = function(origin, xPoint, zPoint){		
+
+		var xaxis = [xPoint[0]-origin[0], xPoint[1]-origin[1], xPoint[2]-origin[2]];
+		var zaxis = [zPoint[0]-origin[0], zPoint[1]-origin[1], zPoint[2]-origin[2]];		
+
+		var yaxis = verb.core.Vec.cross(xaxis, zaxis);
+
+		return [origin, xaxis, yaxis]
 
 	};
 
 	mod.frm.byYZPoints = function(origin, yPoint, zPoint){
 
+		var yaxis = [yPoint[0]-origin[0], yPoint[1]-origin[1], yPoint[2]-origin[2]];
+		var zaxis = [zPoint[0]-origin[0], zPoint[1]-origin[1], zPoint[2]-origin[2]];		
+
+		var xaxis = verb.core.Vec.cross(yaxis, zaxis);
+
+		return [origin, xaxis, yaxis]
+	
 	};
 
 	mod.frm.byXYAxes = function(origin, xAxis, yAxis){
-
+		
+		return [origin, xaxis, yaxis];
+	
 	};
 
 	mod.frm.byXZAxes = function(origin, xAxis, zAxis){
 
+		var yAxis = verb.core.Vec.cross(xAxis, zAxis);
+
+		return [origin, xaxis, yaxis]
+
 	};
 
 	mod.frm.byYZAxes = function(origin, yAxis, zAxis){
+		
+		var xAxis = verb.core.Vec.cross(yAxis, zAxis);
 
+		return [origin, xaxis, yaxis]
+	
 	};
 
 	//
@@ -58,8 +87,8 @@ var MOBIUS = ( function (mod){
 	mod.sld.byExtrusion = function(surface, frame, xDistance, yDistance, zDistance){
 
 		var bottomSurface = surface;
-		var topSurface = VIDAMO.makeCopy( bottomSurface, undefined, undefined, undefined);
-		VIDAMO.shiftObject(topSurface, extrusionVector[0], extrusionVector[1], extrusionVector[2]);
+		var topSurface = MOBIUS.makeCopy( bottomSurface );
+		MOBIUS.shiftObject(topSurface, extrusionVector[0], extrusionVector[1], extrusionVector[2]);
 
 		var solid = [ bottomSurface, topSurface ];
 		// join boundary points of the two surfaces
@@ -607,8 +636,8 @@ var MOBIUS = ( function (mod){
 	 * @returns {float} radians
 	 */
 	mod.vec.angle = function(vector1, vector2){
-		var dotP = VIDAMO.getDotProduct( vector1,  vector2 );
-		var cos_t = dotP / (VIDAMO.getLengthOfVector( vector1 ) * VIDAMO.getLengthOfVector( vector2 ) );
+		var dotP = MOBIUS.getDotProduct( vector1,  vector2 );
+		var cos_t = dotP / (MOBIUS.getLengthOfVector( vector1 ) * MOBIUS.getLengthOfVector( vector2 ) );
 		return Math.cosh(cos_t);
 	};
 
@@ -782,7 +811,7 @@ var MOBIUS = ( function (mod){
 
 		if(mObj instanceof Array){
 			for(var obj=0; obj < mObj.length; obj++)
-				VIDAMO.rotateObjectAboutAxis(mObj[obj], axis, angle );	
+				MOBIUS.rotateObjectAboutAxis(mObj[obj], axis, angle );	
 			return;
 		}
 
@@ -806,7 +835,7 @@ var MOBIUS = ( function (mod){
 			mObj.setGeometry( transformedGeometry );
 		
 			// shift to original centre point
-			//VIDAMO.moveObjectToPoint(mObj, centre[0], centre[1], centre[2]);
+			//MOBIUS.moveObjectToPoint(mObj, centre[0], centre[1], centre[2]);
 		}
 	
 	};
@@ -826,18 +855,18 @@ var MOBIUS = ( function (mod){
 
 		if(mObj instanceof Array){
 			for(var obj=0; obj < mObj.length; obj++)
-				VIDAMO.rotateObjectAboutAxis(mObj[obj], axis, angle );	
+				MOBIUS.rotateObjectAboutAxis(mObj[obj], axis, angle );	
 			return;
 		}
 
 		var geom = mObj.getGeometry();
 		if(geom instanceof verb.geom.NurbsCurve || geom instanceof verb.geom.NurbsSurface){
 
-			var centre = VIDAMO.getCentre(mObj);
+			var centre = MOBIUS.getCentre(mObj);
 
 			var cost = Math.cos( angle );
 			var sint = Math.sin( angle );
-			var axis = VIDAMO.getUnitVector(axis); 
+			var axis = MOBIUS.getUnitVector(axis); 
 
 			var mat = [ [ cost + axis[0]*axis[0]*( 1 - cost ) , axis[0]*axis[1]*( 1 - cost ) - axis[2]*sint, axis[0]*axis[2]*( 1 - cost ) + axis[1]*sint, 0],
 							[ axis[0]*axis[1]*( 1 - cost ) + axis[2]*sint,	cost + axis[1]*axis[1]*( 1 - cost ), axis[1]*axis[2]*( 1 - cost ) - axis[0]*sint,0],
@@ -850,12 +879,12 @@ var MOBIUS = ( function (mod){
 
 			// if the object is scaled, the object centre remains the same and needs to be redefined
 			if(geom.center != undefined)
-				transformedGeometry.center = function(){ return VIDAMO.getCentre( mObj ) } // bug - tranform the centre too - if the object is rotated
+				transformedGeometry.center = function(){ return MOBIUS.getCentre( mObj ) } // bug - tranform the centre too - if the object is rotated
 
 			mObj.setGeometry( transformedGeometry );
 		
 			// shift to original centre point
-			//VIDAMO.moveObjectToPoint(mObj, centre[0], centre[1], centre[2]);
+			//MOBIUS.moveObjectToPoint(mObj, centre[0], centre[1], centre[2]);
 		}
 	
 	};
@@ -876,7 +905,7 @@ var MOBIUS = ( function (mod){
 
 		if(mObj instanceof Array){
 			for(var obj=0; obj < mObj.length; obj++)
-				VIDAMO.scaleObject(mObj[obj], scaleX, scaleY, scaleZ);	
+				MOBIUS.scaleObject(mObj[obj], scaleX, scaleY, scaleZ);	
 			return;
 		}
 
@@ -908,9 +937,9 @@ var MOBIUS = ( function (mod){
 		if (mObj instanceof mObj_geom_Solid)
 			mObj = mObj.getGeometry();
 
-		if(mObj instanceof Array){
+		if (mObj instanceof Array){
 			for(var obj=0; obj < mObj.length; obj++)
-				VIDAMO.shiftObject(mObj[obj], shiftX, shiftY, shiftZ);	
+				MOBIUS.shiftObject(mObj[obj], shiftX, shiftY, shiftZ);	
 			return;
 		}
 
@@ -924,7 +953,7 @@ var MOBIUS = ( function (mod){
 		var transformedGeometry = geom.transform( mat );
 		
 		if(geom.center != undefined){ 
-			var centre = VIDAMO.getCentre( mObj );
+			var centre = MOBIUS.getCentre( mObj );
 			transformedGeometry.center = function(){ return [ centre[0]+shiftX, centre[1]+shiftY, centre[2]+shiftZ ] }
 		}
 				
@@ -949,11 +978,11 @@ var MOBIUS = ( function (mod){
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
 		if(mObj instanceof Array){
 			for(var obj=0; obj < mObj.length; obj++)
-				VIDAMO.moveObjectToPoint(mObj[obj], xCoord, yCoord, zCoord);	
+				MOBIUS.moveObjectToPoint(mObj[obj], xCoord, yCoord, zCoord);	
 			return;
 		}
 	
-		var orCenter = VIDAMO.getCentre(mObj);
+		var orCenter = MOBIUS.getCentre(mObj);
 			
 		// translation required
 		var target = [xCoord, yCoord, zCoord];
@@ -961,7 +990,7 @@ var MOBIUS = ( function (mod){
 		var ty = target[1] - orCenter[1];
 		var tz = target[2] - orCenter[2]; 
 		
-		VIDAMO.shiftObject( mObj, tx, ty, tz );		
+		MOBIUS.shiftObject( mObj, tx, ty, tz );		
 	};
 
 
@@ -1083,7 +1112,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {float / int} 
 	 */
 	mod.lst.average = function(numericList){
-		return VIDAMO.sumList( valueList )/ valueList.length;
+		return MOBIUS.sumList( valueList )/ valueList.length;
 	};
 
 
@@ -1143,7 +1172,7 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.lst.range = function(numericList){
 		
-		return VIDAMO.getMaxValue( valueList ) - VIDAMO.getMinValue( valueList );
+		return MOBIUS.getMaxValue( valueList ) - MOBIUS.getMinValue( valueList );
 	
 	};
 
@@ -1209,7 +1238,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {null}
 	 */
 	mod.msc.print = function(content){
-		// try to find vidamo web app, if found print in vidamo console
+		// try to find MOBIUS web app, if found print in MOBIUS console
 
 		this.content = content;
 
@@ -1217,7 +1246,7 @@ var MOBIUS = ( function (mod){
 			var logString = "<div style='color: green;'>" + this.content + '</div>';
 			document.getElementById('log').innerHTML += logString;
 		}catch(err){
-			console.log('warnning: vidamo web app not connected.');
+			console.log('warnning: MOBIUS web app not connected.');
 		}
 	};
 
