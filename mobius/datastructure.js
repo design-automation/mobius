@@ -16,6 +16,104 @@ var mObj = function mObj( type ){
 	}
 }
 
+var mObj_frame = function mObj( origin, xaxis, yaxis, zaxis ){
+
+    //mObj.call(this, 'frame');
+
+
+    // compute missing axes 
+    if( xaxis == undefined )
+        xaxis = verb.core.Vec.cross( yaxis, zaxis );
+    else if( yaxis == undefined )
+        yaxis = verb.core.Vec.cross( xaxis, zaxis );
+    else if( zaxis == undefined )
+        zaxis = verb.core.Vec.cross( xaxis, yaxis );
+
+    this.origin = origin;
+    this.xaxis = verb.core.Vec.normalized( xaxis ); 
+    this.yaxis = verb.core.Vec.normalized( yaxis ); 
+    this.zaxis = verb.core.Vec.normalized( zaxis );
+
+    var angle_x = Math.cosh(zaxis[2]);
+    var angle_y = Math.cosh(zaxis[1]);
+    var angle_z = Math.cosh(xaxis[0]);
+
+    // compute translation
+    var mat_trans = [ [ 1, 0, 0, origin[0] ],
+                    [ 0, 1, 0, origin[1] ],
+                            [ 0, 0, 1, origin[2] ],
+                                        [ 0, 0, 0, 1 ]
+                        ];
+
+    // zaxis [0,0,1]
+    var cost = Math.cos( angle_z );
+    var sint = Math.sin( angle_z );
+    var mat_rot_z = [ [ cost , -sint, 0, 0 ],
+                            [ sint, cost, 0, 0 ],
+                                [ 0, 0, 1, 0 ],
+                                    [ 0, 0, 0, 1 ]
+                        ];
+
+    // yaxis [0,1,0]
+    var cost = Math.cos( angle_y );
+    var sint = Math.sin( angle_y );
+    var mat_rot_y = [ [ cost , 0, sint, 0 ],
+                            [ 0,  1,  0, 0 ],
+                                [ -sint, 0, cost, 0],
+                                    [ 0, 0, 0, 1 ]
+                        ];
+
+    // xaxis [1,0,0]
+    var cost = Math.cos( angle_x );
+    var sint = Math.sin( angle_x );
+    var mat_rot_x = [ [ 1, 0, 0, 0 ],
+                            [ 0,  cost, -sint, 0 ],
+                                [ -sint,  sint, cost, 0 ],
+                                    [ 0, 0, 0, 1 ]
+                        ];
+
+    var mat = verb.core.Mat.mult( mat_trans, mat_rot_z );
+    mat = verb.core.Mat.mult( mat, mat_rot_y );
+    mat = verb.core.Mat.mult( mat, mat_rot_x );
+
+    var m = [];
+    mat.map( function(t){
+            t.map( function(u){
+                m.push(u)
+            })
+    })
+
+    var r = new Array(15)
+
+    r[0] = m[5]*m[10]*m[15] - m[5]*m[14]*m[11] - m[6]*m[9]*m[15] + m[6]*m[13]*m[11] + m[7]*m[9]*m[14] - m[7]*m[13]*m[10];
+    r[1] = -m[1]*m[10]*m[15] + m[1]*m[14]*m[11] + m[2]*m[9]*m[15] - m[2]*m[13]*m[11] - m[3]*m[9]*m[14] + m[3]*m[13]*m[10];
+    r[2] = m[1]*m[6]*m[15] - m[1]*m[14]*m[7] - m[2]*m[5]*m[15] + m[2]*m[13]*m[7] + m[3]*m[5]*m[14] - m[3]*m[13]*m[6];
+    r[3] = -m[1]*m[6]*m[11] + m[1]*m[10]*m[7] + m[2]*m[5]*m[11] - m[2]*m[9]*m[7] - m[3]*m[5]*m[10] + m[3]*m[9]*m[6];
+
+    r[4] = -m[4]*m[10]*m[15] + m[4]*m[14]*m[11] + m[6]*m[8]*m[15] - m[6]*m[12]*m[11] - m[7]*m[8]*m[14] + m[7]*m[12]*m[10];
+    r[5] = m[0]*m[10]*m[15] - m[0]*m[14]*m[11] - m[2]*m[8]*m[15] + m[2]*m[12]*m[11] + m[3]*m[8]*m[14] - m[3]*m[12]*m[10];
+    r[6] = -m[0]*m[6]*m[15] + m[0]*m[14]*m[7] + m[2]*m[4]*m[15] - m[2]*m[12]*m[7] - m[3]*m[4]*m[14] + m[3]*m[12]*m[6];
+    r[7] = m[0]*m[6]*m[11] - m[0]*m[10]*m[7] - m[2]*m[4]*m[11] + m[2]*m[8]*m[7] + m[3]*m[4]*m[10] - m[3]*m[8]*m[6];
+
+    r[8] = m[4]*m[9]*m[15] - m[4]*m[13]*m[11] - m[5]*m[8]*m[15] + m[5]*m[12]*m[11] + m[7]*m[8]*m[13] - m[7]*m[12]*m[9];
+    r[9] = -m[0]*m[9]*m[15] + m[0]*m[13]*m[11] + m[1]*m[8]*m[15] - m[1]*m[12]*m[11] - m[3]*m[8]*m[13] + m[3]*m[12]*m[9];
+    r[10] = m[0]*m[5]*m[15] - m[0]*m[13]*m[7] - m[1]*m[4]*m[15] + m[1]*m[12]*m[7] + m[3]*m[4]*m[13] - m[3]*m[12]*m[5];
+    r[11] = -m[0]*m[5]*m[11] + m[0]*m[9]*m[7] + m[1]*m[4]*m[11] - m[1]*m[8]*m[7] - m[3]*m[4]*m[9] + m[3]*m[8]*m[5];
+
+    r[12] = -m[4]*m[9]*m[14] + m[4]*m[13]*m[10] + m[5]*m[8]*m[14] - m[5]*m[12]*m[10] - m[6]*m[8]*m[13] + m[6]*m[12]*m[9];
+    r[13] = m[0]*m[9]*m[14] - m[0]*m[13]*m[10] - m[1]*m[8]*m[14] + m[1]*m[12]*m[10] + m[2]*m[8]*m[13] - m[2]*m[12]*m[9];
+    r[14] = -m[0]*m[5]*m[14] + m[0]*m[13]*m[6] + m[1]*m[4]*m[14] - m[1]*m[12]*m[6] - m[2]*m[4]*m[13] + m[2]*m[12]*m[5];
+    r[15] = m[0]*m[5]*m[10] - m[0]*m[9]*m[6] - m[1]*m[4]*m[10] + m[1]*m[8]*m[6] + m[2]*m[4]*m[9] - m[2]*m[8]*m[5];
+
+    var det = m[0]*r[0] + m[1]*r[4] + m[2]*r[8] + m[3]*r[12];
+    for (var i = 0; i < 16; i++) 
+        r[i] /= det;
+
+    this.matrix = mat;
+    this.inverseMatrix = r;
+ 
+}
+
 // mObj Geometry Class
 // geometry is stored in geometry format native to module
 var mObj_geom = function mObj_geom( geometry, material ){
@@ -40,7 +138,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
         threeTopology = undefined;
     }
 
-     //
+    //
     // get & set functions
     //
     this.getGeometry = function(){

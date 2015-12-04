@@ -23,7 +23,7 @@ var MOBIUS = ( function (mod){
 		var xaxis = [xPoint[0]-origin[0], xPoint[1]-origin[1], xPoint[2]-origin[2]];
 		var yaxis = [yPoint[0]-origin[0], yPoint[1]-origin[1], yPoint[2]-origin[2]];
 
-		return [origin, xaxis, yaxis];
+		return new mObj_frame(origin, xaxis, yaxis, undefined);
 
 	};
 	        
@@ -32,9 +32,7 @@ var MOBIUS = ( function (mod){
 		var xaxis = [xPoint[0]-origin[0], xPoint[1]-origin[1], xPoint[2]-origin[2]];
 		var zaxis = [zPoint[0]-origin[0], zPoint[1]-origin[1], zPoint[2]-origin[2]];		
 
-		var yaxis = verb.core.Vec.cross(xaxis, zaxis);
-
-		return [origin, xaxis, yaxis]
+		return new mObj_frame(origin, xaxis, undefined, zaxis);
 
 	};
 
@@ -43,32 +41,26 @@ var MOBIUS = ( function (mod){
 		var yaxis = [yPoint[0]-origin[0], yPoint[1]-origin[1], yPoint[2]-origin[2]];
 		var zaxis = [zPoint[0]-origin[0], zPoint[1]-origin[1], zPoint[2]-origin[2]];		
 
-		var xaxis = verb.core.Vec.cross(yaxis, zaxis);
-
-		return [origin, xaxis, yaxis]
+		return new mObj_frame(origin, undefined, yaxis, zaxis)
 	
 	};
 
 	mod.frm.byXYAxes = function(origin, xAxis, yAxis){
 		
-		return [origin, xaxis, yaxis];
+		return new mObj_frame(origin, xAxis, yAxis, undefined);
 	
 	};
 
 	mod.frm.byXZAxes = function(origin, xAxis, zAxis){
 
-		var yAxis = verb.core.Vec.cross(xAxis, zAxis);
-
-		return [origin, xaxis, yaxis]
+		return new mObj(origin, xAxis, undefined, zAxis);
 
 	};
 
 	mod.frm.byYZAxes = function(origin, yAxis, zAxis){
-		
-		var xAxis = verb.core.Vec.cross(yAxis, zAxis);
 
-		return [origin, xaxis, yaxis]
-	
+		return new mObj(origin, undefined, yAxis, zAxis);
+
 	};
 
 	//
@@ -158,7 +150,7 @@ var MOBIUS = ( function (mod){
 		if( point3.getGeometry != undefined )
 			point3 = point3.getGeometry();
 
-		return new mObj_geom_Surface( new verb.geom.NurbsSurface.byCorners ( point0,point1,point2,point3 ) ) ;
+		return new mObj_geom_Surface( new verb.geom.NurbsSurface.byCorners ( point0, point1, point2, point3 ) ) ;
 	};
 
 	/**
@@ -219,7 +211,7 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.srf.nurbsBySweep = function( sectionCurve, railCurve ){
 		
-		var profile = secionCurve.getGeometry();
+		var profile = sectionCurve.getGeometry();
 		var rail = railCurve.getGeometry();
 		
 		return new mObj_geom_Surface( new verb.geom.SweptSurface ( profile, rail ) ) ;
@@ -233,11 +225,11 @@ var MOBIUS = ( function (mod){
 	 * @returns {mobiusobject}  - NURBS Surface
 	 */
 	mod.srf.nurbsSphere = function(frame, radius){
-
-		if( centerPoint.getGeometry != undefined )
-			centerPoint = centerPoint.getGeometry();
 					
-		return new mObj_geom_Surface(  new verb.geom.SphericalSurface(centrePoint, radius) ) ;
+		var sphere = new verb.geom.SphericalSurface( [0,0,0], radius );
+		sphere.transform( frame.matrix );
+
+		return mObj_geom_Surface( sphere );
 
 	};
 
@@ -251,9 +243,12 @@ var MOBIUS = ( function (mod){
 	 * @returns {mobiusobject}  - NURBS Surface
 	 */
 	mod.srf.nurbsCone = function(frame, height, radius1, radius2){
-		
-		return new mObj_geom_Surface( new verb.geom.ConicalSurface( axis,xaxis,base,height,radius ) ) ;
-	
+
+		var cone = new verb.geom.ConicalSurface( [0,1,0], [1,0,0], radius1, height, radius2 );	
+		cone.transform( frame.matrix );
+
+		return mObj_geom_Surface( cone );
+
 	};
 
 	mod.srf.nurbsPipe = function(centreCurve, radius){
@@ -317,31 +312,28 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.srf.divide = function(surface, uvGrid, method){
 		
-		var srf = mObj.getGeometry(); 
+		var srf = surface.getGeometry(); 
 		
-		if(srf instanceof verb.geom.NurbsSurface){
-			var div_surfaces = [], gridPoints = [];
-			var uincr = 1/ugrid;
-			var vincr = 1/vgrid;
+		var div_surfaces = [], 
+		gridPoints = [];
+		var uincr = 1/ugrid;
+		var vincr = 1/vgrid;
 
-			//for uv lines
-			for(var i=0; i <= ugrid; i++){
-				for(var seg=0; seg <= vgrid; seg++)
-					gridPoints.push(srf.point(i*uincr, seg*vincr)); 
-			}
-
-			// creation of polygons from the gridPoints
-			for(var i=0; i< gridPoints.length-vgrid-2; i++){
-				if((i+vgrid+2)%(vgrid+1) != 0 || i==0){
-					// construction of the verbs four point surface
-					var mbObj =  new mObj_geom_Surface( new verb.geom.NurbsSurface.byCorners(gridPoints[i], gridPoints[i+1],  gridPoints[i+vgrid+2], gridPoints[i+vgrid+1]) );
-					div_surfaces.push(mbObj); 
-				}
-			}
-			return new mObj_geom_Solid( div_surfaces );
+		//for uv lines
+		for(var i=0; i <= ugrid; i++){
+			for(var seg=0; seg <= vgrid; seg++)
+				gridPoints.push(srf.point(i*uincr, seg*vincr)); 
 		}
-		else
-			return "Invalid Input"
+		// creation of polygons from the gridPoints
+		for(var i=0; i< gridPoints.length-vgrid-2; i++){
+			if((i+vgrid+2)%(vgrid+1) != 0 || i==0){
+				// construction of the verbs four point surface
+				var mbObj =  new mObj_geom_Surface( new verb.geom.NurbsSurface.byCorners(gridPoints[i], gridPoints[i+1],  gridPoints[i+vgrid+2], gridPoints[i+vgrid+1]) );
+				div_surfaces.push(mbObj); 
+			}
+		}
+		return new mObj_geom_Solid( div_surfaces );
+
 	};
 
 	mod.srf.carve = function(surface, uv1, uv2, hole){
@@ -364,7 +356,7 @@ var MOBIUS = ( function (mod){
 	 * @param {array} weights - Weights
 	 * @returns {mobiusobject}  - NURBS Curve
 	 */
-	mod.crv.nurbsByData = function(degree, knots, controlPoints, weights){
+	mod.crv.nurbsByData = function( degree, knots, controlPoints, weights ){
 
 		controlPoints = controlPoints.map( function(p){ 
 								
@@ -373,7 +365,7 @@ var MOBIUS = ( function (mod){
 								else 
 									return p; } )
 
-		return new mObj_geom_Curve( new verb.geom.NurbsCurve.byKnotsControlPointsWeights( degree,knots,controlPoints,weights ) ) ;
+		return new mObj_geom_Curve( new verb.geom.NurbsCurve.byKnotsControlPointsWeights( degree, knots, controlPoints, weights ) ) ;
 
 	};
 
@@ -384,7 +376,7 @@ var MOBIUS = ( function (mod){
 	 * @param {int} degree - Degree of the Curve
 	 * @returns {mobiusobject}  - NURBS Curve
 	 */
-	mod.crv.nurbsByPoints = function(points, degree, weights){
+	mod.crv.nurbsByPoints = function( points, degree ){
 
 		points = points.map( function(p){ 
 								
@@ -404,14 +396,14 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.crv.bezierByPoints = function(points, weights) {
 
-		var points = points.map( function(p){ 
+		points = points.map( function(p){ 
 								
 								if(p.getGeometry != undefined) 
 									return p.getGeometry(); 
 								else 
-									return p; } )
+									return p; } );
 
-		return new mObj_geom_Curve( new verb.geom.BezierCurve(points, weights) ) 
+		return new mObj_geom_Curve( new verb.geom.BezierCurve( points, weights ) ) ;
 	};
 
 
@@ -426,12 +418,11 @@ var MOBIUS = ( function (mod){
 	 * @returns {mobiusobject}  - NURBS Curve
 	 */
 	mod.crv.arc = function(frame, radius, minAngle, maxAngle){
-		// input variations
-		// center, axis and yaxis could be vector3
-		if( centerPoint.getGeometry != undefined )
-			centerPoint = centerPoint.getGeometry();
 
-		return new mObj_geom_Curve( new verb.geom.Arc(centerPoint,xaxis,yaxis,radius,minAngle,maxAngle) ) ;
+		var xaxis = MOBIUS.vec.resize( frame.xaxis, xRadius );
+		var yaxis = MOBIUS.vec.resize( frame.yaxis, yRadius );
+
+		return new mObj_geom_Curve( new verb.geom.Arc( frame.origin, xaxis, yaxis, radius, minAngle, maxAngle) ) ;
 
 	};
 
@@ -453,10 +444,10 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.crv.circleBoundary = function(frame, radius){
 
-		if( centerPoint.getGeometry != undefined )
-			centerPoint = centerPoint.getGeometry();
+		var xaxis = MOBIUS.vec.resize( frame.xaxis, xRadius );
+		var yaxis = MOBIUS.vec.resize( frame.yaxis, yRadius );
 
-		return new mObj_geom_Curve( new verb.geom.Circle(centerPoint,xaxis,yaxis,radius) ) 
+		return new mObj_geom_Curve( new verb.geom.Circle( frame.origin, xaxis, yaxis, radius ) ) 
 	};
 
 	/**
@@ -468,10 +459,10 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.crv.ellipse = function(frame, xRadius, yRadius) {
 
-		if( centerPoint.getGeometry != undefined )
-			centerPoint = centerPoint.getGeometry();
+		var xaxis = MOBIUS.vec.resize( frame.xaxis, xRadius );
+		var yaxis = MOBIUS.vec.resize( frame.yaxis, yRadius );
 
-		return new mObj_geom_Curve( new verb.geom.Ellipse( centerPoint,xaxis,yaxis ) ) 
+		return new mObj_geom_Curve( new verb.geom.Ellipse( frame.origin, xaxis, yaxis ) ); 
 		
 	};
 
@@ -486,11 +477,10 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.crv.ellipseArc = function(frame, xRadius, yRadius, minAngle, maxAngle){
 
-		if( centerPoint.getGeometry != undefined )
-			centerPoint = centerPoint.getGeometry();
+		var xaxis = MOBIUS.vec.resize( frame.xaxis, xRadius );
+		var yaxis = MOBIUS.vec.resize( frame.yaxis, yRadius );
 
-
-		return new mObj_geom_Curve( new verb.geom.EllipseArc( centerPoint,xaxis,yaxis,minAngle,maxAngle ) ) 
+		return new mObj_geom_Curve( new verb.geom.EllipseArc( frame.origin, xaxis, yaxis, minAngle, maxAngle ) ) 
 	};
 
 
@@ -511,11 +501,14 @@ var MOBIUS = ( function (mod){
 
 	};
 
+	// what's method?
 	mod.crv.tListByNumber = function(curve, numPoints, method){
+
 
 	};
 
 	mod.crv.tListByDistance = function(curve, distance, method){
+
 
 	};
 
@@ -537,6 +530,12 @@ var MOBIUS = ( function (mod){
 	};
 
 	mod.crv.getFrames = function(curve, tList, upVector){
+
+		var frames = tList.map( function(t){
+			return mObj_frame( curve.point(t), curve.tangent(t), undefined, upVector );
+		})
+
+		return frames;
 
 	};
 	
@@ -563,9 +562,34 @@ var MOBIUS = ( function (mod){
 
 	mod.crv.divide = function(curve, tList){
 
+		var tPoints = tList.map( function(t){
+			return curve.point(t);
+		})
+
+		var result = [];
+		var crv = curve;
+		for(var t=0; t<tList.length; t++){
+
+			var tPoint = curve.point(t);
+
+			var crvs = crv.split( crv.param(tPoint) );
+			
+			result.push(crvs[0]);
+			crv = crvs[1];
+		}
+
+		return result;
+
 	};
 
 	mod.crv.convertToPolyline = function(curve, tList){
+
+		var plinePoints = []
+		for(var p=0; p<tList.length; p++){
+			plinePoints.push(curve.point(tList[p]));
+		}
+
+		return MOBIUS.crv.nurbsByPoints( plinePoints, 1, undefined);
 
 	};
 
@@ -626,7 +650,7 @@ var MOBIUS = ( function (mod){
 	mod.vec= {};
 
 	mod.vec.byCoords = function(x, y, z){
-
+		return [x, y, z];
 	};
 
 	/**
@@ -636,8 +660,8 @@ var MOBIUS = ( function (mod){
 	 * @returns {float} radians
 	 */
 	mod.vec.angle = function(vector1, vector2){
-		var dotP = MOBIUS.getDotProduct( vector1,  vector2 );
-		var cos_t = dotP / (MOBIUS.getLengthOfVector( vector1 ) * MOBIUS.getLengthOfVector( vector2 ) );
+		var dotP = MOBIUS.mtx.dot( vector1,  vector2 );
+		var cos_t = dotP / (MOBIUS.vec.length( vector1 ) * MOBIUS.vec.length( vector2 ) );
 		return Math.cosh(cos_t);
 	};
 
@@ -699,7 +723,7 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.obj.copy = function( object ){
 
-		if( mObj.getGeometry == undefined ){
+		if( object.getGeometry == undefined ){
 			console.log("Non-Mobius passed to copy function");
 			return mObj;
 		}
@@ -777,7 +801,7 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.obj.getCentre = function(object){
 		//calculate centre based on what kind of object
-		var geometry = mObj.getGeometry();  
+		var geometry = object.getGeometry();  
 
 		if(geometry.center != undefined)
 			return geometry.center();
@@ -806,37 +830,45 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.trn.reflect = function(object, frame, copy){
 
-		if (mObj instanceof mObj_geom_Solid)
-			mObj = mObj.getGeometry();
+		if (object instanceof mObj_geom_Solid)
+			object = object.getGeometry();
 
-		if(mObj instanceof Array){
-			for(var obj=0; obj < mObj.length; obj++)
-				MOBIUS.rotateObjectAboutAxis(mObj[obj], axis, angle );	
-			return;
+		if (object instanceof Array){
+
+			var newobject = [];
+			
+			for(var obj=0; obj < object.length; obj++)
+				newobject.push(MOBIUS.trn.reflect( object[obj], shiftX, shiftY, shiftZ, copy ));	
+			
+			return newobject;
 		}
+
+
+		if( copy )
+			object = MOBIUS.obj.copy( object );
 
 		var geom = mObj.getGeometry();
-		if(geom instanceof verb.geom.NurbsCurve || geom instanceof verb.geom.NurbsSurface){
 
-			var a = normalVector[0]; 
-			var b = normalVector[1];
-			var c = normalVector[2];
-			var d = normalVector[0]*pointOnPlane[0] + normalVector[1]*pointOnPlane[1] + normalVector[2]*pointOnPlane[2];
+		var a = 0; 
+		var b = 0;
+		var c = 1;
+		var d = 0;
 
-			var mat = [ [ 1-2*a*a, -2*a*b, -2*a*c , 0],
-							[ -2*a*b, 1-2*b*b, -2*b*c, 0],
-								[ -2*a*c, -2*b*c, 1-2*c*c, 0],
-									[0,0,0,1]
-						];
+		var mat = [ [ 1, 0, 0 , 0],
+						[ 0, 1, 0, 0],
+							[ 0, 0, -1, 0],
+								[0, 0, 0, 1]
+					];
 						
 			
-			var transformedGeometry = geom.transform( mat );
+		if(frame == undefined)
+			geom = geom.transform( mat );
+		else
+			geom = geom.transform( frame.matrix ).transform( mat ).transform( frame.inverseMatrix );
 
-			mObj.setGeometry( transformedGeometry );
-		
-			// shift to original centre point
-			//MOBIUS.moveObjectToPoint(mObj, centre[0], centre[1], centre[2]);
-		}
+		object.setGeometry( transformedGeometry );
+
+		return object;
 	
 	};
 
@@ -850,42 +882,63 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.trn.rotate = function(object, frame, angleX, angleY, angleZ, copy){
 
-		if (mObj instanceof mObj_geom_Solid)
-			mObj = mObj.getGeometry();
+		if (object instanceof mObj_geom_Solid)
+			object = object.getGeometry();
 
-		if(mObj instanceof Array){
-			for(var obj=0; obj < mObj.length; obj++)
-				MOBIUS.rotateObjectAboutAxis(mObj[obj], axis, angle );	
-			return;
+		if (object instanceof Array){
+
+			var newobject = [];
+			
+			for(var obj=0; obj < object.length; obj++)
+				newobject.push(MOBIUS.trn.rotate( object[obj], shiftX, shiftY, shiftZ, copy ));	
+			
+			return newobject;
 		}
+
+		if( copy )
+			object = MOBIUS.obj.copy( object );
 
 		var geom = mObj.getGeometry();
-		if(geom instanceof verb.geom.NurbsCurve || geom instanceof verb.geom.NurbsSurface){
 
-			var centre = MOBIUS.getCentre(mObj);
+	    // zaxis [0,0,1]
+	    var cost = Math.cos( angleZ );
+	    var sint = Math.sin( angleZ );
+	    var mat_rot_z = [ [ cost , -sint, 0, 0 ],
+	                            [ sint, cost, 0, 0 ],
+	                                [ 0, 0, 1, 0 ],
+	                                    [ 0, 0, 0, 1 ]
+	                        ];
 
-			var cost = Math.cos( angle );
-			var sint = Math.sin( angle );
-			var axis = MOBIUS.getUnitVector(axis); 
+	    // yaxis [0,1,0]
+	    var cost = Math.cos( angleY );
+	    var sint = Math.sin( angleY );
+	    var mat_rot_y = [ [ cost , 0, sint, 0 ],
+	                            [ 0,  1,  0, 0 ],
+	                                [ -sint, 0, cost, 0],
+	                                    [ 0, 0, 0, 1 ]
+	                        ];
 
-			var mat = [ [ cost + axis[0]*axis[0]*( 1 - cost ) , axis[0]*axis[1]*( 1 - cost ) - axis[2]*sint, axis[0]*axis[2]*( 1 - cost ) + axis[1]*sint, 0],
-							[ axis[0]*axis[1]*( 1 - cost ) + axis[2]*sint,	cost + axis[1]*axis[1]*( 1 - cost ), axis[1]*axis[2]*( 1 - cost ) - axis[0]*sint,0],
-								[ axis[2]*axis[0]*( 1 - cost ) - axis[1]*sint,	axis[2]*axis[1]*( 1 - cost ) + axis[0]*sint, cost + axis[2]*axis[2]*( 1 - cost ),0],
-									[0,0,0,1]
-						];
-						
+	    // xaxis [1,0,0]
+	    var cost = Math.cos( angleX );
+	    var sint = Math.sin( angleX );
+	    var mat_rot_x = [ [ 1, 0, 0, 0 ],
+	                            [ 0,  cost, -sint, 0 ],
+	                                [ -sint,  sint, cost, 0 ],
+	                                    [ 0, 0, 0, 1 ]
+	                        ];
+
+	    var mat = verb.core.Mat.mult( mat_trans, mat_rot_z );
+	    mat = verb.core.Mat.mult( mat, mat_rot_y );
+	    mat = verb.core.Mat.mult( mat, mat_rot_x );
 			
-			var transformedGeometry = geom.transform( mat );
+		if(frame == undefined)
+			geom = geom.transform(mat);
+		else
+			geom = geom.transform( frame.matrix ).transform( mat ).transform( frame.inverseMatrix );
 
-			// if the object is scaled, the object centre remains the same and needs to be redefined
-			if(geom.center != undefined)
-				transformedGeometry.center = function(){ return MOBIUS.getCentre( mObj ) } // bug - tranform the centre too - if the object is rotated
-
-			mObj.setGeometry( transformedGeometry );
-		
-			// shift to original centre point
-			//MOBIUS.moveObjectToPoint(mObj, centre[0], centre[1], centre[2]);
-		}
+		object.setGeometry( transformedGeometry );	
+			
+		return object;
 	
 	};
 
@@ -900,27 +953,38 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.trn.scale = function(object, frame, scaleX, scaleY, scaleZ, copy) {
 
-		if (mObj instanceof mObj_geom_Solid)
-			mObj = mObj.getGeometry();
+		if (object instanceof mObj_geom_Solid)
+			object = object.getGeometry();
 
-		if(mObj instanceof Array){
-			for(var obj=0; obj < mObj.length; obj++)
-				MOBIUS.scaleObject(mObj[obj], scaleX, scaleY, scaleZ);	
-			return;
+		if (object instanceof Array){
+
+			var newobject = [];
+			
+			for(var obj=0; obj < object.length; obj++)
+				newobject.push(MOBIUS.trn.scale( object[obj], shiftX, shiftY, shiftZ, copy ));	
+			
+			return newobject;
 		}
 
-		// if extractGeometry is called again, the translations would  be lost ..
-		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
+		if( copy )
+			object = MOBIUS.obj.copy( object );
+
 		var geom = mObj.getGeometry();
 			
-		var mat = [ [scaleX, 0, 0, 0],
-							[0,scaleY,0,0],
-								[0,0,scaleZ,0],
-									[0,0,0,1]
+		var mat = [ [ scaleX, 0, 0, 0 ],
+						[ 0, scaleY, 0, 0],
+							[ 0, 0, scaleZ, 0 ],
+								[ 0, 0, 0, 1 ]
 					];
 			
-		var transformedGeometry = geom.transform(mat);
-		mObj.setGeometry( transformedGeometry );
+		if(frame == undefined)
+			geom = geom.transform(mat);
+		else
+			geom = geom.transform( frame.matrix ).transform( mat ).transform( frame.inverseMatrix );
+
+		object.setGeometry( transformedGeometry );
+
+		return object;
 
 	};
 
@@ -934,30 +998,38 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.trn.shift = function(object, frame, shiftX, shiftY, shiftZ, copy){
 
-		if (mObj instanceof mObj_geom_Solid)
-			mObj = mObj.getGeometry();
+		if (object instanceof mObj_geom_Solid)
+			object = object.getGeometry();
 
-		if (mObj instanceof Array){
-			for(var obj=0; obj < mObj.length; obj++)
-				MOBIUS.shiftObject(mObj[obj], shiftX, shiftY, shiftZ);	
-			return;
+		if (object instanceof Array){
+
+			var newobject = [];
+			
+			for(var obj=0; obj < object.length; obj++)
+				newobject.push(MOBIUS.trn.shift( object[obj], shiftX, shiftY, shiftZ, copy ));	
+			
+			return newobject;
 		}
-
-		var geom = mObj.getGeometry();
 		
-		var mat = [ [1,0,0, shiftX],
-							[0,1,0,shiftY],
-								[0,0,1, shiftZ],
-									[0,0,0,1]
+		if( copy )
+			object = MOBIUS.obj.copy( object );
+
+		var geom = object.getGeometry();
+	
+		var mat = [ [ 1, 0, 0, shiftX ],
+						[ 0, 1, 0, shiftY ],
+							[ 0, 0, 1, shiftZ ],
+							 	[ 0, 0, 0, 1 ]
 						];
-		var transformedGeometry = geom.transform( mat );
 		
-		if(geom.center != undefined){ 
-			var centre = MOBIUS.getCentre( mObj );
-			transformedGeometry.center = function(){ return [ centre[0]+shiftX, centre[1]+shiftY, centre[2]+shiftZ ] }
-		}
+		if(frame == undefined)
+			geom = geom.transform(mat);
+		else
+			geom = geom.transform( frame.matrix ).transform( mat ).transform( frame.inverseMatrix );
 				
-		mObj.setGeometry( transformedGeometry ); 
+		object.setGeometry( geom ); 
+
+		return object;
 		
 	};
 
@@ -970,27 +1042,19 @@ var MOBIUS = ( function (mod){
 	 * @param {float} zCoord - z-coordinate of the target point where the clone appears
 	 * @returns Null
 	 */
-	mod.trn.move = function(object, point , copy){
+	mod.trn.move = function(object, point, copy){
 
-		if (mObj instanceof mObj_geom_Solid)
-			mObj = mObj.getGeometry();
-		// if extractGeometry is called again, the translations would  be lost ..
-		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
-		if(mObj instanceof Array){
-			for(var obj=0; obj < mObj.length; obj++)
-				MOBIUS.moveObjectToPoint(mObj[obj], xCoord, yCoord, zCoord);	
-			return;
-		}
+		if (object instanceof mObj_geom_Solid)
+			object = object.getGeometry();
 	
-		var orCenter = MOBIUS.getCentre(mObj);
+		var orCenter = MOBIUS.obj.getCentre(object);
 			
 		// translation required
-		var target = [xCoord, yCoord, zCoord];
-		var tx = target[0] - orCenter[0];
-		var ty = target[1] - orCenter[1];
-		var tz = target[2] - orCenter[2]; 
+		var tx = point[0] - orCenter[0];
+		var ty = point[1] - orCenter[1];
+		var tz = point[2] - orCenter[2]; 
 		
-		MOBIUS.shiftObject( mObj, tx, ty, tz );		
+		return MOBIUS.trn.shiftObject( object, undefined, tx, ty, tz, copy );		
 	};
 
 
@@ -1048,19 +1112,30 @@ var MOBIUS = ( function (mod){
 		return list.indexOf( item );
 	};
 
-	mod.lst.append = function(list, itemOrList, unpack){
-
-		if( itemOrList.constructor.name == "Array"){
-			itemOrList.map( function(t){
-				list.push(t);
-			});
-		}
-		else 
-			list.push(itemOrList);
-
+	mod.lst.append = function(list, itemOrList){
+		list.push(itemOrList);
 	};
 
-	mod.lst.prepend = function(list, itemOrList, unpack){
+	mod.lst.insert = function(list, item, index){
+
+		var newlist = [];
+		for(var i=0; i<=list.length; i++){
+			
+			if(i < index)
+				newlist.push(list[i]);
+			else if(i == index)
+				newlist.push(item);
+			else
+				newlist.push(list[i-1]);
+		}
+			
+	};
+
+	mod.lst.extend = function(list, extension_list){
+		
+		extension_list.map( function(t){
+			list.push(t);
+		});
 
 	};
 
@@ -1112,7 +1187,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {float / int} 
 	 */
 	mod.lst.average = function(numericList){
-		return MOBIUS.sumList( valueList )/ valueList.length;
+		return MOBIUS.lst.sum( valueList )/ valueList.length;
 	};
 
 
@@ -1154,7 +1229,7 @@ var MOBIUS = ( function (mod){
 	 * @param {array} valueList - List which is to be summed
 	 * @returns {float / int} 
 	 */
-	mod.lst.sum = function(numericList){
+	mod.lst.sum = function( numericList ){
 		
 		var sum = 0;
 		
@@ -1170,9 +1245,9 @@ var MOBIUS = ( function (mod){
 	 * @param {array} valueList - List which is to be analyzed
 	 * @returns {float / int} 
 	 */
-	mod.lst.range = function(numericList){
+	mod.lst.range = function( numericList ){
 		
-		return MOBIUS.getMaxValue( valueList ) - MOBIUS.getMinValue( valueList );
+		return MOBIUS.lst.max( valueList ) - MOBIUS.lst.min( valueList );
 	
 	};
 
