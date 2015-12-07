@@ -30,36 +30,37 @@ var mObj_frame = function mObj( origin, xaxis, yaxis, zaxis ){
         zaxis = verb.core.Vec.cross( xaxis, yaxis );
 
     this.origin = origin;
-    this.xaxis = verb.core.Vec.normalized( xaxis ); 
-    this.yaxis = verb.core.Vec.normalized( yaxis ); 
-    this.zaxis = verb.core.Vec.normalized( zaxis );
+    xaxis = verb.core.Vec.normalized( xaxis ); 
+    yaxis = verb.core.Vec.normalized( yaxis ); 
+    zaxis = verb.core.Vec.normalized( zaxis );
 
-    var angle_x = Math.cosh(zaxis[2]);
-    var angle_y = Math.cosh(zaxis[1]);
-    var angle_z = Math.cosh(xaxis[0]);
+    var angle_x = verb.core.Vec.angleBetween([0,1,0], zaxis);
+    var angle_y = verb.core.Vec.angleBetween([0,1,0], zaxis);
+    var angle_z = verb.core.Vec.angleBetween([1,0,0], xaxis);
 
     // compute translation
     var mat_trans = [ [ 1, 0, 0, origin[0] ],
-                    [ 0, 1, 0, origin[1] ],
+                        [ 0, 1, 0, origin[1] ],
                             [ 0, 0, 1, origin[2] ],
-                                        [ 0, 0, 0, 1 ]
+                                [ 0, 0, 0, 1 ]
+      
                         ];
 
-    // zaxis [0,0,1]
+    // zaxis [0,1,0]
     var cost = Math.cos( angle_z );
     var sint = Math.sin( angle_z );
-    var mat_rot_z = [ [ cost , -sint, 0, 0 ],
-                            [ sint, cost, 0, 0 ],
-                                [ 0, 0, 1, 0 ],
+    var mat_rot_z = [ [ cost , 0, sint, 0 ],
+                            [ 0,  1,  0, 0 ],
+                                [ -sint, 0, cost, 0],
                                     [ 0, 0, 0, 1 ]
                         ];
 
-    // yaxis [0,1,0]
+    // yaxis [0,0,1]
     var cost = Math.cos( angle_y );
     var sint = Math.sin( angle_y );
-    var mat_rot_y = [ [ cost , 0, sint, 0 ],
-                            [ 0,  1,  0, 0 ],
-                                [ -sint, 0, cost, 0],
+    var mat_rot_y = [ [ cost, -sint, 0, 0 ],
+                            [ sint, cost, 0, 0 ],
+                                [ 0, 0, 1, 0 ],
                                     [ 0, 0, 0, 1 ]
                         ];
 
@@ -68,7 +69,7 @@ var mObj_frame = function mObj( origin, xaxis, yaxis, zaxis ){
     var sint = Math.sin( angle_x );
     var mat_rot_x = [ [ 1, 0, 0, 0 ],
                             [ 0,  cost, -sint, 0 ],
-                                [ -sint,  sint, cost, 0 ],
+                                [ 0,  sint, cost, 0 ],
                                     [ 0, 0, 0, 1 ]
                         ];
 
@@ -110,8 +111,63 @@ var mObj_frame = function mObj( origin, xaxis, yaxis, zaxis ){
         r[i] /= det;
 
     this.matrix = mat;
-    this.inverseMatrix = r;
- 
+    this.inverseMatrix = [ [ r[0], r[1], r[2], r[3] ],
+                                [ r[4], r[5], r[6], r[7] ],
+                                    [ r[8], r[9], r[10], r[11] ],
+                                        [ r[12], r[13], r[14], r[15] ]  ];
+
+    this.extractThreeGeometry = function(){
+        return buildAxes( 20 );
+    }
+
+    this.extractData = function(){
+        return "This is a frame"
+    }
+
+
+    function buildAxis( src, dst, colorHex, dashed ) {
+        var geom = new THREE.Geometry(),
+            mat; 
+
+        if(dashed) {
+                mat = new THREE.LineDashedMaterial({ linewidth: 3, color: colorHex, dashSize: 3, gapSize: 3 });
+        } else {
+                mat = new THREE.LineBasicMaterial({ linewidth: 3, color: colorHex });
+        }
+
+        geom.vertices.push( src.clone() );
+        geom.vertices.push( dst.clone() );
+        geom.computeLineDistances(); // This one is SUPER important, otherwise dashed lines will appear as simple plain lines
+
+        var axis = new THREE.Line( geom, mat, THREE.LineSegments );
+
+        return axis;
+
+    }
+
+    function buildAxes( length ) {
+        var axes = new THREE.Object3D();
+        axes.is_mObj = true;
+
+        var or = new THREE.Vector3( origin[0], origin[1], origin[2] )
+        var pos_x = new THREE.Vector3( length*xaxis[0],  length*xaxis[1],  length*xaxis[2] )
+        var neg_x = new THREE.Vector3( -length*xaxis[0],  -length*xaxis[1],  -length*xaxis[2] )
+        var pos_y = new THREE.Vector3( length*yaxis[0],  length*yaxis[1],  length*yaxis[2] )
+        var neg_y = new THREE.Vector3( -length*yaxis[0],  -length*yaxis[1],  -length*yaxis[2] )
+        var pos_z = new THREE.Vector3( length*zaxis[0],  length*zaxis[1],  length*zaxis[2] )
+        var neg_z = new THREE.Vector3( -length*zaxis[0],  -length*zaxis[1],  -length*zaxis[2] )
+
+        axes.add( buildAxis( or, pos_x, 0x990000, false ) ); // +X
+        axes.add( buildAxis( or, neg_x, 0x990000, true ) ); // -X
+        axes.add( buildAxis( or, pos_y, 0x009900, false ) ); // +Y
+        axes.add( buildAxis( or, neg_y, 0x009900, true ) ); // -Y
+        axes.add( buildAxis( or, pos_z, 0x0000CC, false ) ); // +Z
+        axes.add( buildAxis( or, neg_z, 0x0000CC, true ) ); // -Z
+
+        return axes;
+
+    }
+
 }
 
 // mObj Geometry Class

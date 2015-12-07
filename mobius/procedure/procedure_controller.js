@@ -598,18 +598,14 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                     }else{
                         result = '';
                     }
-                    //
-                    //for(var cate in MOBIUS) {
-                    //    if(subCate.category === cate){
-                    //
-                    //    }
-                    //}
 
-                    var paraList = getParamNames(MOBIUS[subCate.category][subCate.name]);
-                    for(var j = 0; j< paraList.length; j++){
-                        parameters.push({value:'',type:paraList[j]});
-                    }
-
+					if(subCate.name !== 'expression'){
+						var paraList = getParamNames(MOBIUS[subCate.category][subCate.name]);
+						for(var j = 0; j< paraList.length; j++){
+							parameters.push({value:'',type:paraList[j]});
+						}
+					}
+					
                     var actionObj = {
                         id: $scope.data.length  + 1,
                         title:  'Action',

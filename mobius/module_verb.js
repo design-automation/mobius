@@ -20,6 +20,7 @@ var MOBIUS = ( function (mod){
 	
 	mod.frm.byXYPoints = function(origin, xPoint, yPoint){
 	    
+	    // how to you make sure the two axes are perpendicular
 		var xaxis = [xPoint[0]-origin[0], xPoint[1]-origin[1], xPoint[2]-origin[2]];
 		var yaxis = [yPoint[0]-origin[0], yPoint[1]-origin[1], yPoint[2]-origin[2]];
 
@@ -80,14 +81,17 @@ var MOBIUS = ( function (mod){
 
 		var bottomSurface = surface;
 		var topSurface = MOBIUS.makeCopy( bottomSurface );
-		MOBIUS.shiftObject(topSurface, extrusionVector[0], extrusionVector[1], extrusionVector[2]);
+		MOBIUS.shiftObject(topSurface, frame, xDistance, yDistance, zDistance, false);
 
 		var solid = [ bottomSurface, topSurface ];
 		// join boundary points of the two surfaces
-		var edges = bottomSurface.getGeometry().boundaries(); console.log(bottomSurface);
-		for(var e=0; e < edges.length; e++ ){
-			var edge = edges[e];
-			var srf = new mObj_geom_Surface(  new verb.geom.ExtrudedSurface( edge, extrusionVector ) );
+		var edges_b = bottomSurface.getGeometry().boundaries(); 
+		var edges_t = bottomSurface.getGeometry().boundaries(); 
+		for(var e=0; e < edges_b.length; e++ ){
+			var edge_b = edges_b[e];
+			var edge_t  = edges_t[e];
+			var extrusionVector = verb.core.Mat.sub(MOBIUS.object.getCentre(edge_t) - MOBIUS.object.getCentre(edge_b));
+			var srf = new mObj_geom_Surface(  new verb.geom.ExtrudedSurface( edge_b, extrusionVector ) );
 			solid.push(srf);
 		}
 
@@ -192,14 +196,14 @@ var MOBIUS = ( function (mod){
 	 * @param {float} angle - Angle of revolution in radians
 	 * @returns {mobiusobject}  - NURBS Surface
 	 */
-	mod.srf.nurbsByRevolution = function(sectionCurve, centrePoint, axis, angle){
-
-		if( centerPoint.getGeometry != undefined )
-			centerPoint = centerPoint.getGeometry();
+	mod.srf.nurbsByRevolution = function(sectionCurve, frame, angle){
 
 		var profile = sectionCurve.getGeometry();
-		
-		return new mObj_geom_Surface( new verb.geom.RevolvedSurface( profile, centerPoint, axis, angle ) ) ;
+
+		if (frame == undefined)
+			return new mObj_geom_Surface( new verb.geom.RevolvedSurface( profile, [0,0,0], [0,1,0], angle ) ) ;
+		else
+			return new mObj_geom_Surface( new verb.geom.RevolvedSurface( profile, frame.origin, frame.zaxis, angle ) ) ;
 
 	};
 
@@ -227,9 +231,9 @@ var MOBIUS = ( function (mod){
 	mod.srf.nurbsSphere = function(frame, radius){
 					
 		var sphere = new verb.geom.SphericalSurface( [0,0,0], radius );
-		sphere.transform( frame.matrix );
+		sphere = sphere.transform( frame.matrix );
 
-		return mObj_geom_Surface( sphere );
+		return new mObj_geom_Surface( sphere );
 
 	};
 
@@ -244,10 +248,12 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.srf.nurbsCone = function(frame, height, radius1, radius2){
 
-		var cone = new verb.geom.ConicalSurface( [0,1,0], [1,0,0], radius1, height, radius2 );	
-		cone.transform( frame.matrix );
+		var profile = MOBIUS.crv.line([radius1, 0, 0], [radius2, height, 0]);
 
-		return mObj_geom_Surface( cone );
+		var surface = MOBIUS.srf.nurbsByRevolution( profile, undefined, 2*Math.PI);
+		surface.setGeometry(  surface.getGeometry().transform( frame.matrix ) );
+
+		return surface;
 
 	};
 
@@ -277,13 +283,13 @@ var MOBIUS = ( function (mod){
 		if(uvList.constructor.name == "Array"){
 
 			var points = uvList.map( function(p){
-				return mobj_geom_Vertex( srf.point( p[0], p[1] ) );
+				return new mobj_geom_Vertex( srf.point( p[0], p[1] ) );
 			})
 			
 			return points;
 		}
 		else
-			return mobj_geom_Vertex( srf.point( u, v ) );
+			return new mobj_geom_Vertex( srf.point( u, v ) );
 
 	};
 
@@ -519,20 +525,20 @@ var MOBIUS = ( function (mod){
 		if(tList.constructor.name == "Array"){
 
 			var points = tList.map( function( t ){
-				return mobj_geom_Vertex( curve.point( t ) );
+				return new mobj_geom_Vertex( curve.point( t ) );
 			})
 			
 			return points;
 		}
 		else
-			return mobj_geom_Vertex( curve.point( t ) );
+			return new mobj_geom_Vertex( curve.point( t ) );
 	
 	};
 
 	mod.crv.getFrames = function(curve, tList, upVector){
 
 		var frames = tList.map( function(t){
-			return mObj_frame( curve.point(t), curve.tangent(t), undefined, upVector );
+			return new mObj_frame( curve.point(t), curve.tangent(t), undefined, upVector );
 		})
 
 		return frames;
@@ -546,13 +552,13 @@ var MOBIUS = ( function (mod){
 		if(tList.constructor.name == "Array"){
 
 			var points = tList.map( function( t ){
-				return mobj_geom_Vertex( curve.tangent( t ) );
+				return new mobj_geom_Vertex( curve.tangent( t ) );
 			})
 			
 			return points;
 		}
 		else
-			return mobj_geom_Vertex( curve.tangent( t ) );
+			return new mobj_geom_Vertex( curve.tangent( t ) );
 
 	};
 
@@ -725,22 +731,22 @@ var MOBIUS = ( function (mod){
 
 		if( object.getGeometry == undefined ){
 			console.log("Non-Mobius passed to copy function");
-			return mObj;
+			return object;
 		}
 
 		// fix: make this into one line code with 'eval'
 		var newcopy;
-		if(mObj instanceof mObj_geom_Vertex)
-			newcopy = new mObj_geom_Vertex( mObj.getGeometry() );
-		else if(mObj instanceof mObj_geom_Curve)
-			newcopy = new mObj_geom_Curve( mObj.getGeometry() );
-		else if(mObj instanceof mObj_geom_Surface)
-			newcopy = new mObj_geom_Surface( mObj.getGeometry() );
-		else if(mObj instanceof mObj_geom_Solid)
-			newcopy = new mObj_geom_Solid( mObj.getGeometry() );
+		if(object instanceof mObj_geom_Vertex)
+			newcopy = new mObj_geom_Vertex( object.getGeometry() );
+		else if(object instanceof mObj_geom_Curve)
+			newcopy = new mObj_geom_Curve( object.getGeometry() );
+		else if(object instanceof mObj_geom_Surface)
+			newcopy = new mObj_geom_Surface( object.getGeometry() );
+		else if(object instanceof mObj_geom_Solid)
+			newcopy = new mObj_geom_Solid( object.getGeometry() );
 
-		newcopy.setData( mObj.getData() );
-		newcopy.setMaterial( mObj.getMaterial() );	
+		newcopy.setData( object.getData() );
+		newcopy.setMaterial( object.getMaterial() );	
 
 		return newcopy;
 		
@@ -847,7 +853,7 @@ var MOBIUS = ( function (mod){
 		if( copy )
 			object = MOBIUS.obj.copy( object );
 
-		var geom = mObj.getGeometry();
+		var geom = object.getGeometry();
 
 		var a = 0; 
 		var b = 0;
@@ -866,7 +872,7 @@ var MOBIUS = ( function (mod){
 		else
 			geom = geom.transform( frame.matrix ).transform( mat ).transform( frame.inverseMatrix );
 
-		object.setGeometry( transformedGeometry );
+		object.setGeometry( geom );
 
 		return object;
 	
@@ -898,12 +904,12 @@ var MOBIUS = ( function (mod){
 		if( copy )
 			object = MOBIUS.obj.copy( object );
 
-		var geom = mObj.getGeometry();
+		var geom = object.getGeometry();
 
 	    // zaxis [0,0,1]
 	    var cost = Math.cos( angleZ );
 	    var sint = Math.sin( angleZ );
-	    var mat_rot_z = [ [ cost , -sint, 0, 0 ],
+	    var mat_rot_z = [ [ cost, -sint, 0, 0 ],
 	                            [ sint, cost, 0, 0 ],
 	                                [ 0, 0, 1, 0 ],
 	                                    [ 0, 0, 0, 1 ]
@@ -912,7 +918,7 @@ var MOBIUS = ( function (mod){
 	    // yaxis [0,1,0]
 	    var cost = Math.cos( angleY );
 	    var sint = Math.sin( angleY );
-	    var mat_rot_y = [ [ cost , 0, sint, 0 ],
+	    var mat_rot_y = [ [ cost, 0, sint, 0 ],
 	                            [ 0,  1,  0, 0 ],
 	                                [ -sint, 0, cost, 0],
 	                                    [ 0, 0, 0, 1 ]
@@ -1368,8 +1374,9 @@ var MOBIUS = ( function (mod){
 				geom.push(tempGeom0);
 				geomData.push(tempData0);
 			}
-			else if(obj instanceof  MobiusDataObject){
-				geom.push( obj.extractGeometry() );
+			else if(obj instanceof  mObj_geom_Solid || obj instanceof  mObj_geom_Surface ||
+						obj instanceof  mObj_geom_Curve || obj instanceof  mObj_geom_Vertex || obj instanceof mObj_frame){
+				geom.push( obj.extractThreeGeometry() );
 				geomData.push( obj.extractData() );
 			}else{
 				for(var key in obj){
@@ -1402,7 +1409,7 @@ var MOBIUS = ( function (mod){
 //	Function names should remain the same
 //
 
-
+var TOPOLOGY_DEF = {"vertices":[], "edges":[], "faces":[]}
 //
 //	Function to convert module geometry into three.js Mesh geometry
 //  Add another if-else condition for each new geometry
@@ -1535,10 +1542,6 @@ var computeTopology = function( mObj ){
 
 	return topology;
 }
-
-
-var TOPOLOGY_DEF = {"vertices":[], "edges":[], "faces":[]}
-
 
 //
 // function to remove clones
