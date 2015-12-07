@@ -867,7 +867,7 @@ var MOBIUS = ( function (mod){
 			return newobject;
 		}
 
-
+		console.log("truth", object === MOBIUS.obj.copy( object ))
 		if( copy )
 			object = MOBIUS.obj.copy( object );
 
@@ -875,7 +875,7 @@ var MOBIUS = ( function (mod){
 
 		// compute x-y plane equations from one point and one normal method
 
-		var z = frame.getXAxis();
+		var z = frame.getZAxis();
 		var a = z[0]; 
 		var b = z[1];
 		var c = z[2];
@@ -891,7 +891,7 @@ var MOBIUS = ( function (mod){
 		if(frame == undefined)
 			geom = geom.transform( mat );
 		else
-			geom = geom.transform( frame.matrix ).transform( mat ).transform( frame.inverseMatrix );
+			geom = geom.transform( frame.inverseMatrix ).transform( mat ).transform( frame.matrix );
 
 		object.setGeometry( geom );
 
