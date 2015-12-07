@@ -25,14 +25,14 @@ var mObj_frame = function mObj( origin, xaxis, yaxis, zaxis ){
     if( xaxis == undefined )
         xaxis = verb.core.Vec.cross( yaxis, zaxis );
     else if( yaxis == undefined )
-        yaxis = verb.core.Vec.cross( xaxis, zaxis );
+        yaxis = verb.core.Vec.cross( zaxis, xaxis );
     else if( zaxis == undefined )
-        zaxis = verb.core.Vec.cross( xaxis, yaxis );
+        zaxis = verb.core.Vec.cross( yaxis, xaxis );
 
     this.origin = origin;
-    xaxis = verb.core.Vec.normalized( xaxis ); 
-    yaxis = verb.core.Vec.normalized( yaxis ); 
-    zaxis = verb.core.Vec.normalized( zaxis );
+    xaxis = verb.core.Vec.normalized( xaxis ); this.xaxis = xaxis; 
+    yaxis = verb.core.Vec.normalized( yaxis ); this.yaxis = yaxis;
+    zaxis = verb.core.Vec.normalized( zaxis ); this.zaxis = zaxis;
 
     var angle_x = verb.core.Vec.angleBetween([0,1,0], zaxis);
     var angle_y = verb.core.Vec.angleBetween([0,1,0], zaxis);
@@ -136,7 +136,7 @@ var mObj_frame = function mObj( origin, xaxis, yaxis, zaxis ){
         }
 
         geom.vertices.push( src.clone() );
-        geom.vertices.push( dst.clone() );
+        geom.vertices.push( dst.clone() ); 
         geom.computeLineDistances(); // This one is SUPER important, otherwise dashed lines will appear as simple plain lines
 
         var axis = new THREE.Line( geom, mat, THREE.LineSegments );
@@ -150,12 +150,12 @@ var mObj_frame = function mObj( origin, xaxis, yaxis, zaxis ){
         axes.is_mObj = true;
 
         var or = new THREE.Vector3( origin[0], origin[1], origin[2] )
-        var pos_x = new THREE.Vector3( length*xaxis[0],  length*xaxis[1],  length*xaxis[2] )
-        var neg_x = new THREE.Vector3( -length*xaxis[0],  -length*xaxis[1],  -length*xaxis[2] )
-        var pos_y = new THREE.Vector3( length*yaxis[0],  length*yaxis[1],  length*yaxis[2] )
-        var neg_y = new THREE.Vector3( -length*yaxis[0],  -length*yaxis[1],  -length*yaxis[2] )
-        var pos_z = new THREE.Vector3( length*zaxis[0],  length*zaxis[1],  length*zaxis[2] )
-        var neg_z = new THREE.Vector3( -length*zaxis[0],  -length*zaxis[1],  -length*zaxis[2] )
+        var pos_x = new THREE.Vector3( origin[0] + length*xaxis[0],  origin[1]+length*xaxis[1],  origin[2]+length*xaxis[2] );
+        var neg_x = new THREE.Vector3( origin[0] - length*xaxis[0],  origin[1]-length*xaxis[1],  origin[2]-length*xaxis[2] );
+        var pos_y = new THREE.Vector3( origin[0] + length*yaxis[0],  origin[1]+length*yaxis[1],  origin[2]+length*yaxis[2] );
+        var neg_y = new THREE.Vector3( origin[0] - length*yaxis[0],  origin[1]-length*yaxis[1],  origin[2]-length*yaxis[2] );
+        var pos_z = new THREE.Vector3( origin[0] + length*zaxis[0],  origin[1]+length*zaxis[1],  origin[2]+length*zaxis[2] );
+        var neg_z = new THREE.Vector3( origin[0] - length*zaxis[0],  origin[1]-length*zaxis[1],  origin[2]-length*zaxis[2] );
 
         axes.add( buildAxis( or, pos_x, 0x990000, false ) ); // +X
         axes.add( buildAxis( or, neg_x, 0x990000, true ) ); // -X
@@ -166,6 +166,18 @@ var mObj_frame = function mObj( origin, xaxis, yaxis, zaxis ){
 
         return axes;
 
+    }
+
+    this.getXAxis = function(){
+        return xaxis;
+    }
+
+    this.getYAxis = function(){
+        return yaxis;
+    }
+
+    this.getZAxis = function(){
+        return zaxis;
     }
 
 }

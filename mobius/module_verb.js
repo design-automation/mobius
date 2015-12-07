@@ -24,6 +24,9 @@ var MOBIUS = ( function (mod){
 		var xaxis = [xPoint[0]-origin[0], xPoint[1]-origin[1], xPoint[2]-origin[2]];
 		var yaxis = [yPoint[0]-origin[0], yPoint[1]-origin[1], yPoint[2]-origin[2]];
 
+		if( mod.mtx.dot(xaxis, yaxis) != 0)
+			mod.msc.print("Axes are not perpendicular");
+
 		return new mObj_frame(origin, xaxis, yaxis, undefined);
 
 	};
@@ -32,6 +35,9 @@ var MOBIUS = ( function (mod){
 
 		var xaxis = [xPoint[0]-origin[0], xPoint[1]-origin[1], xPoint[2]-origin[2]];
 		var zaxis = [zPoint[0]-origin[0], zPoint[1]-origin[1], zPoint[2]-origin[2]];		
+
+		if( mod.mtx.dot(xaxis, zaxis) != 0)
+			mod.msc.print("Axes are not perpendicular");
 
 		return new mObj_frame(origin, xaxis, undefined, zaxis);
 
@@ -42,25 +48,37 @@ var MOBIUS = ( function (mod){
 		var yaxis = [yPoint[0]-origin[0], yPoint[1]-origin[1], yPoint[2]-origin[2]];
 		var zaxis = [zPoint[0]-origin[0], zPoint[1]-origin[1], zPoint[2]-origin[2]];		
 
+		if( mod.mtx.dot(zaxis, yaxis) != 0)
+			mod.msc.print("Axes are not perpendicular");
+
 		return new mObj_frame(origin, undefined, yaxis, zaxis)
 	
 	};
 
 	mod.frm.byXYAxes = function(origin, xAxis, yAxis){
-		
+
+		if( mod.mtx.dot(xAxis, yAxis) != 0)
+			mod.msc.print("Axes are not perpendicular");
+
 		return new mObj_frame(origin, xAxis, yAxis, undefined);
-	
+
 	};
 
 	mod.frm.byXZAxes = function(origin, xAxis, zAxis){
 
-		return new mObj(origin, xAxis, undefined, zAxis);
+		if( mod.mtx.dot(xAxis, zAxis) != 0)
+			mod.msc.print("Axes are not perpendicular");
+
+		return new mObj_frame(origin, xAxis, undefined, zAxis);
 
 	};
 
 	mod.frm.byYZAxes = function(origin, yAxis, zAxis){
 
-		return new mObj(origin, undefined, yAxis, zAxis);
+		if( mod.mtx.dot(zAxis, yAxis) != 0)
+			mod.msc.print("Axes are not perpendicular");
+
+		return new mObj_frame(origin, undefined, yAxis, zAxis);
 
 	};
 
@@ -855,18 +873,21 @@ var MOBIUS = ( function (mod){
 
 		var geom = object.getGeometry();
 
-		var a = 0; 
-		var b = 0;
-		var c = 1;
-		var d = 0;
+		// compute x-y plane equations from one point and one normal method
 
-		var mat = [ [ 1, 0, 0 , 0],
-						[ 0, 1, 0, 0],
-							[ 0, 0, -1, 0],
+		var z = frame.getXAxis();
+		var a = z[0]; 
+		var b = z[1];
+		var c = z[2];
+		var d = a*frame.origin[0] + b*frame.origin[1] + c*frame.origin[2];
+
+		var mat = [ [ 1 - 2*a*a, -2*a*b, -2*a*c , 0],
+						[ -2*a*b, 1-2*b*b, -2*b*c, 0],
+							[ -2*a*c, -2*b*c, 1-2*c*c, 0],
 								[0, 0, 0, 1]
 					];
 						
-			
+		console.log(mat);
 		if(frame == undefined)
 			geom = geom.transform( mat );
 		else
