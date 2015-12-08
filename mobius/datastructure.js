@@ -34,17 +34,10 @@ var mObj_frame = function mObj( origin, xaxis, yaxis, zaxis ){
     _yaxis = verb.core.Vec.normalized( yaxis ); this.yaxis = _yaxis;
     _zaxis = verb.core.Vec.normalized( zaxis ); this.zaxis = _zaxis;
 
-    // order doesn't matter
-    //var angle_x = verb.core.Vec.angleBetween([1,0,0], zaxis);
-    //var angle_y = verb.core.Vec.angleBetween([0,0,1], xaxis);
-    //var angle_z = -verb.core.Vec.angleBetween([1,0,0], xaxis); 
-/*    var euler_alpha = Math.cosh( zaxis[2] );
-    var euler_beta = Math.cosh( -zaxis[2] / Math.sin(euler_alpha) )
-    var euler_gamma = Math.cosh( yaxis[2] / Math.sin(euler_alpha) )*/
 
-    var a = -Math.atan( xaxis[2] / xaxis[0] ); 
-    var b = -Math.asin( xaxis[1] ); //Math.tanh( xaxis[1] / Math.sqrt( xaxis[0]*xaxis[0] + xaxis[2]*xaxis[2] ))
-    var c = Math.atan( yaxis[1] / yaxis[2])
+    var a = -Math.atan( _xaxis[2] / _xaxis[0] ); 
+    var b = -Math.asin( _xaxis[1] ); //Math.tanh( )
+    var c = Math.atan( zaxis[1] / Math.sqrt( zaxis[0]*zaxis[0] + zaxis[2]*zaxis[2] ) )
 
     // compute translation
     var mat_trans = [ [ 1, 0, 0, origin[0] ],
@@ -52,100 +45,49 @@ var mObj_frame = function mObj( origin, xaxis, yaxis, zaxis ){
                             [ 0, 0, 1, origin[2] ],
                                 [ 0, 0, 0, 1 ]
       
-                        ]; console.log(mat_trans);
+                        ]; 
+
+    function getRotationMatrix( axis, angle){
+        var cost = Math.cos(angle);
+        var sint = Math.sin(angle);
+        var ux = axis[0];
+        var uy = axis[1];
+        var uz = axis[2];
+
+        return [ [ cost + ux*ux*(1-cost), ux*uy*(1-cost) - uz*sint, ux*uz*(1-cost) + uy*sint, 0 ],
+                    [ ux*uy*(1-cost) + uz*sint,  cost + uy*uy*(1-cost),  uy*uz*(1-cost) - ux*sint, 0 ],
+                        [ ux*uz*(1-cost) - uy*sint, uy*uz*(1-cost) + ux*sint, cost + uz*uz*(1-cost), 0 ],
+                            [ 0, 0, 0, 1 ]
+                ];
+
+    }
 
     // yaxis [0,1,0]
-    var cost = Math.cos( a );
-    var sint = Math.sin( a );
-    var mat_rot_a = [ [ cost , 0, sint, 0 ],
-                            [ 0,  1,  0, 0 ],
-                                [ -sint, 0, cost, 0],
-                                    [ 0, 0, 0, 1 ]
-                        ];
+    var mat_rot_a = getRotationMatrix( [0,1,0], a); 
 
     // zaxis [0,0,1]
-    var cost = Math.cos( b );
-    var sint = Math.sin( b );
-    var mat_rot_b = [ [ cost, -sint, 0, 0 ],
-                            [ sint, cost, 0, 0 ],
-                                [ 0, 0, 1, 0 ],
-                                    [ 0, 0, 0, 1 ]
-                        ];
-/*
-    var cost = Math.cos( euler_gamma );
-    var sint = Math.sin( euler_gamma );
-    var mat_rot_c = [ [ cost, -sint, 0, 0 ],
-                            [ sint, cost, 0, 0 ],
-                                [ 0, 0, 1, 0 ],
-                                    [ 0, 0, 0, 1 ]
-                        ]; */
+    var mat_rot_b = getRotationMatrix( _zaxis, b);
+
     // xaxis [1,0,0]
-    var cost = Math.cos( c );
-    var sint = Math.sin( c );
-    var mat_rot_c = [ [ 1, 0, 0, 0 ],
-                            [ 0,  cost, -sint, 0 ],
-                                [ 0,  sint, cost, 0 ],
-                                    [ 0, 0, 0, 1 ]
-                        ];
+    var mat_rot_c = getRotationMatrix( _xaxis, c);
 
-                        /*
-    var mat = verb.core.Mat.mult( mat_trans, mat_rot_z );
-    mat = verb.core.Mat.mult( mat, mat_rot_y );
-    mat = verb.core.Mat.mult( mat, mat_rot_x );*/
+                        
 
-    this.applyMatrix = function( geom ){ console.log("applying");
-       geom = geom.transform(mat_rot_a);
-       //geom = geom.transform(mat_rot_b); 
-       //geom = geom.transform(mat_rot_b);
-       //geom = geom.transform( mat_trans );
+    this.applyMatrix = function( geom ){ 
+       geom = geom.transform(mat_rot_a); 
+       geom = geom.transform(mat_rot_b); 
+       geom = geom.transform(mat_rot_c);
+       geom = geom.transform( mat_trans );
        return geom;
     }
 
-    /*var m = [];
-    mat.map( function(t){
-            t.map( function(u){
-                m.push(u)
-            })
-    })
-
-    var r = new Array(15)
-
-    r[0] = m[5]*m[10]*m[15] - m[5]*m[14]*m[11] - m[6]*m[9]*m[15] + m[6]*m[13]*m[11] + m[7]*m[9]*m[14] - m[7]*m[13]*m[10];
-    r[1] = -m[1]*m[10]*m[15] + m[1]*m[14]*m[11] + m[2]*m[9]*m[15] - m[2]*m[13]*m[11] - m[3]*m[9]*m[14] + m[3]*m[13]*m[10];
-    r[2] = m[1]*m[6]*m[15] - m[1]*m[14]*m[7] - m[2]*m[5]*m[15] + m[2]*m[13]*m[7] + m[3]*m[5]*m[14] - m[3]*m[13]*m[6];
-    r[3] = -m[1]*m[6]*m[11] + m[1]*m[10]*m[7] + m[2]*m[5]*m[11] - m[2]*m[9]*m[7] - m[3]*m[5]*m[10] + m[3]*m[9]*m[6];
-
-    r[4] = -m[4]*m[10]*m[15] + m[4]*m[14]*m[11] + m[6]*m[8]*m[15] - m[6]*m[12]*m[11] - m[7]*m[8]*m[14] + m[7]*m[12]*m[10];
-    r[5] = m[0]*m[10]*m[15] - m[0]*m[14]*m[11] - m[2]*m[8]*m[15] + m[2]*m[12]*m[11] + m[3]*m[8]*m[14] - m[3]*m[12]*m[10];
-    r[6] = -m[0]*m[6]*m[15] + m[0]*m[14]*m[7] + m[2]*m[4]*m[15] - m[2]*m[12]*m[7] - m[3]*m[4]*m[14] + m[3]*m[12]*m[6];
-    r[7] = m[0]*m[6]*m[11] - m[0]*m[10]*m[7] - m[2]*m[4]*m[11] + m[2]*m[8]*m[7] + m[3]*m[4]*m[10] - m[3]*m[8]*m[6];
-
-    r[8] = m[4]*m[9]*m[15] - m[4]*m[13]*m[11] - m[5]*m[8]*m[15] + m[5]*m[12]*m[11] + m[7]*m[8]*m[13] - m[7]*m[12]*m[9];
-    r[9] = -m[0]*m[9]*m[15] + m[0]*m[13]*m[11] + m[1]*m[8]*m[15] - m[1]*m[12]*m[11] - m[3]*m[8]*m[13] + m[3]*m[12]*m[9];
-    r[10] = m[0]*m[5]*m[15] - m[0]*m[13]*m[7] - m[1]*m[4]*m[15] + m[1]*m[12]*m[7] + m[3]*m[4]*m[13] - m[3]*m[12]*m[5];
-    r[11] = -m[0]*m[5]*m[11] + m[0]*m[9]*m[7] + m[1]*m[4]*m[11] - m[1]*m[8]*m[7] - m[3]*m[4]*m[9] + m[3]*m[8]*m[5];
-
-    r[12] = -m[4]*m[9]*m[14] + m[4]*m[13]*m[10] + m[5]*m[8]*m[14] - m[5]*m[12]*m[10] - m[6]*m[8]*m[13] + m[6]*m[12]*m[9];
-    r[13] = m[0]*m[9]*m[14] - m[0]*m[13]*m[10] - m[1]*m[8]*m[14] + m[1]*m[12]*m[10] + m[2]*m[8]*m[13] - m[2]*m[12]*m[9];
-    r[14] = -m[0]*m[5]*m[14] + m[0]*m[13]*m[6] + m[1]*m[4]*m[14] - m[1]*m[12]*m[6] - m[2]*m[4]*m[13] + m[2]*m[12]*m[5];
-    r[15] = m[0]*m[5]*m[10] - m[0]*m[9]*m[6] - m[1]*m[4]*m[10] + m[1]*m[8]*m[6] + m[2]*m[4]*m[9] - m[2]*m[8]*m[5];
-
-    var det = m[0]*r[0] + m[1]*r[4] + m[2]*r[8] + m[3]*r[12];
-    for (var i = 0; i < 16; i++) 
-        r[i] /= det;
-
-    this.matrix = mat;
-    this.inverseMatrix = [ [ r[0], r[1], r[2], r[3] ],
-                                [ r[4], r[5], r[6], r[7] ],
-                                    [ r[8], r[9], r[10], r[11] ],
-                                        [ r[12], r[13], r[14], r[15] ]  ];*/
 
     this.extractThreeGeometry = function(){
         return buildAxes( 20 );
     }
 
     this.extractData = function(){
-        return "This is a frame"
+        return 'frame';
     }
 
     function buildAxis( src, dst, colorHex, dashed ) {
@@ -189,18 +131,6 @@ var mObj_frame = function mObj( origin, xaxis, yaxis, zaxis ){
 
         return axes;
 
-    }
-
-    this.getXAxis = function(){
-        return _xaxis;
-    }
-
-    this.getYAxis = function(){
-        return _yaxis;
-    }
-
-    this.getZAxis = function(){
-        return _zaxis;
     }
 
 }

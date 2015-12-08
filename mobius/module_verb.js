@@ -1043,8 +1043,8 @@ var MOBIUS = ( function (mod){
 
 		var geom = object.getGeometry();
 	
-		geom = frame.applyMatrix( geom ); console.log(geom);
-				
+		geom = frame.applyMatrix( geom ); 
+		
 		object.setGeometry( geom ); 
 
 		return object;
