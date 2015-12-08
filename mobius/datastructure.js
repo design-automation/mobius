@@ -25,18 +25,26 @@ var mObj_frame = function mObj( origin, xaxis, yaxis, zaxis ){
     if( xaxis == undefined )
         xaxis = verb.core.Vec.cross( yaxis, zaxis );
     else if( yaxis == undefined )
-        yaxis = verb.core.Vec.cross( zaxis, xaxis );
+        yaxis = verb.core.Vec.cross( xaxis, zaxis );
     else if( zaxis == undefined )
         zaxis = verb.core.Vec.cross( yaxis, xaxis );
 
     this.origin = origin;
-    xaxis = verb.core.Vec.normalized( xaxis ); this.xaxis = xaxis; 
-    yaxis = verb.core.Vec.normalized( yaxis ); this.yaxis = yaxis;
-    zaxis = verb.core.Vec.normalized( zaxis ); this.zaxis = zaxis;
+    _xaxis = verb.core.Vec.normalized( xaxis ); this.xaxis = _xaxis; 
+    _yaxis = verb.core.Vec.normalized( yaxis ); this.yaxis = _yaxis;
+    _zaxis = verb.core.Vec.normalized( zaxis ); this.zaxis = _zaxis;
 
-    var angle_x = verb.core.Vec.angleBetween([0,1,0], zaxis);
-    var angle_y = verb.core.Vec.angleBetween([0,1,0], zaxis);
-    var angle_z = verb.core.Vec.angleBetween([1,0,0], xaxis);
+    // order doesn't matter
+    //var angle_x = verb.core.Vec.angleBetween([1,0,0], zaxis);
+    //var angle_y = verb.core.Vec.angleBetween([0,0,1], xaxis);
+    //var angle_z = -verb.core.Vec.angleBetween([1,0,0], xaxis); 
+/*    var euler_alpha = Math.cosh( zaxis[2] );
+    var euler_beta = Math.cosh( -zaxis[2] / Math.sin(euler_alpha) )
+    var euler_gamma = Math.cosh( yaxis[2] / Math.sin(euler_alpha) )*/
+
+    var a = -Math.atan( xaxis[2] / xaxis[0] ); 
+    var b = -Math.asin( xaxis[1] ); //Math.tanh( xaxis[1] / Math.sqrt( xaxis[0]*xaxis[0] + xaxis[2]*xaxis[2] ))
+    var c = Math.atan( yaxis[1] / yaxis[2])
 
     // compute translation
     var mat_trans = [ [ 1, 0, 0, origin[0] ],
@@ -44,40 +52,56 @@ var mObj_frame = function mObj( origin, xaxis, yaxis, zaxis ){
                             [ 0, 0, 1, origin[2] ],
                                 [ 0, 0, 0, 1 ]
       
-                        ];
+                        ]; console.log(mat_trans);
 
-    // zaxis [0,1,0]
-    var cost = Math.cos( angle_z );
-    var sint = Math.sin( angle_z );
-    var mat_rot_z = [ [ cost , 0, sint, 0 ],
+    // yaxis [0,1,0]
+    var cost = Math.cos( a );
+    var sint = Math.sin( a );
+    var mat_rot_a = [ [ cost , 0, sint, 0 ],
                             [ 0,  1,  0, 0 ],
                                 [ -sint, 0, cost, 0],
                                     [ 0, 0, 0, 1 ]
                         ];
 
-    // yaxis [0,0,1]
-    var cost = Math.cos( angle_y );
-    var sint = Math.sin( angle_y );
-    var mat_rot_y = [ [ cost, -sint, 0, 0 ],
+    // zaxis [0,0,1]
+    var cost = Math.cos( b );
+    var sint = Math.sin( b );
+    var mat_rot_b = [ [ cost, -sint, 0, 0 ],
                             [ sint, cost, 0, 0 ],
                                 [ 0, 0, 1, 0 ],
                                     [ 0, 0, 0, 1 ]
                         ];
-
+/*
+    var cost = Math.cos( euler_gamma );
+    var sint = Math.sin( euler_gamma );
+    var mat_rot_c = [ [ cost, -sint, 0, 0 ],
+                            [ sint, cost, 0, 0 ],
+                                [ 0, 0, 1, 0 ],
+                                    [ 0, 0, 0, 1 ]
+                        ]; */
     // xaxis [1,0,0]
-    var cost = Math.cos( angle_x );
-    var sint = Math.sin( angle_x );
-    var mat_rot_x = [ [ 1, 0, 0, 0 ],
+    var cost = Math.cos( c );
+    var sint = Math.sin( c );
+    var mat_rot_c = [ [ 1, 0, 0, 0 ],
                             [ 0,  cost, -sint, 0 ],
                                 [ 0,  sint, cost, 0 ],
                                     [ 0, 0, 0, 1 ]
                         ];
 
+                        /*
     var mat = verb.core.Mat.mult( mat_trans, mat_rot_z );
     mat = verb.core.Mat.mult( mat, mat_rot_y );
-    mat = verb.core.Mat.mult( mat, mat_rot_x );
+    mat = verb.core.Mat.mult( mat, mat_rot_x );*/
 
-    var m = [];
+    this.applyMatrix = function( geom ){ console.log("applying");
+       geom = geom.transform(mat_rot_a);
+       //geom = geom.transform(mat_rot_b); 
+       //geom = geom.transform(mat_rot_b);
+       //geom = geom.transform( mat_trans );
+       return geom;
+    }
+
+    /*var m = [];
     mat.map( function(t){
             t.map( function(u){
                 m.push(u)
@@ -114,7 +138,7 @@ var mObj_frame = function mObj( origin, xaxis, yaxis, zaxis ){
     this.inverseMatrix = [ [ r[0], r[1], r[2], r[3] ],
                                 [ r[4], r[5], r[6], r[7] ],
                                     [ r[8], r[9], r[10], r[11] ],
-                                        [ r[12], r[13], r[14], r[15] ]  ];
+                                        [ r[12], r[13], r[14], r[15] ]  ];*/
 
     this.extractThreeGeometry = function(){
         return buildAxes( 20 );
@@ -123,7 +147,6 @@ var mObj_frame = function mObj( origin, xaxis, yaxis, zaxis ){
     this.extractData = function(){
         return "This is a frame"
     }
-
 
     function buildAxis( src, dst, colorHex, dashed ) {
         var geom = new THREE.Geometry(),
@@ -169,15 +192,15 @@ var mObj_frame = function mObj( origin, xaxis, yaxis, zaxis ){
     }
 
     this.getXAxis = function(){
-        return xaxis;
+        return _xaxis;
     }
 
     this.getYAxis = function(){
-        return yaxis;
+        return _yaxis;
     }
 
     this.getZAxis = function(){
-        return zaxis;
+        return _zaxis;
     }
 
 }

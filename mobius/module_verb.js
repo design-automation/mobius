@@ -1043,16 +1043,7 @@ var MOBIUS = ( function (mod){
 
 		var geom = object.getGeometry();
 	
-		var mat = [ [ 1, 0, 0, shiftX ],
-						[ 0, 1, 0, shiftY ],
-							[ 0, 0, 1, shiftZ ],
-							 	[ 0, 0, 0, 1 ]
-						];
-		
-		if(frame == undefined)
-			geom = geom.transform(mat);
-		else
-			geom = geom.transform( frame.matrix ).transform( mat ).transform( frame.inverseMatrix );
+		geom = frame.applyMatrix( geom ); console.log(geom);
 				
 		object.setGeometry( geom ); 
 
