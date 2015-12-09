@@ -50,27 +50,76 @@ var mObj_frame = function mObj_frame( origin, xaxis, yaxis, zaxis ){
                 ];
     }
 
+    function invertMatrix(m) {
+          
+          var r = [16]; 
+
+          r[0] = m[1][1]*m[2][2]*m[3][3] - m[1][1]*m[3][2]*m[2][3] - m[1][2]*m[2][1]*m[3][3] + m[1][2]*m[3][1]*m[2][3] + m[1][3]*m[2][1]*m[3][2] - m[1][3]*m[3][1]*m[2][2];
+          r[1] = -m[0][1]*m[2][2]*m[3][3] + m[0][1]*m[3][2]*m[2][3] + m[0][2]*m[2][1]*m[3][3] - m[0][2]*m[3][1]*m[2][3] - m[0][3]*m[2][1]*m[3][2] + m[0][3]*m[3][1]*m[2][2];
+          r[2] = m[0][1]*m[1][2]*m[3][3] - m[0][1]*m[3][2]*m[1][3] - m[0][2]*m[1][1]*m[3][3] + m[0][2]*m[3][1]*m[1][3] + m[0][3]*m[1][1]*m[3][2] - m[0][3]*m[3][1]*m[1][2] ;
+          r[3] = -m[0][1]*m[1][2]*m[2][3] + m[0][1]*m[2][2]*m[1][3] + m[0][2]*m[1][1]*m[2][3] - m[0][2]*m[2][1]*m[1][3] - m[0][3]*m[1][1]*m[2][2] + m[0][3]*m[2][1]*m[1][2] ;
+
+          r[4] = -m[1][0]*m[2][2]*m[3][3] + m[1][0]*m[3][2]*m[2][3] + m[1][2]*m[2][0]*m[3][3] - m[1][2]*m[3][0]*m[2][3] - m[1][3]*m[2][0]*m[3][2] + m[1][3]*m[3][0]*m[2][2];
+          r[5] = m[0][0]*m[2][2]*m[3][3] - m[0][0]*m[3][2]*m[2][3] - m[0][2]*m[2][0]*m[3][3] + m[0][2]*m[3][0]*m[2][3] + m[0][3]*m[2][0]*m[3][2] - m[0][3]*m[3][0]*m[2][2];
+          r[6] = -m[0][0]*m[1][2]*m[3][3] + m[0][0]*m[3][2]*m[1][3] + m[0][2]*m[1][0]*m[3][3] - m[0][2]*m[3][0]*m[1][3] - m[0][3]*m[1][0]*m[3][2] + m[0][3]*m[3][0]*m[1][2] ;
+          r[7] = m[0][0]*m[1][2]*m[2][3] - m[0][0]*m[2][2]*m[1][3] - m[0][2]*m[1][0]*m[2][3] + m[0][2]*m[2][0]*m[1][3] + m[0][3]*m[1][0]*m[2][2] - m[0][3]*m[2][0]*m[1][2] ;
+
+          r[8] = m[1][0]*m[2][1]*m[3][3] - m[1][0]*m[3][1]*m[2][3] - m[1][1]*m[2][0]*m[3][3] + m[1][1]*m[3][0]*m[2][3] + m[1][3]*m[2][0]*m[3][1] - m[1][3]*m[3][0]*m[2][1] ;
+          r[9] = -m[0][0]*m[2][1]*m[3][3] + m[0][0]*m[3][1]*m[2][3] + m[0][1]*m[2][0]*m[3][3] - m[0][1]*m[3][0]*m[2][3] - m[0][3]*m[2][0]*m[3][1] + m[0][3]*m[3][0]*m[2][1] ;
+          r[10] = m[0][0]*m[1][1]*m[3][3] - m[0][0]*m[3][1]*m[1][3] - m[0][1]*m[1][0]*m[3][3] + m[0][1]*m[3][0]*m[1][3] + m[0][3]*m[1][0]*m[3][1] - m[0][3]*m[3][0]*m[1][1] ;
+          r[11] = -m[0][0]*m[1][1]*m[2][3] + m[0][0]*m[2][1]*m[1][3] + m[0][1]*m[1][0]*m[2][3] - m[0][1]*m[2][0]*m[1][3] - m[0][3]*m[1][0]*m[2][1] + m[0][3]*m[2][0]*m[1][1] ;
+
+          r[12] = -m[1][0]*m[2][1]*m[3][2] + m[1][0]*m[3][1]*m[2][2] + m[1][1]*m[2][0]*m[3][2] - m[1][1]*m[3][0]*m[2][2] - m[1][2]*m[2][0]*m[3][1] + m[1][2]*m[3][0]*m[2][1] ;
+          r[13] = m[0][0]*m[2][1]*m[3][2] - m[0][0]*m[3][1]*m[2][2] - m[0][1]*m[2][0]*m[3][2] + m[0][1]*m[3][0]*m[2][2] + m[0][2]*m[2][0]*m[3][1] - m[0][2]*m[3][0]*m[2][1] ;
+          r[14] = -m[0][0]*m[1][1]*m[3][2] + m[0][0]*m[3][1]*m[1][2] + m[0][1]*m[1][0]*m[3][2] - m[0][1]*m[3][0]*m[1][2] - m[0][2]*m[1][0]*m[3][1] + m[0][2]*m[3][0]*m[1][1] ;
+          r[15] = m[0][0]*m[1][1]*m[2][2] - m[0][0]*m[2][1]*m[1][2] - m[0][1]*m[1][0]*m[2][2] + m[0][1]*m[2][0]*m[1][2] + m[0][2]*m[1][0]*m[2][1] - m[0][2]*m[2][0]*m[1][1] ;
+
+          var det = m[0][0]*r[0] + m[0][1]*r[4] + m[0][2]*r[8] + m[0][3]*r[12];
+          for (var i = 0; i < 16; i++) r[i] /= det;
+          
+          return [ [ r[0], r[1], r[2], r[3]],
+                        [ r[4], r[5], r[6], r[7]],
+                            [ r[8], r[9], r[10], r[11]],
+                                [ r[12], r[13], r[14], r[15] ]
+                    ];
+    };
+
 
     // computing the angles needed to get the object into position - HINT: align with one axis and deal with one vector at a time
-    var a = Math.atan( _xaxis[2] / _xaxis[0] ); //negative sign because rotation is acw
+/*    var a = Math.atan( _xaxis[2] / _xaxis[0] ); //negative sign because rotation is acw
     if( _xaxis[0] < 0 )
         a = Math.PI - a;
     
     var b = -Math.asin( _xaxis[1] );
-    var c = -Math.atan( zaxis[1] / Math.sqrt( zaxis[0]*zaxis[0] + zaxis[2]*zaxis[2] ) ); 
+    var c = -Math.atan( zaxis[1] / Math.sqrt( zaxis[0]*zaxis[0] + zaxis[2]*zaxis[2] ) ); */
     // going from x-axis to the next vector - follow the order of arguments
 /*    var a = verb.core.Vec.angleBetweenNormalized2d( [_xaxis[0], _xaxis[2]], [1,0] ); // calculating angle between xdirection & projection of xaxis on xz plane
     var b = (_xaxis[1]?_xaxis[1]<0?-1:1:0)*verb.core.Vec.angleBetween( _xaxis, [_xaxis[0], 0, _xaxis[2]] );
     var c = verb.core.Vec.angleBetweenNormalized2d( [0,1], [_xaxis[0], _xaxis[2]] );*/
 
+/*    var angle_a = xaxis[0] / Math.sqrt( xaxis[0]*xaxis[0] + xaxis[2]*xaxis[2] )
+    var a  = -Math.acos( angle_a );
+    if( (xaxis[0]>0 && xaxis[2]<0) || (xaxis[0]<0 && xaxis[2]<0) )
+        a = -a; 
+
+    var angle_b = ( xaxis[0]*_xaxis[0] + xaxis[2]*_xaxis[2] ) / Math.sqrt( xaxis[0]*xaxis[0] + xaxis[2]*xaxis[2] )
+    var b = Math.acos( angle_b ); // no change required because default perp looks after acw?
+    //console.log(angle_b);
+
+    var default_perp = verb.core.Vec.normalized(verb.core.Vec.cross([xaxis[0], 0, xaxis[2]], xaxis))
+    var c = -Math.acos( verb.core.Vec.dot( default_perp, _zaxis ) ); 
+    if( verb.core.Vec.dot( default_perp, _zaxis ) < 0 )
+        c = -c;
+
     // yaxis [0,1,0] - Rotate about world up-axis to align with the xaxis
     var mat_rot_a = getRotationMatrix( [0,1,0], a); 
 
     // zaxis [0,0,1] - Rotate about the local coming out axis to align with it
-    var mat_rot_b = getRotationMatrix( _zaxis, b);
+    
+    var mat_rot_b = getRotationMatrix( default_perp , b);
 
     // xaxis [1,0,0] - Rotate about the local x axis to obtain final position
-    var mat_rot_c = getRotationMatrix( _xaxis, c);
+    var mat_rot_c = getRotationMatrix( _xaxis, c);*/
 
     // compute translation
     var mat_trans = [ [ 1, 0, 0, origin[0] ],
@@ -79,13 +128,20 @@ var mObj_frame = function mObj_frame( origin, xaxis, yaxis, zaxis ){
                                 [ 0, 0, 0, 1 ]
       
                         ]; 
+
+    var world_space_matrix = [ [ _xaxis[0], _xaxis[1], _xaxis[2], 0 ], 
+                                  [ _yaxis[0], _yaxis[1], _yaxis[2], 0 ], 
+                                    [ _zaxis[0], _zaxis[1], _zaxis[2], 0 ],
+                                      [ 0, 0, 0, 1 ] ]
+
+    var local_space_matrix = invertMatrix( world_space_matrix );
                         
 
+
     this.applyMatrix = function( geom ){ 
-       geom = geom.transform(mat_rot_a); console.log(a);
-       //geom = geom.transform(mat_rot_b); 
-       //geom = geom.transform(mat_rot_c);
-       geom = geom.transform( mat_trans ); //translation will be in the end. REFER: Conjugation
+        geom = geom.transform( local_space_matrix);
+        console.log( world_space_matrix,local_space_matrix );
+       geom = geom.transform( mat_trans ); //translation will be in the end. REFER: Conjugation*/
        return geom;
     }
 
@@ -143,7 +199,7 @@ var mObj_frame = function mObj_frame( origin, xaxis, yaxis, zaxis ){
         return 'frame';
     }
 
-a}
+}
 
 // mObj Geometry Class
 // geometry is stored in geometry format native to module
