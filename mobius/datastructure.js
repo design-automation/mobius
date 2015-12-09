@@ -52,9 +52,10 @@ var mObj_frame = function mObj_frame( origin, xaxis, yaxis, zaxis ){
 
 
     // computing the angles needed to get the object into position - HINT: align with one axis and deal with one vector at a time
-    //var a = Math.atan2( _xaxis[2] _xaxis[0] ); //negative sign because rotation is acw
-    var a = Math.atan2(xaxis[2], xaxis[1]);
-
+    var a = Math.atan( _xaxis[2] / _xaxis[0] ); //negative sign because rotation is acw
+    if( _xaxis[0] < 0 )
+        a = Math.PI - a;
+    
     var b = -Math.asin( _xaxis[1] );
     var c = -Math.atan( zaxis[1] / Math.sqrt( zaxis[0]*zaxis[0] + zaxis[2]*zaxis[2] ) ); 
     // going from x-axis to the next vector - follow the order of arguments
