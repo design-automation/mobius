@@ -862,38 +862,31 @@ var MOBIUS = ( function (mod){
 			var newobject = [];
 			
 			for(var obj=0; obj < object.length; obj++)
-				newobject.push(MOBIUS.trn.reflect( object[obj], shiftX, shiftY, shiftZ, copy ));	
+				newobject.push(MOBIUS.trn.reflect( object, frame, copy ));	
 			
 			return newobject;
 		}
 
-		console.log("truth", object === MOBIUS.obj.copy( object ))
 		if( copy )
 			object = MOBIUS.obj.copy( object );
 
 		var geom = object.getGeometry();
 
-		// compute x-y plane equations from one point and one normal method
-
-		var z = frame.getZAxis();
-		var a = z[0]; 
-		var b = z[1];
-		var c = z[2];
-		var d = a*frame.origin[0] + b*frame.origin[1] + c*frame.origin[2];
-
-		var mat = [ [ 1 - 2*a*a, -2*a*b, -2*a*c , 0],
-						[ -2*a*b, 1-2*b*b, -2*b*c, 0],
-							[ -2*a*c, -2*b*c, 1-2*c*c, 0],
+		var trnMat = [ [ 1, 0, 0, 0],
+						[ 0, 1, 0, 0],
+							[ 0, 0, -1, 0],
 								[0, 0, 0, 1]
 					];
 						
-		console.log(mat);
-		if(frame == undefined)
-			geom = geom.transform( mat );
+		if( frame != undefined ){
+			geom = geom.transform( frame.toLocal() );
+			geom = geom.transform( trnMat ); 
+			geom = geom.transform( frame.toGlobal() );
+		}
 		else
-			geom = geom.transform( frame.inverseMatrix ).transform( mat ).transform( frame.matrix );
-
-		object.setGeometry( geom );
+			geom = geom.transform( trnMat );
+		
+		object.setGeometry( geom ); 
 
 		return object;
 	
@@ -917,7 +910,7 @@ var MOBIUS = ( function (mod){
 			var newobject = [];
 			
 			for(var obj=0; obj < object.length; obj++)
-				newobject.push(MOBIUS.trn.rotate( object[obj], shiftX, shiftY, shiftZ, copy ));	
+				newobject.push(MOBIUS.trn.rotate( object, frame, angleX, angleY, angleZ, copy ));	
 			
 			return newobject;
 		}
@@ -953,18 +946,21 @@ var MOBIUS = ( function (mod){
 	                                [ -sint,  sint, cost, 0 ],
 	                                    [ 0, 0, 0, 1 ]
 	                        ];
-
-	    var mat = verb.core.Mat.mult( mat_trans, mat_rot_z );
-	    mat = verb.core.Mat.mult( mat, mat_rot_y );
-	    mat = verb.core.Mat.mult( mat, mat_rot_x );
+		
+		if( frame != undefined ){
+			geom = geom.transform( frame.toLocal() );
 			
-		if(frame == undefined)
-			geom = geom.transform(mat);
+			geom = geom.transform( mat_rot_z );
+			geom = geom.transform( mat_rot_y );
+			geom = geom.transform( mat_rot_x );
+			
+			geom = geom.transform( frame.toGlobal() );
+		}
 		else
-			geom = geom.transform( frame.matrix ).transform( mat ).transform( frame.inverseMatrix );
+			geom = geom.transform( trnMat );
+		
+		object.setGeometry( geom ); 
 
-		object.setGeometry( transformedGeometry );	
-			
 		return object;
 	
 	};
@@ -988,7 +984,7 @@ var MOBIUS = ( function (mod){
 			var newobject = [];
 			
 			for(var obj=0; obj < object.length; obj++)
-				newobject.push(MOBIUS.trn.scale( object[obj], shiftX, shiftY, shiftZ, copy ));	
+				newobject.push(MOBIUS.trn.scale(object, frame, scaleX, scaleY, scaleZ, copy));	
 			
 			return newobject;
 		}
@@ -996,22 +992,26 @@ var MOBIUS = ( function (mod){
 		if( copy )
 			object = MOBIUS.obj.copy( object );
 
-		var geom = mObj.getGeometry();
+		var geom = object.getGeometry();
 			
-		var mat = [ [ scaleX, 0, 0, 0 ],
+		var trnMat = [ [ scaleX, 0, 0, 0 ],
 						[ 0, scaleY, 0, 0],
 							[ 0, 0, scaleZ, 0 ],
 								[ 0, 0, 0, 1 ]
 					];
 			
-		if(frame == undefined)
-			geom = geom.transform(mat);
+		if( frame != undefined ){
+			geom = geom.transform( frame.toLocal() );
+			geom = geom.transform( trnMat );
+			geom = geom.transform( frame.toGlobal() );
+		}
 		else
-			geom = geom.transform( frame.matrix ).transform( mat ).transform( frame.inverseMatrix );
-
-		object.setGeometry( transformedGeometry );
+			geom = geom.transform( trnMat );
+		
+		object.setGeometry( geom ); 
 
 		return object;
+
 
 	};
 
@@ -1042,8 +1042,20 @@ var MOBIUS = ( function (mod){
 			object = MOBIUS.obj.copy( object );
 
 		var geom = object.getGeometry();
+
+		var trnMat = [ [ 1, 0, 0, shiftX ], 
+							[ 0, 1, 0, shiftY ], 
+								[ 0, 0, 1, shiftZ ], 
+									[ 0, 0, 0, 1 ]
+					 	] 
 	
-		geom = frame.applyMatrix( geom ); 
+		if( frame != undefined ){
+			geom = geom.transform( frame.toLocal() );
+			geom = geom.transform( trnMat );
+			geom = geom.transform( frame.toGlobal() );
+		}
+		else
+			geom = geom.transform( trnMat );
 		
 		object.setGeometry( geom ); 
 
@@ -1072,7 +1084,7 @@ var MOBIUS = ( function (mod){
 		var ty = point[1] - orCenter[1];
 		var tz = point[2] - orCenter[2]; 
 		
-		return MOBIUS.trn.shiftObject( object, undefined, tx, ty, tz, copy );		
+		return MOBIUS.trn.shift( object, undefined, tx, ty, tz, copy );		
 	};
 
 

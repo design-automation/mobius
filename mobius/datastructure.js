@@ -33,23 +33,6 @@ var mObj_frame = function mObj_frame( origin, xaxis, yaxis, zaxis ){
     var _yaxis = verb.core.Vec.normalized( yaxis ); 
     var _zaxis = verb.core.Vec.normalized( zaxis ); 
 
-    /* If the 3D space is right-handed, this rotation will be counterclockwise when u points towards the observer (Right-hand rule). 
-     * Rotations in the counterclockwise (anticlockwise) direction are considered positive rotations. 
-     */
-    function getRotationMatrix( axis, angle){
-        var cost = Math.cos(angle);
-        var sint = Math.sin(angle);
-        var ux = axis[0];
-        var uy = axis[1];
-        var uz = axis[2];
-
-        return [ [ cost + ux*ux*(1-cost), ux*uy*(1-cost) - uz*sint, ux*uz*(1-cost) + uy*sint, 0 ],
-                    [ ux*uy*(1-cost) + uz*sint,  cost + uy*uy*(1-cost),  uy*uz*(1-cost) - ux*sint, 0 ],
-                        [ ux*uz*(1-cost) - uy*sint, uy*uz*(1-cost) + ux*sint, cost + uz*uz*(1-cost), 0 ],
-                            [ 0, 0, 0, 1 ]
-                ];
-    }
-
     function invertMatrix(m) {
           
           var r = [16]; 
@@ -85,42 +68,6 @@ var mObj_frame = function mObj_frame( origin, xaxis, yaxis, zaxis ){
     };
 
 
-    // computing the angles needed to get the object into position - HINT: align with one axis and deal with one vector at a time
-/*    var a = Math.atan( _xaxis[2] / _xaxis[0] ); //negative sign because rotation is acw
-    if( _xaxis[0] < 0 )
-        a = Math.PI - a;
-    
-    var b = -Math.asin( _xaxis[1] );
-    var c = -Math.atan( zaxis[1] / Math.sqrt( zaxis[0]*zaxis[0] + zaxis[2]*zaxis[2] ) ); */
-    // going from x-axis to the next vector - follow the order of arguments
-/*    var a = verb.core.Vec.angleBetweenNormalized2d( [_xaxis[0], _xaxis[2]], [1,0] ); // calculating angle between xdirection & projection of xaxis on xz plane
-    var b = (_xaxis[1]?_xaxis[1]<0?-1:1:0)*verb.core.Vec.angleBetween( _xaxis, [_xaxis[0], 0, _xaxis[2]] );
-    var c = verb.core.Vec.angleBetweenNormalized2d( [0,1], [_xaxis[0], _xaxis[2]] );*/
-
-/*    var angle_a = xaxis[0] / Math.sqrt( xaxis[0]*xaxis[0] + xaxis[2]*xaxis[2] )
-    var a  = -Math.acos( angle_a );
-    if( (xaxis[0]>0 && xaxis[2]<0) || (xaxis[0]<0 && xaxis[2]<0) )
-        a = -a; 
-
-    var angle_b = ( xaxis[0]*_xaxis[0] + xaxis[2]*_xaxis[2] ) / Math.sqrt( xaxis[0]*xaxis[0] + xaxis[2]*xaxis[2] )
-    var b = Math.acos( angle_b ); // no change required because default perp looks after acw?
-    //console.log(angle_b);
-
-    var default_perp = verb.core.Vec.normalized(verb.core.Vec.cross([xaxis[0], 0, xaxis[2]], xaxis))
-    var c = -Math.acos( verb.core.Vec.dot( default_perp, _zaxis ) ); 
-    if( verb.core.Vec.dot( default_perp, _zaxis ) < 0 )
-        c = -c;
-
-    // yaxis [0,1,0] - Rotate about world up-axis to align with the xaxis
-    var mat_rot_a = getRotationMatrix( [0,1,0], a); 
-
-    // zaxis [0,0,1] - Rotate about the local coming out axis to align with it
-    
-    var mat_rot_b = getRotationMatrix( default_perp , b);
-
-    // xaxis [1,0,0] - Rotate about the local x axis to obtain final position
-    var mat_rot_c = getRotationMatrix( _xaxis, c);*/
-
     // compute translation
     var mat_trans = [ [ 1, 0, 0, origin[0] ],
                         [ 0, 1, 0, origin[1] ],
@@ -136,15 +83,22 @@ var mObj_frame = function mObj_frame( origin, xaxis, yaxis, zaxis ){
 
     var local_space_matrix = invertMatrix( world_space_matrix );
                         
+    var planes = { 'xy' : {'a': _zaxis[0], 'b': _zaxis[1], 'c': _zaxis[2], 'd':_zaxis[0]*origin[0] + _zaxis[1]*origin[1] + _zaxis[2]*origin[2] }, 
+                        'yz' : {'a': _xaxis[0], 'b': _xaxis[1], 'c': _xaxis[2], 'd':_xaxis[0]*origin[0] + _xaxis[1]*origin[1] + _xaxis[2]*origin[2] },
+                            'zx' : {'a': _yaxis[0], 'b': _yaxis[1], 'c': _yaxis[2], 'd':_yaxis[0]*origin[0] + _yaxis[1]*origin[1] + _yaxis[2]*origin[2] }
+    }    
 
-
-    this.applyMatrix = function( geom ){ 
-        geom = geom.transform( local_space_matrix);
-        console.log( world_space_matrix,local_space_matrix );
-       geom = geom.transform( mat_trans ); //translation will be in the end. REFER: Conjugation*/
-       return geom;
+    this.toLocal = function( ){ 
+       return local_space_matrix; 
     }
 
+    this.toGlobal = function(){
+        return world_space_matrix;
+    }
+
+    this.getPlane = function(id){
+        return planes[id];
+    }
 
     this.extractThreeGeometry = function(){
 
