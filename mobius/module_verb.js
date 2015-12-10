@@ -98,8 +98,11 @@ var MOBIUS = ( function (mod){
 	mod.sld.byExtrusion = function(surface, frame, xDistance, yDistance, zDistance){
 
 		var bottomSurface = surface;
-		var topSurface = MOBIUS.makeCopy( bottomSurface );
-		MOBIUS.shiftObject(topSurface, frame, xDistance, yDistance, zDistance, false);
+		bottomSurface.setGeometry( surface.getGeometry().transform( frame.toLocal() ) ); 
+		
+		var topSurface = MOBIUS.obj.copy( bottomSurface );
+		
+		topSurface = MOBIUS.trn.shift(topSurface, undefined, xDistance, yDistance, zDistance, false);
 
 		var solid = [ bottomSurface, topSurface ];
 		// join boundary points of the two surfaces
@@ -108,10 +111,14 @@ var MOBIUS = ( function (mod){
 		for(var e=0; e < edges_b.length; e++ ){
 			var edge_b = edges_b[e];
 			var edge_t  = edges_t[e];
-			var extrusionVector = verb.core.Mat.sub(MOBIUS.object.getCentre(edge_t) - MOBIUS.object.getCentre(edge_b));
+			var extrusionVector = verb.core.Mat.sub(MOBIUS.obj.getCentre(edge_t) - MOBIUS.obj.getCentre(edge_b));
 			var srf = new mObj_geom_Surface(  new verb.geom.ExtrudedSurface( edge_b, extrusionVector ) );
 			solid.push(srf);
 		}
+
+		for(var srf=0; srf<solid.length; srf++){
+			solid[srf].setGeometry( solid[srf].getGeometry().transform( frame.toGlobal() ) );
+		}		
 
 		return new mObj_geom_Solid( solid );
 
@@ -220,9 +227,10 @@ var MOBIUS = ( function (mod){
 
 		if (frame == undefined)
 			return new mObj_geom_Surface( new verb.geom.RevolvedSurface( profile, [0,0,0], [0,1,0], angle ) ) ;
-		else
-			return new mObj_geom_Surface( new verb.geom.RevolvedSurface( profile, frame.origin, frame.zaxis, angle ) ) ;
-
+		else{
+			return new mObj_geom_Surface( new verb.geom.RevolvedSurface( profile, frame.getOrigin(), frame.getZAxis(), angle ) ) ;
+		}
+			
 	};
 
 	/**
@@ -248,8 +256,7 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.srf.nurbsSphere = function(frame, radius){
 					
-		var sphere = new verb.geom.SphericalSurface( [0,0,0], radius );
-		sphere = sphere.transform( frame.matrix );
+		var sphere = new verb.geom.SphericalSurface( frame.getOrigin(), radius );
 
 		return new mObj_geom_Surface( sphere );
 
@@ -268,8 +275,7 @@ var MOBIUS = ( function (mod){
 
 		var profile = MOBIUS.crv.line([radius1, 0, 0], [radius2, height, 0]);
 
-		var surface = MOBIUS.srf.nurbsByRevolution( profile, undefined, 2*Math.PI);
-		surface.setGeometry(  surface.getGeometry().transform( frame.matrix ) );
+		var surface = MOBIUS.srf.nurbsByRevolution( profile, frame, 2*Math.PI);
 
 		return surface;
 
@@ -277,9 +283,30 @@ var MOBIUS = ( function (mod){
 
 	mod.srf.nurbsPipe = function(centreCurve, radius){
 
+		var origin = centreCurve.getGeometry().point(0);
+		var zaxis = centreCurve.getGeometry().tangent(0);
+
+		// compute some random vector perpendicular to the z-vector
+		var xaxis = [1,1, ((-zaxis[0]-zaxis[1])/zaxis[2])]; console.log(xaxis);
+
+		var frame = new mObj_frame( origin, xaxis, undefined, zaxis );
+		var sectionCurve = MOBIUS.crv.circle( frame, radius );
+
+		return MOBIUS.srf.nurbsBySweep( sectionCurve, centreCurve);
+
 	};
 
+	// method?
 	mod.srf.uvGridByNumber = function(surface, uSegments, vSegments, method){
+		
+		var uvList = [];
+		for(var u=0; u<= uSegments; u++){
+			for(var v=0; v<= vSegments; v++){
+				uvList.push([u, v]);
+			}
+		}
+
+		return uvList;
 
 	};
 
@@ -313,14 +340,40 @@ var MOBIUS = ( function (mod){
 
 	mod.srf.getFrames = function( surface, uvList ){
 
+		var frames = [];
+
+		for(var i=0; i<uvList.length; i++){
+			var origin = surface.getGeometry().point( uvList[i][0], uvList[i][1] );
+			var xaxis = verb.core.Vec.sub( origin, surface.getGeometry().point( uvList[i][0] + 0.1, uvList[i][1] ) );
+			var yaxis = verb.core.Vec.sub( origin, surface.getGeometry().point( uvList[i][0] , uvList[i][1] + 0.1 ) )
+
+			frames.push( new mObj_frame( origin, xaxis, yaxis, undefined ) );
+		}
+
+		return frames;
+
 	};
 
 	mod.srf.getNormals = function( surface, uvList ){
+
+		var normals = [];
+		for(var i=0; i<uvList.length; i++)
+			normals.push( surface.normal(uvList[i][0], uvList[i][1]));
+
+		return normals;
 
 	};
 
 	mod.srf.getTangents = function( surface, uvList ){
 
+		var tangents = [];
+		for(var i=0; i<uvList.length; i++){
+			var xaxis = verb.core.Vec.normalized( verb.core.Vec.sub( origin, surface.getGeometry().point( uvList[i][0] + 0.1, uvList[i][1] ) ));
+			var yaxis = verb.core.Vec.normalized( verb.core.Vec.sub( origin, surface.getGeometry().point( uvList[i][0], uvList[i][1] + 0.1 ) ));
+			tangents.push( [xaxis, yaxis])
+		}
+
+		return tangents;
 	}; 
  
 	mod.srf.getIsoCurves = function( surface, uvList ){
@@ -339,7 +392,7 @@ var MOBIUS = ( function (mod){
 		var srf = surface.getGeometry(); 
 		
 		var div_surfaces = [], 
-		gridPoints = [];
+		var gridPoints = [];
 		var uincr = 1/ugrid;
 		var vincr = 1/vgrid;
 
@@ -443,10 +496,7 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.crv.arc = function(frame, radius, minAngle, maxAngle){
 
-		var xaxis = MOBIUS.vec.resize( frame.xaxis, xRadius );
-		var yaxis = MOBIUS.vec.resize( frame.yaxis, yRadius );
-
-		return new mObj_geom_Curve( new verb.geom.Arc( frame.origin, xaxis, yaxis, radius, minAngle, maxAngle) ) ;
+		return new mObj_geom_Curve( new verb.geom.Arc( frame.getOrigin(), frame.getXaxis(), frame.getYaxis(), radius, minAngle, maxAngle) ) ;
 
 	};
 
@@ -466,12 +516,9 @@ var MOBIUS = ( function (mod){
 	 * @param {array} radius - Radius of the Arc
 	 * @returns {mobiusobject}  - NURBS Curve
 	 */
-	mod.crv.circleBoundary = function(frame, radius){
+	mod.crv.circle = function(frame, radius){
 
-		var xaxis = MOBIUS.vec.resize( frame.xaxis, xRadius );
-		var yaxis = MOBIUS.vec.resize( frame.yaxis, yRadius );
-
-		return new mObj_geom_Curve( new verb.geom.Circle( frame.origin, xaxis, yaxis, radius ) ) 
+		return new mObj_geom_Curve( new verb.geom.Circle( frame.getOrigin(), frame.getXaxis(), frame.getYaxis(), radius ) ) 
 	};
 
 	/**
@@ -483,10 +530,10 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.crv.ellipse = function(frame, xRadius, yRadius) {
 
-		var xaxis = MOBIUS.vec.resize( frame.xaxis, xRadius );
-		var yaxis = MOBIUS.vec.resize( frame.yaxis, yRadius );
+		var xaxis = MOBIUS.vec.resize( frame.getXaxis(), xRadius );
+		var yaxis = MOBIUS.vec.resize( frame.getYAxis(), yRadius );
 
-		return new mObj_geom_Curve( new verb.geom.Ellipse( frame.origin, xaxis, yaxis ) ); 
+		return new mObj_geom_Curve( new verb.geom.Ellipse( frame.getOrigin(), xaxis, yaxis, radius ) ); 
 		
 	};
 
@@ -501,10 +548,10 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.crv.ellipseArc = function(frame, xRadius, yRadius, minAngle, maxAngle){
 
-		var xaxis = MOBIUS.vec.resize( frame.xaxis, xRadius );
-		var yaxis = MOBIUS.vec.resize( frame.yaxis, yRadius );
+		var xaxis = MOBIUS.vec.resize( frame.getXaxis(), xRadius );
+		var yaxis = MOBIUS.vec.resize( frame.getYAxis(), yRadius );
 
-		return new mObj_geom_Curve( new verb.geom.EllipseArc( frame.origin, xaxis, yaxis, minAngle, maxAngle ) ) 
+		return new mObj_geom_Curve( new verb.geom.EllipseArc( frame.getOrigin(), xaxis, yaxis, radius ) ) 
 	};
 
 
@@ -528,11 +575,24 @@ var MOBIUS = ( function (mod){
 	// what's method?
 	mod.crv.tListByNumber = function(curve, numPoints, method){
 
+		var tList = [];
+		var incr = 1/(numPoints-1)
+		for(var t=0; t<numPoints; t++){
+			tList.push(t*incr);
+		}
+
+		return tList; 
 
 	};
 
 	mod.crv.tListByDistance = function(curve, distance, method){
 
+		var tList = [];
+	 	for(var len=0; len <= curve.length; len=len+distance){
+	 		tList.push(curve.paramAtLength( len ));
+	 	}
+
+	 	return tList;
 
 	};
 
@@ -570,13 +630,13 @@ var MOBIUS = ( function (mod){
 		if(tList.constructor.name == "Array"){
 
 			var points = tList.map( function( t ){
-				return new mobj_geom_Vertex( curve.tangent( t ) );
+				return curve.tangent( t );
 			})
 			
 			return points;
 		}
 		else
-			return new mobj_geom_Vertex( curve.tangent( t ) );
+			return curve.tangent( t ) ;
 
 	};
 
@@ -825,7 +885,9 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.obj.getCentre = function(object){
 		//calculate centre based on what kind of object
-		var geometry = object.getGeometry();  
+		var geometry = object;
+		if(object.getGeometry != undefined)
+			geometry = object.getGeometry();  
 
 		if(geometry.center != undefined)
 			return geometry.center();

@@ -100,6 +100,22 @@ var mObj_frame = function mObj_frame( origin, xaxis, yaxis, zaxis ){
         return planes[id];
     }
 
+    this.getOrigin = function(){
+        return origin;
+    }
+
+    this.getXaxis = function(){
+        return _xaxis;
+    }
+
+    this.getYaxis = function(){
+        return _yaxis;
+    }
+
+    this.getZaxis = function(){
+        return _zaxis;
+    }
+
     this.extractThreeGeometry = function(){
 
         function buildAxis( src, dst, colorHex, dashed ) {
