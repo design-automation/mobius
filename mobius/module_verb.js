@@ -19,6 +19,9 @@ var MOBIUS = ( function (mod){
 	mod.frm = {}; 
 	
 	mod.frm.byXYPoints = function(origin, xPoint, yPoint){
+
+		if(origin.getGeometry != undefined)
+			origin = origin.getGeometry();
 	    
 	    // how to you make sure the two axes are perpendicular
 		var xaxis = [xPoint[0]-origin[0], xPoint[1]-origin[1], xPoint[2]-origin[2]];
@@ -33,6 +36,9 @@ var MOBIUS = ( function (mod){
 	        
 	mod.frm.byXZPoints = function(origin, xPoint, zPoint){		
 
+		if(origin.getGeometry != undefined)
+			origin = origin.getGeometry();
+
 		var xaxis = [xPoint[0]-origin[0], xPoint[1]-origin[1], xPoint[2]-origin[2]];
 		var zaxis = [zPoint[0]-origin[0], zPoint[1]-origin[1], zPoint[2]-origin[2]];		
 
@@ -44,6 +50,9 @@ var MOBIUS = ( function (mod){
 	};
 
 	mod.frm.byYZPoints = function(origin, yPoint, zPoint){
+
+		if(origin.getGeometry != undefined)
+			origin = origin.getGeometry();
 
 		var yaxis = [yPoint[0]-origin[0], yPoint[1]-origin[1], yPoint[2]-origin[2]];
 		var zaxis = [zPoint[0]-origin[0], zPoint[1]-origin[1], zPoint[2]-origin[2]];		
@@ -57,6 +66,9 @@ var MOBIUS = ( function (mod){
 
 	mod.frm.byXYAxes = function(origin, xAxis, yAxis){
 
+		if(origin.getGeometry != undefined)
+			origin = origin.getGeometry();
+
 		if( mod.mtx.dot(xAxis, yAxis) != 0)
 			mod.msc.print("Axes are not perpendicular");
 
@@ -66,6 +78,9 @@ var MOBIUS = ( function (mod){
 
 	mod.frm.byXZAxes = function(origin, xAxis, zAxis){
 
+		if(origin.getGeometry != undefined)
+			origin = origin.getGeometry();
+
 		if( mod.mtx.dot(xAxis, zAxis) != 0)
 			mod.msc.print("Axes are not perpendicular");
 
@@ -74,6 +89,9 @@ var MOBIUS = ( function (mod){
 	};
 
 	mod.frm.byYZAxes = function(origin, yAxis, zAxis){
+
+		if(origin.getGeometry != undefined)
+			origin = origin.getGeometry();
 
 		if( mod.mtx.dot(zAxis, yAxis) != 0)
 			mod.msc.print("Axes are not perpendicular");
@@ -287,7 +305,7 @@ var MOBIUS = ( function (mod){
 		var zaxis = centreCurve.getGeometry().tangent(0);
 
 		// compute some random vector perpendicular to the z-vector
-		var xaxis = [1,1, ((-zaxis[0]-zaxis[1])/zaxis[2])]; console.log(xaxis);
+		var xaxis = [1,1, ((-zaxis[0]-zaxis[1])/zaxis[2])]; 
 
 		var frame = new mObj_frame( origin, xaxis, undefined, zaxis );
 		var sectionCurve = MOBIUS.crv.circle( frame, radius );
@@ -300,11 +318,17 @@ var MOBIUS = ( function (mod){
 	mod.srf.uvGridByNumber = function(surface, uSegments, vSegments, method){
 		
 		var uvList = [];
+
+		var uincr = 1/(uSegments); 
+		var vincr = 1/(vSegments); 
 		for(var u=0; u<= uSegments; u++){
 			for(var v=0; v<= vSegments; v++){
-				uvList.push([u, v]);
+				uvList.push([u*uincr, v*vincr]);
 			}
 		}
+
+		uvList.push(uSegments); 
+		uvList.push(vSegments);
 
 		return uvList;
 
@@ -391,24 +415,27 @@ var MOBIUS = ( function (mod){
 		
 		var srf = surface.getGeometry(); 
 		
-		var div_surfaces = [], 
-		var gridPoints = [];
-		var uincr = 1/ugrid;
-		var vincr = 1/vgrid;
+		var div_surfaces = [];
 
-		//for uv lines
-		for(var i=0; i <= ugrid; i++){
-			for(var seg=0; seg <= vgrid; seg++)
-				gridPoints.push(srf.point(i*uincr, seg*vincr)); 
+		var vgrid = uvGrid.pop();
+		var ugrid = uvGrid.pop();
+
+		//uvGrid should be an ordered set of points - u direction first
+		for(var uv=0; uv < uvGrid.length - vgrid - 2; uv++){
+			
+			if( (uv+1)%(vgrid+1) == 0 && uv!=0)
+				continue;
+
+			var point1 = srf.point( uvGrid[uv][0], uvGrid[uv][1] )
+			var point2 = srf.point( uvGrid[uv+1][0], uvGrid[uv+1][1] )
+			var point3 = srf.point( uvGrid[uv+vgrid+2][0], uvGrid[uv+vgrid+2][1] )
+			var point4 = srf.point( uvGrid[uv+vgrid+1][0], uvGrid[uv+vgrid+1][1] )
+
+			var sub_srf =  new mObj_geom_Surface( 
+								new verb.geom.NurbsSurface.byCorners( point1, point2, point3, point4 ));
+			div_surfaces.push(sub_srf); 
 		}
-		// creation of polygons from the gridPoints
-		for(var i=0; i< gridPoints.length-vgrid-2; i++){
-			if((i+vgrid+2)%(vgrid+1) != 0 || i==0){
-				// construction of the verbs four point surface
-				var mbObj =  new mObj_geom_Surface( new verb.geom.NurbsSurface.byCorners(gridPoints[i], gridPoints[i+1],  gridPoints[i+vgrid+2], gridPoints[i+vgrid+1]) );
-				div_surfaces.push(mbObj); 
-			}
-		}
+
 		return new mObj_geom_Solid( div_surfaces );
 
 	};
@@ -495,7 +522,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {mobiusobject}  - NURBS Curve
 	 */
 	mod.crv.arc = function(frame, radius, minAngle, maxAngle){
-
+		
 		return new mObj_geom_Curve( new verb.geom.Arc( frame.getOrigin(), frame.getXaxis(), frame.getYaxis(), radius, minAngle, maxAngle) ) ;
 
 	};
@@ -578,7 +605,7 @@ var MOBIUS = ( function (mod){
 		var tList = [];
 		var incr = 1/(numPoints-1)
 		for(var t=0; t<numPoints; t++){
-			tList.push(t*incr);
+			tList.push((t*incr).toFixed(1));
 		}
 
 		return tList; 
@@ -586,6 +613,8 @@ var MOBIUS = ( function (mod){
 	};
 
 	mod.crv.tListByDistance = function(curve, distance, method){
+
+		var curve = curve.getGeometry();
 
 		var tList = [];
 	 	for(var len=0; len <= curve.length; len=len+distance){
@@ -598,25 +627,27 @@ var MOBIUS = ( function (mod){
 
 	mod.crv.getPoints = function(curve, tList){
 		
-		var crv = curve.getGeometry();		
+		var curve = curve.getGeometry();		
 
 		if(tList.constructor.name == "Array"){
 
 			var points = tList.map( function( t ){
-				return new mobj_geom_Vertex( curve.point( t ) );
+				return new mObj_geom_Vertex( curve.point( t ) );
 			})
 			
 			return points;
 		}
 		else
-			return new mobj_geom_Vertex( curve.point( t ) );
+			return new mObj_geom_Vertex( curve.point( tList ) );
 	
 	};
 
 	mod.crv.getFrames = function(curve, tList, upVector){
 
+		var curve = curve.getGeometry();
+
 		var frames = tList.map( function(t){
-			return new mObj_frame( curve.point(t), curve.tangent(t), undefined, upVector );
+			return new mObj_frame( curve.point(t), verb.core.Vec.normalized( curve.tangent(t) ), undefined, upVector );
 		})
 
 		return frames;
@@ -625,18 +656,18 @@ var MOBIUS = ( function (mod){
 	
 	mod.crv.getTangents = function(curve, tList){
 	
-		var crv = curve.getGeometry();		
+		var curve = curve.getGeometry();		
 
 		if(tList.constructor.name == "Array"){
 
 			var points = tList.map( function( t ){
-				return curve.tangent( t );
+				return verb.core.Vec.normalized( curve.tangent( t ) );
 			})
 			
 			return points;
 		}
 		else
-			return curve.tangent( t ) ;
+			return verb.core.Vec.normalized( curve.tangent( tList ) ) ;
 
 	};
 
@@ -645,6 +676,8 @@ var MOBIUS = ( function (mod){
 	}; 
 
 	mod.crv.divide = function(curve, tList){
+
+		var curve = curve.getGeometry();
 
 		var tPoints = tList.map( function(t){
 			return curve.point(t);
@@ -668,6 +701,8 @@ var MOBIUS = ( function (mod){
 
 	mod.crv.convertToPolyline = function(curve, tList){
 
+		var curve = curve.getGeometry(); 
+
 		var plinePoints = []
 		for(var p=0; p<tList.length; p++){
 			plinePoints.push(curve.point(tList[p]));
@@ -675,6 +710,10 @@ var MOBIUS = ( function (mod){
 
 		return MOBIUS.crv.nurbsByPoints( plinePoints, 1, undefined);
 
+	};
+
+	mod.crv.length = function( curve ){
+		return curve.getGeometry().length();
 	};
 
 	//
@@ -1018,8 +1057,11 @@ var MOBIUS = ( function (mod){
 			
 			geom = geom.transform( frame.toGlobal() );
 		}
-		else
-			geom = geom.transform( trnMat );
+		else{
+			geom = geom.transform( mat_rot_z );
+			geom = geom.transform( mat_rot_y );
+			geom = geom.transform( mat_rot_x );
+		}
 		
 		object.setGeometry( geom ); 
 
@@ -1395,7 +1437,7 @@ var MOBIUS = ( function (mod){
 	 * @param {int} number  - Number of significant digits needed
 	 * @returns {float} 
 	 */
-	mod.msc.sigDig = function(number, number){
+	mod.msc.sigDig = function(number, digits){
 		return number.toFixed(digits);
 	};
 

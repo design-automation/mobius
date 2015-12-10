@@ -187,10 +187,10 @@ vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
                                 var connected_input_name = data.chartViewModel.connections[l].dest.data.name;
 
                                 data.javascriptCode +=  'var '
-                                    + connected_input_name +' = MOBIUS.makeCopy('
+                                    + connected_input_name +' = MOBIUS.obj.copy('
                                     + return_obj_name
                                     + '.'
-                                    + output_port_name + ',undefined,undefined,undefined);\n';
+                                    + output_port_name + ');\n';
                             }
                         }
                     }

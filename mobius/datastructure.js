@@ -361,6 +361,10 @@ var mObj_geom_Vertex = function mObj_geom_Vertex( geometry ){
    var defaultVertexMaterial = new THREE.PointsMaterial( { size: 5, sizeAttenuation: false } );
     
     mObj_geom.call( this, geometry, defaultVertexMaterial  ); 
+
+    this.x = geometry[0];
+    this.y = geometry[1];
+    this.z = geometry[2];
 }
  
 var mObj_geom_Curve = function mObj_geom_Curve( geometry ){
