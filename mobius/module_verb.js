@@ -116,7 +116,7 @@ var MOBIUS = ( function (mod){
 	mod.sld.byExtrusion = function(surface, frame, xDistance, yDistance, zDistance){
 
 		var bottomSurface = surface;
-		bottomSurface.setGeometry( surface.getGeometry().transform( frame.toLocal() ) ); 
+		bottomSurface.setGeometry( bottomSurface.getGeometry().transform( frame.toLocal() ) ); 
 		
 		var topSurface = MOBIUS.obj.copy( bottomSurface );
 		
@@ -1021,6 +1021,19 @@ var MOBIUS = ( function (mod){
 
 		var geom = object.getGeometry();
 
+		function getRotationMatrix( axis, angle){
+		        var cost = Math.cos(angle);
+		        var sint = Math.sin(angle);
+		        var ux = axis[0];
+		        var uy = axis[1];
+		        var uz = axis[2];
+
+		        return [ [ cost + ux*ux*(1-cost), ux*uy*(1-cost) - uz*sint, ux*uz*(1-cost) + uy*sint, 0 ],
+		                    [ ux*uy*(1-cost) + uz*sint,  cost + uy*uy*(1-cost),  uy*uz*(1-cost) - ux*sint, 0 ],
+		                        [ ux*uz*(1-cost) - uy*sint, uy*uz*(1-cost) + ux*sint, cost + uz*uz*(1-cost), 0 ],
+		                            [ 0, 0, 0, 1 ]
+		                ];
+		}
 	    // zaxis [0,0,1]
 	    var cost = Math.cos( angleZ );
 	    var sint = Math.sin( angleZ );
@@ -1051,9 +1064,9 @@ var MOBIUS = ( function (mod){
 		if( frame != undefined ){
 			geom = geom.transform( frame.toLocal() );
 			
-			geom = geom.transform( mat_rot_z );
-			geom = geom.transform( mat_rot_y );
-			geom = geom.transform( mat_rot_x );
+			geom = geom.transform( getRotationMatrix( frame.getZaxis(), angleZ) );
+			geom = geom.transform( getRotationMatrix( frame.getYaxis(), angleY) );
+			geom = geom.transform( getRotationMatrix( frame.getXaxis(), angleX) );
 			
 			geom = geom.transform( frame.toGlobal() );
 		}

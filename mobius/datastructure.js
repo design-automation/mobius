@@ -76,9 +76,9 @@ var mObj_frame = function mObj_frame( origin, xaxis, yaxis, zaxis ){
       
                         ]; 
 
-    var world_space_matrix = [ [ _xaxis[0], _xaxis[1], _xaxis[2], 0 ], 
-                                  [ _yaxis[0], _yaxis[1], _yaxis[2], 0 ], 
-                                    [ _zaxis[0], _zaxis[1], _zaxis[2], 0 ],
+    var world_space_matrix = [ [ _xaxis[0], _xaxis[1], _xaxis[2], origin[0] ], 
+                                  [ _yaxis[0], _yaxis[1], _yaxis[2], origin[1] ], 
+                                    [ _zaxis[0], _zaxis[1], _zaxis[2], origin[2] ],
                                       [ 0, 0, 0, 1 ] ]
 
     var local_space_matrix = invertMatrix( world_space_matrix );
@@ -264,9 +264,9 @@ var mObj_geom = function mObj_geom( geometry, material ){
         // if threeGeometry hasn't been computed before or native geometry has been transformed so that new conversion is required
         // the function defines it and caches it
         if( threeGeometry == undefined ){
-            
-            // means it is a solid
-            if( geometry instanceof Array && geometry[0] instanceof mObj_geom_Surface){
+           
+            // means it is a solid 
+            if( geometry instanceof Array && (geometry[0] instanceof mObj_geom_Surface)){
                 var threeGeometry = new THREE.Object3D(); 
                 for(var srf=0; srf < geometry.length; srf++){
                     var geom = geometry[srf];
@@ -274,7 +274,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
                     if(material)
                         exGeom.material = material;
                     threeGeometry.add( exGeom ); 
-                }
+                } 
             }else{
                 threeGeometry = convertGeomToThree( geometry );  // calls a function in the module to convert native geom into accepted three format
                 if(material)
