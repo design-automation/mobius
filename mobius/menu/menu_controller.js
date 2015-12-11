@@ -10,6 +10,7 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
         $scope.jsUrl = '';
         $scope.libUrl = '';
         $scope.nodeUrl = '';
+        $scope.nodeLibUrl = '';
 
         // listen to graph to get current selected node
         // for export selected node
@@ -30,37 +31,46 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
             })
                 .then(function(answer) {
                     if(answer === 'save'){
+                        $scope.sceneUrl= '';
+
                         setTimeout(function(){
-                            document.getElementById('saveSceneJson').click()
+                            document.getElementById('saveSceneJson').click();
                         },0);
                     }
+                    setTimeout(function(){
 
+                    if($scope.sceneUrl !== ''){
+                        newScene();
+                    }
+                    },250);
 
-                        $rootScope.$broadcast('clearProcedure');
-
-                        // reset procedure / interface / graph and refresh viewport
-                    generateCode.setChartViewModel(new flowchart.ChartViewModel({
-                            "nodes": [],
-                            "connections": []
-                        }
-                    ));
-                    generateCode.setDataList([]);
-                    generateCode.setInterfaceList([]);
-
-                    var scope = angular.element(document.getElementById('threeViewport')).scope();
-                    var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
-
-                    setTimeout(function(
-                    ){
-                        scope.$apply(function(){scope.viewportControl.refreshView();} );
-                        scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
-                    },0);
-
-                    consoleMsg.confirmMsg('newSceneCreated');
-                    $rootScope.$broadcast('runNewScene');
-
-                },
+                    },
                 function() {});
+
+            function newScene(){
+                $rootScope.$broadcast('clearProcedure');
+
+                // reset procedure / interface / graph and refresh viewport
+                generateCode.setChartViewModel(new flowchart.ChartViewModel({
+                        "nodes": [],
+                        "connections": []
+                    }
+                ));
+                generateCode.setDataList([]);
+                generateCode.setInterfaceList([]);
+
+                var scope = angular.element(document.getElementById('threeViewport')).scope();
+                var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
+
+                setTimeout(function(
+                ){
+                    scope.$apply(function(){scope.viewportControl.refreshView();} );
+                    scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
+                },0);
+
+                consoleMsg.confirmMsg('newSceneCreated');
+                //$rootScope.$broadcast('runNewScene');
+            }
         };
 
         $scope.loadExample = function(exampleFile){
@@ -139,7 +149,7 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                     ){
                         scope.$apply(function(){scope.viewportControl.refreshView();} );
                         scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
-                        $rootScope.$broadcast('runNewScene');
+                       // $rootScope.$broadcast('runNewScene');
                     },0);
                 }
             );
@@ -234,7 +244,7 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
             ){
                 scope.$apply(function(){scope.viewportControl.refreshView();} );
                 scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
-                $rootScope.$broadcast('runNewScene');
+                //$rootScope.$broadcast('runNewScene');
             },0);
 
         };
@@ -254,11 +264,24 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                                     + interfaceJson], {type: "application/json"});
 
             $scope.sceneUrl = URL.createObjectURL(sceneBlob);
+            return true;
         };
 
 
+        // redo / undo emit to graph controller
+        // fixme seperate module for undo/redo
+
+        $scope.undo = function(){
+            $rootScope.$broadcast('undo')
+        };
+
+        $scope.redo = function(){
+            $rootScope.$broadcast('redo')
+        };
+
         // import pre-defined node
         // fixme potentially malfunction since input and output are not dynamically linked
+        // fixme so far so good
         $scope.importNode = function (files) {
 
             var jsonString;
@@ -332,6 +355,60 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
 
             $scope.nodeUrl = URL.createObjectURL(nodeBlob);
         };
+
+        // export node library in current local storage
+        $scope.exportNodeLib = function (){
+            var allType = JSON.parse(localStorage.vidamoNodeTypes);
+            var typeToExport = [];
+
+            for(var i =0; i< allType.length ; i++){
+                if(allType[i].overwrite !== false){
+                    typeToExport.push(allType[i]);
+                }
+            }
+
+            var typesJson = JSON.stringify(typeToExport,null,4);
+            var typesBlob = new Blob([typesJson], {type: "application/json"});
+
+            $scope.nodeLibUrl = URL.createObjectURL(typesBlob);
+        };
+
+
+        // import node library to current local storage
+        $scope.importNodeLib = function(files){
+
+            for(var i = 0; i < files.length ; i ++ ){
+                var f = files[i];
+
+                var reader = new FileReader();
+
+                reader.onload = (function () {
+
+                    return function (e) {
+                        if(f.name.split('.').pop() == 'json') {
+                            var jsonString = e.target.result;
+                            var types = JSON.parse(jsonString);
+
+                            var currentTypes = JSON.parse(localStorage.vidamoNodeTypes);
+                            for(var i = 0; i < types.length; i++ ){
+                                currentTypes.push(types[i]);
+                            }
+
+                            localStorage.vidamoNodeTypes = JSON.stringify(currentTypes);
+
+                            nodeCollection.syncNodeTpyeStorage();
+
+                            consoleMsg.confirmMsg('nodeImport');
+                        }else{
+                            consoleMsg.errorMsg('invalidFileType');
+                        }
+                    };
+                })(f);
+
+                reader.readAsText(f);
+            }
+
+        }
 
         // save generated js file
         $scope.downloadJs = function(){

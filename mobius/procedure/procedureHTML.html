@@ -100,7 +100,9 @@
                     <div ui-tree-nodes="" ng-model="data">
                         <div ng-repeat="node in data"
                              ui-tree-node
-                             ng-include="'mobius/procedure/procedure_template.html'">
+                             ng-include="'mobius/procedure/procedure_template.html'"
+                             context-menu
+                             data-target="menu-procedure">
                         </div>
                     </div>
                 </div>

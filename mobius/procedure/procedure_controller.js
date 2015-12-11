@@ -552,9 +552,20 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                 }
 
                 else if(cate === 'Output'){
+                    if($scope.data.length !== 0){
+                        var maxId = $scope.data[0].id;
+                        for(var i = 1;i < $scope.data.length; i ++){
+                            if(maxId < $scope.data[i].id){
+                                maxId = $scope.data[i].id;
+                            }
+                        }
+                    }else{
+                        maxId = 0;
+                    }
+
 
                     var outputObj = {
-                        id:$scope.data.length + 1,
+                        id:maxId + 1,
                         title: 'Output'
                         //name: undefined,
                         //dataValue:undefined,
@@ -599,13 +610,13 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                         result = '';
                     }
 
-					if(subCate.name !== 'expression'){
-						var paraList = getParamNames(MOBIUS[subCate.category][subCate.name]);
-						for(var j = 0; j< paraList.length; j++){
-							parameters.push({value:'',type:paraList[j]});
-						}
-					}
-					
+                    if(subCate.name !== 'expression'){
+                        var paraList = getParamNames(MOBIUS[subCate.category][subCate.name]);
+                        for(var j = 0; j< paraList.length; j++){
+                            parameters.push({value:'',type:paraList[j]});
+                        }
+                    }
+
                     var actionObj = {
                         id: $scope.data.length  + 1,
                         title:  'Action',

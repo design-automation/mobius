@@ -1,11 +1,10 @@
 <!--vidamo-->
 <!-- interface template -->
 
-
-<div ui-tree-handle class="tree-node tree-node-content"  style="background-color: white">
+<div ui-tree-handle class="tree-node tree-node-content"  style="background-color: white" >
 
     <!-- parameter presentation-->
-    <div style="padding-left:20px " class="tree-node-content">
+    <div style="padding-left:20px " class="tree-node-content" >
         {{ node.name || 'undefined' }}
         &nbsp;:&nbsp;
         <a ng-if =" node.option.name === 'none'"
@@ -13,8 +12,6 @@
            editable-text="node.dataValue"
            buttons="no"
            blur="submit">{{ node.dataValue || 'value' }}</a>
-
-
 
         <span ng-if =" node.option.name === 'slider'">
             <a data-nodrag href="#"
@@ -24,7 +21,7 @@
             </a>
 
             <input
-               style="width: 55%; display:inline-block"
+               style="width: 55%; display:inline-block;float: right;"
                 type="range"
                 data-nodrag
                 ng-model="node.dataValue"
@@ -48,15 +45,5 @@
            e-ng-options="option for option in menuOptions(node.menuOptionText)">
             {{ node.dataValue || 'value' }}
         </a>
-
     </div>
-
-    <div ui-tree-nodes=""  ng-model="node.nodes" ng-class="{hidden: collapsed}">
-            <div ng-repeat="node in node.nodes"
-                 ui-tree-node ng-include="'mobius/procedure/interface_template.html'">
-            </div>
-        </div>
-
-    </div>
-
 </div>

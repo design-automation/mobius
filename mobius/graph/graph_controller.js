@@ -11,7 +11,9 @@ vidamo.controller('graphCtrl',[
                     'nodeCollection',
                     'prompt',
                     '$mdDialog',
-    function($scope,$timeout,consoleMsg,hotkeys,generateCode,nodeCollection,prompt,$mdDialog) {
+                    'History',
+    function($scope,$timeout,consoleMsg,hotkeys,generateCode,nodeCollection,prompt,$mdDialog, History) {
+
 
 
         // temp holder for name input
@@ -35,34 +37,6 @@ vidamo.controller('graphCtrl',[
         });
 
         $scope.functionCodeList = [];
-        // synchronization with vidamo application data pool
-
-        // generated javascript code
-        //$scope.javascriptCode = generateCode.getJavascriptCode();
-        //$scope.$watch('javascriptCode', function () {
-        //    generateCode.setJavascriptCode($scope.javascriptCode);
-        //},true);
-        //$scope.$watch(function () { return generateCode.getJavascriptCode(); }, function () {
-        //    $scope.javascriptCode = generateCode.getJavascriptCode();
-        //},true);
-
-        // inner function code for procedures
-        //$scope.innerCodeList = generateCode.getInnerCodeList();
-        //$scope.$watch('innerCodeList', function () {
-        //    generateCode.setInnerCodeList($scope.innerCodeList);
-        //},true);
-        //$scope.$watch(function () { return generateCode.getInnerCodeList(); }, function () {
-        //    $scope.innerCodeList = generateCode.getInnerCodeList();
-        //},true);
-
-        // outer function code for procedures
-        //$scope.outerCodeList = generateCode.getOuterCodeList();
-        //$scope.$watch('outerCodeList', function () {
-        //    generateCode.setOuterCodeList($scope.outerCodeList);
-        //},true);
-        //$scope.$watch(function () { return generateCode.getOuterCodeList(); }, function () {
-        //    $scope.outerCodeList = generateCode.getOuterCodeList();
-        //},true);
 
         // procedure data list
         $scope.dataList = generateCode.getDataList();
@@ -79,6 +53,7 @@ vidamo.controller('graphCtrl',[
         $scope.$watch('interfaceList', function () {
             generateCode.setInterfaceList($scope.interfaceList);
         },true);
+
         $scope.$watch(function () { return generateCode.getInterfaceList(); }, function () {
             $scope.interfaceList= generateCode.getInterfaceList();
         },true);
@@ -120,6 +95,35 @@ vidamo.controller('graphCtrl',[
         $scope.currentNodeType = '';
 
 
+        // history testing
+        // todo refactor chartviewmodel and chartdatamodel
+        //
+        //$scope.model = {
+        //    interfaceModel:$scope.interfaceList,
+        //    dataModel:  $scope.dataList,
+        //    graphModel:$scope.chartViewModel.data
+        //};
+        //
+        //var w = History.watch('model',$scope)
+        //    .addChangeHandler('myChangeHandler', function() {
+        //        console.log('foo got changed',$scope.model);
+        //    });
+        //
+        //$scope.$on('undo', function(){
+        //    History.undo('model', $scope);
+        //
+        //    $scope.interfaceList = $scope.model.interfaceModel;
+        //    $scope.dataList = $scope.model.dataModel;
+        //    $scope.chartViewModel.data = $scope.model.graphModel;
+        //
+        //    console.log($scope.dataList);
+        //});
+        //
+        //$scope.$on('redo', function(){
+        //    console.log('redo')
+        //});
+
+        // fixme chart view model should exists here and not model
         // Setup the data-model for the chart.
         //var chartDataModel = {
         //    nodes: [],
@@ -254,10 +258,6 @@ vidamo.controller('graphCtrl',[
         $scope.$on("newOutputConnector",function (event,connectorModel) {
 
             try{
-                //$timeout(function(){
-                //    var connectorName = prompt("Enter a connector name:", "out"
-                //        + $scope.chartViewModel.nodes[$scope.nodeIndex].outputConnectors.length);
-
                 if (!isValidName(connectorModel.name)) {
                     return;
                 }
@@ -268,10 +268,7 @@ vidamo.controller('graphCtrl',[
                     var node = selectedNodes[i];
                     node.addOutputConnector(connectorModel);
                 }
-                //},100);
 
-
-                // update version fixme
                 var d = new Date();
                 $scope.chartViewModel.nodes[$scope.nodeIndex].data.version = d.getTime();
             }
@@ -351,6 +348,7 @@ vidamo.controller('graphCtrl',[
                     consoleMsg.confirmMsg('typeAdded');
                 }
 
+                // todo when multi-selection should throw error to user that only one node can be saved
                 var input =  $scope.chartViewModel.getSelectedNodes()[0].data.inputConnectors;
                 var output = $scope.chartViewModel.getSelectedNodes()[0].data.outputConnectors;
                 var index = $scope.chartViewModel.getSelectedNodes()[0].data.id;
@@ -362,7 +360,7 @@ vidamo.controller('graphCtrl',[
 
         });
 
-
+        // todo when multi-selection should throw error to user that only one node can be saved
         $scope.$on('overWriteProcedure',function(){
             if($scope.chartViewModel.getSelectedNodes()[0].data.overwrite){
             // get new type name, by default the original type name
@@ -377,7 +375,7 @@ vidamo.controller('graphCtrl',[
                 .then(function(answer) {
 
                     if(answer === 'Ok'){
-                            overwriteType(oldTypeName, oldTypeName, instanceName);
+                        overwriteType(oldTypeName, oldTypeName, instanceName);
                     }
                 });
             }else{
@@ -436,6 +434,47 @@ vidamo.controller('graphCtrl',[
                 consoleMsg.confirmMsg('typeOverwritten');
             }
 
+        });
+
+        $scope.$on('disableNode', function(){
+            var selectedNodes = $scope.chartViewModel.getSelectedNodes();
+
+            for (var i = 0; i < selectedNodes.length; ++i) {
+                var node = selectedNodes[i];
+                node.disable();
+            }
+
+            // when disabled, reset the attribute of 'connected' in dest connector
+            for(var i = 0; i <$scope.chartViewModel.connections.length; i++){
+                var sourceNodeId = $scope.chartViewModel.connections[i].data.source.nodeID;
+                var destNodeId = $scope.chartViewModel.connections[i].data.dest.nodeID;
+                var destConnectorIndex = $scope.chartViewModel.connections[i].data.dest.connectorIndex;
+
+                if($scope.chartViewModel.nodes[sourceNodeId].disabled() === true){
+                    $scope.chartViewModel.nodes[destNodeId].inputConnectors[destConnectorIndex].data.connected = false;
+                }
+            }
+
+        });
+
+        $scope.$on('enableNode', function(){
+            var selectedNodes = $scope.chartViewModel.getSelectedNodes();
+
+            for (var i = 0; i < selectedNodes.length; ++i) {
+                var node = selectedNodes[i];
+                node.enable();
+            }
+
+            // when disabled, reset the attribute of 'connected' in dest connector
+            for(var i = 0; i <$scope.chartViewModel.connections.length; i++){
+                var sourceNodeId = $scope.chartViewModel.connections[i].data.source.nodeID;
+                var destNodeId = $scope.chartViewModel.connections[i].data.dest.nodeID;
+                var destConnectorIndex = $scope.chartViewModel.connections[i].data.dest.connectorIndex;
+
+                if($scope.chartViewModel.nodes[sourceNodeId].disabled() === false){
+                    $scope.chartViewModel.nodes[destNodeId].inputConnectors[destConnectorIndex].data.connected = true;
+                }
+            }
         });
 
         $scope.$on('selectAll',function(){

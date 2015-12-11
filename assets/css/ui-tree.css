@@ -71,6 +71,7 @@ margin:2px;
     z-index:999;opacity:.8
 }
 
+
 .procedure-tree {
     background-color: white;
     border: 1px solid #ccc;
@@ -78,7 +79,16 @@ margin:2px;
 }
 
 .node-selected {
-    background-color: #ddd;
+    border: 1px solid #3F98F3;
 }
 
+.node-disabled {
+    background-color: #ddd;
+
+}
+
+.node-selected-disabled {
+    background-color: #ddd;
+    border: 1px solid #3F98F3;
+}
 

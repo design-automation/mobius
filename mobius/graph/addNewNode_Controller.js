@@ -106,7 +106,7 @@ vidamo.controller('newNodeCtrl',[
 
 
         // Add a new node to the chart.
-        // todo integrate with fancy prompt
+        // todo disable name history in input
 
         $scope.addNewNode = function (type) {
             if(type === 'create new type'){
@@ -153,8 +153,10 @@ vidamo.controller('newNodeCtrl',[
 
                 // update node name, node id and location
                 var newNodeDataModel = {};
+                // fixme potential id duplication
                 newNodeDataModel.id = $scope.chartViewModel.nodes.length;
                 newNodeDataModel.name = nodeName;
+                // fixme canvas reconfiguration requried
                 newNodeDataModel.x = 1900;
                 newNodeDataModel.y = 2100;
                 newNodeDataModel.inputConnectors = nodeCollection.getInputConnectors(type);
@@ -162,6 +164,7 @@ vidamo.controller('newNodeCtrl',[
                 newNodeDataModel.type = type;
                 newNodeDataModel.version = 0;
                 newNodeDataModel.overwrite = nodeCollection.getOverwrite(type);
+                newNodeDataModel.disabled = false;
 
                 // when new node added, increase the number of procedure list by one
                 $scope.dataList.push(nodeCollection.getProcedureDataModel(type));
@@ -170,8 +173,16 @@ vidamo.controller('newNodeCtrl',[
                 $scope.innerCodeList.push('//\n' + '// To generate code, create nodes & procedures and run!\n' + '//\n');
                 $scope.outerCodeList.push('//\n' + '// To generate code, create nodes & procedures and run!\n' + '//\n');
 
+                var tempInterface = nodeCollection.getInterfaceDataModel(type);
+                if(tempInterface){
+                    for(var i = 0; i < tempInterface.length; i++){
+                        if(tempInterface[i].connected === true){
+                            tempInterface[i].connected = false;
+                        }
+                    }
+                }
                 // when new node added, increase the number of interface list by one
-                $scope.interfaceList.push(nodeCollection.getInterfaceDataModel(type));
+                $scope.interfaceList.push(tempInterface);
 
                 // todo interface code list
 

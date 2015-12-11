@@ -4,7 +4,7 @@ var vidamo = angular.module('vidamo',
                             [
                                 //'ngMaterial',
                                 'ui.layout',
-                                 'ui.ace',
+                                'ui.ace',
                                 'ui.bootstrap',
                                 'ui.select',
                                 'ngSanitize',
@@ -19,7 +19,8 @@ var vidamo = angular.module('vidamo',
                                 'cfp.hotkeys',
                                 'ngMaterial',
                                 'ngRoute',
-                                'ng-context-menu'
+                                'ng-context-menu',
+                                'decipher.history'
                             ]);
 
     vidamo.filter('propsFilter', function() {

@@ -54,6 +54,7 @@ vidamo.directive('viewport', function factory() {
                 camera.position.set(-120, 60, 200);
                 camera.lookAt( scene.position );
 
+
                 orthoCamera = new THREE.OrthographicCamera(
                     VIEWPORT_WIDTH / -2,		// Left
                     VIEWPORT_WIDTH / 2,		    // Right

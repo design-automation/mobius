@@ -23,6 +23,25 @@ CSS For ui-flowchart [left pane graph area]
 	stroke-width: 3;
 }
 
+.disabled-node-rect {
+	fill:#cccccc;
+	stroke: #aaaaaa;
+	border-radius: 0px;
+	stroke-width: 1;
+}
+
+.mouseover-disabled-node-rect {
+	fill:#cccccc;
+	stroke: #777777;
+	stroke-width: 2;
+}
+
+.selected-disabled-node-rect {
+	fill:#cccccc;
+	stroke: #3F98F3;
+	stroke-width: 3;
+}
+
 .connector-circle {
     fill: white;
     stroke: #777777;

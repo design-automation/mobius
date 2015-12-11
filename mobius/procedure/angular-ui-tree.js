@@ -590,8 +590,8 @@
 
 
               dragStart = function (e) {
-                if (!hasTouch && (e.button == 2 || e.which == 3)) {
-                  // disable right click
+                if (!hasTouch && (e.button == 1 || e.which == 2)) {
+                  // disable middle click
                   return;
                 }
                 if (e.uiTreeDragging || (e.originalEvent && e.originalEvent.uiTreeDragging)) { // event has already fired in other scope.

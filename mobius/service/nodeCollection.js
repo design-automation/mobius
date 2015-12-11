@@ -33,6 +33,10 @@ vidamo.factory('nodeCollection', function () {
     nodes = JSON.parse(localStorage.vidamoNodeTypes);
 
     return{
+        syncNodeTpyeStorage: function(){
+            nodes = JSON.parse(localStorage.vidamoNodeTypes);
+        },
+
         // return node types for graph
         getNodeTypes: function(){
             var nodeTypes = [];
@@ -95,6 +99,16 @@ vidamo.factory('nodeCollection', function () {
 
         // install node for create new node type / import node
         installNewNodeType: function(type, input, output, procedureList, interfaceList){
+
+            //if(interfaceList){
+            //    for(var i = 0; i <interfaceList.length; i++){
+            //        if(interfaceList[i].connected === true){
+            //            interfaceList[i].connected = false;
+            //            console.log('xx')
+            //        }
+            //    }
+            //}
+
             var newNode = {
                 nodeType: type,
                 version:0,
@@ -110,11 +124,19 @@ vidamo.factory('nodeCollection', function () {
             nodes.push(newNode);
             localStorage.vidamoNodeTypes = JSON.stringify(nodes);
 
-            console.log(JSON.stringify(nodes));
         },
 
         // update node procedure content
         updateNodeType: function(oldType,newType, input, output, newProcedureList,newInterfaceList){
+
+            //if(newInterfaceList){
+            //    for(var i = 0; i <newInterfaceList.length; i++){
+            //        if(newInterfaceList[i].connected === true){
+            //            newInterfaceList[i].connected = false;
+            //        }
+            //    }
+            //}
+
             for(var i = 0; i < nodes.length; i++){
                 if(nodes[i].nodeType == oldType){
                     nodes[i].nodeType = newType;
