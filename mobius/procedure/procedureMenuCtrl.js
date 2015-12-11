@@ -25,6 +25,17 @@ vidamo.controller('procedureMenuCtrl',['$scope','$rootScope','generateCode',
         // disable selected item
         $scope.disableProcedure = function(){
             $scope.findSelectedProcedure($scope.data);
+
+            // if disable 'if' -> disable 'if/else'
+            if($scope.selectedPos.title === 'Control' && $scope.selectedPos.controlType === 'if'){
+                for(var i = 0;i < $scope.data.length; i++){
+                    $scope.searchParent($scope.selectedPos,$scope.data[i]);
+                }
+                if($scope.selectedParentItem.controlType === 'if else'){
+                    $scope.selectedPos = $scope.selectedParentItem;
+                }
+            }
+
             $scope.selectedPos.disabled = true;
             $scope.disableSubItems($scope.selectedPos);
         };

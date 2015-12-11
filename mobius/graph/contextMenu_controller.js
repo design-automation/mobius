@@ -134,7 +134,8 @@ vidamo.controller('nodeMenuCtrl',['$scope','$rootScope','generateCode',
 
         $scope.checkDisabled = function(){
             if($scope.chartViewModel.nodes[$scope.nodeIndex] !== undefined){
-                if($scope.chartViewModel.nodes[$scope.nodeIndex].disabled() === false){
+                if($scope.chartViewModel.nodes[$scope.nodeIndex].disabled() === false ||
+                    $scope.chartViewModel.nodes[$scope.nodeIndex].disabled() === undefined){
                     return false;
                 }else{
                     return true;

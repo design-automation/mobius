@@ -79,14 +79,16 @@ margin:2px;
 }
 
 .node-selected {
-    background-color: #ddd;
+    border: 1px solid #3F98F3;
 }
 
 .node-disabled {
-    background-color: red;
+    background-color: #ddd;
+
 }
 
 .node-selected-disabled {
-    background-color: green;
+    background-color: #ddd;
+    border: 1px solid #3F98F3;
 }
 
