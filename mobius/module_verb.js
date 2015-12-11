@@ -724,7 +724,7 @@ var MOBIUS = ( function (mod){
 	mod.pnt = {};
 
 	mod.pnt.byCoords = function(x, y, z){
-		return [x, y, z];
+		return new mObj_geom_Vertex([x, y, z]);
 	}
 
 	/**
@@ -1554,7 +1554,7 @@ var convertGeomToThree = function( geom ){
 		else if(singleDataObject instanceof Array){
 			// means it is a point
 			var dotGeometry = new THREE.Geometry();
-			dotGeometry.vertices.push( new THREE.Vector3(singleDataObject[0], singleDataObject[1], singleDataObject[2]) );
+			dotGeometry.vertices.push( new THREE.Vector3(singleDataObject[0], singleDataObject[1], singleDataObject[2]) ); console.log("here");
 			return new THREE.PointCloud( dotGeometry );
 		}
 		else {

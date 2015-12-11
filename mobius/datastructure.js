@@ -262,7 +262,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
         if( threeGeometry == undefined ){
             
             // means it is a solid
-            if( geometry instanceof Array){
+            if( geometry instanceof Array && geometry[0] instanceof mObj_geom_Surface){
                 var threeGeometry = new THREE.Object3D(); 
                 for(var srf=0; srf < geometry.length; srf++){
                     var geom = geometry[srf];
