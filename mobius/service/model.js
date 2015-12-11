@@ -481,7 +481,9 @@ vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
 
                      codeBlock += ');\n';
                  }else if(procedure.method === 'expression'){
-                     codeBlock += procedure.expression;
+                     if(procedure.expression !== undefined && procedure.expression !== ''){
+                         codeBlock += procedure.expression + ';';
+                     }
                  }
 
 

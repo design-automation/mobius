@@ -51,7 +51,9 @@ vidamo.directive('viewport', function factory() {
                     FAR = 10000;
 
                 camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
-                camera.position.set(-120, 60, 200);
+                camera.position.set(-120, 200, 60);
+                // z up
+                camera.up.set( 0, 0, 1 );
                 camera.lookAt( scene.position );
 
 
@@ -104,8 +106,8 @@ vidamo.directive('viewport', function factory() {
                 var gridHelper = new THREE.GridHelper(100, 10); // 100 is grid size, 10 is grid step
                 gridHelper.name = 'helper';
                 gridHelper.setColors(0x999999,0xaaaaaa);
+                gridHelper.rotation.x = Math.PI/2;//new THREE.Euler(0, 0 ,   0);
                 gridHelper.position = new THREE.Vector3(0, 0, 0);
-                gridHelper.rotation = new THREE.Euler(0, 0, 0);
                 scene.add(gridHelper);
             }
 
