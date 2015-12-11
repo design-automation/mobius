@@ -165,6 +165,10 @@ var mObj_frame = function mObj_frame( origin, xaxis, yaxis, zaxis ){
         return buildAxes( 20 );
     }
 
+    this.extractTopology = function(){
+        return null;
+    }
+
     this.extractData = function(){
         return 'frame';
     }
