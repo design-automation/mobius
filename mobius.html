@@ -77,11 +77,11 @@
             <!--<a style="color: #000" href dropdown-toggle>  Edit |</a>-->
             <!--<ul class="dropdown-menu">-->
                 <!--<li>-->
-                    <!--<a> Todo:Undo </a>-->
+                    <!--<a ng-click = "undo()"> Undo </a>-->
                 <!--</li>-->
 
                 <!--<li>-->
-                    <!--<a> Todo:Redo </a>-->
+                    <!--<a ng-click = "redo()"> Redo </a>-->
                 <!--</li>-->
             <!--</ul>-->
         <!--</span>-->
@@ -91,14 +91,29 @@
               <ul class="dropdown-menu">
                   <li>
                       <input type="file" id="importNode"
-                             style="visibility: hidden; width: 1px; height: 1px" multiple
+                             style="visibility: hidden; width: 1px; height: 1px"
+                             multiple
                              onchange="angular.element(this).scope().importNode(this.files)"/>
                       <a href="" onclick="document.getElementById('importNode').click()"> Import Node </a>
                   </li>
 
+                  <!--todo when no node selected grey out-->
                   <li>
                       <a ng-href="{{nodeUrl}}" download="node.json" ng-click = "exportNode()">
-                          Export Node
+                          Export Selected Node
+                      </a>
+                  </li>
+
+                  <li>
+                      <input type="file" id="importNodeLib"
+                             style="visibility: hidden; width: 1px; height: 1px"
+                             onchange="angular.element(this).scope().importNodeLib(this.files)"/>
+                      <a href="" onclick="document.getElementById('importNodeLib').click()"> Import Node Library</a>
+                  </li>
+
+                  <li>
+                      <a ng-href="{{nodeLibUrl}}" download="nodeLib.json" ng-click = "exportNodeLib()">
+                          Export Node Library
                       </a>
                   </li>
               </ul>
@@ -150,7 +165,6 @@
                         id="layout">
         <div ng-controller="layoutCtrl">
             <div class="layout-area" ui-layout="{flow : 'column'}" ng-controller="procedureCtrl">
-
                 <!-- 3D view area  -->
                 <div class=" view-area" ui-layout-container size={{viewportWidth}} id="viewport">
                     <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
@@ -273,7 +287,7 @@
                     <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
                         <div ui-layout-container size = "25%">
 
-                            <div ng-controller="procedureCtrl">
+                            <div >
                                 <div ng-if = "currentNodeName">
                                     <pre class="nodeName" style="padding: 1px">
                                         &nbsp &nbsp {{currentNodeType}} {{currentNodeVersion}} : &nbsp {{currentNodeName}} &nbsp
@@ -286,8 +300,7 @@
                                     </pre>
                                 </div>
 
-                                <div
-                                        style="overflow: auto;
+                                <div style="overflow: auto;
                                             position: absolute;
                                             height: 100%;
                                             width: 100%;
@@ -299,7 +312,8 @@
                                         <div ui-tree-nodes="" ng-model="interface">
                                             <div ng-repeat="node in interface"
                                                  ui-tree-node
-                                                 ng-include="'mobius/procedure/interface_template.html'">
+                                                 ng-include="'mobius/procedure/interface_template.html'"
+                                                 ng-if="node.connected !== true">
                                             </div>
                                         </div>
                                     </div>
@@ -334,13 +348,6 @@
                                             title="Run program">
                                         Run
                                     </button>
-
-                                        <!--<span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner"-->
-                                                <!--style="position: absolute;-->
-                                                <!--left:50%;-->
-                                                <!--z-index: 999999999999999999999">-->
-                                        <!--</span>-->
-
                                 </span>
 
                                 <div ng-controller="znpController" class="znpController">
@@ -364,7 +371,8 @@
                 </div>
             </div>
         </div>
-<div ng-controller="nodeMenuCtrl">
+
+        <div ng-controller="nodeMenuCtrl">
             <div class="dropdown position-fixed " id="menu-node" >
                 <ul class="dropdown-menu">
                     <li class="dropdown-submenu">
@@ -391,17 +399,13 @@
                     </li>
 
                     <li ng-if="checkDupFunc()"><a ng-click="addFunctionOutput()"> Show Function output </a></li>
-
                     <li><a ng-click="delete()"> Delete </a></li>
-
                     <li><a ng-click="rename()"> Rename </a></li>
-
                     <li><a ng-click="saveAsNew()"> Save as new type</a></li>
-
                     <li><a ng-click="overwrite()"> Overwrite original type</a></li>
-
                     <li><a ng-click="editProcedure()"> Edit procedure</a></li>
-
+                    <li><a ng-if="!checkDisabled()" ng-click="disableNode()"> Disable </a></li>
+                    <li><a ng-if="checkDisabled()" ng-click="enableNode()"> Enable </a></li>
                 </ul>
             </div>
 
@@ -410,7 +414,6 @@
                     <li>
                         <a ng-click="delete()"> Hide </a>
                     </li>
-
                     <!--<li>-->
                         <!--<a ng-click="rename()"> Rename </a>-->
                     <!--</li>-->
@@ -424,8 +427,28 @@
                     </li>
                 </ul>
             </div>
+        </div>
 
-</div>
+        <!--todo context menu for procedure items-->
+        <div ng-controller="procedureMenuCtrl" >
+            <div class="dropdown position-fixed " id="menu-procedure" >
+                <ul class="dropdown-menu" >
+                    <li>
+                        <a ng-if="!checkDisabled()" ng-click="disableProcedure()"> Disable </a>
+                    </li>
+
+                    <li>
+                        <a ng-if="checkDisabled()" ng-click="enableProcedure()"> Enable </a>
+                    </li>
+
+
+                    <!--<li>-->
+                        <!--<a ng-click="copyProcedure()"> Todo: Copy </a>-->
+                    <!--</li>-->
+                </ul>
+            </div>
+
+        </div>
 
     </div>
 </div>
@@ -454,6 +477,9 @@
 
 <script type="text/javascript" src="assets/js/angular-ui/ui-ace/ui-ace.js"></script>
 <script type="text/javascript" src="assets/js/packages/ace-builds/src-min-noconflict/ace.js"></script>
+
+<script type="text/javascript" src="assets/js/angular-ui/history.js"></script>
+
 
 <!-- flowchart -->
 <script src="mobius/graph/ui-flowchart/svg_class.js" type="text/javascript"></script>
@@ -509,6 +535,8 @@
 <script src="mobius/graph/addNewNode_Controller.js"></script>
 <script src="mobius/viewport/code_controller.js"></script>
 <script src="mobius/graph/contextMenu_controller.js"></script>
+<script src="mobius/procedure/procedureMenuCtrl.js"></script>
+
 
 
 <!-- directives -->

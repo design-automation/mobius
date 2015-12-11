@@ -2,7 +2,7 @@
  *	Module, with verb.js
  */
  
-var VIDAMO = ( function (mod){	
+var MOBIUS = ( function (mod){
 
 	/*
 	 *
@@ -17,7 +17,7 @@ var VIDAMO = ( function (mod){
 	 * @returns {null}
 	 */
 	mod.print = function(content){
-		// try to find vidamo web app, if found print in vidamo console
+		// try to find MOBIUS web app, if found print in MOBIUS console
 
 		this.content = content;
 
@@ -25,9 +25,28 @@ var VIDAMO = ( function (mod){
 			var logString = "<div style='color: green;'>" + this.content + '</div>';
 			document.getElementById('log').innerHTML += logString;
 		}catch(err){
-			console.log('warnning: vidamo web app not connected.');
+			console.log('warnning: MOBIUS web app not connected.');
 		}
 	};
+
+	mod.a = {};
+	mod.a.a1 = function(a,b){
+		console.log(a,b)
+	};
+
+	mod.a.a2 = function(){
+	};
+
+	mod.b = {};
+	mod.b.bc1 = function(){
+	};
+
+	mod.b.bc2 = function(){
+	};
+
+	mod.b.bc3 = function(){
+	};
+
 
 	/**
 	 * Converts RGB values into Hex color code
@@ -123,13 +142,14 @@ var VIDAMO = ( function (mod){
 	mod.multiplyArray = function( factor, array ){
 		return [ factor*array[0], factor*array[1], factor*array[2] ] ;
 	}
-	
 
 	/*
 	 *
 	 * List Operations
 	 *
 	 */
+
+
 
 	/**
 	 * Returns a number sequence in the form of an array
@@ -228,7 +248,7 @@ var VIDAMO = ( function (mod){
 	 * @returns {float / int} 
 	 */
 	mod.averageList = function( valueList ){
-		return VIDAMO.sumList( valueList )/ valueList.length;
+		return MOBIUS.sumList( valueList )/ valueList.length;
 	};
 
 	/**
@@ -237,7 +257,7 @@ var VIDAMO = ( function (mod){
 	 * @returns {float / int} 
 	 */
 	mod.rangeOfList = function( valueList ){
-		return VIDAMO.getMaxValue( valueList ) - VIDAMO.getMinValue( valueList );
+		return MOBIUS.getMaxValue( valueList ) - MOBIUS.getMinValue( valueList );
 	};
 
 	/**
@@ -611,8 +631,8 @@ var VIDAMO = ( function (mod){
 		if( centerPoint.getGeometry != undefined )
 			centerPoint = centerPoint.getGeometry();
 
-		var radialLine = VIDAMO.makeLine( centrePoint, [centrePoint[0]+radius, centrePoint[1], centrePoint[2]] );
-		return VIDAMO.makeSurfaceByRevolution( radialLine, centrePoint, [0,1,0] );
+		var radialLine = MOBIUS.makeLine( centrePoint, [centrePoint[0]+radius, centrePoint[1], centrePoint[2]] );
+		return MOBIUS.makeSurfaceByRevolution( radialLine, centrePoint, [0,1,0] );
 	};
 
 
@@ -688,8 +708,8 @@ var VIDAMO = ( function (mod){
 
 	mod.makeSolidByExtrusion = function( surface, extrusionVector ){
 		var bottomSurface = surface;
-		var topSurface = VIDAMO.makeCopy( bottomSurface, undefined, undefined, undefined);
-		VIDAMO.shiftObject(topSurface, extrusionVector[0], extrusionVector[1], extrusionVector[2]);
+		var topSurface = MOBIUS.makeCopy( bottomSurface, undefined, undefined, undefined);
+		MOBIUS.shiftObject(topSurface, extrusionVector[0], extrusionVector[1], extrusionVector[2]);
 
 		var solid = [ bottomSurface, topSurface ];
 		// join boundary points of the two surfaces
@@ -931,7 +951,7 @@ var VIDAMO = ( function (mod){
 		/*	if(mObj instanceof Array){
 			var newcopy = [];
 			for(var obj=0; obj < mObj.length; obj++)
-				newcopy.push(VIDAMO.makeCopy(mObj[obj], xCoord, yCoord, zCoord));	
+				newcopy.push(MOBIUS.makeCopy(mObj[obj], xCoord, yCoord, zCoord));	
 			return newcopy;
 		}*/
 
@@ -957,7 +977,7 @@ var VIDAMO = ( function (mod){
 
 		// if verbs object, has to be copied and translated
 		if(xCoord != undefined && yCoord != undefined && zCoord != undefined){
-			VIDAMO.moveObjectToPoint(newcopy, xCoord, yCoord, zCoord);
+			MOBIUS.moveObjectToPoint(newcopy, xCoord, yCoord, zCoord);
 		}
 			
 
@@ -981,7 +1001,7 @@ var VIDAMO = ( function (mod){
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
 		if(mObj instanceof Array){
 			for(var obj=0; obj < mObj.length; obj++)
-				VIDAMO.shiftObject(mObj[obj], shiftX, shiftY, shiftZ);	
+				MOBIUS.shiftObject(mObj[obj], shiftX, shiftY, shiftZ);	
 		}
 
 		var geom = mObj.getGeometry();
@@ -994,7 +1014,7 @@ var VIDAMO = ( function (mod){
 		var transformedGeometry = geom.transform( mat );
 		
 		if(geom.center != undefined){ 
-			var centre = VIDAMO.getCentre( mObj );
+			var centre = MOBIUS.getCentre( mObj );
 			transformedGeometry.center = function(){ return [ centre[0]+shiftX, centre[1]+shiftY, centre[2]+shiftZ ] }
 		}
 				
@@ -1018,10 +1038,10 @@ var VIDAMO = ( function (mod){
 		// original geometry interactions will not follow the translations - csg is ok, because that derieves from three.js itself
 		if(mObj instanceof Array){
 			for(var obj=0; obj < mObj.length; obj++)
-				VIDAMO.moveObjectToPoint(mObj[obj], xCoord, yCoord, zCoord);	
+				MOBIUS.moveObjectToPoint(mObj[obj], xCoord, yCoord, zCoord);	
 		}
 	
-		var orCenter = VIDAMO.getCentre(mObj);
+		var orCenter = MOBIUS.getCentre(mObj);
 			
 		// translation required
 		var target = [xCoord, yCoord, zCoord];
@@ -1029,7 +1049,7 @@ var VIDAMO = ( function (mod){
 		var ty = target[1] - orCenter[1];
 		var tz = target[2] - orCenter[2]; 
 		
-		VIDAMO.shiftObject( mObj, tx, ty, tz );		
+		MOBIUS.shiftObject( mObj, tx, ty, tz );		
 	};
 
 	/**
@@ -1044,7 +1064,7 @@ var VIDAMO = ( function (mod){
 
 		if(mObj instanceof Array){
 			for(var obj=0; obj < mObj.length; obj++)
-				VIDAMO.scaleObject(mObj[obj], scaleX, scaleY, scaleZ);	
+				MOBIUS.scaleObject(mObj[obj], scaleX, scaleY, scaleZ);	
 		}
 
 		// if extractGeometry is called again, the translations would  be lost ..
@@ -1073,13 +1093,13 @@ var VIDAMO = ( function (mod){
 
 		if(mObj instanceof Array){
 			for(var obj=0; obj < mObj.length; obj++)
-				VIDAMO.rotateObject(mObj[obj], xAxis, yAxis, zAxis);	
+				MOBIUS.rotateObject(mObj[obj], xAxis, yAxis, zAxis);	
 		}
 
 		var geom = mObj.getGeometry();
 		if(geom instanceof verb.geom.NurbsCurve || geom instanceof verb.geom.NurbsSurface){
 
-			var centre = VIDAMO.getCentre(mObj);
+			var centre = MOBIUS.getCentre(mObj);
 			
 			var mat_x = [ [1, 0, 0, 0],
 							[0,	Math.cos(xAxis), -Math.sin(xAxis),0],
@@ -1103,12 +1123,12 @@ var VIDAMO = ( function (mod){
 
 			// if the object is scaled, the object centre remains the same and needs to be redefined
 			if(geom.center != undefined)
-				transformedGeometry.center = function(){ return VIDAMO.getCentre( mObj ) }
+				transformedGeometry.center = function(){ return MOBIUS.getCentre( mObj ) }
 
 			mObj.setGeometry( transformedGeometry );
 		
 			// shift to original centre point
-			VIDAMO.moveObjectToPoint(mObj, centre[0], centre[1], centre[2]);
+			MOBIUS.moveObjectToPoint(mObj, centre[0], centre[1], centre[2]);
 		}
 	};
 
@@ -1233,7 +1253,7 @@ var VIDAMO = ( function (mod){
 
 	return mod;
 
-})(window.VIDAMO || {});
+})(window.MOBIUS || {});
 
 
 
@@ -1316,25 +1336,23 @@ var convertTopoToThree = function( topology ){
 		var edge = convertGeomToThree(topology.edges[e].getGeometry());
 		edge.material = topoEdgeMaterial;
 		topo.add(edge);
-
-
 	}
 
 	// convert faces
-	var topoSurfaceMaterial = new THREE.MeshLambertMaterial( {
-									    side: THREE.DoubleSide,
-									    wireframe: false,
-									    shading: THREE.SmoothShading,
-									    transparent: false,
-									    color: 0x6666FF
-									    } );
-	for(var f = 0; f < topology.faces.length; f++){ 
+	/*	var topoSurfaceMaterial = new THREE.MeshNormalMaterial( {
+	 side: THREE.DoubleSide,
+	 wireframe: false,
+	 //shading: THREE.SmoothShading,
+	 transparent: false,
+	 color: 0x003399
+	 } );*/
+	for(var f = 0; f < topology.faces.length; f++){
 		var face = convertGeomToThree(topology.faces[f].getGeometry());
-		face.material = topoSurfaceMaterial;
+		face.material = new THREE.MeshNormalMaterial();
 		topo.add(face);
 
 		//addNumber( "FaceNumber"+f, face);
-	} 
+	}
 
 	return topo;
 

@@ -6,26 +6,6 @@
   oncontextmenu="return false;"
 >
   <defs>
-    <linearGradient 
-      spreadMethod="pad" 
-      y2="0" 
-      x2="0" 
-      y1="0"
-      x1="0" 
-      id="nodeBackgroundGradient"
-      >
-      <stop 
-        offset="0" 
-        stop-opacity="0.99609" 
-        stop-color="#eeeeee"
-        />
-        <stop 
-        offset="0.63934" 
-        stop-opacity="0.99219" 
-        stop-color="#eeeeee"
-        />
-    </linearGradient>
-
       <pattern id="dots-4-11" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
           <circle cx="10" cy="10" r="0.5" style="stroke:none; fill:#aaaaaa;" />
       </pattern>
@@ -44,20 +24,22 @@
     ng-attr-transform="translate({{node.x()}}, {{node.y()}})"
     >
     <rect
-      ng-attr-class="{{node.selected() && 'selected-node-rect' || (node == mouseOverNode && 'mouseover-node-rect' || 'node-rect')}}"
+      ng-attr-class="{{(!node.disabled()) && (node.selected() && 'selected-node-rect')
+                        || ((!node.disabled()) && (node == mouseOverNode && 'mouseover-node-rect'|| 'node-rect'))
+                        || (node.disabled()) && (node.selected() && 'selected-disabled-node-rect')
+                        || ((node.disabled()) && (node == mouseOverNode && 'mouseover-disabled-node-rect'|| 'disabled-node-rect'))
+}}"
       ry="7"
       rx="7"
       x="0"
       y="0"
       ng-attr-width="{{node.width()}}"
       ng-attr-height="{{node.height()}}"
-      fill="url(#nodeBackgroundGradient)"
+      fill="#f5f5f5"
       context-menu
       data-target="menu-node"
-      ng-dblclick ="nodeDoubleClick($event)"
-            >
+      ng-dblclick ="nodeDoubleClick($event)">
     </rect>
-
 
         <text
           ng-attr-x="{{node.width()+3}}"

@@ -1,11 +1,8 @@
-
 //
 // view model Global accessor for graph
 //
 
-var flowchart = {
-
-};
+var flowchart = {};
 
 // Module.
 (function () {
@@ -46,7 +43,7 @@ var flowchart = {
 
 	//
 	// View model for a connector.
-	// @ vidamo add selection for connector deletion
+	// @ mobius add selection for connector deletion
 	//
 	flowchart.ConnectorViewModel = function (connectorDataModel, x, y, parentNode) {
 
@@ -198,6 +195,20 @@ var flowchart = {
 		};
 
 		//
+		// Enable the node.
+		//
+		this.disable = function(){
+			nodeDataModel.disabled = true;
+		};
+
+		//
+		// Disable the node.
+		//
+		this.enable = function(){
+			nodeDataModel.disabled = false;
+		};
+
+		//
 		// Toggle the selection state of the node.
 		//
 		this.toggleSelected = function () {
@@ -212,6 +223,13 @@ var flowchart = {
 		};
 
 		//
+		// Returns true if the node is selected.
+		//
+		this.disabled = function () {
+			return nodeDataModel.disabled;
+		};
+
+		//
 		// Internal function to add a connector.
 		this._addConnector = function (connectorDataModel, y, connectorsDataModel, connectorsViewModel) {
 			var connectorViewModel = 
@@ -223,8 +241,6 @@ var flowchart = {
 			// Add to node's view model.
 			connectorsViewModel.push(connectorViewModel);
 		};
-
-
 
 		//
 		// Add an input connector to the node.
@@ -642,35 +658,15 @@ var flowchart = {
 			// Update the view model.
 			//
 			this.nodes.push(new flowchart.NodeViewModel(nodeDataModel));
-
-
-            //
-            // iterate through the nodes and print out the input and output of each node
-            //
-            //console.log("========================== test msg ===========================");
-            //for(var i=0; i < this.nodes.length; i++){
-               // console.log("node id: ", this.nodes[i].data.id);
-                //for(var input=0; input < this.nodes[i].data.inputConnectors.length;input++){
-                //    //console.log("inputs: ", this.nodes[i].data.inputConnectors[input].value)
-                //}
-                //for(var output=0; output < this.nodes[i].data.outputConnectors.length;output++){
-                //    //console.log("outputs: ", this.nodes[i].data.outputConnectors[output].value)
-                //}
-            //}
-		}
+		};
 
 		//
-        //	@ vidamo
+        //	@ mobius
         //  topological sort: current setting: add/delete
         //
-
         this.topoSort = function topoSort (){
-
-            // console.log('-------------------- msg from topoSort() ----------------------');
-            //console.log('current edges: ', edgeList);
-
 			//
-			// @ vidamo
+			// @ mobius
 			// Update the edgeList
 			edgeList = [];
 

@@ -3,10 +3,13 @@
 
 <div ui-tree-handle class="tree-node tree-node-content procedure-tree ">
 
-    <div ng-class="{'node-selected':node.selected}" style="min-height: 22px">
+    <div ng-class="{'node-selected':node.selected,
+                    'node-disabled':node.disabled,
+                    'node-selected-disabled':node.selected && node.disabled}"
+         style="min-height: 22px">
 
     <!--data procedure-->
-    <div ng-if="node.title === 'Data'" style="padding-left:20px " class="tree-node-content  ">
+    <div ng-if="node.title === 'Data'" style="padding-left:20px " class="tree-node-content">
         <a>
             <!--vairable name and value-->
             <a href="#" data-nodrag editable-text="node.dataName" blur="submit"  buttons="no" >

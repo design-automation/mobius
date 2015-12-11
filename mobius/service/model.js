@@ -3,6 +3,10 @@
 // code generation module
 //
 
+// todo restructure chartDataModel and chartViewModel
+// todo restructure core data and other code lists
+
+
 vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
 
     // vidamo application data pool
@@ -33,6 +37,10 @@ vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
 
 
     return {
+        getData: function(){
+            return data;
+        },
+
         getNodeIndex: function(){
             return data.nodeIndex;
         },
@@ -96,6 +104,14 @@ vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
         setChartViewModel: function (value) {
             data.chartViewModel= value;
         },
+
+        getChartDataModel: function () {
+            return chartDataModel;
+        },
+
+        setChartDataModel: function (value) {
+            chartDataModel= value;
+        },
         getFunctionCodeList: function(){
             var functionCode = [];
             for(var i = 0; i< data.outerCodeList.length; i++){
@@ -126,78 +142,83 @@ vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
                 data.geomListCode = "var geomList = [];\n";
                 for(var n = 0; n < sortedOrder.length; n++) {
 
-                    // case where the node has output
-                    var output_port_num = data.chartViewModel.nodes[sortedOrder[n]].outputConnectors.length;
-                    var node_name = data.chartViewModel.nodes[sortedOrder[n]].data.name;
-                    var return_obj_name = 'output_' + data.chartViewModel.nodes[sortedOrder[n]].data.name;
+                    // first check if the node is disabled
+                    if(data.chartViewModel.nodes[sortedOrder[n]].disabled() === false){
+                        // case where the node has output
+                        var output_port_num = data.chartViewModel.nodes[sortedOrder[n]].outputConnectors.length;
+                        var node_name = data.chartViewModel.nodes[sortedOrder[n]].data.name;
+                        var return_obj_name = 'output_' + data.chartViewModel.nodes[sortedOrder[n]].data.name;
 
-                    if (output_port_num != 0) {
-                        // first get the return object
-                        data.javascriptCode += 'var ' + return_obj_name + ' = ';
-                        data.geomListCode += 'geomList.push({'
-                                            + 'name:'
-                                            + node_name +'.name,'
-                                            + 'value: angular.copy('
-                                            + return_obj_name + '),'
-                                            + 'geom:[],'
-                                            + 'geomData:[],'
-                                            + 'topo:[]'
-                                            +'});'
-                    }
+                        if (output_port_num != 0) {
+                            // first get the return object
+                            data.javascriptCode += 'var ' + return_obj_name + ' = ';
+                            data.geomListCode += 'geomList.push({'
+                                                + 'name:'
+                                                + node_name +'.name,'
+                                                + 'value: angular.copy('
+                                                + return_obj_name + '),'
+                                                + 'geom:[],'
+                                                + 'geomData:[],'
+                                                + 'topo:[]'
+                                                +'});'
+                        }
 
+                        // case where the node has no output
+                        data.javascriptCode += data.chartViewModel.nodes[sortedOrder[n]].data.name + "(";
 
-                    // case where the node has no output
-                    data.javascriptCode += data.chartViewModel.nodes[sortedOrder[n]].data.name + "(";
+                        // print all the parameters/inputs
 
-                    // print all the parameters/inputs
+                        var input_port_num = data.chartViewModel.nodes[sortedOrder[n]].inputConnectors.length;
 
-                    var input_port_num = data.chartViewModel.nodes[sortedOrder[n]].inputConnectors.length;
+                        for (var m = 0; m < input_port_num; m++) {
 
-                    for (var m = 0; m < input_port_num; m++) {
+                            var input_port_name = data.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.name;
 
-                        var input_port_name = data.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.name;
-
-                        if(data.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.connected === true){
-                            if(m != input_port_num-1){
-                                data.javascriptCode += input_port_name + ',';
-                            }
-                            else{
-                                data.javascriptCode += input_port_name;
+                            if(data.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.connected === true){
+                                if(m != input_port_num-1){
+                                    data.javascriptCode += input_port_name + ',';
+                                }
+                                else{
+                                    data.javascriptCode += input_port_name;
+                                }
                             }
                         }
-                    }
 
-                    if( data.javascriptCode.slice(-1) === ','){
-                        data.javascriptCode = data.javascriptCode.substring(0, data.javascriptCode.length - 1);
-                    }
+                        if( data.javascriptCode.slice(-1) === ','){
+                            data.javascriptCode = data.javascriptCode.substring(0, data.javascriptCode.length - 1);
+                        }
 
-                    data.javascriptCode +=  ");\n";
+                        data.javascriptCode +=  ");\n";
 
-                    // extract items from return through label
-                    // fixme name duplication or undefined name
-                    for(var m =0; m < output_port_num; m++){
+                        // extract items from return through label
+                        // fixme name duplication or undefined name
+                        for(var m =0; m < output_port_num; m++){
 
-                        var output_port_node_id = data.chartViewModel.nodes[sortedOrder[n]].data.id;
-                        var output_port_name = data.chartViewModel.nodes[sortedOrder[n]].outputConnectors[m].data.name;
+                            var output_port_node_id = data.chartViewModel.nodes[sortedOrder[n]].data.id;
+                            var output_port_name = data.chartViewModel.nodes[sortedOrder[n]].outputConnectors[m].data.name;
 
-                        for (var l = 0; l < data.chartViewModel.connections.length; l++) {
+                            for (var l = 0; l < data.chartViewModel.connections.length; l++) {
 
-                            if (output_port_name === data.chartViewModel.connections[l].source.name()
-                                &&         output_port_node_id === data.chartViewModel.connections[l].data.source.nodeID) {
-                                var connected_input_name = data.chartViewModel.connections[l].dest.data.name;
+                                if (output_port_name === data.chartViewModel.connections[l].source.name()
+                                    && output_port_node_id === data.chartViewModel.connections[l].data.source.nodeID) {
+                                    var connected_input_name = data.chartViewModel.connections[l].dest.data.name;
 
-                                data.javascriptCode +=  'var '
-                                    + connected_input_name +' = VIDAMO.makeCopy('
-                                    + return_obj_name
-                                    + '.'
-                                    + output_port_name + ',undefined,undefined,undefined);\n';
+                                    var destNodeId =  data.chartViewModel.connections[l].data.dest.nodeID
+                                    // if connection dest node is not disabled
+                                    if(data.chartViewModel.nodes[destNodeId].disabled() === false){
+                                        data.javascriptCode +=  'var '
+                                            + connected_input_name +' = MOBIUS.makeCopy('
+                                            + return_obj_name
+                                            + '.'
+                                            + output_port_name + ',undefined,undefined,undefined);\n';
+                                    }
+                                }
                             }
                         }
+                        data.javascriptCode +=  "\n";
                     }
-                    data.javascriptCode +=  "\n";
+                    data.javascriptCode += '\n';
                 }
-
-                data.javascriptCode += '\n';
             }
 
             // outer function code with parameters-definition and invoking of procedure function
@@ -363,6 +384,13 @@ vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
 
             // data procedure
             function procedure_data(procedure,nodeIndex,fromLoop){
+
+                if(procedure.disabled === true){
+                    return;
+                }
+                if(procedure.disabled === true){
+                    return;
+                }
                 if(fromLoop){
                     var intentation = '    ';
                 }else{
@@ -394,6 +422,11 @@ vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
 
             // output procedure
             function procedure_output(procedure,nodeIndex,fromLoop){
+
+                if(procedure.disabled === true){
+                    return;
+                }
+
                 if(fromLoop){
                     var intentation = '    ';
                 }else{
@@ -415,6 +448,10 @@ vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
 
             // action procedure
              function procedure_action(procedure,nodeIndex,fromLoop){
+                 if(procedure.disabled === true){
+                     return;
+                 }
+
                 // todo this is only a dummy intentation
                 if(fromLoop){
                     var intentation = '    ';
@@ -430,7 +467,8 @@ vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
                  }
 
                  if(procedure.method !== 'expression'){
-                     codeBlock +=  'VIDAMO.' + procedure.method + '(';
+
+                     codeBlock +=  'MOBIUS.' + procedure.category + '.' +procedure.method + '(';
 
                      for(var j = 0; j< procedure.parameters.length; j++){
                          if(j != procedure.parameters.length - 1 ){
@@ -451,6 +489,10 @@ vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
 
             // control procedure
             function procedure_control(procedure,nodeIndex,fromLoop){
+                if(procedure.disabled === true){
+                    return;
+                }
+
                 var intentation;
                 if(fromLoop){
                     intentation = '    ';

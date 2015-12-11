@@ -81,8 +81,8 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                                 'if else'];
 
         // methods types
-        $scope.methods = function(){
-            var props = Object.getOwnPropertyNames(VIDAMO);
+        $scope.getMethods = function(){
+            var props = Object.getOwnPropertyNames(MOBIUS);
 
             // remove private usage functions
             for(var i =0; i < props.length;i++){
@@ -91,13 +91,29 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                 }
             }
 
-            var func_props = props.filter(function(property) {
-                return typeof VIDAMO[property] == 'function';
-            });
+            //var func_props = props.filter(function(property) {
+            //    return typeof MOBIUS[property] == 'function';
+            //});
 
-            var expression = ['expression'];
-            return expression.concat(func_props);
+            var expression = [{category:'msc',name:'expression'}];
+
+            // fixme sub category temp solution
+            for(var i = 0; i < props.length; i++){
+                if(typeof MOBIUS[props[i]] != 'function'){
+                    var subProps = Object.getOwnPropertyNames(MOBIUS[props[i]]);
+                    for(var j = 0; j < subProps.length; j++){
+                        if(typeof MOBIUS[props[i]][subProps[j]] == 'function'){
+                            expression.push({category:props[i],name:subProps[j]});
+                        }
+                    }
+                }
+            }
+
+            return expression;
+            //return expression.concat(func_props);
         };
+
+        $scope.methods = $scope.getMethods();
 
         $scope.$on("clearProcedure", function(){
             $scope.nodeIndex = undefined;
@@ -197,6 +213,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                         'dataValue',
                         'type',
                         'dataType',
+                        'category',
                         'method',
                         'parameters',
                         'inputConnectors',
@@ -535,9 +552,20 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                 }
 
                 else if(cate === 'Output'){
+                    if($scope.data.length !== 0){
+                        var maxId = $scope.data[0].id;
+                        for(var i = 1;i < $scope.data.length; i ++){
+                            if(maxId < $scope.data[i].id){
+                                maxId = $scope.data[i].id;
+                            }
+                        }
+                    }else{
+                        maxId = 0;
+                    }
+
 
                     var outputObj = {
-                        id:$scope.data.length + 1,
+                        id:maxId + 1,
                         title: 'Output'
                         //name: undefined,
                         //dataValue:undefined,
@@ -576,18 +604,16 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                     var result;
                     var expression;
 
-                    if(subCate === 'print' || subCate === 'expression'){
+                    if(subCate.name === 'print' || subCate.name === 'expression'){
                         result = undefined;
                     }else{
                         result = '';
                     }
 
-                    for(var funcName in VIDAMO) {
-                        if(subCate === funcName){
-                            var paraList = getParamNames(VIDAMO[funcName]);
-                            for(var j = 0; j< paraList.length; j++){
-                                parameters.push({value:'',type:paraList[j]});
-                            }
+                    if(subCate.name !== 'expression'){
+                        var paraList = getParamNames(MOBIUS[subCate.category][subCate.name]);
+                        for(var j = 0; j< paraList.length; j++){
+                            parameters.push({value:'',type:paraList[j]});
                         }
                     }
 
@@ -597,7 +623,8 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                         nodes: [],
                         type:undefined,
                         expression:'',
-                        method:subCate,
+                        method:subCate.name,
+                        category:subCate.category,
                         parameters:parameters,
                         result:result,
                         dataName:undefined
