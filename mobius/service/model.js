@@ -141,9 +141,9 @@ vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
                 data.javascriptCode = '// execution: \n';
                 data.geomListCode = "var geomList = [];\n";
                 for(var n = 0; n < sortedOrder.length; n++) {
-
                     // first check if the node is disabled
-                    if(data.chartViewModel.nodes[sortedOrder[n]].disabled() === false){
+                    if((data.chartViewModel.nodes[sortedOrder[n]].disabled() === false) ||
+                        !data.chartViewModel.nodes[sortedOrder[n]].disabled()){
                         // case where the node has output
                         var output_port_num = data.chartViewModel.nodes[sortedOrder[n]].outputConnectors.length;
                         var node_name = data.chartViewModel.nodes[sortedOrder[n]].data.name;
@@ -205,12 +205,13 @@ vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
 
                                     var destNodeId =  data.chartViewModel.connections[l].data.dest.nodeID
                                     // if connection dest node is not disabled
-                                    if(data.chartViewModel.nodes[destNodeId].disabled() === false){
+                                    if((data.chartViewModel.nodes[destNodeId].disabled() === false) ||
+                                        data.chartViewModel.nodes[destNodeId].disabled() === undefined){
                                         data.javascriptCode +=  'var '
-                                            + connected_input_name +' = MOBIUS.makeCopy('
+                                            + connected_input_name +' = MOBIUS.obj.copy('
                                             + return_obj_name
                                             + '.'
-                                            + output_port_name + ',undefined,undefined,undefined);\n';
+                                            + output_port_name + ');\n';
                                     }
                                 }
                             }
