@@ -61,15 +61,16 @@
                     </pre>
                 </div>
 
-                <ui-select ng-model="method"
+                <ui-select ng-model="method.selected"
                            class="button-action"
                            style=" position:absolute;display: inline-block;"
                            on-select="newItem('Action',$select.selected)"
                         >
                     <ui-select-match placeholder="Function" >Function</ui-select-match>
                     <ui-select-choices
-                            repeat="method as method in methods()| filter: $select.search">
-                        <span ng-bind-html="method| highlight: $select.search"></span>
+                            group-by="'category'"
+                            repeat="method in methods | propsFilter: {name: $select.search, category: $select.search}">
+                        <span ng-bind-html="method.name| highlight: $select.search"></span>
                     </ui-select-choices>
                 </ui-select>
 

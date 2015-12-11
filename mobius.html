@@ -59,7 +59,8 @@
                         <li><a ng-click="loadExample('00_KillianRoof.json')"> Killian Roof </a></li>
                         <li><a ng-click="loadExample('01_VaseExample.json')"> Vase </a></li>
                         <li><a ng-click="loadExample('02_Topology.json')"> Topology Demonstration </a></li>
-                        <li><a ng-click="loadExample('13_HigherOrderFunctions.json')"> Higher Order Functions </a></li>
+                        <li><a ng-click="loadExample('11_SpiralCylinder.json')"> Parametric Spiral Cylinder 1</a></li>
+                        <li><a ng-click="loadExample('12_SpiralCylinder.json')"> Parametric Spiral Cylinder 2</a></li>
                         <li><a ng-click="loadExample('03_SurfaceCurves_Part1.json')"> Surface and Curves Part1 </a></li>
                         <li><a ng-click="loadExample('04_SurfaceCurves_Part2.json')"> Surface and Curves Part2 </a></li>
                         <li><a ng-click="loadExample('05_Box.json')"> Box </a></li>
@@ -272,7 +273,7 @@
                     <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
                         <div ui-layout-container size = "25%">
 
-                            <div ng-controller="procedureCtrl">
+                            <div>
                                 <div ng-if = "currentNodeName">
                                     <pre class="nodeName" style="padding: 1px">
                                         &nbsp &nbsp {{currentNodeType}} {{currentNodeVersion}} : &nbsp {{currentNodeName}} &nbsp

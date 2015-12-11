@@ -166,7 +166,7 @@ vidamo.directive('topoViewport', function factoryTopo() {
                     scene1.add(singleGeomObject);
                 }
                 else{
-                    console.log("Vidamo doesn't recognise this type!");
+                    console.log("mobius doesn't recognise this type!");
                 }
 
             };
