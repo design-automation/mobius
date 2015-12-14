@@ -243,11 +243,12 @@ var MOBIUS = ( function (mod){
 
 		var profile = sectionCurve.getGeometry();
 
-		if (frame == undefined)
-			return new mObj_geom_Surface( new verb.geom.RevolvedSurface( profile, [0,0,0], [0,1,0], angle ) ) ;
-		else{
-			return new mObj_geom_Surface( new verb.geom.RevolvedSurface( profile, frame.getOrigin(), frame.getZAxis(), angle ) ) ;
-		}
+		var srf = new mObj_geom_Surface( new verb.geom.RevolvedSurface( profile, [0,0,0], [0,1,0], angle ) ) ;
+
+		srf = srf.transform( frame.toLocal() );
+
+		return srf;
+
 			
 	};
 
@@ -274,7 +275,8 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.srf.nurbsSphere = function(frame, radius){
 					
-		var sphere = new verb.geom.SphericalSurface( frame.getOrigin(), radius );
+		var sphere = new verb.geom.SphericalSurface( [0,0,0], radius );
+		sphere = sphere.transform( frame.toLocal() );
 
 		return new mObj_geom_Surface( sphere );
 
@@ -411,7 +413,7 @@ var MOBIUS = ( function (mod){
 	 * @param {int} vgrid - Divisions in v-direction
 	 * @returns {array} Array of mobiusobjects with NURBS Surfaces
 	 */
-	mod.srf.divide = function(surface, uvGrid, method){
+	mod.srf.divide = function(surface, uvGrid){
 		
 		var srf = surface.getGeometry(); 
 		
@@ -522,8 +524,11 @@ var MOBIUS = ( function (mod){
 	 * @returns {mobiusobject}  - NURBS Curve
 	 */
 	mod.crv.arc = function(frame, radius, minAngle, maxAngle){
+
+		var arc = new verb.geom.Arc( [0,0,0], [1,0,0], [0,1,0], radius, minAngle, maxAngle) 
+		arc = arc.transform( frame.toLocal() );
 		
-		return new mObj_geom_Curve( new verb.geom.Arc( frame.getOrigin(), frame.getXaxis(), frame.getYaxis(), radius, minAngle, maxAngle) ) ;
+		return new mObj_geom_Curve( arc ) ;
 
 	};
 
@@ -545,7 +550,10 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.crv.circle = function(frame, radius){
 
-		return new mObj_geom_Curve( new verb.geom.Circle( frame.getOrigin(), frame.getXaxis(), frame.getYaxis(), radius ) ) 
+		var circle =  new verb.geom.Circle( [0,0,0], [1,0,0], [0,0,1], radius ) 
+		circle = circle.transform( frame.toLocal() );
+
+		return new mObj_geom_Curve( circle ) 
 	};
 
 	/**
@@ -557,10 +565,10 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.crv.ellipse = function(frame, xRadius, yRadius) {
 
-		var xaxis = MOBIUS.vec.resize( frame.getXaxis(), xRadius );
-		var yaxis = MOBIUS.vec.resize( frame.getYAxis(), yRadius );
+		var ellipse = new verb.geom.Ellipse( [0,0,0], [1,0,0], [0,1,0], radius );
+		ellipse = ellipse.transform( frame.toLocal() )
 
-		return new mObj_geom_Curve( new verb.geom.Ellipse( frame.getOrigin(), xaxis, yaxis, radius ) ); 
+		return new mObj_geom_Curve( ellipse ); 
 		
 	};
 
@@ -575,10 +583,10 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.crv.ellipseArc = function(frame, xRadius, yRadius, minAngle, maxAngle){
 
-		var xaxis = MOBIUS.vec.resize( frame.getXaxis(), xRadius );
-		var yaxis = MOBIUS.vec.resize( frame.getYAxis(), yRadius );
+		var ellipseArc = new verb.geom.EllipseArc( [0,0,0], [1,0,0], [0,1,0], radius, minAngle, maxAngle );
+		ellipseArc = ellipse.transform( frame.toLocal() );
 
-		return new mObj_geom_Curve( new verb.geom.EllipseArc( frame.getOrigin(), xaxis, yaxis, radius ) ) 
+		return new mObj_geom_Curve( ellipseArc ); 
 	};
 
 
@@ -647,7 +655,7 @@ var MOBIUS = ( function (mod){
 		var curve = curve.getGeometry();
 
 		var frames = tList.map( function(t){
-			return new mObj_frame( curve.point(t), verb.core.Vec.normalized( curve.tangent(t) ), undefined, upVector );
+			return new mObj_frame( curve.point(t), undefined, upVector, verb.core.Vec.normalized( curve.tangent(t) ) );
 		})
 
 		return frames;
@@ -980,9 +988,9 @@ var MOBIUS = ( function (mod){
 					];
 						
 		if( frame != undefined ){
-			geom = geom.transform( frame.toLocal() );
-			geom = geom.transform( trnMat ); 
 			geom = geom.transform( frame.toGlobal() );
+			geom = geom.transform( trnMat ); 
+			geom = geom.transform( frame.toLocal() );
 		}
 		else
 			geom = geom.transform( trnMat );
@@ -1034,47 +1042,15 @@ var MOBIUS = ( function (mod){
 		                            [ 0, 0, 0, 1 ]
 		                ];
 		}
-	    // zaxis [0,0,1]
-	    var cost = Math.cos( angleZ );
-	    var sint = Math.sin( angleZ );
-	    var mat_rot_z = [ [ cost, -sint, 0, 0 ],
-	                            [ sint, cost, 0, 0 ],
-	                                [ 0, 0, 1, 0 ],
-	                                    [ 0, 0, 0, 1 ]
-	                        ];
-
-	    // yaxis [0,1,0]
-	    var cost = Math.cos( angleY );
-	    var sint = Math.sin( angleY );
-	    var mat_rot_y = [ [ cost, 0, sint, 0 ],
-	                            [ 0,  1,  0, 0 ],
-	                                [ -sint, 0, cost, 0],
-	                                    [ 0, 0, 0, 1 ]
-	                        ];
-
-	    // xaxis [1,0,0]
-	    var cost = Math.cos( angleX );
-	    var sint = Math.sin( angleX );
-	    var mat_rot_x = [ [ 1, 0, 0, 0 ],
-	                            [ 0,  cost, -sint, 0 ],
-	                                [ -sint,  sint, cost, 0 ],
-	                                    [ 0, 0, 0, 1 ]
-	                        ];
 		
-		if( frame != undefined ){
-			geom = geom.transform( frame.toLocal() );
-			
-			geom = geom.transform( getRotationMatrix( frame.getZaxis(), angleZ) );
-			geom = geom.transform( getRotationMatrix( frame.getYaxis(), angleY) );
-			geom = geom.transform( getRotationMatrix( frame.getXaxis(), angleX) );
-			
-			geom = geom.transform( frame.toGlobal() );
-		}
-		else{
-			geom = geom.transform( mat_rot_z );
-			geom = geom.transform( mat_rot_y );
-			geom = geom.transform( mat_rot_x );
-		}
+
+		geom = geom.transform( frame.toGlobal() );
+
+		geom = geom.transform( getRotationMatrix([0,1,0], angleZ) );
+		geom = geom.transform( getRotationMatrix([0,0,1], angleY) );
+		geom = geom.transform( getRotationMatrix([1,0,0], angleX) );
+				
+		geom = geom.transform( frame.toLocal() );
 		
 		object.setGeometry( geom ); 
 
@@ -1118,9 +1094,9 @@ var MOBIUS = ( function (mod){
 					];
 			
 		if( frame != undefined ){
-			geom = geom.transform( frame.toLocal() );
-			geom = geom.transform( trnMat );
 			geom = geom.transform( frame.toGlobal() );
+			geom = geom.transform( trnMat );
+			geom = geom.transform( frame.toLocal() );
 		}
 		else
 			geom = geom.transform( trnMat );
@@ -1167,9 +1143,9 @@ var MOBIUS = ( function (mod){
 					 	] 
 	
 		if( frame != undefined ){
-			geom = geom.transform( frame.toLocal() );
-			geom = geom.transform( trnMat );
 			geom = geom.transform( frame.toGlobal() );
+			geom = geom.transform( trnMat );
+			geom = geom.transform( frame.toLocal() );
 		}
 		else
 			geom = geom.transform( trnMat );

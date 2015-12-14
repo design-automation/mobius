@@ -69,24 +69,37 @@ var mObj_frame = function mObj_frame( origin, xaxis, yaxis, zaxis ){
 
 
     // compute translation
-    var mat_trans = [ [ 1, 0, 0, origin[0] ],
-                        [ 0, 1, 0, origin[1] ],
-                            [ 0, 0, 1, origin[2] ],
+    var mat_trans = [ [ 1, 0, 0, -origin[0] ],
+                        [ 0, 1, 0, -origin[1] ],
+                            [ 0, 0, 1, -origin[2] ],
                                 [ 0, 0, 0, 1 ]
       
                         ]; 
 
-    var world_space_matrix = [ [ _xaxis[0], _xaxis[1], _xaxis[2], origin[0] ], 
-                                  [ _yaxis[0], _yaxis[1], _yaxis[2], origin[1] ], 
-                                    [ _zaxis[0], _zaxis[1], _zaxis[2], origin[2] ],
-                                      [ 0, 0, 0, 1 ] ]
+    var mat_trans_inv = [ [ 1, 0, 0, origin[0] ],
+                            [ 0, 1, 0, origin[1] ],
+                                [ 0, 0, 1, origin[2] ],
+                                    [ 0, 0, 0, 1 ]
+                    ]; 
 
+    var world_space_matrix = [ [ _xaxis[0], _xaxis[1], _xaxis[2], 0], 
+                                  [ _yaxis[0], _yaxis[1], _yaxis[2], 0], 
+                                    [ _zaxis[0], _zaxis[1], _zaxis[2], 0],
+                                      [ 0, 0, 0, 1 ] ]
+    
+    world_space_matrix = verb.core.Mat.mult(world_space_matrix, mat_trans);
+    
     var local_space_matrix = invertMatrix( world_space_matrix );
+
+
                         
     var planes = { 'xy' : {'a': _zaxis[0], 'b': _zaxis[1], 'c': _zaxis[2], 'd':_zaxis[0]*origin[0] + _zaxis[1]*origin[1] + _zaxis[2]*origin[2] }, 
                         'yz' : {'a': _xaxis[0], 'b': _xaxis[1], 'c': _xaxis[2], 'd':_xaxis[0]*origin[0] + _xaxis[1]*origin[1] + _xaxis[2]*origin[2] },
                             'zx' : {'a': _yaxis[0], 'b': _yaxis[1], 'c': _yaxis[2], 'd':_yaxis[0]*origin[0] + _yaxis[1]*origin[1] + _yaxis[2]*origin[2] }
-    }    
+    }  
+
+
+
 
     this.toLocal = function( ){ 
        return local_space_matrix; 
