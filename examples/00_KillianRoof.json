@@ -17,7 +17,7 @@
                 }
             ],
             "type": "base_curve",
-            "version": 1449753981075,
+            "version": 1450080967555,
             "overwrite": true
         },
         {
@@ -92,7 +92,7 @@
                 }
             ],
             "type": "cross_section",
-            "version": 1449753959041,
+            "version": 1450080968446,
             "overwrite": true
         },
         {
@@ -180,7 +180,7 @@
                 }
             ],
             "type": "killian_roof",
-            "version": 1449754366786,
+            "version": 1450080971167,
             "overwrite": true
         }
     ],
@@ -239,7 +239,7 @@
             "category": "crv",
             "parameters": [
                 {
-                    "value": "[[-80, 0, 0],[-40,-5,20],[0, -14, 0],[40, -17, -20],[80, -5, 0]]",
+                    "value": "[[-80, 0, 0],[-40,20,-5],[0, 0, -14],[40, -20, -17],[80, 0, -5]]",
                     "type": "points",
                     "$$hashKey": "object:1202"
                 },
@@ -367,7 +367,7 @@
                             "$$hashKey": "object:5539"
                         },
                         {
-                            "value": "[0,1,0]",
+                            "value": "[0,0,1]",
                             "type": "matrix2",
                             "$$hashKey": "object:5540"
                         }
@@ -396,7 +396,7 @@
                             "$$hashKey": "object:2904"
                         },
                         {
-                            "value": "[0,1,0]",
+                            "value": "[0,0,1]",
                             "type": "yAxis",
                             "$$hashKey": "object:2905"
                         }
@@ -420,7 +420,7 @@
                             "$$hashKey": "object:1149"
                         },
                         {
-                            "value": "height - point.y",
+                            "value": "height - point.z",
                             "type": "radius",
                             "$$hashKey": "object:1150"
                         },
