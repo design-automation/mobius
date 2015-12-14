@@ -116,27 +116,19 @@ var MOBIUS = ( function (mod){
 	mod.sld.byExtrusion = function(surface, frame, xDistance, yDistance, zDistance){
 
 		var bottomSurface = surface;
-		bottomSurface.setGeometry( bottomSurface.getGeometry().transform( frame.toLocal() ) ); 
-		
-		var topSurface = MOBIUS.obj.copy( bottomSurface );
-		
-		topSurface = MOBIUS.trn.shift(topSurface, undefined, xDistance, yDistance, zDistance, false);
+		var topSurface = MOBIUS.trn.shift(bottomSurface, frame, xDistance, yDistance, zDistance, true);
 
 		var solid = [ bottomSurface, topSurface ];
 		// join boundary points of the two surfaces
 		var edges_b = bottomSurface.getGeometry().boundaries(); 
-		var edges_t = bottomSurface.getGeometry().boundaries(); 
+		var edges_t = topSurface.getGeometry().boundaries(); 
 		for(var e=0; e < edges_b.length; e++ ){
 			var edge_b = edges_b[e];
 			var edge_t  = edges_t[e];
-			var extrusionVector = verb.core.Mat.sub(MOBIUS.obj.getCentre(edge_t) - MOBIUS.obj.getCentre(edge_b));
-			var srf = new mObj_geom_Surface(  new verb.geom.ExtrudedSurface( edge_b, extrusionVector ) );
+			var extrusionVector = verb.core.Mat.sub([MOBIUS.obj.getCentre(edge_t)], [MOBIUS.obj.getCentre(edge_b)]); 
+			var srf = new mObj_geom_Surface(  new verb.geom.ExtrudedSurface( edge_b, extrusionVector[0] ) );
 			solid.push(srf);
 		}
-
-		for(var srf=0; srf<solid.length; srf++){
-			solid[srf].setGeometry( solid[srf].getGeometry().transform( frame.toGlobal() ) );
-		}		
 
 		return new mObj_geom_Solid( solid );
 
@@ -403,8 +395,18 @@ var MOBIUS = ( function (mod){
 		return tangents;
 	}; 
  
-	mod.srf.getIsoCurves = function( surface, uvList ){
+	mod.srf.getIsoCurves = function( surface, uOrvList, useV ){
 
+		if(surface.getGeometry != undefined)
+			surface = surface.getGeometry();
+
+		var isoCurves = [];
+		for(var t=0; t<uOrvList.length; t++){
+			var crv = new mObj_geom_Curve( surface.isocurve( uOrvList[t], useV ) );
+			isoCurves.push(crv);
+		}
+
+		return isoCurves;
 	};
 
 	/**
