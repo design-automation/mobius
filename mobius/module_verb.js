@@ -243,7 +243,7 @@ var MOBIUS = ( function (mod){
 
 		var profile = sectionCurve.getGeometry();
 
-		var srf = new mObj_geom_Surface( new verb.geom.RevolvedSurface( profile, [0,0,0], [0,1,0], angle ) ) ;
+		var srf = new mObj_geom_Surface( new verb.geom.RevolvedSurface( profile, [0,0,0], [0,0,1], angle ) ) ;
 
 		srf = srf.transform( frame.toLocal() );
 
@@ -307,6 +307,7 @@ var MOBIUS = ( function (mod){
 		var zaxis = centreCurve.getGeometry().tangent(0);
 
 		// compute some random vector perpendicular to the z-vector
+		zaxis = verb.core.Vec.normalized( zaxis );
 		var xaxis = [1,1, ((-zaxis[0]-zaxis[1])/zaxis[2])]; 
 
 		var frame = new mObj_frame( origin, xaxis, undefined, zaxis );
@@ -550,7 +551,7 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.crv.circle = function(frame, radius){
 
-		var circle =  new verb.geom.Circle( [0,0,0], [1,0,0], [0,0,1], radius ) 
+		var circle =  new verb.geom.Circle( [0,0,0], [1,0,0], [0,1,0], radius ) 
 		circle = circle.transform( frame.toLocal() );
 
 		return new mObj_geom_Curve( circle ) 
@@ -1019,7 +1020,7 @@ var MOBIUS = ( function (mod){
 			var newobject = [];
 			
 			for(var obj=0; obj < object.length; obj++)
-				newobject.push(MOBIUS.trn.rotate( object, frame, angleX, angleY, angleZ, copy ));	
+				newobject.push(MOBIUS.trn.rotate( object[obj], frame, angleX, angleY, angleZ, copy ));	
 			
 			return newobject;
 		}
@@ -1046,8 +1047,8 @@ var MOBIUS = ( function (mod){
 
 		geom = geom.transform( frame.toGlobal() );
 
-		geom = geom.transform( getRotationMatrix([0,1,0], angleZ) );
-		geom = geom.transform( getRotationMatrix([0,0,1], angleY) );
+		geom = geom.transform( getRotationMatrix([0,0,1], angleZ) );
+		geom = geom.transform( getRotationMatrix([0,1,0], angleY) );
 		geom = geom.transform( getRotationMatrix([1,0,0], angleX) );
 				
 		geom = geom.transform( frame.toLocal() );
@@ -1388,7 +1389,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {float} 
 	 */
 	mod.msc.degToRad = function(degree){
-		return 0.01745*degrees;
+		return 0.01745*degree;
 	};
 
 	/**
