@@ -41,7 +41,8 @@ vidamo.directive('topoViewport', function factoryTopo() {
 
                 camera1 = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
                 scene1.add(camera1);
-                camera1.position.set(-120, 60, 200);
+                camera1.position.set(-120, 200, 60);
+                camera1.up.set( 0, 0, 1 );
                 camera1.lookAt(new THREE.Vector3(0,0,0));
 
                 // prepare renderer1
@@ -80,7 +81,7 @@ vidamo.directive('topoViewport', function factoryTopo() {
                 gridHelper1.name = 'helper';
                 gridHelper1.setColors(0x999999,0xaaaaaa);
                 gridHelper1.position = new THREE.Vector3(0, 0, 0);
-                gridHelper1.rotation = new THREE.Euler(0, 0, 0);
+                gridHelper1.rotation.x = Math.PI/2;//new THREE.Euler(0, 0 ,   0);
                 scene1.add(gridHelper1);
             }
 
