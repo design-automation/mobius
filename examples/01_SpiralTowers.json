@@ -24,7 +24,7 @@
                 }
             ],
             "type": "spiral0",
-            "version": 1450084990419,
+            "version": 1450166421332,
             "overwrite": true
         },
         {
@@ -58,7 +58,7 @@
                 }
             ],
             "type": "radial_copy0",
-            "version": 1450087128221,
+            "version": 1450166564518,
             "overwrite": true
         },
         {
@@ -157,7 +157,7 @@
                 }
             ],
             "type": "curve",
-            "version": 1450087143178,
+            "version": 1450166563906,
             "overwrite": true
         },
         {
@@ -184,7 +184,7 @@
                 }
             ],
             "type": "spiral02",
-            "version": 1450086372628,
+            "version": 1450166454150,
             "overwrite": true,
             "disabled": false
         },
@@ -212,7 +212,7 @@
                 }
             ],
             "type": "spiral03",
-            "version": 1450085975552,
+            "version": 1450166436001,
             "overwrite": true,
             "disabled": false
         },
@@ -240,7 +240,7 @@
                 }
             ],
             "type": "spiral03",
-            "version": 1450087140845,
+            "version": 1450166472401,
             "overwrite": true,
             "disabled": false
         }
@@ -258,7 +258,7 @@
         },
         {
             "source": {
-                "nodeID": 5,
+                "nodeID": 0,
                 "connectorIndex": 1
             },
             "dest": {
@@ -377,20 +377,21 @@
                     "expression": "",
                     "method": "append",
                     "category": "lst",
+                    "return": false,
                     "parameters": [
                         {
                             "value": "points",
                             "type": "list",
-                            "$$hashKey": "object:2409"
+                            "$$hashKey": "object:1861"
                         },
                         {
-                            "value": "[ x, y, z]",
+                            "value": "[ x, y, z ]",
                             "type": "itemOrList",
-                            "$$hashKey": "object:2410"
+                            "$$hashKey": "object:1862"
                         }
                     ],
-                    "result": "_",
-                    "$$hashKey": "object:2396",
+                    "result": "",
+                    "$$hashKey": "object:1851",
                     "selected": false
                 }
             ],
@@ -399,7 +400,7 @@
             "dataName": "i",
             "forList": "seq",
             "$$hashKey": "object:14017",
-            "selected": false
+            "selected": true
         },
         {
             "id": 7,
@@ -619,26 +620,27 @@
                     "selected": false
                 },
                 {
-                    "id": 9,
+                    "id": 7,
                     "title": "Action",
                     "nodes": [],
                     "expression": "",
                     "method": "extend",
                     "category": "lst",
+                    "return": false,
                     "parameters": [
                         {
                             "value": "cpys",
                             "type": "list",
-                            "$$hashKey": "object:2740"
+                            "$$hashKey": "object:5324"
                         },
                         {
                             "value": "spirals",
                             "type": "extension_list",
-                            "$$hashKey": "object:2741"
+                            "$$hashKey": "object:5325"
                         }
                     ],
-                    "result": "_",
-                    "$$hashKey": "object:2727",
+                    "result": "",
+                    "$$hashKey": "object:5314",
                     "selected": false
                 }
             ],
@@ -647,7 +649,7 @@
             "dataName": "i",
             "forList": "seq",
             "$$hashKey": "object:2681",
-            "selected": false
+            "selected": true
         },
         {
             "id": 1,
@@ -804,27 +806,28 @@
                     "$$hashKey": "object:10003"
                 },
                 {
-                    "id": 10,
+                    "id": 7,
                     "title": "Action",
                     "nodes": [],
                     "expression": "",
                     "method": "append",
                     "category": "lst",
+                    "return": false,
                     "parameters": [
                         {
                             "value": "points",
                             "type": "list",
-                            "$$hashKey": "object:8083"
+                            "$$hashKey": "object:3458"
                         },
                         {
-                            "value": "[x, y, z]",
+                            "value": "[ x, y, z ]",
                             "type": "itemOrList",
-                            "$$hashKey": "object:8084"
+                            "$$hashKey": "object:3459"
                         }
                     ],
-                    "result": "_",
-                    "$$hashKey": "object:8070",
-                    "selected": false
+                    "result": "",
+                    "$$hashKey": "object:3448",
+                    "selected": true
                 }
             ],
             "type": "new",
@@ -1013,21 +1016,22 @@
                     "expression": "",
                     "method": "append",
                     "category": "lst",
+                    "return": false,
                     "parameters": [
                         {
                             "value": "points",
                             "type": "list",
-                            "$$hashKey": "object:3607"
+                            "$$hashKey": "object:2683"
                         },
                         {
                             "value": "[x, y, z]",
                             "type": "itemOrList",
-                            "$$hashKey": "object:3608"
+                            "$$hashKey": "object:2684"
                         }
                     ],
-                    "result": "_",
-                    "$$hashKey": "object:3594",
-                    "selected": false
+                    "result": "",
+                    "$$hashKey": "object:2673",
+                    "selected": true
                 }
             ],
             "type": "new",
@@ -1059,7 +1063,7 @@
             ],
             "result": "spiral",
             "$$hashKey": "object:4192",
-            "selected": true
+            "selected": false
         },
         {
             "id": 1,
@@ -1216,20 +1220,21 @@
                     "expression": "",
                     "method": "append",
                     "category": "lst",
+                    "return": false,
                     "parameters": [
                         {
                             "value": "points",
                             "type": "list",
-                            "$$hashKey": "object:12564"
+                            "$$hashKey": "object:4285"
                         },
                         {
-                            "value": "[x, y, z]",
+                            "value": "[ x, y, z ]",
                             "type": "itemOrList",
-                            "$$hashKey": "object:12565"
+                            "$$hashKey": "object:4286"
                         }
                     ],
-                    "result": "_",
-                    "$$hashKey": "object:12551",
+                    "result": "",
+                    "$$hashKey": "object:4275",
                     "selected": false
                 }
             ],
@@ -1237,7 +1242,7 @@
             "controlType": "for each",
             "dataName": "i",
             "forList": "seq",
-            "selected": false,
+            "selected": true,
             "$$hashKey": "object:16277"
         },
         {

@@ -17,7 +17,7 @@
                 }
             ],
             "type": "base_curve",
-            "version": 1450080967555,
+            "version": 1450163287084,
             "overwrite": true
         },
         {
@@ -92,7 +92,7 @@
                 }
             ],
             "type": "cross_section",
-            "version": 1450080968446,
+            "version": 1450163274191,
             "overwrite": true
         },
         {
@@ -150,7 +150,7 @@
                 }
             ],
             "type": "loft_surface",
-            "version": 0,
+            "version": 1450163267220,
             "overwrite": true
         },
         {
@@ -180,7 +180,7 @@
                 }
             ],
             "type": "killian_roof",
-            "version": 1450080971167,
+            "version": 1450163218368,
             "overwrite": true
         }
     ],
@@ -285,22 +285,17 @@
                 {
                     "value": "centralProfile",
                     "type": "curve",
-                    "$$hashKey": "object:1313"
+                    "$$hashKey": "object:2262"
                 },
                 {
                     "value": "num_curves",
                     "type": "numPoints",
-                    "$$hashKey": "object:1314"
-                },
-                {
-                    "value": "undefined",
-                    "type": "method",
-                    "$$hashKey": "object:1315"
+                    "$$hashKey": "object:2263"
                 }
             ],
             "result": "tList",
-            "selected": false,
-            "$$hashKey": "object:287"
+            "$$hashKey": "object:2247",
+            "selected": false
         },
         {
             "id": 3,
@@ -440,26 +435,27 @@
                     "selected": false
                 },
                 {
-                    "id": 8,
+                    "id": 5,
                     "title": "Action",
                     "nodes": [],
                     "expression": "",
                     "method": "append",
                     "category": "lst",
+                    "return": false,
                     "parameters": [
                         {
                             "value": "crvs",
                             "type": "list",
-                            "$$hashKey": "object:1705"
+                            "$$hashKey": "object:1701"
                         },
                         {
                             "value": "arc",
                             "type": "itemOrList",
-                            "$$hashKey": "object:1706"
+                            "$$hashKey": "object:1702"
                         }
                     ],
-                    "result": "_",
-                    "$$hashKey": "object:1692",
+                    "result": "",
+                    "$$hashKey": "object:1691",
                     "selected": false
                 },
                 {
@@ -469,20 +465,21 @@
                     "expression": "",
                     "method": "append",
                     "category": "lst",
+                    "return": false,
                     "parameters": [
                         {
                             "value": "frames",
                             "type": "list",
-                            "$$hashKey": "object:3404"
+                            "$$hashKey": "object:2761"
                         },
                         {
                             "value": "frame",
                             "type": "itemOrList",
-                            "$$hashKey": "object:3405"
+                            "$$hashKey": "object:2762"
                         }
                     ],
-                    "result": "_",
-                    "$$hashKey": "object:3391",
+                    "result": "",
+                    "$$hashKey": "object:2751",
                     "selected": false
                 }
             ],
@@ -611,29 +608,9 @@
             "$$hashKey": "object:332"
         },
         {
-            "id": 2,
-            "title": "Data",
-            "nodes": [],
-            "dataName": "meshfaces",
-            "dataValue": "mesh.faces",
-            "type": "new",
-            "selected": false,
-            "$$hashKey": "object:330"
-        },
-        {
             "id": 3,
             "title": "Control",
             "nodes": [
-                {
-                    "id": 4,
-                    "title": "Data",
-                    "nodes": [],
-                    "dataName": "seq",
-                    "dataValue": "[0,1]",
-                    "type": "new",
-                    "selected": false,
-                    "$$hashKey": "object:1140"
-                },
                 {
                     "id": 5,
                     "title": "Data",
@@ -690,16 +667,6 @@
                             "selected": false
                         },
                         {
-                            "id": 4,
-                            "title": "Data",
-                            "nodes": [],
-                            "dataName": "radius",
-                            "dataValue": "0.02*tubeLength",
-                            "type": "new",
-                            "selected": false,
-                            "$$hashKey": "object:1201"
-                        },
-                        {
                             "id": 5,
                             "title": "Action",
                             "nodes": [],
@@ -708,7 +675,7 @@
                             "category": "msc",
                             "parameters": [
                                 {
-                                    "value": "radius",
+                                    "value": "0.02*tubeLength",
                                     "type": "number",
                                     "$$hashKey": "object:1310"
                                 },
@@ -752,21 +719,22 @@
                             "expression": "",
                             "method": "append",
                             "category": "lst",
+                            "return": false,
                             "parameters": [
                                 {
                                     "value": "allPanels",
                                     "type": "list",
-                                    "$$hashKey": "object:1355"
+                                    "$$hashKey": "object:4140"
                                 },
                                 {
                                     "value": "tube",
                                     "type": "itemOrList",
-                                    "$$hashKey": "object:1356"
+                                    "$$hashKey": "object:4141"
                                 }
                             ],
-                            "result": "_",
-                            "selected": false,
-                            "$$hashKey": "object:1205"
+                            "result": "",
+                            "$$hashKey": "object:4130",
+                            "selected": false
                         },
                         {
                             "id": 5,
@@ -775,27 +743,28 @@
                             "expression": "",
                             "method": "append",
                             "category": "lst",
+                            "return": false,
                             "parameters": [
                                 {
                                     "value": "rads",
                                     "type": "list",
-                                    "$$hashKey": "object:1325"
+                                    "$$hashKey": "object:3661"
                                 },
                                 {
                                     "value": "radius",
                                     "type": "itemOrList",
-                                    "$$hashKey": "object:1326"
+                                    "$$hashKey": "object:3662"
                                 }
                             ],
-                            "result": "_",
-                            "selected": false,
-                            "$$hashKey": "object:1203"
+                            "result": "",
+                            "$$hashKey": "object:3651",
+                            "selected": false
                         }
                     ],
                     "type": "new",
                     "controlType": "for each",
                     "dataName": "index",
-                    "forList": "seq",
+                    "forList": "[0,1]",
                     "selected": false,
                     "$$hashKey": "object:1142"
                 },
@@ -803,35 +772,37 @@
                     "id": 5,
                     "title": "Action",
                     "nodes": [],
+                    "type": "new",
                     "expression": "",
                     "method": "addData",
                     "category": "obj",
+                    "return": false,
                     "parameters": [
                         {
                             "value": "face",
                             "type": "obj",
-                            "$$hashKey": "object:1229"
+                            "$$hashKey": "object:4613"
                         },
                         {
-                            "value": "\"tuberadius\"",
+                            "value": "\"tube_radius\"",
                             "type": "dataName",
-                            "$$hashKey": "object:1230"
+                            "$$hashKey": "object:4614"
                         },
                         {
                             "value": "rads",
                             "type": "dataValue",
-                            "$$hashKey": "object:1231"
+                            "$$hashKey": "object:4615"
                         }
                     ],
-                    "result": "_",
-                    "selected": false,
-                    "$$hashKey": "object:1143"
+                    "result": "",
+                    "$$hashKey": "object:4603",
+                    "selected": false
                 }
             ],
             "type": "assign",
             "controlType": "for each",
             "dataName": "face",
-            "forList": "meshfaces",
+            "forList": "mesh.faces",
             "selected": true,
             "$$hashKey": "object:331"
         }
