@@ -103,7 +103,9 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                     var subProps = Object.getOwnPropertyNames(MOBIUS[props[i]]);
                     for(var j = 0; j < subProps.length; j++){
                         if(typeof MOBIUS[props[i]][subProps[j]] == 'function'){
-                            expression.push({category:props[i],name:subProps[j]});
+                            expression.push({category:props[i],
+                                             name:subProps[j],
+                                             return:MOBIUS[props[i]][subProps[j]].prototype.return});
                         }
                     }
                 }
@@ -215,6 +217,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                         'dataType',
                         'category',
                         'method',
+                        'return',
                         'parameters',
                         'inputConnectors',
                         'outputConnectors']
@@ -625,6 +628,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                         expression:'',
                         method:subCate.name,
                         category:subCate.category,
+                        return:subCate.return,
                         parameters:parameters,
                         result:result,
                         dataName:undefined

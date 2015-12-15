@@ -901,8 +901,10 @@ var MOBIUS = ( function (mod){
 		
 		obj.setMaterial(material);
 
-		return obj;
+		//return obj;
 	};
+
+	mod.obj.addMaterial.prototype.return  = false;
 
 	/**
 	 * Adds data to an object
@@ -928,6 +930,8 @@ var MOBIUS = ( function (mod){
 				obj.setData( new_data );
 		}
 	};
+
+	mod.obj.addData.prototype.return = false;
 
 	/**
 	 * Returns the centre of a NURBS Curve, NURBS Surface or geometry for which centre is defined
@@ -1258,6 +1262,8 @@ var MOBIUS = ( function (mod){
 		list.push(itemOrList);
 	};
 
+	mod.lst.append.prototype.return = false;
+
 	mod.lst.insert = function(list, item, index){
 
 		var newlist = [];
@@ -1273,6 +1279,8 @@ var MOBIUS = ( function (mod){
 			
 	};
 
+	mod.lst.insert.prototype.return = false;
+
 	mod.lst.extend = function(list, extension_list){
 		
 		extension_list.map( function(t){
@@ -1280,6 +1288,8 @@ var MOBIUS = ( function (mod){
 		});
 
 	};
+
+	mod.lst.extend.prototype.return = false;
 
 	/**
 	 * Removes an array element from a list by it's index number
@@ -1290,6 +1300,8 @@ var MOBIUS = ( function (mod){
 	mod.lst.remove = function(list, index) {
 		list.splice(index, 1);
 	};
+
+	mod.lst.remove.prototype.return = false;
 
 
 	/**
