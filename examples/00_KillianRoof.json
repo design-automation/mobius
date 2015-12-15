@@ -4,7 +4,7 @@
             "id": 0,
             "name": "base_curve0",
             "x": 1926.7493546963033,
-            "y": 1999.215888745529,
+            "y": 1998.2023707867984,
             "inputConnectors": [],
             "outputConnectors": [
                 {
@@ -17,7 +17,7 @@
                 }
             ],
             "type": "base_curve",
-            "version": 1450163287084,
+            "version": 1450195348823,
             "overwrite": true
         },
         {
@@ -92,7 +92,7 @@
                 }
             ],
             "type": "cross_section",
-            "version": 1450163274191,
+            "version": 1450195349271,
             "overwrite": true
         },
         {
@@ -150,7 +150,7 @@
                 }
             ],
             "type": "loft_surface",
-            "version": 1450163267220,
+            "version": 1450195263638,
             "overwrite": true
         },
         {
@@ -180,7 +180,7 @@
                 }
             ],
             "type": "killian_roof",
-            "version": 1450163218368,
+            "version": 1450195350600,
             "overwrite": true
         }
     ],
@@ -274,27 +274,27 @@
             "dataValue": "[]"
         },
         {
-            "id": 5,
+            "id": 9,
             "title": "Action",
             "nodes": [],
             "type": "new",
             "expression": "",
-            "method": "tListByNumber",
+            "method": "divideByNumber",
             "category": "crv",
             "parameters": [
                 {
                     "value": "centralProfile",
                     "type": "curve",
-                    "$$hashKey": "object:2262"
+                    "$$hashKey": "object:1919"
                 },
                 {
                     "value": "num_curves",
                     "type": "numPoints",
-                    "$$hashKey": "object:2263"
+                    "$$hashKey": "object:1920"
                 }
             ],
             "result": "tList",
-            "$$hashKey": "object:2247",
+            "$$hashKey": "object:1904",
             "selected": false
         },
         {
@@ -487,7 +487,7 @@
             "controlType": "for each",
             "dataName": "t",
             "forList": "tList",
-            "selected": true,
+            "selected": false,
             "$$hashKey": "object:289"
         }
     ],

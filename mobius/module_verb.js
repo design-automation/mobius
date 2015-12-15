@@ -228,7 +228,7 @@ var MOBIUS = ( function (mod){
 	 * @param {array} cornerpoints - Array of points / vertex objects ( [ [x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4] ] )
 	 * @returns { surface object }  - Surface object
 	 */
-	mod.srf.nurbsByCorners = function ( frame, cornerpoints ){
+	mod.srf.nurbsByCorners = function ( cornerpoints ){
 
 		var point0 = cornerpoints[0];
 		var point1 = cornerpoints[1];
@@ -245,7 +245,7 @@ var MOBIUS = ( function (mod){
 			point3 = point3.getGeometry();
 
 		var srf = new verb.geom.NurbsSurface.byCorners ( point0, point1, point2, point3 );
-		srf.transform( frame.toLocal() );
+		//srf.transform( frame.toLocal() );
 
 		return new mObj_geom_Surface( srf ) ;
 	};
@@ -257,12 +257,12 @@ var MOBIUS = ( function (mod){
 	 * @returns { surface object }  - Surface Object 
 	 */
 	 //checked
-	mod.srf.nurbsByExtrusion  = function(frame, curve, direction){
+	mod.srf.nurbsByExtrusion  = function(curve, direction){
 
-		var profile = curve.getGeometry().transform( frame.toLocal() );
+		var profile = curve.getGeometry();
 
 		var srf = new verb.geom.ExtrudedSurface( profile, direction );
-		srf.transform( frame.toLocal() );
+		//srf.transform( frame.toLocal() );
 
 		return new mObj_geom_Surface( srf ) ;
 
@@ -274,7 +274,7 @@ var MOBIUS = ( function (mod){
 	 * @param {int} degree - Degree of the Surface ( optional parameter; defaults to 3)
 	 * @returns { surface object }  - Surface Object 
 	 */
-	mod.srf.nurbsByLoft = function(listOfCurves, degree){
+	mod.srf.nurbsByLoft = function( listOfCurves, degree ){
 
 		var deg = degree || 3;
 		var curves = []; 
@@ -283,7 +283,7 @@ var MOBIUS = ( function (mod){
 			curves.push(listOfCurves[c].getGeometry()); 
 
 		var srf = new verb.geom.NurbsSurface.byLoftingCurves( curves, deg );
-		srf.transform( frame.toLocal() );
+		//srf.transform( frame.toLocal() );
 
 		return new mObj_geom_Surface( srf ) ;
 		
@@ -291,12 +291,12 @@ var MOBIUS = ( function (mod){
 
 	/**
 	 * Creates a surface by revolving a curve around the z-Axis of the specified local coordinate system 
-	 * @param { curve object } sectionCurve - Curve Object which has to be revolved about the z-Axis
 	 * @param { frame object } frame - Local coordinate system; Z-Axis of the frame determines the axis of revolution
+	 * @param { curve object } sectionCurve - Curve Object which has to be revolved about the z-Axis
 	 * @param { float } angle - Angle of revolution in Radians 
 	 * @returns { surface object }  - Surface Object 
 	 */
-	mod.srf.nurbsByRevolution = function(sectionCurve, frame, angle){
+	mod.srf.nurbsByRevolution = function(frame, sectionCurve, angle){
 
 		var profile = sectionCurve.getGeometry();
 
