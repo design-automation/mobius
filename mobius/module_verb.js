@@ -158,7 +158,7 @@ var MOBIUS = ( function (mod){
 	 * @param { float } zDistance - Amount of extrusion in the direction of the z-Axis of the frame
 	 * @returns { solid object }  - Solid object 
 	 */
-	mod.sld.byExtrusion = function(frame, surface, xDistance, yDistance, zDistance){
+	mod.sld.byExtrusion = function(surface, frame, xDistance, yDistance, zDistance){
 
 		var bottomSurface = surface;
 		var topSurface = MOBIUS.trn.shift(bottomSurface, frame, xDistance, yDistance, zDistance, true);

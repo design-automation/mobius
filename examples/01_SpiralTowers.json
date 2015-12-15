@@ -50,15 +50,15 @@
                 {
                     "id": 1,
                     "title": "Output",
-                    "name": "geom",
-                    "dataValue": "cpys",
+                    "name": "cpys",
+                    "dataValue": "[]",
                     "type": "new",
                     "selected": false,
                     "$$hashKey": "object:15323"
                 }
             ],
             "type": "radial_copy0",
-            "version": 1450166564518,
+            "version": 1450196691915,
             "overwrite": true
         },
         {
@@ -157,7 +157,7 @@
                 }
             ],
             "type": "curve",
-            "version": 1450166563906,
+            "version": 1450196691257,
             "overwrite": true
         },
         {
@@ -258,7 +258,7 @@
         },
         {
             "source": {
-                "nodeID": 0,
+                "nodeID": 5,
                 "connectorIndex": 1
             },
             "dest": {
@@ -439,6 +439,15 @@
     ],
     [
         {
+            "id": 1,
+            "title": "Output",
+            "name": "cpys",
+            "dataValue": "[]",
+            "type": "new",
+            "selected": false,
+            "$$hashKey": "object:15323"
+        },
+        {
             "id": 9,
             "title": "Action",
             "nodes": [],
@@ -516,66 +525,39 @@
             "selected": false
         },
         {
-            "id": 4,
-            "title": "Data",
+            "id": 8,
+            "title": "Action",
             "nodes": [],
-            "dataName": "cpys",
-            "dataValue": "[]",
-            "type": "new",
-            "$$hashKey": "object:3403",
-            "selected": false
+            "expression": "",
+            "method": "reflect",
+            "category": "trn",
+            "parameters": [
+                {
+                    "value": "geom",
+                    "type": "object",
+                    "$$hashKey": "object:6477"
+                },
+                {
+                    "value": "frame",
+                    "type": "frame",
+                    "$$hashKey": "object:6478"
+                },
+                {
+                    "value": "true",
+                    "type": "copy",
+                    "$$hashKey": "object:6479"
+                }
+            ],
+            "result": "anti_geom",
+            "$$hashKey": "object:6464",
+            "selected": false,
+            "disabled": false,
+            "type": "new"
         },
         {
             "id": 3,
             "title": "Control",
             "nodes": [
-                {
-                    "id": 8,
-                    "title": "Action",
-                    "nodes": [],
-                    "expression": "",
-                    "method": "copy",
-                    "category": "obj",
-                    "parameters": [
-                        {
-                            "value": "geom",
-                            "type": "object",
-                            "$$hashKey": "object:4006"
-                        }
-                    ],
-                    "result": "cpy",
-                    "$$hashKey": "object:3993",
-                    "selected": false
-                },
-                {
-                    "id": 8,
-                    "title": "Action",
-                    "nodes": [],
-                    "expression": "",
-                    "method": "reflect",
-                    "category": "trn",
-                    "parameters": [
-                        {
-                            "value": "cpy",
-                            "type": "object",
-                            "$$hashKey": "object:6477"
-                        },
-                        {
-                            "value": "frame",
-                            "type": "frame",
-                            "$$hashKey": "object:6478"
-                        },
-                        {
-                            "value": "true",
-                            "type": "copy",
-                            "$$hashKey": "object:6479"
-                        }
-                    ],
-                    "result": "anti_cpy",
-                    "$$hashKey": "object:6464",
-                    "selected": false,
-                    "disabled": false
-                },
                 {
                     "id": 7,
                     "title": "Action",
@@ -585,7 +567,7 @@
                     "category": "trn",
                     "parameters": [
                         {
-                            "value": "[cpy, anti_cpy]",
+                            "value": "[geom, anti_geom]",
                             "type": "object",
                             "$$hashKey": "object:4706"
                         },
@@ -610,7 +592,7 @@
                             "$$hashKey": "object:4710"
                         },
                         {
-                            "value": "false",
+                            "value": "true",
                             "type": "copy",
                             "$$hashKey": "object:4711"
                         }
@@ -650,15 +632,6 @@
             "forList": "seq",
             "$$hashKey": "object:2681",
             "selected": true
-        },
-        {
-            "id": 1,
-            "title": "Output",
-            "name": "geom",
-            "dataValue": "cpys",
-            "type": "new",
-            "selected": false,
-            "$$hashKey": "object:15323"
         }
     ],
     [
