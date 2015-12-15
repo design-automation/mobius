@@ -310,7 +310,7 @@ var MOBIUS = ( function (mod){
 	};
 
 	// method?
-	mod.srf.uvGridByNumber = function(surface, uSegments, vSegments, method){
+	mod.srf.uvGridByNumber = function(surface, uSegments, vSegments){
 		
 		var uvList = [];
 
@@ -329,7 +329,7 @@ var MOBIUS = ( function (mod){
 
 	};
 
-	mod.srf.uvGridByDistance = function(surface, uDistance, vDistance, method){
+	mod.srf.uvGridByDistance = function(surface, uDistance, vDistance){
 
 	};
 
