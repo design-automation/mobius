@@ -611,7 +611,7 @@ var MOBIUS = ( function (mod){
 	};
 
 	// what's method?
-	mod.crv.tListByNumber = function(curve, numPoints, method){
+	mod.crv.tListByNumber = function(curve, numPoints){
 
 		var tList = [];
 		var incr = 1/(numPoints-1)
@@ -623,7 +623,7 @@ var MOBIUS = ( function (mod){
 
 	};
 
-	mod.crv.tListByDistance = function(curve, distance, method){
+	mod.crv.tListByDistance = function(curve, distance){
 
 		var curve = curve.getGeometry();
 
@@ -658,7 +658,8 @@ var MOBIUS = ( function (mod){
 		var curve = curve.getGeometry();
 
 		var frames = tList.map( function(t){
-			return new mObj_frame( curve.point(t), undefined, upVector, verb.core.Vec.normalized( curve.tangent(t) ) );
+
+			return new mObj_frame( curve.point(t), undefined, upVector);
 		})
 
 		return frames;
@@ -939,6 +940,29 @@ var MOBIUS = ( function (mod){
 		if(object.getGeometry != undefined)
 			geometry = object.getGeometry();  
 
+		// object is a solid
+		if(geometry.constructor == Array ){
+
+			var centres  = []
+			for( var obj = 0; obj < geometry.length; obj++ )
+				centres.push( MOBIUS.obj.getCentre( geometry[obj]) );
+
+			var x = [];
+			var y = [];
+			var z = [];
+			for( var i=0; i<centres.length; i++){
+				x.push( centres[i][0] );
+				y.push( centres[i][1] );
+				z.push( centres[i][2] );
+			}
+
+			x = MOBIUS.lst.average( x );
+			y = MOBIUS.lst.average( y );
+			z = MOBIUS.lst.average( z );
+
+			return [x, y, z]
+		}
+
 		if(geometry.center != undefined)
 			return geometry.center();
 		else if(geometry instanceof verb.geom.NurbsCurve)
@@ -974,7 +998,7 @@ var MOBIUS = ( function (mod){
 			var newobject = [];
 			
 			for(var obj=0; obj < object.length; obj++)
-				newobject.push(MOBIUS.trn.reflect( object, frame, copy ));	
+				newobject.push(MOBIUS.trn.reflect( object[obj], frame, copy ));	
 			
 			return newobject;
 		}
@@ -990,13 +1014,10 @@ var MOBIUS = ( function (mod){
 								[0, 0, 0, 1]
 					];
 						
-		if( frame != undefined ){
-			geom = geom.transform( frame.toGlobal() );
-			geom = geom.transform( trnMat ); 
-			geom = geom.transform( frame.toLocal() );
-		}
-		else
-			geom = geom.transform( trnMat );
+
+		geom = geom.transform( frame.toGlobal() );
+		geom = geom.transform( trnMat ); 
+		geom = geom.transform( frame.toLocal() );
 		
 		object.setGeometry( geom ); 
 
@@ -1080,7 +1101,7 @@ var MOBIUS = ( function (mod){
 			var newobject = [];
 			
 			for(var obj=0; obj < object.length; obj++)
-				newobject.push(MOBIUS.trn.scale(object, frame, scaleX, scaleY, scaleZ, copy));	
+				newobject.push(MOBIUS.trn.scale(object[obj], frame, scaleX, scaleY, scaleZ, copy));	
 			
 			return newobject;
 		}
@@ -1096,14 +1117,10 @@ var MOBIUS = ( function (mod){
 								[ 0, 0, 0, 1 ]
 					];
 			
-		if( frame != undefined ){
-			geom = geom.transform( frame.toGlobal() );
-			geom = geom.transform( trnMat );
-			geom = geom.transform( frame.toLocal() );
-		}
-		else
-			geom = geom.transform( trnMat );
-		
+		geom = geom.transform( frame.toGlobal() );
+		geom = geom.transform( trnMat );
+		geom = geom.transform( frame.toLocal() );
+	
 		object.setGeometry( geom ); 
 
 		return object;
@@ -1129,7 +1146,7 @@ var MOBIUS = ( function (mod){
 			var newobject = [];
 			
 			for(var obj=0; obj < object.length; obj++)
-				newobject.push(MOBIUS.trn.shift( object[obj], shiftX, shiftY, shiftZ, copy ));	
+				newobject.push(MOBIUS.trn.shift( object[obj], frame, shiftX, shiftY, shiftZ, copy ));	
 			
 			return newobject;
 		}
@@ -1145,13 +1162,9 @@ var MOBIUS = ( function (mod){
 									[ 0, 0, 0, 1 ]
 					 	] 
 	
-		if( frame != undefined ){
-			geom = geom.transform( frame.toGlobal() );
-			geom = geom.transform( trnMat );
-			geom = geom.transform( frame.toLocal() );
-		}
-		else
-			geom = geom.transform( trnMat );
+		geom = geom.transform( frame.toGlobal() );
+		geom = geom.transform( trnMat );
+		geom = geom.transform( frame.toLocal() );
 		
 		object.setGeometry( geom ); 
 
@@ -1175,12 +1188,15 @@ var MOBIUS = ( function (mod){
 	
 		var orCenter = MOBIUS.obj.getCentre(object);
 			
+		// frame definition
+		var frame = MOBIUS.frm.byXYAxes([0,0,0], [1,0,0], [0,1,0])
+
 		// translation required
 		var tx = point[0] - orCenter[0];
 		var ty = point[1] - orCenter[1];
 		var tz = point[2] - orCenter[2]; 
 		
-		return MOBIUS.trn.shift( object, undefined, tx, ty, tz, copy );		
+		return MOBIUS.trn.shift( object, frame, tx, ty, tz, copy );		
 	};
 
 
@@ -1221,11 +1237,11 @@ var MOBIUS = ( function (mod){
 
 	/**
 	 * Returns the length of the list 
-	 * @param {array} valueList - List which is to be analyzed
+	 * @param {array} numericList - List which is to be analyzed
 	 * @returns {int} 
 	 */
 	mod.lst.length = function(list){
-		return valueList.length
+		return list.length
 	};
 
 	/**
@@ -1309,25 +1325,25 @@ var MOBIUS = ( function (mod){
 
 	/**
 	 * Gets the avaerage of a numeric array
-	 * @param {array} valueList - List which is to be averaged
+	 * @param {array} numericList - List which is to be averaged
 	 * @returns {float / int} 
 	 */
 	mod.lst.average = function(numericList){
-		return MOBIUS.lst.sum( valueList )/ valueList.length;
+		return MOBIUS.lst.sum( numericList )/ numericList.length;
 	};
 
 
 	/**
 	 * Gets the minimum value in a numeric array
-	 * @param {array} valueList - List from which minimum value is required
+	 * @param {array} numericList - List from which minimum value is required
 	 * @returns {float / int} 
 	 */
 	mod.lst.min = function(numericList){
 		
-		var minValue = valueList[0];
+		var minValue = numericList[0];
 		
-		for(var i=0; i<valueList.length; i++)
-			minValue = Math.min(minValue, valueList[i]);
+		for(var i=0; i<numericList.length; i++)
+			minValue = Math.min(minValue, numericList[i]);
 		
 		return minValue;
 	
@@ -1335,15 +1351,15 @@ var MOBIUS = ( function (mod){
 
 	/**
 	 * Gets the maximum value in a numeric array
-	 * @param {array} valueList - List from which maximum value is required
+	 * @param {array} numericList - List from which maximum value is required
 	 * @returns {float / int} 
 	 */
 	mod.lst.max = function(numericList){
 		
-		var maxValue = valueList[0];
+		var maxValue = numericList[0];
 		
-		for(var i=0; i<valueList.length; i++)
-			maxValue = Math.max(maxValue, valueList[i]);
+		for(var i=0; i<numericList.length; i++)
+			maxValue = Math.max(maxValue, numericList[i]);
 		
 		return maxValue;
 	
@@ -1352,15 +1368,15 @@ var MOBIUS = ( function (mod){
 
 	/**
 	 * Gets the sum of a numeric array
-	 * @param {array} valueList - List which is to be summed
+	 * @param {array} numericList - List which is to be summed
 	 * @returns {float / int} 
 	 */
 	mod.lst.sum = function( numericList ){
 		
 		var sum = 0;
 		
-		for(var i=0; i<valueList.length; i++)
-			sum += valueList[i];
+		for(var i=0; i<numericList.length; i++)
+			sum += numericList[i];
 		
 		return sum;
 	
@@ -1368,12 +1384,12 @@ var MOBIUS = ( function (mod){
 
 	/**
 	 * Returns the span of the list - the difference between the maximum and the minimum value in the list
-	 * @param {array} valueList - List which is to be analyzed
+	 * @param {array} numericList - List which is to be analyzed
 	 * @returns {float / int} 
 	 */
 	mod.lst.range = function( numericList ){
 		
-		return MOBIUS.lst.max( valueList ) - MOBIUS.lst.min( valueList );
+		return MOBIUS.lst.max( numericList ) - MOBIUS.lst.min( numericList );
 	
 	};
 
