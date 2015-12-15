@@ -36,13 +36,17 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                         setTimeout(function(){
                             document.getElementById('saveSceneJson').click();
                         },0);
-                    }
-                    setTimeout(function(){
 
-                    if($scope.sceneUrl !== ''){
+                        setTimeout(function(){
+
+                            if($scope.sceneUrl !== ''){
+                                newScene();
+                            }
+                        },250);
+                    }else{
                         newScene();
                     }
-                    },250);
+
 
                     },
                 function() {});
@@ -119,7 +123,6 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                                 console.log(generateCode.getChartViewModel().nodes[i].outputConnectors[j].data.name)
                             }
                         }
-                        console.log(generateCode.getChartViewModel().nodes[i].outputConnectors)
                     }
 
 
@@ -251,7 +254,6 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
             if(tree.length > 0){
                 for(var i = 0; i <tree.length; i++){
                     if(tree[i].title === 'Output' && nodeData.id === tree[i].id){
-                        console.log('tree: ',tree[i]);
                         $scope.outputHolder = tree[i];
                     }else{
                         if(tree[i].nodes){
