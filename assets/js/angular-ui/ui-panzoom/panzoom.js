@@ -21,11 +21,12 @@ function ($document, PanZoomService) {
                         var frameElement = $element;
                         //var panElement = $element.find('.pan-element');
                         //var zoomElement = $element.find('.zoom-element');
-                        // @ vidamo
+                        // @ mobius
                         var contentElement = $element.find('.pan-zoom-contents');
 
                         var getCssScale = function (zoomLevel) {
                             var scaleFactor = Math.pow($scope.config.scalePerZoomLevel, zoomLevel - $scope.config.neutralZoomLevel);
+                            // broadcast to graph indicating zoom scale
                             $rootScope.$broadcast("Update", scaleFactor);
                             return scaleFactor;
                         };
@@ -43,10 +44,10 @@ function ($document, PanZoomService) {
                         $scope.config.haltSpeed = $scope.config.haltSpeed || 100.0;
                         $scope.config.scalePerZoomLevel = $scope.config.scalePerZoomLevel || 2;
                         $scope.config.zoomStepDuration = $scope.config.zoomStepDuration || 0.2;
-                        $scope.config.zoomStepDuration = $scope.config.zoomStepDuration || 0.2;
                         $scope.config.modelChangedCallback = $scope.config.modelChangedCallback || function () {};
                         $scope.config.zoomToFitZoomLevelFactor = $scope.config.zoomToFitZoomLevelFactor || 0.95;
-                        $scope.config.zoomButtonIncrement = $scope.config.zoomButtonIncrement || 1.0;
+                        // zooming step
+                        $scope.config.zoomButtonIncrement = $scope.config.zoomButtonIncrement || 0.6;
 
                         $scope.config.initialZoomLevel = $scope.config.initialZoomLevel || $scope.config.neutralZoomLevel;
                         $scope.config.initialPanX = $scope.config.initialPanX || 0;
@@ -56,7 +57,7 @@ function ($document, PanZoomService) {
                         $scope.config.zoomOnMouseWheel = $scope.config.zoomOnMouseWheel !== undefined ? $scope.config.zoomOnMouseWheel : true;
                         $scope.config.panOnClickDrag = $scope.config.panOnClickDrag !== undefined ? $scope.config.panOnClickDrag : true;
 
-                        // @ vidamo
+                        // @ mobius
                         $scope.config.invertMouseWheel = $scope.config.invertMouseWheel || true;
 
                         var calcZoomToFit = function (rect) {
@@ -356,7 +357,7 @@ function ($document, PanZoomService) {
                                 syncModelToDOM();
                                 return true
 
-                                // vidamo change
+                                // mobius
                                 //var doneAnimating = $scope.panVelocity === undefined && $scope.zoomAnimation === undefined;
                                 //if (doneAnimating) {
                                 //    tick.isRegistered = false;
@@ -390,7 +391,7 @@ function ($document, PanZoomService) {
                                     x: $event.pageX - frameElement.offset().left,
                                     y: $event.pageY - frameElement.offset().top
                                 };
-                                // @ vidamo
+                                // @ mobius
                                 // disable double click to zoom
                                 //zoomIn(clickPoint);
                             }
@@ -400,7 +401,7 @@ function ($document, PanZoomService) {
                         var previousPosition;
 
                         $scope.onMousedown = function ($event) {
-                            // @ vidamo
+                            // @ mobius
                             // disable left mouse down
                             if ($scope.config.panOnClickDrag && $event.which == 3) {
                                 previousPosition = {
