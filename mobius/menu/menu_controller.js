@@ -112,15 +112,9 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                     // dynamically link input and output from graph and procedure
                     for(var i =0; i < generateCode.getChartViewModel().nodes.length; i++){
                         for(var j = 0 ; j < generateCode.getChartViewModel().nodes[i].outputConnectors.length; j++ ){
-                            for(var k = 0; k < generateCode.getDataList()[i].length; k++){
-                                if(generateCode.getDataList()[i][k].title === 'Output'){
-                                    if(generateCode.getChartViewModel().nodes[i].outputConnectors[j].data.id
-                                        === generateCode.getDataList()[i][k].id ){
-                                        generateCode.getChartViewModel().nodes[i].outputConnectors[j].data =
-                                            generateCode.getDataList()[i][k];
-                                    }
-                                }
-                            }
+
+                                generateCode.getChartViewModel().nodes[i].outputConnectors[j].data =
+                                    $scope.searchOutput(generateCode.getDataList()[i], generateCode.getChartViewModel().nodes[i].outputConnectors[j].data);
                         }
                     }
 
@@ -198,20 +192,13 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                         generateCode.setInterfaceList(interfaceJsonObj);
 
                         // dynamically link input and output from graph and procedure
+                        // recursive search for node outputs
                         for(var i =0; i < generateCode.getChartViewModel().nodes.length; i++){
                             for(var j = 0 ; j < generateCode.getChartViewModel().nodes[i].outputConnectors.length; j++ ){
-                                for(var k = 0; k < generateCode.getDataList()[i].length; k++){
-                                    if(generateCode.getDataList()[i][k].title === 'Output'){
-                                        if(generateCode.getChartViewModel().nodes[i].outputConnectors[j].data.id
-                                            === generateCode.getDataList()[i][k].id ){
-                                            generateCode.getChartViewModel().nodes[i].outputConnectors[j].data =
-                                                generateCode.getDataList()[i][k];
-                                        }
-                                    }
-                                }
+                                generateCode.getChartViewModel().nodes[i].outputConnectors[j].data =
+                                $scope.searchOutput(generateCode.getDataList()[i],generateCode.getChartViewModel().nodes[i].outputConnectors[j].data);
                             }
                         }
-
 
                         for(var i =0; i < generateCode.getChartViewModel().nodes.length; i++) {
                             for (var j = 0; j < generateCode.getChartViewModel().nodes[i].inputConnectors.length; j++) {
@@ -227,6 +214,7 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                             }
                         }
 
+
                         consoleMsg.confirmMsg('sceneImport');
                     }else{
                         consoleMsg.errorMsg('invalidFileType');
@@ -234,6 +222,7 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                     generateCode.generateCode();
                 };
             })(f);
+
 
             reader.readAsText(f);
 
@@ -247,6 +236,23 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                 //$rootScope.$broadcast('runNewScene');
             },0);
 
+        };
+
+
+
+        $scope.searchOutput = function(tree, nodeData){
+            if(tree.length > 0){
+                for(var i = 0; i <tree.length; i++){
+                    if(tree[i].title === 'Output' && nodeData.id === tree[i].id){
+                        console.log(tree[i]);
+                        return tree[i];
+                    }else{
+                        if(tree[i].nodes){
+                            return $scope.searchOutput(tree[i].nodes,nodeData);
+                        }
+                    }
+                }
+            }
         };
 
         // save json file for scene

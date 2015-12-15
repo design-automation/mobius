@@ -493,8 +493,9 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
         // new parameter / procedure items
         $scope.newItem = function(cate,subCate) {
+            $scope.currentHighestId = 0;
 
-            try{
+            //try{
                 // finding adding position
                 var selectedPos = undefined;
                 var selectedParent = undefined;
@@ -538,7 +539,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                 // adding
                 if(cate === 'Data'){
                     var dataObj = {
-                        id: $scope.data.length  + 1,
+                        id: $scope.maxId($scope.data)  + 1,
                         title:  'Data',
                         nodes: [],
                         dataName:undefined,
@@ -555,20 +556,20 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                 }
 
                 else if(cate === 'Output'){
-                    if($scope.data.length !== 0){
-                        var maxId = $scope.data[0].id;
-                        for(var i = 1;i < $scope.data.length; i ++){
-                            if(maxId < $scope.data[i].id){
-                                maxId = $scope.data[i].id;
-                            }
-                        }
-                    }else{
-                        maxId = 0;
-                    }
+                    //if($scope.data.length !== 0){
+                    //    var maxId = $scope.data[0].id;
+                    //    for(var i = 1;i < $scope.data.length; i ++){
+                    //        if(maxId < $scope.data[i].id){
+                    //            maxId = $scope.data[i].id;
+                    //        }
+                    //    }
+                    //}else{
+                    //    maxId = 0;
+                    //}
 
 
                     var outputObj = {
-                        id:maxId + 1,
+                        id:$scope.maxId($scope.data) + 1,
                         title: 'Output'
                         //name: undefined,
                         //dataValue:undefined,
@@ -586,7 +587,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                 // todo update node flatten func
                 else if(cate === "Function"){
                     var functionObj = {
-                        id:$scope.data.length + 1,
+                        id:$scope.maxId($scope.data) + 1,
                         title: 'Function',
                         name: 'FUNC_OUTPUT',
                         dataValue:undefined,
@@ -621,7 +622,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                     }
 
                     var actionObj = {
-                        id: $scope.data.length  + 1,
+                        id: $scope.maxId($scope.data)  + 1,
                         title:  'Action',
                         nodes: [],
                         type:undefined,
@@ -644,7 +645,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                     switch(subCate){
                         case 'for each':
                             var forObj ={
-                                id: $scope.data.length  + 1,
+                                id: $scope.maxId($scope.data) + 1,
                                 title:  'Control',
                                 nodes: [],
                                 type:undefined,
@@ -662,11 +663,11 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
                         case 'if else':
                             var ifObj = {
-                                id: $scope.data.length  + 1,
+                                id: $scope.maxId($scope.data)  + 1,
                                 title:  'Control',
                                 nodes: [
                                     {
-                                        id: $scope.data.length  + 'if',
+                                        id: $scope.maxId($scope.data)  ,
                                         title:  'Control',
                                         controlType:'if',
                                         nodes: [],
@@ -674,7 +675,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
                                     },
                                     {
-                                        id: $scope.data.length  + 'else',
+                                        id: $scope.maxId($scope.data)  ,
                                         title:  'Control',
                                         controlType:'else',
                                         nodes: []
@@ -693,10 +694,10 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                             break;
                     }
                 }
-            }
-            catch(err){
-                consoleMsg.errorMsg('noNode');
-            }
+            //}
+            //catch(err){
+            //    consoleMsg.errorMsg('noNode');
+            //}
             var procedureDiv = document.getElementById("procedure-area");
             setTimeout(function(){
                 procedureDiv.scrollTop = procedureDiv.scrollHeight;},0);
@@ -751,6 +752,39 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
             }else{
                 return [];
             }
-        }
+        };
+
+        // fixme generate max id in $scope.data or generate uuID?
+        $scope.currentHighestId = 0;
+
+        $scope.maxId = function(tree){
+            if(tree.length > 0){
+                for(var i = 0; i < tree.length; i++){
+                    if(tree[i].id > $scope.currentHighestId){
+                        $scope.currentHighestId = tree[i].id;
+                    }
+                    if(tree[i].nodes){
+                        $scope.maxId(tree[i].nodes);
+                    }
+                }
+            }
+
+            console.log('highest id now is: ', $scope.currentHighestId );
+            return $scope.currentHighestId;
+        };
+
+        //
+        //$scope.generateUUID = function(){
+        //    var d = new Date().getTime();
+        //    if(window.performance && typeof window.performance.now === "function"){
+        //        d += performance.now();; //use high-precision timer if available
+        //    }
+        //    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        //        var r = (d + Math.random()*16)%16 | 0;
+        //        d = Math.floor(d/16);
+        //        return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+        //    });
+        //    return uuid;
+        //};
 
     }]);
