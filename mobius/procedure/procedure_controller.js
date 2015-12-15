@@ -760,7 +760,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         $scope.maxId = function(tree){
             if(tree.length > 0){
                 for(var i = 0; i < tree.length; i++){
-                    if(tree[i].id > $scope.currentHighestId){
+                    if(tree[i].id > $scope.currentHighestId && tree.id !== 999){
                         $scope.currentHighestId = tree[i].id;
                     }
                     if(tree[i].nodes){
