@@ -68,14 +68,14 @@
         <!--return vairable-->
         <a href="#" data-nodrag buttons="no"
            blur="submit"
-           ng-if="node.method !== 'print'"
+           ng-if="node.method !== 'print' && node.return !== false"
            editable-text="node.result"
            style="display: inline-block">
             {{ node.result || 'result' }} =
         </a>
 
         <!--method name-->
-        {{node.method}}
+        {{node.category}}.{{node.method}}
 
         (
         <!--parameters-->

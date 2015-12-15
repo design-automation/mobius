@@ -461,7 +461,10 @@ vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
                 }
 
                  var codeBlock = '';
-                 if(procedure.method !== 'print' && procedure.method !== 'expression'){
+                 if(procedure.method !== 'print' &&
+                     procedure.method !== 'expression' &&
+                     procedure.return !== false &&
+                 procedure.return !== undefined){
                     codeBlock += intentation  + '    '  + 'var ' + procedure.result + ' = ';
                  }else{
                      codeBlock += intentation  + '    ';
