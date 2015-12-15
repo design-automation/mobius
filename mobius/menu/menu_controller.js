@@ -112,10 +112,14 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                     // dynamically link input and output from graph and procedure
                     for(var i =0; i < generateCode.getChartViewModel().nodes.length; i++){
                         for(var j = 0 ; j < generateCode.getChartViewModel().nodes[i].outputConnectors.length; j++ ){
-
-                                generateCode.getChartViewModel().nodes[i].outputConnectors[j].data =
-                                    $scope.searchOutput(generateCode.getDataList()[i], generateCode.getChartViewModel().nodes[i].outputConnectors[j].data);
+                            if( generateCode.getChartViewModel().nodes[i].outputConnectors[j].data.name !== 'FUNC_OUTPUT') {
+                                $scope.searchOutput(generateCode.getDataList()[i],generateCode.getChartViewModel().nodes[i].outputConnectors[j].data);
+                                generateCode.getChartViewModel().nodes[i].outputConnectors[j].data = $scope.outputHolder;
+                            }else {
+                                console.log(generateCode.getChartViewModel().nodes[i].outputConnectors[j].data.name)
+                            }
                         }
+                        console.log(generateCode.getChartViewModel().nodes[i].outputConnectors)
                     }
 
 
@@ -195,8 +199,10 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                         // recursive search for node outputs
                         for(var i =0; i < generateCode.getChartViewModel().nodes.length; i++){
                             for(var j = 0 ; j < generateCode.getChartViewModel().nodes[i].outputConnectors.length; j++ ){
-                                generateCode.getChartViewModel().nodes[i].outputConnectors[j].data =
-                                $scope.searchOutput(generateCode.getDataList()[i],generateCode.getChartViewModel().nodes[i].outputConnectors[j].data);
+                                if( generateCode.getChartViewModel().nodes[i].outputConnectors[j].data.name !== 'FUNC_OUTPUT'){
+                                    $scope.searchOutput(generateCode.getDataList()[i],generateCode.getChartViewModel().nodes[i].outputConnectors[j].data);
+                                    generateCode.getChartViewModel().nodes[i].outputConnectors[j].data = $scope.outputHolder;
+                                }
                             }
                         }
 
@@ -238,17 +244,18 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
 
         };
 
+        $scope.outputHolder = undefined;
 
-
+        // support function to dynamiclly link output connectors
         $scope.searchOutput = function(tree, nodeData){
             if(tree.length > 0){
                 for(var i = 0; i <tree.length; i++){
                     if(tree[i].title === 'Output' && nodeData.id === tree[i].id){
-                        console.log(tree[i]);
-                        return tree[i];
+                        console.log('tree: ',tree[i]);
+                        $scope.outputHolder = tree[i];
                     }else{
                         if(tree[i].nodes){
-                            return $scope.searchOutput(tree[i].nodes,nodeData);
+                            $scope.searchOutput(tree[i].nodes,nodeData);
                         }
                     }
                 }
