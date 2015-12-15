@@ -315,7 +315,8 @@ vidamo.controller('graphCtrl',[
                     controller: DialogController,
                     templateUrl: 'mobius/template/inputName_dialog.tmpl.html',
                     parent: angular.element(document.body),
-                    clickOutsideToClose:false
+                    clickOutsideToClose:false,
+                    focusOnOpen:false
                 })
                 .then(function(newName) {
                     $timeout(function(){
@@ -337,7 +338,8 @@ vidamo.controller('graphCtrl',[
                 controller: DialogController,
                 templateUrl: 'mobius/template/inputName_dialog.tmpl.html',
                 parent: angular.element(document.body),
-                clickOutsideToClose:false
+                clickOutsideToClose:false,
+                    focusOnOpen:false
             })
                 .then(function(newTypeName){
                 if (!isValidName(newTypeName)) {return;}
