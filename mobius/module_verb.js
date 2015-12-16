@@ -244,7 +244,7 @@ var MOBIUS = ( function (mod){
 	 * @returns { surface object }  - Surface object
 	 * @memberof srf
 	 */
-	mod.srf.nurbsByCorners = function (  cornerpoints ){
+	mod.srf.nurbsByCorners = function ( cornerpoints ){
 
 		var point0 = cornerpoints[0];
 		var point1 = cornerpoints[1];
@@ -276,13 +276,13 @@ var MOBIUS = ( function (mod){
 	 * @returns { surface object }  - Surface object 
 	 * @memberof sld
 	 */
-	mod.srf.nurbsByExtrusion  = function(curve, frame, xDistance, yDistance, zDistance){
+	mod.srf.nurbsByExtrusion  = function(frame, curve, xDistance, yDistance, zDistance){
 
 		var profile = curve.getGeometry();
-		var ex_profile = MOBIUS.trn.shift( curve, frame, xDistance, yDistance, zDistance, true).getGeometry();
+		var ex_profile = MOBIUS.trn.shift( frame, curve, xDistance, yDistance, zDistance, true).getGeometry();
 
 		var srf = new verb.geom.NurbsSurface.byLoftingCurves( [profile, ex_profile], 1 );
-		//srf.transform( frame.toLocal() );
+		srf.transform( frame.toLocal() );
 
 		return new mObj_geom_Surface( srf ) ;
 
@@ -322,9 +322,7 @@ var MOBIUS = ( function (mod){
 
 		angle = 0.0174533*angle
 
-		var profile = sectionCurve.getGeometry();
-
-		profile = ( profile.transform( frame.toGlobal() ) ); 
+		var profile = sectionCurve.getGeometry().transform( frame.toGlobal() );
 
 		var srf = new mObj_geom_Surface( new verb.geom.RevolvedSurface( profile, [0,0,0], [0,0,1], angle ) ) ;
 
