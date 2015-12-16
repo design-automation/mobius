@@ -168,7 +168,7 @@ var MOBIUS = ( function (mod){
 	 * @memberof sld
 	 */
 	mod.sld.byExtrusion = function(surface, frame, xDistance, yDistance, zDistance){
-
+		//checked
 		var bottomSurface = surface;
 		var topSurface = MOBIUS.trn.shift(bottomSurface, frame, xDistance, yDistance, zDistance, true);
 
@@ -190,11 +190,13 @@ var MOBIUS = ( function (mod){
 
 	/**
 	 * Creates a single solid object from a list of surfaces 
-	 * @param { array } listOfSurfaces - Array of surfaces which form the solid object 
+	 * @param { array } listOfSurfaces - List of surface objects which form the solid
 	 * @returns { solid object }  - Solid object 
 	 * @memberof sld
 	 */
 	mod.sld.bySurfaces = function (listOfSurfaces){
+		//checked
+
 		return new mObj_geom_Solid( listOfSurfaces );
 	};
 
@@ -208,6 +210,7 @@ var MOBIUS = ( function (mod){
 
 	/**
 	 * Creates a Nurbs surface from user-specified data
+	 * @param {frame object} - Local coordinate system for the object
 	 * @param {int} degreeU - Degree of the surface in the u-Direction 
 	 * @param {int} degreeV - Degree of the surface in the v-Direction 
 	 * @param {array} knotsU - Knots in the u-Direction 
@@ -217,7 +220,7 @@ var MOBIUS = ( function (mod){
 	 * @returns { surface object }  - Surface object
 	 * @memberof srf
 	 */
-	mod.srf.nurbsByData = function ( degreeU, degreeV, knotsU, knotsV, controlPoints, weights ){
+	mod.srf.nurbsByData = function ( frame, degreeU, degreeV, knotsU, knotsV, controlPoints, weights ){
 		
 		var controlPoints = controlPoints.map( function(p){ 
 								
@@ -228,7 +231,7 @@ var MOBIUS = ( function (mod){
 
 		var srf = new verb.geom.NurbsSurface.byKnotsControlPointsWeights( degreeU,degreeV,knotsU,knotsV,controlPoints, weights )
 
-		//srf.transform( frame.toLocal() );
+		srf.transform( frame.toLocal() );
 
 		return new mObj_geom_Surface( srf ) ;
 	};
@@ -236,11 +239,12 @@ var MOBIUS = ( function (mod){
 
 	/**
 	 * Creates a Nurbs surface using the corner-points
+	 * @param {frame object} - Local coordinate system for the object
 	 * @param {array} cornerpoints - Array of points / vertex objects ( [ [x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4] ] )
 	 * @returns { surface object }  - Surface object
 	 * @memberof srf
 	 */
-	mod.srf.nurbsByCorners = function ( cornerpoints ){
+	mod.srf.nurbsByCorners = function (  cornerpoints ){
 
 		var point0 = cornerpoints[0];
 		var point1 = cornerpoints[1];
