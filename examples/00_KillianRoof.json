@@ -17,7 +17,7 @@
                 }
             ],
             "type": "base_curve",
-            "version": 1450195348823,
+            "version": 1450210073432,
             "overwrite": true
         },
         {
@@ -92,8 +92,9 @@
                 }
             ],
             "type": "cross_section",
-            "version": 1450195349271,
-            "overwrite": true
+            "version": 1450242022466,
+            "overwrite": true,
+            "disabled": false
         },
         {
             "id": 2,
@@ -150,8 +151,9 @@
                 }
             ],
             "type": "loft_surface",
-            "version": 1450195263638,
-            "overwrite": true
+            "version": 1450210102736,
+            "overwrite": true,
+            "disabled": false
         },
         {
             "id": 3,
@@ -180,8 +182,9 @@
                 }
             ],
             "type": "killian_roof",
-            "version": 1450195350600,
-            "overwrite": true
+            "version": 1450241988930,
+            "overwrite": true,
+            "disabled": false
         }
     ],
     "connections": [
@@ -230,7 +233,7 @@
             "$$hashKey": "object:184"
         },
         {
-            "id": 1,
+            "id": 3,
             "title": "Action",
             "nodes": [],
             "type": "new",
@@ -239,19 +242,24 @@
             "category": "crv",
             "parameters": [
                 {
+                    "value": "GLOBAL",
+                    "type": "frame",
+                    "$$hashKey": "object:1091"
+                },
+                {
                     "value": "[[-80, 0, 0],[-40,20,-5],[0, 0, -14],[40, -20, -17],[80, 0, -5]]",
                     "type": "points",
-                    "$$hashKey": "object:1202"
+                    "$$hashKey": "object:1092"
                 },
                 {
                     "value": "3",
                     "type": "degree",
-                    "$$hashKey": "object:1203"
+                    "$$hashKey": "object:1093"
                 }
             ],
             "result": "profile",
-            "selected": true,
-            "$$hashKey": "object:185"
+            "$$hashKey": "object:1076",
+            "selected": true
         }
     ],
     [
@@ -425,7 +433,7 @@
                             "$$hashKey": "object:1151"
                         },
                         {
-                            "value": "Math.PI",
+                            "value": "180",
                             "type": "maxAngle",
                             "$$hashKey": "object:1152"
                         }
@@ -487,7 +495,7 @@
             "controlType": "for each",
             "dataName": "t",
             "forList": "tList",
-            "selected": false,
+            "selected": true,
             "$$hashKey": "object:289"
         }
     ],
@@ -626,7 +634,7 @@
                     "title": "Control",
                     "nodes": [
                         {
-                            "id": 5,
+                            "id": 6,
                             "title": "Action",
                             "nodes": [],
                             "expression": "",
@@ -634,19 +642,24 @@
                             "category": "crv",
                             "parameters": [
                                 {
+                                    "value": "GLOBAL",
+                                    "type": "frame",
+                                    "$$hashKey": "object:4530"
+                                },
+                                {
                                     "value": "face.vertices[index]",
                                     "type": "startPoint",
-                                    "$$hashKey": "object:1277"
+                                    "$$hashKey": "object:4531"
                                 },
                                 {
                                     "value": "face.vertices[index+2]",
                                     "type": "endPoint",
-                                    "$$hashKey": "object:1278"
+                                    "$$hashKey": "object:4532"
                                 }
                             ],
                             "result": "diag",
-                            "selected": false,
-                            "$$hashKey": "object:1199"
+                            "$$hashKey": "object:4517",
+                            "selected": false
                         },
                         {
                             "id": 5,

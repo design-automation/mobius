@@ -41,7 +41,7 @@
                 }
             ],
             "type": "rect",
-            "version": 1450169564120,
+            "version": 1450211749673,
             "overwrite": true,
             "disabled": false
         },
@@ -136,7 +136,7 @@
                 }
             ],
             "type": "extrude",
-            "version": 1450169567146,
+            "version": 1450211739826,
             "overwrite": true,
             "disabled": false
         }
@@ -182,7 +182,7 @@
                 }
             ],
             "result": "rectangle",
-            "selected": true,
+            "selected": false,
             "$$hashKey": "object:159"
         }
     ],
@@ -195,35 +195,6 @@
             "selected": false,
             "name": "extrusions",
             "dataValue": "[]"
-        },
-        {
-            "id": 8,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "byXYAxes",
-            "category": "frm",
-            "parameters": [
-                {
-                    "value": "[0,0,0]",
-                    "type": "origin",
-                    "$$hashKey": "object:4687"
-                },
-                {
-                    "value": "[1,0,0]",
-                    "type": "xAxis",
-                    "$$hashKey": "object:4688"
-                },
-                {
-                    "value": "[0,1,0]",
-                    "type": "yAxis",
-                    "$$hashKey": "object:4689"
-                }
-            ],
-            "result": "frame",
-            "$$hashKey": "object:4672",
-            "selected": false
         },
         {
             "id": 2,
@@ -305,7 +276,7 @@
                             "$$hashKey": "object:3089"
                         },
                         {
-                            "value": "frame",
+                            "value": "GLOBAL",
                             "type": "frame",
                             "$$hashKey": "object:3090"
                         },

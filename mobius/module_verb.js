@@ -16,6 +16,7 @@ var MOBIUS = ( function (mod){
 	// frame functions
 	//
 	//
+	/** @namespace */
 	mod.frm = {}; 
 	
 	/**
@@ -24,6 +25,7 @@ var MOBIUS = ( function (mod){
 	 * @param {array / vertex object} xPoint - Point on the X-Axis 
 	 * @param {array / vertex object} yPoint - Point on the Y-Axis
 	 * @returns {frame object }  - A Frame Object
+	 * @memberof frm
 	 */
 	mod.frm.byXYPoints = function(origin, xPoint, yPoint){
 
@@ -47,6 +49,7 @@ var MOBIUS = ( function (mod){
 	 * @param {array / vertex object} xPoint - Point on the X-Axis
 	 * @param {array / vertex object} zPoint - Point on the Z-Axis
 	 * @returns {frame object }  - A Frame Object
+	 * @memberof frm
 	 */
 	mod.frm.byXZPoints = function(origin, xPoint, zPoint){		
 
@@ -69,6 +72,7 @@ var MOBIUS = ( function (mod){
 	 * @param {array / vertex object} xPoint - Point on the Y-Axis
 	 * @param {array / vertex object} zPoint - Point on the Z-Axis
 	 * @returns {frame object }  - A Frame Object
+	 * @memberof frm
 	 */
 	mod.frm.byYZPoints = function(origin, yPoint, zPoint){
 
@@ -91,6 +95,7 @@ var MOBIUS = ( function (mod){
 	 * @param {array} xAxis - X-Axis Vector in [x, y, z] format
 	 * @param {array} yAxis - Y-Axis Vector in [x, y, z] format
 	 * @returns {frame object }  - A Frame Object
+	 * @memberof frm
 	 */
 	mod.frm.byXYAxes = function(origin, xAxis, yAxis){
 
@@ -110,6 +115,7 @@ var MOBIUS = ( function (mod){
 	 * @param {array} xAxis - X-Axis Vector in [x, y, z] format
 	 * @param {array} zAxis - Z-Axis Vector in [x, y, z] format
 	 * @returns {frame object }  - A Frame Object
+	 * @memberof frm
 	 */
 	mod.frm.byXZAxes = function(origin, xAxis, zAxis){
 
@@ -129,6 +135,7 @@ var MOBIUS = ( function (mod){
 	 * @param {array} yAxis - Y-Axis Vector in [x, y, z] format
 	 * @param {array} zAxis - Z-Axis Vector in [x, y, z] format
 	 * @returns {frame object }  - A Frame Object
+	 * @memberof frm
 	 */
 	mod.frm.byYZAxes = function(origin, yAxis, zAxis){
 
@@ -147,6 +154,7 @@ var MOBIUS = ( function (mod){
 	// solid functions
 	//
 	//
+	/** @namespace */
 	mod.sld = {};
 
 	/**
@@ -157,9 +165,10 @@ var MOBIUS = ( function (mod){
 	 * @param { float } yDistance - Amount of extrusion in the direction of the y-Axis of the frame
 	 * @param { float } zDistance - Amount of extrusion in the direction of the z-Axis of the frame
 	 * @returns { solid object }  - Solid object 
+	 * @memberof sld
 	 */
 	mod.sld.byExtrusion = function(surface, frame, xDistance, yDistance, zDistance){
-
+		//checked
 		var bottomSurface = surface;
 		var topSurface = MOBIUS.trn.shift(bottomSurface, frame, xDistance, yDistance, zDistance, true);
 
@@ -181,10 +190,13 @@ var MOBIUS = ( function (mod){
 
 	/**
 	 * Creates a single solid object from a list of surfaces 
-	 * @param { array } listOfSurfaces - Array of surfaces which form the solid object 
+	 * @param { array } listOfSurfaces - List of surface objects which form the solid
 	 * @returns { solid object }  - Solid object 
+	 * @memberof sld
 	 */
 	mod.sld.bySurfaces = function (listOfSurfaces){
+		//checked
+
 		return new mObj_geom_Solid( listOfSurfaces );
 	};
 
@@ -193,11 +205,12 @@ var MOBIUS = ( function (mod){
 	// surface functions
 	//
 	//
+	/** @namespace */
 	mod.srf = {};
 
 	/**
 	 * Creates a Nurbs surface from user-specified data
-	 * @param { frame object } frame - Local coordinate system; Maybe 'GLOBAL' for world coordinate axis 
+	 * @param {frame object} - Local coordinate system for the object
 	 * @param {int} degreeU - Degree of the surface in the u-Direction 
 	 * @param {int} degreeV - Degree of the surface in the v-Direction 
 	 * @param {array} knotsU - Knots in the u-Direction 
@@ -205,6 +218,7 @@ var MOBIUS = ( function (mod){
 	 * @param {array} controlPoints - Array of points / vertex objects through which the curve passes ( [[x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4], ...] )
 	 * @param {array} weights - Weights ( optional parameter; maybe 'undefined' )
 	 * @returns { surface object }  - Surface object
+	 * @memberof srf
 	 */
 	mod.srf.nurbsByData = function ( frame, degreeU, degreeV, knotsU, knotsV, controlPoints, weights ){
 		
@@ -225,10 +239,12 @@ var MOBIUS = ( function (mod){
 
 	/**
 	 * Creates a Nurbs surface using the corner-points
+	 * @param {frame object} - Local coordinate system for the object
 	 * @param {array} cornerpoints - Array of points / vertex objects ( [ [x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4] ] )
 	 * @returns { surface object }  - Surface object
+	 * @memberof srf
 	 */
-	mod.srf.nurbsByCorners = function ( cornerpoints ){
+	mod.srf.nurbsByCorners = function (  cornerpoints ){
 
 		var point0 = cornerpoints[0];
 		var point1 = cornerpoints[1];
@@ -251,17 +267,21 @@ var MOBIUS = ( function (mod){
 	};
 
 	/**
-	 * Creates a Nurbs surface by extruding a curve along a given vector
-	 * @param { curve object } curve - Curve object which is to be extruded
-	 * @param { array } direction - Vector along with the curve is extruded. The magnitude of the vector determines the amount of extrusion.
-	 * @returns { surface object }  - Surface Object 
+	 * Creates a surface by extruding a curve along x, y, z vectors of the given local coordinate system
+	 * @param { frame object } frame - Local coordinate system 
+	 * @param { curve object } curve - Curve to be extruded
+	 * @param { float } xDistance - Amount of extrusion in the direction of the x-Axis of the frame
+	 * @param { float } yDistance - Amount of extrusion in the direction of the y-Axis of the frame
+	 * @param { float } zDistance - Amount of extrusion in the direction of the z-Axis of the frame
+	 * @returns { surface object }  - Surface object 
+	 * @memberof sld
 	 */
-	 //checked
-	mod.srf.nurbsByExtrusion  = function(curve, direction){
+	mod.srf.nurbsByExtrusion  = function(curve, frame, xDistance, yDistance, zDistance){
 
 		var profile = curve.getGeometry();
+		var ex_profile = MOBIUS.trn.shift( curve, frame, xDistance, yDistance, zDistance, true).getGeometry();
 
-		var srf = new verb.geom.ExtrudedSurface( profile, direction );
+		var srf = new verb.geom.NurbsSurface.byLoftingCurves( [profile, ex_profile], 1 );
 		//srf.transform( frame.toLocal() );
 
 		return new mObj_geom_Surface( srf ) ;
@@ -273,6 +293,7 @@ var MOBIUS = ( function (mod){
 	 * @param {array} listOfCurves - Array of curve objects
 	 * @param {int} degree - Degree of the Surface ( optional parameter; defaults to 3)
 	 * @returns { surface object }  - Surface Object 
+	 * @memberof srf
 	 */
 	mod.srf.nurbsByLoft = function( listOfCurves, degree ){
 
@@ -293,10 +314,13 @@ var MOBIUS = ( function (mod){
 	 * Creates a surface by revolving a curve around the z-Axis of the specified local coordinate system 
 	 * @param { frame object } frame - Local coordinate system; Z-Axis of the frame determines the axis of revolution
 	 * @param { curve object } sectionCurve - Curve Object which has to be revolved about the z-Axis
-	 * @param { float } angle - Angle of revolution in Radians 
+	 * @param { float } angle - Angle of revolution in Degrees 
 	 * @returns { surface object }  - Surface Object 
+	 * @memberof srf
 	 */
 	mod.srf.nurbsByRevolution = function(frame, sectionCurve, angle){
+
+		angle = 0.0174533*angle
 
 		var profile = sectionCurve.getGeometry();
 
@@ -315,6 +339,7 @@ var MOBIUS = ( function (mod){
 	 * @param { curve object } sectionCurve - Curve Object which determines the profile of the sweep
 	 * @param { curve object } railCurve - Curve Object which determines the path of the sweep
 	 * @returns { surface object }  - Surface Object 
+	 * @memberof srf
 	 */
 	mod.srf.nurbsBySweep = function( sectionCurve, railCurve ){
 		
@@ -330,6 +355,7 @@ var MOBIUS = ( function (mod){
 	 * @param { frame object } frame - Local Coordinate System; Orientation of the sphere is determined by the local axes of the frame
 	 * @param { float } radius - Radius of the sphere
 	 * @returns { surface object }  - Surface Object 
+	 * @memberof srf
 	 */
 	mod.srf.nurbsSphere = function(frame, radius){
 					
@@ -347,6 +373,7 @@ var MOBIUS = ( function (mod){
 	 * @param { float } radius1 - Radius of the base of the cone 
 	 * @param { float } radius2 - Radius of the top of the cone; Setting this value to 0 would result in a cone; Setting this to be equal to radius1 would result in a cylinder
 	 * @returns {mobiusobject}  - NURBS Surface
+	 * @memberof srf
 	 */
 	mod.srf.nurbsCone = function(frame, height, radius1, radius2){
 
@@ -377,6 +404,7 @@ var MOBIUS = ( function (mod){
 	 * @param { curve object } centreCurve  - Curve Object which determines the path of the pipe
 	 * @param { float } radius - Radius of the pipe
 	 * @returns {mobiusobject}  - NURBS Surface
+	 * @memberof srf
 	 */
 	mod.srf.nurbsPipe = function(centreCurve, radius){
 
@@ -405,6 +433,7 @@ var MOBIUS = ( function (mod){
 	 * @param { int } uSegments  - Number of divisions required in the u-Direction
 	 * @param { int } vSegments  - Number of divisions required in the v-Direction
 	 * @returns {2D array}  - List of UV positions [ [ u1, v1 ], [ u2, v2 ], [ u3, v3 ] ...]; Length of list is equal to uSegments*vSegments
+	 * @memberof srf	 
 	 */
 	mod.srf.uvGridByNumber = function(surface, uSegments, vSegments){
 		
@@ -431,10 +460,11 @@ var MOBIUS = ( function (mod){
 	};*/
 
 	/**
-	 * Returns the actual points on the surface, given a corresponding list of uv-parameters on the surface
+	 * Returns the actual points on the surface, given a corresponding list of uv-parameters or a single [u, v] point
 	 * @param { surface object } surface  - Surface Object for which the uv-Parameters are required
-	 * @param { 2D array } uvList  - List of UV positions [ [ u1, v1 ], [ u2, v2 ], [ u3, v3 ] ...]
+	 * @param { 2D array / array } uvList  - List of UV positions [ [ u1, v1 ], [ u2, v2 ], [ u3, v3 ] ...] or single [u, v]
 	 * @returns {array}  - List of vertex objects
+	 * @memberof srf
 	 */
 	mod.srf.getPoints = function(surface, uvList){
 		
@@ -457,12 +487,16 @@ var MOBIUS = ( function (mod){
 	 * Creates a collection of frames, centred at the the points specified by the uv-List, with the x and y Axes of the frame aligned along
 	 * the surface 
 	 * @param { surface object } surface  - Surface Object along which frames are required
-	 * @param { 2D array } uvList  - List of UV positions [ [ u1, v1 ], [ u2, v2 ], [ u3, v3 ] ...]
+	 * @param { 2D array } uvList  - List of UV positions [ [ u1, v1 ], [ u2, v2 ], [ u3, v3 ] ...] or single [u, v]
 	 * @returns {array}  - List of Frame Objects
+	 * @memberof srf
 	 */
 	mod.srf.getFrames = function( surface, uvList ){
 
 		var frames = [];
+
+		if(uvList.constructor.name != "Array")
+			uvList = [uvList];
 
 		for(var i=0; i<uvList.length; i++){
 			var origin = surface.getGeometry().point( uvList[i][0], uvList[i][1] );
@@ -472,6 +506,9 @@ var MOBIUS = ( function (mod){
 			frames.push( new mObj_frame( origin, xaxis, yaxis, undefined ) );
 		}
 
+		if(frames.length == 1)
+			frames = frames[0]
+
 		return frames;
 
 	};
@@ -479,14 +516,21 @@ var MOBIUS = ( function (mod){
 	/**
 	 * Returns a list of unit vectors normal to the surface the points on specified by the uv-List
 	 * @param { surface object } surface  - Surface Object 
-	 * @param { 2D array } uvList  - List of UV positions [ [ u1, v1 ], [ u2, v2 ], [ u3, v3 ] ...]
+	 * @param { 2D array } uvList  - List of UV positions [ [ u1, v1 ], [ u2, v2 ], [ u3, v3 ] ...] or single [u, v]
 	 * @returns {array}  - List of Normal Unit Vectors 
+	 * @memberof srf
 	 */
 	mod.srf.getNormals = function( surface, uvList ){
+
+		if(uvList.constructor.name != "Array")
+			uvList = [uvList];
 
 		var normals = [];
 		for(var i=0; i<uvList.length; i++)
 			normals.push( verb.core.Vec.normalized( surface.normal(uvList[i][0], uvList[i][1])) );
+
+		if(normals.length == 1)
+			normals = normals[0]
 
 		return normals;
 
@@ -495,10 +539,14 @@ var MOBIUS = ( function (mod){
 	/**
 	 * Returns a list of unit vectors tangent to the surface at the points specified by the uv-List
 	 * @param { surface object } surface  - Surface Object 
-	 * @param { 2D array } uvList  - List of UV positions [ [ u1, v1 ], [ u2, v2 ], [ u3, v3 ] ...]
-	 * @returns {2D array}  - List of Tangent Unit Vectors along two directions 
+	 * @param { 2D array } uvList  - List of UV positions [ [ u1, v1 ], [ u2, v2 ], [ u3, v3 ] ...] or single [u, v]
+	 * @returns {2D array}  - List of Tangent Unit Vectors along two directions  (or single tangent unit vector)
+	 * @memberof srf
 	 */
 	mod.srf.getTangents = function( surface, uvList ){
+
+		if(uvList.constructor.name != "Array")
+			uvList = [uvList];
 
 		var tangents = [];
 		for(var i=0; i<uvList.length; i++){
@@ -507,20 +555,27 @@ var MOBIUS = ( function (mod){
 			tangents.push( [xaxis, yaxis])
 		}
 
+		if(tangents.length == 1)
+			tangents = tangents[0]
+
 		return tangents;
 	}; 
  
  	/**
-	 * Returns a list of iso-curve objects along u or v-Direction 
+	 * Returns a list or a single iso-curve object along u or v-Direction 
 	 * @param { surface object } surface  - Surface Object 
-	 * @param { array } uOrvList  - List of positions at which iso-curves are required 
+	 * @param { array } uOrvList  - List of positions at which iso-curves are required or single u/v value
 	 * @param { array } useV  - Specifies if the given list of positions is in u-Direction or v-Direction; True value means v-Direction;
 	 * @returns {2D array}  - List of Tangent Unit Vectors along two directions 
+	 * @memberof srf
 	 */
 	mod.srf.getIsoCurves = function( surface, uOrvList, useV ){
 
 		if(surface.getGeometry != undefined)
 			surface = surface.getGeometry();
+
+		if(uvList.constructor.name != "Array")
+			uvList = [uvList];
 
 		var isoCurves = [];
 		for(var t=0; t<uOrvList.length; t++){
@@ -528,14 +583,18 @@ var MOBIUS = ( function (mod){
 			isoCurves.push(crv);
 		}
 
+		if(isoCurves.length == 1)
+			isoCurves = isoCurves[0]; 
+
 		return isoCurves;
 	};
 
 	/**
 	 * Subdivides a surface into a grid of smaller surfaces - a mesh solid
 	 * @param {surface object} surface - Surface Object 
-	 * @param {int} uvGrid - List of UV positions [ [ u1, v1 ], [ u2, v2 ], [ u3, v3 ] ...]
+	 * @param {int} uvGrid - UV positions with u & v dimensions [ [ u1, v1 ], ... [ un, vn ], uDimension, vDimension ]
 	 * @returns {solid object} Solid object  
+	 * @memberof srf
 	 */
 	mod.srf.divide = function(surface, uvGrid){
 		
@@ -576,17 +635,20 @@ var MOBIUS = ( function (mod){
 	// Curves
 	//
 	//
+	/** @namespace */
 	mod.crv = {};
 
 	/**
 	 * Creates a Nurbs curve from user-specified data
+	 * @param {frame object} - Local Coordinate System 
 	 * @param {int} degree - Degree of the curve
 	 * @param {array} knots - Knots of the curve
 	 * @param {array} controlPoints - Array of points / vertex objects through which the curve passes ( [[x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4], ...] )
 	 * @param {array} weights - Weights ( optional parameter; maybe 'undefined' )
 	 * @returns { curve object }  - Curve object
+	 * @memberof crv
 	 */
-	mod.crv.nurbsByData = function( degree, knots, controlPoints, weights ){
+	mod.crv.nurbsByData = function( frame, degree, knots, controlPoints, weights ){
 
 		controlPoints = controlPoints.map( function(p){ 
 								
@@ -595,18 +657,23 @@ var MOBIUS = ( function (mod){
 								else 
 									return p; } )
 
-		return new mObj_geom_Curve( new verb.geom.NurbsCurve.byKnotsControlPointsWeights( degree, knots, controlPoints, weights ) ) ;
+		var crv = new verb.geom.NurbsCurve.byKnotsControlPointsWeights( degree, knots, controlPoints, weights )
+		crv = crv.transform( frame.toLocal() );
+
+		return new mObj_geom_Curve( crv ) ;
 
 	};
 
 
 	/**
 	 * Creates a Nurbs curve passsing through a list of points 
+	 * @param {frame object} - Local Coordinate System 
 	 * @param {array} points - Array of points / vertices through which the curve passes ( [[x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4], ...] )
 	 * @param {int} degree - Degree of the Curve
 	 * @returns {curve object}  - NURBS Curve
+	 * @memberof crv
 	 */
-	mod.crv.nurbsByPoints = function( points, degree ){
+	mod.crv.nurbsByPoints = function( frame, points, degree ){
 
 		points = points.map( function(p){ 
 								
@@ -615,16 +682,21 @@ var MOBIUS = ( function (mod){
 								else 
 									return p; } )
 
-		return new mObj_geom_Curve( new verb.geom.NurbsCurve.byPoints( points, degree ) ) ;
+		var crv = new verb.geom.NurbsCurve.byPoints( points, degree )
+		crv = crv.transform( frame.toLocal() );
+
+		return new mObj_geom_Curve( crv ) ;
 	};
 
 	/**
 	 * Creates a Bezier Nurbs curve passsing through a list of points 
+	 * @param {frame object} - Local Coordinate System 
 	 * @param {array} points - Array of points / vertices through which the curve passes ( [[x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4], ...] )
 	 * @param {int} degree - Degree of the Curve
 	 * @returns {curve object}  - NURBS Curve
+	 * @memberof crv
 	 */
-	mod.crv.bezierByPoints = function(points, weights) {
+	mod.crv.bezierByPoints = function(frame, points, weights) {
 
 		points = points.map( function(p){ 
 								
@@ -633,7 +705,10 @@ var MOBIUS = ( function (mod){
 								else 
 									return p; } );
 
-		return new mObj_geom_Curve( new verb.geom.BezierCurve( points, weights ) ) ;
+		var crv =  new verb.geom.BezierCurve( points, weights ) ;
+		crv = crv.transform( frame.toLocal() );
+
+		return new mObj_geom_Curve( crv );
 	};
 
 
@@ -641,11 +716,15 @@ var MOBIUS = ( function (mod){
 	 * Creates an arc centred at the origin of the frame; The arc is created in the xy-plane of the local coordinate system
 	 * @param {frame object} frame - Local coordinate system
 	 * @param {float} radius - Radius of the arc
-	 * @param {float} minAngle - Starting angle in radians
-	 * @param {float} maxAngle - Ending angle in radians
+	 * @param {float} minAngle - Starting angle in degrees
+	 * @param {float} maxAngle - Ending angle in degrees
 	 * @returns {curve object}  - NURBS Curve
+	 * @memberof crv
 	 */
 	mod.crv.arc = function(frame, radius, minAngle, maxAngle){
+
+		minAngle = 0.0174533*minAngle;
+		maxAngle = 0.0174533*maxAngle;
 
 		var arc = new verb.geom.Arc( [0,0,0], [1,0,0], [0,1,0], radius, minAngle, maxAngle) 
 		arc = arc.transform( frame.toLocal() );
@@ -667,6 +746,7 @@ var MOBIUS = ( function (mod){
 	 * @param {frame object} frame - Local coordinate system
 	 * @param {float} radius - Radius of the arc
 	 * @returns {curve object}  - NURBS Curve
+	 * @memberof crv
 	 */
 	mod.crv.circle = function(frame, radius){
 
@@ -682,6 +762,7 @@ var MOBIUS = ( function (mod){
 	 * @param {float} xRadius - Radius of the ellipse
 	 * @param {float} yRadius - Radius of the ellipse
 	 * @returns {curve object}  - NURBS Curve
+	 * @memberof crv
 	 */
 	mod.crv.ellipse = function(frame, xRadius, yRadius) {
 
@@ -697,11 +778,15 @@ var MOBIUS = ( function (mod){
 	 * @param {frame object} frame - Local coordinate system
 	 * @param {float} xRadius - Radius of the ellipse arc
 	 * @param {float} yRadius - Radius of the ellipse arc
-	 * @param {float} minAngle - Starting angle in radians
-	 * @param {float} maxAngle - Ending angle in radians
+	 * @param {float} minAngle - Starting angle in degrees
+	 * @param {float} maxAngle - Ending angle in degrees
 	 * @returns {curve object}  - NURBS Curve
+	 * @memberof crv
 	 */
 	mod.crv.ellipseArc = function(frame, xRadius, yRadius, minAngle, maxAngle){
+
+		minAngle = 0.0174533*minAngle;
+		maxAngle = 0.0174533*maxAngle;
 
 		var ellipseArc = new verb.geom.EllipseArc( [0,0,0], [1,0,0], [0,1,0], radius, minAngle, maxAngle );
 		ellipseArc = ellipse.transform( frame.toLocal() );
@@ -712,18 +797,23 @@ var MOBIUS = ( function (mod){
 
 	/**
 	 * Creates a line
+	 * @param {frame object} frame - Local coordinate system
 	 * @param {point / vertex} startPoint - Starting point
 	 * @param {point / vertex} endPoint - Ending point
 	 * @returns {curve object}  - NURBS Line Curve
+	 * @memberof crv
 	 */
-	mod.crv.line = function(startPoint, endPoint){
+	mod.crv.line = function(frame, startPoint, endPoint){
 
 		if( startPoint.getGeometry != undefined )
 			startPoint = startPoint.getGeometry();
 		if( endPoint.getGeometry != undefined )
 			endPoint = endPoint.getGeometry();
+
+		var crv = new verb.geom.Line(startPoint, endPoint);
+		crv = crv.transform( frame.toLocal() );
 	
-		return new mObj_geom_Curve( new verb.geom.Line(startPoint, endPoint) );
+		return new mObj_geom_Curve( crv );
 
 	};
 
@@ -732,6 +822,7 @@ var MOBIUS = ( function (mod){
 	 * @param {curve object} curve - Curve Object to be divided
 	 * @param {int} numPoints - Number of divisions required
 	 * @returns {array}  - List of t-parameters at the division points
+	 * @memberof crv
 	 */
 	mod.crv.divideByNumber = function(curve, numPoints){
 
@@ -750,6 +841,7 @@ var MOBIUS = ( function (mod){
 	 * @param {curve object} curve - Curve Object to be divided
 	 * @param {float} distance - Distance of each segment - along the curve
 	 * @returns {array}  - List of t-parameters at the division points
+	 * @memberof crv
 	 */
 	mod.crv.divideByDistance = function(curve, distance){
 
@@ -769,6 +861,7 @@ var MOBIUS = ( function (mod){
 	 * @param {curve object} curve - Curve Object 
 	 * @param {array} tList - Array of t-parameters 
 	 * @returns {array}  - List of vertex objects on the curve 
+	 * @memberof crv
 	 */
 	mod.crv.getPoints = function(curve, tList){
 		
@@ -794,20 +887,35 @@ var MOBIUS = ( function (mod){
 	 * @param {array} tList - Array of t-parameter
 	 * @param {array} upVector - Vector specifying the z-axis of the frames  
 	 * @returns {array}  - List of frames
+	 * @memberof crv
 	 */
 	mod.crv.getFrames = function(curve, tList, upVector){
 
 		var curve = curve.getGeometry();
+
+		if(tList.constructor.name != "Array")
+			tList = [tList];
+
 
 		var frames = tList.map( function(t){
 
 			return new mObj_frame( curve.point(t), undefined, upVector);
 		})
 
+		if(frames.length == 1)
+			frames = frames[0]
+
 		return frames;
 
 	};
-	
+
+	/**
+	 * Returns a list of unit tangent vectors at points corresponding to a list of or a single t-value on a curve
+	 * @param {curve object} curve - Curve Object 
+	 * @param {array} tList - Array of t-parameter or single t-parameter
+	 * @returns {array}  - List or single unit tangent vector 
+	 * @memberof crv
+	 */
 	mod.crv.getTangents = function(curve, tList){
 	
 		var curve = curve.getGeometry();		
@@ -829,6 +937,13 @@ var MOBIUS = ( function (mod){
 
 	}; */
 
+	/**
+	 * Returns a list of curve objects obtained by dividing a single curve at points corresponding to a list of t-values
+	 * @param {curve object} curve - Curve Object 
+	 * @param {array} tList - Array of t-parameter
+	 * @returns {array}  - List of curve objects
+	 * @memberof crv
+	 */
 	mod.crv.divideByTList = function(curve, tList){
 
 		var curve = curve.getGeometry();
@@ -853,6 +968,13 @@ var MOBIUS = ( function (mod){
 
 	};
 
+	/**
+	 * Converts a curve into a polyline passing through points corresponding to t-paramters on the curve
+	 * @param {curve object} curve - Curve Object 
+	 * @param {array} tList - Array of t-parameter
+	 * @returns {curve object}  - Curve Object
+	 * @memberof crv
+	 */
 	mod.crv.convertToPolyline = function(curve, tList){
 
 		var curve = curve.getGeometry(); 
@@ -866,6 +988,12 @@ var MOBIUS = ( function (mod){
 
 	};
 
+	/**
+	 * Returns the length of the curve
+	 * @param {curve object} curve - Curve Object 
+	 * @returns {float}  - Length of the curve
+	 * @memberof crv
+	 */
 	mod.crv.length = function( curve ){
 		return curve.getGeometry().length();
 	};
@@ -875,12 +1003,17 @@ var MOBIUS = ( function (mod){
 	// Points
 	//
 	//
+	/** @namespace */
 	mod.pnt = {};
 
 	/**
-	 * Creates a vertex object with the given point
-	 * @param {array} point - [x, y, z]
+	 * Creates a vertex object with the given point geometry
+	 * @param {frame object} frame - Local Coordinate System
+	 * @param {float} x - x-position
+	 * @param {float} y - y-position
+	 * @param {float} z - z-position
 	 * @return {vertex object} Vertex object
+	 * @memberof pnt
 	 */
 	mod.pnt.byCoords = function(x, y, z){
 		return new mObj_geom_Vertex([x, y, z]);
@@ -891,6 +1024,7 @@ var MOBIUS = ( function (mod){
 	 * @param {point / vertex object} point1 - [x, y , z] or Vertex
 	 * @param {point / vertex object} point2 - [x, y , z] or Vertex
 	 * @returns {point} Mid Point of line between the two given points 
+	 * @memberof pnt
 	 */
 	mod.pnt.midPoint = function(point1, point2){
 
@@ -908,6 +1042,7 @@ var MOBIUS = ( function (mod){
 	 * @param {point / vertex object} point1 - [x, y , z] or Vertex
 	 * @param {point / vertex object} point2 - [x, y , z] or Vertex
 	 * @returns {float} Distance 
+	 * @memberof pnt
 	 */
 	mod.pnt.distance = function(point1, point2){
 
@@ -931,8 +1066,17 @@ var MOBIUS = ( function (mod){
 	//	Vector functions
 	//
 	//
+	/** @namespace */
 	mod.vec= {};
 
+	/**
+	 * Returns a vector with magnitude x, y, z along the x, y, z axes
+	 * @param {float} x - Magnitude along x-direction
+	 * @param {float} y - Magnitude along y-direction
+	 * @param {float} z - Magnitude along z-direction
+	 * @returns {array} Vector 
+	 * @memberof vec
+	 */
 	mod.vec.byCoords = function(x, y, z){
 		return [x, y, z];
 	};
@@ -942,6 +1086,7 @@ var MOBIUS = ( function (mod){
 	 * @param {array} vector1  - Vector 1 in [x, y, z] format
 	 * @param {array} vector2  - Vector 2 in [x, y, z] format
 	 * @returns {float} radians
+	 * @memberof vec
 	 */
 	mod.vec.angle = function(vector1, vector2){
 		var dotP = MOBIUS.mtx.dot( vector1,  vector2 );
@@ -954,6 +1099,7 @@ var MOBIUS = ( function (mod){
 	 * @param {array} vector1  - Vector 1 in [x, y, z] format
 	 * @param {array} vector2  - Vector 2 in [x, y, z] format
 	 * @returns {array} vector
+	 * @memberof vec
 	 */
 	mod.vec.add = function( vector1, vector2){
 		return verb.core.Vec.add( vector1, vector2 );
@@ -964,6 +1110,7 @@ var MOBIUS = ( function (mod){
 	 * @param {array} vector1  - Vector 1 in [x, y, z] format
 	 * @param {array} vector2  - Vector 2 in [x, y, z] format
 	 * @returns {array} vector
+	 * @memberof vec
 	 */
 	mod.vec.subtract = function( vector1, vector2 ){
 		return verb.core.Vec.sub( vector1, vector2 )
@@ -973,6 +1120,7 @@ var MOBIUS = ( function (mod){
 	 * Computes length of the vector
 	 * @param {array} vector  - Vector in [x, y, z] format
 	 * @returns {float} length
+	 * @memberof vec
 	 */
 	mod.vec.length = function(vector){
 		return Math.sqrt( vector[0]*vector[0] + vector[1]*vector[1] + vector[2]*vector[2] );
@@ -983,6 +1131,7 @@ var MOBIUS = ( function (mod){
 	 * @param {array} vector  - Vector in [x, y, z] format 
 	 * @param {float} length - New length of the vector
 	 * @returns {array} Vector 
+	 * @memberof vec
 	 */
 	mod.vec.resize = function(vector, length){
 
@@ -996,6 +1145,7 @@ var MOBIUS = ( function (mod){
 	 * @param {array} vector  - Vector in [x, y, z] format 
 	 * @param {float} factor - Scaling factor of the vector
 	 * @returns {array} Vector 
+	 * @memberof vec
 	 */
 	mod.vec.scale = function(vector, factor){
 
@@ -1007,6 +1157,7 @@ var MOBIUS = ( function (mod){
 	 * Computes unit vector
 	 * @param {array} vector  - Vector in [x, y, z] format
 	 * @returns {array} Unit Vector
+	 * @memberof vec
 	 */
 	mod.vec.normalize = function(vector){
 		return verb.core.Vec.normalized( vector );
@@ -1018,12 +1169,14 @@ var MOBIUS = ( function (mod){
 	//	Objects
 	//
 	//
+	/** @namespace */
 	mod.obj = {};
 
 	/**
-	 * Creates a unique copy of the object with the same geometry, transformations, material and data at the same location
-	 * @param {mobiusobject} mObj - Object to be cloned
-	 * @returns {mobiusobject} Cloned object
+	 * Creates a copy of the object with the same geometry, transformations, material and data at the same location
+	 * @param {any object} mObj - Object to be cloned
+	 * @returns {object} Cloned object
+	 * @memberof obj
 	 */
 	mod.obj.copy = function( object ){
 
@@ -1052,12 +1205,13 @@ var MOBIUS = ( function (mod){
 
 	/**
 	 * Adds material to an object
-	 * @param {mobiusobject} obj - Object to which material is to be added
+	 * @param {object} obj - Object to which material is to be added
 	 * @param {String} material_type - "MeshBasicMaterial", "MeshNormalMaterial", "MeshLambertMaterial", "LineBasicMaterial" etc... 
 	 * @param {boolean} wireframe - 'True' if wireframe is required. 
 	 * @param {hexCode} color - Hex Code of the color
 	 * @param {boolean} transparent - 'True' if transparency is required. 
 	 * @returns null
+	 * @memberof obj
 	 */
 	mod.obj.addMaterial = function(obj, material_type, wireframe, color_hex, transparent){
 		var option = {	
@@ -1077,10 +1231,11 @@ var MOBIUS = ( function (mod){
 
 	/**
 	 * Adds data to an object
-	 * @param {mobiusobject} obj - Object to which data is to be added
+	 * @param {object} obj - Object to which data is to be added
 	 * @param {String} dataName - Name of the property
 	 * @param {String / int / object ... } dataValue - Value of the property
 	 * @returns null
+	 * @memberof obj
 	 */
 	mod.obj.addData = function(obj, dataName, dataValue){
 
@@ -1103,9 +1258,10 @@ var MOBIUS = ( function (mod){
 	mod.obj.addData.prototype.return = false;
 
 	/**
-	 * Returns the centre of a NURBS Curve, NURBS Surface or geometry for which centre is defined
-	 * @param {array} mObj - Mobius object
+	 * Returns the centre of a NURBS Curve, NURBS Surface or Solid Geometry
+	 * @param {object} object - Mobius object
 	 * @returns {array} Point - [x, y, z]
+	 * @memberof obj
 	 */
 	mod.obj.getCentre = function(object){
 		//calculate centre based on what kind of object
@@ -1152,14 +1308,16 @@ var MOBIUS = ( function (mod){
 	//	Transformation functions
 	//
 	//
+	/** @namespace */
 	mod.trn = {};
 
 	/**
 	 * Reflects the object about the XY plane of the frame
-	 * @param {mobiusobject} mObj - Object to be reflected
-	 * @param {array} planeABC - Parameters A, B, C, D from the plane equation (Ax+By+Cz-D=0) as an array  
-	 * @param {radians} angle - Angle (in Radians) about y-axis
-	 * @returns Null
+	 * @param {object} object - Object to be reflected
+	 * @param {frame object} frame - Local coordinate system
+	 * @param {boolean} copy - Determines if the object is to be copied before transformation
+	 * @returns {object} - Transformed Object or Copy 
+	 * @memberof trn
 	 */
 	mod.trn.reflect = function(object, frame, copy){
 
@@ -1201,10 +1359,14 @@ var MOBIUS = ( function (mod){
 
 	/**
 	 * Rotates the object about the axes of the frame. 
-	 * @param {mobiusobject} mObj - Object to be rotated
-	 * @param {array} axis - Axis in [x, y, z] format
-	 * @param {radians} angle - Angle (in Radians) about y-axis
-	 * @returns Null
+	 * @param {object} object - Object to be rotated
+	 * @param {frame object} frame - Local coordinate system
+	 * @param {float} angleX - Angle to be rotated about x-Axis of the frame, in degrees
+	 * @param {float} angleY - Angle to be rotated about y-Axis of the frame, in degrees
+	 * @param {float} angleZ - Angle to be rotated about z-Axis of the frame, in degrees
+	 * @param {boolean} copy - Determines if the object is to be copied before transformation
+	 * @returns {object} - Transformed Object or Copy 
+	 * @memberof trn
 	 */
 	mod.trn.rotate = function(object, frame, angleX, angleY, angleZ, copy){
 
@@ -1227,6 +1389,7 @@ var MOBIUS = ( function (mod){
 		var geom = object.getGeometry();
 
 		function getRotationMatrix( axis, angle){
+				angle = 0.0174533*angle;
 		        var cost = Math.cos(angle);
 		        var sint = Math.sin(angle);
 		        var ux = axis[0];
@@ -1258,11 +1421,14 @@ var MOBIUS = ( function (mod){
 
 	/**
 	 * Scales the object along different axes
-	 * @param {mobiusobject} mObj - Object to be scaled
-	 * @param {float} scaleX - Scaling-factor along the x-direction; Should be set to '1' if no scaling is required.
-	 * @param {float} scaleY - Scaling-factor along the y-direction; Should be set to '1' if no scaling is required.
-	 * @param {float} scaleZ - Scaling-factor along the z-direction; Should be set to '1' if no scaling is required.
-	 * @returns Null
+	 * @param {object} object - Object to be scaled
+	 * @param {frame object} frame - Local coordinate system
+	 * @param {float} scaleX - Scaling factor along x-Axis of the frame
+	 * @param {float} scaleY - Scaling factor along y-Axis of the frame
+	 * @param {float} scaleZ - Scaling factor along z-Axis of the frame
+	 * @param {boolean} copy - Determines if the object is to be copied before transformation
+	 * @returns {object} - Transformed Object or Copy 
+	 * @memberof trn
 	 */
 	mod.trn.scale = function(object, frame, scaleX, scaleY, scaleZ, copy) {
 
@@ -1303,11 +1469,14 @@ var MOBIUS = ( function (mod){
 
 	/**
 	 * Shifts the object relative to its current position
-	 * @param {mobiusobject} mObj - Object to be moved
-	 * @param {float} shiftX - Distance to be moved in x-direction
-	 * @param {float} shiftY - Distance to be moved in y-direction
-	 * @param {float} shiftZ - Distance to be moved in z-direction
-	 * @returns Null
+	 * @param {object} object - Object to be shifted
+	 * @param {frame object} frame - Local coordinate system
+	 * @param {float} shiftX - Distance to be moved along x-Axis of the frame
+	 * @param {float} shiftY - Distance to be moved along y-Axis of the frame
+	 * @param {float} shiftZ - Distance to be moved along z-Axis of the frame
+	 * @param {boolean} copy - Determines if the object is to be copied before transformation
+	 * @returns {object} - Transformed Object or Copy 
+	 * @memberof trn
 	 */
 	mod.trn.shift = function(object, frame, shiftX, shiftY, shiftZ, copy){
 
@@ -1348,11 +1517,11 @@ var MOBIUS = ( function (mod){
 
 	/**
 	 * Moves the centre of the object to a target point
-	 * @param {mobiusobject} mObj - Object to be moved
-	 * @param {float} xCoord - x-coordinate of the target point where the clone appears
-	 * @param {float} yCoord - y-coordinate of the target point where the clone appears
-	 * @param {float} zCoord - z-coordinate of the target point where the clone appears
-	 * @returns Null
+	 * @param {object} object - Object to be shifted
+	 * @param {point / vertex } point - Point to which the object is to be moved
+	 * @param {boolean} copy - Determines if the object is to be copied before transformation
+	 * @returns {object} - Transformed Object or Copy 
+	 * @memberof trn
 	 */
 	mod.trn.move = function(object, point, copy){
 
@@ -1363,6 +1532,9 @@ var MOBIUS = ( function (mod){
 			
 		// frame definition
 		var frame = MOBIUS.frm.byXYAxes([0,0,0], [1,0,0], [0,1,0])
+
+		if( point.getGeometry != undefined )
+			point = point.getGeometry()
 
 		// translation required
 		var tx = point[0] - orCenter[0];
@@ -1378,13 +1550,15 @@ var MOBIUS = ( function (mod){
 	// Matrix operations
 	//
 	//
+	/** @namespace */
 	mod.mtx = {};
 
 	/**
 	 * Computes dot product of two matrices
-	 * @param {array} mat1  - Matrix 1
-	 * @param {array} mat2  - Matrix 2
+	 * @param {array} matrix1  - Matrix 1
+	 * @param {array} matrix2  - Matrix 2
 	 * @returns {float} 
+	 * @memberof mtx
 	 */
 	mod.mtx.dot = function( matrix1, matrix2 ){
 		return verb.core.Vec.dot(matrix1, matrix2);
@@ -1392,9 +1566,10 @@ var MOBIUS = ( function (mod){
 
 	/**
 	 * Computes cross product of two matrices
-	 * @param {array} mat1  - Matrix 1
-	 * @param {array} mat2  - Matrix 2
+	 * @param {array} matrix1  - Matrix 1
+	 * @param {array} matrix2  - Matrix 2
 	 * @returns {array} 
+	 * @memberof mtx
 	 */
 	mod.mtx.cross = function( matrix1, matrix2 ){
 		return verb.core.Vec.cross(matrix1, matrix2);
@@ -1405,13 +1580,15 @@ var MOBIUS = ( function (mod){
 	// Lists
 	//
 	//
+	/** @namespace */
 	mod.lst = {};
 
 
 	/**
 	 * Returns the length of the list 
-	 * @param {array} numericList - List which is to be analyzed
+	 * @param {array} list - List which is to be analyzed
 	 * @returns {int} 
+	 * @memberof lst
 	 */
 	mod.lst.length = function(list){
 		return list.length
@@ -1421,18 +1598,33 @@ var MOBIUS = ( function (mod){
 	 * Finds the index of the first occurence of an array element. 
 	 * @param {array} list  - List in which an element needs to be searched
 	 * @param {array element} object - Element to be searched for
-	 * @returns {int} Returns -1 if the element doesn't exist in array. 
+	 * @returns {int} Returns -1 if the element doesn't exist in array; else returns the index of the item
+	 * @memberof lst
 	 */
 	mod.lst.find = function(list, item){
 		return list.indexOf( item );
 	};
 
+	/**
+	 * Appends the item as it is to a list
+	 * @param {array} list  - List in which item is to be added
+	 * @param {array / element} itemOrList - List or single element to be added to the list
+	 * @returns {NULL} 
+	 * @memberof lst
+	 */
 	mod.lst.append = function(list, itemOrList){
 		list.push(itemOrList);
 	};
 
 	mod.lst.append.prototype.return = false;
 
+	/**
+	 * Inserts an item at a given index in a list
+	 * @param {array} list  - List in which an element needs to be inserted
+	 * @param {object} item - Element to be inserted
+	 * @returns {NULL}
+	 * @memberof lst
+	 */
 	mod.lst.insert = function(list, item, index){
 
 		var newlist = [];
@@ -1448,8 +1640,16 @@ var MOBIUS = ( function (mod){
 			
 	};
 
+
 	mod.lst.insert.prototype.return = false;
 
+	/**
+	 * Adds the elements of one list to another list
+	 * @param {array} list  - List in which an elements need to be added
+	 * @param {array} extension_list - List of elements to be added
+	 * @returns {NULL}
+	 * @memberof lst
+	 */
 	mod.lst.extend = function(list, extension_list){
 		
 		extension_list.map( function(t){
@@ -1461,10 +1661,11 @@ var MOBIUS = ( function (mod){
 	mod.lst.extend.prototype.return = false;
 
 	/**
-	 * Removes an array element from a list by it's index number
+	 * Removes an array element from a list by its index number
 	 * @param {array} list  - List in which an element needs to be removed
 	 * @param {int} index - Index to be removed
 	 * @returns {null} 
+	 * @memberof lst
 	 */
 	mod.lst.remove = function(list, index) {
 		list.splice(index, 1);
@@ -1479,6 +1680,7 @@ var MOBIUS = ( function (mod){
 	 * @param {float or int} end  - Ending value of the sequence (not included in the sequence)
 	 * @param {float or int} stepSize  - Increment or Decrement value to get to the 'end' value from the 'start' value
 	 * @returns {array} 
+	 * @memberof lst
 	 */
 	mod.lst.sequence = function(start, end, stepSize){
 
@@ -1505,9 +1707,10 @@ var MOBIUS = ( function (mod){
 	//
 
 	/**
-	 * Gets the avaerage of a numeric array
+	 * Gets the average of a numeric array
 	 * @param {array} numericList - List which is to be averaged
-	 * @returns {float / int} 
+	 * @returns {float / int} Average of the numbers in the list
+	 * @memberof lst
 	 */
 	mod.lst.average = function(numericList){
 		return MOBIUS.lst.sum( numericList )/ numericList.length;
@@ -1515,9 +1718,10 @@ var MOBIUS = ( function (mod){
 
 
 	/**
-	 * Gets the minimum value in a numeric array
+	 * Gets the minimum value in a numeric list
 	 * @param {array} numericList - List from which minimum value is required
-	 * @returns {float / int} 
+	 * @returns {float / int} Minimum value
+	 * @memberof lst
 	 */
 	mod.lst.min = function(numericList){
 		
@@ -1533,7 +1737,8 @@ var MOBIUS = ( function (mod){
 	/**
 	 * Gets the maximum value in a numeric array
 	 * @param {array} numericList - List from which maximum value is required
-	 * @returns {float / int} 
+	 * @returns {float / int} Maximum value
+	 * @memberof lst
 	 */
 	mod.lst.max = function(numericList){
 		
@@ -1550,7 +1755,8 @@ var MOBIUS = ( function (mod){
 	/**
 	 * Gets the sum of a numeric array
 	 * @param {array} numericList - List which is to be summed
-	 * @returns {float / int} 
+	 * @returns {float / int} Sum of the numbers in the list
+	 * @memberof lst
 	 */
 	mod.lst.sum = function( numericList ){
 		
@@ -1566,7 +1772,8 @@ var MOBIUS = ( function (mod){
 	/**
 	 * Returns the span of the list - the difference between the maximum and the minimum value in the list
 	 * @param {array} numericList - List which is to be analyzed
-	 * @returns {float / int} 
+	 * @returns {float / int} Span
+	 * @memberof lst
 	 */
 	mod.lst.range = function( numericList ){
 		
@@ -1580,25 +1787,48 @@ var MOBIUS = ( function (mod){
 	// Misc functions
 	//
 	//
+	/** @namespace */
 	mod.msc = {};
 
 	/**
 	 * Converts degrees into radians
 	 * @param {float} degree - Degrees to be converted
-	 * @returns {float} 
+	 * @returns {float} Value in Radians
+	 * @memberof msc
 	 */
 	mod.msc.degToRad = function(degree){
-		return 0.01745*degree;
+		return 0.0174533*degree;
 	};
 
 	/**
 	 * Converts radians into degrees
 	 * @param {float} radians - Radians to be converted
-	 * @returns {float} 
+	 * @returns {float} Value in Degrees
+	 * @memberof msc
 	 */
 	mod.msc.radToDeg = function(radians){
 		return 57.29*radians;
-	};
+	};	
+
+	/**
+	 * Returns the sine value of an angle
+	 * @param {float} angle - Angle in degrees
+	 * @returns {float} Sine value
+	 * @memberof msc
+	 */
+	mod.msc.sin = function( angle ){
+		return Math.sin( 0.0174533*angle )
+	}
+
+	/**
+	 * Returns the cos value of an angle
+	 * @param {float} angle - Angle in degrees
+	 * @returns {float} Sine value
+	 * @memberof msc
+	 */
+	mod.msc.cos = function( angle ){
+		return Math.cos( 0.0174533*angle )
+	}
 
 	/**
 	 * Converts RGB values into Hex color code
@@ -1606,8 +1836,9 @@ var MOBIUS = ( function (mod){
 	 * @param {int} green - Value between 0-255 for green color
 	 * @param {int} blue - Value between 0-255 for blue color
 	 * @returns {string} - HexValue
+	 * @memberof msc
 	 */
-	mod.msc.rgbToHex = function(red, green, blue){
+/*	mod.msc.rgbToHex = function(red, green, blue){
 		
 		return '0x'+toHex(red)+toHex(green)+toHex(blue);
 			
@@ -1618,13 +1849,14 @@ var MOBIUS = ( function (mod){
 			 return "0123456789ABCDEF".charAt((n-n%16)/16)
 				  + "0123456789ABCDEF".charAt(n%16);
 		}
-	};
+	};*/
 	
 	/**
 	 * Returns value of a number upto significant digits
 	 * @param {float} number  - Number
-	 * @param {int} number  - Number of significant digits needed
+	 * @param {int} digits  - Number of significant digits needed
 	 * @returns {float} 
+	 * @memberof msc
 	 */
 	mod.msc.sigDig = function(number, digits){
 		return number.toFixed(digits);
@@ -1634,6 +1866,7 @@ var MOBIUS = ( function (mod){
 	 * Prints to console
 	 * @param {string} content - Message to be printed on the console
 	 * @returns {null}
+	 * @memberof msc
 	 */
 	mod.msc.print = function(content){
 		// try to find MOBIUS web app, if found print in MOBIUS console
