@@ -92,7 +92,7 @@
                 }
             ],
             "type": "cross_section",
-            "version": 1450210100627,
+            "version": 1450242022466,
             "overwrite": true,
             "disabled": false
         },
@@ -182,7 +182,7 @@
                 }
             ],
             "type": "killian_roof",
-            "version": 1450210177317,
+            "version": 1450241988930,
             "overwrite": true,
             "disabled": false
         }
@@ -433,7 +433,7 @@
                             "$$hashKey": "object:1151"
                         },
                         {
-                            "value": "Math.PI",
+                            "value": "180",
                             "type": "maxAngle",
                             "$$hashKey": "object:1152"
                         }
