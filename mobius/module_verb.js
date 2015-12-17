@@ -31,6 +31,13 @@ var MOBIUS = ( function (mod){
 
 		if(origin.getGeometry != undefined)
 			origin = origin.getGeometry();
+
+		if(xPoint.getGeometry != undefined)
+			xPoint = xPoint.getGeometry();
+
+		if(yPoint.getGeometry != undefined)
+			yPoint = yPoint.getGeometry();
+
 	    
 	    // how to you make sure the two axes are perpendicular
 		var xaxis = [xPoint[0]-origin[0], xPoint[1]-origin[1], xPoint[2]-origin[2]];
@@ -56,6 +63,12 @@ var MOBIUS = ( function (mod){
 		if(origin.getGeometry != undefined)
 			origin = origin.getGeometry();
 
+		if(xPoint.getGeometry != undefined)
+			xPoint = xPoint.getGeometry();
+
+		if(zPoint.getGeometry != undefined)
+			zPoint = zPoint.getGeometry();
+
 		var xaxis = [xPoint[0]-origin[0], xPoint[1]-origin[1], xPoint[2]-origin[2]];
 		var zaxis = [zPoint[0]-origin[0], zPoint[1]-origin[1], zPoint[2]-origin[2]];		
 
@@ -78,6 +91,12 @@ var MOBIUS = ( function (mod){
 
 		if(origin.getGeometry != undefined)
 			origin = origin.getGeometry();
+
+		if(yPoint.getGeometry != undefined)
+			yPoint = yPoint.getGeometry();
+
+		if(zPoint.getGeometry != undefined)
+			zPoint = zPoint.getGeometry();
 
 		var yaxis = [yPoint[0]-origin[0], yPoint[1]-origin[1], yPoint[2]-origin[2]];
 		var zaxis = [zPoint[0]-origin[0], zPoint[1]-origin[1], zPoint[2]-origin[2]];		
@@ -160,7 +179,7 @@ var MOBIUS = ( function (mod){
 	/**
 	 * Creates a solid object by extruding a surface along x, y, z vectors of the given local coordinate system
 	 * @param { frame object } frame - Local coordinate system 
-	 * @param { surface object } surface - Surface to be extruded
+	 * @param { surface object } surface - Surface Object to be extruded
 	 * @param { float } xDistance - Amount of extrusion in the direction of the x-Axis of the frame
 	 * @param { float } yDistance - Amount of extrusion in the direction of the y-Axis of the frame
 	 * @param { float } zDistance - Amount of extrusion in the direction of the z-Axis of the frame
@@ -168,6 +187,11 @@ var MOBIUS = ( function (mod){
 	 * @memberof sld
 	 */
 	mod.sld.byExtrusion = function(surface, frame, xDistance, yDistance, zDistance){
+
+		// surface is not a surface object but a verbs object - it get's converted into a surface
+		if(surface.getGeometry == undefined)
+			surface = new mObj_geom_Surface( surface );
+
 		//checked
 		var bottomSurface = surface;
 		var topSurface = MOBIUS.trn.shift(bottomSurface, frame, xDistance, yDistance, zDistance, true);
@@ -244,7 +268,7 @@ var MOBIUS = ( function (mod){
 	 * @returns { surface object }  - Surface object
 	 * @memberof srf
 	 */
-	mod.srf.nurbsByCorners = function ( cornerpoints ){
+	mod.srf.nurbsByCorners = function ( frame, cornerpoints ){
 
 		var point0 = cornerpoints[0];
 		var point1 = cornerpoints[1];
@@ -261,7 +285,7 @@ var MOBIUS = ( function (mod){
 			point3 = point3.getGeometry();
 
 		var srf = new verb.geom.NurbsSurface.byCorners ( point0, point1, point2, point3 );
-		//srf.transform( frame.toLocal() );
+		srf.transform( frame.toLocal() );
 
 		return new mObj_geom_Surface( srf ) ;
 	};
@@ -278,8 +302,11 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.srf.nurbsByExtrusion  = function(frame, curve, xDistance, yDistance, zDistance){
 
+		if( curve.getGeometry == undefined )
+			curve = mObj_geom_Curve( curve );
+
 		var profile = curve.getGeometry();
-		var ex_profile = MOBIUS.trn.shift( frame, curve, xDistance, yDistance, zDistance, true).getGeometry();
+		var ex_profile = MOBIUS.trn.shift( curve, frame, xDistance, yDistance, zDistance, true).getGeometry();
 
 		var srf = new verb.geom.NurbsSurface.byLoftingCurves( [profile, ex_profile], 1 );
 		srf.transform( frame.toLocal() );
@@ -341,8 +368,13 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.srf.nurbsBySweep = function( sectionCurve, railCurve ){
 		
-		var profile = sectionCurve.getGeometry();
-		var rail = railCurve.getGeometry();
+		var profile = sectionCurve;
+		var rail = railCurve;
+
+		if( profile.getGeometry != undefined )
+			profile = sectionCurve.getGeometry();
+		if( rail.getGeometry != undefined )
+			rail = railCurve.getGeometry();
 		
 		return new mObj_geom_Surface( new verb.geom.SweptSurface ( profile, rail ) ) ;
 		
@@ -406,21 +438,44 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.srf.nurbsPipe = function(centreCurve, radius){
 
-		var origin = centreCurve.getGeometry().point(0);
-		var zaxis = centreCurve.getGeometry().tangent(0);
+		centreCurve = centreCurve.getGeometry();
+
+		var origin = centreCurve.point(0);
+		var zaxis = centreCurve.tangent(0);
+
+		zaxis = verb.core.Vec.normalized( zaxis );
+		var xaxis;
+		if( zaxis[2] != 0 )
+			xaxis = [1,1, (-zaxis[0]-zaxis[1])/zaxis[2] ];  
+		else if( zaxis[1] != 0 )
+			xaxis = [ 1, (-zaxis[0]-zaxis[2])/zaxis[1], 1 ];
+		else if( zaxis[0] != 0 )
+			xaxis = [ (-zaxis[0]-zaxis[1])/zaxis[0], 1, 1 ];
+		else
+			console.log("invalid tangent in pipe function")
+
+
+		var frame = new mObj_frame( origin, xaxis, undefined, zaxis );
+		var sectionCurve = MOBIUS.crv.circle( frame, radius );
 
 		// compute some random vector perpendicular to the z-vector
-		var sectionCurves  = [];
+/*		var sectionCurves  = [];
 		for( var i=0; i<5; i++){
+
+			var origin = centreCurve.point(i/5);
+			var zaxis = centreCurve.tangent(i/5);
+
 			zaxis = verb.core.Vec.normalized( zaxis );
 			var xaxis = [1,1, ((-zaxis[0]-zaxis[1])/zaxis[2])]; 
 
 			var frame = new mObj_frame( origin, xaxis, undefined, zaxis );
 			var sectionCurve = MOBIUS.crv.circle( frame, radius );
-		}
+
+			sectionCurves.push( sectionCurve );
+		}*/
 
 
-		return MOBIUS.srf.nurbsBySweep( sectionCurve, centreCurve);
+		return MOBIUS.srf.nurbsBySweep( sectionCurve, centreCurve );
 
 	};
 
