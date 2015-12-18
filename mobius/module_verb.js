@@ -526,13 +526,13 @@ var MOBIUS = ( function (mod){
 		if(uvList.constructor.name == "Array"){
 
 			var points = uvList.map( function(p){
-				return new mobj_geom_Vertex( srf.point( p[0], p[1] ) );
+				return new mObj_geom_Vertex( srf.point( p[0], p[1] ) );
 			})
 			
 			return points;
 		}
 		else
-			return new mobj_geom_Vertex( srf.point( u, v ) );
+			return new mObj_geom_Vertex( srf.point( u, v ) );
 
 	};
 
@@ -627,8 +627,8 @@ var MOBIUS = ( function (mod){
 		if(surface.getGeometry != undefined)
 			surface = surface.getGeometry();
 
-		if(uvList.constructor.name != "Array")
-			uvList = [uvList];
+		if(uOrvList.constructor.name != "Array")
+			uOrvList = [uOrvList];
 
 		var isoCurves = [];
 		for(var t=0; t<uOrvList.length; t++){
@@ -646,7 +646,7 @@ var MOBIUS = ( function (mod){
 	 * Subdivides a surface into a grid of smaller surfaces - a mesh solid
 	 * @param {surface object} surface - Surface Object 
 	 * @param {int} uvGrid - UV positions with u & v dimensions [ [ u1, v1 ], ... [ un, vn ], uDimension, vDimension ]
-	 * @returns {solid object} Solid object  
+	 * @returns {solid object} Solid object with divided faces
 	 * @memberof srf
 	 */
 	mod.srf.divide = function(surface, uvGrid){
@@ -819,7 +819,8 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.crv.ellipse = function(frame, xRadius, yRadius) {
 
-		var ellipse = new verb.geom.Ellipse( [0,0,0], [1,0,0], [0,1,0], radius );
+
+		var ellipse = new verb.geom.Ellipse( [0,0,0], MOBIUS.vec.scale([1,0,0], xRadius), MOBIUS.vec.scale([0,1,0], yRadius) );
 		ellipse = ellipse.transform( frame.toLocal() )
 
 		return new mObj_geom_Curve( ellipse ); 
@@ -841,8 +842,8 @@ var MOBIUS = ( function (mod){
 		minAngle = 0.0174533*minAngle;
 		maxAngle = 0.0174533*maxAngle;
 
-		var ellipseArc = new verb.geom.EllipseArc( [0,0,0], [1,0,0], [0,1,0], radius, minAngle, maxAngle );
-		ellipseArc = ellipse.transform( frame.toLocal() );
+		var ellipseArc = new verb.geom.EllipseArc( [0,0,0], MOBIUS.vec.scale([1,0,0], xRadius), MOBIUS.vec.scale([0,1,0], yRadius), minAngle, maxAngle );
+		ellipseArc = ellipseArc.transform( frame.toLocal() );
 
 		return new mObj_geom_Curve( ellipseArc ); 
 	};
@@ -902,7 +903,7 @@ var MOBIUS = ( function (mod){
 
 		var tList = [];
 	 	for(var len=0; len <= curve.length; len=len+distance){
-	 		tList.push(curve.paramAtLength( len ));
+	 		tList.push(curve.paramAtLength( len )); console.log(len);
 	 	}
 
 	 	return tList;
@@ -1327,7 +1328,7 @@ var MOBIUS = ( function (mod){
 
 			var centres  = []
 			for( var obj = 0; obj < geometry.length; obj++ )
-				centres.push( MOBIUS.obj.getCentre( geometry[obj]) );
+				centres.push( MOBIUS.obj.getCentre( geometry[obj] ).getGeometry() );
 
 			var x = [];
 			var y = [];
@@ -1342,17 +1343,18 @@ var MOBIUS = ( function (mod){
 			y = MOBIUS.lst.average( y );
 			z = MOBIUS.lst.average( z );
 
-			return [x, y, z]
+			return new mObj_geom_Vertex( [x, y, z] )
 		}
 
-		if(geometry.center != undefined)
-			return geometry.center();
-		else if(geometry instanceof verb.geom.NurbsCurve)
-			return geometry.point(0.5);
+		var point;
+		if(geometry instanceof verb.geom.NurbsCurve)
+			point = geometry.point(0.5);
 		else if(geometry instanceof verb.geom.NurbsSurface)
-			return geometry.point(0.5, 0.5);
+			point = geometry.point( 0.5, 0.5 );
 		else
 			return "Invalid Input"
+
+		return point
 	};
 
 
@@ -2027,6 +2029,7 @@ var TOPOLOGY_DEF = {"vertices":[], "edges":[], "faces":[]}
 //
 //	Function to convert module geometry into three.js Mesh geometry
 //  Add another if-else condition for each new geometry
+//  solid never comes here - only points 
 //
 var convertGeomToThree = function( geom ){
 
@@ -2040,7 +2043,7 @@ var convertGeomToThree = function( geom ){
 		else if(singleDataObject instanceof Array){
 			// means it is a point
 			var dotGeometry = new THREE.Geometry();
-			dotGeometry.vertices.push( new THREE.Vector3(singleDataObject[0], singleDataObject[1], singleDataObject[2]) ); console.log("here");
+			dotGeometry.vertices.push( new THREE.Vector3(singleDataObject[0], singleDataObject[1], singleDataObject[2]) ); 
 			return new THREE.PointCloud( dotGeometry );
 		}
 		else {
