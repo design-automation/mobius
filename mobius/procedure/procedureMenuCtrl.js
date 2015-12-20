@@ -71,7 +71,6 @@ vidamo.controller('procedureMenuCtrl',['$scope','$rootScope','generateCode',
         $scope.selectedParentItem = undefined;
 
         // cover backwards enable for if/else and for recursively
-        // todo cover various cases of 'for loop' and 'if else'
         $scope.enableParentItems = function(son){
 
             if(son && son.disabled === true){
@@ -89,7 +88,6 @@ vidamo.controller('procedureMenuCtrl',['$scope','$rootScope','generateCode',
             }
         };
 
-        // fixme if else subitems id are alway : 1if, 1else, not reading the sub layer if-else loops
         // to find the parent item recursively
         $scope.searchParent = function(son,tree){
             if(tree.nodes && tree.nodes.length >0){
