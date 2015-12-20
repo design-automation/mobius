@@ -24,7 +24,7 @@
                 }
             ],
             "type": "spiral0",
-            "version": 1450166421332,
+            "version": 1450084990419,
             "overwrite": true
         },
         {
@@ -50,15 +50,15 @@
                 {
                     "id": 1,
                     "title": "Output",
-                    "name": "cpys",
-                    "dataValue": "[]",
+                    "name": "geom",
+                    "dataValue": "cpys",
                     "type": "new",
                     "selected": false,
                     "$$hashKey": "object:15323"
                 }
             ],
             "type": "radial_copy0",
-            "version": 1450196691915,
+            "version": 1450087128221,
             "overwrite": true
         },
         {
@@ -157,7 +157,7 @@
                 }
             ],
             "type": "curve",
-            "version": 1450196691257,
+            "version": 1450087143178,
             "overwrite": true
         },
         {
@@ -184,7 +184,7 @@
                 }
             ],
             "type": "spiral02",
-            "version": 1450166454150,
+            "version": 1450086372628,
             "overwrite": true,
             "disabled": false
         },
@@ -212,7 +212,7 @@
                 }
             ],
             "type": "spiral03",
-            "version": 1450166436001,
+            "version": 1450085975552,
             "overwrite": true,
             "disabled": false
         },
@@ -240,7 +240,7 @@
                 }
             ],
             "type": "spiral03",
-            "version": 1450166472401,
+            "version": 1450087140845,
             "overwrite": true,
             "disabled": false
         }
@@ -377,21 +377,20 @@
                     "expression": "",
                     "method": "append",
                     "category": "lst",
-                    "return": false,
                     "parameters": [
                         {
                             "value": "points",
                             "type": "list",
-                            "$$hashKey": "object:1861"
+                            "$$hashKey": "object:2409"
                         },
                         {
-                            "value": "[ x, y, z ]",
+                            "value": "[ x, y, z]",
                             "type": "itemOrList",
-                            "$$hashKey": "object:1862"
+                            "$$hashKey": "object:2410"
                         }
                     ],
-                    "result": "",
-                    "$$hashKey": "object:1851",
+                    "result": "_",
+                    "$$hashKey": "object:2396",
                     "selected": false
                 }
             ],
@@ -400,7 +399,7 @@
             "dataName": "i",
             "forList": "seq",
             "$$hashKey": "object:14017",
-            "selected": true
+            "selected": false
         },
         {
             "id": 7,
@@ -438,15 +437,6 @@
         }
     ],
     [
-        {
-            "id": 1,
-            "title": "Output",
-            "name": "cpys",
-            "dataValue": "[]",
-            "type": "new",
-            "selected": false,
-            "$$hashKey": "object:15323"
-        },
         {
             "id": 9,
             "title": "Action",
@@ -525,39 +515,66 @@
             "selected": false
         },
         {
-            "id": 8,
-            "title": "Action",
+            "id": 4,
+            "title": "Data",
             "nodes": [],
-            "expression": "",
-            "method": "reflect",
-            "category": "trn",
-            "parameters": [
-                {
-                    "value": "geom",
-                    "type": "object",
-                    "$$hashKey": "object:6477"
-                },
-                {
-                    "value": "frame",
-                    "type": "frame",
-                    "$$hashKey": "object:6478"
-                },
-                {
-                    "value": "true",
-                    "type": "copy",
-                    "$$hashKey": "object:6479"
-                }
-            ],
-            "result": "anti_geom",
-            "$$hashKey": "object:6464",
-            "selected": false,
-            "disabled": false,
-            "type": "new"
+            "dataName": "cpys",
+            "dataValue": "[]",
+            "type": "new",
+            "$$hashKey": "object:3403",
+            "selected": false
         },
         {
             "id": 3,
             "title": "Control",
             "nodes": [
+                {
+                    "id": 8,
+                    "title": "Action",
+                    "nodes": [],
+                    "expression": "",
+                    "method": "copy",
+                    "category": "obj",
+                    "parameters": [
+                        {
+                            "value": "geom",
+                            "type": "object",
+                            "$$hashKey": "object:4006"
+                        }
+                    ],
+                    "result": "cpy",
+                    "$$hashKey": "object:3993",
+                    "selected": false
+                },
+                {
+                    "id": 8,
+                    "title": "Action",
+                    "nodes": [],
+                    "expression": "",
+                    "method": "reflect",
+                    "category": "trn",
+                    "parameters": [
+                        {
+                            "value": "cpy",
+                            "type": "object",
+                            "$$hashKey": "object:6477"
+                        },
+                        {
+                            "value": "frame",
+                            "type": "frame",
+                            "$$hashKey": "object:6478"
+                        },
+                        {
+                            "value": "true",
+                            "type": "copy",
+                            "$$hashKey": "object:6479"
+                        }
+                    ],
+                    "result": "anti_cpy",
+                    "$$hashKey": "object:6464",
+                    "selected": false,
+                    "disabled": false
+                },
                 {
                     "id": 7,
                     "title": "Action",
@@ -567,7 +584,7 @@
                     "category": "trn",
                     "parameters": [
                         {
-                            "value": "[geom, anti_geom]",
+                            "value": "[cpy, anti_cpy]",
                             "type": "object",
                             "$$hashKey": "object:4706"
                         },
@@ -592,7 +609,7 @@
                             "$$hashKey": "object:4710"
                         },
                         {
-                            "value": "true",
+                            "value": "false",
                             "type": "copy",
                             "$$hashKey": "object:4711"
                         }
@@ -602,27 +619,26 @@
                     "selected": false
                 },
                 {
-                    "id": 7,
+                    "id": 9,
                     "title": "Action",
                     "nodes": [],
                     "expression": "",
                     "method": "extend",
                     "category": "lst",
-                    "return": false,
                     "parameters": [
                         {
                             "value": "cpys",
                             "type": "list",
-                            "$$hashKey": "object:5324"
+                            "$$hashKey": "object:2740"
                         },
                         {
                             "value": "spirals",
                             "type": "extension_list",
-                            "$$hashKey": "object:5325"
+                            "$$hashKey": "object:2741"
                         }
                     ],
-                    "result": "",
-                    "$$hashKey": "object:5314",
+                    "result": "_",
+                    "$$hashKey": "object:2727",
                     "selected": false
                 }
             ],
@@ -631,7 +647,16 @@
             "dataName": "i",
             "forList": "seq",
             "$$hashKey": "object:2681",
-            "selected": true
+            "selected": false
+        },
+        {
+            "id": 1,
+            "title": "Output",
+            "name": "geom",
+            "dataValue": "cpys",
+            "type": "new",
+            "selected": false,
+            "$$hashKey": "object:15323"
         }
     ],
     [
@@ -779,28 +804,27 @@
                     "$$hashKey": "object:10003"
                 },
                 {
-                    "id": 7,
+                    "id": 10,
                     "title": "Action",
                     "nodes": [],
                     "expression": "",
                     "method": "append",
                     "category": "lst",
-                    "return": false,
                     "parameters": [
                         {
                             "value": "points",
                             "type": "list",
-                            "$$hashKey": "object:3458"
+                            "$$hashKey": "object:8083"
                         },
                         {
-                            "value": "[ x, y, z ]",
+                            "value": "[x, y, z]",
                             "type": "itemOrList",
-                            "$$hashKey": "object:3459"
+                            "$$hashKey": "object:8084"
                         }
                     ],
-                    "result": "",
-                    "$$hashKey": "object:3448",
-                    "selected": true
+                    "result": "_",
+                    "$$hashKey": "object:8070",
+                    "selected": false
                 }
             ],
             "type": "new",
@@ -989,22 +1013,21 @@
                     "expression": "",
                     "method": "append",
                     "category": "lst",
-                    "return": false,
                     "parameters": [
                         {
                             "value": "points",
                             "type": "list",
-                            "$$hashKey": "object:2683"
+                            "$$hashKey": "object:3607"
                         },
                         {
                             "value": "[x, y, z]",
                             "type": "itemOrList",
-                            "$$hashKey": "object:2684"
+                            "$$hashKey": "object:3608"
                         }
                     ],
-                    "result": "",
-                    "$$hashKey": "object:2673",
-                    "selected": true
+                    "result": "_",
+                    "$$hashKey": "object:3594",
+                    "selected": false
                 }
             ],
             "type": "new",
@@ -1036,7 +1059,7 @@
             ],
             "result": "spiral",
             "$$hashKey": "object:4192",
-            "selected": false
+            "selected": true
         },
         {
             "id": 1,
@@ -1193,21 +1216,20 @@
                     "expression": "",
                     "method": "append",
                     "category": "lst",
-                    "return": false,
                     "parameters": [
                         {
                             "value": "points",
                             "type": "list",
-                            "$$hashKey": "object:4285"
+                            "$$hashKey": "object:12564"
                         },
                         {
-                            "value": "[ x, y, z ]",
+                            "value": "[x, y, z]",
                             "type": "itemOrList",
-                            "$$hashKey": "object:4286"
+                            "$$hashKey": "object:12565"
                         }
                     ],
-                    "result": "",
-                    "$$hashKey": "object:4275",
+                    "result": "_",
+                    "$$hashKey": "object:12551",
                     "selected": false
                 }
             ],
@@ -1215,7 +1237,7 @@
             "controlType": "for each",
             "dataName": "i",
             "forList": "seq",
-            "selected": true,
+            "selected": false,
             "$$hashKey": "object:16277"
         },
         {

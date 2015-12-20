@@ -769,7 +769,6 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                 }
             }
 
-            console.log('highest id now is: ', $scope.currentHighestId );
             return $scope.currentHighestId;
         };
 

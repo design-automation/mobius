@@ -60,7 +60,7 @@ vidamo.controller('procedureMenuCtrl',['$scope','$rootScope','generateCode',
 
         // enable sub items recursively
         $scope.enableSubItems = function(parent){
-            if(parent.nodes){
+            if(parent && parent.nodes){
                 for(var i = 0; i < parent.nodes.length; i++){
                     parent.nodes[i].disabled = false;
                     $scope.enableSubItems(parent.nodes[i]);
@@ -74,14 +74,16 @@ vidamo.controller('procedureMenuCtrl',['$scope','$rootScope','generateCode',
         // todo cover various cases of 'for loop' and 'if else'
         $scope.enableParentItems = function(son){
 
-            if(son.disabled === true){
+            if(son && son.disabled === true){
                 son.disabled = false;
+                $scope.selectedParentItem = undefined;
 
                 for(var i = 0;i < $scope.data.length; i++){
                     $scope.searchParent($scope.selectedPos,$scope.data[i]);
                 }
 
-                $scope.enableSubItems($scope.selectedParentItem);
+
+                //$scope.enableSubItems($scope.selectedParentItem);
                 $scope.selectedPos = $scope.selectedParentItem;
                 $scope.enableParentItems($scope.selectedParentItem);
             }
@@ -90,7 +92,7 @@ vidamo.controller('procedureMenuCtrl',['$scope','$rootScope','generateCode',
         // fixme if else subitems id are alway : 1if, 1else, not reading the sub layer if-else loops
         // to find the parent item recursively
         $scope.searchParent = function(son,tree){
-            if(tree.nodes.length >0){
+            if(tree.nodes && tree.nodes.length >0){
                 for(var i =0; i < tree.nodes.length; i++){
                     if(tree.nodes[i] === son){
                         $scope.selectedParentItem = tree;
@@ -128,7 +130,7 @@ vidamo.controller('procedureMenuCtrl',['$scope','$rootScope','generateCode',
 
                 $scope.findSelectedProcedure($scope.data);
                 if($scope.selectedPos !== undefined){
-                    if($scope.selectedPos.disabled === true){
+                    if($scope.selectedPos.disabled === true || $scope.selectedPos.title === 'Output' ){
                         return true;
                     }else{
                         return false;
@@ -138,4 +140,17 @@ vidamo.controller('procedureMenuCtrl',['$scope','$rootScope','generateCode',
         };
 
 
+        $scope.isOutput = function(){
+            if($scope.data !== undefined){
+
+                $scope.findSelectedProcedure($scope.data);
+                if($scope.selectedPos !== undefined){
+                    if( $scope.selectedPos.title === 'Output' ){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
+            }
+        };
     }]);

@@ -58,7 +58,6 @@
                     <ul class="dropdown-menu">
                         <li><a ng-click="loadExample('00_KillianRoof.json')"> Killian Roof </a></li>
                         <li><a ng-click="loadExample('01_SpiralTowers.json')"> SpiralTowers </a></li>
-                        <li><a ng-click="loadExample('02_Extrusions.json')"> Extrusion Example </a></li>
                     </ul>
                 </li>
             </ul>
@@ -141,7 +140,7 @@
                     <a ng-click=" toggleCheatSheet();"> Hotkeys </a>
                 </li>
                 <li>
-                    <a href="doc/out/global.html" target="_blank"> Docs </a>
+                    <a href="doc/MobiusHelp.html" target="_blank"> Docs </a>
                 </li>
             </ul>
         </span>
@@ -420,7 +419,7 @@
 
         <!--todo context menu for procedure items-->
         <div ng-controller="procedureMenuCtrl" >
-            <div class="dropdown position-fixed " id="menu-procedure" >
+            <div class="dropdown position-fixed " id="menu-procedure" ng-if="!isOutput()">
                 <ul class="dropdown-menu" >
                     <li>
                         <a ng-if="!checkDisabled()" ng-click="disableProcedure()"> Disable </a>
