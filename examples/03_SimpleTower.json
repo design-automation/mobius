@@ -1,0 +1,675 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "rotate_copy0",
+            "x": 2113.0679884101987,
+            "y": 2108.027312602297,
+            "inputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Input",
+                    "name": "geom",
+                    "connected": true,
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "$$hashKey": "object:18158",
+                    "selected": false
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "id": 3,
+                    "title": "Output",
+                    "type": "new",
+                    "$$hashKey": "object:19540",
+                    "selected": false,
+                    "name": "out",
+                    "dataValue": "copies"
+                }
+            ],
+            "type": "rotate_copy",
+            "version": 1450251146779,
+            "overwrite": true,
+            "disabled": false
+        },
+        {
+            "id": 1,
+            "name": "reflect_copy0",
+            "x": 2112.299885429947,
+            "y": 2031.9851175573722,
+            "inputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Input",
+                    "name": "geom",
+                    "connected": true,
+                    "option": {
+                        "name": "none",
+                        "$$hashKey": "object:25020"
+                    },
+                    "color": "#000000",
+                    "$$hashKey": "object:24966",
+                    "selected": true
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Output",
+                    "type": "new",
+                    "$$hashKey": "object:24997",
+                    "selected": false,
+                    "name": "out1",
+                    "dataValue": "[geom, copy]",
+                    "connected": true
+                }
+            ],
+            "type": "reflect_copy",
+            "version": 1450251145774,
+            "overwrite": true,
+            "disabled": false
+        },
+        {
+            "id": 2,
+            "name": "spiral0",
+            "x": 2112.5557017241804,
+            "y": 1954.0272403824463,
+            "inputConnectors": [],
+            "outputConnectors": [
+                {
+                    "id": 3,
+                    "title": "Output",
+                    "type": "new",
+                    "selected": false,
+                    "name": "out",
+                    "dataValue": "crv",
+                    "connected": true,
+                    "$$hashKey": "object:3550"
+                }
+            ],
+            "type": "spiral",
+            "version": 1450251144920,
+            "overwrite": true,
+            "disabled": false
+        }
+    ],
+    "connections": [
+        {
+            "source": {
+                "nodeID": 1,
+                "connectorIndex": 0
+            },
+            "dest": {
+                "nodeID": 0,
+                "connectorIndex": 0
+            }
+        },
+        {
+            "source": {
+                "nodeID": 2,
+                "connectorIndex": 0
+            },
+            "dest": {
+                "nodeID": 1,
+                "connectorIndex": 0
+            }
+        }
+    ]
+}
+
+//procedure json
+[
+    [
+        {
+            "id": 6,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "copies",
+            "dataValue": "[]",
+            "type": "new",
+            "$$hashKey": "object:20773",
+            "selected": false
+        },
+        {
+            "id": 5,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "sequence",
+            "category": "lst",
+            "parameters": [
+                {
+                    "value": "0",
+                    "type": "start",
+                    "$$hashKey": "object:20745"
+                },
+                {
+                    "value": "num_copies",
+                    "type": "end",
+                    "$$hashKey": "object:20746"
+                },
+                {
+                    "value": "1",
+                    "type": "stepSize",
+                    "$$hashKey": "object:20747"
+                }
+            ],
+            "result": "seq",
+            "$$hashKey": "object:20730",
+            "selected": false
+        },
+        {
+            "id": 4,
+            "title": "Control",
+            "nodes": [
+                {
+                    "id": 1,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "expression": "",
+                    "method": "rotate",
+                    "category": "trn",
+                    "parameters": [
+                        {
+                            "value": "geom",
+                            "type": "object",
+                            "$$hashKey": "object:18799"
+                        },
+                        {
+                            "value": "GLOBAL",
+                            "type": "frame",
+                            "$$hashKey": "object:18800"
+                        },
+                        {
+                            "value": "0",
+                            "type": "angleX",
+                            "$$hashKey": "object:18801"
+                        },
+                        {
+                            "value": "0",
+                            "type": "angleY",
+                            "$$hashKey": "object:18802"
+                        },
+                        {
+                            "value": "i * angle",
+                            "type": "angleZ",
+                            "$$hashKey": "object:18803"
+                        },
+                        {
+                            "value": "true",
+                            "type": "copy",
+                            "$$hashKey": "object:18804"
+                        }
+                    ],
+                    "result": "copy",
+                    "$$hashKey": "object:18779",
+                    "selected": false
+                },
+                {
+                    "id": 12,
+                    "title": "Action",
+                    "nodes": [],
+                    "expression": "",
+                    "method": "extend",
+                    "category": "lst",
+                    "return": false,
+                    "parameters": [
+                        {
+                            "value": "copies",
+                            "type": "list",
+                            "$$hashKey": "object:41840"
+                        },
+                        {
+                            "value": "copy",
+                            "type": "extension_list",
+                            "$$hashKey": "object:41841"
+                        }
+                    ],
+                    "result": "",
+                    "$$hashKey": "object:41830",
+                    "selected": false
+                }
+            ],
+            "type": "assign",
+            "controlType": "for each",
+            "dataName": "i",
+            "forList": "seq",
+            "$$hashKey": "object:20122",
+            "selected": true
+        },
+        {
+            "id": 3,
+            "title": "Output",
+            "type": "new",
+            "$$hashKey": "object:19540",
+            "selected": false,
+            "name": "out",
+            "dataValue": "copies"
+        }
+    ],
+    [
+        {
+            "id": 4,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "byXZAxes",
+            "category": "frm",
+            "parameters": [
+                {
+                    "value": "[0,0,0]",
+                    "type": "origin",
+                    "$$hashKey": "object:2676"
+                },
+                {
+                    "value": "[1,0,0]",
+                    "type": "xAxis",
+                    "$$hashKey": "object:2677"
+                },
+                {
+                    "value": "[0,1,0]",
+                    "type": "zAxis",
+                    "$$hashKey": "object:2678"
+                }
+            ],
+            "result": "xz",
+            "$$hashKey": "object:2661",
+            "selected": true
+        },
+        {
+            "id": 3,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "reflect",
+            "category": "trn",
+            "parameters": [
+                {
+                    "value": "geom",
+                    "type": "object",
+                    "$$hashKey": "object:26721"
+                },
+                {
+                    "value": "xz",
+                    "type": "frame",
+                    "$$hashKey": "object:26722"
+                },
+                {
+                    "value": "true",
+                    "type": "copy",
+                    "$$hashKey": "object:26723"
+                }
+            ],
+            "result": "copy",
+            "$$hashKey": "object:26707",
+            "selected": false
+        },
+        {
+            "id": 1,
+            "title": "Output",
+            "type": "new",
+            "$$hashKey": "object:24997",
+            "selected": false,
+            "name": "out1",
+            "dataValue": "[geom, copy]",
+            "connected": true
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "points",
+            "dataValue": "[]",
+            "type": "new",
+            "selected": false,
+            "$$hashKey": "object:3546"
+        },
+        {
+            "id": 4,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "sequence",
+            "category": "lst",
+            "parameters": [
+                {
+                    "value": "0",
+                    "type": "start",
+                    "$$hashKey": "object:3963"
+                },
+                {
+                    "value": "num_points + 1",
+                    "type": "end",
+                    "$$hashKey": "object:3964"
+                },
+                {
+                    "value": "1",
+                    "type": "stepSize",
+                    "$$hashKey": "object:3965"
+                }
+            ],
+            "result": "seq",
+            "selected": false,
+            "$$hashKey": "object:3547"
+        },
+        {
+            "id": 5,
+            "title": "Control",
+            "nodes": [
+                {
+                    "id": 6,
+                    "title": "Data",
+                    "nodes": [],
+                    "dataName": "z",
+                    "dataValue": "(height / num_points) * i",
+                    "selected": false,
+                    "$$hashKey": "object:3979"
+                },
+                {
+                    "id": 7,
+                    "title": "Data",
+                    "nodes": [],
+                    "dataName": "a",
+                    "dataValue": "(( 360 ) / num_points) * i",
+                    "selected": false,
+                    "$$hashKey": "object:3980"
+                },
+                {
+                    "id": 14,
+                    "title": "Action",
+                    "nodes": [],
+                    "expression": "",
+                    "method": "cos",
+                    "category": "msc",
+                    "parameters": [
+                        {
+                            "value": "a",
+                            "type": "angle",
+                            "$$hashKey": "object:4084"
+                        }
+                    ],
+                    "result": "cos",
+                    "selected": false,
+                    "$$hashKey": "object:3981"
+                },
+                {
+                    "id": 13,
+                    "title": "Action",
+                    "nodes": [],
+                    "expression": "",
+                    "method": "sin",
+                    "category": "msc",
+                    "parameters": [
+                        {
+                            "value": "a",
+                            "type": "angle",
+                            "$$hashKey": "object:4095"
+                        }
+                    ],
+                    "result": "sine",
+                    "selected": false,
+                    "$$hashKey": "object:3982"
+                },
+                {
+                    "id": 8,
+                    "title": "Data",
+                    "nodes": [],
+                    "dataName": "x",
+                    "dataValue": "cos * rad",
+                    "selected": false,
+                    "$$hashKey": "object:3983"
+                },
+                {
+                    "id": 9,
+                    "title": "Data",
+                    "nodes": [],
+                    "dataName": "y",
+                    "dataValue": "sine * rad",
+                    "selected": false,
+                    "$$hashKey": "object:3984"
+                },
+                {
+                    "id": 11,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "expression": "",
+                    "method": "byCoords",
+                    "category": "pnt",
+                    "parameters": [
+                        {
+                            "value": "x",
+                            "type": "x",
+                            "$$hashKey": "object:4120"
+                        },
+                        {
+                            "value": "y",
+                            "type": "y",
+                            "$$hashKey": "object:4121"
+                        },
+                        {
+                            "value": "z",
+                            "type": "z",
+                            "$$hashKey": "object:4122"
+                        }
+                    ],
+                    "result": "point",
+                    "selected": false,
+                    "$$hashKey": "object:3985"
+                },
+                {
+                    "id": 12,
+                    "title": "Action",
+                    "nodes": [],
+                    "expression": "",
+                    "method": "append",
+                    "category": "lst",
+                    "return": false,
+                    "parameters": [
+                        {
+                            "value": "points",
+                            "type": "list",
+                            "$$hashKey": "object:4136"
+                        },
+                        {
+                            "value": "point",
+                            "type": "itemOrList",
+                            "$$hashKey": "object:4137"
+                        }
+                    ],
+                    "result": "",
+                    "selected": false,
+                    "$$hashKey": "object:3986"
+                }
+            ],
+            "type": "new",
+            "controlType": "for each",
+            "dataName": "i",
+            "forList": "seq",
+            "selected": true,
+            "$$hashKey": "object:3548"
+        },
+        {
+            "id": 15,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "nurbsByPoints",
+            "category": "crv",
+            "parameters": [
+                {
+                    "value": "GLOBAL",
+                    "type": "frame",
+                    "$$hashKey": "object:4011"
+                },
+                {
+                    "value": "points",
+                    "type": "points",
+                    "$$hashKey": "object:4012"
+                },
+                {
+                    "value": "3",
+                    "type": "degree",
+                    "$$hashKey": "object:4013"
+                }
+            ],
+            "result": "crv",
+            "selected": false,
+            "$$hashKey": "object:3549"
+        },
+        {
+            "id": 3,
+            "title": "Output",
+            "type": "new",
+            "selected": false,
+            "name": "out",
+            "dataValue": "crv",
+            "connected": true,
+            "$$hashKey": "object:3550"
+        }
+    ]
+]
+
+//interface json
+[
+    [
+        {
+            "id": 1,
+            "title": "Input",
+            "name": "geom",
+            "connected": true,
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:18158",
+            "selected": false
+        },
+        {
+            "id": 2,
+            "title": "Input",
+            "name": "num_copies",
+            "connected": false,
+            "dataValue": "48",
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:2346"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:21903",
+            "selected": false,
+            "min": "2",
+            "max": "50",
+            "step": "1"
+        },
+        {
+            "id": 3,
+            "title": "Input",
+            "name": "angle",
+            "connected": false,
+            "dataValue": "360 / num_copies",
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:2346"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:21956",
+            "selected": true,
+            "min": "0",
+            "max": "360",
+            "step": "0.1"
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Input",
+            "name": "geom",
+            "connected": true,
+            "option": {
+                "name": "none",
+                "$$hashKey": "object:25020"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:24966",
+            "selected": true
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Input",
+            "name": "angle",
+            "connected": false,
+            "dataValue": "73",
+            "option": {
+                "name": "slider"
+            },
+            "color": "#000000",
+            "selected": false,
+            "min": "0",
+            "max": "360",
+            "step": "1",
+            "$$hashKey": "object:3498"
+        },
+        {
+            "id": 2,
+            "title": "Input",
+            "name": "num_points",
+            "connected": false,
+            "dataValue": "12",
+            "option": {
+                "name": "slider"
+            },
+            "color": "#000000",
+            "selected": false,
+            "min": "4",
+            "max": "30",
+            "step": "1",
+            "$$hashKey": "object:3499"
+        },
+        {
+            "id": 3,
+            "title": "Input",
+            "name": "height",
+            "connected": false,
+            "dataValue": "42",
+            "option": {
+                "name": "slider"
+            },
+            "color": "#000000",
+            "selected": false,
+            "min": "5",
+            "max": "50",
+            "step": "1",
+            "$$hashKey": "object:3500"
+        },
+        {
+            "id": 5,
+            "title": "Input",
+            "name": "rad",
+            "connected": false,
+            "dataValue": "8.2",
+            "option": {
+                "name": "slider"
+            },
+            "color": "#000000",
+            "selected": false,
+            "min": "0",
+            "max": "10",
+            "step": "0.1",
+            "$$hashKey": "object:3502"
+        }
+    ]
+]

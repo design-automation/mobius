@@ -1,26 +1,34 @@
-/*
- *	Module, with verb.js
- */
- 
-var MOBIUS = ( function (mod){	
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: moduleDocs.js</title>
 
-	/*
-	 *
-	 * General Functions,
-	 * Input - according to requirements; Output - non-geometric primitives
-	 *
-	 */
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
 
-	//
-	//
-	// frame functions
-	//
-	//
-	/** @namespace */
-	mod.frm = {}; 
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: moduleDocs.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>	/** @namespace */
+	frm = {}; 
 	
-<<<<<<< HEAD
-=======
 	/**
 	 * Creates a local coordinate system with a given origin and the X-Axis and Y-Axis pointing towards the specfied points 
 	 * @param {array / vertex object} origin - Origin of the local coordinate system
@@ -29,8 +37,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {frame object }  - A Frame Object
 	 * @memberof frm
 	 */
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
-	mod.frm.byXYPoints = function(origin, xPoint, yPoint){
+	byXYPoints = function(origin, xPoint, yPoint){
 
 		if(origin.getGeometry != undefined)
 			origin = origin.getGeometry();
@@ -39,15 +46,13 @@ var MOBIUS = ( function (mod){
 		var xaxis = [xPoint[0]-origin[0], xPoint[1]-origin[1], xPoint[2]-origin[2]];
 		var yaxis = [yPoint[0]-origin[0], yPoint[1]-origin[1], yPoint[2]-origin[2]];
 
-		if( mod.mtx.dot(xaxis, yaxis) != 0)
-			mod.msc.print("Axes are not perpendicular");
+		if( dot(xaxis, yaxis) != 0)
+			print("Axes are not perpendicular");
 
 		return new mObj_frame(origin, xaxis, yaxis, undefined);
 
 	};
 	        
-<<<<<<< HEAD
-=======
 	/**
 	 * Creates a local coordinate system with a given origin and the X-Axis and Z-Axis pointing towards the specfied points 
 	 * @param {array / vertex object} origin - Origin of the local coordinate system
@@ -56,8 +61,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {frame object }  - A Frame Object
 	 * @memberof frm
 	 */
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
-	mod.frm.byXZPoints = function(origin, xPoint, zPoint){		
+	byXZPoints = function(origin, xPoint, zPoint){		
 
 		if(origin.getGeometry != undefined)
 			origin = origin.getGeometry();
@@ -65,15 +69,13 @@ var MOBIUS = ( function (mod){
 		var xaxis = [xPoint[0]-origin[0], xPoint[1]-origin[1], xPoint[2]-origin[2]];
 		var zaxis = [zPoint[0]-origin[0], zPoint[1]-origin[1], zPoint[2]-origin[2]];		
 
-		if( mod.mtx.dot(xaxis, zaxis) != 0)
-			mod.msc.print("Axes are not perpendicular");
+		if( dot(xaxis, zaxis) != 0)
+			print("Axes are not perpendicular");
 
 		return new mObj_frame(origin, xaxis, undefined, zaxis);
 
 	};
 
-<<<<<<< HEAD
-=======
 	/**
 	 * Creates a local coordinate system with a given origin and the Y-Axis and Z-Axis pointing towards the specfied points 
 	 * @param {array / vertex object} origin - Origin of the local coordinate system
@@ -82,8 +84,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {frame object }  - A Frame Object
 	 * @memberof frm
 	 */
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
-	mod.frm.byYZPoints = function(origin, yPoint, zPoint){
+	byYZPoints = function(origin, yPoint, zPoint){
 
 		if(origin.getGeometry != undefined)
 			origin = origin.getGeometry();
@@ -91,15 +92,13 @@ var MOBIUS = ( function (mod){
 		var yaxis = [yPoint[0]-origin[0], yPoint[1]-origin[1], yPoint[2]-origin[2]];
 		var zaxis = [zPoint[0]-origin[0], zPoint[1]-origin[1], zPoint[2]-origin[2]];		
 
-		if( mod.mtx.dot(zaxis, yaxis) != 0)
-			mod.msc.print("Axes are not perpendicular");
+		if( dot(zaxis, yaxis) != 0)
+			print("Axes are not perpendicular");
 
 		return new mObj_frame(origin, undefined, yaxis, zaxis)
 	
 	};
 
-<<<<<<< HEAD
-=======
 	/**
 	 * Creates a local coordinate system with a given origin and the X and Y axis Vectors. Units vectors are not neccessary. 
 	 * @param {array / vertex object} origin - Origin of the local coordinate system
@@ -108,21 +107,18 @@ var MOBIUS = ( function (mod){
 	 * @returns {frame object }  - A Frame Object
 	 * @memberof frm
 	 */
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
-	mod.frm.byXYAxes = function(origin, xAxis, yAxis){
+	byXYAxes = function(origin, xAxis, yAxis){
 
 		if(origin.getGeometry != undefined)
 			origin = origin.getGeometry();
 
-		if( mod.mtx.dot(xAxis, yAxis) != 0)
-			mod.msc.print("Axes are not perpendicular");
+		if( dot(xAxis, yAxis) != 0)
+			print("Axes are not perpendicular");
 
 		return new mObj_frame(origin, xAxis, yAxis, undefined);
 
 	};
 
-<<<<<<< HEAD
-=======
 	/**
 	 * Creates a local coordinate system with a given origin and the X and Y axis Vectors. Units vectors are not neccessary. 
 	 * @param {array / vertex object} origin - Origin of the local coordinate system
@@ -131,21 +127,18 @@ var MOBIUS = ( function (mod){
 	 * @returns {frame object }  - A Frame Object
 	 * @memberof frm
 	 */
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
-	mod.frm.byXZAxes = function(origin, xAxis, zAxis){
+	byXZAxes = function(origin, xAxis, zAxis){
 
 		if(origin.getGeometry != undefined)
 			origin = origin.getGeometry();
 
-		if( mod.mtx.dot(xAxis, zAxis) != 0)
-			mod.msc.print("Axes are not perpendicular");
+		if( dot(xAxis, zAxis) != 0)
+			print("Axes are not perpendicular");
 
 		return new mObj_frame(origin, xAxis, undefined, zAxis);
 
 	};
 
-<<<<<<< HEAD
-=======
 	/**
 	 * Creates a local coordinate system with a given origin and the Y and Z axis Vectors. Units vectors are not neccessary. 
 	 * @param {array / vertex object} origin - Origin of the local coordinate system
@@ -154,14 +147,13 @@ var MOBIUS = ( function (mod){
 	 * @returns {frame object }  - A Frame Object
 	 * @memberof frm
 	 */
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
-	mod.frm.byYZAxes = function(origin, yAxis, zAxis){
+	byYZAxes = function(origin, yAxis, zAxis){
 
 		if(origin.getGeometry != undefined)
 			origin = origin.getGeometry();
 
-		if( mod.mtx.dot(zAxis, yAxis) != 0)
-			mod.msc.print("Axes are not perpendicular");
+		if( dot(zAxis, yAxis) != 0)
+			print("Axes are not perpendicular");
 
 		return new mObj_frame(origin, undefined, yAxis, zAxis);
 
@@ -173,15 +165,9 @@ var MOBIUS = ( function (mod){
 	//
 	//
 	/** @namespace */
-	mod.sld = {};
+	sld = {};
 
 	/**
-<<<<<<< HEAD
-	 * Returns a mobiusobject containing a solid (array of surfaces)
-	 * @param {mobius surface} surface - Mobius Surface Object to be extruded
-	 * @param {array} extrusion vector - Direction of extrusion in [x, y, z] format
-	 * @returns {mobiusobject}  - Solid
-=======
 	 * Creates a solid object by extruding a surface along x, y, z vectors of the given local coordinate system
 	 * @param { frame object } frame - Local coordinate system 
 	 * @param { surface object } surface - Surface to be extruded
@@ -190,49 +176,35 @@ var MOBIUS = ( function (mod){
 	 * @param { float } zDistance - Amount of extrusion in the direction of the z-Axis of the frame
 	 * @returns { solid object }  - Solid object 
 	 * @memberof sld
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	 */
-	mod.sld.byExtrusion = function(surface, frame, xDistance, yDistance, zDistance){
-		//checked
+	byExtrusion = function(surface, frame, xDistance, yDistance, zDistance){
+
 		var bottomSurface = surface;
-		bottomSurface.setGeometry( bottomSurface.getGeometry().transform( frame.toLocal() ) ); 
-		
-		var topSurface = MOBIUS.obj.copy( bottomSurface );
-		
-		topSurface = MOBIUS.trn.shift(topSurface, undefined, xDistance, yDistance, zDistance, false);
+		var topSurface = MOBIUS.shift(bottomSurface, frame, xDistance, yDistance, zDistance, true);
 
 		var solid = [ bottomSurface, topSurface ];
 		// join boundary points of the two surfaces
 		var edges_b = bottomSurface.getGeometry().boundaries(); 
-		var edges_t = bottomSurface.getGeometry().boundaries(); 
-		for(var e=0; e < edges_b.length; e++ ){
+		var edges_t = topSurface.getGeometry().boundaries(); 
+		for(var e=0; e &lt; edges_b.length; e++ ){
 			var edge_b = edges_b[e];
 			var edge_t  = edges_t[e];
-			var extrusionVector = verb.core.Mat.sub(MOBIUS.obj.getCentre(edge_t) - MOBIUS.obj.getCentre(edge_b));
-			var srf = new mObj_geom_Surface(  new verb.geom.ExtrudedSurface( edge_b, extrusionVector ) );
+			var extrusionVector = verb.core.Mat.sub([MOBIUS.getCentre(edge_t)], [MOBIUS.getCentre(edge_b)]); 
+			var srf = new mObj_geom_Surface(  new verb.geom.ExtrudedSurface( edge_b, extrusionVector[0] ) );
 			solid.push(srf);
 		}
 
-		for(var srf=0; srf<solid.length; srf++){
-			solid[srf].setGeometry( solid[srf].getGeometry().transform( frame.toGlobal() ) );
-		}		
-
-		return new mObj_geom_Solid( solid );
+		return MOBIUS.bySurfaces( solid );
 
 	};
 
-<<<<<<< HEAD
-=======
 	/**
 	 * Creates a single solid object from a list of surfaces 
-	 * @param { array } listOfSurfaces - List of surface objects which form the solid
+	 * @param { array } listOfSurfaces - Array of surfaces which form the solid object 
 	 * @returns { solid object }  - Solid object 
 	 * @memberof sld
 	 */
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
-	mod.sld.bySurfaces = function (listOfSurfaces){
-		//checked
-
+	bySurfaces = function (listOfSurfaces){
 		return new mObj_geom_Solid( listOfSurfaces );
 	};
 
@@ -242,21 +214,10 @@ var MOBIUS = ( function (mod){
 	//
 	//
 	/** @namespace */
-	mod.srf = {};
+	srf = {};
 
 	/**
-<<<<<<< HEAD
-	 * Returns a mobiusobject containing a NURBS Surface
-	 * @param {int} degreeU - DegreeU of the Surface
-	 * @param {int} degreeV - DegreeV of the Surface
-	 * @param {array} knotsU - Knots in U Direction
-	 * @param {array} knotsV - Knots in V Direction
-	 * @param {array} controlPoints - Array of points / vertices through which the curve passes ( [[x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4], ...] )
-	 * @param {array} weights - Weights
-	 * @returns {mobiusobject}  - NURBS Surface
-=======
 	 * Creates a Nurbs surface from user-specified data
-	 * @param {frame object} - Local coordinate system for the object
 	 * @param {int} degreeU - Degree of the surface in the u-Direction 
 	 * @param {int} degreeV - Degree of the surface in the v-Direction 
 	 * @param {array} knotsU - Knots in the u-Direction 
@@ -265,9 +226,8 @@ var MOBIUS = ( function (mod){
 	 * @param {array} weights - Weights ( optional parameter; maybe 'undefined' )
 	 * @returns { surface object }  - Surface object
 	 * @memberof srf
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	 */
-	mod.srf.nurbsByData = function ( degreeU,degreeV,knotsU,knotsV,controlPoints,weights ){
+	nurbsByData = function ( degreeU, degreeV, knotsU, knotsV, controlPoints, weights ){
 		
 		var controlPoints = controlPoints.map( function(p){ 
 								
@@ -276,24 +236,21 @@ var MOBIUS = ( function (mod){
 								else 
 									return p; } )
 
-		return new mObj_geom_Surface( new verb.geom.NurbsSurface.byKnotsControlPointsWeights( degreeU,degreeV,knotsU,knotsV,controlPoints,weights ) ) ;
+		var srf = new verb.geom.NurbsSurface.byKnotsControlPointsWeights( degreeU,degreeV,knotsU,knotsV,controlPoints, weights )
+
+		//transform( frame.toLocal() );
+
+		return new mObj_geom_Surface( srf ) ;
 	};
 
 
 	/**
-<<<<<<< HEAD
-	 * Returns a mobiusobject containing a NURBS Surface
-	 * @param {array} point - Corner points in [x,y,z] format / Vertex Objects
-	 * @returns {mobiusobject}  - NURBS Surface
-=======
 	 * Creates a Nurbs surface using the corner-points
-	 * @param {frame object} - Local coordinate system for the object
 	 * @param {array} cornerpoints - Array of points / vertex objects ( [ [x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4] ] )
 	 * @returns { surface object }  - Surface object
 	 * @memberof srf
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	 */
-	mod.srf.nurbsByCorners = function ( cornerpoints ){
+	nurbsByCorners = function ( cornerpoints ){
 
 		var point0 = cornerpoints[0];
 		var point1 = cornerpoints[1];
@@ -309,21 +266,13 @@ var MOBIUS = ( function (mod){
 		if( point3.getGeometry != undefined )
 			point3 = point3.getGeometry();
 
-		return new mObj_geom_Surface( new verb.geom.NurbsSurface.byCorners ( point0, point1, point2, point3 ) ) ;
+		var srf = new verb.geom.NurbsSurface.byCorners ( point0, point1, point2, point3 );
+		//transform( frame.toLocal() );
+
+		return new mObj_geom_Surface( srf ) ;
 	};
 
 	/**
-<<<<<<< HEAD
-	 * Returns a mobiusobject containing a NURBS Surface
-	 * @param {mobiusobject} mObjProfile - Array of mobiusobject with NURBS Curve Geometry
-	 * @param {array} direction - Direction of Sweep in [x,y,z] format	 
-	 * @returns {mobiusobject}  - NURBS Surface
-	 */
-	mod.srf.nurbsByExtrusion  = function(curve, direction){
-
-		var profile = curve.getGeometry();
-		return new mObj_geom_Surface(  new verb.geom.ExtrudedSurface( profile, direction ) ) ;
-=======
 	 * Creates a surface by extruding a curve along x, y, z vectors of the given local coordinate system
 	 * @param { frame object } frame - Local coordinate system 
 	 * @param { curve object } curve - Curve to be extruded
@@ -333,95 +282,72 @@ var MOBIUS = ( function (mod){
 	 * @returns { surface object }  - Surface object 
 	 * @memberof sld
 	 */
-	mod.srf.nurbsByExtrusion  = function(frame, curve, xDistance, yDistance, zDistance){
+	nurbsByExtrusion  = function(curve, frame, xDistance, yDistance, zDistance){
 
 		var profile = curve.getGeometry();
-		var ex_profile = MOBIUS.trn.shift( frame, curve, xDistance, yDistance, zDistance, true).getGeometry();
+		var ex_profile = MOBIUS.shift( curve, frame, xDistance, yDistance, zDistance, true).getGeometry();
 
 		var srf = new verb.geom.NurbsSurface.byLoftingCurves( [profile, ex_profile], 1 );
-		srf.transform( frame.toLocal() );
+		//transform( frame.toLocal() );
 
 		return new mObj_geom_Surface( srf ) ;
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 
 	};
 
 	/**
-<<<<<<< HEAD
-	 * Returns a mobiusobject containing a NURBS Surface
-	 * @param {array} listOfCurves - Array of mobiusobject with NURBS Curve Geometry
-	 * @param {int} degree - Degree of the Surface
-	 * @returns {mobiusobject}  - NURBS Surface
-=======
 	 * Creates a surface by lofting an array of curves 
 	 * @param {array} listOfCurves - Array of curve objects
 	 * @param {int} degree - Degree of the Surface ( optional parameter; defaults to 3)
 	 * @returns { surface object }  - Surface Object 
 	 * @memberof srf
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	 */
-	mod.srf.nurbsByLoft = function(listOfCurves, degree){
+	nurbsByLoft = function( listOfCurves, degree ){
 
 		var deg = degree || 3;
 		var curves = []; 
 		
-		for(var c=0; c<listOfCurves.length; c++)
+		for(var c=0; c&lt;listOfCurves.length; c++)
 			curves.push(listOfCurves[c].getGeometry()); 
 
-		return new mObj_geom_Surface( new verb.geom.NurbsSurface.byLoftingCurves( curves, deg ) ) ;
+		var srf = new verb.geom.NurbsSurface.byLoftingCurves( curves, deg );
+		//transform( frame.toLocal() );
+
+		return new mObj_geom_Surface( srf ) ;
 		
 	};
 
 	/**
-<<<<<<< HEAD
-	 * Returns a mobiusobject containing a NURBS Surface
-	 * @param {mobiusobject} mObj - mobiusobject with NURBS Curve Geometry
-	 * @param {array} centerPoint - CentrePoint in [x,y,z] format or Vertex Object
-	 * @param {array} axis - Axis of revolution in [x,y,z] format	 
-	 * @param {float} angle - Angle of revolution in radians
-	 * @returns {mobiusobject}  - NURBS Surface
-=======
 	 * Creates a surface by revolving a curve around the z-Axis of the specified local coordinate system 
 	 * @param { frame object } frame - Local coordinate system; Z-Axis of the frame determines the axis of revolution
 	 * @param { curve object } sectionCurve - Curve Object which has to be revolved about the z-Axis
 	 * @param { float } angle - Angle of revolution in Degrees 
 	 * @returns { surface object }  - Surface Object 
 	 * @memberof srf
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	 */
-	mod.srf.nurbsByRevolution = function(sectionCurve, frame, angle){
+	nurbsByRevolution = function(frame, sectionCurve, angle){
 
 		angle = 0.0174533*angle
 
-<<<<<<< HEAD
-=======
-		var profile = sectionCurve.getGeometry().transform( frame.toGlobal() );
+		var profile = sectionCurve.getGeometry();
 
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
+		profile = ( profile.transform( frame.toGlobal() ) ); 
+
 		var srf = new mObj_geom_Surface( new verb.geom.RevolvedSurface( profile, [0,0,0], [0,0,1], angle ) ) ;
 
-		srf = srf.transform( frame.toLocal() );
+		setGeometry( getGeometry().transform( frame.toLocal() ) );
 
 		return srf;
-
 			
 	};
 
 	/**
-<<<<<<< HEAD
-	 * Returns a mobiusobject containing a NURBS Surface
-	 * @param {mobiusobject} mObj - mobiusobject with NURBS Curve Geometry
-	 * @param {mobiusobject} mObj - mobiusobject with NURBS Curve Geometry
-	 * @returns {mobiusobject}  - NURBS Surface
-=======
 	 * Creates a surface by sweeping the section-curve along the rail-curve
 	 * @param { curve object } sectionCurve - Curve Object which determines the profile of the sweep
 	 * @param { curve object } railCurve - Curve Object which determines the path of the sweep
 	 * @returns { surface object }  - Surface Object 
 	 * @memberof srf
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	 */
-	mod.srf.nurbsBySweep = function( sectionCurve, railCurve ){
+	nurbsBySweep = function( sectionCurve, railCurve ){
 		
 		var profile = sectionCurve.getGeometry();
 		var rail = railCurve.getGeometry();
@@ -431,20 +357,13 @@ var MOBIUS = ( function (mod){
 	};
 
 	/**
-<<<<<<< HEAD
-	 * Returns a mobiusobject containing a NURBS Surface
-	 * @param {array} centrePoint - CentrePoint in [x,y,z] format or Vertex Object	 
-	 * @param {float} radius - Radius of the Sphere 	 
-	 * @returns {mobiusobject}  - NURBS Surface
-=======
 	 * Creates a spherical surface at the origin of the frame given 
 	 * @param { frame object } frame - Local Coordinate System; Orientation of the sphere is determined by the local axes of the frame
 	 * @param { float } radius - Radius of the sphere
 	 * @returns { surface object }  - Surface Object 
 	 * @memberof srf
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	 */
-	mod.srf.nurbsSphere = function(frame, radius){
+	nurbsSphere = function(frame, radius){
 					
 		var sphere = new verb.geom.SphericalSurface( [0,0,0], radius );
 		sphere = sphere.transform( frame.toLocal() );
@@ -454,27 +373,37 @@ var MOBIUS = ( function (mod){
 	};
 
 	/**
-	 * Returns a mobiusobject containing a NURBS Surface
-	 * @param {array} axis - Axis Direction of the cone in [x,y,z] format
-	 * @param {array} xaxis - Direction of x-axis of cone in [x,y,z] format
-	 * @param {float} base - Radius of cone base
-	 * @param {float} height - Height of the cone
-	 * @param {float} radius - Radius of cone
+	 * Creates a cylinderical or conical surface at the origin of the frame given 
+	 * @param { frame object } frame  - Local Coordinate System; Orientation of the cone is determined by the local axes of the frame
+	 * @param { float } height - Height of the cone
+	 * @param { float } radius1 - Radius of the base of the cone 
+	 * @param { float } radius2 - Radius of the top of the cone; Setting this value to 0 would result in a cone; Setting this to be equal to radius1 would result in a cylinder
 	 * @returns {mobiusobject}  - NURBS Surface
 	 * @memberof srf
 	 */
-	mod.srf.nurbsCone = function(frame, height, radius1, radius2){
+	nurbsCone = function(frame, height, radius1, radius2){
 
-		var profile = MOBIUS.crv.line([radius1, 0, 0], [radius2, height, 0]);
+		if(radius1 == 0)
+			radius1 = 0.0001
+		if(radius2 == 0)
+			radius2 = 0.0001
 
-		var surface = MOBIUS.srf.nurbsByRevolution( profile, frame, 2*Math.PI);
+		// frame
+		frameOr = MOBIUS.byXYAxes( [0,0,0], [1,0,0], [0,1,0] )
+
+		var baseProfile = MOBIUS.circle( frameOr, radius1 )
+		var topProfile = MOBIUS.circle(frameOr, radius2)
+
+		topProfile = MOBIUS.shift( topProfile, frameOr, 0, 0, height, true );
+
+		var surface = MOBIUS.nurbsByLoft( [ baseProfile, topProfile ], 1 ) 
+
+		surface.setGeometry( surface.getGeometry().transform( frame.toLocal() ));
 
 		return surface;
 
 	};
 
-<<<<<<< HEAD
-=======
 	/************* unchecked portion ***********/
 	/**
 	 * Creates a circular pipe along a given path 
@@ -483,27 +412,26 @@ var MOBIUS = ( function (mod){
 	 * @returns {mobiusobject}  - NURBS Surface
 	 * @memberof srf
 	 */
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
-	mod.srf.nurbsPipe = function(centreCurve, radius){
+	nurbsPipe = function(centreCurve, radius){
 
 		var origin = centreCurve.getGeometry().point(0);
 		var zaxis = centreCurve.getGeometry().tangent(0);
 
 		// compute some random vector perpendicular to the z-vector
-		zaxis = verb.core.Vec.normalized( zaxis );
-		var xaxis = [1,1, ((-zaxis[0]-zaxis[1])/zaxis[2])]; 
+		var sectionCurves  = [];
+		for( var i=0; i&lt;5; i++){
+			zaxis = verb.core.Vec.normalized( zaxis );
+			var xaxis = [1,1, ((-zaxis[0]-zaxis[1])/zaxis[2])]; 
 
-		var frame = new mObj_frame( origin, xaxis, undefined, zaxis );
-		var sectionCurve = MOBIUS.crv.circle( frame, radius );
+			var frame = new mObj_frame( origin, xaxis, undefined, zaxis );
+			var sectionCurve = MOBIUS.circle( frame, radius );
+		}
 
-		return MOBIUS.srf.nurbsBySweep( sectionCurve, centreCurve);
+
+		return MOBIUS.nurbsBySweep( sectionCurve, centreCurve);
 
 	};
 
-<<<<<<< HEAD
-	// method?
-	mod.srf.uvGridByNumber = function(surface, uSegments, vSegments, method){
-=======
 	/**
 	 * Divides the surface into a grid, based number of divisions in the u and v directions and  
 	 * returns the uv-Parameters for the corresponding grid points
@@ -513,15 +441,14 @@ var MOBIUS = ( function (mod){
 	 * @returns {2D array}  - List of UV positions [ [ u1, v1 ], [ u2, v2 ], [ u3, v3 ] ...]; Length of list is equal to uSegments*vSegments
 	 * @memberof srf	 
 	 */
-	mod.srf.uvGridByNumber = function(surface, uSegments, vSegments){
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
+	uvGridByNumber = function(surface, uSegments, vSegments){
 		
 		var uvList = [];
 
 		var uincr = 1/(uSegments); 
 		var vincr = 1/(vSegments); 
-		for(var u=0; u<= uSegments; u++){
-			for(var v=0; v<= vSegments; v++){
+		for(var u=0; u&lt;= uSegments; u++){
+			for(var v=0; v&lt;= vSegments; v++){
 				uvList.push([u*uincr, v*vincr]);
 			}
 		}
@@ -533,44 +460,35 @@ var MOBIUS = ( function (mod){
 
 	};
 
-	mod.srf.uvGridByDistance = function(surface, uDistance, vDistance, method){
 
-	};
+/*	uvGridByDistance = function(surface, uDistance, vDistance){
+
+	};*/
 
 	/**
-<<<<<<< HEAD
-	 * Returns a point or list of points on the surface at the given parameter values
-	 * @param {mobiusobject} surface - mobiusobject with NURBS Surface
-	 * @param {int} u - Parameter in u-direction
-	 * @param {int} v - Parameter in v-direction
-	 * @returns {array} point [x,y,z]
-=======
 	 * Returns the actual points on the surface, given a corresponding list of uv-parameters or a single [u, v] point
 	 * @param { surface object } surface  - Surface Object for which the uv-Parameters are required
 	 * @param { 2D array / array } uvList  - List of UV positions [ [ u1, v1 ], [ u2, v2 ], [ u3, v3 ] ...] or single [u, v]
 	 * @returns {array}  - List of vertex objects
 	 * @memberof srf
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	 */
-	mod.srf.getPoints = function(surface, uvList){
+	getPoints = function(surface, uvList){
 		
 		var srf = surface.getGeometry();		
 
 		if(uvList.constructor.name == "Array"){
 
 			var points = uvList.map( function(p){
-				return new mobj_geom_Vertex( srf.point( p[0], p[1] ) );
+				return new mobj_geom_Vertex( point( p[0], p[1] ) );
 			})
 			
 			return points;
 		}
 		else
-			return new mobj_geom_Vertex( srf.point( u, v ) );
+			return new mobj_geom_Vertex( point( u, v ) );
 
 	};
 
-<<<<<<< HEAD
-=======
 	/**
 	 * Creates a collection of frames, centred at the the points specified by the uv-List, with the x and y Axes of the frame aligned along
 	 * the surface 
@@ -579,15 +497,14 @@ var MOBIUS = ( function (mod){
 	 * @returns {array}  - List of Frame Objects
 	 * @memberof srf
 	 */
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
-	mod.srf.getFrames = function( surface, uvList ){
+	getFrames = function( surface, uvList ){
 
 		var frames = [];
 
 		if(uvList.constructor.name != "Array")
 			uvList = [uvList];
 
-		for(var i=0; i<uvList.length; i++){
+		for(var i=0; i&lt;uvList.length; i++){
 			var origin = surface.getGeometry().point( uvList[i][0], uvList[i][1] );
 			var xaxis = verb.core.Vec.sub( origin, surface.getGeometry().point( uvList[i][0] + 0.1, uvList[i][1] ) );
 			var yaxis = verb.core.Vec.sub( origin, surface.getGeometry().point( uvList[i][0] , uvList[i][1] + 0.1 ) )
@@ -602,8 +519,6 @@ var MOBIUS = ( function (mod){
 
 	};
 
-<<<<<<< HEAD
-=======
 	/**
 	 * Returns a list of unit vectors normal to the surface the points on specified by the uv-List
 	 * @param { surface object } surface  - Surface Object 
@@ -611,15 +526,14 @@ var MOBIUS = ( function (mod){
 	 * @returns {array}  - List of Normal Unit Vectors 
 	 * @memberof srf
 	 */
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
-	mod.srf.getNormals = function( surface, uvList ){
+	getNormals = function( surface, uvList ){
 
 		if(uvList.constructor.name != "Array")
 			uvList = [uvList];
 
 		var normals = [];
-		for(var i=0; i<uvList.length; i++)
-			normals.push( surface.normal(uvList[i][0], uvList[i][1]));
+		for(var i=0; i&lt;uvList.length; i++)
+			normals.push( verb.core.Vec.normalized( surface.normal(uvList[i][0], uvList[i][1])) );
 
 		if(normals.length == 1)
 			normals = normals[0]
@@ -628,8 +542,6 @@ var MOBIUS = ( function (mod){
 
 	};
 
-<<<<<<< HEAD
-=======
 	/**
 	 * Returns a list of unit vectors tangent to the surface at the points specified by the uv-List
 	 * @param { surface object } surface  - Surface Object 
@@ -637,14 +549,13 @@ var MOBIUS = ( function (mod){
 	 * @returns {2D array}  - List of Tangent Unit Vectors along two directions  (or single tangent unit vector)
 	 * @memberof srf
 	 */
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
-	mod.srf.getTangents = function( surface, uvList ){
+	getTangents = function( surface, uvList ){
 
 		if(uvList.constructor.name != "Array")
 			uvList = [uvList];
 
 		var tangents = [];
-		for(var i=0; i<uvList.length; i++){
+		for(var i=0; i&lt;uvList.length; i++){
 			var xaxis = verb.core.Vec.normalized( verb.core.Vec.sub( origin, surface.getGeometry().point( uvList[i][0] + 0.1, uvList[i][1] ) ));
 			var yaxis = verb.core.Vec.normalized( verb.core.Vec.sub( origin, surface.getGeometry().point( uvList[i][0], uvList[i][1] + 0.1 ) ));
 			tangents.push( [xaxis, yaxis])
@@ -656,18 +567,6 @@ var MOBIUS = ( function (mod){
 		return tangents;
 	}; 
  
-<<<<<<< HEAD
-	mod.srf.getIsoCurves = function( surface, uvList ){
-
-	};
-
-	/**
-	 * Subdivides a surface into smaller surfaces
-	 * @param {mobiusobject} surface - mobiusobject with NURBS Surface
-	 * @param {int} ugrid - Divisions in u-direction
-	 * @param {int} vgrid - Divisions in v-direction
-	 * @returns {array} Array of mobiusobjects with NURBS Surfaces
-=======
  	/**
 	 * Returns a list or a single iso-curve object along u or v-Direction 
 	 * @param { surface object } surface  - Surface Object 
@@ -676,7 +575,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {2D array}  - List of Tangent Unit Vectors along two directions 
 	 * @memberof srf
 	 */
-	mod.srf.getIsoCurves = function( surface, uOrvList, useV ){
+	getIsoCurves = function( surface, uOrvList, useV ){
 
 		if(surface.getGeometry != undefined)
 			surface = surface.getGeometry();
@@ -685,7 +584,7 @@ var MOBIUS = ( function (mod){
 			uvList = [uvList];
 
 		var isoCurves = [];
-		for(var t=0; t<uOrvList.length; t++){
+		for(var t=0; t&lt;uOrvList.length; t++){
 			var crv = new mObj_geom_Curve( surface.isocurve( uOrvList[t], useV ) );
 			isoCurves.push(crv);
 		}
@@ -699,12 +598,11 @@ var MOBIUS = ( function (mod){
 	/**
 	 * Subdivides a surface into a grid of smaller surfaces - a mesh solid
 	 * @param {surface object} surface - Surface Object 
-	 * @param {int} uvGrid - UV positions with u & v dimensions [ [ u1, v1 ], ... [ un, vn ], uDimension, vDimension ]
+	 * @param {int} uvGrid - UV positions with u &amp; v dimensions [ [ u1, v1 ], ... [ un, vn ], uDimension, vDimension ]
 	 * @returns {solid object} Solid object  
 	 * @memberof srf
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	 */
-	mod.srf.divide = function(surface, uvGrid){
+	divide = function(surface, uvGrid){
 		
 		var srf = surface.getGeometry(); 
 		
@@ -714,15 +612,15 @@ var MOBIUS = ( function (mod){
 		var ugrid = uvGrid.pop();
 
 		//uvGrid should be an ordered set of points - u direction first
-		for(var uv=0; uv < uvGrid.length - vgrid - 2; uv++){
+		for(var uv=0; uv &lt; uvGrid.length - vgrid - 2; uv++){
 			
-			if( (uv+1)%(vgrid+1) == 0 && uv!=0)
+			if( (uv+1)%(vgrid+1) == 0 &amp;&amp; uv!=0)
 				continue;
 
-			var point1 = srf.point( uvGrid[uv][0], uvGrid[uv][1] )
-			var point2 = srf.point( uvGrid[uv+1][0], uvGrid[uv+1][1] )
-			var point3 = srf.point( uvGrid[uv+vgrid+2][0], uvGrid[uv+vgrid+2][1] )
-			var point4 = srf.point( uvGrid[uv+vgrid+1][0], uvGrid[uv+vgrid+1][1] )
+			var point1 = point( uvGrid[uv][0], uvGrid[uv][1] )
+			var point2 = point( uvGrid[uv+1][0], uvGrid[uv+1][1] )
+			var point3 = point( uvGrid[uv+vgrid+2][0], uvGrid[uv+vgrid+2][1] )
+			var point4 = point( uvGrid[uv+vgrid+1][0], uvGrid[uv+vgrid+1][1] )
 
 			var sub_srf =  new mObj_geom_Surface( 
 								new verb.geom.NurbsSurface.byCorners( point1, point2, point3, point4 ));
@@ -733,9 +631,9 @@ var MOBIUS = ( function (mod){
 
 	};
 
-	mod.srf.carve = function(surface, uv1, uv2, hole){
+/*	carve = function(surface, uv1, uv2, hole){
 
-	};
+	};*/
 
 
 	//
@@ -744,17 +642,9 @@ var MOBIUS = ( function (mod){
 	//
 	//
 	/** @namespace */
-	mod.crv = {};
+	crv = {};
 
 	/**
-<<<<<<< HEAD
-	 * Returns a mobiusobject containing a NURBS Curve
-	 * @param {int} degree - Degree of the Curve
-	 * @param {array} knots - Knots
-	 * @param {array} controlPoints - Array of points / vertices through which the curve passes ( [[x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4], ...] )
-	 * @param {array} weights - Weights
-	 * @returns {mobiusobject}  - NURBS Curve
-=======
 	 * Creates a Nurbs curve from user-specified data
 	 * @param {frame object} - Local Coordinate System 
 	 * @param {int} degree - Degree of the curve
@@ -763,9 +653,8 @@ var MOBIUS = ( function (mod){
 	 * @param {array} weights - Weights ( optional parameter; maybe 'undefined' )
 	 * @returns { curve object }  - Curve object
 	 * @memberof crv
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	 */
-	mod.crv.nurbsByData = function( frame, degree, knots, controlPoints, weights ){
+	nurbsByData = function( frame, degree, knots, controlPoints, weights ){
 
 		controlPoints = controlPoints.map( function(p){ 
 								
@@ -775,7 +664,7 @@ var MOBIUS = ( function (mod){
 									return p; } )
 
 		var crv = new verb.geom.NurbsCurve.byKnotsControlPointsWeights( degree, knots, controlPoints, weights )
-		crv = crv.transform( frame.toLocal() );
+		crv = transform( frame.toLocal() );
 
 		return new mObj_geom_Curve( crv ) ;
 
@@ -783,21 +672,14 @@ var MOBIUS = ( function (mod){
 
 
 	/**
-<<<<<<< HEAD
-	 * Returns a mobiusobject containing a NURBS Curve
-	 * @param {array} points - Array of points / vertices through which the curve passes ( [[x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4], ...] )
-	 * @param {int} degree - Degree of the Curve
-	 * @returns {mobiusobject}  - NURBS Curve
-=======
 	 * Creates a Nurbs curve passsing through a list of points 
 	 * @param {frame object} - Local Coordinate System 
 	 * @param {array} points - Array of points / vertices through which the curve passes ( [[x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4], ...] )
 	 * @param {int} degree - Degree of the Curve
 	 * @returns {curve object}  - NURBS Curve
 	 * @memberof crv
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	 */
-	mod.crv.nurbsByPoints = function( frame, points, degree ){
+	nurbsByPoints = function( frame, points, degree ){
 
 		points = points.map( function(p){ 
 								
@@ -807,27 +689,20 @@ var MOBIUS = ( function (mod){
 									return p; } )
 
 		var crv = new verb.geom.NurbsCurve.byPoints( points, degree )
-		crv = crv.transform( frame.toLocal() );
+		crv = transform( frame.toLocal() );
 
 		return new mObj_geom_Curve( crv ) ;
 	};
 
 	/**
-<<<<<<< HEAD
-	 * Returns a mobiusobject containing a NURBS Curve
-	 * @param {array} points - Array of Control Points for the Bezier Curve ( [[x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4], ...] or Vertices )
-	 * @param {array} weights - Weights
-	 * @returns {mobiusobject}  - NURBS Curve
-=======
 	 * Creates a Bezier Nurbs curve passsing through a list of points 
 	 * @param {frame object} - Local Coordinate System 
 	 * @param {array} points - Array of points / vertices through which the curve passes ( [[x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4], ...] )
 	 * @param {int} degree - Degree of the Curve
 	 * @returns {curve object}  - NURBS Curve
 	 * @memberof crv
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	 */
-	mod.crv.bezierByPoints = function(frame, points, weights) {
+	bezierByPoints = function(frame, points, weights) {
 
 		points = points.map( function(p){ 
 								
@@ -837,23 +712,13 @@ var MOBIUS = ( function (mod){
 									return p; } );
 
 		var crv =  new verb.geom.BezierCurve( points, weights ) ;
-		crv = crv.transform( frame.toLocal() );
+		crv = transform( frame.toLocal() );
 
 		return new mObj_geom_Curve( crv );
 	};
 
 
 	/**
-<<<<<<< HEAD
-	 * Returns a mobiusobject containing a NURBS Curve
-	 * @param {array} centerPoint - Centre point of the Arc in [x,y,z] format or Vertex Object
-	 * @param {array} xaxis - Direction of X-Axis of the Arc in [x,y,z] format 
-	 * @param {array} yaxis - Direction of Y-Axis of the Arc in [x,y,z] format 
-	 * @param {array} radius - Radius of the Arc
-	 * @param {float} minAngle - Minimum Angle in Radians
-	 * @param {float} maxAngle - Maximum Angle in Radians
-	 * @returns {mobiusobject}  - NURBS Curve
-=======
 	 * Creates an arc centred at the origin of the frame; The arc is created in the xy-plane of the local coordinate system
 	 * @param {frame object} frame - Local coordinate system
 	 * @param {float} radius - Radius of the arc
@@ -861,9 +726,8 @@ var MOBIUS = ( function (mod){
 	 * @param {float} maxAngle - Ending angle in degrees
 	 * @returns {curve object}  - NURBS Curve
 	 * @memberof crv
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	 */
-	mod.crv.arc = function(frame, radius, minAngle, maxAngle){
+	arc = function(frame, radius, minAngle, maxAngle){
 
 		minAngle = 0.0174533*minAngle;
 		maxAngle = 0.0174533*maxAngle;
@@ -875,31 +739,22 @@ var MOBIUS = ( function (mod){
 
 	};
 
-	mod.crv.arcByPointsSOE = function(startPoint, onArcPoint, endPoint){
+/*	arcByPointsSOE = function(startPoint, onArcPoint, endPoint){
 
 	};
 
-	mod.crv.arcByPointsCSE = function(centrePoint, startPoint, endPoint){
+	arcByPointsCSE = function(centrePoint, startPoint, endPoint){
 
-	};
+	};*/
 
 	/**
-<<<<<<< HEAD
-	 * Returns a mobiusobject containing a NURBS Curve
-	 * @param {array} centerPoint - Centre point of the Circle in [x,y,z] format or Vertex Object
-	 * @param {array} xaxis - Direction of X-Axis of the Circle in [x,y,z] format 
-	 * @param {array} yaxis - Direction of Y-Axis of the Circle in [x,y,z] format 
-	 * @param {array} radius - Radius of the Arc
-	 * @returns {mobiusobject}  - NURBS Curve
-=======
 	 * Creates an circle centred at the origin of the frame; The circle is created in the xy-plane of the local coordinate system
 	 * @param {frame object} frame - Local coordinate system
 	 * @param {float} radius - Radius of the arc
 	 * @returns {curve object}  - NURBS Curve
 	 * @memberof crv
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	 */
-	mod.crv.circle = function(frame, radius){
+	circle = function(frame, radius){
 
 		var circle =  new verb.geom.Circle( [0,0,0], [1,0,0], [0,1,0], radius ) 
 		circle = circle.transform( frame.toLocal() );
@@ -908,22 +763,14 @@ var MOBIUS = ( function (mod){
 	};
 
 	/**
-<<<<<<< HEAD
-	 * Returns a mobiusobject containing a NURBS Curve
-	 * @param {array} centerPoint - Centre point of the Ellipse in [x,y,z] formats or Vertex Object
-	 * @param {array} xaxis - Direction of X-Axis of the Ellipse in [x,y,z] format; Length of this vector determines length of x-Axis of ellipse;
-	 * @param {array} yaxis - Direction of Y-Axis of the Ellipse in [x,y,z] format; Length of this vector determines length of y-Axis of ellipse;
-	 * @returns {mobiusobject}  - NURBS Curve
-=======
 	 * Creates an ellipse centred at the origin of the frame; The ellipse is created in the xy-plane of the local coordinate system
 	 * @param {frame object} frame - Local coordinate system
 	 * @param {float} xRadius - Radius of the ellipse
 	 * @param {float} yRadius - Radius of the ellipse
 	 * @returns {curve object}  - NURBS Curve
 	 * @memberof crv
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	 */
-	mod.crv.ellipse = function(frame, xRadius, yRadius) {
+	ellipse = function(frame, xRadius, yRadius) {
 
 		var ellipse = new verb.geom.Ellipse( [0,0,0], [1,0,0], [0,1,0], radius );
 		ellipse = ellipse.transform( frame.toLocal() )
@@ -933,15 +780,6 @@ var MOBIUS = ( function (mod){
 	};
 
 	/**
-<<<<<<< HEAD
-	 * Returns a mobiusobject containing a NURBS Curve
-	 * @param {array} centerPoint - Centre point of the EllipseArc in [x,y,z] formats or Vertex Object
-	 * @param {array} xaxis - Direction of X-Axis of the EllipseArc in [x,y,z] format; Length of this vector determines length of x-Axis of ellipse;
-	 * @param {array} yaxis - Direction of Y-Axis of the EllipseArc in [x,y,z] format; Length of this vector determines length of y-Axis of ellipse;
-	 * @param {float} minAngle - Minimum Angle in Radians
-	 * @param {float} maxAngle - Maximum Angle in Radians
-	 * @returns {mobiusobject}  - NURBS Curve
-=======
 	 * Creates an ellipse arc centred at the origin of the frame; The ellipse arc is created in the xy-plane of the local coordinate system
 	 * @param {frame object} frame - Local coordinate system
 	 * @param {float} xRadius - Radius of the ellipse arc
@@ -950,9 +788,8 @@ var MOBIUS = ( function (mod){
 	 * @param {float} maxAngle - Ending angle in degrees
 	 * @returns {curve object}  - NURBS Curve
 	 * @memberof crv
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	 */
-	mod.crv.ellipseArc = function(frame, xRadius, yRadius, minAngle, maxAngle){
+	ellipseArc = function(frame, xRadius, yRadius, minAngle, maxAngle){
 
 		minAngle = 0.0174533*minAngle;
 		maxAngle = 0.0174533*maxAngle;
@@ -965,21 +802,14 @@ var MOBIUS = ( function (mod){
 
 
 	/**
-<<<<<<< HEAD
-	 * Returns a Mobius Curve object
-	 * @param {array} startPoint - Starting point of the line in [x,y,z] format or Vertex Object
-	 * @param {array} endPoint - Ending point of the line in [x,y,z] format	or Vertex Object
-	 * @returns {MobiusObject}  - NURBS Curve
-=======
 	 * Creates a line
 	 * @param {frame object} frame - Local coordinate system
 	 * @param {point / vertex} startPoint - Starting point
 	 * @param {point / vertex} endPoint - Ending point
 	 * @returns {curve object}  - NURBS Line Curve
 	 * @memberof crv
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	 */
-	mod.crv.line = function(frame, startPoint, endPoint){
+	line = function(frame, startPoint, endPoint){
 
 		if( startPoint.getGeometry != undefined )
 			startPoint = startPoint.getGeometry();
@@ -987,16 +817,12 @@ var MOBIUS = ( function (mod){
 			endPoint = endPoint.getGeometry();
 
 		var crv = new verb.geom.Line(startPoint, endPoint);
-		crv = crv.transform( frame.toLocal() );
+		crv = transform( frame.toLocal() );
 	
 		return new mObj_geom_Curve( crv );
 
 	};
 
-<<<<<<< HEAD
-	// what's method?
-	mod.crv.tListByNumber = function(curve, numPoints, method){
-=======
 	/**
 	 * Divides a curve into multiple segments and gives the corresponding t-parameter on the curve
 	 * @param {curve object} curve - Curve Object to be divided
@@ -1004,12 +830,11 @@ var MOBIUS = ( function (mod){
 	 * @returns {array}  - List of t-parameters at the division points
 	 * @memberof crv
 	 */
-	mod.crv.divideByNumber = function(curve, numPoints){
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
+	divideByNumber = function(curve, numPoints){
 
 		var tList = [];
 		var incr = 1/(numPoints-1)
-		for(var t=0; t<numPoints; t++){
+		for(var t=0; t&lt;numPoints; t++){
 			tList.push((t*incr).toFixed(1));
 		}
 
@@ -1017,9 +842,6 @@ var MOBIUS = ( function (mod){
 
 	};
 
-<<<<<<< HEAD
-	mod.crv.tListByDistance = function(curve, distance, method){
-=======
 	/**
 	 * Divides a curve into multiple segments and equal distances along the curve and returns the corresponding t-parameter on the curve
 	 * @param {curve object} curve - Curve Object to be divided
@@ -1027,13 +849,12 @@ var MOBIUS = ( function (mod){
 	 * @returns {array}  - List of t-parameters at the division points
 	 * @memberof crv
 	 */
-	mod.crv.divideByDistance = function(curve, distance){
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
+	divideByDistance = function(curve, distance){
 
 		var curve = curve.getGeometry();
 
 		var tList = [];
-	 	for(var len=0; len <= curve.length; len=len+distance){
+	 	for(var len=0; len &lt;= curve.length; len=len+distance){
 	 		tList.push(curve.paramAtLength( len ));
 	 	}
 
@@ -1041,8 +862,6 @@ var MOBIUS = ( function (mod){
 
 	};
 
-<<<<<<< HEAD
-=======
 	/**
 	 * Returns a list of points on the curve, corresponding the list of t-parameters specified
 	 * @param {curve object} curve - Curve Object 
@@ -1050,8 +869,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {array}  - List of vertex objects on the curve 
 	 * @memberof crv
 	 */
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
-	mod.crv.getPoints = function(curve, tList){
+	getPoints = function(curve, tList){
 		
 		var curve = curve.getGeometry();		
 
@@ -1068,8 +886,6 @@ var MOBIUS = ( function (mod){
 	
 	};
 
-<<<<<<< HEAD
-=======
 	/**
 	 * Returns a list of frames, centred at t-points on the curve, with the x-Axis along the tangent to the curve at that
 	 * point and z-Axis along the upVector
@@ -1079,8 +895,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {array}  - List of frames
 	 * @memberof crv
 	 */
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
-	mod.crv.getFrames = function(curve, tList, upVector){
+	getFrames = function(curve, tList, upVector){
 
 		var curve = curve.getGeometry();
 
@@ -1089,7 +904,8 @@ var MOBIUS = ( function (mod){
 
 
 		var frames = tList.map( function(t){
-			return new mObj_frame( curve.point(t), undefined, upVector, verb.core.Vec.normalized( curve.tangent(t) ) );
+
+			return new mObj_frame( curve.point(t), undefined, upVector);
 		})
 
 		if(frames.length == 1)
@@ -1106,7 +922,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {array}  - List or single unit tangent vector 
 	 * @memberof crv
 	 */
-	mod.crv.getTangents = function(curve, tList){
+	getTangents = function(curve, tList){
 	
 		var curve = curve.getGeometry();		
 
@@ -1123,13 +939,10 @@ var MOBIUS = ( function (mod){
 
 	};
 
-	mod.crv.carve = function(curve, t1, t2, hole){
+/*	carve = function(curve, t1, t2, hole){
 
-	}; 
+	}; */
 
-<<<<<<< HEAD
-	mod.crv.divide = function(curve, tList){
-=======
 	/**
 	 * Returns a list of curve objects obtained by dividing a single curve at points corresponding to a list of t-values
 	 * @param {curve object} curve - Curve Object 
@@ -1137,8 +950,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {array}  - List of curve objects
 	 * @memberof crv
 	 */
-	mod.crv.divideByTList = function(curve, tList){
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
+	divideByTList = function(curve, tList){
 
 		var curve = curve.getGeometry();
 
@@ -1148,11 +960,11 @@ var MOBIUS = ( function (mod){
 
 		var result = [];
 		var crv = curve;
-		for(var t=0; t<tList.length; t++){
+		for(var t=0; t&lt;tList.length; t++){
 
 			var tPoint = curve.point(t);
 
-			var crvs = crv.split( crv.param(tPoint) );
+			var crvs = split( param(tPoint) );
 			
 			result.push(crvs[0]);
 			crv = crvs[1];
@@ -1169,16 +981,16 @@ var MOBIUS = ( function (mod){
 	 * @returns {curve object}  - Curve Object
 	 * @memberof crv
 	 */
-	mod.crv.convertToPolyline = function(curve, tList){
+	convertToPolyline = function(curve, tList){
 
 		var curve = curve.getGeometry(); 
 
 		var plinePoints = []
-		for(var p=0; p<tList.length; p++){
+		for(var p=0; p&lt;tList.length; p++){
 			plinePoints.push(curve.point(tList[p]));
 		}
 
-		return MOBIUS.crv.nurbsByPoints( plinePoints, 1, undefined);
+		return MOBIUS.nurbsByPoints( plinePoints, 1, undefined);
 
 	};
 
@@ -1188,7 +1000,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {float}  - Length of the curve
 	 * @memberof crv
 	 */
-	mod.crv.length = function( curve ){
+	length = function( curve ){
 		return curve.getGeometry().length();
 	};
 
@@ -1198,10 +1010,8 @@ var MOBIUS = ( function (mod){
 	//
 	//
 	/** @namespace */
-	mod.pnt = {};
+	pnt = {};
 
-<<<<<<< HEAD
-=======
 	/**
 	 * Creates a vertex object with the given point geometry
 	 * @param {frame object} frame - Local Coordinate System
@@ -1211,24 +1021,18 @@ var MOBIUS = ( function (mod){
 	 * @return {vertex object} Vertex object
 	 * @memberof pnt
 	 */
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
-	mod.pnt.byCoords = function(x, y, z){
+	byCoords = function(x, y, z){
 		return new mObj_geom_Vertex([x, y, z]);
 	}
 
 	/**
 	 * Returns the mid-point between two points
-<<<<<<< HEAD
-	 * @param {point / vertex} point - [x, y , z] or Vertex
-	 * @returns {float} Distance 
-=======
 	 * @param {point / vertex object} point1 - [x, y , z] or Vertex
 	 * @param {point / vertex object} point2 - [x, y , z] or Vertex
 	 * @returns {point} Mid Point of line between the two given points 
 	 * @memberof pnt
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	 */
-	mod.pnt.midPoint = function(point1, point2){
+	midPoint = function(point1, point2){
 
 		if( point1.getGeometry != undefined )
 			point1 = point1.getGeometry();
@@ -1241,11 +1045,12 @@ var MOBIUS = ( function (mod){
 
 	/**
 	 * Returns the distance between two points or vertices
-	 * @param {point / vertex} point - [x, y, z] or vertex object
+	 * @param {point / vertex object} point1 - [x, y , z] or Vertex
+	 * @param {point / vertex object} point2 - [x, y , z] or Vertex
 	 * @returns {float} Distance 
 	 * @memberof pnt
 	 */
-	mod.pnt.distance = function(point1, point2){
+	distance = function(point1, point2){
 
 		if( point1.getGeometry != undefined )
 			point1 = point1.getGeometry();
@@ -1268,7 +1073,7 @@ var MOBIUS = ( function (mod){
 	//
 	//
 	/** @namespace */
-	mod.vec= {};
+	vec= {};
 
 	/**
 	 * Returns a vector with magnitude x, y, z along the x, y, z axes
@@ -1278,7 +1083,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {array} Vector 
 	 * @memberof vec
 	 */
-	mod.vec.byCoords = function(x, y, z){
+	byCoords = function(x, y, z){
 		return [x, y, z];
 	};
 
@@ -1289,12 +1094,10 @@ var MOBIUS = ( function (mod){
 	 * @returns {float} radians
 	 * @memberof vec
 	 */
-	mod.vec.angle = function(vector1, vector2){
-		var dotP = MOBIUS.mtx.dot( vector1,  vector2 );
-		var cos_t = dotP / (MOBIUS.vec.length( vector1 ) * MOBIUS.vec.length( vector2 ) );
+	angle = function(vector1, vector2){
+		var dotP = MOBIUS.dot( vector1,  vector2 );
+		var cos_t = dotP / (MOBIUS.length( vector1 ) * MOBIUS.length( vector2 ) );
 		return Math.cosh(cos_t);
-<<<<<<< HEAD
-=======
 	};	
 
 	/**
@@ -1304,7 +1107,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {array} vector
 	 * @memberof vec
 	 */
-	mod.vec.add = function( vector1, vector2){
+	add = function( vector1, vector2){
 		return verb.core.Vec.add( vector1, vector2 );
 	};
 
@@ -1315,9 +1118,8 @@ var MOBIUS = ( function (mod){
 	 * @returns {array} vector
 	 * @memberof vec
 	 */
-	mod.vec.subtract = function( vector1, vector2 ){
+	subtract = function( vector1, vector2 ){
 		return verb.core.Vec.sub( vector1, vector2 )
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	};
 
 	/**
@@ -1326,23 +1128,18 @@ var MOBIUS = ( function (mod){
 	 * @returns {float} length
 	 * @memberof vec
 	 */
-	mod.vec.length = function(vector){
+	length = function(vector){
 		return Math.sqrt( vector[0]*vector[0] + vector[1]*vector[1] + vector[2]*vector[2] );
 	};
 
 	/**
-	 * Makes a copy of the vector and sets the length
-	 * @param {float / int } factor - Value to be multiplied
+	 * Resets the length of the given vector
 	 * @param {array} vector  - Vector in [x, y, z] format 
-<<<<<<< HEAD
-	 * @returns {array} 
-=======
 	 * @param {float} length - New length of the vector
 	 * @returns {array} Vector 
 	 * @memberof vec
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	 */
-	mod.vec.resize = function(vector, length){
+	resize = function(vector, length){
 
 		var unitV = verb.core.Vec.normalized( vector );
 		return [ length*unitV[0], length*unitV[1], length*unitV[2] ] ;
@@ -1350,18 +1147,13 @@ var MOBIUS = ( function (mod){
 
 
 	/**
-	 * Makes a copy of the vector and sets the length
-	 * @param {float / int } factor - Value to be multiplied
+	 * Scales the given vector
 	 * @param {array} vector  - Vector in [x, y, z] format 
-<<<<<<< HEAD
-	 * @returns {array} 
-=======
 	 * @param {float} factor - Scaling factor of the vector
 	 * @returns {array} Vector 
 	 * @memberof vec
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	 */
-	mod.vec.scale = function(vector, factor){
+	scale = function(vector, factor){
 
 		return [ factor*vector[0], factor*vector[1], factor*vector[2] ] ;
 	}
@@ -1373,7 +1165,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {array} Unit Vector
 	 * @memberof vec
 	 */
-	mod.vec.normalize = function(vector){
+	normalize = function(vector){
 		return verb.core.Vec.normalized( vector );
 	}
 
@@ -1384,7 +1176,7 @@ var MOBIUS = ( function (mod){
 	//
 	//
 	/** @namespace */
-	mod.obj = {};
+	obj = {};
 
 	/**
 	 * Creates a copy of the object with the same geometry, transformations, material and data at the same location
@@ -1392,7 +1184,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {object} Cloned object
 	 * @memberof obj
 	 */
-	mod.obj.copy = function( object ){
+	copy = function( object ){
 
 		if( object.getGeometry == undefined ){
 			console.log("Non-Mobius passed to copy function");
@@ -1427,7 +1219,7 @@ var MOBIUS = ( function (mod){
 	 * @returns null
 	 * @memberof obj
 	 */
-	mod.obj.addMaterial = function(obj, material_type, wireframe, color_hex, transparent){
+	addMaterial = function(obj, material_type, wireframe, color_hex, transparent){
 		var option = {	
 			wireframe: wireframe,
 			color: color_hex,
@@ -1436,12 +1228,12 @@ var MOBIUS = ( function (mod){
 		};
 		var material = new THREE[material_type](option);
 		
-		obj.setMaterial(material);
+		setMaterial(material);
 
 		//return obj;
 	};
 
-	mod.obj.addMaterial.prototype.return  = false;
+	addMaterial.prototype.return  = false;
 
 	/**
 	 * Adds data to an object
@@ -1451,25 +1243,25 @@ var MOBIUS = ( function (mod){
 	 * @returns null
 	 * @memberof obj
 	 */
-	mod.obj.addData = function(obj, dataName, dataValue){
+	addData = function(obj, dataName, dataValue){
 
 		// decide on topology heirarchy also - if edge gets a property, do the vertices also get the same property?
-		if(obj.constructor === Array){
-			for(var i=0; i<obj.length; i++){
+		if(constructor === Array){
+			for(var i=0; i&lt;length; i++){
 				if(obj[i].getData() == undefined)
 					var new_data = {};
 					new_data[dataName] = dataValue;
 					obj[i].setData( new_data );
 			}
 		} else{
-			if(obj.getData() == undefined)
+			if(getData() == undefined)
 				var new_data = {};
 				new_data[dataName] = dataValue;
-				obj.setData( new_data );
+				setData( new_data );
 		}
 	};
 
-	mod.obj.addData.prototype.return = false;
+	addData.prototype.return = false;
 
 	/**
 	 * Returns the centre of a NURBS Curve, NURBS Surface or Solid Geometry
@@ -1477,11 +1269,34 @@ var MOBIUS = ( function (mod){
 	 * @returns {array} Point - [x, y, z]
 	 * @memberof obj
 	 */
-	mod.obj.getCentre = function(object){
+	getCentre = function(object){
 		//calculate centre based on what kind of object
 		var geometry = object;
 		if(object.getGeometry != undefined)
 			geometry = object.getGeometry();  
+
+		// object is a solid
+		if(geometry.constructor == Array ){
+
+			var centres  = []
+			for( var obj = 0; obj &lt; geometry.length; obj++ )
+				centres.push( MOBIUS.getCentre( geometry[obj]) );
+
+			var x = [];
+			var y = [];
+			var z = [];
+			for( var i=0; i&lt;centres.length; i++){
+				x.push( centres[i][0] );
+				y.push( centres[i][1] );
+				z.push( centres[i][2] );
+			}
+
+			x = MOBIUS.average( x );
+			y = MOBIUS.average( y );
+			z = MOBIUS.average( z );
+
+			return [x, y, z]
+		}
 
 		if(geometry.center != undefined)
 			return geometry.center();
@@ -1500,7 +1315,7 @@ var MOBIUS = ( function (mod){
 	//
 	//
 	/** @namespace */
-	mod.trn = {};
+	trn = {};
 
 	/**
 	 * Reflects the object about the XY plane of the frame
@@ -1510,7 +1325,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {object} - Transformed Object or Copy 
 	 * @memberof trn
 	 */
-	mod.trn.reflect = function(object, frame, copy){
+	reflect = function(object, frame, copy){
 
 		if (object instanceof mObj_geom_Solid)
 			object = object.getGeometry();
@@ -1519,14 +1334,14 @@ var MOBIUS = ( function (mod){
 
 			var newobject = [];
 			
-			for(var obj=0; obj < object.length; obj++)
-				newobject.push(MOBIUS.trn.reflect( object, frame, copy ));	
+			for(var obj=0; obj &lt; object.length; obj++)
+				newobject.push(MOBIUS.reflect( object[obj], frame, copy ));	
 			
 			return newobject;
 		}
 
 		if( copy )
-			object = MOBIUS.obj.copy( object );
+			object = MOBIUS.copy( object );
 
 		var geom = object.getGeometry();
 
@@ -1536,13 +1351,10 @@ var MOBIUS = ( function (mod){
 								[0, 0, 0, 1]
 					];
 						
-		if( frame != undefined ){
-			geom = geom.transform( frame.toGlobal() );
-			geom = geom.transform( trnMat ); 
-			geom = geom.transform( frame.toLocal() );
-		}
-		else
-			geom = geom.transform( trnMat );
+
+		geom = geom.transform( frame.toGlobal() );
+		geom = geom.transform( trnMat ); 
+		geom = geom.transform( frame.toLocal() );
 		
 		object.setGeometry( geom ); 
 
@@ -1562,7 +1374,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {object} - Transformed Object or Copy 
 	 * @memberof trn
 	 */
-	mod.trn.rotate = function(object, frame, angleX, angleY, angleZ, copy){
+	rotate = function(object, frame, angleX, angleY, angleZ, copy){
 
 		if (object instanceof mObj_geom_Solid)
 			object = object.getGeometry();
@@ -1571,14 +1383,14 @@ var MOBIUS = ( function (mod){
 
 			var newobject = [];
 			
-			for(var obj=0; obj < object.length; obj++)
-				newobject.push(MOBIUS.trn.rotate( object[obj], frame, angleX, angleY, angleZ, copy ));	
+			for(var obj=0; obj &lt; object.length; obj++)
+				newobject.push(MOBIUS.rotate( object[obj], frame, angleX, angleY, angleZ, copy ));	
 			
 			return newobject;
 		}
 
 		if( copy )
-			object = MOBIUS.obj.copy( object );
+			object = MOBIUS.copy( object );
 
 		var geom = object.getGeometry();
 
@@ -1624,7 +1436,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {object} - Transformed Object or Copy 
 	 * @memberof trn
 	 */
-	mod.trn.scale = function(object, frame, scaleX, scaleY, scaleZ, copy) {
+	scale = function(object, frame, scaleX, scaleY, scaleZ, copy) {
 
 		if (object instanceof mObj_geom_Solid)
 			object = object.getGeometry();
@@ -1633,14 +1445,14 @@ var MOBIUS = ( function (mod){
 
 			var newobject = [];
 			
-			for(var obj=0; obj < object.length; obj++)
-				newobject.push(MOBIUS.trn.scale(object, frame, scaleX, scaleY, scaleZ, copy));	
+			for(var obj=0; obj &lt; object.length; obj++)
+				newobject.push(MOBIUS.scale(object[obj], frame, scaleX, scaleY, scaleZ, copy));	
 			
 			return newobject;
 		}
 
 		if( copy )
-			object = MOBIUS.obj.copy( object );
+			object = MOBIUS.copy( object );
 
 		var geom = object.getGeometry();
 			
@@ -1650,14 +1462,10 @@ var MOBIUS = ( function (mod){
 								[ 0, 0, 0, 1 ]
 					];
 			
-		if( frame != undefined ){
-			geom = geom.transform( frame.toGlobal() );
-			geom = geom.transform( trnMat );
-			geom = geom.transform( frame.toLocal() );
-		}
-		else
-			geom = geom.transform( trnMat );
-		
+		geom = geom.transform( frame.toGlobal() );
+		geom = geom.transform( trnMat );
+		geom = geom.transform( frame.toLocal() );
+	
 		object.setGeometry( geom ); 
 
 		return object;
@@ -1676,7 +1484,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {object} - Transformed Object or Copy 
 	 * @memberof trn
 	 */
-	mod.trn.shift = function(object, frame, shiftX, shiftY, shiftZ, copy){
+	shift = function(object, frame, shiftX, shiftY, shiftZ, copy){
 
 		if (object instanceof mObj_geom_Solid)
 			object = object.getGeometry();
@@ -1685,14 +1493,14 @@ var MOBIUS = ( function (mod){
 
 			var newobject = [];
 			
-			for(var obj=0; obj < object.length; obj++)
-				newobject.push(MOBIUS.trn.shift( object[obj], shiftX, shiftY, shiftZ, copy ));	
+			for(var obj=0; obj &lt; object.length; obj++)
+				newobject.push(MOBIUS.shift( object[obj], frame, shiftX, shiftY, shiftZ, copy ));	
 			
 			return newobject;
 		}
 		
 		if( copy )
-			object = MOBIUS.obj.copy( object );
+			object = MOBIUS.copy( object );
 
 		var geom = object.getGeometry();
 
@@ -1702,13 +1510,9 @@ var MOBIUS = ( function (mod){
 									[ 0, 0, 0, 1 ]
 					 	] 
 	
-		if( frame != undefined ){
-			geom = geom.transform( frame.toGlobal() );
-			geom = geom.transform( trnMat );
-			geom = geom.transform( frame.toLocal() );
-		}
-		else
-			geom = geom.transform( trnMat );
+		geom = geom.transform( frame.toGlobal() );
+		geom = geom.transform( trnMat );
+		geom = geom.transform( frame.toLocal() );
 		
 		object.setGeometry( geom ); 
 
@@ -1725,28 +1529,25 @@ var MOBIUS = ( function (mod){
 	 * @returns {object} - Transformed Object or Copy 
 	 * @memberof trn
 	 */
-	mod.trn.move = function(object, point, copy){
+	move = function(object, point, copy){
 
 		if (object instanceof mObj_geom_Solid)
 			object = object.getGeometry();
 	
-		var orCenter = MOBIUS.obj.getCentre(object);
+		var orCenter = MOBIUS.getCentre(object);
 			
-<<<<<<< HEAD
-=======
 		// frame definition
-		var frame = MOBIUS.frm.byXYAxes([0,0,0], [1,0,0], [0,1,0])
+		var frame = MOBIUS.byXYAxes([0,0,0], [1,0,0], [0,1,0])
 
 		if( point.getGeometry != undefined )
 			point = point.getGeometry()
 
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 		// translation required
 		var tx = point[0] - orCenter[0];
 		var ty = point[1] - orCenter[1];
 		var tz = point[2] - orCenter[2]; 
 		
-		return MOBIUS.trn.shift( object, undefined, tx, ty, tz, copy );		
+		return MOBIUS.shift( object, frame, tx, ty, tz, copy );		
 	};
 
 
@@ -1756,7 +1557,7 @@ var MOBIUS = ( function (mod){
 	//
 	//
 	/** @namespace */
-	mod.mtx = {};
+	mtx = {};
 
 	/**
 	 * Computes dot product of two matrices
@@ -1765,7 +1566,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {float} 
 	 * @memberof mtx
 	 */
-	mod.mtx.dot = function( matrix1, matrix2 ){
+	dot = function( matrix1, matrix2 ){
 		return verb.core.Vec.dot(matrix1, matrix2);
 	};
 
@@ -1776,7 +1577,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {array} 
 	 * @memberof mtx
 	 */
-	mod.mtx.cross = function( matrix1, matrix2 ){
+	cross = function( matrix1, matrix2 ){
 		return verb.core.Vec.cross(matrix1, matrix2);
 	};
 
@@ -1786,21 +1587,17 @@ var MOBIUS = ( function (mod){
 	//
 	//
 	/** @namespace */
-	mod.lst = {};
+	lst = {};
 
 
 	/**
 	 * Returns the length of the list 
-<<<<<<< HEAD
-	 * @param {array} valueList - List which is to be analyzed
-=======
 	 * @param {array} list - List which is to be analyzed
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	 * @returns {int} 
 	 * @memberof lst
 	 */
-	mod.lst.length = function(list){
-		return valueList.length
+	length = function(list){
+		return list.length
 	};
 
 	/**
@@ -1810,7 +1607,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {int} Returns -1 if the element doesn't exist in array; else returns the index of the item
 	 * @memberof lst
 	 */
-	mod.lst.find = function(list, item){
+	find = function(list, item){
 		return list.indexOf( item );
 	};
 
@@ -1821,11 +1618,11 @@ var MOBIUS = ( function (mod){
 	 * @returns {NULL} 
 	 * @memberof lst
 	 */
-	mod.lst.append = function(list, itemOrList){
+	append = function(list, itemOrList){
 		list.push(itemOrList);
 	};
 
-	mod.lst.append.prototype.return = false;
+	append.prototype.return = false;
 
 	/**
 	 * Inserts an item at a given index in a list
@@ -1834,12 +1631,12 @@ var MOBIUS = ( function (mod){
 	 * @returns {NULL}
 	 * @memberof lst
 	 */
-	mod.lst.insert = function(list, item, index){
+	insert = function(list, item, index){
 
 		var newlist = [];
-		for(var i=0; i<=list.length; i++){
+		for(var i=0; i&lt;=list.length; i++){
 			
-			if(i < index)
+			if(i &lt; index)
 				newlist.push(list[i]);
 			else if(i == index)
 				newlist.push(item);
@@ -1850,7 +1647,7 @@ var MOBIUS = ( function (mod){
 	};
 
 
-	mod.lst.insert.prototype.return = false;
+	insert.prototype.return = false;
 
 	/**
 	 * Adds the elements of one list to another list
@@ -1859,7 +1656,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {NULL}
 	 * @memberof lst
 	 */
-	mod.lst.extend = function(list, extension_list){
+	extend = function(list, extension_list){
 		
 		extension_list.map( function(t){
 			list.push(t);
@@ -1867,7 +1664,7 @@ var MOBIUS = ( function (mod){
 
 	};
 
-	mod.lst.extend.prototype.return = false;
+	extend.prototype.return = false;
 
 	/**
 	 * Removes an array element from a list by its index number
@@ -1876,11 +1673,11 @@ var MOBIUS = ( function (mod){
 	 * @returns {null} 
 	 * @memberof lst
 	 */
-	mod.lst.remove = function(list, index) {
+	remove = function(list, index) {
 		list.splice(index, 1);
 	};
 
-	mod.lst.remove.prototype.return = false;
+	remove.prototype.return = false;
 
 
 	/**
@@ -1891,18 +1688,18 @@ var MOBIUS = ( function (mod){
 	 * @returns {array} 
 	 * @memberof lst
 	 */
-	mod.lst.sequence = function(start, end, stepSize){
+	sequence = function(start, end, stepSize){
 
 		var arr = [];
 		if( start == end ){
 			arr.push(start);
 		}
-		else if(start > end && stepSize < 0){
+		else if(start > end &amp;&amp; stepSize &lt; 0){
 			for(var i = start; i > end; i = i + stepSize)
 				arr.push(i);
 		} 
 		else{
-			for(var i = start; i < end; i = i + stepSize)
+			for(var i = start; i &lt; end; i = i + stepSize)
 				arr.push(i);
 		}
 
@@ -1916,40 +1713,28 @@ var MOBIUS = ( function (mod){
 	//
 
 	/**
-<<<<<<< HEAD
-	 * Gets the avaerage of a numeric array
-	 * @param {array} valueList - List which is to be averaged
-	 * @returns {float / int} 
-=======
 	 * Gets the average of a numeric array
 	 * @param {array} numericList - List which is to be averaged
 	 * @returns {float / int} Average of the numbers in the list
 	 * @memberof lst
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	 */
-	mod.lst.average = function(numericList){
-		return MOBIUS.lst.sum( valueList )/ valueList.length;
+	average = function(numericList){
+		return MOBIUS.sum( numericList )/ numericList.length;
 	};
 
 
 	/**
-<<<<<<< HEAD
-	 * Gets the minimum value in a numeric array
-	 * @param {array} valueList - List from which minimum value is required
-	 * @returns {float / int} 
-=======
 	 * Gets the minimum value in a numeric list
 	 * @param {array} numericList - List from which minimum value is required
 	 * @returns {float / int} Minimum value
 	 * @memberof lst
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	 */
-	mod.lst.min = function(numericList){
+	min = function(numericList){
 		
-		var minValue = valueList[0];
+		var minValue = numericList[0];
 		
-		for(var i=0; i<valueList.length; i++)
-			minValue = Math.min(minValue, valueList[i]);
+		for(var i=0; i&lt;numericList.length; i++)
+			minValue = Math.min(minValue, numericList[i]);
 		
 		return minValue;
 	
@@ -1957,21 +1742,16 @@ var MOBIUS = ( function (mod){
 
 	/**
 	 * Gets the maximum value in a numeric array
-<<<<<<< HEAD
-	 * @param {array} valueList - List from which maximum value is required
-	 * @returns {float / int} 
-=======
 	 * @param {array} numericList - List from which maximum value is required
 	 * @returns {float / int} Maximum value
 	 * @memberof lst
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	 */
-	mod.lst.max = function(numericList){
+	max = function(numericList){
 		
-		var maxValue = valueList[0];
+		var maxValue = numericList[0];
 		
-		for(var i=0; i<valueList.length; i++)
-			maxValue = Math.max(maxValue, valueList[i]);
+		for(var i=0; i&lt;numericList.length; i++)
+			maxValue = Math.max(maxValue, numericList[i]);
 		
 		return maxValue;
 	
@@ -1980,21 +1760,16 @@ var MOBIUS = ( function (mod){
 
 	/**
 	 * Gets the sum of a numeric array
-<<<<<<< HEAD
-	 * @param {array} valueList - List which is to be summed
-	 * @returns {float / int} 
-=======
 	 * @param {array} numericList - List which is to be summed
 	 * @returns {float / int} Sum of the numbers in the list
 	 * @memberof lst
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	 */
-	mod.lst.sum = function( numericList ){
+	sum = function( numericList ){
 		
 		var sum = 0;
 		
-		for(var i=0; i<valueList.length; i++)
-			sum += valueList[i];
+		for(var i=0; i&lt;numericList.length; i++)
+			sum += numericList[i];
 		
 		return sum;
 	
@@ -2002,18 +1777,13 @@ var MOBIUS = ( function (mod){
 
 	/**
 	 * Returns the span of the list - the difference between the maximum and the minimum value in the list
-<<<<<<< HEAD
-	 * @param {array} valueList - List which is to be analyzed
-	 * @returns {float / int} 
-=======
 	 * @param {array} numericList - List which is to be analyzed
 	 * @returns {float / int} Span
 	 * @memberof lst
->>>>>>> 0e5eb81e0d11e91b292631103ddfe296fe4703bf
 	 */
-	mod.lst.range = function( numericList ){
+	range = function( numericList ){
 		
-		return MOBIUS.lst.max( valueList ) - MOBIUS.lst.min( valueList );
+		return MOBIUS.max( numericList ) - MOBIUS.min( numericList );
 	
 	};
 
@@ -2024,7 +1794,7 @@ var MOBIUS = ( function (mod){
 	//
 	//
 	/** @namespace */
-	mod.msc = {};
+	msc = {};
 
 	/**
 	 * Converts degrees into radians
@@ -2032,7 +1802,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {float} Value in Radians
 	 * @memberof msc
 	 */
-	mod.msc.degToRad = function(degree){
+	degToRad = function(degree){
 		return 0.0174533*degree;
 	};
 
@@ -2042,7 +1812,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {float} Value in Degrees
 	 * @memberof msc
 	 */
-	mod.msc.radToDeg = function(radians){
+	radToDeg = function(radians){
 		return 57.29*radians;
 	};	
 
@@ -2052,7 +1822,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {float} Sine value
 	 * @memberof msc
 	 */
-	mod.msc.sin = function( angle ){
+	sin = function( angle ){
 		return Math.sin( 0.0174533*angle )
 	}
 
@@ -2062,7 +1832,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {float} Sine value
 	 * @memberof msc
 	 */
-	mod.msc.cos = function( angle ){
+	cos = function( angle ){
 		return Math.cos( 0.0174533*angle )
 	}
 
@@ -2074,7 +1844,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {string} - HexValue
 	 * @memberof msc
 	 */
-/*	mod.msc.rgbToHex = function(red, green, blue){
+/*	rgbToHex = function(red, green, blue){
 		
 		return '0x'+toHex(red)+toHex(green)+toHex(blue);
 			
@@ -2094,7 +1864,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {float} 
 	 * @memberof msc
 	 */
-	mod.msc.sigDig = function(number, digits){
+	sigDig = function(number, digits){
 		return number.toFixed(digits);
 	};
 
@@ -2104,287 +1874,39 @@ var MOBIUS = ( function (mod){
 	 * @returns {null}
 	 * @memberof msc
 	 */
-	mod.msc.print = function(content){
+	print = function(content){
 		// try to find MOBIUS web app, if found print in MOBIUS console
 
 		this.content = content;
 
 		try{
-			var logString = "<div style='color: green;'>" + this.content + '</div>';
+			var logString = "&lt;div style='color: green;'>" + this.content + '&lt;/div>';
 			document.getElementById('log').innerHTML += logString;
 		}catch(err){
 			console.log('warnning: MOBIUS web app not connected.');
 		}
 	};
 
-
-	// data conversion module
-
-	mod.dataConversion = function(data){
-
-		for(var i = 0; i < data.length; i++) {
-			for (var m in data[i].value) {
-
-				if (data[i].value[m] !== undefined) {
-
-					if (data[i].value[m].constructor !== Array) {
-						extract(data[i].value[m],
-							data[i].geom,
-							data[i].geomData,
-							data[i].topo);
-					}
-					else {
-						var tempGeom = [];
-						var tempData = [];
-						var tempTopo = []
-
-						for (var n = 0; n < data[i].value[m].length; n++) {
-
-							extract(data[i].value[m][n],
-								tempGeom,
-								tempData,
-								tempTopo);
-						}
-						data[i].geom.push(tempGeom);
-						data[i].geomData.push(tempData);
-						data[i].topo.push(tempTopo);
-					}
-				}
-			}
-		}
-
-		function extract (obj,geom,geomData,topo){ 				
-			if(obj.constructor === Array){
-				var tempGeom0 = [];
-				var tempData0 = [];
-				var tempTopo0 = [];
-
-				for(var k = 0; k < obj.length ; k++){
-					extract(obj[k],tempGeom0,tempData0,tempTopo0);
-				}
-
-				geom.push(tempGeom0);
-				geomData.push(tempData0);
-				topo.push(tempTopo0);
-			}
-			else if(obj instanceof  mObj_geom_Curve || 
-					obj instanceof mObj_geom_Surface ||
-					obj instanceof mObj_geom_Solid ||
-					obj instanceof mObj_geom_Vertex ||
-					obj instanceof mObj_frame){ 
-				geom.push( obj.extractThreeGeometry() );
-				geomData.push( obj.extractData() );
-				topo.push(obj.extractTopology());
-			}else{
-				for(var key in obj){
-					extract(obj[key],geom,geomData,topo);
-				}
-			}
-		}
-
-		return data;
-	};
-
-	return mod;
-
-})(window.MOBIUS || {});
+</code></pre>
+        </article>
+    </section>
 
 
-/*
- *
- * Bridging Functions for all libraries used in Module - for geometry and topology
- *
- */
-
-//
-//	Functions forming bridge between data structure, topology and modules
-//	Dependent on the modules being used for geometry and topology
-//
-
-//
-//	Requirements
-//	Function names should remain the same
-//
-
-var TOPOLOGY_DEF = {"vertices":[], "edges":[], "faces":[]}
-//
-//	Function to convert module geometry into three.js Mesh geometry
-//  Add another if-else condition for each new geometry
-//
-var convertGeomToThree = function( geom ){
-
-	// internal function
-	convertToThree = function(singleDataObject){
-
-		if( singleDataObject instanceof verb.geom.NurbsSurface )
-			return ( new THREE.Mesh( singleDataObject.toThreeGeometry() ) );
-		else if( singleDataObject instanceof verb.geom.NurbsCurve )
-			return ( new THREE.Line( singleDataObject.toThreeGeometry() ) );
-		else if(singleDataObject instanceof Array){
-			// means it is a point
-			var dotGeometry = new THREE.Geometry();
-			dotGeometry.vertices.push( new THREE.Vector3(singleDataObject[0], singleDataObject[1], singleDataObject[2]) ); console.log("here");
-			return new THREE.PointCloud( dotGeometry );
-		}
-		else {
-			console.log("Module doesnt recognise either!", singleDataObject);
-		}
-	}
-
-	var rawResult = convertToThree( geom );
-	
-	return rawResult;
-}
-
-//
-// Takes native topology and converts it into three.js format
-//
-var convertTopoToThree = function( topology ){
-
-	var topo = new THREE.Object3D();
-	
-	// convert vertices
-	var topoPointMaterial = new THREE.PointsMaterial( { size: 5, sizeAttenuation: false, color:0xCC3333 } );
-	var dotGeometry = new THREE.Geometry(); 
-	for(var v = 0; v < topology.vertices.length; v++){
-		var vertex = topology.vertices[v].getGeometry();
-		dotGeometry.vertices.push( new THREE.Vector3(vertex[0], vertex[1], vertex[2]) );
-	}
-	var allVertices = new THREE.Points( dotGeometry, topoPointMaterial );
-	topo.add(allVertices);
-
- 	
-	// convert edges
-	var topoEdgeMaterial = new THREE.LineBasicMaterial({
-							    side: THREE.DoubleSide,
-							    linewidth: 100,
-							    color: 0x003366
-							    });
-	for(var e = 0; e < topology.edges.length; e++){ 
-		var edge = convertGeomToThree(topology.edges[e].getGeometry());
-		edge.material = topoEdgeMaterial;
-		topo.add(edge);
 
 
-	}
+</div>
 
-	// convert faces
-	var topoSurfaceMaterial = new THREE.MeshLambertMaterial( {
-									    side: THREE.DoubleSide,
-									    wireframe: false,
-									    shading: THREE.SmoothShading,
-									    transparent: false,
-									    color: 0x6666FF
-									    } );
-	for(var f = 0; f < topology.faces.length; f++){ 
-		var face = convertGeomToThree(topology.faces[f].getGeometry());
-		face.material = topoSurfaceMaterial;
-		topo.add(face);
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="crv.html">crv</a></li><li><a href="frm.html">frm</a></li><li><a href="lst.html">lst</a></li><li><a href="msc.html">msc</a></li><li><a href="mtx.html">mtx</a></li><li><a href="obj.html">obj</a></li><li><a href="pnt.html">pnt</a></li><li><a href="sld.html">sld</a></li><li><a href="srf.html">srf</a></li><li><a href="trn.html">trn</a></li><li><a href="vec.html">vec</a></li></ul>
+</nav>
 
-		//addNumber( "FaceNumber"+f, face);
-	} 
+<br class="clear">
 
-	return topo;
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Wed Dec 16 2015 04:42:04 GMT+0800 (Malay Peninsula Standard Time)
+</footer>
 
-}
-
-//
-//	Takes native geometry ( geometry from module ) and converts it into native topology - edges, faces, vertices
-//
-var computeTopology = function( mObj ){
-
-	var geom = mObj.getGeometry(); 
-	var topology = {};
-
-
-	if(mObj instanceof mObj_geom_Vertex){
-		topology.vertices = [];
-		topology.edges = [];
-		topology.faces = [];
-	}
-	else if(mObj instanceof mObj_geom_Curve){
-		topology.vertices = [ new mObj_geom_Vertex(geom.point(0)) , new mObj_geom_Vertex(geom.point(1)) ];
-		topology.edges = [ mObj ];
-		topology.faces = [];
-	}	
-	else if(mObj instanceof mObj_geom_Surface){
-		topology.vertices = [ new mObj_geom_Vertex(geom.point(0,0)), 
-								 new mObj_geom_Vertex(geom.point(1,0)), 
-									 new mObj_geom_Vertex(geom.point(1,1)), 
-										 new mObj_geom_Vertex(geom.point(0,1))];
-		topology.edges = geom.boundaries().map( function( boundary ) { return new mObj_geom_Curve( boundary )} );
-		topology.faces = [mObj];
-	}	
-	else if(mObj instanceof mObj_geom_Solid){
-		// means it is a solid - collection of surfaces
-		topology.vertices = [];
-		topology.edges = [];
-		topology.faces = [];
-
-		for(var srf=0; srf < geom.length; srf++){
-			var surfaceTopo = geom[srf].getTopology(); 
-			topology.vertices = topology.vertices.concat(surfaceTopo.vertices); 
-			topology.edges = topology.edges.concat(surfaceTopo.edges);
-			topology.faces = topology.faces.concat(surfaceTopo.faces);		
-		}
-
-		// remove clones - doesn't do well with the edges :/
-/*		topology.vertices = removeClonesInList( topology.vertices ); 
-		topology.edges = removeClonesInList( topology.edges );
-		topology.faces = removeClonesInList( topology.faces ); */
-	}
-	else
-		topology = undefined;	
-
-
-	return topology;
-}
-
-//
-// function to remove clones
-//
-//
-var removeClonesInList = function( list ){
-		var newArray = [];
-		
-		for(var v=0; v < list.length; v++){
-
-			var thisObject = list[v].getGeometry() ; 
-			var duplicate = false;
-			//console.log(thisObject);
-			for(nextV=v+1; nextV < list.length; nextV++){
-			
-				var nextObject = list[nextV].getGeometry() ; 
-
-				if(thisObject._data != undefined)
-					thisObject = thisObject._data;
-				if (nextObject._data != undefined)		
-					nextObject = nextObject._data; 
-
-				if( thisObject.constructor.name == "Array" ){ 
-					if( JSON.stringify( thisObject ) == JSON.stringify( nextObject ) ){
-						duplicate = true; console.log(thisObject);
-						break; 
-					}
-				}else{
-						for(property in thisObject){
-							if(thisObject.hasOwnProperty(property)){ 
-								if(thisObject[property] != nextObject[property]){
-									duplicate = false; 
-									break;
-								}
-								else
-									duplicate = true;	
-							}
-						}
-					if(!duplicate)
-						break;	
-				}
-			}
-			
-			if( !duplicate )
-				newArray.push(list[v]);
-		}
-
-		return newArray;
-}
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -2,146 +2,136 @@
     "nodes": [
         {
             "id": 0,
-            "name": "SimpleCylinder",
-            "x": 2012.0485511472973,
-            "y": 2067.897926939406,
+            "name": "radius_func0",
+            "x": 2207.5446549811645,
+            "y": 1859.161947000727,
             "inputConnectors": [],
             "outputConnectors": [
-                {
-                    "id": 1,
-                    "title": "Output",
-                    "name": "out0",
-                    "dataValue": "spiral",
-                    "type": "new",
-                    "$$hashKey": "object:13468",
-                    "selected": false,
-                    "connected": true
-                },
                 {
                     "id": "999",
                     "title": "Output",
                     "name": "FUNC_OUTPUT"
+                },
+                {
+                    "id": 3,
+                    "title": "Output",
+                    "type": "new",
+                    "$$hashKey": "object:8510",
+                    "selected": false,
+                    "name": "out",
+                    "dataValue": "r1 + r2"
                 }
             ],
-            "type": "spiral0",
-            "version": 1450084990419,
-            "overwrite": true
+            "type": "radius_func",
+            "version": 1450211669304,
+            "overwrite": true,
+            "disabled": false
         },
         {
             "id": 1,
-            "name": "radial_copy0",
-            "x": 2048.2708925856464,
-            "y": 2248.5266295047977,
+            "name": "spiral_sin0",
+            "x": 2113.0679884101987,
+            "y": 1957.503272356104,
             "inputConnectors": [
                 {
-                    "id": 1,
+                    "id": 4,
                     "title": "Input",
-                    "name": "geom",
+                    "name": "rad_f",
                     "connected": true,
                     "option": {
                         "name": "none"
                     },
                     "color": "#000000",
-                    "selected": false,
-                    "$$hashKey": "object:15208"
+                    "$$hashKey": "object:11241",
+                    "selected": false
+                },
+                {
+                    "id": 8,
+                    "title": "Input",
+                    "name": "rad2",
+                    "connected": false,
+                    "dataValue": "0",
+                    "option": {
+                        "name": "slider",
+                        "$$hashKey": "object:2346"
+                    },
+                    "color": "#000000",
+                    "$$hashKey": "object:54351",
+                    "selected": true,
+                    "min": "0",
+                    "max": "10",
+                    "step": "0.1"
                 }
             ],
             "outputConnectors": [
                 {
-                    "id": 1,
+                    "id": 3,
                     "title": "Output",
-                    "name": "geom",
-                    "dataValue": "cpys",
                     "type": "new",
+                    "$$hashKey": "object:9593",
                     "selected": false,
-                    "$$hashKey": "object:15323"
+                    "name": "out",
+                    "dataValue": "crv",
+                    "connected": true
                 }
             ],
-            "type": "radial_copy0",
-            "version": 1450087128221,
-            "overwrite": true
+            "type": "spiral_sin",
+            "version": 1450211668323,
+            "overwrite": true,
+            "disabled": false
         },
         {
             "id": 2,
-            "name": "curve0",
-            "x": 2047.8647507645896,
-            "y": 2178.101808461451,
+            "name": "rotate_copy0",
+            "x": 2113.0679884101987,
+            "y": 2108.027312602297,
             "inputConnectors": [
                 {
                     "id": 1,
                     "title": "Input",
-                    "name": "radius",
-                    "connected": false,
-                    "dataValue": "30",
-                    "option": {
-                        "name": "slider",
-                        "$$hashKey": "object:9220"
-                    },
-                    "color": "#000000",
-                    "$$hashKey": "object:7249",
-                    "selected": false,
-                    "min": "0",
-                    "max": "100",
-                    "step": "5"
-                },
-                {
-                    "id": 2,
-                    "title": "Input",
-                    "name": "height",
-                    "connected": false,
-                    "dataValue": "140",
-                    "option": {
-                        "name": "slider",
-                        "$$hashKey": "object:9220"
-                    },
-                    "color": "#000000",
-                    "$$hashKey": "object:7275",
-                    "selected": false,
-                    "min": "20",
-                    "max": "200",
-                    "step": "20"
-                },
-                {
-                    "id": 3,
-                    "title": "Input",
-                    "name": "angle",
-                    "connected": false,
-                    "dataValue": "360",
-                    "option": {
-                        "name": "slider",
-                        "$$hashKey": "object:9220"
-                    },
-                    "color": "#000000",
-                    "$$hashKey": "object:7298",
-                    "selected": false,
-                    "min": "0",
-                    "max": "360",
-                    "step": "1"
-                },
-                {
-                    "id": 4,
-                    "title": "Input",
-                    "name": "num_points",
-                    "connected": false,
-                    "dataValue": "10",
-                    "option": {
-                        "name": "none",
-                        "$$hashKey": "object:9219"
-                    },
-                    "color": "#000000",
-                    "$$hashKey": "object:7321",
-                    "selected": false
-                },
-                {
-                    "id": 6,
-                    "title": "Input",
-                    "name": "curve",
+                    "name": "geom",
                     "connected": true,
                     "option": {
                         "name": "none"
                     },
                     "color": "#000000",
-                    "$$hashKey": "object:1941",
+                    "$$hashKey": "object:18158",
+                    "selected": false
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "id": 3,
+                    "title": "Output",
+                    "type": "new",
+                    "$$hashKey": "object:19540",
+                    "selected": false,
+                    "name": "out",
+                    "dataValue": "copies"
+                }
+            ],
+            "type": "rotate_copy",
+            "version": 1450211670404,
+            "overwrite": true,
+            "disabled": false
+        },
+        {
+            "id": 3,
+            "name": "reflect_copy0",
+            "x": 2112.299885429947,
+            "y": 2031.9851175573722,
+            "inputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Input",
+                    "name": "geom",
+                    "connected": true,
+                    "option": {
+                        "name": "none",
+                        "$$hashKey": "object:25020"
+                    },
+                    "color": "#000000",
+                    "$$hashKey": "object:24966",
                     "selected": true
                 }
             ],
@@ -149,98 +139,16 @@
                 {
                     "id": 1,
                     "title": "Output",
-                    "name": "pipe",
-                    "dataValue": "pipe",
                     "type": "new",
-                    "$$hashKey": "object:8432",
-                    "selected": false
+                    "$$hashKey": "object:24997",
+                    "selected": true,
+                    "name": "out1",
+                    "dataValue": "[geom, copy]",
+                    "connected": true
                 }
             ],
-            "type": "curve",
-            "version": 1450087143178,
-            "overwrite": true
-        },
-        {
-            "id": 3,
-            "name": "Cone",
-            "x": 2181.401324679374,
-            "y": 1952.8764491491652,
-            "inputConnectors": [],
-            "outputConnectors": [
-                {
-                    "id": 1,
-                    "title": "Output",
-                    "name": "out0",
-                    "dataValue": "spiral",
-                    "type": "new",
-                    "selected": false,
-                    "connected": true,
-                    "$$hashKey": "object:8842"
-                },
-                {
-                    "id": "999",
-                    "title": "Output",
-                    "name": "FUNC_OUTPUT"
-                }
-            ],
-            "type": "spiral02",
-            "version": 1450086372628,
-            "overwrite": true,
-            "disabled": false
-        },
-        {
-            "id": 4,
-            "name": "Sinusoidal_Cylinder",
-            "x": 2054.96875,
-            "y": 2007.890625,
-            "inputConnectors": [],
-            "outputConnectors": [
-                {
-                    "id": 1,
-                    "title": "Output",
-                    "name": "out0",
-                    "dataValue": "spiral",
-                    "type": "new",
-                    "selected": false,
-                    "connected": true,
-                    "$$hashKey": "object:9207"
-                },
-                {
-                    "id": "999",
-                    "title": "Output",
-                    "name": "FUNC_OUTPUT"
-                }
-            ],
-            "type": "spiral03",
-            "version": 1450085975552,
-            "overwrite": true,
-            "disabled": false
-        },
-        {
-            "id": 5,
-            "name": "Sinusoidal_Cone",
-            "x": 2243.46875,
-            "y": 2057.375,
-            "inputConnectors": [],
-            "outputConnectors": [
-                {
-                    "id": 1,
-                    "title": "Output",
-                    "name": "out0",
-                    "dataValue": "spiral",
-                    "type": "new",
-                    "selected": false,
-                    "connected": true,
-                    "$$hashKey": "object:16279"
-                },
-                {
-                    "id": "999",
-                    "title": "Output",
-                    "name": "FUNC_OUTPUT"
-                }
-            ],
-            "type": "spiral03",
-            "version": 1450087140845,
+            "type": "reflect_copy",
+            "version": 1450211667689,
             "overwrite": true,
             "disabled": false
         }
@@ -248,7 +156,7 @@
     "connections": [
         {
             "source": {
-                "nodeID": 2,
+                "nodeID": 0,
                 "connectorIndex": 0
             },
             "dest": {
@@ -258,12 +166,22 @@
         },
         {
             "source": {
-                "nodeID": 5,
-                "connectorIndex": 1
+                "nodeID": 1,
+                "connectorIndex": 0
+            },
+            "dest": {
+                "nodeID": 3,
+                "connectorIndex": 0
+            }
+        },
+        {
+            "source": {
+                "nodeID": 3,
+                "connectorIndex": 0
             },
             "dest": {
                 "nodeID": 2,
-                "connectorIndex": 4
+                "connectorIndex": 0
             }
         }
     ]
@@ -273,17 +191,105 @@
 [
     [
         {
+            "id": 6,
+            "title": "Control",
+            "nodes": [
+                {
+                    "id": 5,
+                    "title": "Control",
+                    "controlType": "if",
+                    "nodes": [
+                        {
+                            "id": 1,
+                            "title": "Data",
+                            "nodes": [],
+                            "dataName": "r1",
+                            "dataValue": "rad1 + ((rad2 - rad1) * input)",
+                            "type": "new",
+                            "$$hashKey": "object:8456",
+                            "selected": false
+                        }
+                    ],
+                    "ifExpression": "rad1 < rad2",
+                    "$$hashKey": "object:61554",
+                    "selected": false
+                },
+                {
+                    "id": 5,
+                    "title": "Control",
+                    "controlType": "else",
+                    "nodes": [
+                        {
+                            "id": 7,
+                            "title": "Data",
+                            "nodes": [],
+                            "dataName": "r1",
+                            "dataValue": "rad1 - ((rad1 - rad2) * input)",
+                            "$$hashKey": "object:61642",
+                            "selected": false
+                        }
+                    ],
+                    "$$hashKey": "object:61555",
+                    "selected": false
+                }
+            ],
+            "controlType": "if else",
+            "type": "new",
+            "$$hashKey": "object:61542",
+            "selected": false
+        },
+        {
+            "id": 8,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "sin",
+            "category": "msc",
+            "parameters": [
+                {
+                    "value": "360 * input * freq",
+                    "type": "angle",
+                    "$$hashKey": "object:1436"
+                }
+            ],
+            "result": "sine",
+            "$$hashKey": "object:1421",
+            "selected": true
+        },
+        {
+            "id": 2,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "r2",
+            "dataValue": "sine * amplitude",
+            "type": "new",
+            "$$hashKey": "object:8481",
+            "selected": false
+        },
+        {
             "id": 3,
+            "title": "Output",
+            "type": "new",
+            "$$hashKey": "object:8510",
+            "selected": false,
+            "name": "out",
+            "dataValue": "r1 + r2"
+        }
+    ],
+    [
+        {
+            "id": 1,
             "title": "Data",
             "nodes": [],
             "dataName": "points",
             "dataValue": "[]",
             "type": "new",
-            "$$hashKey": "object:14054",
+            "$$hashKey": "object:9226",
             "selected": false
         },
         {
-            "id": 7,
+            "id": 4,
             "title": "Action",
             "nodes": [],
             "type": "new",
@@ -294,103 +300,150 @@
                 {
                     "value": "0",
                     "type": "start",
-                    "$$hashKey": "object:1404"
+                    "$$hashKey": "object:10774"
                 },
                 {
-                    "value": "num_points",
+                    "value": "num_points + 1",
                     "type": "end",
-                    "$$hashKey": "object:1405"
+                    "$$hashKey": "object:10775"
                 },
                 {
                     "value": "1",
                     "type": "stepSize",
-                    "$$hashKey": "object:1406"
+                    "$$hashKey": "object:10776"
                 }
             ],
             "result": "seq",
-            "$$hashKey": "object:1391",
+            "$$hashKey": "object:10759",
             "selected": false
         },
         {
-            "id": 7,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "degToRad",
-            "category": "msc",
-            "parameters": [
-                {
-                    "value": "angle",
-                    "type": "degree",
-                    "$$hashKey": "object:1923"
-                }
-            ],
-            "result": "angle",
-            "$$hashKey": "object:1908",
-            "selected": false
-        },
-        {
-            "id": 2,
+            "id": 5,
             "title": "Control",
             "nodes": [
                 {
-                    "id": 5,
-                    "title": "Data",
-                    "nodes": [],
-                    "dataName": "a",
-                    "dataValue": "(angle / (num_points)) * i",
-                    "$$hashKey": "object:14474",
-                    "selected": false
-                },
-                {
-                    "id": 5,
-                    "title": "Data",
-                    "nodes": [],
-                    "dataName": "x",
-                    "dataValue": "Math.cos(a) * radius",
-                    "$$hashKey": "object:14332",
-                    "selected": false
-                },
-                {
-                    "id": 5,
-                    "title": "Data",
-                    "nodes": [],
-                    "dataName": "y",
-                    "dataValue": "Math.sin(a) * radius",
-                    "$$hashKey": "object:14403",
-                    "selected": false
-                },
-                {
-                    "id": 5,
+                    "id": 6,
                     "title": "Data",
                     "nodes": [],
                     "dataName": "z",
                     "dataValue": "(height / num_points) * i",
-                    "$$hashKey": "object:14323",
+                    "$$hashKey": "object:10947",
                     "selected": false
                 },
                 {
                     "id": 7,
+                    "title": "Data",
+                    "nodes": [],
+                    "dataName": "a",
+                    "dataValue": "(( 360 ) / num_points) * i",
+                    "$$hashKey": "object:10969",
+                    "selected": false
+                },
+                {
+                    "id": 14,
+                    "title": "Action",
+                    "nodes": [],
+                    "expression": "",
+                    "method": "cos",
+                    "category": "msc",
+                    "parameters": [
+                        {
+                            "value": "a",
+                            "type": "angle",
+                            "$$hashKey": "object:2991"
+                        }
+                    ],
+                    "result": "cos",
+                    "$$hashKey": "object:2978",
+                    "selected": false
+                },
+                {
+                    "id": 13,
+                    "title": "Action",
+                    "nodes": [],
+                    "expression": "",
+                    "method": "sin",
+                    "category": "msc",
+                    "parameters": [
+                        {
+                            "value": "a",
+                            "type": "angle",
+                            "$$hashKey": "object:2438"
+                        }
+                    ],
+                    "result": "sine",
+                    "$$hashKey": "object:2425",
+                    "selected": false
+                },
+                {
+                    "id": 8,
+                    "title": "Data",
+                    "nodes": [],
+                    "dataName": "x",
+                    "dataValue": "cos * rad_f(i/num_points, rad1, rad2, freq, amplitude).out",
+                    "$$hashKey": "object:10994",
+                    "selected": false
+                },
+                {
+                    "id": 9,
+                    "title": "Data",
+                    "nodes": [],
+                    "dataName": "y",
+                    "dataValue": "sine * rad_f(i/num_points, rad1, rad2, freq, amplitude).out",
+                    "$$hashKey": "object:14116",
+                    "selected": false
+                },
+                {
+                    "id": 11,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "expression": "",
+                    "method": "byCoords",
+                    "category": "pnt",
+                    "parameters": [
+                        {
+                            "value": "x",
+                            "type": "x",
+                            "$$hashKey": "object:15396"
+                        },
+                        {
+                            "value": "y",
+                            "type": "y",
+                            "$$hashKey": "object:15397"
+                        },
+                        {
+                            "value": "z",
+                            "type": "z",
+                            "$$hashKey": "object:15398"
+                        }
+                    ],
+                    "result": "point",
+                    "$$hashKey": "object:15381",
+                    "selected": false
+                },
+                {
+                    "id": 12,
                     "title": "Action",
                     "nodes": [],
                     "expression": "",
                     "method": "append",
                     "category": "lst",
+                    "return": false,
                     "parameters": [
                         {
                             "value": "points",
                             "type": "list",
-                            "$$hashKey": "object:2409"
+                            "$$hashKey": "object:15928"
                         },
                         {
-                            "value": "[ x, y, z]",
+                            "value": "point",
                             "type": "itemOrList",
-                            "$$hashKey": "object:2410"
+                            "$$hashKey": "object:15929"
                         }
                     ],
-                    "result": "_",
-                    "$$hashKey": "object:2396",
+                    "result": "",
+                    "$$hashKey": "object:15918",
                     "selected": false
                 }
             ],
@@ -398,11 +451,11 @@
             "controlType": "for each",
             "dataName": "i",
             "forList": "seq",
-            "$$hashKey": "object:14017",
+            "$$hashKey": "object:10864",
             "selected": false
         },
         {
-            "id": 7,
+            "id": 15,
             "title": "Action",
             "nodes": [],
             "type": "new",
@@ -411,34 +464,169 @@
             "category": "crv",
             "parameters": [
                 {
+                    "value": "GLOBAL",
+                    "type": "frame",
+                    "$$hashKey": "object:4830"
+                },
+                {
                     "value": "points",
                     "type": "points",
-                    "$$hashKey": "object:2022"
+                    "$$hashKey": "object:4831"
                 },
                 {
                     "value": "3",
                     "type": "degree",
-                    "$$hashKey": "object:2023"
+                    "$$hashKey": "object:4832"
                 }
             ],
-            "result": "spiral",
-            "$$hashKey": "object:2007",
+            "result": "crv",
+            "$$hashKey": "object:4815",
             "selected": false
         },
         {
-            "id": 1,
+            "id": 3,
             "title": "Output",
-            "name": "out0",
-            "dataValue": "spiral",
             "type": "new",
-            "$$hashKey": "object:13468",
+            "$$hashKey": "object:9593",
             "selected": false,
+            "name": "out",
+            "dataValue": "crv",
             "connected": true
         }
     ],
     [
         {
-            "id": 9,
+            "id": 6,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "copies",
+            "dataValue": "[]",
+            "type": "new",
+            "$$hashKey": "object:20773",
+            "selected": false
+        },
+        {
+            "id": 5,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "sequence",
+            "category": "lst",
+            "parameters": [
+                {
+                    "value": "0",
+                    "type": "start",
+                    "$$hashKey": "object:20745"
+                },
+                {
+                    "value": "num_copies",
+                    "type": "end",
+                    "$$hashKey": "object:20746"
+                },
+                {
+                    "value": "1",
+                    "type": "stepSize",
+                    "$$hashKey": "object:20747"
+                }
+            ],
+            "result": "seq",
+            "$$hashKey": "object:20730",
+            "selected": false
+        },
+        {
+            "id": 4,
+            "title": "Control",
+            "nodes": [
+                {
+                    "id": 1,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "expression": "",
+                    "method": "rotate",
+                    "category": "trn",
+                    "parameters": [
+                        {
+                            "value": "geom",
+                            "type": "object",
+                            "$$hashKey": "object:18799"
+                        },
+                        {
+                            "value": "GLOBAL",
+                            "type": "frame",
+                            "$$hashKey": "object:18800"
+                        },
+                        {
+                            "value": "0",
+                            "type": "angleX",
+                            "$$hashKey": "object:18801"
+                        },
+                        {
+                            "value": "0",
+                            "type": "angleY",
+                            "$$hashKey": "object:18802"
+                        },
+                        {
+                            "value": "i * angle",
+                            "type": "angleZ",
+                            "$$hashKey": "object:18803"
+                        },
+                        {
+                            "value": "true",
+                            "type": "copy",
+                            "$$hashKey": "object:18804"
+                        }
+                    ],
+                    "result": "copy",
+                    "$$hashKey": "object:18779",
+                    "selected": false
+                },
+                {
+                    "id": 12,
+                    "title": "Action",
+                    "nodes": [],
+                    "expression": "",
+                    "method": "extend",
+                    "category": "lst",
+                    "return": false,
+                    "parameters": [
+                        {
+                            "value": "copies",
+                            "type": "list",
+                            "$$hashKey": "object:41840"
+                        },
+                        {
+                            "value": "copy",
+                            "type": "extension_list",
+                            "$$hashKey": "object:41841"
+                        }
+                    ],
+                    "result": "",
+                    "$$hashKey": "object:41830",
+                    "selected": false
+                }
+            ],
+            "type": "assign",
+            "controlType": "for each",
+            "dataName": "i",
+            "forList": "seq",
+            "$$hashKey": "object:20122",
+            "selected": true
+        },
+        {
+            "id": 3,
+            "title": "Output",
+            "type": "new",
+            "$$hashKey": "object:19540",
+            "selected": false,
+            "name": "out",
+            "dataValue": "copies"
+        }
+    ],
+    [
+        {
+            "id": 4,
             "title": "Action",
             "nodes": [],
             "type": "new",
@@ -449,830 +637,61 @@
                 {
                     "value": "[0,0,0]",
                     "type": "origin",
-                    "$$hashKey": "object:7523"
+                    "$$hashKey": "object:2676"
                 },
                 {
                     "value": "[1,0,0]",
                     "type": "xAxis",
-                    "$$hashKey": "object:7524"
+                    "$$hashKey": "object:2677"
                 },
                 {
                     "value": "[0,1,0]",
                     "type": "zAxis",
-                    "$$hashKey": "object:7525"
+                    "$$hashKey": "object:2678"
                 }
             ],
-            "result": "frame",
-            "$$hashKey": "object:7508",
-            "selected": false
-        },
-        {
-            "id": 7,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "sequence",
-            "category": "lst",
-            "parameters": [
-                {
-                    "value": "0",
-                    "type": "start",
-                    "$$hashKey": "object:4084"
-                },
-                {
-                    "value": "num_copies",
-                    "type": "end",
-                    "$$hashKey": "object:4085"
-                },
-                {
-                    "value": "1",
-                    "type": "stepSize",
-                    "$$hashKey": "object:4086"
-                }
-            ],
-            "result": "seq",
-            "$$hashKey": "object:4069",
-            "selected": false
-        },
-        {
-            "id": 8,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "degToRad",
-            "category": "msc",
-            "parameters": [
-                {
-                    "value": "360 / num_copies",
-                    "type": "degree",
-                    "$$hashKey": "object:2955"
-                }
-            ],
-            "result": "angle_rad",
-            "$$hashKey": "object:2940",
-            "selected": false
-        },
-        {
-            "id": 4,
-            "title": "Data",
-            "nodes": [],
-            "dataName": "cpys",
-            "dataValue": "[]",
-            "type": "new",
-            "$$hashKey": "object:3403",
-            "selected": false
-        },
-        {
-            "id": 3,
-            "title": "Control",
-            "nodes": [
-                {
-                    "id": 8,
-                    "title": "Action",
-                    "nodes": [],
-                    "expression": "",
-                    "method": "copy",
-                    "category": "obj",
-                    "parameters": [
-                        {
-                            "value": "geom",
-                            "type": "object",
-                            "$$hashKey": "object:4006"
-                        }
-                    ],
-                    "result": "cpy",
-                    "$$hashKey": "object:3993",
-                    "selected": false
-                },
-                {
-                    "id": 8,
-                    "title": "Action",
-                    "nodes": [],
-                    "expression": "",
-                    "method": "reflect",
-                    "category": "trn",
-                    "parameters": [
-                        {
-                            "value": "cpy",
-                            "type": "object",
-                            "$$hashKey": "object:6477"
-                        },
-                        {
-                            "value": "frame",
-                            "type": "frame",
-                            "$$hashKey": "object:6478"
-                        },
-                        {
-                            "value": "true",
-                            "type": "copy",
-                            "$$hashKey": "object:6479"
-                        }
-                    ],
-                    "result": "anti_cpy",
-                    "$$hashKey": "object:6464",
-                    "selected": false,
-                    "disabled": false
-                },
-                {
-                    "id": 7,
-                    "title": "Action",
-                    "nodes": [],
-                    "expression": "",
-                    "method": "rotate",
-                    "category": "trn",
-                    "parameters": [
-                        {
-                            "value": "[cpy, anti_cpy]",
-                            "type": "object",
-                            "$$hashKey": "object:4706"
-                        },
-                        {
-                            "value": "frame",
-                            "type": "frame",
-                            "$$hashKey": "object:4707"
-                        },
-                        {
-                            "value": "0",
-                            "type": "angleX",
-                            "$$hashKey": "object:4708"
-                        },
-                        {
-                            "value": "angle_rad*i",
-                            "type": "angleY",
-                            "$$hashKey": "object:4709"
-                        },
-                        {
-                            "value": "0",
-                            "type": "angleZ",
-                            "$$hashKey": "object:4710"
-                        },
-                        {
-                            "value": "false",
-                            "type": "copy",
-                            "$$hashKey": "object:4711"
-                        }
-                    ],
-                    "result": "spirals",
-                    "$$hashKey": "object:4693",
-                    "selected": false
-                },
-                {
-                    "id": 9,
-                    "title": "Action",
-                    "nodes": [],
-                    "expression": "",
-                    "method": "extend",
-                    "category": "lst",
-                    "parameters": [
-                        {
-                            "value": "cpys",
-                            "type": "list",
-                            "$$hashKey": "object:2740"
-                        },
-                        {
-                            "value": "spirals",
-                            "type": "extension_list",
-                            "$$hashKey": "object:2741"
-                        }
-                    ],
-                    "result": "_",
-                    "$$hashKey": "object:2727",
-                    "selected": false
-                }
-            ],
-            "type": "new",
-            "controlType": "for each",
-            "dataName": "i",
-            "forList": "seq",
-            "$$hashKey": "object:2681",
-            "selected": false
-        },
-        {
-            "id": 1,
-            "title": "Output",
-            "name": "geom",
-            "dataValue": "cpys",
-            "type": "new",
-            "selected": false,
-            "$$hashKey": "object:15323"
-        }
-    ],
-    [
-        {
-            "id": 1,
-            "title": "Output",
-            "name": "pipe",
-            "dataValue": "pipe",
-            "type": "new",
-            "$$hashKey": "object:8432",
-            "selected": false
-        },
-        {
-            "id": 2,
-            "title": "Data",
-            "nodes": [],
-            "dataName": "crv",
-            "dataValue": "curve( radius, height, angle, num_points, tube_radius ).out0",
-            "type": "new",
-            "$$hashKey": "object:9328",
+            "result": "xz",
+            "$$hashKey": "object:2661",
             "selected": true
         },
         {
-            "id": 5,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "nurbsPipe",
-            "category": "srf",
-            "parameters": [
-                {
-                    "value": "crv",
-                    "type": "centreCurve",
-                    "$$hashKey": "object:3232"
-                },
-                {
-                    "value": "tube_radius",
-                    "type": "radius",
-                    "$$hashKey": "object:3233"
-                }
-            ],
-            "result": "pipe",
-            "$$hashKey": "object:3217",
-            "selected": false
-        }
-    ],
-    [
-        {
             "id": 3,
-            "title": "Data",
-            "nodes": [],
-            "dataName": "points",
-            "dataValue": "[]",
-            "type": "new",
-            "selected": false,
-            "$$hashKey": "object:8837"
-        },
-        {
-            "id": 10,
             "title": "Action",
             "nodes": [],
             "type": "new",
             "expression": "",
-            "method": "sequence",
-            "category": "lst",
+            "method": "reflect",
+            "category": "trn",
             "parameters": [
                 {
-                    "value": "0",
-                    "type": "start",
-                    "$$hashKey": "object:7093"
+                    "value": "geom",
+                    "type": "object",
+                    "$$hashKey": "object:26721"
                 },
                 {
-                    "value": "num_points",
-                    "type": "end",
-                    "$$hashKey": "object:7094"
+                    "value": "xz",
+                    "type": "frame",
+                    "$$hashKey": "object:26722"
                 },
                 {
-                    "value": "1",
-                    "type": "stepSize",
-                    "$$hashKey": "object:7095"
+                    "value": "true",
+                    "type": "copy",
+                    "$$hashKey": "object:26723"
                 }
             ],
-            "result": "seq",
-            "$$hashKey": "object:7078",
-            "selected": false
-        },
-        {
-            "id": 10,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "degToRad",
-            "category": "msc",
-            "parameters": [
-                {
-                    "value": "angle",
-                    "type": "degree",
-                    "$$hashKey": "object:7597"
-                }
-            ],
-            "result": "angle",
-            "$$hashKey": "object:7582",
-            "selected": false
-        },
-        {
-            "id": 2,
-            "title": "Control",
-            "nodes": [
-                {
-                    "id": 5,
-                    "title": "Data",
-                    "nodes": [],
-                    "dataName": "a",
-                    "dataValue": "(angle / (num_points)) * i",
-                    "selected": false,
-                    "$$hashKey": "object:9998"
-                },
-                {
-                    "id": 5,
-                    "title": "Data",
-                    "nodes": [],
-                    "dataName": "x",
-                    "dataValue": "Math.cos(a) * (radius - i*radius/num_points)",
-                    "selected": false,
-                    "$$hashKey": "object:10001"
-                },
-                {
-                    "id": 5,
-                    "title": "Data",
-                    "nodes": [],
-                    "dataName": "y",
-                    "dataValue": "Math.sin(a) * (radius - i*radius/num_points)",
-                    "selected": false,
-                    "$$hashKey": "object:10002"
-                },
-                {
-                    "id": 5,
-                    "title": "Data",
-                    "nodes": [],
-                    "dataName": "z",
-                    "dataValue": "(height / num_points) * i",
-                    "selected": false,
-                    "$$hashKey": "object:10003"
-                },
-                {
-                    "id": 10,
-                    "title": "Action",
-                    "nodes": [],
-                    "expression": "",
-                    "method": "append",
-                    "category": "lst",
-                    "parameters": [
-                        {
-                            "value": "points",
-                            "type": "list",
-                            "$$hashKey": "object:8083"
-                        },
-                        {
-                            "value": "[x, y, z]",
-                            "type": "itemOrList",
-                            "$$hashKey": "object:8084"
-                        }
-                    ],
-                    "result": "_",
-                    "$$hashKey": "object:8070",
-                    "selected": false
-                }
-            ],
-            "type": "new",
-            "controlType": "for each",
-            "dataName": "i",
-            "forList": "seq",
-            "selected": false,
-            "$$hashKey": "object:8840"
-        },
-        {
-            "id": 10,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "nurbsByPoints",
-            "category": "crv",
-            "parameters": [
-                {
-                    "value": "points",
-                    "type": "points",
-                    "$$hashKey": "object:8698"
-                },
-                {
-                    "value": "3",
-                    "type": "degree",
-                    "$$hashKey": "object:8699"
-                }
-            ],
-            "result": "spiral",
-            "$$hashKey": "object:8685",
+            "result": "copy",
+            "$$hashKey": "object:26707",
             "selected": false
         },
         {
             "id": 1,
             "title": "Output",
-            "name": "out0",
-            "dataValue": "spiral",
             "type": "new",
+            "$$hashKey": "object:24997",
             "selected": false,
-            "connected": true,
-            "$$hashKey": "object:8842"
-        }
-    ],
-    [
-        {
-            "id": 8,
-            "title": "Data",
-            "nodes": [],
-            "dataName": "amp",
-            "dataValue": "4",
-            "type": "new",
-            "selected": false,
-            "$$hashKey": "object:9200"
-        },
-        {
-            "id": 7,
-            "title": "Data",
-            "nodes": [],
-            "dataName": "freq",
-            "dataValue": "0.3",
-            "type": "new",
-            "selected": false,
-            "$$hashKey": "object:9201"
-        },
-        {
-            "id": 3,
-            "title": "Data",
-            "nodes": [],
-            "dataName": "points",
-            "dataValue": "[]",
-            "type": "new",
-            "selected": false,
-            "$$hashKey": "object:9202"
-        },
-        {
-            "id": 9,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "sequence",
-            "category": "lst",
-            "parameters": [
-                {
-                    "value": "0",
-                    "type": "start",
-                    "$$hashKey": "object:1806"
-                },
-                {
-                    "value": "num_points",
-                    "type": "end",
-                    "$$hashKey": "object:1807"
-                },
-                {
-                    "value": "1",
-                    "type": "stepSize",
-                    "$$hashKey": "object:1808"
-                }
-            ],
-            "result": "seq",
-            "$$hashKey": "object:1791",
-            "selected": false
-        },
-        {
-            "id": 9,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "degToRad",
-            "category": "msc",
-            "parameters": [
-                {
-                    "value": "angle",
-                    "type": "degree",
-                    "$$hashKey": "object:2310"
-                }
-            ],
-            "result": "angle",
-            "$$hashKey": "object:2295",
-            "selected": false
-        },
-        {
-            "id": 2,
-            "title": "Control",
-            "nodes": [
-                {
-                    "id": 5,
-                    "title": "Data",
-                    "nodes": [],
-                    "dataName": "a",
-                    "dataValue": "(angle / (num_points)) * i",
-                    "selected": false,
-                    "$$hashKey": "object:10340"
-                },
-                {
-                    "id": 7,
-                    "title": "Data",
-                    "nodes": [],
-                    "dataName": "sinusoid_variation",
-                    "dataValue": "amp*Math.sin( 2*Math.PI*freq*i )",
-                    "selected": false,
-                    "$$hashKey": "object:10341"
-                },
-                {
-                    "id": 7,
-                    "title": "Data",
-                    "nodes": [],
-                    "dataName": "radius",
-                    "dataValue": "radius + sinusoid_variation",
-                    "selected": false,
-                    "$$hashKey": "object:10342"
-                },
-                {
-                    "id": 5,
-                    "title": "Data",
-                    "nodes": [],
-                    "dataName": "x",
-                    "dataValue": "Math.cos(a) * radius",
-                    "selected": false,
-                    "$$hashKey": "object:10343"
-                },
-                {
-                    "id": 5,
-                    "title": "Data",
-                    "nodes": [],
-                    "dataName": "y",
-                    "dataValue": "Math.sin(a) * radius",
-                    "selected": false,
-                    "$$hashKey": "object:10344"
-                },
-                {
-                    "id": 5,
-                    "title": "Data",
-                    "nodes": [],
-                    "dataName": "z",
-                    "dataValue": "(height / num_points) * i",
-                    "selected": false,
-                    "$$hashKey": "object:10345"
-                },
-                {
-                    "id": 9,
-                    "title": "Action",
-                    "nodes": [],
-                    "expression": "",
-                    "method": "append",
-                    "category": "lst",
-                    "parameters": [
-                        {
-                            "value": "points",
-                            "type": "list",
-                            "$$hashKey": "object:3607"
-                        },
-                        {
-                            "value": "[x, y, z]",
-                            "type": "itemOrList",
-                            "$$hashKey": "object:3608"
-                        }
-                    ],
-                    "result": "_",
-                    "$$hashKey": "object:3594",
-                    "selected": false
-                }
-            ],
-            "type": "new",
-            "controlType": "for each",
-            "dataName": "i",
-            "forList": "seq",
-            "selected": false,
-            "$$hashKey": "object:9205"
-        },
-        {
-            "id": 9,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "nurbsByPoints",
-            "category": "crv",
-            "parameters": [
-                {
-                    "value": "points",
-                    "type": "points",
-                    "$$hashKey": "object:4207"
-                },
-                {
-                    "value": "3",
-                    "type": "degree",
-                    "$$hashKey": "object:4208"
-                }
-            ],
-            "result": "spiral",
-            "$$hashKey": "object:4192",
-            "selected": true
-        },
-        {
-            "id": 1,
-            "title": "Output",
-            "name": "out0",
-            "dataValue": "spiral",
-            "type": "new",
-            "selected": false,
-            "connected": true,
-            "$$hashKey": "object:9207"
-        }
-    ],
-    [
-        {
-            "id": 8,
-            "title": "Data",
-            "nodes": [],
-            "dataName": "amp",
-            "dataValue": "1",
-            "type": "new",
-            "selected": false,
-            "$$hashKey": "object:16272"
-        },
-        {
-            "id": 7,
-            "title": "Data",
-            "nodes": [],
-            "dataName": "freq",
-            "dataValue": "0.3",
-            "type": "new",
-            "selected": false,
-            "$$hashKey": "object:16273"
-        },
-        {
-            "id": 3,
-            "title": "Data",
-            "nodes": [],
-            "dataName": "points",
-            "dataValue": "[]",
-            "type": "new",
-            "selected": false,
-            "$$hashKey": "object:16274"
-        },
-        {
-            "id": 9,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "sequence",
-            "category": "lst",
-            "parameters": [
-                {
-                    "value": "0",
-                    "type": "start",
-                    "$$hashKey": "object:11574"
-                },
-                {
-                    "value": "num_points",
-                    "type": "end",
-                    "$$hashKey": "object:11575"
-                },
-                {
-                    "value": "1",
-                    "type": "stepSize",
-                    "$$hashKey": "object:11576"
-                }
-            ],
-            "result": "seq",
-            "$$hashKey": "object:11559",
-            "selected": false
-        },
-        {
-            "id": 9,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "degToRad",
-            "category": "msc",
-            "parameters": [
-                {
-                    "value": "angle",
-                    "type": "degree",
-                    "$$hashKey": "object:12078"
-                }
-            ],
-            "result": "angle",
-            "$$hashKey": "object:12063",
-            "selected": false
-        },
-        {
-            "id": 2,
-            "title": "Control",
-            "nodes": [
-                {
-                    "id": 5,
-                    "title": "Data",
-                    "nodes": [],
-                    "dataName": "a",
-                    "dataValue": "(angle / (num_points)) * i",
-                    "selected": false,
-                    "$$hashKey": "object:16602"
-                },
-                {
-                    "id": 7,
-                    "title": "Data",
-                    "nodes": [],
-                    "dataName": "sinusoid_variation",
-                    "dataValue": "amp*Math.sin( 2*Math.PI*freq*i )",
-                    "selected": false,
-                    "$$hashKey": "object:16603"
-                },
-                {
-                    "id": 7,
-                    "title": "Data",
-                    "nodes": [],
-                    "dataName": "radius",
-                    "dataValue": "radius + sinusoid_variation  - (radius/num_points)",
-                    "selected": false,
-                    "$$hashKey": "object:16604"
-                },
-                {
-                    "id": 5,
-                    "title": "Data",
-                    "nodes": [],
-                    "dataName": "x",
-                    "dataValue": "Math.cos(a) * ((radius - i*radius/num_points) + sinusoid_variation)",
-                    "selected": false,
-                    "$$hashKey": "object:16605"
-                },
-                {
-                    "id": 5,
-                    "title": "Data",
-                    "nodes": [],
-                    "dataName": "y",
-                    "dataValue": "Math.sin(a) * ((radius - i*radius/num_points) + sinusoid_variation)",
-                    "selected": false,
-                    "$$hashKey": "object:16606"
-                },
-                {
-                    "id": 5,
-                    "title": "Data",
-                    "nodes": [],
-                    "dataName": "z",
-                    "dataValue": "(height / num_points) * i",
-                    "selected": false,
-                    "$$hashKey": "object:16607"
-                },
-                {
-                    "id": 9,
-                    "title": "Action",
-                    "nodes": [],
-                    "expression": "",
-                    "method": "append",
-                    "category": "lst",
-                    "parameters": [
-                        {
-                            "value": "points",
-                            "type": "list",
-                            "$$hashKey": "object:12564"
-                        },
-                        {
-                            "value": "[x, y, z]",
-                            "type": "itemOrList",
-                            "$$hashKey": "object:12565"
-                        }
-                    ],
-                    "result": "_",
-                    "$$hashKey": "object:12551",
-                    "selected": false
-                }
-            ],
-            "type": "new",
-            "controlType": "for each",
-            "dataName": "i",
-            "forList": "seq",
-            "selected": false,
-            "$$hashKey": "object:16277"
-        },
-        {
-            "id": 9,
-            "title": "Action",
-            "nodes": [],
-            "type": "new",
-            "expression": "",
-            "method": "nurbsByPoints",
-            "category": "crv",
-            "parameters": [
-                {
-                    "value": "points",
-                    "type": "points",
-                    "$$hashKey": "object:13721"
-                },
-                {
-                    "value": "3",
-                    "type": "degree",
-                    "$$hashKey": "object:13722"
-                }
-            ],
-            "result": "spiral",
-            "$$hashKey": "object:13708",
-            "selected": false
-        },
-        {
-            "id": 1,
-            "title": "Output",
-            "name": "out0",
-            "dataValue": "spiral",
-            "type": "new",
-            "selected": false,
-            "connected": true,
-            "$$hashKey": "object:16279"
+            "name": "out1",
+            "dataValue": "[geom, copy]",
+            "connected": true
         }
     ]
 ]
@@ -1281,72 +700,222 @@
 [
     [
         {
-            "id": 2,
+            "id": 5,
             "title": "Input",
-            "name": "radius",
+            "name": "input",
             "connected": false,
-            "dataValue": "40",
+            "dataValue": "0.2",
             "option": {
                 "name": "slider",
-                "$$hashKey": "object:713"
+                "$$hashKey": "object:2346"
             },
             "color": "#000000",
-            "$$hashKey": "object:13412",
+            "$$hashKey": "object:3968",
             "selected": false,
-            "min": "1",
-            "max": "50",
+            "min": "0",
+            "max": "1",
             "step": "0.1"
+        },
+        {
+            "id": 2,
+            "title": "Input",
+            "name": "rad1",
+            "connected": false,
+            "dataValue": "3.5",
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:2346"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:2255",
+            "selected": true,
+            "min": "0",
+            "max": "10",
+            "step": "0.1"
+        },
+        {
+            "id": 5,
+            "title": "Input",
+            "name": "rad2",
+            "connected": false,
+            "dataValue": "5",
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:2346"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:53870",
+            "selected": false,
+            "min": "0",
+            "max": "10",
+            "step": "1"
+        },
+        {
+            "id": 3,
+            "title": "Input",
+            "name": "freq",
+            "connected": false,
+            "dataValue": "1.2",
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:2346"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:2289",
+            "selected": false,
+            "min": "0",
+            "max": "3",
+            "step": "0.1"
+        },
+        {
+            "id": 4,
+            "title": "Input",
+            "name": "amplitude",
+            "connected": false,
+            "dataValue": "4.2",
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:2346"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:2317",
+            "selected": false,
+            "min": "0",
+            "max": "10",
+            "step": "0.1"
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Input",
+            "name": "angle",
+            "connected": false,
+            "dataValue": "73",
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:2346"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:9451",
+            "selected": false,
+            "min": "0",
+            "max": "360",
+            "step": "1"
+        },
+        {
+            "id": 2,
+            "title": "Input",
+            "name": "num_points",
+            "connected": false,
+            "dataValue": "12",
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:2346"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:10806",
+            "selected": false,
+            "min": "4",
+            "max": "30",
+            "step": "1"
         },
         {
             "id": 3,
             "title": "Input",
             "name": "height",
             "connected": false,
-            "dataValue": "90",
+            "dataValue": "42",
             "option": {
                 "name": "slider",
-                "$$hashKey": "object:713"
+                "$$hashKey": "object:2346"
             },
             "color": "#000000",
-            "$$hashKey": "object:13428",
+            "$$hashKey": "object:10893",
             "selected": false,
-            "min": "1",
-            "max": "100",
-            "step": "0.1"
-        },
-        {
-            "id": 1,
-            "title": "Input",
-            "name": "angle",
-            "connected": false,
-            "dataValue": "50.1",
-            "option": {
-                "name": "slider",
-                "$$hashKey": "object:713"
-            },
-            "color": "#000000",
-            "$$hashKey": "object:13396",
-            "selected": true,
-            "min": "0",
-            "max": "360",
-            "step": "0.1"
+            "min": "5",
+            "max": "50",
+            "step": "1"
         },
         {
             "id": 4,
             "title": "Input",
-            "name": "num_points",
-            "connected": false,
-            "dataValue": "10",
+            "name": "rad_f",
+            "connected": true,
             "option": {
-                "name": "slider",
-                "$$hashKey": "object:713"
+                "name": "none"
             },
             "color": "#000000",
-            "$$hashKey": "object:14031",
+            "$$hashKey": "object:11241",
+            "selected": false
+        },
+        {
+            "id": 5,
+            "title": "Input",
+            "name": "rad1",
+            "connected": false,
+            "dataValue": "8.2",
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:2346"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:12602",
             "selected": false,
-            "min": "4",
-            "max": "20",
-            "step": "1"
+            "min": "0",
+            "max": "10",
+            "step": "0.1"
+        },
+        {
+            "id": 8,
+            "title": "Input",
+            "name": "rad2",
+            "connected": false,
+            "dataValue": "0",
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:2346"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:54351",
+            "selected": true,
+            "min": "0",
+            "max": "10",
+            "step": "0.1"
+        },
+        {
+            "id": 6,
+            "title": "Input",
+            "name": "freq",
+            "connected": false,
+            "dataValue": "3.2",
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:2346"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:12630",
+            "selected": false,
+            "min": "0",
+            "max": "10",
+            "step": "0.1"
+        },
+        {
+            "id": 7,
+            "title": "Input",
+            "name": "amplitude",
+            "connected": false,
+            "dataValue": "3.1",
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:2346"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:12658",
+            "selected": false,
+            "min": "0",
+            "max": "10",
+            "step": "0.1"
         }
     ],
     [
@@ -1359,315 +928,57 @@
                 "name": "none"
             },
             "color": "#000000",
-            "selected": false,
-            "$$hashKey": "object:15208"
-        },
-        {
-            "id": 3,
-            "title": "Input",
-            "name": "num_copies",
-            "connected": false,
-            "dataValue": "15",
-            "option": {
-                "name": "none"
-            },
-            "color": "#000000",
-            "selected": true,
-            "$$hashKey": "object:15211"
-        }
-    ],
-    [
-        {
-            "id": 1,
-            "title": "Input",
-            "name": "radius",
-            "connected": false,
-            "dataValue": "30",
-            "option": {
-                "name": "slider",
-                "$$hashKey": "object:9220"
-            },
-            "color": "#000000",
-            "$$hashKey": "object:7249",
-            "selected": false,
-            "min": "0",
-            "max": "100",
-            "step": "5"
-        },
-        {
-            "id": 2,
-            "title": "Input",
-            "name": "height",
-            "connected": false,
-            "dataValue": "140",
-            "option": {
-                "name": "slider",
-                "$$hashKey": "object:9220"
-            },
-            "color": "#000000",
-            "$$hashKey": "object:7275",
-            "selected": false,
-            "min": "20",
-            "max": "200",
-            "step": "20"
-        },
-        {
-            "id": 3,
-            "title": "Input",
-            "name": "angle",
-            "connected": false,
-            "dataValue": "360",
-            "option": {
-                "name": "slider",
-                "$$hashKey": "object:9220"
-            },
-            "color": "#000000",
-            "$$hashKey": "object:7298",
-            "selected": false,
-            "min": "0",
-            "max": "360",
-            "step": "1"
-        },
-        {
-            "id": 4,
-            "title": "Input",
-            "name": "num_points",
-            "connected": false,
-            "dataValue": "10",
-            "option": {
-                "name": "none",
-                "$$hashKey": "object:9219"
-            },
-            "color": "#000000",
-            "$$hashKey": "object:7321",
+            "$$hashKey": "object:18158",
             "selected": false
         },
         {
-            "id": 6,
+            "id": 2,
             "title": "Input",
-            "name": "tube_radius",
+            "name": "num_copies",
             "connected": false,
-            "dataValue": "0.6",
+            "dataValue": "48",
             "option": {
                 "name": "slider",
-                "$$hashKey": "object:5053"
+                "$$hashKey": "object:2346"
             },
             "color": "#000000",
-            "$$hashKey": "object:5024",
+            "$$hashKey": "object:21903",
             "selected": false,
-            "min": "0.1",
-            "max": "1.5",
-            "step": "0.1"
+            "min": "2",
+            "max": "50",
+            "step": "1"
         },
         {
-            "id": 6,
+            "id": 3,
             "title": "Input",
-            "name": "curve",
+            "name": "angle",
+            "connected": false,
+            "dataValue": "360 / num_copies",
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:2346"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:21956",
+            "selected": true,
+            "min": "0",
+            "max": "360",
+            "step": "0.1"
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Input",
+            "name": "geom",
             "connected": true,
             "option": {
-                "name": "none"
+                "name": "none",
+                "$$hashKey": "object:25020"
             },
             "color": "#000000",
-            "$$hashKey": "object:1941",
+            "$$hashKey": "object:24966",
             "selected": true
-        }
-    ],
-    [
-        {
-            "id": 2,
-            "title": "Input",
-            "name": "radius",
-            "connected": false,
-            "dataValue": "24.8",
-            "option": {
-                "name": "slider"
-            },
-            "color": "#000000",
-            "selected": false,
-            "min": "1",
-            "max": "50",
-            "step": "0.1",
-            "$$hashKey": "object:8815"
-        },
-        {
-            "id": 3,
-            "title": "Input",
-            "name": "height",
-            "connected": false,
-            "dataValue": "45.4",
-            "option": {
-                "name": "slider"
-            },
-            "color": "#000000",
-            "selected": false,
-            "min": "1",
-            "max": "100",
-            "step": "0.1",
-            "$$hashKey": "object:8816"
-        },
-        {
-            "id": 1,
-            "title": "Input",
-            "name": "angle",
-            "connected": false,
-            "dataValue": "360",
-            "option": {
-                "name": "slider"
-            },
-            "color": "#000000",
-            "selected": true,
-            "min": "0",
-            "max": "360",
-            "step": "0.1",
-            "$$hashKey": "object:8817"
-        },
-        {
-            "id": 4,
-            "title": "Input",
-            "name": "num_points",
-            "connected": false,
-            "dataValue": "11",
-            "option": {
-                "name": "slider"
-            },
-            "color": "#000000",
-            "selected": false,
-            "min": "4",
-            "max": "20",
-            "step": "1",
-            "$$hashKey": "object:8818"
-        }
-    ],
-    [
-        {
-            "id": 2,
-            "title": "Input",
-            "name": "radius",
-            "connected": false,
-            "dataValue": "24.8",
-            "option": {
-                "name": "slider"
-            },
-            "color": "#000000",
-            "selected": false,
-            "min": "1",
-            "max": "50",
-            "step": "0.1",
-            "$$hashKey": "object:9176"
-        },
-        {
-            "id": 3,
-            "title": "Input",
-            "name": "height",
-            "connected": false,
-            "dataValue": "45.4",
-            "option": {
-                "name": "slider"
-            },
-            "color": "#000000",
-            "selected": false,
-            "min": "1",
-            "max": "100",
-            "step": "0.1",
-            "$$hashKey": "object:9177"
-        },
-        {
-            "id": 1,
-            "title": "Input",
-            "name": "angle",
-            "connected": false,
-            "dataValue": "360",
-            "option": {
-                "name": "slider"
-            },
-            "color": "#000000",
-            "selected": true,
-            "min": "0",
-            "max": "360",
-            "step": "0.1",
-            "$$hashKey": "object:9178"
-        },
-        {
-            "id": 4,
-            "title": "Input",
-            "name": "num_points",
-            "connected": false,
-            "dataValue": "11",
-            "option": {
-                "name": "slider"
-            },
-            "color": "#000000",
-            "selected": false,
-            "min": "4",
-            "max": "20",
-            "step": "1",
-            "$$hashKey": "object:9179"
-        }
-    ],
-    [
-        {
-            "id": 2,
-            "title": "Input",
-            "name": "radius",
-            "connected": false,
-            "dataValue": "24.8",
-            "option": {
-                "name": "slider"
-            },
-            "color": "#000000",
-            "selected": false,
-            "min": "1",
-            "max": "50",
-            "step": "0.1",
-            "$$hashKey": "object:16248"
-        },
-        {
-            "id": 3,
-            "title": "Input",
-            "name": "height",
-            "connected": false,
-            "dataValue": "45.4",
-            "option": {
-                "name": "slider"
-            },
-            "color": "#000000",
-            "selected": false,
-            "min": "1",
-            "max": "100",
-            "step": "0.1",
-            "$$hashKey": "object:16249"
-        },
-        {
-            "id": 1,
-            "title": "Input",
-            "name": "angle",
-            "connected": false,
-            "dataValue": "360",
-            "option": {
-                "name": "slider"
-            },
-            "color": "#000000",
-            "selected": true,
-            "min": "0",
-            "max": "360",
-            "step": "0.1",
-            "$$hashKey": "object:16250"
-        },
-        {
-            "id": 4,
-            "title": "Input",
-            "name": "num_points",
-            "connected": false,
-            "dataValue": "11",
-            "option": {
-                "name": "slider"
-            },
-            "color": "#000000",
-            "selected": false,
-            "min": "4",
-            "max": "20",
-            "step": "1",
-            "$$hashKey": "object:16251"
         }
     ]
 ]
