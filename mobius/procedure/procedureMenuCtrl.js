@@ -1,6 +1,10 @@
 vidamo.controller('procedureMenuCtrl',['$scope','$rootScope','generateCode',
     function($scope, $rootScope, generateCode){
 
+        // procedure items to track
+        $scope.selectedParentItem = undefined;
+        $scope.selectedPos = undefined;
+        $scope.selectedParent = undefined;
 
         // procedure data list
         $scope.dataList = generateCode.getDataList();
@@ -25,7 +29,6 @@ vidamo.controller('procedureMenuCtrl',['$scope','$rootScope','generateCode',
         // disable selected item
         $scope.disableProcedure = function(){
             $scope.findSelectedProcedure($scope.data);
-
             // if disable 'if' -> disable 'if/else'
             if($scope.selectedPos.title === 'Control' && $scope.selectedPos.controlType === 'if'){
                 for(var i = 0;i < $scope.data.length; i++){
@@ -57,7 +60,6 @@ vidamo.controller('procedureMenuCtrl',['$scope','$rootScope','generateCode',
             $scope.enableParentItems($scope.selectedPos);
         };
 
-
         // enable sub items recursively
         $scope.enableSubItems = function(parent){
             if(parent && parent.nodes){
@@ -67,8 +69,6 @@ vidamo.controller('procedureMenuCtrl',['$scope','$rootScope','generateCode',
                 }
             }
         };
-
-        $scope.selectedParentItem = undefined;
 
         // cover backwards enable for if/else and for recursively
         $scope.enableParentItems = function(son){
@@ -101,12 +101,31 @@ vidamo.controller('procedureMenuCtrl',['$scope','$rootScope','generateCode',
             }
         };
 
+        // todo comprehensive copy
+        $scope.copyProcedure = function (){
+            // broadcast to procedure controller to add new items
+            $scope.findSelectedProcedure($scope.data);
 
-        // todo copy selected item
-        $scope.copyProcedure = function (){};
 
-        $scope.selectedPos = undefined;
-        $scope.selectedParent = undefined;
+            if($scope.selectedPos.title === 'Data' ||
+                $scope.selectedPos.title === 'Output' ){
+                $rootScope.$broadcast('copyProcedure', $scope.selectedPos.title);
+            }
+            else if($scope.selectedPos.title === 'Action'){
+                var subCate = {
+                    category:$scope.selectedPos.category,
+                    name:$scope.selectedPos.method,
+                    return:$scope.selectedPos.return};
+                $rootScope.$broadcast('copyProcedure', $scope.selectedPos.title,subCate);
+            }
+            else if($scope.selectedPos.title === 'Control'){
+                var subCate = $scope.selectedPos.controlType;
+                if(subCate === 'if' || subCate === 'else'){
+                    subCate === 'if else';
+                }
+                $rootScope.$broadcast('copyProcedure', $scope.selectedPos.title,subCate);
+            }
+        };
 
         $scope.findSelectedProcedure = function (tree){
             for(var i = 0; i < tree.length; i++ ){
@@ -117,7 +136,7 @@ vidamo.controller('procedureMenuCtrl',['$scope','$rootScope','generateCode',
                         $scope.root = false;
 
                 }else if(tree[i].nodes){
-                    $scope.findSelectedProcedure(tree[i].nodes)
+                    $scope.findSelectedProcedure(tree[i].nodes);
                     $scope.selectedParentItem = tree[i];
                 }
             }

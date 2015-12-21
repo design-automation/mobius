@@ -491,19 +491,23 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
             scope.toggle();
         };
 
+        $scope.$on('copyProcedure',function(event,cate,subCate){
+            $scope.newItem(cate,subCate);
+        });
+
         // new parameter / procedure items
         $scope.newItem = function(cate,subCate) {
             $scope.currentHighestId = 0;
 
-            //try{
-                // finding adding position
+
+            try{
+                 //finding adding position
                 var selectedPos = undefined;
                 var selectedParent = undefined;
                 var insertPos = undefined;
                 var insertIndex = undefined;
 
                 function findSelected (tree){
-
                     for(var i = 0; i < tree.length; i++ ){
                         if(tree[i].selected === true){
                             selectedPos  = tree[i];
@@ -694,10 +698,10 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                             break;
                     }
                 }
-            //}
-            //catch(err){
-            //    consoleMsg.errorMsg('noNode');
-            //}
+            }
+            catch(err){
+                consoleMsg.errorMsg('noNode');
+            }
             var procedureDiv = document.getElementById("procedure-area");
             setTimeout(function(){
                 procedureDiv.scrollTop = procedureDiv.scrollHeight;},0);

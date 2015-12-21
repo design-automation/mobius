@@ -422,19 +422,19 @@
 
         <!--todo context menu for procedure items-->
         <div ng-controller="procedureMenuCtrl" >
-            <div class="dropdown position-fixed " id="menu-procedure" ng-if="!isOutput()">
+            <div class="dropdown position-fixed " id="menu-procedure">
                 <ul class="dropdown-menu" >
-                    <li>
+                    <li ng-if="!isOutput()">
                         <a ng-if="!checkDisabled()" ng-click="disableProcedure()"> Disable </a>
                     </li>
 
-                    <li>
+                    <li ng-if="!isOutput()">
                         <a ng-if="checkDisabled()" ng-click="enableProcedure()"> Enable </a>
                     </li>
 
-                    <!--<li>-->
-                        <!--<a ng-click="copyProcedure()"> Copy </a>-->
-                    <!--</li>-->
+                    <li>
+                        <a ng-click="copyProcedure()"> Copy </a>
+                    </li>
                 </ul>
             </div>
 
