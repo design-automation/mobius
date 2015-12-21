@@ -491,14 +491,17 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
             scope.toggle();
         };
 
-        $scope.$on('copyProcedure',function(event,cate,subCate){
-            $scope.newItem(cate,subCate);
+        //$scope.$on('copyProcedure',function(event,cate,subCate){
+            //$scope.newItem(cate,subCate);
+        //});
+
+        $scope.$on('copyProcedure',function(event,content) {
+            $scope.newItem(undefined,undefined,true,content);
         });
 
         // new parameter / procedure items
-        $scope.newItem = function(cate,subCate) {
+        $scope.newItem = function(cate,subCate,isCopy,content) {
             $scope.currentHighestId = 0;
-
 
             try{
                  //finding adding position
@@ -524,7 +527,8 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                     if(selectedPos.title === 'Data' ||
                         selectedPos.title === 'Output' ||
                         selectedPos.title === 'Action' ||
-                        (selectedPos.title === 'Control' && selectedPos.controlType === 'if else')){
+                        (selectedPos.title === 'Control' && selectedPos.controlType === 'if else')||
+                        isCopy === true){
                         // insert below the select
                         insertIndex = selectedParent.indexOf(selectedPos) + 1;
                     }
@@ -540,8 +544,12 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                     insertPos = $scope.data;
                 }
 
-                // adding
-                if(cate === 'Data'){
+                // if copy
+                if(isCopy && isCopy === true){
+                    selectedParent.splice(insertIndex,0,content);
+                }
+                // if direct adding
+                else if(cate === 'Data'){
                     var dataObj = {
                         id: $scope.maxId($scope.data)  + 1,
                         title:  'Data',
@@ -671,7 +679,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                                 title:  'Control',
                                 nodes: [
                                     {
-                                        id: $scope.maxId($scope.data)  ,
+                                        id: $scope.maxId($scope.data) + 1,
                                         title:  'Control',
                                         controlType:'if',
                                         nodes: [],
@@ -679,7 +687,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
                                     },
                                     {
-                                        id: $scope.maxId($scope.data)  ,
+                                        id: $scope.maxId($scope.data) + 1,
                                         title:  'Control',
                                         controlType:'else',
                                         nodes: []
@@ -702,6 +710,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
             catch(err){
                 consoleMsg.errorMsg('noNode');
             }
+            console.log($scope.data);
             var procedureDiv = document.getElementById("procedure-area");
             setTimeout(function(){
                 procedureDiv.scrollTop = procedureDiv.scrollHeight;},0);

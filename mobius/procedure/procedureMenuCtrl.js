@@ -103,27 +103,60 @@ vidamo.controller('procedureMenuCtrl',['$scope','$rootScope','generateCode',
 
         // todo comprehensive copy
         $scope.copyProcedure = function (){
+            // version 1 | copy without content
             // broadcast to procedure controller to add new items
+            //$scope.findSelectedProcedure($scope.data);
+            //
+            //if($scope.selectedPos.title === 'Data' ||
+            //    $scope.selectedPos.title === 'Output' ){
+            //    $rootScope.$broadcast('copyProcedure', $scope.selectedPos.title);
+            //}
+            //else if($scope.selectedPos.title === 'Action'){
+            //    var subCate = {
+            //        category:$scope.selectedPos.category,
+            //        name:$scope.selectedPos.method,
+            //        return:$scope.selectedPos.return};
+            //    $rootScope.$broadcast('copyProcedure', $scope.selectedPos.title,subCate);
+            //}
+            //else if($scope.selectedPos.title === 'Control'){
+            //    var subCate = $scope.selectedPos.controlType;
+            //    if(subCate === 'if' || subCate === 'else'){
+            //        subCate === 'if else';
+            //    }
+            //    $rootScope.$broadcast('copyProcedure', $scope.selectedPos.title,subCate);
+            //}
+
+            // version 2 | copy with content
             $scope.findSelectedProcedure($scope.data);
+            $scope.numOfItems = 0;
+            $scope.findNumOfItems($scope.selectedPos);
+            var temp =  angular.copy($scope.selectedPos);
+            $scope.updateCopyItemId(temp,$scope.numOfItems);
+            $rootScope.$broadcast('copyProcedure',temp);
+        };
 
+        $scope.numOfItems = 0;
 
-            if($scope.selectedPos.title === 'Data' ||
-                $scope.selectedPos.title === 'Output' ){
-                $rootScope.$broadcast('copyProcedure', $scope.selectedPos.title);
-            }
-            else if($scope.selectedPos.title === 'Action'){
-                var subCate = {
-                    category:$scope.selectedPos.category,
-                    name:$scope.selectedPos.method,
-                    return:$scope.selectedPos.return};
-                $rootScope.$broadcast('copyProcedure', $scope.selectedPos.title,subCate);
-            }
-            else if($scope.selectedPos.title === 'Control'){
-                var subCate = $scope.selectedPos.controlType;
-                if(subCate === 'if' || subCate === 'else'){
-                    subCate === 'if else';
+        // find number of items to be copy
+        $scope.findNumOfItems = function(parent){
+            if(parent && parent.nodes){
+                if(parent.controlType !== 'if' && parent.controlType !== 'else'){
+                    $scope.numOfItems ++;
                 }
-                $rootScope.$broadcast('copyProcedure', $scope.selectedPos.title,subCate);
+                for(var i = 0; i < parent.nodes.length; i++){
+                    $scope.findNumOfItems (parent.nodes[i]);
+                }
+            }
+        };
+
+        // update copy item id & reset selected attribute
+        $scope.updateCopyItemId = function(parent,increment){
+            if(parent && parent.nodes){
+                parent.id += increment;
+                parent.selected = false;
+                for(var i = 0; i < parent.nodes.length; i++){
+                    $scope.updateCopyItemId (parent.nodes[i],increment);
+                }
             }
         };
 
