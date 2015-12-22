@@ -51,7 +51,7 @@ vidamo.directive('viewport', function factory() {
                     FAR = 10000;
 
                 camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
-                camera.position.set(-120, 200, 60);
+                camera.position.set(-120, -200, 60);
                 // z up
                 camera.up.set( 0, 0, 1 );
                 camera.lookAt( scene.position );
@@ -64,6 +64,8 @@ vidamo.directive('viewport', function factory() {
                     VIEWPORT_HEIGHT / -2,	    // Bottom
                     -2000,            			// Near
                     5000 );           			// Far
+                orthoCamera.up.set( 0, 0, 1 );
+
 
                 // prepare renderer
                 renderer = new THREE.WebGLRenderer({antialias:true, alpha: false});
@@ -132,7 +134,7 @@ vidamo.directive('viewport', function factory() {
                 controls = controlsOrtho;
                 scene.add(orthoCamera);
                 controlsOrtho.enableRotate = false;
-                orthoCamera.position.set(0,1000,0);
+                orthoCamera.position.set(0,0,1000);
                 orthoCamera.lookAt( scene.position );
                 orthographic = true;
             };
@@ -144,7 +146,7 @@ vidamo.directive('viewport', function factory() {
 
                 controlsOrtho.reset();
 
-                orthoCamera.position.set(0,-1000,0);
+                orthoCamera.position.set(0,0,-1000);
                 orthoCamera.lookAt( scene.position );
                 scene.add(orthoCamera);
                 controlsOrtho.enableRotate = false;
@@ -158,7 +160,7 @@ vidamo.directive('viewport', function factory() {
 
                 controlsOrtho.reset();
 
-                orthoCamera.position.set(0,0,1000);
+                orthoCamera.position.set(0,-1000,0);
                 orthoCamera.lookAt( scene.position );
                 scene.add(orthoCamera);
                 controlsOrtho.enableRotate = false;
@@ -172,7 +174,7 @@ vidamo.directive('viewport', function factory() {
 
                 controlsOrtho.reset();
 
-                orthoCamera.position.set(0,0,-1000);
+                orthoCamera.position.set(0,1000,0);
                 orthoCamera.lookAt( scene.position );
                 scene.add(orthoCamera);
                 controlsOrtho.enableRotate = false;
