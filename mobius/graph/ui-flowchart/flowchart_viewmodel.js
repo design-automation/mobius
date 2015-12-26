@@ -547,11 +547,16 @@ var flowchart = {};
 			debug.assertObjectValid(sourceConnector);
 			debug.assertObjectValid(destConnector);
 
-			// @ mobius : flag for input connector is connected
-			// fixme
-			//sourceConnector.data.connected = true;
-			destConnector.data.connected = true;
+			// if connected from input connector to output connector, switch data model
+			if(sourceConnector.data.title === 'Input' && destConnector.data.title === 'Output'){
+				var temp = sourceConnector;
+				sourceConnector = destConnector;
+				destConnector = temp;
+			}
 
+			// @ mobius : flag for input connector is connected
+
+			destConnector.data.connected = true;
 
 			var connectionsDataModel = this.data.connections;
 			if (!connectionsDataModel) {

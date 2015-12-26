@@ -11,6 +11,7 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
         $scope.libUrl = '';
         $scope.nodeUrl = '';
         $scope.nodeLibUrl = '';
+        $scope.outputHolder = undefined;
 
         // listen to graph to get current selected node
         // for export selected node
@@ -116,11 +117,10 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                     // dynamically link input and output from graph and procedure
                     for(var i =0; i < generateCode.getChartViewModel().nodes.length; i++){
                         for(var j = 0 ; j < generateCode.getChartViewModel().nodes[i].outputConnectors.length; j++ ){
+                            $scope.outputHolder = undefined;
                             if( generateCode.getChartViewModel().nodes[i].outputConnectors[j].data.name !== 'FUNC_OUTPUT') {
                                 $scope.searchOutput(generateCode.getDataList()[i],generateCode.getChartViewModel().nodes[i].outputConnectors[j].data);
                                 generateCode.getChartViewModel().nodes[i].outputConnectors[j].data = $scope.outputHolder;
-                            }else {
-                                console.log(generateCode.getChartViewModel().nodes[i].outputConnectors[j].data.name)
                             }
                         }
                     }
@@ -202,6 +202,7 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                         // recursive search for node outputs
                         for(var i =0; i < generateCode.getChartViewModel().nodes.length; i++){
                             for(var j = 0 ; j < generateCode.getChartViewModel().nodes[i].outputConnectors.length; j++ ){
+                                $scope.outputHolder = undefined;
                                 if( generateCode.getChartViewModel().nodes[i].outputConnectors[j].data.name !== 'FUNC_OUTPUT'){
                                     $scope.searchOutput(generateCode.getDataList()[i],generateCode.getChartViewModel().nodes[i].outputConnectors[j].data);
                                     generateCode.getChartViewModel().nodes[i].outputConnectors[j].data = $scope.outputHolder;
@@ -247,7 +248,7 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
 
         };
 
-        $scope.outputHolder = undefined;
+
 
         // support function to dynamiclly link output connectors
         $scope.searchOutput = function(tree, nodeData){
