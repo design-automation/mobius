@@ -902,9 +902,9 @@ var MOBIUS = ( function (mod){
 		var curve = curve.getGeometry();
 
 		var tList = [];
-	 	for(var len=0; len <= curve.length(); ){
-	 		tList.push(curve.paramAtLength( len )); console.log('this is the list', tList);
-	 		len=len+distance;
+	 	for(var len=0; len <= curve.length(); len=len+distance){
+	 		tList.push(curve.paramAtLength( len ));
+	 		
 	 	}
 	 	
 	 	return tList;
@@ -953,8 +953,7 @@ var MOBIUS = ( function (mod){
 
 
 		var frames = tList.map( function(t){
-
-			return new mObj_frame( curve.point(t), undefined, upVector);
+			return new mObj_frame( curve.point(t), curve.tangent(t), undefined, upVector);
 		})
 
 		if(frames.length == 1)
@@ -999,27 +998,32 @@ var MOBIUS = ( function (mod){
 	 * @returns {array}  - List of curve objects
 	 * @memberof crv
 	 */
+	/*to be fixed*/
 	mod.crv.divideByTList = function(curve, tList){
 
-		var curve = curve.getGeometry();
-
-		var tPoints = tList.map( function(t){
-			return curve.point(t);
-		})
+		var crv = curve.getGeometry();
 
 		var result = [];
-		var crv = curve;
-		for(var t=0; t<tList.length; t++){
+		tDist = tList.map( function(t){
+			if(crv.lengthAtParam(t) != 0)
+				return crv.lengthAtParam(t);
+		})
+		
+		for(var t=0; t<tDist.length; t++){
+		
+			if(t==0){
+				crvs = crv.split( crv.paramAtLength( tList[t] ) );
+			}
+			else
+				crvs = crv.split( crv.paramAtLength( tList[t] - tList[t-1] ) );
 
-			var tPoint = curve.point(t);
-
-			var crvs = crv.split( crv.param(tPoint) );
+			result.push(crv.split(tList[t-1])[1])
 			
-			result.push(crvs[0]);
-			crv = crvs[1];
 		}
 
-		return result;
+		return result.map( function(c) {
+			return new mObj_geom_Curve( c );
+		});
 
 	};
 
@@ -1039,7 +1043,7 @@ var MOBIUS = ( function (mod){
 			plinePoints.push(curve.point(tList[p]));
 		}
 
-		return MOBIUS.crv.nurbsByPoints( plinePoints, 1, undefined);
+		return MOBIUS.crv.nurbsByPoints( GLOBAL, plinePoints, 1 );
 
 	};
 
@@ -1088,7 +1092,7 @@ var MOBIUS = ( function (mod){
 		if( point2.getGeometry != undefined )
 			point2 = point2.getGeometry();
 
-		return [ (point1[0] + point2[0])/2, (point1[1] + point2[1])/2, (point1[2] + point2[2])/2 ];
+		return new mObj_geom_Vertex([ (point1[0] + point2[0])/2, (point1[1] + point2[1])/2, (point1[2] + point2[2])/2 ]);
 	};	
 
 
@@ -1146,7 +1150,7 @@ var MOBIUS = ( function (mod){
 	mod.vec.angle = function(vector1, vector2){
 		var dotP = MOBIUS.mtx.dot( vector1,  vector2 );
 		var cos_t = dotP / (MOBIUS.vec.length( vector1 ) * MOBIUS.vec.length( vector2 ) );
-		return Math.cosh(cos_t);
+		return MOBIUS.msc.radToDeg( Math.acos(cos_t) );
 	};	
 
 	/**
@@ -1688,11 +1692,13 @@ var MOBIUS = ( function (mod){
 			
 			if(i < index)
 				newlist.push(list[i]);
-			else if(i == index)
+			if(i == index)
 				newlist.push(item);
-			else
+			if(i > index)
 				newlist.push(list[i-1]);
 		}
+
+		list = newlist;
 			
 	};
 
