@@ -377,7 +377,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
 var mObj_geom_Vertex = function mObj_geom_Vertex( geometry ){
 
     var defaultVertexMaterial = new THREE.PointsMaterial( { size: 5, sizeAttenuation: false } );
-    console.log(geometry);
+    //console.log(geometry);
     mObj_geom.call( this, geometry, defaultVertexMaterial  ); 
 
     this.x = geometry[0];

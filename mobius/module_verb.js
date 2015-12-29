@@ -902,10 +902,11 @@ var MOBIUS = ( function (mod){
 		var curve = curve.getGeometry();
 
 		var tList = [];
-	 	for(var len=0; len <= curve.length; len=len+distance){
-	 		tList.push(curve.paramAtLength( len )); console.log(len);
+	 	for(var len=0; len <= curve.length(); ){
+	 		tList.push(curve.paramAtLength( len )); console.log('this is the list', tList);
+	 		len=len+distance;
 	 	}
-
+	 	
 	 	return tList;
 
 	};
