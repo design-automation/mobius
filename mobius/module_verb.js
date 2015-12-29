@@ -1685,6 +1685,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {NULL}
 	 * @memberof lst
 	 */
+	 /*to be fixed*/
 	mod.lst.insert = function(list, item, index){
 
 		var newlist = [];
