@@ -944,6 +944,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {array}  - List of frames
 	 * @memberof crv
 	 */
+	 /*to be verified*/
 	mod.crv.getFrames = function(curve, tList, upVector){
 
 		var curve = curve.getGeometry();
@@ -1685,22 +1686,8 @@ var MOBIUS = ( function (mod){
 	 * @returns {NULL}
 	 * @memberof lst
 	 */
-	 /*to be fixed*/
 	mod.lst.insert = function(list, item, index){
-
-		var newlist = [];
-		for(var i=0; i<=list.length; i++){
-			
-			if(i < index)
-				newlist.push(list[i]);
-			if(i == index)
-				newlist.push(item);
-			if(i > index)
-				newlist.push(list[i-1]);
-		}
-
-		list = newlist;
-			
+		list.splice(index, 0, item);
 	};
 
 
