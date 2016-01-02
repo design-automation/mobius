@@ -2113,7 +2113,7 @@ var computeTopology = function( mObj ){
 
 
 	if(mObj instanceof mObj_geom_Vertex){
-		topology.vertices = [];
+		topology.vertices = [ mObj ];
 		topology.edges = [];
 		topology.faces = [];
 	}
@@ -2138,15 +2138,17 @@ var computeTopology = function( mObj ){
 
 		for(var srf=0; srf < geom.length; srf++){
 			var surfaceTopo = geom[srf].getTopology(); 
+
+			topology.faces = topology.faces.concat(surfaceTopo.faces);		
+
 			topology.vertices = topology.vertices.concat(surfaceTopo.vertices); 
 			topology.edges = topology.edges.concat(surfaceTopo.edges);
-			topology.faces = topology.faces.concat(surfaceTopo.faces);		
 		}
 
 		// remove clones - doesn't do well with the edges :/
-/*		topology.vertices = removeClonesInList( topology.vertices ); 
+		topology.vertices = removeClonesInList( topology.vertices ); 
 		topology.edges = removeClonesInList( topology.edges );
-		topology.faces = removeClonesInList( topology.faces ); */
+		//topology.faces = removeClonesInList( topology.faces ); 
 	}
 	else
 		topology = undefined;	
@@ -2160,6 +2162,24 @@ var computeTopology = function( mObj ){
 //
 //
 var removeClonesInList = function( list ){
+
+/*		if(list[0].constructor == mObj_geom_Vertex){
+			for(var obj=0; obj <)
+		}
+		// for vertices 
+		function arraysEqual(a, b) {
+			  if (a === b) return true;
+			  if (a == null || b == null) return false;
+			  if (a.length != b.length) return false;
+
+			  // If you don't care about the order of the elements inside
+			  // the array, you should sort both arrays here.
+
+			  for (var i = 0; i < a.length; ++i) {
+			    if (a[i] !== b[i]) return false;
+			  }
+			  return true;
+		}*/
 		var newArray = [];
 		
 		for(var v=0; v < list.length; v++){
@@ -2176,24 +2196,58 @@ var removeClonesInList = function( list ){
 				if (nextObject._data != undefined)		
 					nextObject = nextObject._data; 
 
+				// for vertices
 				if( thisObject.constructor.name == "Array" ){ 
 					if( JSON.stringify( thisObject ) == JSON.stringify( nextObject ) ){
-						duplicate = true; console.log(thisObject);
-						break; 
+						duplicate = true; 
+						break; // no need to check against the next objects - it's already a duplicate!
 					}
-				}else{
-						for(property in thisObject){
+				}
+				else{
+
+					//for edges
+					if( thisObject["degree"] == nextObject["degree"] &&
+							thisObject.controlPoints.length == nextObject.controlPoints.length ){	
+						// for controlPoints
+						var flag = true;
+						for(var i=0; i<thisObject.controlPoints.length; i++){ 
+							for(var j=0; j<4; j++){ //console.log(thisObject["controlPoints"][i][j] - nextObject["controlPoints"][i][j])
+								// float comparison
+								if( Math.abs(thisObject["controlPoints"][i][j] - nextObject["controlPoints"][i][j]) > 0.01){
+									flag = false; // doesn't match with this object - might match with next
+									continue;
+								}
+							}
+							if(flag == false) // doesn't match - break the loop and move to next object
+								break;
+						}
+						if(flag == true)
+							duplicate = true; // if all control points matched, it's a duplicate
+					}
+
+
+					
+
+/*						for(property in thisObject){
 							if(thisObject.hasOwnProperty(property)){ 
-								if(thisObject[property] != nextObject[property]){
-									duplicate = false; 
+								if(thisObject[property].constructor.name == "Array"){
+									if( JSON.stringify( thisObject[property] ) != JSON.stringify( nextObject[property] ) {
+										duplicate = false; 
+										break;
+									})
+									else
+										duplicate = true;
+								} 
+								else if(thisObject[property] != nextObject[property]){
+									duplicate = false; console.log(property);
 									break;
 								}
 								else
-									duplicate = true;	
+									duplicate = true;
 							}
 						}
 					if(!duplicate)
-						break;	
+						break;	*/
 				}
 			}
 			

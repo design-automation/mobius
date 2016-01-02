@@ -11,9 +11,26 @@ var mObj = function mObj( type ){
 	
     this.is_mObj = true; 
 
+    id = guid();
+
+    // code from http://stackoverflow.com/questions/2020670/javascript-object-id
+    function guid() {
+          function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+              .toString(16)
+              .substring(1);
+          }
+          return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+            s4() + '-' + s4() + s4() + s4();
+    }
+
 	this.getType = function(){
 		return type;
 	}
+
+    this.getID = function(){
+        return id;
+    }
 }
 
 var mObj_frame = function mObj_frame( origin, xaxis, yaxis, zaxis ){
