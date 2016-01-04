@@ -1,0 +1,1047 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "frames0",
+            "x": 2033.53510787838,
+            "y": 1940.5339009159713,
+            "inputConnectors": [],
+            "outputConnectors": [
+                {
+                    "id": 7,
+                    "title": "Output",
+                    "type": "new",
+                    "$$hashKey": "object:3493",
+                    "selected": false,
+                    "name": "frames",
+                    "dataValue": "[GLOBAL, frm1, frm2, frm3, frm4, frm5, frm6]"
+                }
+            ],
+            "type": "frames",
+            "version": 0,
+            "overwrite": true,
+            "disabled": false
+        },
+        {
+            "id": 1,
+            "name": "solids0",
+            "x": 1908.5060314391549,
+            "y": 2139.081367050329,
+            "inputConnectors": [
+                {
+                    "id": 2,
+                    "title": "Input",
+                    "name": "frame",
+                    "connected": false,
+                    "dataValue": "0",
+                    "option": {
+                        "name": "slider",
+                        "$$hashKey": "object:1003"
+                    },
+                    "color": "#000000",
+                    "$$hashKey": "object:937",
+                    "selected": true,
+                    "min": "0",
+                    "max": "6",
+                    "step": "1"
+                },
+                {
+                    "id": 2,
+                    "title": "Input",
+                    "name": "surface",
+                    "connected": false,
+                    "dataValue": "0",
+                    "option": {
+                        "name": "slider",
+                        "$$hashKey": "object:1003"
+                    },
+                    "color": "#000000",
+                    "$$hashKey": "object:2859",
+                    "selected": false,
+                    "min": "0",
+                    "max": "6",
+                    "step": "1"
+                },
+                {
+                    "id": 3,
+                    "title": "Input",
+                    "name": "xDist",
+                    "connected": false,
+                    "dataValue": "5",
+                    "option": {
+                        "name": "slider",
+                        "$$hashKey": "object:1003"
+                    },
+                    "color": "#000000",
+                    "$$hashKey": "object:2920",
+                    "selected": false,
+                    "min": "1",
+                    "max": "50",
+                    "step": "2"
+                },
+                {
+                    "id": 4,
+                    "title": "Input",
+                    "name": "yDist",
+                    "connected": false,
+                    "dataValue": "5",
+                    "option": {
+                        "name": "slider",
+                        "$$hashKey": "object:1003"
+                    },
+                    "color": "#000000",
+                    "$$hashKey": "object:2942",
+                    "selected": false,
+                    "min": "1",
+                    "max": "50",
+                    "step": "2"
+                },
+                {
+                    "id": 5,
+                    "title": "Input",
+                    "name": "zDist",
+                    "connected": false,
+                    "dataValue": "5",
+                    "option": {
+                        "name": "slider",
+                        "$$hashKey": "object:1003"
+                    },
+                    "color": "#000000",
+                    "$$hashKey": "object:2964",
+                    "selected": false,
+                    "min": "1",
+                    "max": "50",
+                    "step": "2"
+                },
+                {
+                    "id": 6,
+                    "title": "Input",
+                    "name": "frames",
+                    "connected": true,
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "$$hashKey": "object:3911",
+                    "selected": false
+                },
+                {
+                    "id": 7,
+                    "title": "Input",
+                    "name": "surfaces",
+                    "connected": true,
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "$$hashKey": "object:3933",
+                    "selected": false
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "id": 2,
+                    "title": "Output",
+                    "type": "new",
+                    "$$hashKey": "object:4322",
+                    "selected": false,
+                    "name": "extrusion"
+                },
+                {
+                    "id": 3,
+                    "title": "Output",
+                    "type": "new",
+                    "$$hashKey": "object:13297",
+                    "selected": false,
+                    "name": "solid"
+                }
+            ],
+            "type": "solids",
+            "version": 0,
+            "overwrite": true,
+            "disabled": false
+        },
+        {
+            "id": 2,
+            "name": "surfaces0",
+            "x": 2104.1715378891295,
+            "y": 2039.1695533732227,
+            "inputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Input",
+                    "name": "frames",
+                    "connected": true,
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "$$hashKey": "object:6320",
+                    "selected": false
+                },
+                {
+                    "id": 2,
+                    "title": "Input",
+                    "name": "opt",
+                    "connected": false,
+                    "dataValue": "0",
+                    "option": {
+                        "name": "slider",
+                        "$$hashKey": "object:1003"
+                    },
+                    "color": "#000000",
+                    "$$hashKey": "object:6351",
+                    "selected": true,
+                    "min": "0",
+                    "max": "6",
+                    "step": "1"
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "id": 3,
+                    "title": "Output",
+                    "type": "new",
+                    "$$hashKey": "object:6108",
+                    "selected": false,
+                    "name": "surfaces",
+                    "dataValue": "[srf1, srf2, srf3, srf4, srf5, srf6, srf7, srf8, srf9]"
+                }
+            ],
+            "type": "surfaces",
+            "version": 0,
+            "overwrite": true,
+            "disabled": false
+        }
+    ],
+    "connections": [
+        {
+            "source": {
+                "nodeID": 0,
+                "connectorIndex": 0
+            },
+            "dest": {
+                "nodeID": 1,
+                "connectorIndex": 5
+            }
+        },
+        {
+            "source": {
+                "nodeID": 0,
+                "connectorIndex": 0
+            },
+            "dest": {
+                "nodeID": 2,
+                "connectorIndex": 0
+            }
+        },
+        {
+            "source": {
+                "nodeID": 2,
+                "connectorIndex": 0
+            },
+            "dest": {
+                "nodeID": 1,
+                "connectorIndex": 6
+            }
+        }
+    ]
+}
+
+//procedure json
+[
+    [
+        {
+            "id": 1,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "byXYPoints",
+            "category": "frm",
+            "parameters": [
+                {
+                    "value": "[-80,0,10]",
+                    "type": "origin",
+                    "$$hashKey": "object:883"
+                },
+                {
+                    "value": "[0,0,10]",
+                    "type": "xPoint",
+                    "$$hashKey": "object:884"
+                },
+                {
+                    "value": "[-80,10,10]",
+                    "type": "yPoint",
+                    "$$hashKey": "object:885"
+                }
+            ],
+            "result": "frm1",
+            "$$hashKey": "object:859",
+            "selected": false
+        },
+        {
+            "id": 2,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "byXZPoints",
+            "category": "frm",
+            "parameters": [
+                {
+                    "value": "[-40,0,10]",
+                    "type": "origin",
+                    "$$hashKey": "object:1381"
+                },
+                {
+                    "value": "[0,0,10]",
+                    "type": "xPoint",
+                    "$$hashKey": "object:1382"
+                },
+                {
+                    "value": "[-40,10,10]",
+                    "type": "zPoint",
+                    "$$hashKey": "object:1383"
+                }
+            ],
+            "result": "frm2",
+            "$$hashKey": "object:1366",
+            "selected": false
+        },
+        {
+            "id": 3,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "byYZPoints",
+            "category": "frm",
+            "parameters": [
+                {
+                    "value": "[20,0,10]",
+                    "type": "origin",
+                    "$$hashKey": "object:1879"
+                },
+                {
+                    "value": "[0,0,10]",
+                    "type": "yPoint",
+                    "$$hashKey": "object:1880"
+                },
+                {
+                    "value": "[20,10,10]",
+                    "type": "zPoint",
+                    "$$hashKey": "object:1881"
+                }
+            ],
+            "result": "frm3",
+            "$$hashKey": "object:1864",
+            "selected": false
+        },
+        {
+            "id": 4,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "byXYAxes",
+            "category": "frm",
+            "parameters": [
+                {
+                    "value": "[60,0,10]",
+                    "type": "origin",
+                    "$$hashKey": "object:2377"
+                },
+                {
+                    "value": "[1,0,0]",
+                    "type": "xAxis",
+                    "$$hashKey": "object:2378"
+                },
+                {
+                    "value": "[0,1,0]",
+                    "type": "yAxis",
+                    "$$hashKey": "object:2379"
+                }
+            ],
+            "result": "frm4",
+            "$$hashKey": "object:2362",
+            "selected": false
+        },
+        {
+            "id": 5,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "byXZAxes",
+            "category": "frm",
+            "parameters": [
+                {
+                    "value": "[0, -50,10]",
+                    "type": "origin",
+                    "$$hashKey": "object:2856"
+                },
+                {
+                    "value": "[0,0,1]",
+                    "type": "xAxis",
+                    "$$hashKey": "object:2857"
+                },
+                {
+                    "value": "[1,0,0]",
+                    "type": "zAxis",
+                    "$$hashKey": "object:2858"
+                }
+            ],
+            "result": "frm5",
+            "$$hashKey": "object:2841",
+            "selected": false
+        },
+        {
+            "id": 6,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "byYZAxes",
+            "category": "frm",
+            "parameters": [
+                {
+                    "value": "[0,50,10]",
+                    "type": "origin",
+                    "$$hashKey": "object:3331"
+                },
+                {
+                    "value": "[1,1,1]",
+                    "type": "yAxis",
+                    "$$hashKey": "object:3332"
+                },
+                {
+                    "value": "[-1,2,-1]",
+                    "type": "zAxis",
+                    "$$hashKey": "object:3333"
+                }
+            ],
+            "result": "frm6",
+            "$$hashKey": "object:3316",
+            "selected": true
+        },
+        {
+            "id": 7,
+            "title": "Output",
+            "type": "new",
+            "$$hashKey": "object:3493",
+            "selected": false,
+            "name": "frames",
+            "dataValue": "[GLOBAL, frm1, frm2, frm3, frm4, frm5, frm6]"
+        }
+    ],
+    [
+        {
+            "id": 2,
+            "title": "Output",
+            "type": "new",
+            "$$hashKey": "object:4322",
+            "selected": false,
+            "name": "extrusion"
+        },
+        {
+            "id": 3,
+            "title": "Output",
+            "type": "new",
+            "$$hashKey": "object:13297",
+            "selected": false,
+            "name": "solid"
+        },
+        {
+            "id": 1,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "byExtrusion",
+            "category": "sld",
+            "parameters": [
+                {
+                    "value": "surfaces[surface]",
+                    "type": "surface",
+                    "$$hashKey": "object:1797"
+                },
+                {
+                    "value": "frames[frame]",
+                    "type": "frame",
+                    "$$hashKey": "object:1798"
+                },
+                {
+                    "value": "0",
+                    "type": "xDistance",
+                    "$$hashKey": "object:1799"
+                },
+                {
+                    "value": "0",
+                    "type": "yDistance",
+                    "$$hashKey": "object:1800"
+                },
+                {
+                    "value": "zDist",
+                    "type": "zDistance",
+                    "$$hashKey": "object:1801"
+                }
+            ],
+            "result": "extrusion",
+            "$$hashKey": "object:1780",
+            "selected": false
+        },
+        {
+            "id": 4,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "bySurfaces",
+            "category": "sld",
+            "parameters": [
+                {
+                    "value": "[surfaces[7], surfaces[8]]",
+                    "type": "listOfSurfaces",
+                    "$$hashKey": "object:14136"
+                }
+            ],
+            "result": "solid",
+            "$$hashKey": "object:14121",
+            "selected": true
+        }
+    ],
+    [
+        {
+            "id": 12,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "frm",
+            "dataValue": "frames[opt]",
+            "type": "new",
+            "$$hashKey": "object:10444",
+            "selected": false
+        },
+        {
+            "id": 2,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "nurbsByCorners",
+            "category": "srf",
+            "parameters": [
+                {
+                    "value": "frm",
+                    "type": "frame",
+                    "$$hashKey": "object:5524"
+                },
+                {
+                    "value": "[ [0,0,0], [30,0,0], [30,30,0], [0,30,0]]",
+                    "type": "cornerpoints",
+                    "$$hashKey": "object:5525"
+                }
+            ],
+            "result": "srf1",
+            "$$hashKey": "object:5506",
+            "selected": false
+        },
+        {
+            "id": 5,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "nurbsByExtrusion",
+            "category": "srf",
+            "parameters": [
+                {
+                    "value": "frm",
+                    "type": "frame",
+                    "$$hashKey": "object:9100"
+                },
+                {
+                    "value": "srf1.edges[0]",
+                    "type": "curve",
+                    "$$hashKey": "object:9101"
+                },
+                {
+                    "value": "0",
+                    "type": "xDistance",
+                    "$$hashKey": "object:9102"
+                },
+                {
+                    "value": "0",
+                    "type": "yDistance",
+                    "$$hashKey": "object:9103"
+                },
+                {
+                    "value": "20",
+                    "type": "zDistance",
+                    "$$hashKey": "object:9104"
+                }
+            ],
+            "result": "srf3",
+            "$$hashKey": "object:9085",
+            "selected": false
+        },
+        {
+            "id": 7,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "nurbsByRevolution",
+            "category": "srf",
+            "parameters": [
+                {
+                    "value": "frm",
+                    "type": "frame",
+                    "$$hashKey": "object:9482"
+                },
+                {
+                    "value": "srf3.edges[1]",
+                    "type": "sectionCurve",
+                    "$$hashKey": "object:9483"
+                },
+                {
+                    "value": "90",
+                    "type": "angle",
+                    "$$hashKey": "object:9484"
+                }
+            ],
+            "result": "srf5",
+            "$$hashKey": "object:9467",
+            "selected": false,
+            "disabled": false
+        },
+        {
+            "id": 4,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "nurbsByData",
+            "category": "srf",
+            "parameters": [
+                {
+                    "value": "frm",
+                    "type": "frame",
+                    "$$hashKey": "object:8710"
+                },
+                {
+                    "value": "3",
+                    "type": "degreeU",
+                    "$$hashKey": "object:8711"
+                },
+                {
+                    "value": "3",
+                    "type": "degreeV",
+                    "$$hashKey": "object:8712"
+                },
+                {
+                    "value": "[0, 0, 0, 0, 0.333, 0.666, 1, 1, 1, 1]",
+                    "type": "knotsU",
+                    "$$hashKey": "object:8713"
+                },
+                {
+                    "value": "[0, 0, 0, 0, 0.333, 0.666, 1, 1, 1, 1]",
+                    "type": "knotsV",
+                    "$$hashKey": "object:8714"
+                },
+                {
+                    "value": "[ [ [0, 0, -10], [10, 0, 0], [20, 0, 0], [30, 0, 0] , [40, 0, 0], [50, 0, 0] ], [ [0, -10, 0], [10, -10, 10], [20, -10, 10], [30, -10, 0] , [40, -10, 0], [50, -10, 0]], [ [0, -20, 0], [10, -20, 10], [20, -20, 10], [30, -20, 0] , [40, -20, -2], [50, -20, -12] ], [ [0, -30, 0], [10, -30, 0], [20, -30, -23], [30, -30, 0] , [40, -30, 0], [50, -30, 0]     ], [ [0, -40, 0], [10, -40, 0], [20, -40, 0], [30, -40, 4] , [40, -40, -20], [50, -40, 0]     ], [ [0, -50, 12], [10, -50, 0], [20, -50, 20], [30, -50, 0] , [50, -50, -10], [50, -50, -15]     ]    ]",
+                    "type": "controlPoints",
+                    "$$hashKey": "object:8715"
+                },
+                {
+                    "value": "undefined",
+                    "type": "weights",
+                    "$$hashKey": "object:8716"
+                }
+            ],
+            "result": "srf2",
+            "$$hashKey": "object:8695",
+            "selected": false
+        },
+        {
+            "id": 14,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "shift",
+            "category": "trn",
+            "parameters": [
+                {
+                    "value": "srf2",
+                    "type": "object",
+                    "$$hashKey": "object:12048"
+                },
+                {
+                    "value": "frm",
+                    "type": "frame",
+                    "$$hashKey": "object:12049"
+                },
+                {
+                    "value": "0",
+                    "type": "shiftX",
+                    "$$hashKey": "object:12050"
+                },
+                {
+                    "value": "-40",
+                    "type": "shiftY",
+                    "$$hashKey": "object:12051"
+                },
+                {
+                    "value": "0",
+                    "type": "shiftZ",
+                    "$$hashKey": "object:12052"
+                },
+                {
+                    "value": "false",
+                    "type": "copy",
+                    "$$hashKey": "object:12053"
+                }
+            ],
+            "result": "_",
+            "$$hashKey": "object:12033",
+            "selected": false
+        },
+        {
+            "id": 6,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "nurbsByLoft",
+            "category": "srf",
+            "parameters": [
+                {
+                    "value": "[srf2.edges[0], srf2.edges[1]]",
+                    "type": "listOfCurves",
+                    "$$hashKey": "object:9297"
+                },
+                {
+                    "value": "3",
+                    "type": "degree",
+                    "$$hashKey": "object:9298"
+                }
+            ],
+            "result": "srf4",
+            "$$hashKey": "object:9282",
+            "selected": false,
+            "disabled": false
+        },
+        {
+            "id": 13,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "shift",
+            "category": "trn",
+            "parameters": [
+                {
+                    "value": "srf4",
+                    "type": "object",
+                    "$$hashKey": "object:11739"
+                },
+                {
+                    "value": "frm",
+                    "type": "frame",
+                    "$$hashKey": "object:11740"
+                },
+                {
+                    "value": "0",
+                    "type": "shiftX",
+                    "$$hashKey": "object:11741"
+                },
+                {
+                    "value": "0",
+                    "type": "shiftY",
+                    "$$hashKey": "object:11742"
+                },
+                {
+                    "value": "50",
+                    "type": "shiftZ",
+                    "$$hashKey": "object:11743"
+                },
+                {
+                    "value": "false",
+                    "type": "copy",
+                    "$$hashKey": "object:11744"
+                }
+            ],
+            "result": "_",
+            "$$hashKey": "object:11724",
+            "selected": false
+        },
+        {
+            "id": 8,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "nurbsBySweep",
+            "category": "srf",
+            "parameters": [
+                {
+                    "value": "srf5.edges[3]",
+                    "type": "sectionCurve",
+                    "$$hashKey": "object:9671"
+                },
+                {
+                    "value": "srf3.edges[3]",
+                    "type": "railCurve",
+                    "$$hashKey": "object:9672"
+                }
+            ],
+            "result": "srf6",
+            "$$hashKey": "object:9656",
+            "selected": false,
+            "disabled": false
+        },
+        {
+            "id": 9,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "nurbsSphere",
+            "category": "srf",
+            "parameters": [
+                {
+                    "value": "frames[6]",
+                    "type": "frame",
+                    "$$hashKey": "object:9856"
+                },
+                {
+                    "value": "3",
+                    "type": "radius",
+                    "$$hashKey": "object:9857"
+                }
+            ],
+            "result": "srf7",
+            "$$hashKey": "object:9841",
+            "selected": false,
+            "disabled": false
+        },
+        {
+            "id": 10,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "nurbsCone",
+            "category": "srf",
+            "parameters": [
+                {
+                    "value": "frames[4]",
+                    "type": "frame",
+                    "$$hashKey": "object:10041"
+                },
+                {
+                    "value": "40",
+                    "type": "height",
+                    "$$hashKey": "object:10042"
+                },
+                {
+                    "value": "20",
+                    "type": "radius1",
+                    "$$hashKey": "object:10043"
+                },
+                {
+                    "value": "10",
+                    "type": "radius2",
+                    "$$hashKey": "object:10044"
+                }
+            ],
+            "result": "srf8",
+            "$$hashKey": "object:10026",
+            "selected": false,
+            "disabled": false
+        },
+        {
+            "id": 11,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "nurbsPipe",
+            "category": "srf",
+            "parameters": [
+                {
+                    "value": "srf8.edges[2]",
+                    "type": "centreCurve",
+                    "$$hashKey": "object:10234"
+                },
+                {
+                    "value": "2",
+                    "type": "radius",
+                    "$$hashKey": "object:10235"
+                }
+            ],
+            "result": "srf9",
+            "$$hashKey": "object:10219",
+            "selected": true,
+            "disabled": false
+        },
+        {
+            "id": 3,
+            "title": "Output",
+            "type": "new",
+            "$$hashKey": "object:6108",
+            "selected": false,
+            "name": "surfaces",
+            "dataValue": "[srf1, srf2, srf3, srf4, srf5, srf6, srf7, srf8, srf9]"
+        }
+    ]
+]
+
+//interface json
+[
+    [],
+    [
+        {
+            "id": 2,
+            "title": "Input",
+            "name": "frame",
+            "connected": false,
+            "dataValue": "0",
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:1003"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:937",
+            "selected": true,
+            "min": "0",
+            "max": "6",
+            "step": "1"
+        },
+        {
+            "id": 2,
+            "title": "Input",
+            "name": "surface",
+            "connected": false,
+            "dataValue": "0",
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:1003"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:2859",
+            "selected": false,
+            "min": "0",
+            "max": "6",
+            "step": "1"
+        },
+        {
+            "id": 3,
+            "title": "Input",
+            "name": "xDist",
+            "connected": false,
+            "dataValue": "5",
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:1003"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:2920",
+            "selected": false,
+            "min": "1",
+            "max": "50",
+            "step": "2"
+        },
+        {
+            "id": 4,
+            "title": "Input",
+            "name": "yDist",
+            "connected": false,
+            "dataValue": "5",
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:1003"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:2942",
+            "selected": false,
+            "min": "1",
+            "max": "50",
+            "step": "2"
+        },
+        {
+            "id": 5,
+            "title": "Input",
+            "name": "zDist",
+            "connected": false,
+            "dataValue": "5",
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:1003"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:2964",
+            "selected": false,
+            "min": "1",
+            "max": "50",
+            "step": "2"
+        },
+        {
+            "id": 6,
+            "title": "Input",
+            "name": "frames",
+            "connected": true,
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:3911",
+            "selected": false
+        },
+        {
+            "id": 7,
+            "title": "Input",
+            "name": "surfaces",
+            "connected": true,
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:3933",
+            "selected": false
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Input",
+            "name": "frames",
+            "connected": true,
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:6320",
+            "selected": false
+        },
+        {
+            "id": 2,
+            "title": "Input",
+            "name": "opt",
+            "connected": false,
+            "dataValue": "0",
+            "option": {
+                "name": "slider",
+                "$$hashKey": "object:1003"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:6351",
+            "selected": true,
+            "min": "0",
+            "max": "6",
+            "step": "1"
+        }
+    ]
+]
