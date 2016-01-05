@@ -31,6 +31,13 @@ var MOBIUS = ( function (mod){
 
 		if(origin.getGeometry != undefined)
 			origin = origin.getGeometry();
+
+		if(xPoint.getGeometry != undefined)
+			xPoint = xPoint.getGeometry();
+
+		if(yPoint.getGeometry != undefined)
+			yPoint = yPoint.getGeometry();
+
 	    
 	    // how to you make sure the two axes are perpendicular
 		var xaxis = [xPoint[0]-origin[0], xPoint[1]-origin[1], xPoint[2]-origin[2]];
@@ -56,6 +63,12 @@ var MOBIUS = ( function (mod){
 		if(origin.getGeometry != undefined)
 			origin = origin.getGeometry();
 
+		if(xPoint.getGeometry != undefined)
+			xPoint = xPoint.getGeometry();
+
+		if(zPoint.getGeometry != undefined)
+			zPoint = zPoint.getGeometry();
+
 		var xaxis = [xPoint[0]-origin[0], xPoint[1]-origin[1], xPoint[2]-origin[2]];
 		var zaxis = [zPoint[0]-origin[0], zPoint[1]-origin[1], zPoint[2]-origin[2]];		
 
@@ -78,6 +91,12 @@ var MOBIUS = ( function (mod){
 
 		if(origin.getGeometry != undefined)
 			origin = origin.getGeometry();
+
+		if(yPoint.getGeometry != undefined)
+			yPoint = yPoint.getGeometry();
+
+		if(zPoint.getGeometry != undefined)
+			zPoint = zPoint.getGeometry();
 
 		var yaxis = [yPoint[0]-origin[0], yPoint[1]-origin[1], yPoint[2]-origin[2]];
 		var zaxis = [zPoint[0]-origin[0], zPoint[1]-origin[1], zPoint[2]-origin[2]];		
@@ -160,7 +179,7 @@ var MOBIUS = ( function (mod){
 	/**
 	 * Creates a solid object by extruding a surface along x, y, z vectors of the given local coordinate system
 	 * @param { frame object } frame - Local coordinate system 
-	 * @param { surface object } surface - Surface to be extruded
+	 * @param { surface object } surface - Surface Object to be extruded
 	 * @param { float } xDistance - Amount of extrusion in the direction of the x-Axis of the frame
 	 * @param { float } yDistance - Amount of extrusion in the direction of the y-Axis of the frame
 	 * @param { float } zDistance - Amount of extrusion in the direction of the z-Axis of the frame
@@ -168,6 +187,11 @@ var MOBIUS = ( function (mod){
 	 * @memberof sld
 	 */
 	mod.sld.byExtrusion = function(surface, frame, xDistance, yDistance, zDistance){
+
+		// surface is not a surface object but a verbs object - it get's converted into a surface
+		if(surface.getGeometry == undefined)
+			surface = new mObj_geom_Surface( surface );
+
 		//checked
 		var bottomSurface = surface;
 		var topSurface = MOBIUS.trn.shift(bottomSurface, frame, xDistance, yDistance, zDistance, true);
@@ -244,7 +268,7 @@ var MOBIUS = ( function (mod){
 	 * @returns { surface object }  - Surface object
 	 * @memberof srf
 	 */
-	mod.srf.nurbsByCorners = function ( cornerpoints ){
+	mod.srf.nurbsByCorners = function ( frame, cornerpoints ){
 
 		var point0 = cornerpoints[0];
 		var point1 = cornerpoints[1];
@@ -261,7 +285,7 @@ var MOBIUS = ( function (mod){
 			point3 = point3.getGeometry();
 
 		var srf = new verb.geom.NurbsSurface.byCorners ( point0, point1, point2, point3 );
-		//srf.transform( frame.toLocal() );
+		srf.transform( frame.toLocal() );
 
 		return new mObj_geom_Surface( srf ) ;
 	};
@@ -278,8 +302,11 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.srf.nurbsByExtrusion  = function(frame, curve, xDistance, yDistance, zDistance){
 
+		if( curve.getGeometry == undefined )
+			curve = mObj_geom_Curve( curve );
+
 		var profile = curve.getGeometry();
-		var ex_profile = MOBIUS.trn.shift( frame, curve, xDistance, yDistance, zDistance, true).getGeometry();
+		var ex_profile = MOBIUS.trn.shift( curve, frame, xDistance, yDistance, zDistance, true).getGeometry();
 
 		var srf = new verb.geom.NurbsSurface.byLoftingCurves( [profile, ex_profile], 1 );
 		srf.transform( frame.toLocal() );
@@ -341,8 +368,13 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.srf.nurbsBySweep = function( sectionCurve, railCurve ){
 		
-		var profile = sectionCurve.getGeometry();
-		var rail = railCurve.getGeometry();
+		var profile = sectionCurve;
+		var rail = railCurve;
+
+		if( profile.getGeometry != undefined )
+			profile = sectionCurve.getGeometry();
+		if( rail.getGeometry != undefined )
+			rail = railCurve.getGeometry();
 		
 		return new mObj_geom_Surface( new verb.geom.SweptSurface ( profile, rail ) ) ;
 		
@@ -406,21 +438,44 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.srf.nurbsPipe = function(centreCurve, radius){
 
-		var origin = centreCurve.getGeometry().point(0);
-		var zaxis = centreCurve.getGeometry().tangent(0);
+		centreCurve = centreCurve.getGeometry();
+
+		var origin = centreCurve.point(0);
+		var zaxis = centreCurve.tangent(0);
+
+		zaxis = verb.core.Vec.normalized( zaxis );
+		var xaxis;
+		if( zaxis[2] != 0 )
+			xaxis = [1,1, (-zaxis[0]-zaxis[1])/zaxis[2] ];  
+		else if( zaxis[1] != 0 )
+			xaxis = [ 1, (-zaxis[0]-zaxis[2])/zaxis[1], 1 ];
+		else if( zaxis[0] != 0 )
+			xaxis = [ (-zaxis[0]-zaxis[1])/zaxis[0], 1, 1 ];
+		else
+			console.log("invalid tangent in pipe function")
+
+
+		var frame = new mObj_frame( origin, xaxis, undefined, zaxis );
+		var sectionCurve = MOBIUS.crv.circle( frame, radius );
 
 		// compute some random vector perpendicular to the z-vector
-		var sectionCurves  = [];
+/*		var sectionCurves  = [];
 		for( var i=0; i<5; i++){
+
+			var origin = centreCurve.point(i/5);
+			var zaxis = centreCurve.tangent(i/5);
+
 			zaxis = verb.core.Vec.normalized( zaxis );
 			var xaxis = [1,1, ((-zaxis[0]-zaxis[1])/zaxis[2])]; 
 
 			var frame = new mObj_frame( origin, xaxis, undefined, zaxis );
 			var sectionCurve = MOBIUS.crv.circle( frame, radius );
-		}
+
+			sectionCurves.push( sectionCurve );
+		}*/
 
 
-		return MOBIUS.srf.nurbsBySweep( sectionCurve, centreCurve);
+		return MOBIUS.srf.nurbsBySweep( sectionCurve, centreCurve );
 
 	};
 
@@ -471,13 +526,13 @@ var MOBIUS = ( function (mod){
 		if(uvList.constructor.name == "Array"){
 
 			var points = uvList.map( function(p){
-				return new mobj_geom_Vertex( srf.point( p[0], p[1] ) );
+				return new mObj_geom_Vertex( srf.point( p[0], p[1] ) );
 			})
 			
 			return points;
 		}
 		else
-			return new mobj_geom_Vertex( srf.point( u, v ) );
+			return new mObj_geom_Vertex( srf.point( u, v ) );
 
 	};
 
@@ -572,8 +627,8 @@ var MOBIUS = ( function (mod){
 		if(surface.getGeometry != undefined)
 			surface = surface.getGeometry();
 
-		if(uvList.constructor.name != "Array")
-			uvList = [uvList];
+		if(uOrvList.constructor.name != "Array")
+			uOrvList = [uOrvList];
 
 		var isoCurves = [];
 		for(var t=0; t<uOrvList.length; t++){
@@ -591,7 +646,7 @@ var MOBIUS = ( function (mod){
 	 * Subdivides a surface into a grid of smaller surfaces - a mesh solid
 	 * @param {surface object} surface - Surface Object 
 	 * @param {int} uvGrid - UV positions with u & v dimensions [ [ u1, v1 ], ... [ un, vn ], uDimension, vDimension ]
-	 * @returns {solid object} Solid object  
+	 * @returns {solid object} Solid object with divided faces
 	 * @memberof srf
 	 */
 	mod.srf.divide = function(surface, uvGrid){
@@ -764,7 +819,8 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.crv.ellipse = function(frame, xRadius, yRadius) {
 
-		var ellipse = new verb.geom.Ellipse( [0,0,0], [1,0,0], [0,1,0], radius );
+
+		var ellipse = new verb.geom.Ellipse( [0,0,0], MOBIUS.vec.scale([1,0,0], xRadius), MOBIUS.vec.scale([0,1,0], yRadius) );
 		ellipse = ellipse.transform( frame.toLocal() )
 
 		return new mObj_geom_Curve( ellipse ); 
@@ -786,8 +842,8 @@ var MOBIUS = ( function (mod){
 		minAngle = 0.0174533*minAngle;
 		maxAngle = 0.0174533*maxAngle;
 
-		var ellipseArc = new verb.geom.EllipseArc( [0,0,0], [1,0,0], [0,1,0], radius, minAngle, maxAngle );
-		ellipseArc = ellipse.transform( frame.toLocal() );
+		var ellipseArc = new verb.geom.EllipseArc( [0,0,0], MOBIUS.vec.scale([1,0,0], xRadius), MOBIUS.vec.scale([0,1,0], yRadius), minAngle, maxAngle );
+		ellipseArc = ellipseArc.transform( frame.toLocal() );
 
 		return new mObj_geom_Curve( ellipseArc ); 
 	};
@@ -846,10 +902,11 @@ var MOBIUS = ( function (mod){
 		var curve = curve.getGeometry();
 
 		var tList = [];
-	 	for(var len=0; len <= curve.length; len=len+distance){
+	 	for(var len=0; len <= curve.length(); len=len+distance){
 	 		tList.push(curve.paramAtLength( len ));
+	 		
 	 	}
-
+	 	
 	 	return tList;
 
 	};
@@ -887,6 +944,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {array}  - List of frames
 	 * @memberof crv
 	 */
+	 /*to be verified*/
 	mod.crv.getFrames = function(curve, tList, upVector){
 
 		var curve = curve.getGeometry();
@@ -896,8 +954,7 @@ var MOBIUS = ( function (mod){
 
 
 		var frames = tList.map( function(t){
-
-			return new mObj_frame( curve.point(t), undefined, upVector);
+			return new mObj_frame( curve.point(t), curve.tangent(t), undefined, upVector);
 		})
 
 		if(frames.length == 1)
@@ -942,27 +999,32 @@ var MOBIUS = ( function (mod){
 	 * @returns {array}  - List of curve objects
 	 * @memberof crv
 	 */
+	/*to be fixed*/
 	mod.crv.divideByTList = function(curve, tList){
 
-		var curve = curve.getGeometry();
-
-		var tPoints = tList.map( function(t){
-			return curve.point(t);
-		})
+		var crv = curve.getGeometry();
 
 		var result = [];
-		var crv = curve;
-		for(var t=0; t<tList.length; t++){
+		tDist = tList.map( function(t){
+			if(crv.lengthAtParam(t) != 0)
+				return crv.lengthAtParam(t);
+		})
+		
+		for(var t=0; t<tDist.length; t++){
+		
+			if(t==0){
+				crvs = crv.split( crv.paramAtLength( tList[t] ) );
+			}
+			else
+				crvs = crv.split( crv.paramAtLength( tList[t] - tList[t-1] ) );
 
-			var tPoint = curve.point(t);
-
-			var crvs = crv.split( crv.param(tPoint) );
+			result.push(crv.split(tList[t-1])[1])
 			
-			result.push(crvs[0]);
-			crv = crvs[1];
 		}
 
-		return result;
+		return result.map( function(c) {
+			return new mObj_geom_Curve( c );
+		});
 
 	};
 
@@ -982,7 +1044,7 @@ var MOBIUS = ( function (mod){
 			plinePoints.push(curve.point(tList[p]));
 		}
 
-		return MOBIUS.crv.nurbsByPoints( plinePoints, 1, undefined);
+		return MOBIUS.crv.nurbsByPoints( GLOBAL, plinePoints, 1 );
 
 	};
 
@@ -1031,7 +1093,7 @@ var MOBIUS = ( function (mod){
 		if( point2.getGeometry != undefined )
 			point2 = point2.getGeometry();
 
-		return [ (point1[0] + point2[0])/2, (point1[1] + point2[1])/2, (point1[2] + point2[2])/2 ];
+		return new mObj_geom_Vertex([ (point1[0] + point2[0])/2, (point1[1] + point2[1])/2, (point1[2] + point2[2])/2 ]);
 	};	
 
 
@@ -1089,7 +1151,7 @@ var MOBIUS = ( function (mod){
 	mod.vec.angle = function(vector1, vector2){
 		var dotP = MOBIUS.mtx.dot( vector1,  vector2 );
 		var cos_t = dotP / (MOBIUS.vec.length( vector1 ) * MOBIUS.vec.length( vector2 ) );
-		return Math.cosh(cos_t);
+		return MOBIUS.msc.radToDeg( Math.acos(cos_t) );
 	};	
 
 	/**
@@ -1272,7 +1334,7 @@ var MOBIUS = ( function (mod){
 
 			var centres  = []
 			for( var obj = 0; obj < geometry.length; obj++ )
-				centres.push( MOBIUS.obj.getCentre( geometry[obj]) );
+				centres.push( MOBIUS.obj.getCentre( geometry[obj] ).getGeometry() );
 
 			var x = [];
 			var y = [];
@@ -1287,17 +1349,18 @@ var MOBIUS = ( function (mod){
 			y = MOBIUS.lst.average( y );
 			z = MOBIUS.lst.average( z );
 
-			return [x, y, z]
+			return new mObj_geom_Vertex( [x, y, z] )
 		}
 
-		if(geometry.center != undefined)
-			return geometry.center();
-		else if(geometry instanceof verb.geom.NurbsCurve)
-			return geometry.point(0.5);
+		var point;
+		if(geometry instanceof verb.geom.NurbsCurve)
+			point = geometry.point(0.5);
 		else if(geometry instanceof verb.geom.NurbsSurface)
-			return geometry.point(0.5, 0.5);
+			point = geometry.point( 0.5, 0.5 );
 		else
 			return "Invalid Input"
+
+		return point
 	};
 
 
@@ -1624,18 +1687,7 @@ var MOBIUS = ( function (mod){
 	 * @memberof lst
 	 */
 	mod.lst.insert = function(list, item, index){
-
-		var newlist = [];
-		for(var i=0; i<=list.length; i++){
-			
-			if(i < index)
-				newlist.push(list[i]);
-			else if(i == index)
-				newlist.push(item);
-			else
-				newlist.push(list[i-1]);
-		}
-			
+		list.splice(index, 0, item);
 	};
 
 
@@ -1972,6 +2024,7 @@ var TOPOLOGY_DEF = {"vertices":[], "edges":[], "faces":[]}
 //
 //	Function to convert module geometry into three.js Mesh geometry
 //  Add another if-else condition for each new geometry
+//  solid never comes here - only points 
 //
 var convertGeomToThree = function( geom ){
 
@@ -1985,7 +2038,7 @@ var convertGeomToThree = function( geom ){
 		else if(singleDataObject instanceof Array){
 			// means it is a point
 			var dotGeometry = new THREE.Geometry();
-			dotGeometry.vertices.push( new THREE.Vector3(singleDataObject[0], singleDataObject[1], singleDataObject[2]) ); console.log("here");
+			dotGeometry.vertices.push( new THREE.Vector3(singleDataObject[0], singleDataObject[1], singleDataObject[2]) ); 
 			return new THREE.PointCloud( dotGeometry );
 		}
 		else {
@@ -2060,7 +2113,7 @@ var computeTopology = function( mObj ){
 
 
 	if(mObj instanceof mObj_geom_Vertex){
-		topology.vertices = [];
+		topology.vertices = [ mObj ];
 		topology.edges = [];
 		topology.faces = [];
 	}
@@ -2085,15 +2138,17 @@ var computeTopology = function( mObj ){
 
 		for(var srf=0; srf < geom.length; srf++){
 			var surfaceTopo = geom[srf].getTopology(); 
+
+			topology.faces = topology.faces.concat(surfaceTopo.faces);		
+
 			topology.vertices = topology.vertices.concat(surfaceTopo.vertices); 
 			topology.edges = topology.edges.concat(surfaceTopo.edges);
-			topology.faces = topology.faces.concat(surfaceTopo.faces);		
 		}
 
 		// remove clones - doesn't do well with the edges :/
-/*		topology.vertices = removeClonesInList( topology.vertices ); 
+		topology.vertices = removeClonesInList( topology.vertices ); 
 		topology.edges = removeClonesInList( topology.edges );
-		topology.faces = removeClonesInList( topology.faces ); */
+		//topology.faces = removeClonesInList( topology.faces ); 
 	}
 	else
 		topology = undefined;	
@@ -2107,6 +2162,24 @@ var computeTopology = function( mObj ){
 //
 //
 var removeClonesInList = function( list ){
+
+/*		if(list[0].constructor == mObj_geom_Vertex){
+			for(var obj=0; obj <)
+		}
+		// for vertices 
+		function arraysEqual(a, b) {
+			  if (a === b) return true;
+			  if (a == null || b == null) return false;
+			  if (a.length != b.length) return false;
+
+			  // If you don't care about the order of the elements inside
+			  // the array, you should sort both arrays here.
+
+			  for (var i = 0; i < a.length; ++i) {
+			    if (a[i] !== b[i]) return false;
+			  }
+			  return true;
+		}*/
 		var newArray = [];
 		
 		for(var v=0; v < list.length; v++){
@@ -2123,24 +2196,58 @@ var removeClonesInList = function( list ){
 				if (nextObject._data != undefined)		
 					nextObject = nextObject._data; 
 
+				// for vertices
 				if( thisObject.constructor.name == "Array" ){ 
 					if( JSON.stringify( thisObject ) == JSON.stringify( nextObject ) ){
-						duplicate = true; console.log(thisObject);
-						break; 
+						duplicate = true; 
+						break; // no need to check against the next objects - it's already a duplicate!
 					}
-				}else{
-						for(property in thisObject){
+				}
+				else{
+
+					//for edges
+					if( thisObject["degree"] == nextObject["degree"] &&
+							thisObject.controlPoints.length == nextObject.controlPoints.length ){	
+						// for controlPoints
+						var flag = true;
+						for(var i=0; i<thisObject.controlPoints.length; i++){ 
+							for(var j=0; j<4; j++){ //console.log(thisObject["controlPoints"][i][j] - nextObject["controlPoints"][i][j])
+								// float comparison
+								if( Math.abs(thisObject["controlPoints"][i][j] - nextObject["controlPoints"][i][j]) > 0.01){
+									flag = false; // doesn't match with this object - might match with next
+									continue;
+								}
+							}
+							if(flag == false) // doesn't match - break the loop and move to next object
+								break;
+						}
+						if(flag == true)
+							duplicate = true; // if all control points matched, it's a duplicate
+					}
+
+
+					
+
+/*						for(property in thisObject){
 							if(thisObject.hasOwnProperty(property)){ 
-								if(thisObject[property] != nextObject[property]){
-									duplicate = false; 
+								if(thisObject[property].constructor.name == "Array"){
+									if( JSON.stringify( thisObject[property] ) != JSON.stringify( nextObject[property] ) {
+										duplicate = false; 
+										break;
+									})
+									else
+										duplicate = true;
+								} 
+								else if(thisObject[property] != nextObject[property]){
+									duplicate = false; console.log(property);
 									break;
 								}
 								else
-									duplicate = true;	
+									duplicate = true;
 							}
 						}
 					if(!duplicate)
-						break;	
+						break;	*/
 				}
 			}
 			

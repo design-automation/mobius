@@ -1,0 +1,706 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "curves0",
+            "x": 1931.8169444899547,
+            "y": 1979.9590475296504,
+            "inputConnectors": [],
+            "outputConnectors": [
+                {
+                    "id": 8,
+                    "title": "Output",
+                    "type": "new",
+                    "selected": true,
+                    "name": "crvs",
+                    "dataValue": "[crv1, crv2, crv3, crv4, crv5]"
+                }
+            ],
+            "type": "curves",
+            "version": 0,
+            "overwrite": true,
+            "disabled": false
+        },
+        {
+            "id": 1,
+            "name": "crv_functions0",
+            "x": 1931.3101855105897,
+            "y": 2052.9323405582422,
+            "inputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Input",
+                    "name": "curves",
+                    "connected": true,
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "$$hashKey": "object:1989",
+                    "selected": true
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "id": 10,
+                    "title": "Output",
+                    "type": "new",
+                    "$$hashKey": "object:4926",
+                    "selected": false,
+                    "name": "points"
+                },
+                {
+                    "id": 13,
+                    "title": "Output",
+                    "type": "new",
+                    "$$hashKey": "object:6972",
+                    "selected": false,
+                    "name": "points2"
+                },
+                {
+                    "id": 14,
+                    "title": "Output",
+                    "type": "new",
+                    "$$hashKey": "object:7047",
+                    "selected": false,
+                    "name": "crv"
+                },
+                {
+                    "id": 15,
+                    "title": "Output",
+                    "type": "new",
+                    "$$hashKey": "object:7086",
+                    "selected": false,
+                    "name": "crv2"
+                },
+                {
+                    "id": 16,
+                    "title": "Output",
+                    "type": "new",
+                    "$$hashKey": "object:7130",
+                    "selected": false,
+                    "name": "frames"
+                },
+                {
+                    "id": 18,
+                    "title": "Output",
+                    "type": "new",
+                    "$$hashKey": "object:764",
+                    "selected": false,
+                    "name": "pline"
+                }
+            ],
+            "type": "crv_functions",
+            "version": 1451406491240,
+            "overwrite": true,
+            "disabled": false
+        }
+    ],
+    "connections": [
+        {
+            "source": {
+                "nodeID": 0,
+                "connectorIndex": 0
+            },
+            "dest": {
+                "nodeID": 1,
+                "connectorIndex": 0
+            }
+        }
+    ]
+}
+
+//procedure json
+[
+    [
+        {
+            "id": 9,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "byXYAxes",
+            "category": "frm",
+            "parameters": [
+                {
+                    "value": "[0,40,0]",
+                    "type": "origin",
+                    "$$hashKey": "object:487"
+                },
+                {
+                    "value": "[1,0,0]",
+                    "type": "xAxis",
+                    "$$hashKey": "object:488"
+                },
+                {
+                    "value": "[0,1,0]",
+                    "type": "yAxis",
+                    "$$hashKey": "object:489"
+                }
+            ],
+            "result": "newfrm",
+            "selected": false,
+            "$$hashKey": "object:136"
+        },
+        {
+            "id": 1,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "nurbsByData",
+            "category": "crv",
+            "parameters": [
+                {
+                    "value": "GLOBAL",
+                    "type": "frame",
+                    "$$hashKey": "object:506"
+                },
+                {
+                    "value": "2",
+                    "type": "degree",
+                    "$$hashKey": "object:507"
+                },
+                {
+                    "value": "[0, 0, 0, 1, 1, 1]",
+                    "type": "knots",
+                    "$$hashKey": "object:508"
+                },
+                {
+                    "value": "[[40,0,0], [50,10,0], [70,0,0]]",
+                    "type": "controlPoints",
+                    "$$hashKey": "object:509"
+                },
+                {
+                    "value": "undefined",
+                    "type": "weights",
+                    "$$hashKey": "object:510"
+                }
+            ],
+            "result": "crv1",
+            "selected": false,
+            "$$hashKey": "object:137"
+        },
+        {
+            "id": 2,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "nurbsByPoints",
+            "category": "crv",
+            "parameters": [
+                {
+                    "value": "GLOBAL",
+                    "type": "frame",
+                    "$$hashKey": "object:533"
+                },
+                {
+                    "value": "[[0,0,0], [0,10,10], [0,0,20], [0,-10,30], [0,0,40]]",
+                    "type": "points",
+                    "$$hashKey": "object:534"
+                },
+                {
+                    "value": "3",
+                    "type": "degree",
+                    "$$hashKey": "object:535"
+                }
+            ],
+            "result": "crv2",
+            "selected": false,
+            "$$hashKey": "object:138"
+        },
+        {
+            "id": 3,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "bezierByPoints",
+            "category": "crv",
+            "parameters": [
+                {
+                    "value": "GLOBAL",
+                    "type": "frame",
+                    "$$hashKey": "object:552"
+                },
+                {
+                    "value": "[[-40,0,0], [-50,10,0], [-70,0,0]]",
+                    "type": "points",
+                    "$$hashKey": "object:553"
+                },
+                {
+                    "value": "undefined",
+                    "type": "weights",
+                    "$$hashKey": "object:554"
+                }
+            ],
+            "result": "crv3",
+            "selected": false,
+            "disabled": false,
+            "$$hashKey": "object:139"
+        },
+        {
+            "id": 4,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "arc",
+            "category": "crv",
+            "parameters": [
+                {
+                    "value": "GLOBAL",
+                    "type": "frame",
+                    "$$hashKey": "object:571"
+                },
+                {
+                    "value": "10",
+                    "type": "radius",
+                    "$$hashKey": "object:572"
+                },
+                {
+                    "value": "0",
+                    "type": "minAngle",
+                    "$$hashKey": "object:573"
+                },
+                {
+                    "value": "120",
+                    "type": "maxAngle",
+                    "$$hashKey": "object:574"
+                }
+            ],
+            "result": "crv4",
+            "selected": false,
+            "disabled": false,
+            "$$hashKey": "object:140"
+        },
+        {
+            "id": 5,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "ellipse",
+            "category": "crv",
+            "parameters": [
+                {
+                    "value": "newfrm",
+                    "type": "frame",
+                    "$$hashKey": "object:594"
+                },
+                {
+                    "value": "10",
+                    "type": "xRadius",
+                    "$$hashKey": "object:595"
+                },
+                {
+                    "value": "20",
+                    "type": "yRadius",
+                    "$$hashKey": "object:596"
+                }
+            ],
+            "result": "crv5",
+            "selected": false,
+            "disabled": false,
+            "$$hashKey": "object:141"
+        },
+        {
+            "id": 6,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "ellipseArc",
+            "category": "crv",
+            "parameters": [
+                {
+                    "value": "newfrm",
+                    "type": "frame",
+                    "$$hashKey": "object:613"
+                },
+                {
+                    "value": "30",
+                    "type": "xRadius",
+                    "$$hashKey": "object:614"
+                },
+                {
+                    "value": "40",
+                    "type": "yRadius",
+                    "$$hashKey": "object:615"
+                },
+                {
+                    "value": "0",
+                    "type": "minAngle",
+                    "$$hashKey": "object:616"
+                },
+                {
+                    "value": "270",
+                    "type": "maxAngle",
+                    "$$hashKey": "object:617"
+                }
+            ],
+            "result": "crv6",
+            "selected": false,
+            "disabled": false,
+            "$$hashKey": "object:142"
+        },
+        {
+            "id": 7,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "line",
+            "category": "crv",
+            "parameters": [
+                {
+                    "value": "GLOBAL",
+                    "type": "frame",
+                    "$$hashKey": "object:640"
+                },
+                {
+                    "value": "[-40,0,20]",
+                    "type": "startPoint",
+                    "$$hashKey": "object:641"
+                },
+                {
+                    "value": "[20,20,20]",
+                    "type": "endPoint",
+                    "$$hashKey": "object:642"
+                }
+            ],
+            "result": "crv7",
+            "selected": false,
+            "disabled": false,
+            "$$hashKey": "object:143"
+        },
+        {
+            "id": 10,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "circle",
+            "category": "crv",
+            "parameters": [
+                {
+                    "value": "GLOBAL",
+                    "type": "frame",
+                    "$$hashKey": "object:1720"
+                },
+                {
+                    "value": "90",
+                    "type": "radius",
+                    "$$hashKey": "object:1721"
+                }
+            ],
+            "result": "crv8",
+            "$$hashKey": "object:1705",
+            "selected": true
+        },
+        {
+            "id": 8,
+            "title": "Output",
+            "type": "new",
+            "selected": false,
+            "name": "crvs",
+            "dataValue": "[crv1, crv2, crv3, crv4, crv5, crv6, crv7, crv8]",
+            "$$hashKey": "object:144"
+        }
+    ],
+    [
+        {
+            "id": 14,
+            "title": "Output",
+            "type": "new",
+            "$$hashKey": "object:7047",
+            "selected": false,
+            "name": "crv"
+        },
+        {
+            "id": 15,
+            "title": "Output",
+            "type": "new",
+            "$$hashKey": "object:7086",
+            "selected": false,
+            "name": "crv2"
+        },
+        {
+            "id": 10,
+            "title": "Output",
+            "type": "new",
+            "$$hashKey": "object:4926",
+            "selected": false,
+            "name": "points"
+        },
+        {
+            "id": 13,
+            "title": "Output",
+            "type": "new",
+            "$$hashKey": "object:6972",
+            "selected": false,
+            "name": "points2"
+        },
+        {
+            "id": 18,
+            "title": "Output",
+            "type": "new",
+            "$$hashKey": "object:764",
+            "selected": false,
+            "name": "pline"
+        },
+        {
+            "id": 16,
+            "title": "Output",
+            "type": "new",
+            "$$hashKey": "object:7130",
+            "selected": false,
+            "name": "frames"
+        },
+        {
+            "id": 9,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "crv",
+            "dataValue": "curves[5]",
+            "type": "new",
+            "$$hashKey": "object:4031",
+            "selected": false
+        },
+        {
+            "id": 1,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "divideByNumber",
+            "category": "crv",
+            "parameters": [
+                {
+                    "value": "crv",
+                    "type": "curve",
+                    "$$hashKey": "object:2843"
+                },
+                {
+                    "value": "11",
+                    "type": "numPoints",
+                    "$$hashKey": "object:2844"
+                }
+            ],
+            "result": "tByDiv",
+            "$$hashKey": "object:2823",
+            "selected": false
+        },
+        {
+            "id": 3,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "getPoints",
+            "category": "crv",
+            "parameters": [
+                {
+                    "value": "crv",
+                    "type": "curve",
+                    "$$hashKey": "object:3213"
+                },
+                {
+                    "value": "tByDiv",
+                    "type": "tList",
+                    "$$hashKey": "object:3214"
+                }
+            ],
+            "result": "points",
+            "$$hashKey": "object:3198",
+            "selected": false,
+            "disabled": false
+        },
+        {
+            "id": 11,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "shift",
+            "category": "trn",
+            "parameters": [
+                {
+                    "value": "crv",
+                    "type": "object",
+                    "$$hashKey": "object:6379"
+                },
+                {
+                    "value": "GLOBAL",
+                    "type": "frame",
+                    "$$hashKey": "object:6380"
+                },
+                {
+                    "value": "0",
+                    "type": "shiftX",
+                    "$$hashKey": "object:6381"
+                },
+                {
+                    "value": "0",
+                    "type": "shiftY",
+                    "$$hashKey": "object:6382"
+                },
+                {
+                    "value": "30",
+                    "type": "shiftZ",
+                    "$$hashKey": "object:6383"
+                },
+                {
+                    "value": "true",
+                    "type": "copy",
+                    "$$hashKey": "object:6384"
+                }
+            ],
+            "result": "crv2",
+            "$$hashKey": "object:6364",
+            "selected": false
+        },
+        {
+            "id": 2,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "divideByDistance",
+            "category": "crv",
+            "parameters": [
+                {
+                    "value": "crv2",
+                    "type": "curve",
+                    "$$hashKey": "object:3028"
+                },
+                {
+                    "value": "30",
+                    "type": "distance",
+                    "$$hashKey": "object:3029"
+                }
+            ],
+            "result": "tByDist",
+            "$$hashKey": "object:3013",
+            "selected": false,
+            "disabled": false
+        },
+        {
+            "id": 17,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "print",
+            "category": "msc",
+            "parameters": [
+                {
+                    "value": "tByDist",
+                    "type": "content",
+                    "$$hashKey": "object:8334"
+                }
+            ],
+            "$$hashKey": "object:8322",
+            "selected": false
+        },
+        {
+            "id": 12,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "getPoints",
+            "category": "crv",
+            "parameters": [
+                {
+                    "value": "crv2",
+                    "type": "curve",
+                    "$$hashKey": "object:6946"
+                },
+                {
+                    "value": "tByDist",
+                    "type": "tList",
+                    "$$hashKey": "object:6947"
+                }
+            ],
+            "result": "points2",
+            "$$hashKey": "object:6931",
+            "selected": false
+        },
+        {
+            "id": 6,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "convertToPolyline",
+            "category": "crv",
+            "parameters": [
+                {
+                    "value": "crv2",
+                    "type": "curve",
+                    "$$hashKey": "object:3772"
+                },
+                {
+                    "value": "tByDist",
+                    "type": "tList",
+                    "$$hashKey": "object:3773"
+                }
+            ],
+            "result": "pline",
+            "$$hashKey": "object:3757",
+            "selected": false,
+            "disabled": false
+        },
+        {
+            "id": 4,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "getFrames",
+            "category": "crv",
+            "parameters": [
+                {
+                    "value": "crv",
+                    "type": "curve",
+                    "$$hashKey": "object:3398"
+                },
+                {
+                    "value": "tByDiv",
+                    "type": "tList",
+                    "$$hashKey": "object:3399"
+                },
+                {
+                    "value": "[0,0,1]",
+                    "type": "upVector",
+                    "$$hashKey": "object:3400"
+                }
+            ],
+            "result": "frames",
+            "$$hashKey": "object:3383",
+            "selected": false,
+            "disabled": false
+        }
+    ]
+]
+
+//interface json
+[
+    [],
+    [
+        {
+            "id": 1,
+            "title": "Input",
+            "name": "curves",
+            "connected": true,
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "$$hashKey": "object:1989",
+            "selected": true
+        }
+    ]
+]
