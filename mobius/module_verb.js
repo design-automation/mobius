@@ -1855,6 +1855,46 @@ var MOBIUS = ( function (mod){
 	
 	};
 
+	/**
+	 * Returns a 2D list by joining two given lists
+	 * @param {array} array1 - List which is to be joined
+	 * @param {array} array2 - List which is to be joined
+	 * @param {boolean} trim - If one of the lists is longer, setting this property to 'true' would remove the extra list elements from the longer list; 
+	 *						   Setting this to false, would copy the last value of the shorter list to all the extra elements
+	 * @returns {array} Combination of lists to be joined
+	 * @memberof lst
+	 */
+	mod.lst.zip = function( arr1, arr2, copyValue ){
+		
+		var length = arr1.length >= arr2.length ? arr1.length : arr2.length ;
+
+		var zippedArr = [];
+
+		for(var i=0; i < length; i++ ){
+
+			var subArr;
+
+			if( i < arr1.length && i < arr2.length )				
+				subArr = [ arr1[i], arr2[i] ]
+			else{
+				if( copyValue ){
+					if ( i >= arr1.length )
+						subArr = [ arr1[arr1.length-1], arr2[i] ]
+					else if ( i >= arr2.length )
+						subArr = [ arr1[i], arr2[arr2.length-1] ]
+				}
+				else
+					break;
+			}
+
+			zippedArr.push( subArr );
+		}
+		
+		return zippedArr;
+	
+	};
+
+
 
 	//
 	//
