@@ -2,7 +2,7 @@
 // Mobius Data Structure definition
 // Not open to editing by module developer
 //
-
+var counter = 0; var guids = [];
 // Main mObj Class definition
 // mObj maybe geometry, ifcModel, data / charts etc
 var mObj = function mObj( type ){
@@ -11,7 +11,8 @@ var mObj = function mObj( type ){
 	
     this.is_mObj = true; 
 
-    id = guid();
+    var id = counter++ + guid(); guids.push(this);
+    var equivalent = []; 
 
     // code from http://stackoverflow.com/questions/2020670/javascript-object-id
     function guid() {
@@ -31,6 +32,15 @@ var mObj = function mObj( type ){
     this.getID = function(){
         return id;
     }
+
+    this.getEquivalent = function(){
+        return equivalent;
+    }
+
+    this.setEquivalent = function( object ){
+        equivalent.push( object )
+    }
+
 }
 
 var mObj_frame = function mObj_frame( origin, xaxis, yaxis, zaxis ){
@@ -344,47 +354,73 @@ var mObj_geom = function mObj_geom( geometry, material ){
     //
     this.extractData = function(){
 
-        var dataTable = [];
+        var dataTables = [];
 
         // LIMITATION - Data can only be added to the topology
         if( topology == undefined && data == undefined )
-            return dataTable;
+            return dataTables;
         else{
             if (data != undefined){
+
+                // object table
+                var objectTable = {}
+                objectTable.name = 'ObjectTable';
+                objectTable.propertyNames = [];
+                objectTable.rows = [];
+
+                var newrow = {};
+                newrow.index = 'Object UID'
+                newrow.content = [];
+
                 for(var property in data){
-                    var jsonObject = {
-                        'attachedTo' : self,
-                        'Property' : property,
-                        'Value' : data[property]
-                    };
-                    dataTable.push(jsonObject);
+                    objectTable.propertyNames.push( property );
+                    newrow.content.push(data[property]);
                 }
+
+                objectTable.rows.push( newrow );
+
+                dataTables.push( objectTable );
             }
 
             // generalized - irrespective of topology object configuration
             for(topoElement in topology){
+
                 if(topology.hasOwnProperty(topoElement)){
+                    
+                    var topoTable = {};
+                    topoTable.name = topoElement;
+                    topoTable.propertyNames = [];
+                    topoTable.rows = [];
+
                     for( var index=0; index < topology[topoElement].length; index++){ 
+
+                        // each index has a row
+                        var newrow = {}
+                        newrow.index = index;
+                        newrow.content = [];
+
                         var topoData = topology[topoElement][index].getData(); 
+
                         if (topoData != undefined){
-                            for( var property in topoData ){
-                                var jsonObject = {
-                                    'attachedTo' : topoElement+index,
-                                    'Property' : property,
-                                    'Value' : topoData[property]
-                                };
-                                dataTable.push(jsonObject);
+                            for (var property in topoData ){
+
+                                if( topoTable.propertyNames.indexOf(property) == -1 )
+                                    topoTable.propertyNames.push(property);
+
+                                newrow.content[topoTable.propertyNames.indexOf(property)] = topoData[property];
                             }
                         }
+
+                        topoTable.rows.push( newrow );
                     }
+
+                    dataTables.push( topoTable );
                 }
             } 
         }
-        return dataTable;
+        return dataTables;
     }
 
-
-   
 
     // topology is always computed 
     update();

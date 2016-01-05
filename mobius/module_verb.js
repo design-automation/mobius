@@ -1326,16 +1326,18 @@ var MOBIUS = ( function (mod){
 		// decide on topology heirarchy also - if edge gets a property, do the vertices also get the same property?
 		if(obj.constructor === Array){
 			for(var i=0; i<obj.length; i++){
-				if(obj[i].getData() == undefined)
-					var new_data = {};
-					new_data[dataName] = dataValue;
-					obj[i].setData( new_data );
+				var new_data = obj[i].getData();
+				if(new_data == undefined)
+					new_data = {};
+				new_data[dataName] = dataValue;
+				obj[i].setData( new_data );
 			}
 		} else{
-			if(obj.getData() == undefined)
-				var new_data = {};
+				var new_data = obj.getData();
+				if(new_data == undefined)
+					new_data = {};
 				new_data[dataName] = dataValue;
-				obj.setData( new_data );
+			obj.setData( new_data );
 		}
 	};
 
@@ -2187,12 +2189,20 @@ var computeTopology = function( mObj ){
 		topology.faces = [];
 	}	
 	else if(mObj instanceof mObj_geom_Surface){
-		topology.vertices = [ new mObj_geom_Vertex(geom.point(0,0)), 
+/*		topology.vertices = [ new mObj_geom_Vertex(geom.point(0,0)), 
 								 new mObj_geom_Vertex(geom.point(1,0)), 
 									 new mObj_geom_Vertex(geom.point(1,1)), 
-										 new mObj_geom_Vertex(geom.point(0,1))];
-		topology.edges = geom.boundaries().map( function( boundary ) { return new mObj_geom_Curve( boundary )} );
-		topology.faces = [mObj];
+										 new mObj_geom_Vertex(geom.point(0,1))];*/
+		topology.edges = geom.boundaries().map( function( boundary ) { return new mObj_geom_Curve( boundary ) } ); 
+		
+		topology.vertices = [];
+
+		for(var e=0; e<topology.edges.length; e++)
+			topology.vertices = topology.vertices.concat(topology.edges[e].vertices); 
+	
+		topology.vertices = removeClonesInList( topology.vertices ); 
+
+		topology.faces = [mObj]; 
 	}	
 	else if(mObj instanceof mObj_geom_Solid){
 		// means it is a solid - collection of surfaces
@@ -2227,23 +2237,6 @@ var computeTopology = function( mObj ){
 //
 var removeClonesInList = function( list ){
 
-/*		if(list[0].constructor == mObj_geom_Vertex){
-			for(var obj=0; obj <)
-		}
-		// for vertices 
-		function arraysEqual(a, b) {
-			  if (a === b) return true;
-			  if (a == null || b == null) return false;
-			  if (a.length != b.length) return false;
-
-			  // If you don't care about the order of the elements inside
-			  // the array, you should sort both arrays here.
-
-			  for (var i = 0; i < a.length; ++i) {
-			    if (a[i] !== b[i]) return false;
-			  }
-			  return true;
-		}*/
 		var newArray = [];
 		
 		for(var v=0; v < list.length; v++){
@@ -2252,7 +2245,7 @@ var removeClonesInList = function( list ){
 			var duplicate = false;
 			//console.log(thisObject);
 			for(nextV=v+1; nextV < list.length; nextV++){
-			
+
 				var nextObject = list[nextV].getGeometry() ; 
 
 				if(thisObject._data != undefined)
@@ -2289,29 +2282,6 @@ var removeClonesInList = function( list ){
 							duplicate = true; // if all control points matched, it's a duplicate
 					}
 
-
-					
-
-/*						for(property in thisObject){
-							if(thisObject.hasOwnProperty(property)){ 
-								if(thisObject[property].constructor.name == "Array"){
-									if( JSON.stringify( thisObject[property] ) != JSON.stringify( nextObject[property] ) {
-										duplicate = false; 
-										break;
-									})
-									else
-										duplicate = true;
-								} 
-								else if(thisObject[property] != nextObject[property]){
-									duplicate = false; console.log(property);
-									break;
-								}
-								else
-									duplicate = true;
-							}
-						}
-					if(!duplicate)
-						break;	*/
 				}
 			}
 			
@@ -2320,6 +2290,7 @@ var removeClonesInList = function( list ){
 		}
 
 		return newArray;
+
 }
 
 
