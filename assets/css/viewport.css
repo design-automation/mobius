@@ -1,0 +1,67 @@
+/*four views */
+#viewSingle, #viewSingle1{
+    position: absolute;
+    top:0;
+    left:0;
+}
+
+#viewLT, #viewLT1{
+    border-right: 1px solid #444444;
+    position: absolute;
+    top:0;
+    left:0;
+}
+
+#viewLB,#viewLB1{
+    border-top:1px solid #444444;
+    border-right:1px solid #444444;
+    position: absolute;
+    top:0;
+    left:0;
+}
+
+#viewRT,#viewRT1{
+    border-bottom: 1px solid #444444;
+    position: absolute;
+    top:0;
+    left:0;
+}
+
+#viewRB,#viewRB1{
+    border-top:1px solid #444444;
+    position: absolute;
+    top:0;
+    left:0;
+}
+
+#LT,#LT1{
+    width: 50%;
+    height:50%;
+    top:0;
+    left:0;
+    position:absolute;
+}
+
+#LB, #LB1{
+    width: 50%;
+    height:50%;
+    top:50%;
+    left:0;
+    position:absolute;
+}
+
+#RT, #RT1{
+    width: 50%;
+    height:50%;
+    top:0;
+    left:50%;
+    position:absolute;
+}
+
+#RB, #RB1{
+    width: 50%;
+    height:50%;
+    top:50%;
+    left:50%;
+    position:absolute;
+}
