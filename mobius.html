@@ -58,13 +58,9 @@
 
                     <ul class="dropdown-menu">
                         <li><a ng-click="loadExample('00_KillianRoof.json')"> Killian Roof </a></li>
-                        <li><a ng-click="loadExample('04_HigherOrderKillian.json')"> Higher Order Killian Roof </a></li>
                         <li><a ng-click="loadExample('03_SimpleTower.json')"> Simple Tower </a></li>
                         <li><a ng-click="loadExample('01_SpiralTowers.json')"> Spiral Towers </a></li>
                         <li><a ng-click="loadExample('02_Extrusions.json')"> Extrusion Example </a></li>
-                        <li><a ng-click="loadExample('05_Frames_Solids_Surfaces.json')"> Frames Example </a></li>
-                        <li><a ng-click="loadExample('06_SurfaceFunctions.json')"> Surface Example </a></li>
-                        <li><a ng-click="loadExample('07_CurveFunctions.json')"> Curves Example </a></li>
                     </ul>
                 </li>
             </ul>
@@ -253,8 +249,8 @@
                                                 <li class="dropdown-submenu" ng-if="showGeometryLT">
                                                     <a   href="#">Display Mode</a>
                                                     <ul class="dropdown-menu">
-                                                        <li><a    ng-click="viewportControl.toggleWireframe()">Wireframe</a></li>
-                                                        <li><a   ng-click="viewportControl.toggleRender()">Render</a></li>
+                                                        <li><a    ng-click="viewportControl.wireframeOption('LT')">Wireframe</a></li>
+                                                        <li><a   ng-click="viewportControl.renderOption('LT')">Render</a></li>
                                                     </ul>
                                                 </li>
                                             </ul>
@@ -316,8 +312,8 @@
                                                 <li class="dropdown-submenu" ng-if="showGeometryRT">
                                                     <a   href="#">Display Mode</a>
                                                     <ul class="dropdown-menu">
-                                                        <li><a    ng-click="viewportControl.toggleWireframe()">Wireframe</a></li>
-                                                        <li><a   ng-click="viewportControl.toggleRender()">Render</a></li>
+                                                        <li><a    ng-click="viewportControl.wireframeOption('RT')">Wireframe</a></li>
+                                                        <li><a   ng-click="viewportControl.renderOption('RT')">Render</a></li>
                                                     </ul>
                                                 </li>
                                             </ul>
@@ -377,8 +373,8 @@
                                                 <li class="dropdown-submenu" ng-if="showGeometryLB">
                                                     <a   href="#">Display Mode</a>
                                                     <ul class="dropdown-menu">
-                                                        <li><a    ng-click="viewportControl.toggleWireframe()">Wireframe</a></li>
-                                                        <li><a   ng-click="viewportControl.toggleRender()">Render</a></li>
+                                                        <li><a    ng-click="viewportControl.wireframeOption('LB')">Wireframe</a></li>
+                                                        <li><a   ng-click="viewportControl.renderOption('LB')">Render</a></li>
                                                     </ul>
                                                 </li>
                                             </ul>
@@ -438,8 +434,8 @@
                                                  <li class="dropdown-submenu" ng-if="showGeometryRB">
                                                      <a href="#">Display Mode</a>
                                                      <ul class="dropdown-menu">
-                                                         <li><a    ng-click="viewportControl.toggleWireframe()">Wireframe</a></li>
-                                                         <li><a   ng-click="viewportControl.toggleRender()">Render</a></li>
+                                                         <li><a    ng-click="viewportControl.wireframeOption('RB')">Wireframe</a></li>
+                                                         <li><a   ng-click="viewportControl.renderOption('RB')">Render</a></li>
                                                      </ul>
                                                  </li>
                                              </ul>

@@ -635,7 +635,8 @@ vidamo.directive('viewport', function factory() {
             var wireframeLB = false;
             var wireframeRB = false;
 
-            scope.wireframeOption = function (view){
+            scope.internalControl.wireframeOption = function (view){
+                console.log(view);
                 switch (view){
                     case 'main':
                         wireframeMain = true;
@@ -655,7 +656,7 @@ vidamo.directive('viewport', function factory() {
                 }
             };
 
-            scope.renderOption = function (view){
+            scope.internalControl.renderOption = function (view){
                 switch (view){
                     case 'main':
                         wireframeMain = false;
@@ -851,11 +852,11 @@ vidamo.directive('viewport', function factory() {
                     document.getElementById("LB").appendChild(rendererLB.domElement);
                     document.getElementById("RB").appendChild(rendererRB.domElement);
 
-                    //if(wireframeLT){
-                    //    scope.internalControl.toggleWireframe();
-                    //}else{
-                    //    scope.internalControl.toggleRender();
-                    //}
+                    if(wireframeLT){
+                        scope.internalControl.toggleWireframe();
+                    }else{
+                        scope.internalControl.toggleRender();
+                    }
 
                     if(!orthographicLT){
                         rendererLT.render(scene, cameraLT);
@@ -864,11 +865,11 @@ vidamo.directive('viewport', function factory() {
                         rendererLT.render(scene, orthoCameraLT);
                     }
 
-                    //if(wireframeRT){
-                    //    scope.internalControl.toggleWireframe();
-                    //}else{
-                    //    scope.internalControl.toggleRender();
-                    //}
+                    if(wireframeRT){
+                        scope.internalControl.toggleWireframe();
+                    }else{
+                        scope.internalControl.toggleRender();
+                    }
 
                     if(!orthographicRT){
                         rendererRT.render(scene, cameraRT);
@@ -877,11 +878,11 @@ vidamo.directive('viewport', function factory() {
                         rendererRT.render(scene, orthoCameraRT);
                     }
 
-                    //if(wireframeLB){
-                    //    scope.internalControl.toggleWireframe();
-                    //}else{
-                    //    scope.internalControl.toggleRender();
-                    //}
+                    if(wireframeLB){
+                        scope.internalControl.toggleWireframe();
+                    }else{
+                        scope.internalControl.toggleRender();
+                    }
 
                     if(!orthographicLB){
                         rendererLB.render(scene, cameraLB);
@@ -890,11 +891,11 @@ vidamo.directive('viewport', function factory() {
                         rendererLB.render(scene, orthoCameraLB);
                     }
 
-                    //if(wireframeRB){
-                    //    scope.internalControl.toggleWireframe();
-                    //}else{
-                    //    scope.internalControl.toggleRender();
-                    //}
+                    if(wireframeRB){
+                        scope.internalControl.toggleWireframe();
+                    }else{
+                        scope.internalControl.toggleRender();
+                    }
 
                     if(!orthographicRB){
                         rendererRB.render(scene, cameraRB);

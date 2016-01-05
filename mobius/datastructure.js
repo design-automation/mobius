@@ -11,26 +11,9 @@ var mObj = function mObj( type ){
 	
     this.is_mObj = true; 
 
-    id = guid();
-
-    // code from http://stackoverflow.com/questions/2020670/javascript-object-id
-    function guid() {
-          function s4() {
-            return Math.floor((1 + Math.random()) * 0x10000)
-              .toString(16)
-              .substring(1);
-          }
-          return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-            s4() + '-' + s4() + s4() + s4();
-    }
-
 	this.getType = function(){
 		return type;
 	}
-
-    this.getID = function(){
-        return id;
-    }
 }
 
 var mObj_frame = function mObj_frame( origin, xaxis, yaxis, zaxis ){
@@ -392,9 +375,8 @@ var mObj_geom = function mObj_geom( geometry, material ){
 }
 
 var mObj_geom_Vertex = function mObj_geom_Vertex( geometry ){
-
-    var defaultVertexMaterial = new THREE.PointsMaterial( { size: 5, sizeAttenuation: false } );
-    //console.log(geometry);
+   var defaultVertexMaterial = new THREE.PointsMaterial( { size: 5, sizeAttenuation: false } );
+    
     mObj_geom.call( this, geometry, defaultVertexMaterial  ); 
 
     this.x = geometry[0];
