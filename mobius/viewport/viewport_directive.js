@@ -42,7 +42,8 @@ vidamo.directive('viewport', function factory() {
             var VIEWPORT_WIDTH = container.offsetWidth;
             var VIEWPORT_HEIGHT = container.offsetHeight;
 
-            var scene;
+            //akm
+            //scene;
             var camera,cameraLT, cameraLB, cameraRT, cameraRB;
             var  orthoCamera, orthoCameraLT, orthoCameraLB, orthoCameraRT, orthoCameraRB;
 

@@ -2004,6 +2004,17 @@ var MOBIUS = ( function (mod){
 	//	Polygon Library
 	//
 	//
+	mod.ply = {};
+	
+	mod.ply.makePolygon = function ( twoDim_points ){
+
+		var customShape = new THREE.Shape();
+		customShape.moveTo(pointsXY[0], pointsXY[1]);
+		for(var pointNo=1; pointNo < pointsXY.length; pointNo++)
+			customShape.lineTo(pointsXY[pointNo][0], pointsXY[pointNo][1]);
+		customShape.lineTo(pointsXY[0][0], pointsXY[0][1]);
+
+	};
 
 
 
