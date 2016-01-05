@@ -448,4 +448,14 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
         $scope.toggleCheatSheet = function(){
             hotkeys.toggleCheatSheet();
         };
+
+
+        // emit to viewport controller for view splitting
+        $scope.singleView = function(){
+            $rootScope.$broadcast('singleView');
+        };
+
+        $scope.fourViews = function(){
+            $rootScope.$broadcast('fourViews');
+        }
     }]);
