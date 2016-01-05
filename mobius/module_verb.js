@@ -883,7 +883,7 @@ var MOBIUS = ( function (mod){
 		var tList = [];
 		var incr = 1/(numPoints-1)
 		for(var t=0; t<numPoints; t++){
-			tList.push( Number((t*incr).toFixed(1)) );
+			tList.push( Number((t*incr).toFixed(3)) + 0.00001);  //0.00001 added for workaround verbs limitation of 0.25 multiple call stack
 		}
 
 		return tList; 
@@ -903,7 +903,7 @@ var MOBIUS = ( function (mod){
 
 		var tList = [];
 	 	for(var len=0; len <= curve.length(); len=len+distance){
-	 		tList.push( Number(curve.paramAtLength( len ).toFixed(2)) );
+	 		tList.push( Number(curve.paramAtLength( len ).toFixed(3) + 0.00001) ); //workaround
 	 		
 	 	}
 	 	
@@ -1012,16 +1012,17 @@ var MOBIUS = ( function (mod){
 		var tList_cpy = tList.slice(); 
 
 		// removing superfluous 0 and 1 values
-		if( tList_cpy[0] == 0 )
+		if( tList_cpy[0] < 0.001 )
 			tList_cpy.splice(0, 1);
-		if( tList_cpy[tList_cpy.length-1] == 1 )
+		if( tList_cpy[tList_cpy.length-1] - 1 < 0.001 )
 			tList_cpy.pop(); 
 
 		if( tList_cpy.length == 0 )
 			return [curve];
 
-		if( tList_cpy.length == 1 )
+		if( tList_cpy.length == 1 ){
 			return MOBIUS.crv.divideByTList(curve, tList_cpy[0] );
+		}
 
 		var crvSegments = [];
 		var splits;
@@ -1996,6 +1997,14 @@ var MOBIUS = ( function (mod){
 			console.log('warnning: MOBIUS web app not connected.');
 		}
 	};
+
+
+	//
+	//
+	//	Polygon Library
+	//
+	//
+
 
 
 	// data conversion module
