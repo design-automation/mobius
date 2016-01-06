@@ -2011,22 +2011,25 @@ var MOBIUS = ( function (mod){
 		var customShape = new THREE.Shape();
 
 		//move to starting point
-		customShape.moveTo(pointsXY[0], pointsXY[1]);
+		// TODO: pointsXY might specify multiple paths
+		customShape.moveTo(pointsXY[0][0], pointsXY[0][1]);
 
 		for(var pointNo=1; pointNo < pointsXY.length; pointNo++)
 			customShape.lineTo( pointsXY[pointNo][0], pointsXY[pointNo][1] );
 
-		var holePath = new THREE.Path();
-		holePath.moveTo( holes[0][0], holes[0][1] );
-		for(var point=1; point < holes.length; point++ )
-			holePath.lineTo( holes[point][0], holes[point][1] );
+		
+		if(holes.length){
+			var holePath = new THREE.Path();
+			holePath.moveTo( holes[0][0], holes[0][1] );
+			for(var point=1; point < holes.length; point++ )
+				holePath.lineTo( holes[point][0], holes[point][1] );
+			customShape.holes.push( holePath );
+		}
 
 		if( closedPolygon ){
 			customShape.lineTo( pointsXY[0][0], pointsXY[0][1] );
 			//holePath.lineTo( holes[0][0], holes[0][1] );
 		}			
-
-		customShape.holes.push( holePath );
 
 		//var geometry = new THREE.ShapeGeometry( customShape );
 
@@ -2042,7 +2045,30 @@ var MOBIUS = ( function (mod){
 
 	};
 
-	mod.ply.offset = function(){
+	mod.ply.offset = function( polygon, offset ){
+
+		//var poly = polygon.getGeometry() // this is a THREE.Shape object
+
+		// convert the poly into Clipper.Path
+
+		//var subj = new ClipperLib.Paths();
+		var solution = new ClipperLib.Paths();
+		//subj[0] = [{"X":348,"Y":257},{"X":364,"Y":148},{"X":362,"Y":148},{"X":326,"Y":241},{"X":295,"Y":219},{"X":258,"Y":88},{"X":440,"Y":129},{"X":370,"Y":196},{"X":372,"Y":275}];
+		var subj = convertShapeToPath( polygon.getGeometry() ); 
+		
+		var scale = 100;
+		ClipperLib.JS.ScaleUpPaths(subj, scale);
+		var co = new ClipperLib.ClipperOffset(2, 0.25);
+		co.AddPaths(subj, ClipperLib.JoinType.jtRound, ClipperLib.EndType.etClosedPolygon);
+		co.Execute(solution, offset);
+		//ClipperLib.JS.ScaleDownPaths(subj, scale);
+
+		//draw solution with your own drawing function...
+		var result = convertPathToShape( solution );
+		//console.log(solution);
+		//console.log(result);
+
+		return new mObj_geom_Surface( result ); //result is a three.js shape
 
 	};
 
@@ -2394,5 +2420,44 @@ var removeClonesInList = function( list ){
 
 }
 
+//
+//
+//	convert shape to path in js clipper
+//
+//
+convertShapeToPath = function( shape ){
+
+	var subj = new ClipperLib.Paths();	
+	subj[0] = shape.actions.map( function( a ){
+				//console.log(a);
+				return { "X": a.args[0]*0.01, "Y": a.args[1]*0.01 }
+	});
+	//[{"X":348,"Y":257},{"X":364,"Y":148},{"X":362,"Y":148},{"X":326,"Y":241},{"X":295,"Y":219},{"X":258,"Y":88},{"X":440,"Y":129},{"X":370,"Y":196},{"X":372,"Y":275}];
+	return subj;
+}
+
+//
+//
+//	convert jsclipper path to shape in three.js 
+//
+//
+convertPathToShape = function( paths ){
+
+	//console.log("these are paths ", paths);
+
+	// for now, lets consider only one path is passed => pathPoints lengh == 1
+	pathPoints = paths.map( function( sln ){
+
+		return sln.map( function(pnt){  
+			return new THREE.Vector2(pnt.X, pnt.Y) 
+		} )
+
+	})
+
+	var path = new THREE.Path( )
+	path.fromPoints( pathPoints[0] );	
+
+	return path.toShapes()[0];
+}
 
 var GLOBAL = MOBIUS.frm.byXYAxes( [0,0,0], [1,0,0], [0,1,0] );

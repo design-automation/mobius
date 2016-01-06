@@ -1,0 +1,259 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "offse0",
+            "x": 1950.0602677471031,
+            "y": 2021.5132838375985,
+            "inputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Input",
+                    "name": "p1",
+                    "connected": false,
+                    "dataValue": "[0,0]",
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "selected": false
+                },
+                {
+                    "id": 2,
+                    "title": "Input",
+                    "name": "p2",
+                    "connected": false,
+                    "dataValue": "[10,0]",
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "selected": false
+                },
+                {
+                    "id": 3,
+                    "title": "Input",
+                    "name": "p3",
+                    "connected": false,
+                    "dataValue": "[10,10]",
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "selected": false
+                },
+                {
+                    "id": 4,
+                    "title": "Input",
+                    "name": "p4",
+                    "connected": false,
+                    "dataValue": "[0,10]",
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "selected": false
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Output",
+                    "type": "new",
+                    "selected": false,
+                    "name": "offset"
+                },
+                {
+                    "id": 6,
+                    "title": "Output",
+                    "type": "new",
+                    "selected": false,
+                    "name": "polygon"
+                }
+            ],
+            "type": "offse",
+            "version": 0,
+            "overwrite": true,
+            "disabled": false
+        }
+    ],
+    "connections": []
+}
+
+//procedure json
+[
+    [
+        {
+            "id": 1,
+            "title": "Output",
+            "type": "new",
+            "selected": false,
+            "name": "offset",
+            "$$hashKey": "object:179"
+        },
+        {
+            "id": 6,
+            "title": "Output",
+            "type": "new",
+            "selected": false,
+            "name": "polygon",
+            "$$hashKey": "object:180"
+        },
+        {
+            "id": 4,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "makePolygon",
+            "category": "ply",
+            "parameters": [
+                {
+                    "value": "GLOBAL",
+                    "type": "frame",
+                    "$$hashKey": "object:604"
+                },
+                {
+                    "value": "[[28.18,205.95],[ 28.18,105.07],[48.27,105.07],[48.28,110.23], [54.15,107.22], [59.69,105.39], [65.04,104.66], [72.06,105.08], [78.09,106.31], [81.56,107.68], [84.84,110.05], [88.03,113.63], [90.87,118.22], [92.71,123.12], [94.06,129.72], [94.7,138.25], [94.41,147.24], [93.31,155.41], [91.66,161.49], [89.46,166.25], [86.67,170.32], [83.75,173.13], [80.65,174.92], [75.51,176.56], [69.28,177.5], [63.74,177.55], [57.05,176.72], [51.42,175.15], [48.27,173.79], [48.27,205.95], [48.27,205.95], [28.18,205.95]]",
+                    "type": "pointsXY",
+                    "$$hashKey": "object:605"
+                },
+                {
+                    "value": "[]",
+                    "type": "holes",
+                    "$$hashKey": "object:606"
+                },
+                {
+                    "value": "true",
+                    "type": "closedPolygon",
+                    "$$hashKey": "object:607"
+                }
+            ],
+            "result": "polygon",
+            "selected": false,
+            "$$hashKey": "object:181"
+        },
+        {
+            "id": 8,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "offset",
+            "category": "ply",
+            "parameters": [
+                {
+                    "value": "polygon",
+                    "type": "polygon",
+                    "$$hashKey": "object:1205"
+                },
+                {
+                    "value": "-5",
+                    "type": "offset",
+                    "$$hashKey": "object:1206"
+                }
+            ],
+            "result": "offset",
+            "$$hashKey": "object:1190",
+            "selected": true
+        },
+        {
+            "id": 7,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "addMaterial",
+            "category": "obj",
+            "return": false,
+            "parameters": [
+                {
+                    "value": "offset",
+                    "type": "obj",
+                    "$$hashKey": "object:635"
+                },
+                {
+                    "value": "\"MeshNormalMaterial\"",
+                    "type": "material_type",
+                    "$$hashKey": "object:636"
+                },
+                {
+                    "value": "true",
+                    "type": "wireframe",
+                    "$$hashKey": "object:637"
+                },
+                {
+                    "value": "\"red\"",
+                    "type": "color_hex",
+                    "$$hashKey": "object:638"
+                },
+                {
+                    "value": "false",
+                    "type": "transparent",
+                    "$$hashKey": "object:639"
+                }
+            ],
+            "result": "",
+            "selected": false,
+            "$$hashKey": "object:183"
+        }
+    ]
+]
+
+//interface json
+[
+    [
+        {
+            "id": 1,
+            "title": "Input",
+            "name": "p1",
+            "connected": false,
+            "dataValue": "[0,0]",
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "selected": false,
+            "$$hashKey": "object:161"
+        },
+        {
+            "id": 2,
+            "title": "Input",
+            "name": "p2",
+            "connected": false,
+            "dataValue": "[10,0]",
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "selected": false,
+            "$$hashKey": "object:162"
+        },
+        {
+            "id": 3,
+            "title": "Input",
+            "name": "p3",
+            "connected": false,
+            "dataValue": "[10,10]",
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "selected": false,
+            "$$hashKey": "object:163"
+        },
+        {
+            "id": 4,
+            "title": "Input",
+            "name": "p4",
+            "connected": false,
+            "dataValue": "[0,10]",
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "selected": false,
+            "$$hashKey": "object:164"
+        }
+    ]
+]
