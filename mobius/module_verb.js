@@ -2053,7 +2053,7 @@ var MOBIUS = ( function (mod){
 
 		//var subj = new ClipperLib.Paths();
 		var solution = new ClipperLib.Paths();
-		//subj[0] = [{"X":348,"Y":257},{"X":364,"Y":148},{"X":362,"Y":148},{"X":326,"Y":241},{"X":295,"Y":219},{"X":258,"Y":88},{"X":440,"Y":129},{"X":370,"Y":196},{"X":372,"Y":275}];
+		//subj is an array
 		var subj = convertShapeToPath( polygon.getGeometry() ); 
 		
 		var scale = 100;
@@ -2061,12 +2061,10 @@ var MOBIUS = ( function (mod){
 		var co = new ClipperLib.ClipperOffset(2, 0.25);
 		co.AddPaths(subj, ClipperLib.JoinType.jtRound, ClipperLib.EndType.etClosedPolygon);
 		co.Execute(solution, offset);
-		//ClipperLib.JS.ScaleDownPaths(subj, scale);
+		ClipperLib.JS.ScaleDownPaths(solution, scale);
 
 		//draw solution with your own drawing function...
 		var result = convertPathToShape( solution );
-		//console.log(solution);
-		//console.log(result);
 
 		return new mObj_geom_Surface( result ); //result is a three.js shape
 
@@ -2430,7 +2428,7 @@ convertShapeToPath = function( shape ){
 	var subj = new ClipperLib.Paths();	
 	subj[0] = shape.actions.map( function( a ){
 				//console.log(a);
-				return { "X": a.args[0]*0.01, "Y": a.args[1]*0.01 }
+				return { "X": a.args[0], "Y": a.args[1] }
 	});
 	//[{"X":348,"Y":257},{"X":364,"Y":148},{"X":362,"Y":148},{"X":326,"Y":241},{"X":295,"Y":219},{"X":258,"Y":88},{"X":440,"Y":129},{"X":370,"Y":196},{"X":372,"Y":275}];
 	return subj;
