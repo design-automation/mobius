@@ -2006,13 +2006,86 @@ var MOBIUS = ( function (mod){
 	//
 	mod.ply = {};
 	
-	mod.ply.makePolygon = function ( twoDim_points ){
+	mod.ply.makePolygon = function ( frame, pointsXY, holes, closedPolygon ){
 
 		var customShape = new THREE.Shape();
+
+		//move to starting point
 		customShape.moveTo(pointsXY[0], pointsXY[1]);
+
 		for(var pointNo=1; pointNo < pointsXY.length; pointNo++)
-			customShape.lineTo(pointsXY[pointNo][0], pointsXY[pointNo][1]);
-		customShape.lineTo(pointsXY[0][0], pointsXY[0][1]);
+			customShape.lineTo( pointsXY[pointNo][0], pointsXY[pointNo][1] );
+
+		var holePath = new THREE.Path();
+		holePath.moveTo( holes[0][0], holes[0][1] );
+		for(var point=1; point < holes.length; point++ )
+			holePath.lineTo( holes[point][0], holes[point][1] );
+
+		if( closedPolygon ){
+			customShape.lineTo( pointsXY[0][0], pointsXY[0][1] );
+			//holePath.lineTo( holes[0][0], holes[0][1] );
+		}			
+
+		customShape.holes.push( holePath );
+
+		//var geometry = new THREE.ShapeGeometry( customShape );
+
+		return new mObj_geom_Surface( customShape );
+
+	};
+
+	mod.ply.extrude = function(){
+
+	};
+
+	mod.ply.flip = function(){
+
+	};
+
+	mod.ply.offset = function(){
+
+	};
+
+	// this is going to get tough!
+	mod.ply.explode = function(){
+
+	};
+
+	mod.ply.join = function( mainPolygon, subPolygon ){
+
+		var shape = mainPolygon.getGeometry(); // this is Shape
+
+		var compositeShape; 
+
+		if( mainPolygon.getGeometry() instanceof THREE.ShapeGeometry )
+			compositeShape = mainPolygon.getGeometry()
+		else 
+			compositeShape = new THREE.ShapeGeometry( shape );
+		
+		//TODO: subPolygon should be an array also
+		if( subPolygon.getGeometry() instanceof THREE.Shape )
+			compositeShape.addShape( subPolygon.getGeometry() );
+		else 
+			console.log("subPolygon is not a shape");
+
+		return compositeShape; // this is shape geometry
+	};
+
+	//
+	//
+	//	Export Library
+	//
+	//
+	mod.exp = {};
+
+	mod.exp.exportToOBJ = function( geometry ){
+
+
+
+		// has to be sorted out for array 
+
+		// single geometry 
+		return geometry.exportGeometry( "obj" )
 
 	};
 
@@ -2127,6 +2200,10 @@ var convertGeomToThree = function( geom ){
 			dotGeometry.vertices.push( new THREE.Vector3(singleDataObject[0], singleDataObject[1], singleDataObject[2]) ); 
 			return new THREE.PointCloud( dotGeometry );
 		}
+		else if(singleDataObject instanceof THREE.Shape )
+			return new THREE.Mesh( new THREE.ShapeGeometry( singleDataObject ) );
+		else if(singleDataObject instanceof THREE.ShapeGeometry )
+			return new THREE.Mesh( singleDataObject )
 		else {
 			console.log("Module doesnt recognise either!", singleDataObject);
 		}
@@ -2143,6 +2220,9 @@ var convertGeomToThree = function( geom ){
 var convertTopoToThree = function( topology ){
 
 	var topo = new THREE.Object3D();
+
+	if( topology == undefined )
+		return topo;
 	
 	// convert vertices
 	var topoPointMaterial = new THREE.PointsMaterial( { size: 5, sizeAttenuation: false, color:0xCC3333 } );
@@ -2209,20 +2289,21 @@ var computeTopology = function( mObj ){
 		topology.faces = [];
 	}	
 	else if(mObj instanceof mObj_geom_Surface){
-/*		topology.vertices = [ new mObj_geom_Vertex(geom.point(0,0)), 
-								 new mObj_geom_Vertex(geom.point(1,0)), 
-									 new mObj_geom_Vertex(geom.point(1,1)), 
-										 new mObj_geom_Vertex(geom.point(0,1))];*/
-		topology.edges = geom.boundaries().map( function( boundary ) { return new mObj_geom_Curve( boundary ) } ); 
+		// TODO: accomodate geometries which are three.js
+		if(geom instanceof THREE.ShapeGeometry || geom instanceof THREE.Shape )
+			return;
+		else{
+			topology.edges = geom.boundaries().map( function( boundary ) { return new mObj_geom_Curve( boundary ) } ); 
+			
+			topology.vertices = [];
+
+			for(var e=0; e<topology.edges.length; e++)
+				topology.vertices = topology.vertices.concat(topology.edges[e].vertices); 
 		
-		topology.vertices = [];
+			topology.vertices = removeClonesInList( topology.vertices ); 
 
-		for(var e=0; e<topology.edges.length; e++)
-			topology.vertices = topology.vertices.concat(topology.edges[e].vertices); 
-	
-		topology.vertices = removeClonesInList( topology.vertices ); 
-
-		topology.faces = [mObj]; 
+			topology.faces = [mObj]; 
+		}
 	}	
 	else if(mObj instanceof mObj_geom_Solid){
 		// means it is a solid - collection of surfaces

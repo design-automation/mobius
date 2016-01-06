@@ -421,6 +421,29 @@ var mObj_geom = function mObj_geom( geometry, material ){
         return dataTables;
     }
 
+    //
+    // coverts to various file formats from the three geometry
+    //
+    this.exportGeometry = function( format ){
+        
+        var convertedFile; 
+
+        // conversion to obj file format
+        if( format == "obj" ){
+
+            if(threeGeometry == undefined)
+                threeGeometry = this.extractThreeGeometry();
+
+            var exporter = new THREE.OBJExporter();
+            convertedFile = exporter.parse( threeGeometry );
+            console.log("converting to obj", convertedFile);
+
+        }
+
+        return convertedFile; 
+
+    };
+
 
     // topology is always computed 
     update();

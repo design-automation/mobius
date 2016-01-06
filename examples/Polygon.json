@@ -1,0 +1,180 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "polygon0",
+            "x": 1910.5330673566161,
+            "y": 2034.6890173010936,
+            "inputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Input",
+                    "name": "p1",
+                    "connected": false,
+                    "dataValue": "[0,0]",
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "selected": false
+                },
+                {
+                    "id": 2,
+                    "title": "Input",
+                    "name": "p2",
+                    "connected": false,
+                    "dataValue": "[10,0]",
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "selected": false
+                },
+                {
+                    "id": 3,
+                    "title": "Input",
+                    "name": "p3",
+                    "connected": false,
+                    "dataValue": "[10,10]",
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "selected": false
+                },
+                {
+                    "id": 4,
+                    "title": "Input",
+                    "name": "p4",
+                    "connected": false,
+                    "dataValue": "[0,10]",
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "selected": false
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Output",
+                    "type": "new",
+                    "selected": false,
+                    "name": "polygon"
+                }
+            ],
+            "type": "polygon",
+            "version": 0,
+            "overwrite": true,
+            "disabled": false
+        }
+    ],
+    "connections": []
+}
+
+//procedure json
+[
+    [
+        {
+            "id": 1,
+            "title": "Output",
+            "type": "new",
+            "selected": false,
+            "name": "polygon",
+            "$$hashKey": "object:168"
+        },
+        {
+            "id": 4,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "makePolygon",
+            "category": "ply",
+            "parameters": [
+                {
+                    "value": "GLOBAL",
+                    "type": "frame",
+                    "$$hashKey": "object:562"
+                },
+                {
+                    "value": "[[28.18,205.95],[ 28.18,105.07],[48.27,105.07],[48.28,110.23], [54.15,107.22], [59.69,105.39], [65.04,104.66], [72.06,105.08], [78.09,106.31], [81.56,107.68], [84.84,110.05], [88.03,113.63], [90.87,118.22], [92.71,123.12], [94.06,129.72], [94.7,138.25], [94.41,147.24], [93.31,155.41], [91.66,161.49], [89.46,166.25], [86.67,170.32], [83.75,173.13], [80.65,174.92], [75.51,176.56], [69.28,177.5], [63.74,177.55], [57.05,176.72], [51.42,175.15], [48.27,173.79], [48.27,205.95], [48.27,205.95], [28.18,205.95]]",
+                    "type": "pointsXY",
+                    "$$hashKey": "object:563"
+                },
+                {
+                    "value": "[[48.28,120.42], [48.38,164.32], [52.31,166.53], [56.14,167.74], [61.35,168.35], [65.95,167.83], [69.48,166.59], [72.2,164.73], [74.29,162.19], [76.19,157.94], [77.7,152], [78.63,144.11], [78.66,136.61], [77.89,129.16], [76.59,124.08], [74.84,120.6], [72.55,118.04],[ 69.77,116.28], [65.91,115.07], [60.69,114.57], [56.85,115.18], [53.1,116.68], [48.91,119.57], [48.28,120.39], [48.28,120.42]]",
+                    "type": "holes",
+                    "$$hashKey": "object:564"
+                },
+                {
+                    "value": "true",
+                    "type": "closedPolygon",
+                    "$$hashKey": "object:565"
+                }
+            ],
+            "result": "polygon",
+            "selected": true,
+            "$$hashKey": "object:169"
+        }
+    ]
+]
+
+//interface json
+[
+    [
+        {
+            "id": 1,
+            "title": "Input",
+            "name": "p1",
+            "connected": false,
+            "dataValue": "[0,0]",
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "selected": false,
+            "$$hashKey": "object:150"
+        },
+        {
+            "id": 2,
+            "title": "Input",
+            "name": "p2",
+            "connected": false,
+            "dataValue": "[10,0]",
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "selected": false,
+            "$$hashKey": "object:151"
+        },
+        {
+            "id": 3,
+            "title": "Input",
+            "name": "p3",
+            "connected": false,
+            "dataValue": "[10,10]",
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "selected": false,
+            "$$hashKey": "object:152"
+        },
+        {
+            "id": 4,
+            "title": "Input",
+            "name": "p4",
+            "connected": false,
+            "dataValue": "[0,10]",
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "selected": false,
+            "$$hashKey": "object:153"
+        }
+    ]
+]
