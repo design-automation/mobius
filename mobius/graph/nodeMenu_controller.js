@@ -3,7 +3,7 @@
 // procedure and graph data are not affected in this controller
 //
 
-vidamo.controller('nodeMenuCtrl',['$scope','$rootScope','generateCode',
+mobius.controller('nodeMenuCtrl',['$scope','$rootScope','generateCode',
     function($scope,$rootScope,generateCode) {
 
         // procedure data list

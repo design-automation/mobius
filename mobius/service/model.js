@@ -7,9 +7,9 @@
 // todo restructure core data and other code lists
 
 
-vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
+mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
-    // vidamo application data pool
+    // mobius application data pool
 
     var chartDataModel = {
         nodes: [],
@@ -445,7 +445,6 @@ vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
                         data.innerCodeList[nodeIndex] += codeBlock;
                 }
             }
-
 
             // action procedure
              function procedure_action(procedure,nodeIndex,fromLoop){

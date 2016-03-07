@@ -4,7 +4,7 @@
 
 <div ui-tree-handle class="tree-node tree-node-content procedure-tree">
 
-    <div style="padding-left:20px " class="tree-node-content">
+    <div class="tree-node-content tree-item">
         name:
         <a>
             <a href="#" data-nodrag editable-text="node.name" buttons="no">{{ node.name || 'name' }}</a>
@@ -32,8 +32,8 @@
         </span>
 
         <!--delete key-->
-        <a class="pull-right btn btn-xs" data-nodrag ng-click="removeInput(this)" style="padding: 0;margin: 0" >
-            <span style="font-weight: 400; font-size: 16px;line-height:1" > &times; </span>
+        <a class="pull-right btn btn-xs procedure-delete-key" data-nodrag ng-click="removeInput(this)">
+            <span> &times; </span>
         </a>
         <span ng-if="node.option.name === 'dropdown'">
             &nbsp;menu options:
@@ -41,7 +41,7 @@
                    data-nodrag
                    editable-text="node.menuOptionText"
                    buttons="no">
-                    <pre style="margin-right: 15px;margin-bottom: 5px;padding: 0">
+                    <pre class="dropdown-option">
                         {{ node.menuOptionText || 'menu text' }}
                     </pre>
                 </a>
@@ -49,7 +49,7 @@
 
         <div ui-tree-nodes=""  ng-model="node.nodes" ng-class="{hidden: collapsed}">
             <div ng-repeat="node in node.nodes"
-                 ui-tree-node ng-include="'mobius/procedure/parameter_template.html'">
+                 ui-tree-node ng-include="'mobius/procedure/template/parameter_template.html'">
             </div>
         </div>
 

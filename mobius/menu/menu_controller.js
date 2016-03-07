@@ -2,7 +2,7 @@
 // Controller for menubar
 //
 
-vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','generateCode','nodeCollection','$http','hotkeys','$mdDialog',
+mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','generateCode','nodeCollection','$http','hotkeys','$mdDialog',
     function($scope,$rootScope,$timeout,consoleMsg,generateCode,nodeCollection,$http,hotkeys,$mdDialog){
 
         // store json url
@@ -374,7 +374,7 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
 
         // export node library in current local storage
         $scope.exportNodeLib = function (){
-            var allType = JSON.parse(localStorage.vidamoNodeTypes);
+            var allType = JSON.parse(localStorage.mobiusNodeTypes);
             var typeToExport = [];
 
             for(var i =0; i< allType.length ; i++){
@@ -405,12 +405,12 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                             var jsonString = e.target.result;
                             var types = JSON.parse(jsonString);
 
-                            var currentTypes = JSON.parse(localStorage.vidamoNodeTypes);
+                            var currentTypes = JSON.parse(localStorage.mobiusNodeTypes);
                             for(var i = 0; i < types.length; i++ ){
                                 currentTypes.push(types[i]);
                             }
 
-                            localStorage.vidamoNodeTypes = JSON.stringify(currentTypes);
+                            localStorage.mobiusNodeTypes = JSON.stringify(currentTypes);
 
                             nodeCollection.syncNodeTpyeStorage();
 
@@ -434,7 +434,7 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
             $scope.jsUrl = URL.createObjectURL(jsBlob);
         };
 
-        // save vidamo library file
+        // save mobius library file
         $scope.downloadLib = function(){
             $http.get("mobius/module.js")
                 .success(

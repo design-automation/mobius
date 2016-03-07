@@ -1,6 +1,6 @@
 // data pool for node types
 
-vidamo.factory('nodeCollection', function () {
+mobius.factory('nodeCollection', function () {
 
     var nodes= [];
     var defaultNodes = [{
@@ -24,17 +24,17 @@ vidamo.factory('nodeCollection', function () {
 
 
     // check if node types exists in local storage, if not, store default
-    if(localStorage.vidamoNodeTypes === undefined){
+    if(localStorage.mobiusNodeTypes === undefined){
         // store default into local storage
-        localStorage.vidamoNodeTypes = JSON.stringify(defaultNodes);
+        localStorage.mobiusNodeTypes = JSON.stringify(defaultNodes);
     }
 
     // retrieve the local storage node types for usage
-    nodes = JSON.parse(localStorage.vidamoNodeTypes);
+    nodes = JSON.parse(localStorage.mobiusNodeTypes);
 
     return{
         syncNodeTpyeStorage: function(){
-            nodes = JSON.parse(localStorage.vidamoNodeTypes);
+            nodes = JSON.parse(localStorage.mobiusNodeTypes);
         },
 
         // return node types for graph
@@ -122,7 +122,7 @@ vidamo.factory('nodeCollection', function () {
             };
 
             nodes.push(newNode);
-            localStorage.vidamoNodeTypes = JSON.stringify(nodes);
+            localStorage.mobiusNodeTypes = JSON.stringify(nodes);
 
         },
 
@@ -146,7 +146,7 @@ vidamo.factory('nodeCollection', function () {
                     nodes[i].interfaceDataModel = newInterfaceList;
                 }
 
-                localStorage.vidamoNodeTypes = JSON.stringify(nodes);
+                localStorage.mobiusNodeTypes = JSON.stringify(nodes);
             }
         }
     }

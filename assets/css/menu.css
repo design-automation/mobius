@@ -1,0 +1,24 @@
+.menubar{
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 10px;
+    background:-webkit-gradient(linear, left bottom, left top, color-stop(0, #eee), color-stop(1, #fff));
+}
+
+.menuTitle{
+    color: #000000;
+}
+
+#importNode, #importNodeLib, #openSceneJson{
+    visibility: hidden;
+    width: 1px;
+    height: 1px;
+}
+
+#mobiusInfo{
+    position:absolute;
+    right:10px;
+    top:5px;
+    font-size: 12px;
+    color:#555
+}

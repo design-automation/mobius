@@ -1,6 +1,6 @@
 // javascript code fetching from factory
 
-vidamo.controller('codeCtrl',[
+mobius.controller('codeCtrl',[
     '$scope',
     'generateCode',
     function($scope,generateCode) {

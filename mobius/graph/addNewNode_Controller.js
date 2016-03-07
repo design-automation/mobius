@@ -2,7 +2,7 @@
 // Mobius Graph Add Node/Type controller
 //
 
-vidamo.controller('newNodeCtrl',[
+mobius.controller('newNodeCtrl',[
     '$scope',
     '$timeout',
     'consoleMsg',
@@ -13,8 +13,7 @@ vidamo.controller('newNodeCtrl',[
     '$mdDialog',
     function($scope,$timeout,consoleMsg,hotkeys,generateCode,nodeCollection,prompt,$mdDialog) {
 
-        $scope.functionCodeList = [];
-        // synchronization with vidamo application data pool
+        // synchronization with mobius application data pool
 
         // inner function code for procedures
         $scope.innerCodeList = generateCode.getInnerCodeList();
@@ -44,7 +43,6 @@ vidamo.controller('newNodeCtrl',[
         },true);
 
         // interface data list
-
         $scope.interfaceList= generateCode.getInterfaceList();
         $scope.$watch('interfaceList', function () {
             generateCode.setInterfaceList($scope.interfaceList);
@@ -54,8 +52,6 @@ vidamo.controller('newNodeCtrl',[
         },true);
 
         // graph flowchart view model
-        // pass by reference
-        // watch chartViewModel.data instead of chartViewModel to prevent stack limit exceeded
         $scope.chartViewModel= generateCode.getChartViewModel();
         $scope.$watch('chartViewModel.data', function () {
             generateCode.generateCode();
@@ -87,27 +83,29 @@ vidamo.controller('newNodeCtrl',[
         // verify the function name
         // fixme replace eval with regex
         function isValidName(inputName) {
-            if(inputName){
-                var testString =  'function ' + inputName  + '(){};';
+            var valid = true;
 
-                try{
+            if (inputName) {
+                var testString = 'function ' + inputName + '(){};';
+
+                try {
                     eval(testString);
+                } catch (err) {
+                    valid = false;
                 }
-                catch(err){
-                    consoleMsg.errorMsg('invalidName');
-                    return false;
-                }
+            } else {
+                valid = false;
+            }
+
+            if(valid) {
                 return true;
-            }else{
-                consoleMsg.errorMsg('invalidName');
+            } else {
                 return false;
             }
-        }
+        };
 
 
         // Add a new node to the chart.
-        // todo disable name history in input
-
         $scope.addNewNode = function (type) {
             if(type === 'create new type'){
                 // install new node type and update type

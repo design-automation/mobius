@@ -9,7 +9,7 @@
 // 5. set view position
 
 
-vidamo.directive('viewport', function factory() {
+mobius.directive('viewport', function factory() {
     return {
         restrict: 'E',
         replace: true,
@@ -922,6 +922,7 @@ vidamo.directive('viewport', function factory() {
             //
             // supporting function for geometry from verb to three.js
             //
+            // fixme geom here is not used
             scope.internalControl.addGeometryToScene = function(geom,value,geomData){
                 scope.internalControl.geometryData = [{Property:'', Value:'',attachedTo:''}];
 
@@ -959,9 +960,6 @@ vidamo.directive('viewport', function factory() {
                 // update the data table viewport
                 if(singleGeomDataObject.length !== 0){
                     scope.internalControl.geometryData = scope.internalControl.geometryData.concat(singleGeomDataObject);
-                }
-                else{
-                    console.log("Mobius doesn't recognise this type!");
                 }
             };
         }

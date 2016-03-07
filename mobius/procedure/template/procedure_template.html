@@ -5,11 +5,10 @@
 
     <div ng-class="{'node-selected':node.selected,
                     'node-disabled':node.disabled,
-                    'node-selected-disabled':node.selected && node.disabled}"
-         style="min-height: 22px">
+                    'node-selected-disabled':node.selected && node.disabled}">
 
     <!--data procedure-->
-    <div ng-if="node.title === 'Data'" style="padding-left:20px " class="tree-node-content">
+    <div ng-if="node.title === 'Data'" class="tree-node-content tree-item">
         <a>
             <!--vairable name and value-->
             <a href="#" data-nodrag editable-text="node.dataName" blur="submit"  buttons="no" >
@@ -22,13 +21,13 @@
         </a>
 
         <!--delete key-->
-        <a class="pull-right btn btn-xs" data-nodrag ng-click="remove(this)" style="padding: 0;margin: 0" >
-            <span style="font-weight: 400; font-size: 16px;line-height:1" > &times; </span>
+        <a class="pull-right btn btn-xs procedure-delete-key" data-nodrag ng-click="remove(this)">
+            <span> &times; </span>
         </a>
 
         <div ui-tree-nodes=""  ng-model="node.nodes" ng-class="{hidden: collapsed}">
             <div ng-repeat="node in node.nodes"
-                 ui-tree-node ng-include="'vidamo/template/procedure.html'">
+                 ui-tree-node ng-include="'mobius/template/procedure.html'">
             </div>
         </div>
 
@@ -36,7 +35,7 @@
 
 
     <!--output procedure-->
-    <div ng-if="node.title === 'Output'" style="padding-left:20px " class="tree-node-content  ">
+    <div ng-if="node.title === 'Output'" class="tree-node-content tree-item">
 
         Output
         <a>
@@ -51,26 +50,26 @@
         </a>
 
         <!--delete key-->
-        <a class="pull-right btn btn-xs" data-nodrag ng-click="removeOutput(this)" style="padding: 0;margin: 0" >
-            <span style="font-weight: 400; font-size: 16px;line-height:1" > &times; </span>
+        <a class="pull-right btn btn-xs procedure-delete-key" data-nodrag ng-click="removeOutput(this)">
+            <span> &times; </span>
         </a>
 
         <div ui-tree-nodes=""  ng-model="node.nodes" ng-class="{hidden: collapsed}">
             <div ng-repeat="node in node.nodes"
-                 ui-tree-node ng-include="'vidamo/template/procedure.html'">
+                 ui-tree-node ng-include="'mobius/template/procedure.html'">
             </div>
         </div>
 
     </div>
 
     <!--action procedure-->
-    <div ng-if="node.title === 'Action' && node.method !== 'expression'" style="padding-left:20px" class="tree-node-content ">
+    <div ng-if="node.title === 'Action' && node.method !== 'expression'" class="tree-node-content tree-item">
         <!--return vairable-->
         <a href="#" data-nodrag buttons="no"
            blur="submit"
            ng-if="node.method !== 'print' && node.return !== false"
            editable-text="node.result"
-           style="display: inline-block">
+           class="inline">
             {{ node.result || 'result' }} =
         </a>
 
@@ -79,7 +78,7 @@
 
         (
         <!--parameters-->
-        <div ng-repeat="parameter in node.parameters" style="display: inline-block" ng-class="{'last': $last}">
+        <div ng-repeat="parameter in node.parameters" class="inline" ng-class="{'last': $last}">
             <a data-nodrag href="#"
                editable-text="parameter.value"
                buttons="no"
@@ -89,31 +88,30 @@
         )
 
         <!--delete key-->
-        <a class="pull-right btn btn-xs" data-nodrag ng-click="remove(this)" style="padding: 0;margin: 0" >
-            <span style="font-weight: 400; font-size: 16px;line-height:1; right:2px; position: absolute" > &times; </span>
+        <a class="pull-right btn btn-xs procedure-delete-key" data-nodrag ng-click="remove(this)">
+            <span> &times; </span>
         </a>
     </div>
 
-    <div ng-if="node.title === 'Action' && node.method === 'expression'" style="padding-left:20px" class="tree-node-content ">
+    <div ng-if="node.title === 'Action' && node.method === 'expression'" class="tree-node-content tree-item">
         <a data-nodrag href="#" editable-text="node.expression" buttons="no" blur="submit">
             {{ node.expression || 'expression' }}
         </a>
 
         <!--delete key-->
-        <a class="pull-right btn btn-xs" data-nodrag ng-click="remove(this)" style="padding: 0;margin: 0" >
-            <span style="font-weight: 400; font-size: 16px;line-height:1" > &times; </span>
+        <a class="pull-right btn btn-xs procedure-delete-key" data-nodrag ng-click="remove(this)" >
+            <span> &times; </span>
         </a>
     </div>
 
 
     <!--control procedure-->
-    <div ng-if="node.title === 'Control'"  class="tree-node-content ">
+    <div ng-if="node.title === 'Control'"  class="tree-node-content">
         <!--expand/collapse key-->
-        <div ng-if="node.controlType === 'if' || node.controlType === 'else' " style="margin-left: -20px">
+        <div ng-if="node.controlType === 'if' || node.controlType === 'else' " class="control-subheading">
             <a data-nodrag ng-click="toggle(this)" >
                 <span
                         class="fa"
-                        style="font-weight: 900; font-size: 17px;"
                         ng-class="{
                               'fa-angle-right': collapsed,
                               'fa-angle-down': !collapsed
@@ -122,7 +120,7 @@
             </a>
 
             <!--if tag-->
-            <div data-nodrag ng-if="node.controlType === 'if'" style="display: inline-block; padding-left:23px">
+            <div data-nodrag ng-if="node.controlType === 'if'" class="control-content">
                 if
                 <a href="#" data-nodrag editable-text="node.ifExpression" buttons="no" blur="submit">
                     {{ node.ifExpression || 'expression' }}
@@ -130,7 +128,7 @@
             </div>
 
             <!--else tag-->
-            <div data-nodrag ng-if="node.controlType === 'else'" style="display: inline-block;padding-left:23px">
+            <div data-nodrag ng-if="node.controlType === 'else'" class="control-content">
                 else
             </div>
         </div>
@@ -139,7 +137,6 @@
         <a ng-if="node.controlType !== 'if' && node.controlType !== 'else' " data-nodrag ng-click="toggle(this)">
             <span
                     class="fa"
-                    style="font-weight: 900; font-size: 17px;"
                     ng-class="{
                           'fa-angle-right': collapsed,
                           'fa-angle-down': !collapsed
@@ -148,7 +145,7 @@
         </a>
 
         <!--for each loop-->
-        <div ng-if="node.controlType === 'for each'" style="display: inline-block; padding-left:3px">
+        <div ng-if="node.controlType === 'for each'" class="control-heading">
             for each
             <!--list item name-->
             <a href="#" data-nodrag editable-text="node.dataName" buttons="no" blur="submit">
@@ -160,19 +157,18 @@
         </div>
 
         <!--if else control-->
-        <div ng-if="node.controlType === 'if else'" style=" display: inline-block; padding-left:3px">
+        <div ng-if="node.controlType === 'if else'" class="control-heading">
             if...else...
         </div>
 
 
         <!--delete key-->
         <a ng-if="node.controlType !== 'if' && node.controlType !== 'else'"
-           class="pull-right btn btn-xs"
+           class="pull-right btn btn-xs procedure-delete-key"
            data-nodrag
-           ng-click="remove(this)"
-           style="padding: 0;margin: 0">
+           ng-click="remove(this)">
             <span>
-                <span style="font-weight: 400; font-size: 16px;line-height:1" > &times; </span>
+                <span> &times; </span>
             </span>
         </a>
 
@@ -183,7 +179,7 @@
 
     <div ui-tree-nodes=""  ng-model="node.nodes" ng-class="{hidden: collapsed}">
         <div ng-repeat="node in node.nodes"
-             ui-tree-node ng-include="'mobius/procedure/procedure_template.html'">
+             ui-tree-node ng-include="'mobius/procedure/template/procedure_template.html'">
         </div>
     </div>
 

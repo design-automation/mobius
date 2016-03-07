@@ -1,10 +1,10 @@
 //
-// vidamo procedure controller
+// mobius procedure controller
 //
 
 // todo value of in/out connector is not used
 
-vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg','generateCode','nodeCollection',
+mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg','generateCode','nodeCollection',
     function($scope,$rootScope,$filter,consoleMsg,generateCode,nodeCollection) {
 
         $scope.functionCodeList =[];
@@ -15,7 +15,7 @@ vidamo.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
             $scope.codeContent = content;
         };
 
-        // synchronization with vidamo application data pool
+        // synchronization with mobius application data pool
 
         // inner function code for procedures
         $scope.innerCodeList = generateCode.getInnerCodeList();

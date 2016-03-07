@@ -1,6 +1,6 @@
 // @mobius app module
 
-var vidamo = angular.module('vidamo',
+var mobius = angular.module('mobius',
                             [
                                 //'ngMaterial',
                                 'ui.layout',
@@ -13,7 +13,6 @@ var vidamo = angular.module('vidamo',
                                 'flowChart',
                                 'panzoom',
                                 'xeditable',
-                                //'ui.bootstrap.contextMenu',
                                 'ui.grid.resizeColumns',
                                 'ui.grid.autoResize',
                                 'cfp.hotkeys',
@@ -23,7 +22,7 @@ var vidamo = angular.module('vidamo',
                                 'decipher.history'
                             ]);
 
-    vidamo.filter('propsFilter', function() {
+    mobius.filter('propsFilter', function() {
         return function(items, props) {
             var out = [];
 
@@ -57,25 +56,25 @@ var vidamo = angular.module('vidamo',
 
     // Simple service to create a prompt.
     // fixme not using
-     vidamo.service('prompt', function () {
+     mobius.service('prompt', function () {
         return prompt;
     });
 
     // configuration for angular-xeditable plugin
     // bootstrap3 theme. Can be also 'bs2', 'default'
-    vidamo.run(function(editableOptions) {
+    mobius.run(function(editableOptions) {
         editableOptions.theme = 'bs3';
     });
 
     // config for ui-select plugin
-    vidamo.config(function(uiSelectConfig) {
+    mobius.config(function(uiSelectConfig) {
         uiSelectConfig.theme = 'bootstrap';
         uiSelectConfig.appendToBody = false;
     });
 
     // configuration of download files
     // config to add blob as safe prefix in the white list
-    vidamo.config( [
+    mobius.config( [
         '$compileProvider',
         function( $compileProvider ) {
             $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|blob|data):/);
@@ -136,7 +135,7 @@ var vidamo = angular.module('vidamo',
                     var browserId = M.join(' ');
                 }
                 alert('Your browser is ' + browserId +', Mobius currently only supports chrome.');
-                window.location.href = "index.html"
+                window.location.href = "../../index.html"
             }
     }
 

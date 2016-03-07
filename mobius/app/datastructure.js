@@ -249,7 +249,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
             threeGeometry.material = new_material;
         else
             update();
-        console.log("Material updated");
+        //console.log("Material updated");
     }
 
     // Dynamic Topology !
@@ -401,7 +401,7 @@ var mObj_geom_Surface = function mObj_geom_Surface( geometry ){
     var defaultSurfaceMaterial = new THREE.MeshLambertMaterial( {
     side: THREE.DoubleSide,
     wireframe: false,
-    shading: THREE.SmoothShading,
+    //shading: THREE.SmoothShading,
     transparent: false,
     color: 0x003399
     } );
@@ -411,11 +411,11 @@ var mObj_geom_Surface = function mObj_geom_Surface( geometry ){
 }
 
 var mObj_geom_Solid = function mObj_geom_Solid( geometry){
-	
+
     var defaultSolidMaterial = new THREE.MeshLambertMaterial( {
     side: THREE.DoubleSide,
     wireframe: false,
-    shading: THREE.SmoothShading,
+    //shading: THREE.SmoothShading,
     transparent: false,
     color: 0xCC6600
     } );

@@ -1,8 +1,8 @@
 //
-// VIDAMO middle console controller
+// mobius middle console controller
 //
 
-vidamo.controller('consoleCtrl',[
+mobius.controller('consoleCtrl',[
     '$scope',
     function($scope) {
         $scope.clearConsole = function(){

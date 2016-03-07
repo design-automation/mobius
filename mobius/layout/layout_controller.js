@@ -1,5 +1,5 @@
 
-vidamo.controller('layoutCtrl',['$scope','hotkeys',
+mobius.controller('layoutCtrl',['$scope','hotkeys',
     function($scope,hotkeys) {
 
         hotkeys.add({
@@ -11,7 +11,7 @@ vidamo.controller('layoutCtrl',['$scope','hotkeys',
         });
 
         // templates not in use
-        $scope.procedureHTML = { name: 'procedureHTML.html', url: 'mobius/procedure/procedureHTML.html'} ;
+        $scope.procedureHTML = { name: 'procedureHTML.html', url: 'mobius/procedure/template/procedureHTML.html'} ;
 
         $scope.bodySize =   document.getElementById('layout').offsetWidth;
 

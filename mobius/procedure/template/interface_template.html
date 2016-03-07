@@ -1,10 +1,9 @@
-<!--vidamo-->
+<!--mobius-->
 <!-- interface template -->
 
-<div ui-tree-handle class="tree-node tree-node-content"  style="background-color: white" >
-
+<div ui-tree-handle class="tree-node tree-node-content interface">
     <!-- parameter presentation-->
-    <div style="padding-left:20px " class="tree-node-content" >
+    <div class="tree-node-content tree-item" >
         {{ node.name || 'undefined' }}
         &nbsp;:&nbsp;
         <a ng-if =" node.option.name === 'none'"
@@ -20,9 +19,8 @@
                blur="submit">{{ node.dataValue || 'value' }}
             </a>
 
-            <input
-               style="width: 55%; display:inline-block;float: right;"
-                type="range"
+            <input type="range"
+                   class="range"
                 data-nodrag
                 ng-model="node.dataValue"
                 max = "{{node.max}}"

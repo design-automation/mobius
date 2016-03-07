@@ -1,0 +1,172 @@
+.code-area{
+    border-top-left-radius: 0;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 0;
+
+    border:0;
+    overflow: auto;
+    width:100%;
+    margin-bottom: 2px;
+}
+
+.code-area .buttons{
+    position: absolute;
+    bottom: 8px;
+    margin-bottom:-8px ;
+    width: 100%;
+    height: 80px;
+    border-bottom: 1px solid #cccccc;
+    border-left: 1px solid #cccccc;
+    border-right: 1px solid #cccccc;
+    border-radius: 4px;
+}
+
+.code-area .buttons #button-parameter{
+    display: inline-block;
+    width:20%;
+    left:8%;
+    position:absolute;
+    bottom:8px;
+}
+
+.code-area .buttons .button-data{
+    display: inline-block;
+    position: absolute;
+    bottom: 8px;
+    width: 20%;
+    left: 29.5%;
+}
+
+.code-area #argument-area{
+    position: absolute;
+    width: 100%;
+    border-top: 1px solid #cccccc;
+    border-left: 1px solid #cccccc;
+    border-right: 1px solid #cccccc;
+    border-radius: 4px;
+    margin-top:1px;
+    height:  calc(100% - 30px);
+    overflow: auto;
+}
+
+.code-area #tree-root-parameter{
+    padding-bottom:6px;
+}
+
+.button-action{
+    display: inline-block;
+    position: absolute !important;
+    top: 2px;
+    right: 44%;
+    white-space: nowrap;
+    width:68px;
+}
+
+.button-control{
+    display: inline-block;
+    position: absolute !important;
+    top: 2px;
+    right:28%;
+    white-space: nowrap;
+    width:68px;
+
+}
+
+.button-output{
+    display: inline-block;
+    white-space: nowrap;
+    position: absolute;
+    right:2%;
+    top:2px;
+}
+
+.button-input{
+    display: inline-block;
+    white-space: nowrap;
+    position: absolute;
+    right:2%;
+    top:2px;
+
+}
+
+.button-variable{
+    display: inline-block;
+    white-space: nowrap;
+    position: absolute;
+    right:14%;
+    top:2px;
+}
+
+.code-area .codeEditor {
+    position: absolute;
+    height:97%;
+    width:100%;
+    overflow: auto;
+    border-top: 1px solid #cccccc;
+    border-left: 1px solid #cccccc;
+    border-right: 1px solid #cccccc;
+    border-radius: 4px;
+    margin-top:1px;
+}
+
+.code-area .tabArea{
+    position: absolute;
+    width: 100%;
+    border-top: 1px solid #cccccc;
+    border-left: 1px solid #cccccc;
+    border-right: 1px solid #cccccc;
+    border-radius: 4px;
+    margin-top:1px;
+    /*fixme css3*/
+    height:  calc(100% - 27px);
+    overflow: auto;
+}
+
+
+.code-area .procedure-delete-key{
+    padding: 0;
+    margin: 0;
+}
+
+.code-area .procedure-delete-key > span{
+    font-weight: 400;
+    font-size: 16px;
+    line-height:1;
+}
+
+.code-area .dropdown-option{
+    margin-right: 15px;
+    margin-bottom: 5px;
+    padding: 0;
+}
+
+.code-area .far{
+    font-weight: 900;
+    font-size: 17px;
+}
+
+.code-area .control-content{
+    display: inline-block;
+    padding-left:23px;
+}
+
+.code-area .control-heading{
+    display: inline-block;
+    padding-left:3px;
+}
+
+.code-area .buttons .btn {
+    margin: 0;
+    font-size: 12px !important;
+    height: 24px !important;
+    line-height: 1 !important;
+}
+
+.code-area .control-subheading{
+    margin-left: -20px;
+}
+
+.code-area .inline{
+    display: inline-block;
+}

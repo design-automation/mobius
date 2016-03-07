@@ -3,7 +3,7 @@
 //
 
 
-vidamo.directive('topoViewport', function factoryTopo() {
+mobius.directive('topoViewport', function factoryTopo() {
     return {
         restrict: 'E',
         replace: true,
@@ -313,21 +313,6 @@ vidamo.directive('topoViewport', function factoryTopo() {
                     || singleGeomObject instanceof THREE.Object3D){
                     scene1.add(singleGeomObject);
                 }
-                else{
-                    console.log("mobius doesn't recognise this type!");
-                }
-
-            };
-
-
-            //// anyone tells me what the hell is this
-            //// fixme
-            scope.internalControlTopo.benchmark = function(func, runs){
-                var d1 = Date.now();
-                for (var i = 0 ; i < runs; i++)
-                    res = func();
-                var d2 = Date.now();
-                return { result : res, elapsed : d2-d1, each : (d2-d1)/runs };
             };
         }
     }

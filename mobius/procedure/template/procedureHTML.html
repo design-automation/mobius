@@ -3,7 +3,7 @@
         <div ui-layout-container size = "25%">
             <div>
                 <div ng-if = "currentNodeName">
-                    <pre class="nodeName" style="padding: 1px">
+                    <pre class="nodeName">
                         <span>
                             &nbsp &nbsp {{currentNodeType}}  {{currentNodeVersion}}
                         </span>
@@ -11,7 +11,7 @@
                 </div>
 
                 <div ng-if = "!currentNodeName">
-                    <pre class="nodeName" style="padding: 1px;">
+                    <pre class="nodeName">
                             &nbsp &nbsp No Node Selected
                     </pre>
                 </div>
@@ -21,23 +21,12 @@
                 </button>
             </div>
 
-            <div    id="argument-area"
-                    style="    position: absolute;
-                            width: 100%;
-                            border-top: 1px solid #cccccc;
-                            border-left: 1px solid #cccccc;
-                            border-right: 1px solid #cccccc;
-                            border-radius: 4px;
-                            margin-top:1px;
-                            height:  calc(100% - 30px);
-                            overflow: auto;">
-                <div ui-tree id="tree-root-parameter"
-                     style="padding-bottom:6px;"
-                   >
+            <div id="argument-area">
+                <div ui-tree id="tree-root-parameter">
                     <div ui-tree-nodes="" ng-model="interface">
                         <div ng-repeat="node in interface"
                              ui-tree-node
-                             ng-include="'mobius/procedure/parameter_template.html'">
+                             ng-include="'mobius/procedure/template/parameter_template.html'">
                         </div>
                     </div>
                 </div>
@@ -47,7 +36,7 @@
         <div ui-layout-container >
             <div>
                 <div ng-if = "currentNodeName">
-                    <pre class="nodeName" style="padding: 1px">
+                    <pre class="nodeName">
                         <span>
                             &nbsp &nbsp {{currentNodeType}} {{currentNodeVersion}}
                         </span>
@@ -56,14 +45,13 @@
                 </div>
 
                 <div ng-if = "!currentNodeName">
-                    <pre class="nodeName" style="padding: 1px;">
+                    <pre class="nodeName">
                             &nbsp &nbsp No Node Selected
                     </pre>
                 </div>
 
                 <ui-select ng-model="method.selected"
                            class="button-action"
-                           style=" position:absolute;display: inline-block;"
                            on-select="newItem('Action',$select.selected)"
                         >
                     <ui-select-match placeholder="Function" >Function</ui-select-match>
@@ -75,7 +63,6 @@
                 </ui-select>
 
                 <ui-select ng-model="controlType" class="button-control"
-                           style=" display: inline-block;position:absolute;"
                            on-select="newItem('Control',$select.selected)">
                     <ui-select-match placeholder="Control">Control</ui-select-match>
                     <ui-select-choices
@@ -100,7 +87,7 @@
                     <div ui-tree-nodes="" ng-model="data">
                         <div ng-repeat="node in data"
                              ui-tree-node
-                             ng-include="'mobius/procedure/procedure_template.html'"
+                             ng-include="'mobius/procedure/template/procedure_template.html'"
                              context-menu
                              data-target="menu-procedure">
                         </div>
@@ -111,7 +98,7 @@
 
         <div ui-layout-container size = "27px" class="monitor" >
 
-            <pre class="nodeName" style="padding: 1px">
+            <pre class="nodeName">
                     &nbsp &nbsp Function Code
             </pre>
 

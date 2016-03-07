@@ -1,192 +1,57 @@
-/***************************************************************
-
-CSS For ui-flowchart [left pane graph area]
-
-***************************************************************/
-
-/*Styles for nodes and connectors flowchart svg template*/
-
-.node-rect {
-	stroke: #aaaaaa;
-	border-radius: 0px;
-	stroke-width: 1;
+.graph-area{
+    border-radius: 3px;
 }
 
-.mouseover-node-rect {
-	stroke: #777777;
-	stroke-width: 2;
+.graph-area .znpController{
+    width:100%;
+    height:95%;
+    position:relative;
 }
 
-.selected-node-rect {
-    fill:white;
-	stroke: #3F98F3;
-	stroke-width: 3;
+.graph-area .panzoom{
+    width:100%;
+    height:1100px;
 }
 
-.disabled-node-rect {
-	fill:#cccccc;
-	stroke: #aaaaaa;
-	border-radius: 0px;
-	stroke-width: 1;
-}
-
-.mouseover-disabled-node-rect {
-	fill:#cccccc;
-	stroke: #777777;
-	stroke-width: 2;
-}
-
-.selected-disabled-node-rect {
-	fill:#cccccc;
-	stroke: #3F98F3;
-	stroke-width: 3;
-}
-
-.connector-circle {
-    fill: white;
-    stroke: #777777;
-    stroke-width: 2;
-}
-
-.func-connector-circle {
-	fill: white;
-	stroke: #777777;
-	stroke-width: 2;
-	stroke-dasharray:5,1;
-}
-
-.mouseover-func-connector-circle {
-	fill: white;
-	stroke: #777777;
-	stroke-width: 3;
-	stroke-dasharray:5,1;
-
-}
-
-.selected-func-connector-circle {
-	fill: white;
-	stroke: red;
-	stroke-width: 2;
-	stroke-dasharray:5,1;
+.graph-area .flow-chart{
+    position: absolute;
+    width:4000px;
+    height: 4000px
 }
 
 
-.mouseover-connector-circle {
-	 fill: white;
-	 stroke: #777777;
-	 stroke-width: 3;
- }
-.connector-text{
-	visibility: hidden;
-	font-size: 10px;
-}
-.connector:hover > .connector-text {
-	visibility: visible;
-	font-size: 10px;
+.graph-area #interface {
+    overflow: auto;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    margin-top:1px;
 }
 
+.graph-area #run-button{
+    white-space: nowrap;
+    position: absolute;
+    right: 10px;
+    top:2px;
+    display: inline-block;
+}
 
-.selected-connector-circle {
-	fill: white;
-	stroke: red;
-	stroke-width: 2;
+.graph-area #canvas{
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    margin-top:1px;
+}
+
+.graph-area .interface{
+    background-color: white;
+}
+
+.graph-area .interface .range{
+    width: 55%;
+    display:inline-block;
+    float: right;
 }
 
 
-
-
-/*
-Style for connections.
-*/
-
-.connection {
-}
-
-.connection-line {
-	stroke: #555555;
-	stroke-width: 2.5;
-	fill: transparent;
-}
-
-.func-connection-line {
-	stroke: #555555;
-	stroke-width: 2.5;
-	fill: transparent;
-	stroke-dasharray:3,1;
-
-}
-
-.mouseover-connection-line {
-	stroke: gray;
-	stroke-width: 3;
-	fill: transparent;
-}
-
-.mouseover-func-connection-line {
-	stroke: gray;
-	stroke-width: 3;
-	fill: transparent;
-	stroke-dasharray:3,1;
-}
-
-.selected-connection-line {
-	stroke: red;
-	stroke-width: 3;
-	fill: transparent;
-}
-
-.selected-func-connection-line {
-	stroke: red;
-	stroke-width: 3;
-	fill: transparent;
-	stroke-dasharray:3,1;
-}
-
-.connection-endpoint {
-	fill: #555555;
-}
-
-.selected-connection-endpoint {
-	fill: red;
-}	
-
-.mouseover-connection-endpoint {
-	fill: gray;
-}
-
-/*
-Style for the connection being dragged out.
-*/
-
-.dragging-connection {
-	pointer-events: none;
-}
-
-.dragging-connection-line {
-	stroke: gray;
-	stroke-width: 3;
-	fill: transparent;
-}	
-
-.dragging-connection-endpoint {
-	fill: gray;
-}
-
-/*
-The element (in this case the SVG element) that contains the draggable elements.
-*/
-
-.draggable-container {
-	border: solid 5px #aaaaaa;
-}
-
-/*
-Drag selection rectangle.
-*/
-
-.drag-selection-rect {
-	stroke: #aaa;
-	stroke-width: 1;
-	stroke-dasharray:3,3;
-	fill: transparent;
-}

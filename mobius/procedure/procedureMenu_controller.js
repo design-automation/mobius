@@ -1,4 +1,4 @@
-vidamo.controller('procedureMenuCtrl',['$scope','$rootScope','generateCode',
+mobius.controller('procedureMenuCtrl',['$scope','$rootScope','generateCode',
     function($scope, $rootScope, generateCode){
 
         // procedure items to track

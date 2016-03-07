@@ -1,9 +1,9 @@
 //
-// VIDAMO viewport controller for viewport directive
-// This functions of viewport directive will be invoked through VIDAMO module
+// mobius viewport controller for viewport directive
+// This functions of viewport directive will be invoked through mobius module
 //
 
-vidamo.controller('viewportCtrl',[
+mobius.controller('viewportCtrl',[
     '$scope','$rootScope',
     function($scope,$rootScope) {
 

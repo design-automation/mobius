@@ -1,0 +1,54 @@
+<div class="dropdown position-fixed " id="menu-node" >
+    <ul class="dropdown-menu">
+        <li class="dropdown-submenu">
+            <a> Show Input </a>
+            <ul class="dropdown-menu" ng-if="disableAddInput()">
+                <li ng-repeat="input in inputs"
+                    ng-if="input.title ==='Input' && checkDupInput(input)"
+                    ng-click="addInputConnector(input)">
+                    <a> {{input.name}}</a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="dropdown-submenu" >
+            <a> Show Output </a>
+            <ul class="dropdown-menu " ng-if="disableAddOutput()">
+                <li ng-repeat="procedure in procedures"
+                    ng-if="procedure.title ==='Output' && checkDupOutput(procedure)"
+                    ng-click="addOutputConnector(procedure)"
+                >
+                    <a> {{procedure.name}}</a>
+                </li>
+            </ul>
+        </li>
+
+        <li ng-if="checkDupFunc()"><a ng-click="addFunctionOutput()"> Show Function output </a></li>
+        <li><a ng-click="delete()"> Delete </a></li>
+        <li><a ng-click="rename()"> Rename </a></li>
+        <li><a ng-click="saveAsNew()"> Save as new type</a></li>
+        <li><a ng-click="overwrite()"> Overwrite original type</a></li>
+        <li><a ng-click="editProcedure()"> Edit procedure</a></li>
+        <li><a ng-if="!checkDisabled()" ng-click="disableNode()"> Disable </a></li>
+        <li><a ng-if="checkDisabled()" ng-click="enableNode()"> Enable </a></li>
+    </ul>
+</div>
+
+<div class="dropdown position-fixed " id="menu-connector" >
+    <ul class="dropdown-menu">
+        <li>
+            <a ng-click="delete()"> Hide </a>
+        </li>
+        <!--<li>-->
+        <!--<a ng-click="rename()"> Rename </a>-->
+        <!--</li>-->
+    </ul>
+</div>
+
+<div class="dropdown position-fixed " id="menu-connection" >
+    <ul class="dropdown-menu">
+        <li>
+            <a href="" ng-click="delete()"> Delete </a>
+        </li>
+    </ul>
+</div>

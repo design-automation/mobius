@@ -1,0 +1,112 @@
+﻿body {
+    font-family: Arial, sans-serif;
+    font-size: 14px !important;
+}
+
+@media (min-width: 768px) {
+    .nav-tabs.nav-justified > li > a{
+        padding: 3px;
+    }
+}
+
+.btn-xs, .btn-group-xs {
+    font-size: 12px !important;
+    margin: 3px;
+}
+
+.btn {
+    margin: 0;
+    font-size: 12px !important;
+    height: 24px !important;
+    line-height: 1 !important;
+}
+
+#layout{
+    margin: 2px;
+    border:1px solid #aaaaaa;
+    border-radius: 4px;
+    top: 23px;
+}
+
+
+.info-title {
+    font-size: 13px;
+    padding-top: 0;
+    padding-bottom: 3px;
+    padding-right: 3px;
+    padding-left: 3px;
+    width: 100%;
+    background-color: #eee ;
+}
+
+.nodeName{
+    white-space: nowrap;
+    padding: 1px ;
+    margin: 0;
+    position: relative;
+    border-radius: 3px;
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    background:-webkit-gradient(linear, left bottom, left top, color-stop(0, #eee), color-stop(1, #fff));
+    line-height: 1.92857143;
+}
+
+.tree-item{
+    padding-left:20px;
+}
+
+/*  hack for bootstrap
+    fixme forget what these things really do
+*/
+.group-title {
+    background-color: #687074 !important;
+    color: #FFF !important;
+}
+
+.panel-default > .panel-heading {
+    padding: 6px;
+}
+
+.panel-title{
+    font-size: 13px !important;
+}
+
+.panel-group {
+    margin-top: 1px;
+    margin-bottom: 0px !important;
+    padding-left: 10px;
+    padding-right: 1px;
+}
+
+.panel{
+    border-left: 2px solid #aaaaaa !important;
+}
+
+
+
+/* css fix for dropdown selects*/
+.form-control{
+    margin: 0;
+    font-size: 12px !important;
+    height: 24px !important;
+    line-height: 1 !important;
+}
+
+.ui-select-bootstrap .ui-select-toggle>.caret {
+display: none;
+}
+
+.position-fixed {
+    position: fixed;
+}
+
+/*selectize */
+
+.selectize-dropdown {
+    line-height: 10px !important;
+    font-size: 12px !important;;
+}
+
+.selectize-input {
+    padding: 3px 3px !important;;
+}

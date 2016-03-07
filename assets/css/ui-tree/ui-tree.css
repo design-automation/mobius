@@ -80,15 +80,17 @@ margin:2px;
 
 .node-selected {
     border: 1px solid #3F98F3;
+    min-height: 22px;
 }
 
 .node-disabled {
     background-color: #ddd;
-
+    min-height: 22px;
 }
 
 .node-selected-disabled {
     background-color: #ddd;
     border: 1px solid #3F98F3;
+    min-height: 22px;
 }
 
