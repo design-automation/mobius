@@ -37,20 +37,12 @@ mobius.controller(  'graphCtrl',
         // procedure data list
         $scope.dataList = generateCode.getDataList();
 
-        $scope.$watch('dataList', function () {
-            generateCode.setDataList($scope.dataList);
-        },true);
-
         $scope.$watch(function () { return generateCode.getDataList(); }, function () {
                 $scope.dataList = generateCode.getDataList();
         },true);
 
         // interface data list
         $scope.interfaceList= generateCode.getInterfaceList();
-
-        $scope.$watch('interfaceList', function () {
-            generateCode.setInterfaceList($scope.interfaceList);
-        },true);
 
         $scope.$watch(function () { return generateCode.getInterfaceList(); }, function () {
             $scope.interfaceList= generateCode.getInterfaceList();
@@ -61,14 +53,9 @@ mobius.controller(  'graphCtrl',
         // watch chartViewModel.data instead of chartViewModel to prevent stack limit exceeded
         $scope.chartViewModel= generateCode.getChartViewModel();
         $scope.$watch('chartViewModel.data', function () {
+            console.log($scope.chartViewModel.data)
             generateCode.generateCode();
         },true);
-
-        $scope.$watch(function () { return generateCode.getChartViewModel(); }, function () {
-            if(generateCode.getChartViewModel() !== $scope.chartViewModel){
-                $scope.chartViewModel= generateCode.getChartViewModel();
-            }
-        });
 
         // geometry list for visualising after node selection
         $scope.outputGeom =[];
@@ -123,9 +110,9 @@ mobius.controller(  'graphCtrl',
         $scope.$on("nodeIndex", function(event, message) {
              if($scope.nodeIndex !== message && message !== undefined){
                  $scope.nodeIndex = message;
-                 $scope.currentNodeName = $scope.chartViewModel.nodes[$scope.nodeIndex].data.name;
-                 $scope.currentNodeType = $scope.chartViewModel.nodes[$scope.nodeIndex].data.type;
-                 $scope.currentNodeVersion = $scope.chartViewModel.nodes[$scope.nodeIndex].data.version === 0?'':'*';
+                 $scope.currentNodeName = $scope.chartViewModel.data.nodes[$scope.nodeIndex].name;
+                 $scope.currentNodeType = $scope.chartViewModel.data.nodes[$scope.nodeIndex].type;
+                 $scope.currentNodeVersion = $scope.chartViewModel.data.nodes[$scope.nodeIndex].version === 0?'':'*';
                  displayGeometry();
              }else if(message === undefined){
                  $scope.nodeIndex = message;
@@ -190,7 +177,7 @@ mobius.controller(  'graphCtrl',
 
                     // update version fixme
                     var d = new Date();
-                    $scope.chartViewModel.nodes[$scope.nodeIndex].data.version = d.getTime();
+                    $scope.chartViewModel.data.nodes[$scope.nodeIndex].version = d.getTime();
                 }
             catch(err){
                 consoleMsg.errorMsg('noNode');
@@ -213,7 +200,7 @@ mobius.controller(  'graphCtrl',
                 }
 
                 var d = new Date();
-                $scope.chartViewModel.nodes[$scope.nodeIndex].data.version = d.getTime();
+                $scope.chartViewModel.data.nodes[$scope.nodeIndex].version = d.getTime();
             }
             catch(err){
                 consoleMsg.errorMsg('noNode');
@@ -227,7 +214,7 @@ mobius.controller(  'graphCtrl',
             if(deletedObj.deletedNodeIds.length === 0 && deletedObj.nodeIndex !== undefined){
                 // update version since connector changed
                 var d = new Date();
-                $scope.chartViewModel.nodes[deletedObj.nodeIndex].data.version = d.getTime();
+                $scope.chartViewModel.data.nodes[deletedObj.nodeIndex].version = d.getTime();
             }else{
 
                 $scope.$emit('clearProcedure');
@@ -263,7 +250,7 @@ mobius.controller(  'graphCtrl',
                             if (renameObj.isConnector) {
                                 // update version since connector changed
                                 var d = new Date();
-                                $scope.chartViewModel.nodes[renameObj.nodeIndex].data.version = d.getTime();
+                                $scope.chartViewModel.data.nodes[renameObj.nodeIndex].version = d.getTime();
                             }
                         }
                     }, 10);

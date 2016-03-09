@@ -86,7 +86,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
         },
 
         setDataList: function (value) {
-            data.dataList = value;
+            angular.copy(value,data.dataList);
         },
 
         getInterfaceList: function () {
@@ -94,7 +94,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
         },
 
         setInterfaceList: function (value) {
-            data.interfaceList= value;
+            angular.copy(value,data.interfaceList);
         },
 
         getChartViewModel: function () {
@@ -102,7 +102,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
         },
 
         setChartViewModel: function (value) {
-            data.chartViewModel= value;
+             angular.copy(value,data.chartViewModel);
         },
 
         getChartDataModel: function () {
@@ -122,6 +122,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
         generateCode: function (){
             // copy the sorted order
+            console.log('generating')
             var sortedOrder = data.chartViewModel.topoSort().slice();
 
             generate_execution_code();

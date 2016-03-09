@@ -35,33 +35,15 @@ mobius.controller('newNodeCtrl',[
 
         // procedure data list
         $scope.dataList = generateCode.getDataList();
-        $scope.$watch('dataList', function () {
-            generateCode.setDataList($scope.dataList);
-        },true);
-        $scope.$watch(function () { return generateCode.getDataList(); }, function () {
-            $scope.dataList = generateCode.getDataList();
-        },true);
 
         // interface data list
         $scope.interfaceList= generateCode.getInterfaceList();
-        $scope.$watch('interfaceList', function () {
-            generateCode.setInterfaceList($scope.interfaceList);
-        },true);
-        $scope.$watch(function () { return generateCode.getInterfaceList(); }, function () {
-            $scope.interfaceList= generateCode.getInterfaceList();
-        },true);
 
         // graph flowchart view model
         $scope.chartViewModel= generateCode.getChartViewModel();
         $scope.$watch('chartViewModel.data', function () {
             generateCode.generateCode();
         },true);
-
-        $scope.$watch(function () { return generateCode.getChartViewModel(); }, function () {
-            if(generateCode.getChartViewModel() !== $scope.chartViewModel){
-                $scope.chartViewModel= generateCode.getChartViewModel();
-            }
-        });
 
         // synchronization with node collection
         // new node type

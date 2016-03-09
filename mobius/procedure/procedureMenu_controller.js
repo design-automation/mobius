@@ -9,14 +9,6 @@ mobius.controller('procedureMenuCtrl',['$scope','$rootScope','generateCode',
         // procedure data list
         $scope.dataList = generateCode.getDataList();
 
-        $scope.$watch('dataList', function () {
-            generateCode.setDataList($scope.dataList);
-        });
-
-        $scope.$watch(function () { return generateCode.getDataList(); }, function () {
-            $scope.dataList = generateCode.getDataList();
-        },true);
-
         $scope.$watch(function () {
             return generateCode.getNodeIndex();
         }, function () {

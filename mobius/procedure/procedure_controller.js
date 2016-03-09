@@ -42,21 +42,9 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
         // procedure data list
         $scope.dataList = generateCode.getDataList();
-        $scope.$watch('dataList', function () {
-            generateCode.setDataList($scope.dataList);
-        });
-        $scope.$watch(function () { return generateCode.getDataList(); }, function () {
-            $scope.dataList = generateCode.getDataList();
-        });
 
         // interface data list
         $scope.interfaceList= generateCode.getInterfaceList();
-        $scope.$watch('interfaceList', function () {
-            generateCode.setInterfaceList($scope.interfaceList);
-        });
-        $scope.$watch(function () { return generateCode.getInterfaceList(); }, function () {
-            $scope.interfaceList = generateCode.getInterfaceList();
-        });
 
         // graph flowchart view model
         // pass by reference
@@ -65,13 +53,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         $scope.$watch('chartViewModel.data', function () {
             generateCode.generateCode();
         },true);
-
-        $scope.$watch(function () { return generateCode.getChartViewModel(); }, function () {
-            if(generateCode.getChartViewModel() !== $scope.chartViewModel){
-                $scope.chartViewModel= generateCode.getChartViewModel();
-            }
-        });
-
 
         // currently selected node ID
         $scope.nodeIndex = '';
@@ -710,7 +691,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
             catch(err){
                 consoleMsg.errorMsg('noNode');
             }
-            console.log($scope.data);
             var procedureDiv = document.getElementById("procedure-area");
             setTimeout(function(){
                 procedureDiv.scrollTop = procedureDiv.scrollHeight;},0);
