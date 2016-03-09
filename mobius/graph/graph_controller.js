@@ -53,7 +53,6 @@ mobius.controller(  'graphCtrl',
         // watch chartViewModel.data instead of chartViewModel to prevent stack limit exceeded
         $scope.chartViewModel= generateCode.getChartViewModel();
         $scope.$watch('chartViewModel.data', function () {
-            console.log($scope.chartViewModel.data)
             generateCode.generateCode();
         },true);
 
@@ -300,7 +299,6 @@ mobius.controller(  'graphCtrl',
                     clickOutsideToClose:false,
                 })
                 .then(function(answer) {
-
                     if(answer === 'Ok'){
                         overwriteType(oldTypeName, oldTypeName, instanceName);
                     }

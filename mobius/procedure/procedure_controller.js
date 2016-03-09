@@ -50,9 +50,9 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         // pass by reference
         // deep watch chartViewModel.data instead of chartViewModel to prevent stack limit exceeded
         $scope.chartViewModel= generateCode.getChartViewModel();
-        $scope.$watch('chartViewModel.data', function () {
-            generateCode.generateCode();
-        },true);
+        //$scope.$watch('chartViewModel.data', function () {
+        //    generateCode.generateCode();
+        //},true);
 
         // currently selected node ID
         $scope.nodeIndex = '';
@@ -138,7 +138,7 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
         $scope.$watch('data',function(){
             updateVersion();
-            generateCode.generateCode();
+            //generateCode.generateCode();
             flattenData();
         } , true);
 
@@ -146,7 +146,7 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
         $scope.$watch('interface',function(){
             updateVersion();
-            generateCode.generateCode();
+            //generateCode.generateCode();
             flattenData();
         },true);
 

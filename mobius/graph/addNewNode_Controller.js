@@ -41,9 +41,9 @@ mobius.controller('newNodeCtrl',[
 
         // graph flowchart view model
         $scope.chartViewModel= generateCode.getChartViewModel();
-        $scope.$watch('chartViewModel.data', function () {
-            generateCode.generateCode();
-        },true);
+        //$scope.$watch('chartViewModel.data', function () {
+        //    generateCode.generateCode();
+        //},true);
 
         // synchronization with node collection
         // new node type
