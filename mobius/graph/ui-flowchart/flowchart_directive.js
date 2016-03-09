@@ -18,7 +18,7 @@ angular.module('flowChart', ['dragging'] )
   	//
   	// Controller for the flowchart directive.
   	// Having a separate controller is better for unit testing, otherwise
-  	// it is painful to unit test a directive without instantiating the DOM 
+  	// it is painful to unit test a directive without instantiating the DOM
   	// (which is possible, just not ideal).
   	//
   	controller: 'FlowChartController',

@@ -49,11 +49,31 @@ mobius.controller(  'graphCtrl',
         },true);
 
         // graph flowchart view model
-        // pass by reference
+        // note that changes in procedure/ interface/ argument will update the
+        // version of selected node, hence update the chartViewModel.data
         // watch chartViewModel.data instead of chartViewModel to prevent stack limit exceeded
-        $scope.chartViewModel= generateCode.getChartViewModel();
-        $scope.$watch('chartViewModel.data', function () {
-            generateCode.generateCode();
+        $scope.chartViewModel = generateCode.getChartViewModel();
+        $scope.$watch('chartViewModel.data', function (newValue, oldValue) {
+            if(!angular.equals(newValue.connections,oldValue.connections)){
+                generateCode.generateCode();
+            }else if(newValue.nodes.length !== oldValue.nodes.length){
+                generateCode.generateCode();
+            }else{
+                for(var i = 0; i < newValue.nodes.length; i++){
+                    if( newValue.nodes[i].disabled !== oldValue.nodes[i].disabled ||
+                        newValue.nodes[i].id !== oldValue.nodes[i].id ||
+                        newValue.nodes[i].overwrite !== oldValue.nodes[i].overwrite ||
+                        newValue.nodes[i].version !== oldValue.nodes[i].version ||
+                        newValue.nodes[i].type !== oldValue.nodes[i].type ||
+                        newValue.nodes[i].name !== oldValue.nodes[i].name ||
+                        !angular.equals(newValue.nodes[i].inputConnectors,oldValue.nodes[i].inputConnectors) ||
+                        !angular.equals(newValue.nodes[i].outputConnectors,oldValue.nodes[i].outputConnectors)
+                    ){
+                        generateCode.generateCode();
+                        break;
+                    }
+                }
+            }
         },true);
 
         // geometry list for visualising after node selection
