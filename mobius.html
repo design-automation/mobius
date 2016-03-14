@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="assets/css/graph.css">
     <link rel="stylesheet" href="assets/css/viewport.css">
     <link rel="stylesheet" href="assets/css/procedure.css">
+    <link rel="stylesheet" href="assets/css/typeManager.css">
     <link rel="stylesheet" href="assets/css/ui-layout/ui-layout.css">
     <link rel="stylesheet" href="assets/css/bootstrap/bootstrap.css">
     <link rel="stylesheet" href="assets/css/ui-tree/ui-tree.css">
@@ -86,6 +87,10 @@
         <span dropdown on-toggle="toggled(open)" >
               <a class = "menuTitle" href dropdown-toggle>  Node |</a>
               <ul class="dropdown-menu">
+                  <li>
+                      <a href="" ng-click="openTypeManager()"> Type Manager </a>
+                  </li>
+
                   <li>
                       <input type="file" id="importNode"
                              multiple
@@ -562,14 +567,14 @@
                                 </span>
 
                                 <div ng-controller="znpController" class="znpController">
-                                    <div id="canvas">
-                                        <panzoom config="panzoomConfig"
-                                                 model="panzoomModel"
-                                                 class="panzoom">
+                                    <panzoom config="panzoomConfig"
+                                             model="panzoomModel"
+                                             class="panzoom">
+                                        <div id="canvas">
                                             <flow-chart chart="chartViewModel" class = "flow-chart" >
                                             </flow-chart>
-                                        </panzoom>
-                                    </div>
+                                        </div>
+                                    </panzoom>
                                 </div>
                             </div>
                         </div>
@@ -582,8 +587,9 @@
 </div>
 
 
-<div ng-controller="nodeMenuCtrl" ng-include="'mobius/graph/contextMenu_template.html'"></div>
+<div id="typeManager" ng-controller="nodeTypesCtrl" ng-include="'mobius/typeManager/typeManager_template.html'"></div>
 
+<div ng-controller="nodeMenuCtrl" ng-include="'mobius/graph/contextMenu_template.html'"></div>
 <div ng-controller="procedureMenuCtrl" ng-include="'mobius/procedure/template/procedureMenu_template.html'" ></div>
 
 
@@ -592,8 +598,8 @@
 
 <!-- angularJs -->
 <script type="application/javascript" src="assets/js/angular/angular.min.js"></script>
-<script type="text/javascript" src="assets/js/angular/angular-sanitize.js"></script>
-<script type="application/javascript" src="//code.angularjs.org/1.4.4/angular-route.js"></script>
+<script type="text/javascript" src="assets/js/angular/angular-sanitize.min.js"></script>
+<script type="application/javascript" src="assets/js/angular/angular-route.min.js"></script>
 
 <!-- angular-ui -->
 <script type="application/javascript" src="mobius/layout/ui-layout.js"></script>
@@ -610,7 +616,6 @@
 
 <script type="text/javascript" src="assets/js/angular-ui/history.js"></script>
 
-
 <!-- flowchart -->
 <script src="mobius/graph/ui-flowchart/svg_class.js" type="text/javascript"></script>
 <script src="mobius/graph/ui-flowchart/mouse_capture_service.js" type="text/javascript"></script>
@@ -621,7 +626,7 @@
 
 <!-- zoom and pan -->
 <script src="assets/js/packages/hamsterjs/hamster.js"></script>
-<script src="assets/js/angular/angular-mousewheel/mousewheel.js"></script>
+<script src="assets/js/angular-ui/angular-mousewheel/mousewheel.js"></script>
 <script src="mobius/graph/ui-panzoom/panzoom.js"></script>
 
 <!-- three.js -->
@@ -629,7 +634,6 @@
 <script src="assets/js/threejs/OrbitControls.js"></script>
 <script src="assets/js/threejs/CombinedCamera.js"></script>
 <script src="assets/js/threejs/Detector.js"></script>
-
 <script src="assets/js/threejs/curves/NURBSCurve.js"></script>
 <script src="assets/js/threejs/curves/NURBSSurface.js"></script>
 <script src="assets/js/threejs/curves/NURBSUtils.js"></script>
@@ -666,12 +670,11 @@
 <script src="mobius/viewport/code_controller.js"></script>
 <script src="mobius/graph/nodeMenu_controller.js"></script>
 <script src="mobius/procedure/procedureMenu_controller.js"></script>
-
+<script src="mobius/typeManager/nodeTypes_controller.js"></script>
 
 <!-- directives -->
 <script src="mobius/viewport/viewport_directive.js"></script>
 <script src="mobius/viewport/topoViewport_directive.js"></script>
-
 
 <!-- services -->
 <script src="mobius/service/model.js"></script>
@@ -687,14 +690,10 @@
 <script src="mobius/app/datastructure.js"></script>
 <script src="mobius/module/module_verb.js"></script>
 
-
 <!--angular material-->
 <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-animate.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-aria.min.js"></script>
-
-
-
 
 </body>
 

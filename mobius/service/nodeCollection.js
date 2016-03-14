@@ -3,24 +3,26 @@
 mobius.factory('nodeCollection', function () {
 
     var nodes= [];
-    var defaultNodes = [{
-        // node type name
-        nodeType:'create new type',
-        // node type
-        version:'',
-        // node option to be overwritten
-        overwrite:false,
-
-        // graph info
-        inputConnectors: [],
-        outputConnectors: [],
-
-        // procedure data model linked with node
-        procedureDataModel: [],
-
-        // procedure data model linked with node
-        interfaceDataModel: []
-    }];
+    var defaultNodes = [
+    //    {
+    //    // node type name
+    //    nodeType:'xxx',
+    //    // node type
+    //    version:'',
+    //    // node option to be overwritten
+    //    overwrite:false,
+    //
+    //    // graph info
+    //    inputConnectors: [],
+    //    outputConnectors: [],
+    //
+    //    // procedure data model linked with node
+    //    procedureDataModel: [],
+    //
+    //    // procedure data model linked with node
+    //    interfaceDataModel: []
+    //}
+    ];
 
 
     // check if node types exists in local storage, if not, store default
@@ -35,6 +37,7 @@ mobius.factory('nodeCollection', function () {
     return{
         syncNodeTpyeStorage: function(){
             nodes = JSON.parse(localStorage.mobiusNodeTypes);
+            return nodes;
         },
 
         // return node types for graph
@@ -99,16 +102,6 @@ mobius.factory('nodeCollection', function () {
 
         // install node for create new node type / import node
         installNewNodeType: function(type, input, output, procedureList, interfaceList){
-
-            //if(interfaceList){
-            //    for(var i = 0; i <interfaceList.length; i++){
-            //        if(interfaceList[i].connected === true){
-            //            interfaceList[i].connected = false;
-            //            console.log('xx')
-            //        }
-            //    }
-            //}
-
             var newNode = {
                 nodeType: type,
                 version:0,
@@ -123,20 +116,10 @@ mobius.factory('nodeCollection', function () {
 
             nodes.push(newNode);
             localStorage.mobiusNodeTypes = JSON.stringify(nodes);
-
         },
 
         // update node procedure content
         updateNodeType: function(oldType,newType, input, output, newProcedureList,newInterfaceList){
-
-            //if(newInterfaceList){
-            //    for(var i = 0; i <newInterfaceList.length; i++){
-            //        if(newInterfaceList[i].connected === true){
-            //            newInterfaceList[i].connected = false;
-            //        }
-            //    }
-            //}
-
             for(var i = 0; i < nodes.length; i++){
                 if(nodes[i].nodeType == oldType){
                     nodes[i].nodeType = newType;
@@ -148,6 +131,18 @@ mobius.factory('nodeCollection', function () {
 
                 localStorage.mobiusNodeTypes = JSON.stringify(nodes);
             }
+        },
+
+        // delete node type
+        deleteNodeType: function(name){
+            for(var i =0; i< name.length; i++){
+                for(var j = 0; j < nodes.length; j++){
+                    if(name[i] === nodes[j].nodeType){
+                        nodes.splice(j,1);
+                    }
+                }
+            }
+            localStorage.mobiusNodeTypes = JSON.stringify(nodes);
         }
     }
 });

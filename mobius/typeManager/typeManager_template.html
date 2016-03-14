@@ -1,0 +1,33 @@
+<div id="nodeTypeList">
+         <pre>
+            <span> Type Name </span>
+            <input type="checkbox" ng-model="selectAll" ng-change="toggleSelection()">
+        </pre>
+
+    <div ui-tree id="tree-root-nodeType">
+        <div ui-tree-nodes="" ng-model="typeList">
+            <div ng-repeat="type in typeList"
+                 ui-tree-node
+                 ng-include="'mobius/typeManager/nodeTypes_template.html'">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="typeManage_buttons">
+    <!--<button class="btn btn-default btn-xs">Import</button>-->
+    <!--<button class="btn btn-default btn-xs">Export</button>-->
+    <button class="btn btn-default btn-xs" ng-click = "deleteChecked(this)">Delete</button>
+</div>
+
+
+<div ui-tree id="tree-root-procedure">
+    <div ui-tree-nodes="" ng-model="definition">
+        <div ng-repeat="node in definition"
+             ui-tree-node
+             ng-include="'mobius/procedure/template/procedure_template.html'">
+        </div>
+    </div>
+</div>
+
+<div class="cfp-hotkeys-close" ng-click="closeTypeManager()" role="button" tabindex="0">×</div>

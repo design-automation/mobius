@@ -48,7 +48,9 @@ mobius.controller('newNodeCtrl',[
         // synchronization with node collection
         // new node type
         $scope.nodeTypes = function(){
-            return nodeCollection.getNodeTypes();
+            var x = angular.copy(nodeCollection.getNodeTypes());
+            x.splice(0,0,"create new type");
+            return x;
         };
 
         // for generate node name

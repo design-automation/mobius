@@ -1,5 +1,5 @@
 //
-// Controller for menubar
+// Controller for menu bar
 //
 
 mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','generateCode','nodeCollection','$http','hotkeys','$mdDialog',
@@ -457,5 +457,10 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
 
         $scope.fourViews = function(){
             $rootScope.$broadcast('fourViews');
-        }
+        };
+
+        $scope.openTypeManager = function(){
+            document.getElementById('typeManager').style.display = " inline";
+        };
+
     }]);

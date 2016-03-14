@@ -1,0 +1,73 @@
+#typeManager {
+    height:100%;
+    width:100%;
+    background-color: rgba(255,255,255,0.9);
+    position: fixed;
+    top:0;left:0;
+    display: none;
+    z-index:10002
+}
+
+#nodeTypeList{
+    overflow: hidden;
+    position: absolute;
+    height: 70%;
+    width: 20%;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    left:27%;top:5%
+}
+
+#nodeTypeList > pre{
+    white-space: nowrap;
+    padding: 4px;
+    margin: 0;
+    position: relative;
+    font-family: Arial, sans-serif;
+    background:-webkit-gradient(linear, left bottom, left top, color-stop(0, #eee), color-stop(1, #fff));
+}
+
+#nodeTypeList > pre > span {
+    padding-left:17px;
+}
+
+#nodeTypeList > pre > span > input{
+    position:absolute;
+    right:19px;
+    display: inline;
+}
+
+#tree-root-nodeType{
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+}
+
+#typeManage_buttons{
+    position: absolute;
+    top:76%;
+    left:29%;
+    width: 20%;
+}
+
+#typeManage_buttons  button:nth-child(1){
+    position: absolute; left: 10%
+}
+
+#typeManage_buttons  button:nth-child(2){
+    position: absolute; left: 30%
+}
+
+#typeManage_buttons  button:nth-child(3){
+    position: absolute; left: 50%
+}
+
+#typeManager #tree-root-procedure{
+    overflow: auto;
+    position: absolute;
+    height: 70%;
+    width: 20%;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    left:51%;top:5%
+}
