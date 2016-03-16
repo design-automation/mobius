@@ -15,9 +15,24 @@
 </div>
 
 <div id="typeManage_buttons">
-    <!--<button class="btn btn-default btn-xs">Import</button>-->
-    <!--<button class="btn btn-default btn-xs">Export</button>-->
+
+    <button class="btn btn-default btn-xs"
+            onclick="document.getElementById('importNode').click()"> Import </button>
+    <!--fixme error handling-->
+    <button class="btn btn-default btn-xs" onclick="document.getElementById('exportNode').click()">Export</button>
+
     <button class="btn btn-default btn-xs" ng-click = "deleteChecked(this)">Delete</button>
+
+    <input type="file" id="importNode"
+           onchange="angular.element(this).scope().importNode(this.files)"/>
+
+    <a  ng-href="{{nodeUrl}}"
+        download="node.json"
+        id="exportNode"
+        ng-if="existSelected()"
+        ng-click = "exportNode()"
+        style="display: none;">Export
+    </a>
 </div>
 
 

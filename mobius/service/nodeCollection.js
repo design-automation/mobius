@@ -3,6 +3,8 @@
 mobius.factory('nodeCollection', function () {
 
     var nodes= [];
+
+    // embeded unchangable node goes here
     var defaultNodes = [
     //    {
     //    // node type name
@@ -37,7 +39,6 @@ mobius.factory('nodeCollection', function () {
     return{
         syncNodeTpyeStorage: function(){
             nodes = JSON.parse(localStorage.mobiusNodeTypes);
-            return nodes;
         },
 
         // return node types for graph
@@ -101,6 +102,7 @@ mobius.factory('nodeCollection', function () {
         },
 
         // install node for create new node type / import node
+        // fixme no longer used
         installNewNodeType: function(type, input, output, procedureList, interfaceList){
             var newNode = {
                 nodeType: type,
@@ -113,8 +115,12 @@ mobius.factory('nodeCollection', function () {
                 procedureDataModel: procedureList,
                 interfaceDataModel: interfaceList
             };
-
             nodes.push(newNode);
+            localStorage.mobiusNodeTypes = JSON.stringify(nodes);
+        },
+
+        importNodeType: function(jsonObj){
+            nodes.push(jsonObj);
             localStorage.mobiusNodeTypes = JSON.stringify(nodes);
         },
 
@@ -128,7 +134,6 @@ mobius.factory('nodeCollection', function () {
                     nodes[i].procedureDataModel = newProcedureList;
                     nodes[i].interfaceDataModel = newInterfaceList;
                 }
-
                 localStorage.mobiusNodeTypes = JSON.stringify(nodes);
             }
         },

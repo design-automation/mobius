@@ -91,19 +91,12 @@
                       <a href="" ng-click="openTypeManager()"> Type Manager </a>
                   </li>
 
-                  <li>
-                      <input type="file" id="importNode"
-                             multiple
-                             onchange="angular.element(this).scope().importNode(this.files)"/>
-                      <a href="" onclick="document.getElementById('importNode').click()"> Import Node </a>
-                  </li>
-
                   <!--todo when no node selected grey out-->
-                  <li>
-                      <a ng-href="{{nodeUrl}}" download="node.json" ng-click = "exportNode()">
-                          Export Selected Node
-                      </a>
-                  </li>
+                  <!--<li>-->
+                      <!--<a ng-href="{{nodeUrl}}" download="node.json" ng-click = "exportNode()">-->
+                          <!--Export Selected Node-->
+                      <!--</a>-->
+                  <!--</li>-->
 
                   <li>
                       <input type="file" id="importNodeLib"

@@ -31,7 +31,7 @@
     padding-left:17px;
 }
 
-#nodeTypeList > pre > span > input{
+#nodeTypeList > pre > input{
     position:absolute;
     right:19px;
     display: inline;
