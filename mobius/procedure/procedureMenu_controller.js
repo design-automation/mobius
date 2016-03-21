@@ -95,30 +95,7 @@ mobius.controller('procedureMenuCtrl',['$scope','$rootScope','generateCode',
 
         // todo comprehensive copy
         $scope.copyProcedure = function (){
-            // version 1 | copy without content
-            // broadcast to procedure controller to add new items
-            //$scope.findSelectedProcedure($scope.data);
-            //
-            //if($scope.selectedPos.title === 'Data' ||
-            //    $scope.selectedPos.title === 'Output' ){
-            //    $rootScope.$broadcast('copyProcedure', $scope.selectedPos.title);
-            //}
-            //else if($scope.selectedPos.title === 'Action'){
-            //    var subCate = {
-            //        category:$scope.selectedPos.category,
-            //        name:$scope.selectedPos.method,
-            //        return:$scope.selectedPos.return};
-            //    $rootScope.$broadcast('copyProcedure', $scope.selectedPos.title,subCate);
-            //}
-            //else if($scope.selectedPos.title === 'Control'){
-            //    var subCate = $scope.selectedPos.controlType;
-            //    if(subCate === 'if' || subCate === 'else'){
-            //        subCate === 'if else';
-            //    }
-            //    $rootScope.$broadcast('copyProcedure', $scope.selectedPos.title,subCate);
-            //}
-
-            // version 2 | copy with content
+            // copy with content
             $scope.findSelectedProcedure($scope.data);
             $scope.numOfItems = 0;
             $scope.findNumOfItems($scope.selectedPos);

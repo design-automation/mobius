@@ -5,6 +5,9 @@
     background:-webkit-gradient(linear, left bottom, left top, color-stop(0, #eee), color-stop(1, #fff));
 }
 
+.menubar .dropdown{
+    z-index: 10001;
+}
 .menuTitle{
     color: #000000;
 }

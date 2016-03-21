@@ -122,7 +122,6 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
         generateCode: function (){
             // copy the sorted order
-            console.log('generating')
             var sortedOrder = data.chartViewModel.topoSort().slice();
 
             generate_execution_code();
@@ -387,9 +386,6 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
             // data procedure
             function procedure_data(procedure,nodeIndex,fromLoop){
 
-                if(procedure.disabled === true){
-                    return;
-                }
                 if(procedure.disabled === true){
                     return;
                 }

@@ -4,7 +4,7 @@
  * UI.Layout
  */
 angular.module('ui.layout', [])
-    .controller('uiLayoutCtrl', ['$scope', '$attrs', '$element', '$timeout', 'LayoutContainer', function uiLayoutCtrl($scope, $attrs, $element, $timeout, LayoutContainer) {
+    .controller('uiLayoutCtrl', ['$scope', '$attrs', '$element', '$timeout', '$window', 'LayoutContainer', function uiLayoutCtrl($scope, $attrs, $element, $timeout, $window, LayoutContainer) {
       var ctrl = this;
       var opts = angular.extend({}, $scope.$eval($attrs.uiLayout), $scope.$eval($attrs.options));
       var numOfSplitbars = 0;
@@ -24,11 +24,18 @@ angular.module('ui.layout', [])
       { sizeProperty: 'width', offsetSize: 'offsetWidth', offsetPos: 'left', flowProperty: 'left', oppositeFlowProperty: 'right', mouseProperty: 'clientX', flowPropertyPosition: 'x' };
 
       $element
-        // Force the layout to fill the parent space
-        // fix no height layout...
+      // Force the layout to fill the parent space
+      // fix no height layout...
           .addClass('stretch')
-        // set the layout css class
+          // set the layout css class
           .addClass('ui-layout-' + (opts.flow || 'row'));
+
+      if (opts.disableToggle) {
+        $element.addClass('no-toggle');
+      }
+      if (opts.disableMobileToggle) {
+        $element.addClass('no-mobile-toggle');
+      }
 
       // Initial global size definition
       opts.sizes = opts.sizes || [];
@@ -39,7 +46,6 @@ angular.module('ui.layout', [])
       ctrl.opts = opts;
 
       $scope.updateDisplay = function() {
-        console.log(ctrl.containers);
         ctrl.updateDisplay();
       };
 
@@ -94,7 +100,7 @@ angular.module('ui.layout', [])
               // broadcast an event that resize happened (debounced to 50ms)
               if(debounceEvent) $timeout.cancel(debounceEvent);
               debounceEvent = $timeout(function() {
-                $scope.$emit('ui.layout.resize', beforeContainer, afterContainer);
+                $scope.$broadcast('ui.layout.resize', beforeContainer, afterContainer);
                 debounceEvent = null;
               }, 50);
             }
@@ -142,7 +148,10 @@ angular.module('ui.layout', [])
       ctrl.mouseMoveHandler = function(mouseEvent) {
         var mousePos = mouseEvent[ctrl.sizeProperties.mouseProperty] ||
             (mouseEvent.originalEvent && mouseEvent.originalEvent[ctrl.sizeProperties.mouseProperty]) ||
-            (mouseEvent.targetTouches ? mouseEvent.targetTouches[0][ctrl.sizeProperties.mouseProperty] : 0);
+              // jQuery does touches weird, see #82
+            ($window.jQuery ?
+                (mouseEvent.originalEvent ? mouseEvent.originalEvent.targetTouches[0][ctrl.sizeProperties.mouseProperty] : 0) :
+                (mouseEvent.targetTouches ? mouseEvent.targetTouches[0][ctrl.sizeProperties.mouseProperty] : 0));
 
         lastPos = mousePos - offset($element)[ctrl.sizeProperties.offsetPos];
 
@@ -231,9 +240,9 @@ angular.module('ui.layout', [])
             if(!LayoutContainer.isSplitbar(ctrl.containers[i])) {
 
               var child = ctrl.containers[i].element;
-              opts.maxSizes[i] = child.attr('max-size') || opts.maxSizes[i] || null;
-              opts.minSizes[i] = child.attr('min-size') || opts.minSizes[i] || null;
-              opts.sizes[i] = child.attr('size') || opts.sizes[i] || 'auto';
+              opts.maxSizes[i] = child.attr('max-size') || child.attr('data-max-size') || opts.maxSizes[i] || null;
+              opts.minSizes[i] = child.attr('min-size') || child.attr('data-min-size') || opts.minSizes[i] || null;
+              opts.sizes[i] = child.attr('size') || child.attr('data-size') || opts.sizes[i] || 'auto';
               //opts.collapsed[i] = child.attr('collapsed') || opts.collapsed[i] || false;
 
 
@@ -403,7 +412,7 @@ angular.module('ui.layout', [])
             }
           }
         });
-        $scope.$emit('ui.layout.toggle', c);
+        $scope.$broadcast('ui.layout.toggle', c);
 
         return c.collapsed;
       };
@@ -448,8 +457,7 @@ angular.module('ui.layout', [])
             if(prevContainer) prevContainer.size -= (c.actualSize + endDiff);
           }
         });
-        $scope.$emit('ui.layout.toggle', c);
-
+        $scope.$broadcast('ui.layout.toggle', c);
 
         return c.collapsed;
       };
@@ -552,12 +560,14 @@ angular.module('ui.layout', [])
         restrict: 'AE',
         controller: 'uiLayoutCtrl',
         link: function(scope, element, attrs, ctrl) {
-          scope.$watch(element[0][ctrl.sizeProperties.offsetSize], function() {
+          scope.$watch(function () {
+            return element[0][ctrl.sizeProperties.offsetSize];
+          }, function() {
             ctrl.updateDisplay();
           });
 
           function onResize() {
-            scope.$apply(function() {
+            scope.$evalAsync(function() {
               ctrl.updateDisplay();
             });
           }
@@ -587,25 +597,25 @@ angular.module('ui.layout', [])
           scope.splitbar = LayoutContainer.Splitbar();
           scope.splitbar.element = element;
 
-          //chevron <a> elements
+          //icon <a> elements
           var prevButton = angular.element(element.children()[0]);
           var afterButton = angular.element(element.children()[1]);
 
-          //chevron <span> elements
-          var prevChevron = angular.element(prevButton.children()[0]);
-          var afterChevron = angular.element(afterButton.children()[0]);
+          //icon <span> elements
+          var prevIcon = angular.element(prevButton.children()[0]);
+          var afterIcon = angular.element(afterButton.children()[0]);
 
-          //chevron bootstrap classes
-          var chevronLeft = 'glyphicon-chevron-left';
-          var chevronRight = 'glyphicon-chevron-right';
-          var chevronUp = 'glyphicon-chevron-up';
-          var chevronDown = 'glyphicon-chevron-down';
+          //icon classes
+          var iconLeft = 'ui-splitbar-icon-left';
+          var iconRight = 'ui-splitbar-icon-right';
+          var iconUp = 'ui-splitbar-icon-up';
+          var iconDown = 'ui-splitbar-icon-down';
 
-          var prevChevronClass = ctrl.isUsingColumnFlow ? chevronLeft : chevronUp;
-          var afterChevronClass = ctrl.isUsingColumnFlow ? chevronRight : chevronDown;
+          var prevIconClass = ctrl.isUsingColumnFlow ? iconLeft : iconUp;
+          var afterIconClass = ctrl.isUsingColumnFlow ? iconRight : iconDown;
 
-          prevChevron.addClass(prevChevronClass);
-          afterChevron.addClass(afterChevronClass);
+          prevIcon.addClass(prevIconClass);
+          afterIcon.addClass(afterIconClass);
 
           prevButton.on('click', function() {
             var prevSplitbarBeforeButton, prevSplitbarAfterButton;
@@ -620,8 +630,8 @@ angular.module('ui.layout', [])
             if(ctrl.isUsingColumnFlow) {
               if(result) {
                 afterButton.css('display', 'none');
-                prevChevron.removeClass(chevronLeft);
-                prevChevron.addClass(chevronRight);
+                prevIcon.removeClass(iconLeft);
+                prevIcon.addClass(iconRight);
 
                 // hide previous splitbar buttons
                 if(previousSplitbar !== null) {
@@ -630,10 +640,10 @@ angular.module('ui.layout', [])
                 }
               } else {
                 afterButton.css('display', 'inline');
-                prevChevron.removeClass(chevronRight);
-                prevChevron.addClass(chevronLeft);
+                prevIcon.removeClass(iconRight);
+                prevIcon.addClass(iconLeft);
 
-                // show previous splitbar chevrons
+                // show previous splitbar icons
                 if(previousSplitbar !== null) {
                   prevSplitbarBeforeButton.css('display', 'inline');
                   prevSplitbarAfterButton.css('display', 'inline');
@@ -642,8 +652,8 @@ angular.module('ui.layout', [])
             } else {
               if(result) {
                 afterButton.css('display', 'none');
-                prevChevron.removeClass(chevronUp);
-                prevChevron.addClass(chevronDown);
+                prevIcon.removeClass(iconUp);
+                prevIcon.addClass(iconDown);
 
                 // hide previous splitbar buttons
                 if(previousSplitbar !== null) {
@@ -652,10 +662,10 @@ angular.module('ui.layout', [])
                 }
               } else {
                 afterButton.css('display', 'inline');
-                prevChevron.removeClass(chevronDown);
-                prevChevron.addClass(chevronUp);
+                prevIcon.removeClass(iconDown);
+                prevIcon.addClass(iconUp);
 
-                // show previous splitbar chevrons
+                // show previous splitbar icons
                 if(previousSplitbar !== null) {
                   prevSplitbarBeforeButton.css('display', 'inline');
                   prevSplitbarAfterButton.css('display', 'inline');
@@ -677,8 +687,8 @@ angular.module('ui.layout', [])
             if(ctrl.isUsingColumnFlow) {
               if(result) {
                 prevButton.css('display', 'none');
-                afterChevron.removeClass(chevronRight);
-                afterChevron.addClass(chevronLeft);
+                afterIcon.removeClass(iconRight);
+                afterIcon.addClass(iconLeft);
 
                 // hide next splitbar buttons
                 if(nextSplitbar !== null) {
@@ -687,8 +697,8 @@ angular.module('ui.layout', [])
                 }
               } else {
                 prevButton.css('display', 'inline');
-                afterChevron.removeClass(chevronLeft);
-                afterChevron.addClass(chevronRight);
+                afterIcon.removeClass(iconLeft);
+                afterIcon.addClass(iconRight);
 
                 // show next splitbar buttons
                 if(nextSplitbar !== null) {
@@ -699,8 +709,8 @@ angular.module('ui.layout', [])
             } else {
               if(result) {
                 prevButton.css('display', 'none');
-                afterChevron.removeClass(chevronDown);
-                afterChevron.addClass(chevronUp);
+                afterIcon.removeClass(iconDown);
+                afterIcon.addClass(iconUp);
 
                 // hide next splitbar buttons
                 if(nextSplitbar !== null) {
@@ -709,8 +719,8 @@ angular.module('ui.layout', [])
                 }
               } else {
                 prevButton.css('display', 'inline');
-                afterChevron.removeClass(chevronUp);
-                afterChevron.addClass(chevronDown);
+                afterIcon.removeClass(iconUp);
+                afterIcon.addClass(iconDown);
 
                 // show next splitbar buttons
                 if(nextSplitbar !== null) {
@@ -748,9 +758,7 @@ angular.module('ui.layout', [])
           });
 
           scope.$on('$destroy', function() {
-            //htmlElement.off('mouseup touchend mousemove touchmove');
-            // mobius temp fix may lead to memory leak
-            htmlElement.off('mousemove touchmove');
+            htmlElement.off('mouseup touchend mousemove touchmove');
           });
 
           //Add splitbar to layout container list
@@ -800,7 +808,7 @@ angular.module('ui.layout', [])
               var parent = element.parent();
               var children = parent.children();
               var index = ctrl.indexOfElement(element);
-              var splitbar = angular.element('<div ui-splitbar><a><span class="glyphicon"></span></a><a><span class="glyphicon"></span></a></div>');
+              var splitbar = angular.element('<div ui-splitbar><a><span class="ui-splitbar-icon"></span></a><a><span class="ui-splitbar-icon"></span></a></div>');
               if(0 < index && !ctrl.hasSplitbarBefore(scope.container)) {
                 angular.element(children[index-1]).after(splitbar);
                 $compile(splitbar)(scope);

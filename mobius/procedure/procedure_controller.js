@@ -72,10 +72,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                 }
             }
 
-            //var func_props = props.filter(function(property) {
-            //    return typeof MOBIUS[property] == 'function';
-            //});
-
             var expression = [{category:'msc',name:'expression'}];
 
             // fixme sub category temp solution
@@ -93,7 +89,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
             }
 
             return expression;
-            //return expression.concat(func_props);
         };
 
         $scope.methods = $scope.getMethods();
@@ -141,8 +136,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
             //generateCode.generateCode();
             flattenData();
         } , true);
-
-
 
         $scope.$watch('interface',function(){
             updateVersion();

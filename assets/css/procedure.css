@@ -70,7 +70,6 @@
     right:28%;
     white-space: nowrap;
     width:68px;
-
 }
 
 .button-output{
@@ -135,6 +134,10 @@
     line-height:1;
 }
 
+.code-area .dropdown{
+    z-index: 10001;
+}
+
 .code-area .dropdown-option{
     margin-right: 15px;
     margin-bottom: 5px;
@@ -146,12 +149,12 @@
     font-size: 17px;
 }
 
-.code-area .control-content{
+.control-content{
     display: inline-block;
     padding-left:23px;
 }
 
-.code-area .control-heading{
+.control-heading{
     display: inline-block;
     padding-left:3px;
 }

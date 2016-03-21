@@ -1,4 +1,3 @@
-
 mobius.controller('layoutCtrl',['$scope','hotkeys',
     function($scope,hotkeys) {
 
