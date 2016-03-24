@@ -257,7 +257,7 @@ mobius.controller(  'graphCtrl',
         $scope.$on("renameSelected",function(){
             $mdDialog.show({
                     controller: DialogController,
-                    templateUrl: 'mobius/template/inputName_dialog.tmpl.html',
+                    templateUrl: 'mobius/dialog/inputName_dialog.tmpl.html',
                     parent: angular.element(document.body),
                     clickOutsideToClose:false,
                     focusOnOpen:false
@@ -280,7 +280,7 @@ mobius.controller(  'graphCtrl',
         $scope.$on("saveAsNewType",function(){
             $mdDialog.show({
                 controller: DialogController,
-                templateUrl: 'mobius/template/inputName_dialog.tmpl.html',
+                templateUrl: 'mobius/dialog/inputName_dialog.tmpl.html',
                 parent: angular.element(document.body),
                 clickOutsideToClose:false,
                     focusOnOpen:false
@@ -309,20 +309,20 @@ mobius.controller(  'graphCtrl',
         // todo when multi-selection should throw error to user that only one node can be saved
         $scope.$on('overWriteProcedure',function(){
             if($scope.chartViewModel.getSelectedNodes()[0].data.overwrite){
-            // get new type name, by default the original type name
-            var instanceName =  $scope.chartViewModel.getSelectedNodes()[0].data.name;
-            var oldTypeName = $scope.chartViewModel.getSelectedNodes()[0].data.type;
-            $mdDialog.show({
-                    controller: DialogController,
-                    templateUrl: 'mobius/template/overwrite_dialog.tmpl.html',
-                    parent: angular.element(document.body),
-                    clickOutsideToClose:false,
-                })
-                .then(function(answer) {
-                    if(answer === 'Ok'){
-                        overwriteType(oldTypeName, oldTypeName, instanceName);
-                    }
-                });
+                // get new type name, by default the original type name
+                var instanceName =  $scope.chartViewModel.getSelectedNodes()[0].data.name;
+                var oldTypeName = $scope.chartViewModel.getSelectedNodes()[0].data.type;
+                $mdDialog.show({
+                        controller: DialogController,
+                        templateUrl: 'mobius/dialog/overwrite_dialog.tmpl.html',
+                        parent: angular.element(document.body),
+                        clickOutsideToClose:false,
+                    })
+                    .then(function(answer) {
+                        if(answer === 'Ok'){
+                            overwriteType(oldTypeName, oldTypeName, instanceName);
+                        }
+                    });
             }else{
                 consoleMsg.errorMsg('notWritable');
             }

@@ -557,6 +557,7 @@
                   html = document.documentElement,
                   document_height,
                   document_width,
+                  selection,
                   dragStart,
                   tagName,
                   dragMove,
@@ -588,6 +589,29 @@
                 attrs.$set('collapsed', val);
               });
 
+              selection = function(e){
+                if (!hasTouch && (e.button == 1 || e.which == 2)) {
+                  // disable middle click
+                  return;
+                }
+                // mobius: deselect all the items
+                function deselect(tree){
+                  if(tree){
+                    for(var i = 0; i < tree.length ; i++){
+                      tree[i].selected = false;
+                      if(tree[i].nodes){
+                        deselect(tree[i].nodes);
+                      }
+                    }
+                  }
+                  return;
+                }
+
+                deselect(scope.$nodesScope.$modelValue);
+
+                // mobius select the clicked item
+                scope.$modelValue.selected = true;
+              };
 
               dragStart = function (e) {
                 if (!hasTouch && (e.button == 1 || e.which == 2)) {
@@ -598,7 +622,7 @@
                   return;
                 }
 
-                // hack: deselect all the items
+                // mobius: deselect all the items
                   function deselect(tree){
                     if(tree){
                         for(var i = 0; i < tree.length ; i++){
@@ -613,7 +637,7 @@
 
                   deselect(scope.$nodesScope.$modelValue);
 
-                // hack select the clicked item
+                // mobius select the clicked item
                 scope.$modelValue.selected = true;
 
 
@@ -978,6 +1002,7 @@
                 if (scope.dragEnabled()) {
                   dragStart(e);
                 }
+                selection(e)
               };
 
               dragMoveEvent = function (e) {

@@ -110,3 +110,7 @@ display: none;
 .selectize-input {
     padding: 3px 3px !important;;
 }
+
+.md-dialog-container{
+    z-index: 10005 !important;
+}

@@ -1,19 +1,134 @@
-mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','consoleMsg',
-    function($scope,$rootScope,nodeCollection,consoleMsg){
+mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','consoleMsg','$mdDialog',
+    function($scope,$rootScope,nodeCollection,consoleMsg,$mdDialog){
 
     $scope.selectAll = false;
 
     $scope.typeList = JSON.parse(localStorage.mobiusNodeTypes);
 
     $scope.$watch(function(){return localStorage.mobiusNodeTypes}, function(){
+        var  uiStatus = [];
+        angular.copy($scope.typeList,uiStatus);
+
         $scope.typeList = JSON.parse(localStorage.mobiusNodeTypes);
+
+        for(var i = 0; i< $scope.typeList.length; i++){
+            for(var j = 0; j< uiStatus.length; j++){
+                if($scope.typeList[i].nodeType === uiStatus[j].nodeType){
+                    $scope.typeList[i].selected = uiStatus[j].selected;
+                    $scope.typeList[i].checked = uiStatus[j].checked;
+                }
+            }
+        }
+
+        for(var i = 0; i< $scope.typeList.length; i++){
+            if($scope.typeList[i].selected === true){
+                return;
+            }
+        }
+        if($scope.typeList[0]){
+            $scope.typeList[0].selected = true;
+        }
+
+
     });
+
+    $scope.$watch('typeList',function(newList,oldList){
+        for(var i = 0; i < $scope.typeList.length;i++){
+            if($scope.typeList[i].selected === true){
+                // on change of selected type
+                if(oldList[i].selected !== newList[i].selected){
+                    // fixme add rename
+                    for(var j = 0; j < oldList.length;j++){
+                        if(oldList[j]){
+                            if(oldList[j].selected === true){
+                                if( !angular.equals(oldList[j].procedureDataModel, JSON.parse(localStorage.mobiusNodeTypes)[j].procedureDataModel) ||
+                                    !angular.equals(oldList[j].interfaceDataModel, JSON.parse(localStorage.mobiusNodeTypes)[j].interfaceDataModel) ||
+                                    oldList[j].nodeType !== JSON.parse(localStorage.mobiusNodeTypes)[j].nodeType){
+
+                                    var oldType = $scope.typeList[j];
+                                    var originalType = JSON.parse(localStorage.mobiusNodeTypes)[j];
+
+                                    $mdDialog.show({
+                                            controller: DialogController,
+                                            templateUrl: 'mobius/dialog/typeOverwrite_dialog.tmpl.html',
+                                            parent: angular.element(document.body),
+                                            clickOutsideToClose:false
+                                        })
+                                        .then(function(answer) {
+                                            if(answer === 'Ok'){
+                                                //overwriteType
+                                                nodeCollection.updateNodeType(originalType.nodeType,
+                                                    oldType.nodeType,
+                                                    oldType.inputConnectors,
+                                                    oldType.outputConnectors,
+                                                    oldType.procedureDataModel,
+                                                    oldType.interfaceDataModel);
+                                            }else if (answer === 'undo'){
+                                                angular.copy(originalType, oldType);
+                                            }
+                                        });
+                                }
+                            }
+                        }
+
+                    }
+
+                    // fixme confirmation, override, unchange, cancel
+                    $scope.definition = $scope.typeList[i].procedureDataModel;
+                    $scope.arguments = $scope.typeList[i].interfaceDataModel;
+                }
+            }
+        }
+        $scope.jsCode = $scope.generateCode();
+    },true);
+
+    $scope.closeTypeManager = function(){
+        for(var j = 0; j < $scope.typeList.length;j++){
+            if($scope.typeList[j].selected === true){
+                if( !angular.equals($scope.typeList[j].procedureDataModel, JSON.parse(localStorage.mobiusNodeTypes)[j].procedureDataModel) ||
+                    !angular.equals($scope.typeList[j].interfaceDataModel, JSON.parse(localStorage.mobiusNodeTypes)[j].interfaceDataModel) ||
+                    $scope.typeList[j].nodeType !== JSON.parse(localStorage.mobiusNodeTypes)[j].nodeType){
+
+                    var oldType = $scope.typeList[j];
+                    var originalType = JSON.parse(localStorage.mobiusNodeTypes)[j];
+
+                    $mdDialog.show({
+                            controller: DialogController,
+                            templateUrl: 'mobius/dialog/typeOverwrite_dialog.tmpl.html',
+                            parent: angular.element(document.body),
+                            clickOutsideToClose:false
+                        })
+                        .then(function(answer) {
+                            if(answer === 'Ok'){
+                                //overwriteType
+                                nodeCollection.updateNodeType(originalType.nodeType,
+                                    oldType.nodeType,
+                                    oldType.inputConnectors,
+                                    oldType.outputConnectors,
+                                    oldType.procedureDataModel,
+                                    oldType.interfaceDataModel);
+                                document.getElementById('typeManager').style.display = 'none';
+                            }else if (answer === 'undo'){
+                                angular.copy(originalType, oldType);
+                                document.getElementById('typeManager').style.display = 'none';
+                            }
+                        });
+                }else{
+                    document.getElementById('typeManager').style.display = 'none'
+                }
+            }
+        }
+    };
 
     $scope.remove = function(scope){
         scope.remove();
     };
 
     $scope.removeInput = function(scope){
+        scope.remove();
+    };
+
+    $scope.removeOutput= function(scope){
         scope.remove();
     };
 
@@ -34,10 +149,6 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
             }
             $scope.selectAll = true;
         }
-    };
-
-    $scope.closeTypeManager = function(){
-        document.getElementById('typeManager').style.display = 'none'
     };
 
     // delete
@@ -114,32 +225,6 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
         $scope.nodeUrl = URL.createObjectURL(blob);
     };
 
-    $scope.$watch('typeList',function(){
-        $scope.definition = $scope.getSelectedProcedureModel();
-        $scope.arguments = $scope.getSelectedInterfaceModel();
-        $scope.jsCode = $scope.generateCode();
-    },true);
-
-    $scope.getSelectedProcedureModel = function (){
-        for(var i = 0; i < $scope.typeList.length;i++){
-            if($scope.typeList[i].selected === true){
-                return $scope.typeList[i].procedureDataModel;
-            }
-        }
-    };
-
-    $scope.getSelectedInterfaceModel = function (){
-        for(var i = 0; i < $scope.typeList.length;i++){
-            if($scope.typeList[i].selected === true){
-                return $scope.typeList[i].interfaceDataModel;
-            }
-        }
-    };
-
-    $scope.definition = $scope.getSelectedProcedureModel();
-
-    $scope.arguments = $scope.getSelectedInterfaceModel();
-
     // only there is checked item then toggle export nodes
     // fixme warning
     // fixme directly from javascript
@@ -151,7 +236,55 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
         }
     };
 
-    // methods types
+    $scope.addNewType = function(){
+        $mdDialog.show({
+                controller: DialogController,
+                templateUrl: 'mobius/dialog/inputName_dialog.tmpl.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose:false
+            })
+            .then(function(newTypeName) {
+                if (!isValidName(newTypeName)) {
+                    return;}
+
+                var existingTypes = angular.copy(nodeCollection.getNodeTypes());
+
+                if (existingTypes.indexOf(newTypeName) >= 0 ){
+                    return;
+                }
+
+                var newProcedureDataModel =  [];
+                var newInterfaceDataModel = [];
+
+                nodeCollection.installNewNodeType(newTypeName,newProcedureDataModel,newInterfaceDataModel);
+            });
+    };
+
+    // fixme should made in public service function
+    // fixme replace eval with regex
+    function isValidName(inputName) {
+        var valid = true;
+
+        if (inputName) {
+            var testString = 'function ' + inputName + '(){};';
+
+            try {
+                eval(testString);
+            } catch (err) {
+                valid = false;
+            }
+        } else {
+            valid = false;
+        }
+
+        if(valid) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    // procedure & interface manipulation
     $scope.getMethods = function(){
         var props = Object.getOwnPropertyNames(MOBIUS);
 
@@ -176,13 +309,8 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
         }
         return expression;
     };
-
     $scope.methods = $scope.getMethods();
-
-    // control types
     $scope.controlTypes = ['for each', 'if else'];
-
-    // add item to select node type
     $scope.newItem = function(cate,subCate,isCopy,content) {
         $scope.currentHighestId = 0;
         // fixme error handling
@@ -194,6 +322,9 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
             var insertIndex = undefined;
 
             function findSelected (tree){
+                if (tree === undefined)
+                    return;
+
                 for(var i = 0; i < tree.length; i++ ){
                     if(tree[i].selected === true){
                         selectedPos  = tree[i];
@@ -221,8 +352,7 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
                     // insert inside the selected
                     insertPos = selectedPos.nodes;
                 }
-            }
-            else{
+            } else {
                 // no procedure is selected
                 insertPos = $scope.definition;
             }
@@ -382,8 +512,6 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
         setTimeout(function(){
             procedureDiv.scrollTop = procedureDiv.scrollHeight;},0);
     };
-
-    // add new item in interface
     $scope.newInterface = function(cate) {
         // fixme error handling
         //try{
@@ -417,12 +545,10 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
         setTimeout(function(){argumentDiv.scrollTop = argumentDiv.scrollHeight;},0);
     };
 
-    // interface design options
     $scope.interfaceOptions = [{name:'none'},
         {name:'slider'},
         {name:'dropdown'},
         {name:'color picker'}];
-
     $scope.menuOptions = function (menuOptionText) {
         if(menuOptionText){
             return menuOptionText.split(",");
@@ -430,10 +556,9 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
             return [];
         }
     };
-
     $scope.currentHighestId = 0;
-
     $scope.maxId = function(tree){
+        if(tree === undefined) return;
         if(tree.length > 0){
             for(var i = 0; i < tree.length; i++){
                 if(tree[i].id > $scope.currentHighestId && tree.id !== 999){
@@ -448,11 +573,9 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
         return $scope.currentHighestId;
     };
 
-    // procedure items to track
     $scope.selectedParentItem = undefined;
     $scope.selectedPos = undefined;
     $scope.selectedParent = undefined;
-
     $scope.findSelectedProcedure = function (tree){
         for(var i = 0; i < tree.length; i++ ){
             if(tree[i].selected === true){
@@ -467,8 +590,6 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
             }
         }
     };
-
-    // to find the parent item recursively
     $scope.searchParent = function(son,tree){
         if(tree.nodes && tree.nodes.length >0){
             for(var i =0; i < tree.nodes.length; i++){
@@ -480,7 +601,6 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
             }
         }
     };
-
     $scope.disableProcedure = function(){
         $scope.findSelectedProcedure($scope.definition);
         // if disable 'if' -> disable 'if/else'
@@ -496,8 +616,6 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
         $scope.selectedPos.disabled = true;
         $scope.disableSubItems($scope.selectedPos);
     };
-
-    // disable items recursively
     $scope.disableSubItems = function(parent){
         if(parent.nodes){
             for(var i = 0; i < parent.nodes.length; i++){
@@ -506,14 +624,11 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
             }
         }
     };
-
     $scope.enableProcedure = function(){
         $scope.findSelectedProcedure($scope.definition);
         $scope.enableSubItems($scope.selectedPos);
         $scope.enableParentItems($scope.selectedPos);
     };
-
-    // enable sub items recursively
     $scope.enableSubItems = function(parent){
         if(parent && parent.nodes){
             for(var i = 0; i < parent.nodes.length; i++){
@@ -522,8 +637,6 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
             }
         }
     };
-
-    // cover backwards enable for if/else and for recursively
     $scope.enableParentItems = function(son){
 
         if(son && son.disabled === true){
@@ -537,9 +650,7 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
             $scope.enableParentItems($scope.selectedParentItem);
         }
     };
-
     $scope.numOfItems = 0;
-
     $scope.copyProcedure = function(){
         $scope.findSelectedProcedure($scope.definition);
         $scope.numOfItems = 0;
@@ -548,8 +659,6 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
         $scope.updateCopyItemId(temp,$scope.numOfItems);
         $scope.newItem(undefined,undefined,true,temp);
     };
-
-    // find number of items to be copy
     $scope.findNumOfItems = function(parent){
         if(parent && parent.nodes){
             if(parent.controlType !== 'if' && parent.controlType !== 'else'){
@@ -560,8 +669,6 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
             }
         }
     };
-
-    // update copy item id & reset selected attribute
     $scope.updateCopyItemId = function(parent,increment){
         if(parent && parent.nodes){
             parent.id += increment;
@@ -571,7 +678,6 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
             }
         }
     };
-
     $scope.isOutput = function(){
         if($scope.definition!== undefined){
             $scope.findSelectedProcedure($scope.definition);
@@ -584,7 +690,6 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
             }
         }
     };
-
     $scope.checkDisabled = function(){
         if($scope.definition !== undefined){
             $scope.findSelectedProcedure($scope.definition);
@@ -597,7 +702,6 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
             }
         }
     };
-
     $scope.generateCode =  function (){
         var selectedType;
 
@@ -904,6 +1008,5 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
 
         return jsCode;
     }
-
 
 }]);

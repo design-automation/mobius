@@ -10,12 +10,15 @@
             </pre>
 
             <div id="typeManage_buttons">
+
                 <button class="btn btn-default btn-xs"
                         onclick="document.getElementById('importNode').click()"> Import </button>
-                <!--fixme error handling-->
+
                 <button class="btn btn-default btn-xs" onclick="document.getElementById('exportNode').click()">Export</button>
 
-                <button class="btn btn-default btn-xs" ng-click = "deleteChecked(this)">Delete</button>
+                <button class="btn btn-default btn-xs" ng-click = "addNewType()">Add Type</button>
+
+                <button class="btn btn-default btn-xs" ng-click = "deleteChecked()">Delete</button>
 
                 <input type="file" id="importNode"
                        onchange="angular.element(this).scope().importNode(this.files)"/>
@@ -29,7 +32,7 @@
                 </a>
             </div>
 
-            <div ui-tree id="tree-root-nodeType">
+            <div ui-tree id="tree-root-nodeType" data-drag-enabled="false">
                 <div ui-tree-nodes="" ng-model="typeList">
                     <div ng-repeat="type in typeList"
                          ui-tree-node
@@ -41,7 +44,7 @@
 
     <div ui-layout="{flow : 'column',dividerSize:'10'}"
          style="height:100%;width: 80%;position: relative;">
-            <div ui-layout-container size = "30%">
+            <div ui-layout-container size = "40%">
                 <div style="height: 35%;position: relative">
                     <pre>
                         <span> Type Name </span>

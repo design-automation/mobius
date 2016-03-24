@@ -2,7 +2,6 @@
 
 var mobius = angular.module('mobius',
                             [
-                                //'ngMaterial',
                                 'ui.layout',
                                 'ui.ace',
                                 'ui.bootstrap',

@@ -27,7 +27,7 @@
 
         <div ui-tree-nodes=""  ng-model="node.nodes" ng-class="{hidden: collapsed}">
             <div ng-repeat="node in node.nodes"
-                 ui-tree-node ng-include="'mobius/template/procedure.html'">
+                 ui-tree-node >
             </div>
         </div>
 
@@ -56,14 +56,14 @@
 
         <div ui-tree-nodes=""  ng-model="node.nodes" ng-class="{hidden: collapsed}">
             <div ng-repeat="node in node.nodes"
-                 ui-tree-node ng-include="'mobius/template/procedure.html'">
+                 ui-tree-node >
             </div>
         </div>
 
     </div>
 
     <!--action procedure-->
-    <div ng-if="node.title === 'Action' && node.method !== 'expression'" class="tree-node-content tree-item">
+    <div ng-if="node.title === 'Action' && node.method !== 'expression'" class="tree-node-content tree-item" >
         <!--return vairable-->
         <a href="#" data-nodrag buttons="no"
            blur="submit"

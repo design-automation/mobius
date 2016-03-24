@@ -102,7 +102,6 @@ mobius.factory('nodeCollection', function () {
         },
 
         // install node for create new node type / import node
-        // fixme no longer used
         installNewNodeType: function(type, input, output, procedureList, interfaceList){
             var newNode = {
                 nodeType: type,
@@ -112,9 +111,9 @@ mobius.factory('nodeCollection', function () {
                 inputConnectors: input,
                 outputConnectors: output,
 
-                procedureDataModel: procedureList,
-                interfaceDataModel: interfaceList
-            };
+                procedureDataModel: procedureList === undefined ? [] : procedureList,
+                interfaceDataModel: interfaceList === undefined ? [] : interfaceList
+        };
             nodes.push(newNode);
             localStorage.mobiusNodeTypes = JSON.stringify(nodes);
         },
