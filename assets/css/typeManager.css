@@ -1,0 +1,120 @@
+#typeManager {
+    height:100%;
+    width:100%;
+    background-color: rgba(255,255,255,0.9);
+    position: fixed;
+    top:0;left:0;
+    display: none;
+    z-index:10002
+}
+
+#nodeTypeList{
+    height: 95%;
+}
+
+#typeManager pre{
+    white-space: nowrap;
+    padding: 4px;
+    margin: 0;
+    width: 100%;
+    top:0;
+    font-family: Arial, sans-serif;
+    background:-webkit-gradient(linear, left bottom, left top, color-stop(0, #eee), color-stop(1, #fff));
+    position: relative;
+}
+
+#typeManager pre span {
+    /*padding-left:17px;*/
+}
+
+#typeManager pre > input{
+    position:absolute;
+    right:19px;
+    display: inline;
+}
+
+#tree-root-nodeType{
+    overflow: auto;
+    position: absolute;
+    width: 100%;
+    border: solid 1px black;
+    bottom: 5%;
+    top:28px;
+}
+
+#typeManage_buttons{
+    position: absolute;
+    width: 100%;
+    bottom:0;
+    height:5%;
+    border: solid 1px black;
+    padding: 5px;
+}
+
+#typeManage_buttons  button:nth-child(1){
+    position: absolute;
+    left: 5%;
+}
+
+#typeManage_buttons  button:nth-child(2){
+    position: absolute;
+     left: 27%
+}
+
+#typeManage_buttons  button:nth-child(3){
+    position: absolute;
+    left: 49%
+}
+
+#typeManage_buttons  button:nth-child(4){
+    position: absolute;
+    left: 77%
+}
+
+#typeManager #tree-root-procedure-type{
+    overflow: auto;
+    height:100%
+}
+
+#typeManager #tree-root-parameter-type{
+    overflow: auto;
+    height:100%
+}
+
+#typeManager .button-action{
+    display: inline-block;
+    position: absolute !important;
+    white-space: nowrap;
+    width:20%;
+    width:68px;
+}
+
+#typeManager .button-control{
+    display: inline-block;
+    position: absolute !important;
+    white-space: nowrap;
+    width:68px;
+}
+#typeManager .button-variable{
+    display: inline-block;
+    white-space: nowrap;
+    position: absolute;
+}
+
+#typeManager .button-output{
+    display: inline-block;
+    white-space: nowrap;
+    position: absolute;
+}
+
+#typeManager pre .button-input{
+    display: inline-block;
+    white-space: nowrap;
+    position: absolute;
+}
+
+#menu-typeManager{
+    z-index: 10003;
+}
+
+

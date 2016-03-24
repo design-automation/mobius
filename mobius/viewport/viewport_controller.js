@@ -1,9 +1,9 @@
 //
-// VIDAMO viewport controller for viewport directive
-// This functions of viewport directive will be invoked through VIDAMO module
+// mobius viewport controller for viewport directive
+// This functions of viewport directive will be invoked through mobius module
 //
 
-vidamo.controller('viewportCtrl',[
+mobius.controller('viewportCtrl',[
     '$scope','$rootScope',
     function($scope,$rootScope) {
 
@@ -45,10 +45,6 @@ vidamo.controller('viewportCtrl',[
         $scope.showGeometryLB = true;
         $scope.showGeometryRB = true;
 
-        //$scope.viewportControl.topView('RT');
-        //$scope.viewportControl.rightView('RB');
-        //$scope.viewportControl.frontView('LB');
-
         if($scope.showTopology === false){
             document.getElementById("topoContainer").style.display = "none";
         }
@@ -66,8 +62,6 @@ vidamo.controller('viewportCtrl',[
             $scope.showData = false;
             $scope.showFullCode = false;
         });
-
-
 
         $rootScope.$on('fourViews', function(){
             $scope.viewportControl.layout = 'fourViews';

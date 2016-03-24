@@ -1,0 +1,112 @@
+<div class="code-area">
+    <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
+        <div ui-layout-container size = "25%">
+            <div>
+                <div ng-if = "currentNodeName">
+                    <pre class="nodeName">
+                        <span>
+                            &nbsp &nbsp {{currentNodeType}}  {{currentNodeVersion}}
+                        </span>
+                    </pre>
+                </div>
+
+                <div ng-if = "!currentNodeName">
+                    <pre class="nodeName">
+                            &nbsp &nbsp No Node Selected
+                    </pre>
+                </div>
+
+                <button class="btn btn-default btn-xs pull-right button-input" ng-click="newInterface('Input')">
+                    Input
+                </button>
+            </div>
+
+            <div id="argument-area">
+                <div ui-tree id="tree-root-parameter">
+                    <div ui-tree-nodes="" ng-model="interface">
+                        <div ng-repeat="node in interface"
+                             ui-tree-node
+                             ng-include="'mobius/procedure/template/parameter_template.html'">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div ui-layout-container >
+            <div>
+                <div ng-if = "currentNodeName">
+                    <pre class="nodeName">
+                        <span>
+                            &nbsp &nbsp {{currentNodeType}} {{currentNodeVersion}}
+                        </span>
+
+                    </pre>
+                </div>
+
+                <div ng-if = "!currentNodeName">
+                    <pre class="nodeName">
+                            &nbsp &nbsp No Node Selected
+                    </pre>
+                </div>
+
+                <ui-select ng-model="method.selected"
+                           class="button-action"
+                           on-select="newItem('Action',$select.selected)"
+                        >
+                    <ui-select-match placeholder="Function" >Function</ui-select-match>
+                    <ui-select-choices
+                            group-by="'category'"
+                            repeat="method in methods | propsFilter: {name: $select.search, category: $select.search}">
+                        <span ng-bind-html="method.name| highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+
+                <ui-select ng-model="controlType" class="button-control"
+                           on-select="newItem('Control',$select.selected)">
+                    <ui-select-match placeholder="Control">Control</ui-select-match>
+                    <ui-select-choices
+                            repeat="controlType in controlTypes| filter: $select.search">
+                        <span ng-bind-html="controlType| highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+
+                <button class="btn btn-default btn-xs pull-right button-output" ng-click="newItem('Output')">
+                    Output
+                </button>
+
+                <button class="btn btn-default btn-xs pull-right button-variable"
+                        ng-click="newItem('Data')">Variable
+                </button>
+            </div>
+
+
+            <div class="tabArea" id="procedure-area">
+                <!-- procedure -->
+                <div ui-tree id="tree-root-procedure" >
+                    <div ui-tree-nodes="" ng-model="data">
+                        <div ng-repeat="node in data"
+                             ui-tree-node
+                             ng-include="'mobius/procedure/template/procedure_template.html'"
+                             context-menu
+                             data-target="menu-procedure">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div ui-layout-container size = "27px" class="monitor" >
+
+            <pre class="nodeName">
+                    &nbsp &nbsp Function Code
+            </pre>
+
+            <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'tomorrow' }"
+                 ng-model= "functionCodeList[nodeIndex]"
+                 readonly="{{true}}">
+            </div>
+        </div>
+    </div>
+</div>
+

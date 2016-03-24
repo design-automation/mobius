@@ -2,8 +2,8 @@
 // Execute generated code ('run' button)
 //
 
-vidamo.controller('executeCtrl',['$scope','$rootScope','consoleMsg','generateCode','hotkeys',
-    function($scope,$rootScope,consoleMsg,generateCode,hotkeys,usSpinnerService) {
+mobius.controller('executeCtrl',['$scope','$rootScope','executeService','consoleMsg','generateCode','hotkeys',
+    function($scope,$rootScope,executeService,consoleMsg,generateCode,hotkeys) {
 
         // one-way binding of generated javascript code
 
@@ -43,8 +43,8 @@ vidamo.controller('executeCtrl',['$scope','$rootScope','consoleMsg','generateCod
 
         $rootScope.$on('runNewScene',function(){
             consoleMsg.execMsg().then(function(){
-                    $scope.run();
-                })
+                $scope.run();
+            })
         });
 
 
@@ -53,63 +53,53 @@ vidamo.controller('executeCtrl',['$scope','$rootScope','consoleMsg','generateCod
             // clean output buffer
             $scope.outputs = [];
 
-            setTimeout(function(){
+            executeService.execute( $scope.javascriptCode,$scope.geomListCode)
+                .then(function (data) {
+                        console.log('running done');
+                        $scope.outputs = data;
+                    }
+                ).then(function() {
+                    console.log('display');
 
-                var scope = angular.element(document.getElementById('threeViewport')).scope();
+                     //display in the viewport according to node selection
+                    //setTimeout(function(){
+                        var scope = angular.element(document.getElementById('threeViewport')).scope();
+                        var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
+
+                        scope.viewportControl.refreshView();
+                        scopeTopo.topoViewportControl.refreshView();
+                    //},0);
+
+                    var selectedNodes = $scope.chartViewModel.getSelectedNodes();
+
+                    var scope = angular.element(document.getElementById('threeViewport')).scope();
                     var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
 
-                    scope.$apply(function(){scope.viewportControl.refreshView();} );
-                    scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
-            },0);
+                    for(var i = 0; i < $scope.outputs.length; i++){
 
+                        for(var j =0; j < selectedNodes.length; j++){
+                            if($scope.outputs[i].name === selectedNodes[j].data.name){
 
-            try{
-                $scope.outputs = new Function(   $scope.javascriptCode
-                    + $scope.geomListCode
-                    + '\n return MOBIUS.dataConversion(geomList);')();
-                consoleMsg.runtimeMsg();
+                                var p = 0;
 
-            }catch (e) {
-                consoleMsg.runtimeMsg(e.message);
-                throw(e);
-            }
+                                for(var k in $scope.outputs[i].value){
+                                    //scope.$apply(function(){
+                                        scope.viewportControl.
+                                                addGeometryToScene($scope.outputs[i].value[k],
+                                                                    $scope.outputs[i].geom[p],
+                                                                    $scope.outputs[i].geomData[p]);
+                                    //} );
 
-
-            // display in the viewport according to node selection
-
-            setTimeout(function(){
-
-                var selectedNodes = $scope.chartViewModel.getSelectedNodes();
-
-                var scope = angular.element(document.getElementById('threeViewport')).scope();
-                var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
-
-
-                for(var i = 0; i < $scope.outputs.length; i++){
-
-                    for(var j =0; j < selectedNodes.length; j++){
-                        if($scope.outputs[i].name === selectedNodes[j].data.name){
-                            var p = 0;
-
-                            for(var k in $scope.outputs[i].value){
-                                scope.$apply(function(){
-                                    scope.viewportControl.
-                                        addGeometryToScene($scope.outputs[i].value[k],
-                                                            $scope.outputs[i].geom[p],
-                                                        $scope.outputGeom[i].geomData[p]);
-                                } );
-
-                                scopeTopo.$apply(function(){
-                                    scopeTopo.topoViewportControl.
-                                        addGeometryToScene($scope.outputs[i].value[k],
-                                        $scope.outputGeom[i].topo[p]);
-                                } );
-                                p++;
+                                    //scopeTopo.$apply(function(){
+                                        scopeTopo.topoViewportControl.
+                                            addGeometryToScene($scope.outputs[i].value[k],
+                                                $scope.outputs[i].topo[p]);
+                                    //} );
+                                    p++;
+                                }
                             }
                         }
                     }
-                }
-            },0);
+            });
         }
     }]);
-

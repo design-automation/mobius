@@ -1,0 +1,47 @@
+<!--mobius-->
+<!-- interface template -->
+
+<div ui-tree-handle class="tree-node tree-node-content interface">
+    <!-- parameter presentation-->
+    <div class="tree-node-content tree-item" >
+        {{ node.name || 'undefined' }}
+        &nbsp;:&nbsp;
+        <a ng-if =" node.option.name === 'none'"
+           data-nodrag href="#"
+           editable-text="node.dataValue"
+           buttons="no"
+           blur="submit">{{ node.dataValue || 'value' }}</a>
+
+        <span ng-if =" node.option.name === 'slider'">
+            <a data-nodrag href="#"
+               editable-text="node.dataValue"
+               buttons="no"
+               blur="submit">{{ node.dataValue || 'value' }}
+            </a>
+
+            <input type="range"
+                   class="range"
+                data-nodrag
+                ng-model="node.dataValue"
+                max = "{{node.max}}"
+                min = "{{node.min}}"
+                step="{{node.step}}">
+            </input>
+        </span>
+
+        <input ng-if =" node.option.name === 'color picker'"
+            data-nodrag
+               ng-model="node.color"
+            type="color" />
+
+        <a ng-if =" node.option.name === 'dropdown'"
+           data-nodrag
+           href="#"
+           blur="submit"
+           buttons="no"
+           editable-select="node.dataValue"
+           e-ng-options="option for option in menuOptions(node.menuOptionText)">
+            {{ node.dataValue || 'value' }}
+        </a>
+    </div>
+</div>

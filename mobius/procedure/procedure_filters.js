@@ -1,9 +1,9 @@
 //
-// filter collection for vidamo
+// filter collection for mobius
 //
 
 // filter for procedure dataName
-vidamo.filter('dataNameFilter', function() {
+mobius.filter('dataNameFilter', function() {
     return function( items) {
         var filtered = [];
         angular.forEach(items, function(item) {
@@ -16,7 +16,7 @@ vidamo.filter('dataNameFilter', function() {
 });
 
 // filter to check if the procedure is a data procedure
-vidamo.filter('dataFilter', function() {
+mobius.filter('dataFilter', function() {
     return function( items) {
         var filtered = [];
         angular.forEach(items, function(item) {
@@ -29,7 +29,7 @@ vidamo.filter('dataFilter', function() {
 });
 
 // filter for procedure position
-vidamo.filter('positionFilter', function() {
+mobius.filter('positionFilter', function() {
     return function( items, currentId, scope) {
         var filtered = [];
         var index = -1;

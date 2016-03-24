@@ -1,40 +1,44 @@
 // data pool for node types
 
-vidamo.factory('nodeCollection', function () {
+mobius.factory('nodeCollection', function () {
 
     var nodes= [];
-    var defaultNodes = [{
-        // node type name
-        nodeType:'create new type',
-        // node type
-        version:'',
-        // node option to be overwritten
-        overwrite:false,
 
-        // graph info
-        inputConnectors: [],
-        outputConnectors: [],
-
-        // procedure data model linked with node
-        procedureDataModel: [],
-
-        // procedure data model linked with node
-        interfaceDataModel: []
-    }];
+    // embeded unchangable node goes here
+    var defaultNodes = [
+    //    {
+    //    // node type name
+    //    nodeType:'xxx',
+    //    // node type
+    //    version:'',
+    //    // node option to be overwritten
+    //    overwrite:false,
+    //
+    //    // graph info
+    //    inputConnectors: [],
+    //    outputConnectors: [],
+    //
+    //    // procedure data model linked with node
+    //    procedureDataModel: [],
+    //
+    //    // procedure data model linked with node
+    //    interfaceDataModel: []
+    //}
+    ];
 
 
     // check if node types exists in local storage, if not, store default
-    if(localStorage.vidamoNodeTypes === undefined){
+    if(localStorage.mobiusNodeTypes === undefined){
         // store default into local storage
-        localStorage.vidamoNodeTypes = JSON.stringify(defaultNodes);
+        localStorage.mobiusNodeTypes = JSON.stringify(defaultNodes);
     }
 
     // retrieve the local storage node types for usage
-    nodes = JSON.parse(localStorage.vidamoNodeTypes);
+    nodes = JSON.parse(localStorage.mobiusNodeTypes);
 
     return{
         syncNodeTpyeStorage: function(){
-            nodes = JSON.parse(localStorage.vidamoNodeTypes);
+            nodes = JSON.parse(localStorage.mobiusNodeTypes);
         },
 
         // return node types for graph
@@ -99,16 +103,6 @@ vidamo.factory('nodeCollection', function () {
 
         // install node for create new node type / import node
         installNewNodeType: function(type, input, output, procedureList, interfaceList){
-
-            //if(interfaceList){
-            //    for(var i = 0; i <interfaceList.length; i++){
-            //        if(interfaceList[i].connected === true){
-            //            interfaceList[i].connected = false;
-            //            console.log('xx')
-            //        }
-            //    }
-            //}
-
             var newNode = {
                 nodeType: type,
                 version:0,
@@ -117,26 +111,20 @@ vidamo.factory('nodeCollection', function () {
                 inputConnectors: input,
                 outputConnectors: output,
 
-                procedureDataModel: procedureList,
-                interfaceDataModel: interfaceList
-            };
-
+                procedureDataModel: procedureList === undefined ? [] : procedureList,
+                interfaceDataModel: interfaceList === undefined ? [] : interfaceList
+        };
             nodes.push(newNode);
-            localStorage.vidamoNodeTypes = JSON.stringify(nodes);
+            localStorage.mobiusNodeTypes = JSON.stringify(nodes);
+        },
 
+        importNodeType: function(jsonObj){
+            nodes.push(jsonObj);
+            localStorage.mobiusNodeTypes = JSON.stringify(nodes);
         },
 
         // update node procedure content
         updateNodeType: function(oldType,newType, input, output, newProcedureList,newInterfaceList){
-
-            //if(newInterfaceList){
-            //    for(var i = 0; i <newInterfaceList.length; i++){
-            //        if(newInterfaceList[i].connected === true){
-            //            newInterfaceList[i].connected = false;
-            //        }
-            //    }
-            //}
-
             for(var i = 0; i < nodes.length; i++){
                 if(nodes[i].nodeType == oldType){
                     nodes[i].nodeType = newType;
@@ -145,9 +133,20 @@ vidamo.factory('nodeCollection', function () {
                     nodes[i].procedureDataModel = newProcedureList;
                     nodes[i].interfaceDataModel = newInterfaceList;
                 }
-
-                localStorage.vidamoNodeTypes = JSON.stringify(nodes);
+                localStorage.mobiusNodeTypes = JSON.stringify(nodes);
             }
+        },
+
+        // delete node type
+        deleteNodeType: function(name){
+            for(var i =0; i< name.length; i++){
+                for(var j = 0; j < nodes.length; j++){
+                    if(name[i] === nodes[j].nodeType){
+                        nodes.splice(j,1);
+                    }
+                }
+            }
+            localStorage.mobiusNodeTypes = JSON.stringify(nodes);
         }
     }
 });

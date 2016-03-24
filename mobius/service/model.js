@@ -7,9 +7,9 @@
 // todo restructure core data and other code lists
 
 
-vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
+mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
-    // vidamo application data pool
+    // mobius application data pool
 
     var chartDataModel = {
         nodes: [],
@@ -86,7 +86,7 @@ vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
         },
 
         setDataList: function (value) {
-            data.dataList = value;
+            angular.copy(value,data.dataList);
         },
 
         getInterfaceList: function () {
@@ -94,7 +94,7 @@ vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
         },
 
         setInterfaceList: function (value) {
-            data.interfaceList= value;
+            angular.copy(value,data.interfaceList);
         },
 
         getChartViewModel: function () {
@@ -102,7 +102,7 @@ vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
         },
 
         setChartViewModel: function (value) {
-            data.chartViewModel= value;
+             angular.copy(value,data.chartViewModel);
         },
 
         getChartDataModel: function () {
@@ -389,9 +389,6 @@ vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
                 if(procedure.disabled === true){
                     return;
                 }
-                if(procedure.disabled === true){
-                    return;
-                }
                 if(fromLoop){
                     var intentation = '    ';
                 }else{
@@ -445,7 +442,6 @@ vidamo.factory('generateCode', ['$rootScope',function ($rootScope) {
                         data.innerCodeList[nodeIndex] += codeBlock;
                 }
             }
-
 
             // action procedure
              function procedure_action(procedure,nodeIndex,fromLoop){

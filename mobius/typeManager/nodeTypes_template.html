@@ -1,0 +1,20 @@
+
+<div ui-tree-handle class="tree-node tree-node-content"  style="background-color: white">
+    <div ng-class="{'node-selected':type.selected}"
+         style="min-height: 22px">
+
+        <div style="padding-left:20px; display: inline" class="tree-node-content">
+            <a href="#"
+               data-nodrag
+               editable-text="type.nodeType"
+               blur="submit"
+               buttons="no">
+                {{ type.nodeType || 'something is wrong' }}
+            </a>
+
+            <input type="checkbox"
+                   ng-model="type.checked"
+                   style="position:absolute;right:17px;display: inline;">
+        </div>
+    </div>
+</div>

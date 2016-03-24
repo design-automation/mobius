@@ -1,0 +1,125 @@
+<div style="height:100%;width: 100%;padding: 20px;">
+    <div style="height:100%;
+                width: 20%;
+                float:left;position: relative;
+                display:inline-block;">
+
+            <pre>
+                <span> Type Name </span>
+                <input type="checkbox" ng-model="selectAll" ng-change="toggleSelection()">
+            </pre>
+
+            <div id="typeManage_buttons">
+
+                <button class="btn btn-default btn-xs"
+                        onclick="document.getElementById('importNode').click()"> Import </button>
+
+                <button class="btn btn-default btn-xs" onclick="document.getElementById('exportNode').click()">Export</button>
+
+                <button class="btn btn-default btn-xs" ng-click = "addNewType()">Add Type</button>
+
+                <button class="btn btn-default btn-xs" ng-click = "deleteChecked()">Delete</button>
+
+                <input type="file" id="importNode"
+                       onchange="angular.element(this).scope().importNode(this.files)"/>
+
+                <a  ng-href="{{nodeUrl}}"
+                    download="node.json"
+                    id="exportNode"
+                    ng-if="existSelected()"
+                    ng-click = "exportNode()"
+                    style="display: none;">Export
+                </a>
+            </div>
+
+            <div ui-tree id="tree-root-nodeType" data-drag-enabled="false">
+                <div ui-tree-nodes="" ng-model="typeList">
+                    <div ng-repeat="type in typeList"
+                         ui-tree-node
+                         ng-include="'mobius/typeManager/nodeTypes_template.html'">
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <div ui-layout="{flow : 'column',dividerSize:'10'}"
+         style="height:100%;width: 80%;position: relative;">
+            <div ui-layout-container size = "40%">
+                <div style="height: 35%;position: relative">
+                    <pre>
+                        <span> Type Name </span>
+                        <button class="btn btn-default btn-xs pull-right button-input" ng-click="newInterface('Input')">
+                            Input
+                        </button>
+                    </pre>
+
+                    <div ui-tree id="tree-root-parameter-type">
+                        <div ui-tree-nodes="" ng-model="arguments">
+                            <div ng-repeat="node in arguments"
+                                 ui-tree-node
+                                 ng-include="'mobius/procedure/template/parameter_template.html'">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="position: relative;height: 65%">
+                    <pre>
+                        Type Name
+                    </pre>
+
+                    <div id="typeProcedure_buttons">
+                        <ui-select ng-model="method.selected"
+                                   class="button-action"
+                                   on-select="newItem('Action',$select.selected)">
+                            <ui-select-match placeholder="Function" >Function</ui-select-match>
+                            <ui-select-choices
+                                    group-by="'category'"
+                                    repeat="method in methods | propsFilter: {name: $select.search, category: $select.search}">
+                                <span ng-bind-html="method.name| highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+
+                        <ui-select ng-model="controlType" class="button-control"
+                                   on-select="newItem('Control',$select.selected)">
+                            <ui-select-match placeholder="Control">Control</ui-select-match>
+                            <ui-select-choices
+                                    repeat="controlType in controlTypes| filter: $select.search">
+                                <span ng-bind-html="controlType| highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+
+                        <button class="btn btn-default btn-xs pull-right button-variable"
+                                ng-click="newItem('Data')">Variable
+                        </button>
+
+                        <button class="btn btn-default btn-xs pull-right button-output" ng-click="newItem('Output')">
+                            Output
+                        </button>
+                    </div>
+
+                    <div ui-tree id="tree-root-procedure-type">
+                        <div ui-tree-nodes="" ng-model="definition">
+                            <div ng-repeat="node in definition"
+                                 ui-tree-node
+                                 context-menu
+                                 ng-include="'mobius/procedure/template/procedure_template.html'"
+                                 data-target="menu-typeManager">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ui-layout-container>
+                <div style="height: 100%; width: 100%"
+                     ng-model="jsCode"
+                     ui-ace="{ mode: 'javascript',theme: 'tomorrow',  showGutter: false,}"
+                     readonly="{{true}}">
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div ng-include="'mobius/typeManager/typeProcedure_template.html'" ></div>
+
+<div class="cfp-hotkeys-close" ng-click="closeTypeManager()" role="button" tabindex="0">×</div>

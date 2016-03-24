@@ -1,4 +1,4 @@
-vidamo.factory('consoleMsg', function ($q) {
+mobius.factory('consoleMsg', function () {
 
     function autoScroll(){
         var consoleDiv = document.getElementById("log");

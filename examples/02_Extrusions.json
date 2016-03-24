@@ -41,7 +41,7 @@
                 }
             ],
             "type": "rect",
-            "version": 1450335996588,
+            "version": 1450211749673,
             "overwrite": true,
             "disabled": false
         },
@@ -136,7 +136,7 @@
                 }
             ],
             "type": "extrude",
-            "version": 1450336000877,
+            "version": 1450211739826,
             "overwrite": true,
             "disabled": false
         }
@@ -167,7 +167,7 @@
             "$$hashKey": "object:158"
         },
         {
-            "id": 3,
+            "id": 1,
             "title": "Action",
             "nodes": [],
             "type": "new",
@@ -176,19 +176,14 @@
             "category": "srf",
             "parameters": [
                 {
-                    "value": "GLOBAL",
-                    "type": "frame",
-                    "$$hashKey": "object:1710"
-                },
-                {
                     "value": "[[length/2,breadth/2,0],[-length/2,breadth/2,0],[-length/2,-breadth/2,0],[length/2,-breadth/2,0]]",
                     "type": "cornerpoints",
-                    "$$hashKey": "object:1711"
+                    "$$hashKey": "object:500"
                 }
             ],
             "result": "rectangle",
-            "$$hashKey": "object:1695",
-            "selected": true
+            "selected": false,
+            "$$hashKey": "object:159"
         }
     ],
     [

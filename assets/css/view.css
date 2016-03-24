@@ -1,0 +1,106 @@
+.view-area{}
+
+.view-area #viewportLayout{
+    z-index: 0;
+}
+
+.view-area .viewportMenu{
+    left:5px;
+    top:10px;
+}
+.view-area .viewport-menu-button{
+    background: #ddd;
+}
+
+.view-area #threeViewport {
+    padding: 0;
+    margin: 0;
+    line-height:0;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.view-area #topoViewport {
+    height:0;
+    width:0;
+}
+
+.view-area .codeViewport{
+    width: 100%;
+    top:35px;
+    left:0;
+    bottom: 0;
+    position: absolute;
+}
+
+.view-area .dataViewport{
+    height: 100%;
+    width: 100%;
+    left:0;
+    position: absolute;
+    top:40px;
+}
+
+.view-area .dataGrid{
+    width: 100%;
+    bottom:0;
+    font-size: 12px
+}
+
+.view-area .dataGrid-main{
+    height: 100%;
+    width: 100%;
+    bottom:100px;
+    font-size: 12px;
+}
+
+.view-area #topoContainer{
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+}
+
+.view-area .tabArea{
+    position: relative;
+    left: 9px;
+    height: 100%;
+    width: 100%;
+}
+
+
+/*todo temp fix */
+.view-area  .monitor .stretch{
+    top: 0;
+}
+
+.view-area .monitor .ui-layout-column .ui-splitbar{
+    border:0;
+}
+
+.view-area .monitor .console{
+    padding-top: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-bottom: 30px;
+    font-size: 12px;
+    height: 100%;
+    width:100%;
+    overflow: auto;
+    position: absolute;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    margin-top:1px
+}
+
+.view-area #clear{
+    position: absolute;
+    cursor: pointer;
+    padding-top: 0;
+    padding-bottom:0;
+    right:5px;
+}

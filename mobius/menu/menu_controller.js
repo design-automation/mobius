@@ -1,8 +1,8 @@
 //
-// Controller for menubar
+// Controller for menu bar
 //
 
-vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','generateCode','nodeCollection','$http','hotkeys','$mdDialog',
+mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','generateCode','nodeCollection','$http','hotkeys','$mdDialog',
     function($scope,$rootScope,$timeout,consoleMsg,generateCode,nodeCollection,$http,hotkeys,$mdDialog){
 
         // store json url
@@ -25,7 +25,7 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
 
             $mdDialog.show({
                 controller: DialogController,
-                templateUrl: 'mobius/template/newScene_dialog.tmpl.html',
+                templateUrl: 'mobius/dialog/newScene_dialog.tmpl.html',
                 parent: angular.element(document.body),
                 //targetEvent: ev,
                 clickOutsideToClose:false
@@ -156,7 +156,6 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
             );
         };
 
-
         // open and read json file for scene
         $scope.openSceneJson = function(files){
             var f = files[0];
@@ -248,8 +247,6 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
 
         };
 
-
-
         // support function to dynamiclly link output connectors
         $scope.searchOutput = function(tree, nodeData){
             if(tree.length > 0){
@@ -283,7 +280,6 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
             return true;
         };
 
-
         // redo / undo emit to graph controller
         // fixme seperate module for undo/redo
 
@@ -295,86 +291,9 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
             $rootScope.$broadcast('redo')
         };
 
-        // import pre-defined node
-        // fixme potentially malfunction since input and output are not dynamically linked
-        // fixme so far so good
-        $scope.importNode = function (files) {
-
-            var jsonString;
-            var nodeJsonString;
-            var procedureJsonString;
-            var interfaceJsonString;
-
-            var nodeJsonObj;
-            var procedureJsonObj;
-            var interfaceJsonObj;
-
-            for(var i = 0; i < files.length ; i ++ ){
-                var f = files[i];
-
-                var reader = new FileReader();
-
-                reader.onload = (function () {
-
-                    return function (e) {
-                        if(f.name.split('.').pop() == 'json') {
-
-                            jsonString = e.target.result;
-
-                            nodeJsonString = jsonString.split("//procedure json")[0];
-
-                            var temp = jsonString.split("//procedure json")[1];
-                            procedureJsonString = temp.split("//interface json")[0];
-                            interfaceJsonString = temp.split("//interface json")[1];
-
-                            nodeJsonObj = JSON.parse(nodeJsonString);
-                            procedureJsonObj = JSON.parse(procedureJsonString);
-                            interfaceJsonObj = JSON.parse(interfaceJsonString);
-                            var newNodeName = nodeJsonObj.type;
-
-                            // install new imported node into nodeCollection
-                            nodeCollection.installNewNodeType(newNodeName,
-                                                                nodeJsonObj.inputConnectors,
-                                                                nodeJsonObj.outputConnectors,
-                                                                procedureJsonObj,
-                                                                interfaceJsonObj);
-
-                            consoleMsg.confirmMsg('nodeImport');
-                        }else{
-                            consoleMsg.errorMsg('invalidFileType');
-                        }
-                    };
-                })(f);
-
-                reader.readAsText(f);
-            }
-        };
-
-        // export selected node
-        // nodeType follows the original node name
-        $scope.exportNode = function (){
-
-            if($scope.nodeIndex === undefined){
-                consoleMsg.errorMsg('noNode');
-            }
-
-            var nodeJson = JSON.stringify(generateCode.getChartViewModel().nodes[$scope.nodeIndex].data, null, 4);
-
-            var procedureJson = JSON.stringify(generateCode.getDataList()[$scope.nodeIndex], null, 4);
-
-            var interfaceJson = JSON.stringify(generateCode.getInterfaceList()[$scope.nodeIndex], null, 4)
-
-            var nodeBlob = new Blob([nodeJson + '\n\n' +
-                                    '//procedure json\n' + procedureJson + '\n\n' +
-                                    '//interface json\n' + interfaceJson +'\n\n\n\n'],
-                                    {type: "application/json"});
-
-            $scope.nodeUrl = URL.createObjectURL(nodeBlob);
-        };
-
         // export node library in current local storage
         $scope.exportNodeLib = function (){
-            var allType = JSON.parse(localStorage.vidamoNodeTypes);
+            var allType = JSON.parse(localStorage.mobiusNodeTypes);
             var typeToExport = [];
 
             for(var i =0; i< allType.length ; i++){
@@ -393,7 +312,7 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
         // import node library to current local storage
         $scope.importNodeLib = function(files){
 
-            for(var i = 0; i < files.length ; i ++ ){
+            for(var i = 0; i < files.length ; i ++ ) {
                 var f = files[i];
 
                 var reader = new FileReader();
@@ -401,21 +320,21 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                 reader.onload = (function () {
 
                     return function (e) {
-                        if(f.name.split('.').pop() == 'json') {
+                        if (f.name.split('.').pop() == 'json') {
                             var jsonString = e.target.result;
                             var types = JSON.parse(jsonString);
 
-                            var currentTypes = JSON.parse(localStorage.vidamoNodeTypes);
-                            for(var i = 0; i < types.length; i++ ){
+                            var currentTypes = JSON.parse(localStorage.mobiusNodeTypes);
+                            for (var i = 0; i < types.length; i++) {
                                 currentTypes.push(types[i]);
                             }
 
-                            localStorage.vidamoNodeTypes = JSON.stringify(currentTypes);
+                            localStorage.mobiusNodeTypes = JSON.stringify(currentTypes);
 
                             nodeCollection.syncNodeTpyeStorage();
 
                             consoleMsg.confirmMsg('nodeImport');
-                        }else{
+                        } else {
                             consoleMsg.errorMsg('invalidFileType');
                         }
                     };
@@ -423,8 +342,7 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
 
                 reader.readAsText(f);
             }
-
-        }
+        };
 
         // save generated js file
         $scope.downloadJs = function(){
@@ -434,7 +352,7 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
             $scope.jsUrl = URL.createObjectURL(jsBlob);
         };
 
-        // save vidamo library file
+        // save mobius library file
         $scope.downloadLib = function(){
             $http.get("mobius/module.js")
                 .success(
@@ -457,5 +375,10 @@ vidamo.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
 
         $scope.fourViews = function(){
             $rootScope.$broadcast('fourViews');
-        }
+        };
+
+        $scope.openTypeManager = function(){
+            document.getElementById('typeManager').style.display = " inline";
+        };
+
     }]);

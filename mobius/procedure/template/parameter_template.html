@@ -1,0 +1,58 @@
+<!-- mobius -->
+<!-- parameter (argumnent) template -->
+
+
+<div ui-tree-handle class="tree-node tree-node-content procedure-tree">
+
+    <div class="tree-node-content tree-item">
+        name:
+        <a>
+            <a href="#" data-nodrag editable-text="node.name" buttons="no">{{ node.name || 'name' }}</a>
+        </a>
+
+        &nbsp;option:
+
+        <a href="#" data-nodrag editable-select="node.option" buttons="no" e-ng-options="option.name for option in interfaceOptions">
+            {{node.option.name}}
+        </a>
+
+        <span ng-if="node.option.name === 'slider'">
+            &nbsp;min:
+            <a>
+                <a href="#" data-nodrag editable-text="node.min" buttons="no">{{ node.min || 'min' }}</a>
+            </a>
+            &nbsp;max:
+            <a>
+                <a href="#" data-nodrag editable-text="node.max" buttons="no">{{ node.max || 'max' }}</a>
+            </a>
+            &nbsp;step:
+            <a>
+                <a href="#" data-nodrag editable-text="node.step" buttons="no">{{ node.step || 'step' }}</a>
+            </a>
+        </span>
+
+        <!--delete key-->
+        <a class="pull-right btn btn-xs procedure-delete-key" data-nodrag ng-click="removeInput(this)">
+            <span> &times; </span>
+        </a>
+        <span ng-if="node.option.name === 'dropdown'">
+            &nbsp;menu options:
+                <a href="#"
+                   data-nodrag
+                   editable-text="node.menuOptionText"
+                   buttons="no">
+                    <pre class="dropdown-option">
+                        {{ node.menuOptionText || 'menu text' }}
+                    </pre>
+                </a>
+        </span>
+
+        <div ui-tree-nodes=""  ng-model="node.nodes" ng-class="{hidden: collapsed}">
+            <div ng-repeat="node in node.nodes"
+                 ui-tree-node ng-include="'mobius/procedure/template/parameter_template.html'">
+            </div>
+        </div>
+
+    </div>
+
+</div>
