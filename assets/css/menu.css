@@ -1,15 +1,22 @@
 .menubar{
     padding-top: 2px;
     padding-bottom: 2px;
-    padding-left: 10px;
-    background:-webkit-gradient(linear, left bottom, left top, color-stop(0, #eee), color-stop(1, #fff));
+    /*background:-webkit-gradient(linear, left bottom, left top, color-stop(0, #eee), color-stop(1, #fff));*/
+    background-color: #eee;
+    height: 32px;
 }
 
 .menubar .dropdown{
     z-index: 10001;
 }
 .menuTitle{
-    color: #000000;
+    height: 100%;
+    display: inline-block;
+    margin: 0;
+    padding: 5px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: #888;
 }
 
 #importNode, #importNodeLib, #openSceneJson{
@@ -21,7 +28,19 @@
 #mobiusInfo{
     position:absolute;
     right:10px;
-    top:5px;
+    top:1px;
     font-size: 12px;
-    color:#555
+    /*letter-spacing: 3px;*/
+    /*font-weight: bold;*/
+    color: #888;
+    margin: 5px;
+}
+
+.menu{
+    display: inline-block;
+    padding: 0 5px;
+    cursor: pointer;
+    height: 100%;
+    margin:auto;
+    position: relative;
 }

@@ -95,7 +95,7 @@ mobius.controller('newNodeCtrl',[
                 // install new node type and update type
                 $mdDialog.show({
                     controller: DialogController,
-                    templateUrl: 'mobius/template/inputName_dialog.tmpl.html',
+                    templateUrl: 'mobius/dialog/inputName_dialog.tmpl.html',
                     parent: angular.element(document.body),
                     clickOutsideToClose:false,
                     focusOnOpen:false

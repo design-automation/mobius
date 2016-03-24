@@ -1,24 +1,28 @@
 <div class="code-area">
-    <div ui-layout="{ flow : 'row', dividerSize:'10'}" >
+    <div ui-layout="{ flow : 'row', dividerSize:'1',disableToggle:true}" >
         <div ui-layout-container size = "25%">
             <div>
                 <div ng-if = "currentNodeName">
-                    <pre class="nodeName">
-                        <span>
-                            &nbsp &nbsp {{currentNodeType}}  {{currentNodeVersion}}
-                        </span>
-                    </pre>
+                    <div class="doormat">
+                        <div>
+                             {{currentNodeType}}  {{currentNodeVersion}}
+                        </div>
+                        <button class="btn btn-default btn-xs pull-right button-input" ng-click="newInterface('Input')">
+                            Input
+                        </button>
+                    </div>
                 </div>
 
                 <div ng-if = "!currentNodeName">
-                    <pre class="nodeName">
-                            &nbsp &nbsp No Node Selected
-                    </pre>
+                    <div class="doormat">
+                        <div>No Node Selected</div>
+                        <button class="btn btn-default btn-xs pull-right button-input" ng-click="newInterface('Input')">
+                            Input
+                        </button>
+                    </div>
                 </div>
 
-                <button class="btn btn-default btn-xs pull-right button-input" ng-click="newInterface('Input')">
-                    Input
-                </button>
+
             </div>
 
             <div id="argument-area">
@@ -36,48 +40,77 @@
         <div ui-layout-container >
             <div>
                 <div ng-if = "currentNodeName">
-                    <pre class="nodeName">
-                        <span>
-                            &nbsp &nbsp {{currentNodeType}} {{currentNodeVersion}}
-                        </span>
+                    <div class="doormat">
+                        <div>
+                            {{currentNodeType}} {{currentNodeVersion}}
+                        </div>
+                    </div>
 
-                    </pre>
+                    <ui-select ng-model="method.selected"
+                               class="button-action"
+                               on-select="newItem('Action',$select.selected)">
+                        <ui-select-match placeholder="Function" >Function</ui-select-match>
+                        <ui-select-choices
+                                group-by="'category'"
+                                repeat="method in methods | propsFilter: {name: $select.search, category: $select.search}">
+                            <span ng-bind-html="method.name| highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+
+                    <ui-select ng-model="controlType" class="button-control"
+                               on-select="newItem('Control',$select.selected)">
+                        <ui-select-match placeholder="Control">Control</ui-select-match>
+                        <ui-select-choices
+                                repeat="controlType in controlTypes| filter: $select.search">
+                            <span ng-bind-html="controlType| highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+
+                    <button class="btn btn-default btn-xs pull-right button-output" ng-click="newItem('Output')">
+                        Output
+                    </button>
+
+                    <button class="btn btn-default btn-xs pull-right button-variable"
+                            ng-click="newItem('Data')">Variable
+                    </button>
                 </div>
 
                 <div ng-if = "!currentNodeName">
-                    <pre class="nodeName">
-                            &nbsp &nbsp No Node Selected
-                    </pre>
+                    <div class="doormat">
+                            <div>No Node Selected</div>
+                    </div>
+
+                    <ui-select ng-model="method.selected"
+                               class="button-action"
+                               on-select="newItem('Action',$select.selected)"
+                    >
+                        <ui-select-match placeholder="Function" >Function</ui-select-match>
+                        <ui-select-choices
+                                group-by="'category'"
+                                repeat="method in methods | propsFilter: {name: $select.search, category: $select.search}">
+                            <span ng-bind-html="method.name| highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+
+                    <ui-select ng-model="controlType" class="button-control"
+                               on-select="newItem('Control',$select.selected)">
+                        <ui-select-match placeholder="Control">Control</ui-select-match>
+                        <ui-select-choices
+                                repeat="controlType in controlTypes| filter: $select.search">
+                            <span ng-bind-html="controlType| highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+
+                    <button class="btn btn-default btn-xs pull-right button-output" ng-click="newItem('Output')">
+                        Output
+                    </button>
+
+                    <button class="btn btn-default btn-xs pull-right button-variable"
+                            ng-click="newItem('Data')">Variable
+                    </button>
                 </div>
 
-                <ui-select ng-model="method.selected"
-                           class="button-action"
-                           on-select="newItem('Action',$select.selected)"
-                        >
-                    <ui-select-match placeholder="Function" >Function</ui-select-match>
-                    <ui-select-choices
-                            group-by="'category'"
-                            repeat="method in methods | propsFilter: {name: $select.search, category: $select.search}">
-                        <span ng-bind-html="method.name| highlight: $select.search"></span>
-                    </ui-select-choices>
-                </ui-select>
 
-                <ui-select ng-model="controlType" class="button-control"
-                           on-select="newItem('Control',$select.selected)">
-                    <ui-select-match placeholder="Control">Control</ui-select-match>
-                    <ui-select-choices
-                            repeat="controlType in controlTypes| filter: $select.search">
-                        <span ng-bind-html="controlType| highlight: $select.search"></span>
-                    </ui-select-choices>
-                </ui-select>
-
-                <button class="btn btn-default btn-xs pull-right button-output" ng-click="newItem('Output')">
-                    Output
-                </button>
-
-                <button class="btn btn-default btn-xs pull-right button-variable"
-                        ng-click="newItem('Data')">Variable
-                </button>
             </div>
 
 
@@ -96,17 +129,17 @@
             </div>
         </div>
 
-        <div ui-layout-container size = "27px" class="monitor" >
+        <div ui-layout-container size = "32px" class="monitor" >
 
-            <pre class="nodeName">
-                    &nbsp &nbsp Function Code
-            </pre>
+            <div class="doormat">
+                    <div> Function Code</div>
+            </div>
 
             <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'tomorrow' }"
                  ng-model= "functionCodeList[nodeIndex]"
                  readonly="{{true}}">
             </div>
-        </div>
+        </div>`
     </div>
 </div>
 
