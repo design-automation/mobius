@@ -20,6 +20,7 @@
     top:0;
     font-family: Arial, sans-serif;
     background:-webkit-gradient(linear, left bottom, left top, color-stop(0, #eee), color-stop(1, #fff));
+    /*background-color: #a3a3a3;*/
     position: relative;
 }
 
@@ -37,7 +38,6 @@
     overflow: auto;
     position: absolute;
     width: 100%;
-    border: solid 1px black;
     bottom: 5%;
     top:28px;
 }
@@ -47,7 +47,6 @@
     width: 100%;
     bottom:0;
     height:5%;
-    border: solid 1px black;
     padding: 5px;
 }
 

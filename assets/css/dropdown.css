@@ -4,7 +4,13 @@
 
 .dropdown-menu {
     font-size: 12px !important;
-    cursor: pointer;
+    border:0 !important;
+    background-clip: border-box !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    margin:2px 0 !important;
+    /*left:-2px !important;*/
+    background-color: #eeeeee !important;
 }
 
 .dropdown-submenu{
@@ -47,4 +53,18 @@
     -webkit-border-radius:6px 0 6px 6px;
     -moz-border-radius:6px 0 6px 6px;
     border-radius:6px 0 6px 6px;
+}
+
+.dropdown-menu > li > a {
+    display: block;
+    padding-top:5px !important;
+    padding-bottom:5px !important;
+    padding-right:20px !important;
+    padding-left: 10px !important;
+    clear: both;
+    font-weight: normal;
+    font-size:12px !important;
+    line-height: 1.42857143;
+    color: #777 !important;
+    white-space: nowrap;
 }

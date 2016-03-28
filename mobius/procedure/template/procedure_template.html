@@ -1,6 +1,6 @@
 <!-- mobius -->
 <!-- procedure template -->
-
+<!DOCTYPE html>
 <div ui-tree-handle class="tree-node tree-node-content procedure-tree ">
 
     <div ng-class="{'node-selected':node.selected,
@@ -21,9 +21,9 @@
         </a>
 
         <!--delete key-->
-        <a class="pull-right btn btn-xs procedure-delete-key" data-nodrag ng-click="remove(this)">
+        <div class="procedure-delete-key" data-nodrag ng-click="remove(this)">
             <span> &times; </span>
-        </a>
+        </div>
 
         <div ui-tree-nodes=""  ng-model="node.nodes" ng-class="{hidden: collapsed}">
             <div ng-repeat="node in node.nodes"
@@ -50,9 +50,9 @@
         </a>
 
         <!--delete key-->
-        <a class="pull-right btn btn-xs procedure-delete-key" data-nodrag ng-click="removeOutput(this)">
+        <div class="procedure-delete-key" data-nodrag ng-click="removeOutput(this)">
             <span> &times; </span>
-        </a>
+        </div>
 
         <div ui-tree-nodes=""  ng-model="node.nodes" ng-class="{hidden: collapsed}">
             <div ng-repeat="node in node.nodes"
@@ -88,9 +88,9 @@
         )
 
         <!--delete key-->
-        <a class="pull-right btn btn-xs procedure-delete-key" data-nodrag ng-click="remove(this)">
+        <div class="procedure-delete-key" data-nodrag ng-click="remove(this)">
             <span> &times; </span>
-        </a>
+        </div>
     </div>
 
     <div ng-if="node.title === 'Action' && node.method === 'expression'" class="tree-node-content tree-item">
@@ -99,9 +99,9 @@
         </a>
 
         <!--delete key-->
-        <a class="pull-right btn btn-xs procedure-delete-key" data-nodrag ng-click="remove(this)" >
+        <div class="procedure-delete-key" data-nodrag ng-click="remove(this)" >
             <span> &times; </span>
-        </a>
+        </div>
     </div>
 
 
@@ -163,14 +163,14 @@
 
 
         <!--delete key-->
-        <a ng-if="node.controlType !== 'if' && node.controlType !== 'else'"
-           class="pull-right btn btn-xs procedure-delete-key"
+        <div ng-if="node.controlType !== 'if' && node.controlType !== 'else'"
+           class="procedure-delete-key"
            data-nodrag
            ng-click="remove(this)">
             <span>
                 <span> &times; </span>
             </span>
-        </a>
+        </div>
 
     </div>
 

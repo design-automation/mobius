@@ -1002,7 +1002,7 @@
                 if (scope.dragEnabled()) {
                   dragStart(e);
                 }
-                selection(e)
+                //selection(e)
               };
 
               dragMoveEvent = function (e) {

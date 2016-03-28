@@ -1,34 +1,12 @@
 .code-area{
-    border-top-left-radius: 0;
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
-    border-bottom-left-radius: 0;
-
+    border-radius:0;
     border:0;
     overflow: auto;
     width:100%;
     margin-bottom: 2px;
 }
 
-.code-area .buttons{
-    position: absolute;
-    bottom: 8px;
-    margin-bottom:-8px ;
-    width: 100%;
-    height: 80px;
-    border-bottom: 1px solid #cccccc;
-    border-left: 1px solid #cccccc;
-    border-right: 1px solid #cccccc;
-    border-radius: 4px;
-}
 
-.code-area .buttons #button-parameter{
-    display: inline-block;
-    width:20%;
-    left:8%;
-    position:absolute;
-    bottom:8px;
-}
 
 .code-area .buttons .button-data{
     display: inline-block;
@@ -38,17 +16,6 @@
     left: 29.5%;
 }
 
-.code-area #argument-area{
-    position: absolute;
-    width: 100%;
-    border-top: 1px solid #cccccc;
-    border-left: 1px solid #cccccc;
-    border-right: 1px solid #cccccc;
-    border-radius: 4px;
-    margin-top:1px;
-    height:  calc(100% - 30px);
-    overflow: auto;
-}
 
 .code-area #tree-root-parameter{
     padding-bottom:6px;
@@ -57,44 +24,40 @@
 .button-action{
     display: inline-block;
     position: absolute !important;
-    top: 2px;
-    right: 44%;
+    top: 0;
+    right: 161px;
     white-space: nowrap;
-    width:68px;
+    width:63px;
 }
 
 .button-control{
     display: inline-block;
     position: absolute !important;
-    top: 2px;
-    right:28%;
+    top: 0;
+    right:101px;
     white-space: nowrap;
-    width:68px;
+    width:60px;
 }
 
 .button-output{
-    display: inline-block;
-    white-space: nowrap;
+    /*display: inline-block;*/
     position: absolute;
-    right:2%;
-    top:2px;
+    right:0;
+    top:0;
 }
 
 .button-input{
-    display: inline-block;
     white-space: nowrap;
     position: absolute;
-    right:2%;
-    top:2px;
-
+    right:0;
+    top:0;
 }
 
 .button-variable{
     display: inline-block;
-    white-space: nowrap;
     position: absolute;
-    right:14%;
-    top:2px;
+    top:0;
+    right: 48px;
 }
 
 .code-area .codeEditor {
@@ -102,23 +65,15 @@
     height:97%;
     width:100%;
     overflow: auto;
-    border-top: 1px solid #cccccc;
-    border-left: 1px solid #cccccc;
-    border-right: 1px solid #cccccc;
-    border-radius: 4px;
     margin-top:1px;
 }
 
 .code-area .tabArea{
     position: absolute;
     width: 100%;
-    border-top: 1px solid #cccccc;
-    border-left: 1px solid #cccccc;
-    border-right: 1px solid #cccccc;
-    border-radius: 4px;
     margin-top:1px;
     /*fixme css3*/
-    height:  calc(100% - 27px);
+    height:  calc(100% - 32px);
     overflow: auto;
 }
 
@@ -162,7 +117,7 @@
 .code-area .buttons .btn {
     margin: 0;
     font-size: 12px !important;
-    height: 24px !important;
+    height: 32px !important;
     line-height: 1 !important;
 }
 
@@ -172,4 +127,14 @@
 
  .inline{
     display: inline-block;
+}
+
+ .procedure-delete-key > span {
+     position: absolute;
+     border:0 !important;;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1;
+     right: 2px;
+     top:1px
 }

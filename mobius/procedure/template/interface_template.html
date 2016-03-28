@@ -1,13 +1,13 @@
 <!--mobius-->
 <!-- interface template -->
-
+<!DOCTYPE html>
 <div ui-tree-handle class="tree-node tree-node-content interface">
     <!-- parameter presentation-->
     <div class="tree-node-content tree-item" >
         {{ node.name || 'undefined' }}
         &nbsp;:&nbsp;
         <a ng-if =" node.option.name === 'none'"
-           data-nodrag href="#"
+           data-nodrag `ref="#"
            editable-text="node.dataValue"
            buttons="no"
            blur="submit">{{ node.dataValue || 'value' }}</a>
