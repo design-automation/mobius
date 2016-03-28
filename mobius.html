@@ -138,12 +138,11 @@
                     <a ng-click=" toggleCheatSheet();"> Hotkeys </a>
                 </li>
                 <li>
-
                     <a href="doc/out/index.html" target="_blank"> Docs </a>
                 </li>
             </ul>
         </span>
-        <span id="mobiusInfo"> Mobius v0.1</span>
+        <span id="mobiusInfo"> Mobius v0.1.1</span>
     </div>
 
     <!-- resizable layout -->
@@ -581,7 +580,7 @@
 
 <!--context menu-->
 <div ng-controller="nodeMenuCtrl" ng-include="'mobius/graph/contextMenu_template.html'"></div>
-<div ng-controller="procedureMenuCtrl" ng-include="'mobius/procedure/template/procedureMenu_template.html'" ></div>
+<div ng-controller="procedureMenuCtrl" style="position: absolute" ng-include="'mobius/procedure/template/procedureMenu_template.html'" ></div>
 
 <!-- jquery -->
 <script type="text/javascript" src="assets/js/jquery/jquery-1.11.1.js"></script>

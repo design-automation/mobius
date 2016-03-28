@@ -80,15 +80,15 @@
 
 .cfp-hotkeys-close {
     position: fixed;
-    top: 20px;
-    right: 20px;
+    top: -5px;
+    right: 0px;
     font-size: 2em;
-    font-weight: bold;
-    padding: 5px 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    min-height: 45px;
-    min-width: 45px;
+    /*font-weight: bold;*/
+    /*padding: 5px 10px;*/
+    /*border: 1px solid #ddd;*/
+    /*border-radius: 5px;*/
+    min-height: 30px;
+    min-width: 30px;
     text-align: center;
 }
 
