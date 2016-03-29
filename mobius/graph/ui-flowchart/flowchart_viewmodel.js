@@ -10,12 +10,12 @@ var flowchart = {};
 	//
 	// Width of a node.
 	//
-	flowchart.nodeHeight =35;
+	flowchart.nodeHeight =20;
 
 	//
 	// Amount of space reserved for displaying the node's name.
 	//
-	flowchart.nodeNameWidth = 55;
+	flowchart.nodeNameWidth = 50;
 
 	//
 	// Height of a connector in a node.
@@ -27,8 +27,8 @@ var flowchart = {};
 	//
 	flowchart.computeConnectorX = function (connectorIndex) {
 		// return flowchart.nodeNameWidth + (connectorIndex * flowchart.connectorWidth);
-		return 25 + (connectorIndex * 25);
-	}
+		return 15 + (connectorIndex * 20);
+	};
 
 	//
 	// Compute the position of a connector in the graph.
@@ -170,7 +170,7 @@ var flowchart = {};
 				Math.max(
 					this.inputConnectors.length,
 					this.outputConnectors.length);
-			return flowchart.computeConnectorX(numConnectors);
+			return flowchart.computeConnectorX(numConnectors)-5;
 		}
 
 		//

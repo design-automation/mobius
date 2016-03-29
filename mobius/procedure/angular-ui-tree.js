@@ -1001,8 +1001,9 @@
               dragStartEvent = function (e) {
                 if (scope.dragEnabled()) {
                   dragStart(e);
+                }else{
+                  selection(e);
                 }
-                //selection(e)
               };
 
               dragMoveEvent = function (e) {

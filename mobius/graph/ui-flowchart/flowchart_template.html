@@ -28,8 +28,8 @@
                         || (node.disabled()) && (node.selected() && 'selected-disabled-node-rect')
                         || ((node.disabled()) && (node == mouseOverNode && 'mouseover-disabled-node-rect'|| 'disabled-node-rect'))
 }}"
-      ry="7"
-      rx="7"
+      ry="0"
+      rx="0"
       x="0"
       y="0"
       ng-attr-width="{{node.width()}}"
@@ -42,8 +42,9 @@
 
         <text
           ng-attr-x="{{node.width()+3}}"
-          y="23"
+          y="19"
           context-menu
+          style="font-size:10px; font-weight: 300"
           data-target="menu-node"
           >
           {{node.name()}}
@@ -146,7 +147,7 @@
 
         <circle
             ng-attr-class="{{connection.selected() && 'selected-connection-endpoint' || (connection == mouseOverConnection && 'mouseover-connection-endpoint' || 'connection-endpoint')}}"
-            r="3"
+            r="1.5"
             ng-attr-cx="{{connection.sourceCoordX()}}"
             ng-attr-cy="{{connection.sourceCoordY()}}"
             >
@@ -154,7 +155,7 @@
 
         <circle
             ng-attr-class="{{connection.selected() && 'selected-connection-endpoint' || (connection == mouseOverConnection && 'mouseover-connection-endpoint' || 'connection-endpoint')}}"
-            r="3"
+            r="1.5"
             ng-attr-cx="{{connection.destCoordX()}}"
             ng-attr-cy="{{connection.destCoordY()}}"
             >
@@ -175,7 +176,7 @@
 
     <circle
         class="dragging-connection dragging-connection-endpoint"
-        r="4" 
+        r="2"
         ng-attr-cx="{{dragPoint1.x}}" 
         ng-attr-cy="{{dragPoint1.y}}" 
         >
@@ -183,7 +184,7 @@
 
     <circle
         class="dragging-connection dragging-connection-endpoint"
-        r="4" 
+        r="2"
         ng-attr-cx="{{dragPoint2.x}}" 
         ng-attr-cy="{{dragPoint2.y}}" 
         >

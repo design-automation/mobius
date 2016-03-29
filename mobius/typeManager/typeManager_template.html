@@ -1,24 +1,20 @@
-<div style="height:100%;width: 100%;padding: 20px;">
-    <div style="height:100%;
-                width: 20%;
-                float:left;position: relative;
-                display:inline-block;">
-
-            <pre>
-                <span> Type Name </span>
+<div style="border:solid 1px #ddd;left:30px;right: 30px;top:30px;bottom:30px;position: absolute">
+    <div style="height:100%;width: 20%;float:left;position: relative;display:inline-block;border-right:solid 1px #ddd;">
+            <div class="doormat">
+                <div> Type Name </div>
                 <input type="checkbox" ng-model="selectAll" ng-change="toggleSelection()">
-            </pre>
+            </div>
 
             <div id="typeManage_buttons">
 
-                <button class="btn btn-default btn-xs"
+                <button class="button"
                         onclick="document.getElementById('importNode').click()"> Import </button>
 
-                <button class="btn btn-default btn-xs" onclick="document.getElementById('exportNode').click()">Export</button>
+                <button class="button" onclick="document.getElementById('exportNode').click()">Export</button>
 
-                <button class="btn btn-default btn-xs" ng-click = "addNewType()">Add Type</button>
+                <button class="button" ng-click = "addNewType()">Add Type</button>
 
-                <button class="btn btn-default btn-xs" ng-click = "deleteChecked()">Delete</button>
+                <button class="button" ng-click = "deleteChecked()">Delete</button>
 
                 <input type="file" id="importNode"
                        onchange="angular.element(this).scope().importNode(this.files)"/>
@@ -46,12 +42,12 @@
          style="height:100%;width: 80%;position: relative;">
             <div ui-layout-container size = "35%">
                 <div style="height: 35%;position: relative">
-                    <pre>
-                        <span> Type Name </span>
-                        <button class="btn btn-default btn-xs pull-right button-input" ng-click="newInterface('Input')">
+                    <div class="doormat">
+                        <div> Type Name </div>
+                        <button class="button pull-right button-input" ng-click="newInterface('Input')">
                             Input
                         </button>
-                    </pre>
+                    </div>
 
                     <div ui-tree id="tree-root-parameter-type">
                         <div ui-tree-nodes="" ng-model="arguments">
@@ -63,10 +59,10 @@
                     </div>
                 </div>
 
-                <div style="position: relative;height: 65%">
-                    <pre>
-                        Type Name
-                    </pre>
+                <div style="position: relative;height: 65%;border-top: solid 1px #ddd">
+                    <div class="doormat">
+                        <div>Type Name</div>
+                    </div>
 
                     <div id="typeProcedure_buttons">
                         <ui-select ng-model="method.selected"
@@ -89,11 +85,11 @@
                             </ui-select-choices>
                         </ui-select>
 
-                        <button class="btn btn-default btn-xs pull-right button-variable"
+                        <button class="button pull-right button-variable"
                                 ng-click="newItem('Data')">Variable
                         </button>
 
-                        <button class="btn btn-default btn-xs pull-right button-output" ng-click="newItem('Output')">
+                        <button class="button pull-right button-output" ng-click="newItem('Output')">
                             Output
                         </button>
                     </div>
@@ -120,6 +116,6 @@
         </div>
     </div>
 
-<div ng-include="'mobius/typeManager/typeProcedure_template.html'" ></div>
+<div style="position: absolute" ng-include="'mobius/typeManager/typeProcedure_template.html'"></div>
 
 <div class="cfp-hotkeys-close" ng-click="closeTypeManager()" role="button" tabindex="0">×</div>

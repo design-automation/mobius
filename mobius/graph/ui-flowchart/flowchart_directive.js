@@ -94,7 +94,7 @@ angular.module('flowChart', ['dragging'] )
 	// Init data-model variables.
 	//
 	$scope.draggingConnection = false;
-	$scope.connectorSize = 6;
+	$scope.connectorSize = 4;
 	$scope.dragSelecting = false;
 
 	//
