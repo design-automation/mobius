@@ -7,14 +7,14 @@
 
             <div id="typeManage_buttons">
 
-                <button class="btn btn-default btn-xs"
+                <button class="button"
                         onclick="document.getElementById('importNode').click()"> Import </button>
 
-                <button class="btn btn-default btn-xs" onclick="document.getElementById('exportNode').click()">Export</button>
+                <button class="button" onclick="document.getElementById('exportNode').click()">Export</button>
 
-                <button class="btn btn-default btn-xs" ng-click = "addNewType()">Add Type</button>
+                <button class="button" ng-click = "addNewType()">Add Type</button>
 
-                <button class="btn btn-default btn-xs" ng-click = "deleteChecked()">Delete</button>
+                <button class="button" ng-click = "deleteChecked()">Delete</button>
 
                 <input type="file" id="importNode"
                        onchange="angular.element(this).scope().importNode(this.files)"/>
@@ -44,7 +44,7 @@
                 <div style="height: 35%;position: relative">
                     <div class="doormat">
                         <div> Type Name </div>
-                        <button class="btn btn-default btn-xs pull-right button-input" ng-click="newInterface('Input')">
+                        <button class="button pull-right button-input" ng-click="newInterface('Input')">
                             Input
                         </button>
                     </div>
@@ -85,11 +85,11 @@
                             </ui-select-choices>
                         </ui-select>
 
-                        <button class="btn btn-default btn-xs pull-right button-variable"
+                        <button class="button pull-right button-variable"
                                 ng-click="newItem('Data')">Variable
                         </button>
 
-                        <button class="btn btn-default btn-xs pull-right button-output" ng-click="newItem('Output')">
+                        <button class="button pull-right button-output" ng-click="newItem('Output')">
                             Output
                         </button>
                     </div>

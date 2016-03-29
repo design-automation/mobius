@@ -481,7 +481,7 @@
                             <div ng-controller="consoleCtrl">
                                  <div class="doormat">
                                     <div>Console</div>
-                                    <button class="btn btn-default btn-xs "
+                                    <button class="button"
                                             id = "clear"
                                             ng-click="clearConsole()"> Clear </button>
                                  </div>
@@ -549,8 +549,9 @@
                                 </div>
 
                                 <span ng-controller="executeCtrl" id="run-button">
-                                    <button class="btn btn-default btn-xs"
+                                    <button class="button"
                                             ng-click="run()"
+                                            style="outline: none!important;"
                                             title="Run program">
                                         Run
                                     </button>
@@ -579,7 +580,7 @@
 <div id="typeManager" ng-controller="nodeTypesCtrl" ng-include="'mobius/typeManager/typeManager_template.html'"></div>
 
 <!--context menu-->
-<div ng-controller="nodeMenuCtrl" ng-include="'mobius/graph/contextMenu_template.html'"></div>
+<div ng-controller="nodeMenuCtrl" style="position: absolute" ng-include="'mobius/graph/contextMenu_template.html'"></div>
 <div ng-controller="procedureMenuCtrl" style="position: absolute" ng-include="'mobius/procedure/template/procedureMenu_template.html'" ></div>
 
 <!-- jquery -->

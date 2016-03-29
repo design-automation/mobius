@@ -32,9 +32,10 @@
         </span>
 
         <!--delete key-->
-        <a class="pull-right btn btn-xs procedure-delete-key" data-nodrag ng-click="removeInput(this)">
+        <div class="procedure-delete-key" data-nodrag ng-click="removeInput(this)">
             <span> &times; </span>
-        </a>
+        </div>
+
         <span ng-if="node.option.name === 'dropdown'">
             &nbsp;menu options:
                 <a href="#"

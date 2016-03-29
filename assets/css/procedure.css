@@ -25,19 +25,22 @@
     display: inline-block;
     position: absolute !important;
     top: 0;
-    right: 161px;
+    right: 164px;
     white-space: nowrap;
     width:63px;
 }
+
+
 
 .button-control{
     display: inline-block;
     position: absolute !important;
     top: 0;
-    right:101px;
+    right:105px;
     white-space: nowrap;
     width:60px;
 }
+
 
 .button-output{
     /*display: inline-block;*/

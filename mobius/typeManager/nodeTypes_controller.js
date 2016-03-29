@@ -4,6 +4,11 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
     $scope.selectAll = false;
 
     $scope.typeList = JSON.parse(localStorage.mobiusNodeTypes);
+    if($scope.typeList[0]){
+        $scope.definition = $scope.typeList[0].procedureDataModel;
+        $scope.arguments = $scope.typeList[0].interfaceDataModel;
+    }
+
 
     $scope.$watch(function(){return localStorage.mobiusNodeTypes}, function(){
         var  uiStatus = [];
@@ -27,6 +32,12 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
         }
         if($scope.typeList[0]){
             $scope.typeList[0].selected = true;
+                $scope.definition = $scope.typeList[0].procedureDataModel;
+                $scope.arguments = $scope.typeList[0].interfaceDataModel;
+        }else{
+            $scope.definition = [];
+            $scope.arguments = [];
+            $scope.jsCode = $scope.generateCode();
         }
 
 
@@ -36,11 +47,10 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
         for(var i = 0; i < $scope.typeList.length;i++){
             if($scope.typeList[i].selected === true){
                 // on change of selected type
-                if(oldList[i].selected !== newList[i].selected){
-                    // fixme add rename
+                if(oldList[i] && oldList[i].selected !== newList[i].selected){
                     for(var j = 0; j < oldList.length;j++){
                         if(oldList[j]){
-                            if(oldList[j].selected === true){
+                            if(oldList[j].selected === true &&  JSON.parse(localStorage.mobiusNodeTypes)[j] !== undefined){
                                 if( !angular.equals(oldList[j].procedureDataModel, JSON.parse(localStorage.mobiusNodeTypes)[j].procedureDataModel) ||
                                     !angular.equals(oldList[j].interfaceDataModel, JSON.parse(localStorage.mobiusNodeTypes)[j].interfaceDataModel) ||
                                     oldList[j].nodeType !== JSON.parse(localStorage.mobiusNodeTypes)[j].nodeType){
@@ -113,11 +123,10 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
                                 document.getElementById('typeManager').style.display = 'none';
                             }
                         });
-                }else{
-                    document.getElementById('typeManager').style.display = 'none'
                 }
             }
         }
+        document.getElementById('typeManager').style.display = 'none';
     };
 
     $scope.remove = function(scope){
@@ -715,58 +724,6 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
         if(selectedType === undefined){
             return '';
         }
-        //// function name
-        //var jsCode ='// This is definition for function '
-        //            + selectedType.nodeType + '\n'
-        //            + 'function ' + selectedType.nodeType +' (';
-        //
-        //// function inputs
-        //var num_input_ports = selectedType.inputConnectors.length;
-        //
-        //if(num_input_ports){
-        //    for(var k = 0; k < num_input_ports; k++){
-        //        jsCode += selectedType.inputConnectors[k].name;
-        //    }
-        //
-        //    if(jsCode.slice(-1) === ','){
-        //        jsCode =  jsCode.substring(0, jsCode.length - 1);
-        //    }
-        //}
-        //jsCode +=  '){\n';
-        //
-        //
-        //// parameters code
-        //for(var j = 0; j < selectedType.interfaceDataModel.length;j++){
-        //    // creating new parameters
-        //    var codeBlock = "    " + "var "
-        //        + selectedType.interfaceDataModel[j].name
-        //        + " = ";
-        //    if(selectedType.interfaceDataModel[j].option.name === 'color picker'){
-        //        var color = "'" + selectedType.interfaceDataModel[j].color + "' ;\n" ;
-        //        codeBlock += color.replace('#','0x').replace("'",'').replace("'",'')
-        //    }else{
-        //        codeBlock += selectedType.interfaceDataModel[j].dataValue + ";\n";
-        //    }
-        //
-        //    jsCode += codeBlock;
-        //}
-        //
-        //// code for invoking inner function
-        //var identifier = '_' + selectedType.version;
-        //if(selectedType.version === 0){
-        //    identifier = '';
-        //}
-        //
-        //jsCode += '    return ' + selectedType.nodeType + identifier + '(';
-        //
-        //for(var j = 0; j < selectedType.interfaceDataModel.length; j++){
-        //    jsCode += selectedType.interfaceDataModel[j].name;
-        //    if(j !=  selectedType.interfaceDataModel.length-1){
-        //        jsCode += ', '
-        //    }
-        //}
-        //
-        //jsCode +=   ');' + '\n}\n\n';
 
         var jsCode = '// This is definition for type '
                 + selectedType.nodeType + '\n'

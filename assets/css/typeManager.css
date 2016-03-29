@@ -1,7 +1,7 @@
 #typeManager {
     height:100%;
     width:100%;
-    background-color: rgba(255,255,255,0.9);
+    background-color: rgba(255,255,255,1.0);
     position: fixed;
     top:0;left:0;
     display: none;
@@ -70,41 +70,6 @@
     height:100%
 }
 
-#typeManager .button-action{
-    display: inline-block;
-    position: absolute !important;
-    top: 0;
-    right: 161px;
-    white-space: nowrap;
-    width: 63px;
-}
-
-#typeManager .button-control{
-    display: inline-block;
-    position: absolute !important;
-    top: 0;
-    right:101px;
-    white-space: nowrap;
-    width:60px;
-}
-#typeManager .button-variable{
-    display: inline-block;
-    position: absolute;
-    top:0;
-    right: 48px;
-}
-
-#typeManager .button-output{
-    position: absolute;
-    right:0;
-    top:0;
-}
-
-#typeManager pre .button-input{
-    display: inline-block;
-    white-space: nowrap;
-    position: absolute;
-}
 
 #menu-typeManager{
     z-index: 10010;
