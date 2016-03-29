@@ -8,10 +8,12 @@
     background-clip: border-box !important;
     border-radius: 0 !important;
     box-shadow: none !important;
-    margin:2px 0 !important;
-    /*left:-2px !important;*/
+    margin:0 !important;
     background-color: #eeeeee !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
 }
+
 
 .dropdown-submenu{
     position:relative;
@@ -45,20 +47,10 @@
 .dropdown-submenu:hover>a:after{
     border-left-color:#ffffff;}
 
-.dropdown-submenu.pull-left{
-    float:none;}
-
-.dropdown-submenu.pull-left>.dropdown-menu{
-    left:-100%;margin-left:10px;
-    -webkit-border-radius:6px 0 6px 6px;
-    -moz-border-radius:6px 0 6px 6px;
-    border-radius:6px 0 6px 6px;
-}
-
 .dropdown-menu > li > a {
     display: block;
-    padding-top:5px !important;
-    padding-bottom:5px !important;
+    padding-top:8px !important;
+    padding-bottom:8px !important;
     padding-right:20px !important;
     padding-left: 10px !important;
     clear: both;
@@ -67,4 +59,9 @@
     line-height: 1.42857143;
     color: #777 !important;
     white-space: nowrap;
+}
+
+.dropdown-menu > li > a:hover {
+    background-color: white !important;
+    transition-duration: 0.4s !important;
 }

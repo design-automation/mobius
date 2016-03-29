@@ -1,5 +1,5 @@
 ﻿body {
-    font-family: Arial, sans-serif;
+    font-family: Roboto,'Helvetica Neue',sans-serif;
     font-size: 14px !important;
 }
 
@@ -47,10 +47,8 @@
 .button:active{
     background-color: #ccc;
 }
+
 #layout{
-    /*margin: 2px;*/
-    /*border:1px solid #aaaaaa;*/
-    /*border-radius: 4px;*/
     top: 32px;
     border-top:solid 1px #dddddd;
 }
@@ -139,7 +137,6 @@
     margin: 0;
     position: relative;
     font-size: 12px;
-    font-family: Arial, sans-serif;
     background-color:#eeeeee;
     line-height: 1.92857143;
     /*word-break: break-all;*/

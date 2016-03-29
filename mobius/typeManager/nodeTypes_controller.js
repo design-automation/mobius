@@ -250,7 +250,8 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
                 controller: DialogController,
                 templateUrl: 'mobius/dialog/inputName_dialog.tmpl.html',
                 parent: angular.element(document.body),
-                clickOutsideToClose:false
+                clickOutsideToClose:false,
+                focusOnOpen:false
             })
             .then(function(newTypeName) {
                 if (!isValidName(newTypeName)) {

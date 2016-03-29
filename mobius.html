@@ -34,7 +34,7 @@
 <div >
     <!-- dropdown Menu -->
     <div ng-controller="menuCtrl" class = "menubar">
-        <span dropdown on-toggle="toggled(open)" class="menu" >
+        <span  class="menu" >
             <div dropdown-toggle class = "menuTitle">  File </div>
             <ul class="dropdown-menu">
                 <li>
@@ -69,7 +69,7 @@
         </span>
 
 
-        <span dropdown on-toggle="toggled(open)" class="menu">
+        <span  class="menu">
             <div class = "menuTitle"  dropdown-toggle>  View </div>
             <ul class="dropdown-menu">
                 <li>
@@ -82,19 +82,12 @@
             </ul>
         </span>
 
-        <span dropdown on-toggle="toggled(open)" class="menu">
+        <span class="menu">
               <div class = "menuTitle"  dropdown-toggle>  Node </div>
               <ul class="dropdown-menu">
                   <li>
                       <a href="" ng-click="openTypeManager()"> Type Manager </a>
                   </li>
-
-                  <!--todo when no node selected grey out-->
-                  <!--<li>-->
-                      <!--<a ng-href="{{nodeUrl}}" download="node.json" ng-click = "exportNode()">-->
-                          <!--Export Selected Node-->
-                      <!--</a>-->
-                  <!--</li>-->
 
                   <li>
                       <input type="file" id="importNodeLib"
@@ -110,7 +103,7 @@
               </ul>
         </span>
 
-        <span dropdown on-toggle="toggled(open)" class="menu" >
+        <span class="menu" >
             <div class = "menuTitle"  dropdown-toggle>  Code </div>
             <ul class="dropdown-menu">
                 <li id = "downloadJs">
@@ -127,7 +120,7 @@
             </ul>
         </span>
 
-        <span dropdown on-toggle="toggled(open)" class="menu">
+        <span  class="menu">
             <div class = "menuTitle"  dropdown-toggle>  Help </div>
 
             <ul class="dropdown-menu">
