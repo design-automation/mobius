@@ -1,0 +1,153 @@
+﻿body {
+    font-family: Roboto,'Helvetica Neue',sans-serif;
+    font-size: 14px !important;
+}
+
+@media (min-width: 768px) {
+    .nav-tabs.nav-justified > li > a{
+        padding: 3px;
+    }
+}
+
+.btn {
+    white-space: nowrap;
+    font-size: 12px !important;
+    height: 28px !important;
+    margin: 2px;
+    line-height: 1 !important;
+    border-radius:0 !important;
+    /*border:0 !important;*/
+    border: 1px solid #ccc !important;
+    color:#888;!important;
+    background-color: #eee!important;
+}
+
+.button{
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    white-space: nowrap;
+    font-size: 12px;
+    height: 28px;
+    width: 28px !important;
+    margin: 2px;
+    line-height: 1;
+    border-radius:0;
+    border: 1px solid #ccc;
+    color:#888;
+    background-color: #eee;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    padding: 0 !important;
+}
+
+.button:hover{
+    background-color: white;
+}
+
+.button:active{
+    background-color: #ccc;
+}
+
+#layout{
+    top: 32px;
+    border-top:solid 1px #dddddd;
+}
+
+
+.info-title {
+    font-size: 13px;
+    padding-top: 0;
+    padding-bottom: 3px;
+    padding-right: 3px;
+    padding-left: 3px;
+    width: 100%;
+    background-color: #eee ;
+}
+
+
+.tree-item{
+    padding-left:20px;
+}
+
+/*  hack for bootstrap
+    fixme forget what these things really do
+*/
+.group-title {
+    background-color: #687074 !important;
+    color: #FFF !important;
+}
+
+.panel-default > .panel-heading {
+    padding: 6px;
+}
+
+.panel-title{
+    font-size: 13px !important;
+}
+
+.panel-group {
+    margin-top: 1px;
+    margin-bottom: 0px !important;
+    padding-left: 10px;
+    padding-right: 1px;
+}
+
+.panel{
+    /*border-left: 2px solid #aaaaaa !important;*/
+}
+
+
+/* css fix for dropdown selects*/
+.form-control{
+    margin: 2px;
+    font-size: 12px !important;
+    height: 28px !important;
+    padding: 6px 10px!important;
+    line-height:  1.35 !important;
+    border-radius: 0 !important;
+}
+
+.ui-select-bootstrap .ui-select-toggle>.caret {
+    display: none;
+}
+
+.position-fixed {
+    position: fixed;
+}
+
+/*selectize */
+
+.selectize-dropdown {
+    line-height: 10px !important;
+    font-size: 12px !important;;
+}
+
+.selectize-input {
+    padding: 3px 3px !important;
+}
+
+.md-dialog-container{
+    z-index: 10005 !important;
+}
+
+.doormat{
+    display: inline-block;
+    /*white-space: nowrap;*/
+    padding: 1px ;
+    margin: 0;
+    position: relative;
+    font-size: 12px;
+    background-color:#eeeeee;
+    line-height: 1.92857143;
+    /*word-break: break-all;*/
+    /*word-wrap: break-word;*/
+    height: 32px;
+    width: 100%;
+    /*height: 100%;*/
+}
+
+.doormat  div:nth-child(1){
+    margin: 4px 10px;
+    color: #888;
+}

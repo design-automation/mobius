@@ -3,63 +3,49 @@
   xmlns="http://www.w3.org/2000/svg"
   ng-mousedown="mouseDown($event)"
   ng-mousemove="mouseMove($event)"
-  oncontextmenu="return false;"
->
+  oncontextmenu="return false;">
   <defs>
-    <linearGradient 
-      spreadMethod="pad" 
-      y2="0" 
-      x2="0" 
-      y1="0"
-      x1="0" 
-      id="nodeBackgroundGradient"
-      >
-      <stop 
-        offset="0" 
-        stop-opacity="0.99609" 
-        stop-color="#eeeeee"
-        />
-        <stop 
-        offset="0.63934" 
-        stop-opacity="0.99219" 
-        stop-color="#eeeeee"
-        />
-    </linearGradient>
-
       <pattern id="dots-4-11" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-          <circle cx="10" cy="10" r="0.5" style="stroke:none; fill:#aaaaaa;" />
+          <circle cx="5" cy="5" r="0.7" style="stroke:none; fill:#aaaaaa;" />
       </pattern>
   </defs>
 
     <rect x="0" y="0"
           height="4000" width="4000"
           ng-dblclick ="doubleClick($event)"
-          style="stroke-width:1; stroke:black; fill:url(#dots-4-11);" />
+          class="background"
+          class="position-fixed"
+    />
 
     <g
     ng-repeat="node in chart.nodes"
     ng-mousedown="nodeMouseDown($event, node)"
     ng-attr-transform="translate({{node.x()}}, {{node.y()}})"
     >
-    <rect 
-      ng-attr-class="{{node.selected() && 'selected-node-rect' || (node == mouseOverNode && 'mouseover-node-rect' || 'node-rect')}}"
-      ry="7"
-      rx="7"
-      x="0" 
-      y="0" 
-      ng-attr-width="{{node.width()}}" 
-      ng-attr-height="{{node.height()}}" 
-      fill="url(#nodeBackgroundGradient)"
-      context-menu="nodeMenuOptions"
-      ng-dblclick ="nodeDoubleClick($event)"
-            >
+    <rect
+      ng-attr-class="{{(!node.disabled()) && (node.selected() && 'selected-node-rect')
+                        || ((!node.disabled()) && (node == mouseOverNode && 'mouseover-node-rect'|| 'node-rect'))
+                        || (node.disabled()) && (node.selected() && 'selected-disabled-node-rect')
+                        || ((node.disabled()) && (node == mouseOverNode && 'mouseover-disabled-node-rect'|| 'disabled-node-rect'))
+}}"
+      ry="0"
+      rx="0"
+      x="0"
+      y="0"
+      ng-attr-width="{{node.width()}}"
+      ng-attr-height="{{node.height()}}"
+      fill="#f5f5f5"
+      context-menu
+      data-target="menu-node"
+      ng-dblclick ="nodeDoubleClick($event)">
     </rect>
-
 
         <text
           ng-attr-x="{{node.width()+3}}"
-          y="23"
-          context-menu="nodeMenuOptions"
+          y="19"
+          context-menu
+          style="font-size:10px; font-weight: 300"
+          data-target="menu-node"
           >
           {{node.name()}}
         </text>
@@ -76,12 +62,13 @@
             ng-attr-r="{{connectorSize}}"
             ng-attr-cx="{{connector.x()}}"
             ng-attr-cy="{{connector.y()}}"
-            context-menu="connectorMenuOptions"
+            context-menu
+            data-target="menu-connector"
         />
 
         <text
-                ng-attr-x="{{node.width()/2}}"
-                ng-attr-y="{{node.height()/2}}"
+                ng-attr-x="{{connector.x()}}"
+                ng-attr-y="{{connector.y()-13}}"
                 text-anchor="middle"
                 alignment-baseline="middle"
                 class = "connector-text">
@@ -96,16 +83,32 @@
       class="connector"
       >
     <circle
+            ng-if="connector.data.name !== 'FUNC_OUTPUT'"
             ng-attr-class="{{connector.selected() && 'selected-connector-circle' ||
                     (connector == mouseOverConnector && 'mouseover-connector-circle' || 'connector-circle')}}"
             ng-attr-r="{{connectorSize}}"
             ng-attr-cx="{{connector.x()}}"
             ng-attr-cy="{{connector.y()}}"
-            context-menu="connectorMenuOptions"
+            context-menu
+            data-target="menu-connector"
             />
+
+
+    <circle
+            ng-if="connector.data.name === 'FUNC_OUTPUT'"
+            ng-attr-class="{{connector.selected() && 'selected-func-connector-circle' ||
+                (connector == mouseOverConnector && 'mouseover-func-connector-circle' || 'func-connector-circle')}}"
+            ng-attr-r="{{connectorSize}}"
+            ng-attr-cx="{{connector.x()}}"
+            ng-attr-cy="{{connector.y()}}"
+            context-menu
+            data-target="menu-connector"
+    />
+
+
       <text
-        ng-attr-x="{{node.width()/2}}"
-        ng-attr-y="{{node.height()/2}}"
+        ng-attr-x="{{connector.x()}}"
+        ng-attr-y="{{connector.y()+13}}"
         text-anchor="middle"
         alignment-baseline="middle"
         class = "connector-text"
@@ -115,14 +118,15 @@
     </g>
   </g>
 
-  <g>
     <g
       ng-repeat="connection in chart.connections"
       class="connection"
       ng-mousedown="connectionMouseDown($event, connection)"
-      context-menu="connectionMenuOptions"
+      context-menu
+      data-target="menu-connection"
       >
         <path
+          ng-if="connection.source.name() !== 'FUNC_OUTPUT'"
           ng-attr-class="{{connection.selected() && 'selected-connection-line' || (connection == mouseOverConnection && 'mouseover-connection-line' || 'connection-line')}}"
           ng-attr-d="M {{connection.sourceCoordX()}}, {{connection.sourceCoordY()}}
                      C {{connection.sourceTangentX()}}, {{connection.sourceTangentY()}}
@@ -130,23 +134,33 @@
                        {{connection.destCoordX()}}, {{connection.destCoordY()}}"
           >
         </path>
+
+        <path
+                ng-if="connection.source.name() === 'FUNC_OUTPUT'"
+                ng-attr-class="{{connection.selected() && 'selected-func-connection-line' || (connection == mouseOverConnection && 'mouseover-func-connection-line' || 'func-connection-line')}}"
+                ng-attr-d="M {{connection.sourceCoordX()}}, {{connection.sourceCoordY()}}
+                     C {{connection.sourceTangentX()}}, {{connection.sourceTangentY()}}
+                       {{connection.destTangentX()}}, {{connection.destTangentY()}}
+                       {{connection.destCoordX()}}, {{connection.destCoordY()}}"
+        >
+        </path>
+
         <circle
             ng-attr-class="{{connection.selected() && 'selected-connection-endpoint' || (connection == mouseOverConnection && 'mouseover-connection-endpoint' || 'connection-endpoint')}}"
-            r="3"
-            ng-attr-cx="{{connection.sourceCoordX()}}" 
-            ng-attr-cy="{{connection.sourceCoordY()}}" 
+            r="1.5"
+            ng-attr-cx="{{connection.sourceCoordX()}}"
+            ng-attr-cy="{{connection.sourceCoordY()}}"
             >
         </circle>
 
         <circle
             ng-attr-class="{{connection.selected() && 'selected-connection-endpoint' || (connection == mouseOverConnection && 'mouseover-connection-endpoint' || 'connection-endpoint')}}"
-            r="3"
-            ng-attr-cx="{{connection.destCoordX()}}" 
-            ng-attr-cy="{{connection.destCoordY()}}" 
+            r="1.5"
+            ng-attr-cx="{{connection.destCoordX()}}"
+            ng-attr-cy="{{connection.destCoordY()}}"
             >
         </circle>
     </g>
-  </g>
 
   <g
     ng-if="draggingConnection"
@@ -162,7 +176,7 @@
 
     <circle
         class="dragging-connection dragging-connection-endpoint"
-        r="4" 
+        r="2"
         ng-attr-cx="{{dragPoint1.x}}" 
         ng-attr-cy="{{dragPoint1.y}}" 
         >
@@ -170,7 +184,7 @@
 
     <circle
         class="dragging-connection dragging-connection-endpoint"
-        r="4" 
+        r="2"
         ng-attr-cx="{{dragPoint2.x}}" 
         ng-attr-cy="{{dragPoint2.y}}" 
         >
@@ -191,19 +205,18 @@
         ng-attr-x="{{dbClickMenu.x}}"
         ng-attr-y="{{dbClickMenu.y}}"
         ng-attr-width="{{dbClickMenu.width}}"
-        ng-attr-height="{{dbClickMenu.height}}"
-    >
-        <body xmlns="http://www.w3.org/1999/xhtml">
-            <div ng-controller="graphCtrl" id = "node-creator" style="width:180px; ">
-                    <ui-select ng-model="type.selected"
-                               append-to-body = "true"
-                               on-select="addNewNode(this.type.selected)">
-                    <ui-select-match placeholder="New node" >{{$select.selected}}</ui-select-match>
+        ng-attr-height="{{dbClickMenu.height}}">
+            <div ng-controller="newNodeCtrl" id = "node-creator">
+                <ui-select ng-model="type.selected"
+                           id = "node-dropdown"
+                           theme="selectize"
+                           focus-on='SetFocus'
+                           on-select="addNewNode(this.type.selected)">
+                    <ui-select-match   placeholder="New node" >New node</ui-select-match>
                     <ui-select-choices repeat="type in nodeTypes()| filter: $select.search">
                         <span ng-bind-html="type| highlight: $select.search"></span>
                     </ui-select-choices>
-                        </ui-select>
+                </ui-select>
             </div>
-        </body>
     </foreignObject>
 </svg>

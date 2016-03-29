@@ -1,0 +1,27 @@
+
+<md-dialog >
+    <form>
+        <md-dialog-content style="max-width:800px;max-height:810px; ">
+            Change is made, do you want to overwrite original type?
+        </md-dialog-content>
+
+        <div class="md-actions" layout="row">
+            <md-button ng-click="answer('Ok')">
+                Overwrite
+            </md-button>
+
+            <span flex></span>
+
+            <md-button ng-click="answer('undo')" style="margin-right:20px;" >
+                Undo Change
+            </md-button>
+
+            <span flex></span>
+
+            <md-button ng-click="cancel()" style="margin-right:20px;" >
+                Cancel
+            </md-button>
+
+        </div>
+    </form>
+</md-dialog>

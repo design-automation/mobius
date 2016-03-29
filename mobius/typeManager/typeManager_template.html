@@ -1,0 +1,138 @@
+<div style="border:solid 1px #ddd;left:30px;right: 30px;top:30px;bottom:30px;position: absolute">
+    <div style="height:100%;width: 20%;float:left;position: relative;display:inline-block;border-right:solid 1px #ddd;">
+            <div class="doormat">
+                <input type="checkbox" ng-model="selectAll" ng-change="toggleSelection()">
+            </div>
+
+            <div id="typeManage_buttons">
+                <button class="button"
+                        onclick="document.getElementById('importNode').click()"
+                        title="Import Node Type">
+                    <i class="fa fa-lg fa-upload"></i>
+                </button>
+
+                <button class="button" onclick="document.getElementById('exportNode').click()"
+                        title="Export Node Type">
+                    <i class="fa fa-lg fa-download"></i>
+                </button>
+
+                <button class="button" ng-click = "addNewType()" title="Add New Node Type">
+                    <i class="fa fa-lg fa-plus"></i>
+                </button>
+
+                <button class="button" ng-click = "deleteChecked()" title="Delete Selected Node">
+                    <i class="fa fa-lg fa-remove"></i>
+                </button>
+
+                <input type="file" id="importNode"
+                       onchange="angular.element(this).scope().importNode(this.files)"/>
+
+                <a  ng-href="{{nodeUrl}}"
+                    download="node.json"
+                    id="exportNode"
+                    ng-if="existSelected()"
+                    ng-click = "exportNode()"
+                    style="display: none;">Export
+                </a>
+            </div>
+
+            <div ui-tree id="tree-root-nodeType" data-drag-enabled="false" >
+                <div ui-tree-nodes="" ng-model="typeList">
+                    <div ng-repeat="type in typeList"
+                         ui-tree-node
+                         ng-include="'mobius/typeManager/nodeTypes_template.html'">
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <div ui-layout="{flow : 'column',dividerSize:'2', disableToggle:true}"
+         style="height:100%;width: 80%;position: relative;">
+            <div ui-layout-container size = "35%">
+                <div style="height: 35%;position: relative">
+                    <div class="doormat">
+                        <div> {{typeName}} </div>
+                        <button class="button pull-right button-input" ng-click="newInterface('Input')" title="Add Input">
+                            <i class="fa fa-sign-in fa-lg fa-rotate-90"></i>
+                        </button>
+                    </div>
+
+                    <div ui-tree id="tree-root-parameter-type">
+                        <div ui-tree-nodes="" ng-model="arguments">
+                            <div ng-repeat="node in arguments"
+                                 ui-tree-node
+                                 ng-include="'mobius/procedure/template/parameter_template.html'">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="position: relative;height: 65%;border-top: solid 1px #ddd">
+                    <div class="doormat">
+                        <div>{{typeName}}</div>
+                    </div>
+
+                    <div id="typeProcedure_buttons">
+
+                        <button class="button pull-right button-action" dropdown-toggle="dropdown" title="Add Function">
+                            <i class="icon-function fa-lg"></i>
+                            <ui-select ng-model="method.selected"
+                                       class="dropdown-menu"
+                                       on-select="newItem('Action',$select.selected)">
+                                <ui-select-match placeholder="Function" >Function</ui-select-match>
+                                <ui-select-choices
+                                        group-by="'category'"
+                                        repeat="method in methods | propsFilter: {name: $select.search, category: $select.search}">
+                                    <span ng-bind-html="method.name| highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </button>
+
+                        <button class="button pull-right button-control" dropdown-toggle="dropdown" title="Add Control">
+                            <i class="fa fa-lg fa-retweet"></i>
+                            <ui-select ng-model="controlType" class="dropdown-menu"
+                                       on-select="newItem('Control',$select.selected)">
+                                <ui-select-match placeholder="Control">Control</ui-select-match>
+                                <ui-select-choices
+                                        repeat="controlType in controlTypes| filter: $select.search">
+                                    <span ng-bind-html="controlType| highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </button>
+
+                        <button class="button pull-right button-variable" title="Add Variable"
+                                ng-click="newItem('Data')">
+                            <i class="icon-variable fa-lg"></i>
+                        </button>
+
+                        <button class="button pull-right button-output" ng-click="newItem('Output')"
+                        title="Add Output">
+                            <i class="fa fa-sign-out fa-lg fa-rotate-90"></i>
+                        </button>
+                    </div>
+
+                    <div ui-tree id="tree-root-procedure-type">
+                        <div ui-tree-nodes="" ng-model="definition">
+                            <div ng-repeat="node in definition"
+                                 ui-tree-node
+                                 context-menu
+                                 ng-include="'mobius/procedure/template/procedure_template.html'"
+                                 data-target="menu-typeManager">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ui-layout-container>
+                <div style="height: 100%; width: 100%;"
+                     ng-model="jsCode"
+                     ui-ace="{ mode: 'javascript',theme: 'tomorrow',  showGutter: false,}"
+                     readonly="{{true}}">
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div style="position: absolute" ng-include="'mobius/typeManager/typeProcedure_template.html'"></div>
+
+<div class="cfp-hotkeys-close" ng-click="closeTypeManager()" role="button" tabindex="0">×</div>

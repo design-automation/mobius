@@ -1,4 +1,4 @@
-vidamo.factory('consoleMsg', function () {
+mobius.factory('consoleMsg', function () {
 
     function autoScroll(){
         var consoleDiv = document.getElementById("log");
@@ -39,7 +39,8 @@ vidamo.factory('consoleMsg', function () {
                     case 'invalidFileType':printMsg = 'Error: File type is not Json.';break;
                     case 'noNode':printMsg = 'No node selected.';break;
                     case 'invalidName':printMsg = 'invalidName.';break;
-                    case 'dupName':printMsg = 'The node type name is duplicated..';break;
+                    case 'dupName':printMsg = 'The node type name is duplicated.';break;
+                    case 'notWritable': printMsg = 'This node is not overwrittable.';break;
                 }
 
                 printMsg = timeMsg() + ":" + printMsg;
@@ -56,6 +57,16 @@ vidamo.factory('consoleMsg', function () {
                     document.getElementById('log').innerHTML += "<div style='color: green'> " + printMsg + "</div>";
                 }
                 autoScroll();
+            },
+        execMsg:
+            function(){
+                return new Promise(function (resolve){
+                    printMsg = timeMsg() + ":" + 'Executing ... Please wait ...' +".";
+                    document.getElementById('log').innerHTML += "<div style='color: green'> " + printMsg + "</div>"
+                    setTimeout(function(){
+                        resolve(true);
+                    },100);
+                });
             }
     }
 

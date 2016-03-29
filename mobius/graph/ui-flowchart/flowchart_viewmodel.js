@@ -1,11 +1,8 @@
-
 //
 // view model Global accessor for graph
 //
 
-var flowchart = {
-
-};
+var flowchart = {};
 
 // Module.
 (function () {
@@ -13,12 +10,12 @@ var flowchart = {
 	//
 	// Width of a node.
 	//
-	flowchart.nodeHeight =35;
+	flowchart.nodeHeight =20;
 
 	//
 	// Amount of space reserved for displaying the node's name.
 	//
-	flowchart.nodeNameWidth = 55;
+	flowchart.nodeNameWidth = 50;
 
 	//
 	// Height of a connector in a node.
@@ -30,8 +27,8 @@ var flowchart = {
 	//
 	flowchart.computeConnectorX = function (connectorIndex) {
 		// return flowchart.nodeNameWidth + (connectorIndex * flowchart.connectorWidth);
-		return 25 + (connectorIndex * 25);
-	}
+		return 15 + (connectorIndex * 20);
+	};
 
 	//
 	// Compute the position of a connector in the graph.
@@ -46,7 +43,7 @@ var flowchart = {
 
 	//
 	// View model for a connector.
-	// @ vidamo add selection for connector deletion
+	// @ mobius add selection for connector deletion
 	//
 	flowchart.ConnectorViewModel = function (connectorDataModel, x, y, parentNode) {
 
@@ -62,13 +59,6 @@ var flowchart = {
 			return this.data.name;
 		};
 
-        // @ vidamo
-        // the value of the connector
-        //
-        //this.value = function () {
-        //    return this.data.value;
-        //};
-
 		//
 		// X coordinate of the connector.
 		//
@@ -79,7 +69,7 @@ var flowchart = {
 		//
 		// Y coordinate of the connector.
 		//
-		this.y = function () { 
+		this.y = function () {
 			return this._y;
 		};
 
@@ -130,7 +120,7 @@ var flowchart = {
 
 		if (connectorDataModels) {
 			for (var i = 0; i < connectorDataModels.length; ++i) {
-				var connectorViewModel = 
+				var connectorViewModel =
 					new flowchart.ConnectorViewModel(connectorDataModels[i], flowchart.computeConnectorX(i), y, parentNode);
 				viewModels.push(connectorViewModel);
 			}
@@ -161,7 +151,7 @@ var flowchart = {
 		//
 		// X coordinate of the node.
 		//
-		this.x = function () { 
+		this.x = function () {
 			return this.data.x;
 		};
 
@@ -176,18 +166,18 @@ var flowchart = {
 		// Width of the node.
 		//
 		this.width = function () {
-            var numConnectors =
-                Math.max(
-                    this.inputConnectors.length,
-                    this.outputConnectors.length);
-            return flowchart.computeConnectorX(numConnectors);
+			var numConnectors =
+				Math.max(
+					this.inputConnectors.length,
+					this.outputConnectors.length);
+			return flowchart.computeConnectorX(numConnectors)-5;
 		}
 
 		//
 		// Height of the node.
 		//
 		this.height = function () {
-            return flowchart.nodeHeight;
+			return flowchart.nodeHeight;
 		}
 
 		//
@@ -205,6 +195,20 @@ var flowchart = {
 		};
 
 		//
+		// Enable the node.
+		//
+		this.disable = function(){
+			nodeDataModel.disabled = true;
+		};
+
+		//
+		// Disable the node.
+		//
+		this.enable = function(){
+			nodeDataModel.disabled = false;
+		};
+
+		//
 		// Toggle the selection state of the node.
 		//
 		this.toggleSelected = function () {
@@ -219,19 +223,24 @@ var flowchart = {
 		};
 
 		//
+		// Returns true if the node is selected.
+		//
+		this.disabled = function () {
+			return nodeDataModel.disabled;
+		};
+
+		//
 		// Internal function to add a connector.
 		this._addConnector = function (connectorDataModel, y, connectorsDataModel, connectorsViewModel) {
-			var connectorViewModel = 
+			var connectorViewModel =
 				new flowchart.ConnectorViewModel(connectorDataModel,
-						flowchart.computeConnectorX(connectorsViewModel.length),y, this);
+					flowchart.computeConnectorX(connectorsViewModel.length),y, this);
 
 			connectorsDataModel.push(connectorDataModel);
 
 			// Add to node's view model.
 			connectorsViewModel.push(connectorViewModel);
 		};
-
-
 
 		//
 		// Add an input connector to the node.
@@ -254,9 +263,10 @@ var flowchart = {
 			}
 			this._addConnector(connectorDataModel, flowchart.nodeHeight, this.data.outputConnectors, this.outputConnectors);
 		};
+
 	};
 
-	// 
+	//
 	// Wrap the nodes data-model in a view-model.
 	//
 	var createNodesViewModel = function (nodesDataModel) {
@@ -277,11 +287,12 @@ var flowchart = {
 	flowchart.ConnectionViewModel = function (connectionDataModel, sourceConnector, destConnector) {
 
 		//
-		// @ vidamo
+		// @ mobius
 		//
 
 		// data attribute for transferring data from node to node through connections
 		// fixme data in connection no longer in use
+
 		this.data = connectionDataModel;
 		this.source = sourceConnector;
 		this.dest = destConnector;
@@ -289,17 +300,17 @@ var flowchart = {
 		// Set to true when the connection is selected.
 		this._selected = false;
 
-		// @ vidamo
-        // return the source output value
-        //this.value = function (){
-        //    //return this.source.data.value
-        //}
+		// @ mobius
+		// return the source output value
+		//this.value = function (){
+		//    //return this.source.data.value
+		//}
 
-		this.sourceCoordX = function () { 
+		this.sourceCoordX = function () {
 			return this.source.parentNode().x() + this.source.x();
 		};
 
-		this.sourceCoordY = function () { 
+		this.sourceCoordY = function () {
 			return this.source.parentNode().y() + this.source.y();
 		};
 
@@ -310,19 +321,19 @@ var flowchart = {
 			};
 		};
 
-		this.sourceTangentX = function () { 
+		this.sourceTangentX = function () {
 			return flowchart.computeConnectionSourceTangentX(this.sourceCoord(), this.destCoord());
 		};
 
-		this.sourceTangentY = function () { 
+		this.sourceTangentY = function () {
 			return flowchart.computeConnectionSourceTangentY(this.sourceCoord(), this.destCoord());
 		};
 
-		this.destCoordX = function () { 
+		this.destCoordX = function () {
 			return this.dest.parentNode().x() + this.dest.x();
 		};
 
-		this.destCoordY = function () { 
+		this.destCoordY = function () {
 			return this.dest.parentNode().y() + this.dest.y();
 		};
 
@@ -333,11 +344,11 @@ var flowchart = {
 			};
 		}
 
-		this.destTangentX = function () { 
+		this.destTangentX = function () {
 			return flowchart.computeConnectionDestTangentX(this.sourceCoord(), this.destCoord());
 		};
 
-		this.destTangentY = function () { 
+		this.destTangentY = function () {
 			return flowchart.computeConnectionDestTangentY(this.sourceCoord(), this.destCoord());
 		};
 
@@ -436,22 +447,22 @@ var flowchart = {
 	flowchart.ChartViewModel = function (chartDataModel) {
 
 		//
-		// @ vidamo
+		// @ mobius
 		//
 
-        // variable for topological sort
-        var edgeList = [];
+		// variable for topological sort
+		var edgeList = [];
 
 
-		// @ vidamo new node position
-        // fixme this should be responsive
+		// @ mobius new node position
+		// fixme this should be responsive
 		this.newPos = {x:1900,y:2100};
 
 		//
 		// Find a specific node within the chart.
 		//
 
-        this.findNode = function (nodeID) {
+		this.findNode = function (nodeID) {
 
 			for (var i = 0; i < this.nodes.length; ++i) {
 				var node = this.nodes[i];
@@ -471,7 +482,8 @@ var flowchart = {
 			var node = this.findNode(nodeID);
 
 			if (!node.inputConnectors || node.inputConnectors.length <= connectorIndex) {
-				throw new Error("Node " + nodeID + " has invalid input connectors.");
+				//throw new Error("Node " + nodeID + " has invalid input connectors.");
+				return false;
 			}
 
 			return node.inputConnectors[connectorIndex];
@@ -485,7 +497,8 @@ var flowchart = {
 			var node = this.findNode(nodeID);
 
 			if (!node.outputConnectors || node.outputConnectors.length <= connectorIndex) {
-				throw new Error("Node " + nodeID + " has invalid output connectors.");
+				//throw new Error("Node " + nodeID + " has invalid output connectors.");
+				return false;
 			}
 
 			return node.outputConnectors[connectorIndex];
@@ -497,11 +510,11 @@ var flowchart = {
 		this._createConnectionViewModel = function(connectionDataModel) {
 
 			var sourceConnector = this.findOutputConnector(connectionDataModel.source.nodeID, connectionDataModel.source.connectorIndex);
-			var destConnector = this.findInputConnector(connectionDataModel.dest.nodeID, connectionDataModel.dest.connectorIndex);			
+			var destConnector = this.findInputConnector(connectionDataModel.dest.nodeID, connectionDataModel.dest.connectorIndex);
 			return new flowchart.ConnectionViewModel(connectionDataModel, sourceConnector, destConnector);
 		}
 
-		// 
+		//
 		// Wrap the connections data-model in a view-model.
 		//
 		this._createConnectionsViewModel = function (connectionsDataModel) {
@@ -534,10 +547,16 @@ var flowchart = {
 			debug.assertObjectValid(sourceConnector);
 			debug.assertObjectValid(destConnector);
 
-			// @ mobius : flag for input connector is connected
-			destConnector.data.connected = true;
+			// if connected from input connector to output connector, switch data model
+			if(sourceConnector.data.title === 'Input' && destConnector.data.title === 'Output'){
+				var temp = sourceConnector;
+				sourceConnector = destConnector;
+				destConnector = temp;
+			}
 
-			console.log(destConnector);
+			// @ mobius : flag for input connector is connected
+
+			destConnector.data.connected = true;
 
 			var connectionsDataModel = this.data.connections;
 			if (!connectionsDataModel) {
@@ -551,9 +570,9 @@ var flowchart = {
 
 			var sourceNode = sourceConnector.parentNode();
 			var sourceConnectorIndex = sourceNode.outputConnectors.indexOf(sourceConnector);
-            var sourceFlag = true;
+			var sourceFlag = true;
 			if (sourceConnectorIndex == -1) {
-                sourceFlag = false;
+				sourceFlag = false;
 				sourceConnectorIndex = sourceNode.inputConnectors.indexOf(sourceConnector);
 				if (sourceConnectorIndex == -1) {
 					throw new Error("Failed to find source connector within either inputConnectors or outputConnectors of source node.");
@@ -562,67 +581,67 @@ var flowchart = {
 
 			var destNode = destConnector.parentNode();
 			var destConnectorIndex = destNode.inputConnectors.indexOf(destConnector);
-            var destFlag = true;
+			var destFlag = true;
 			if (destConnectorIndex == -1) {
-                destFlag = false;
-                destConnectorIndex = destNode.outputConnectors.indexOf(destConnector);
+				destFlag = false;
+				destConnectorIndex = destNode.outputConnectors.indexOf(destConnector);
 				if (destConnectorIndex == -1) {
 					throw new Error("Failed to find dest connector within inputConnectors or ouputConnectors of dest node.");
 				}
 			}
 
 			//
-			// @ vidamo transfer data value through conenctions
+			// @ mobius transfer data value through conenctions
 			// fixme no longer in use
 			//
-            if (sourceFlag == true ){
-                if(destFlag == true){
-                    var connectionDataModel = {
-                        // apply the output connector value to the connection
-                        //value: sourceConnector.data.value,
-                        source: {
-                            nodeID: sourceNode.data.id,
-                            connectorIndex: sourceConnectorIndex
-                        },
-                        dest: {
-                            nodeID: destNode.data.id,
-                            connectorIndex: destConnectorIndex
-                        }
-                    };
-                    connectionsDataModel.push(connectionDataModel);
-                    var connectionViewModel = new flowchart.ConnectionViewModel(connectionDataModel, sourceConnector, destConnector);
-                    connectionsViewModel.push(connectionViewModel);
-                }
-            }
-            else if( destFlag == false) {
-                var connectionDataModel = {
-                    // apply the output connector value to the connection
-                    //value: destConnector.data.value,
-                    source: {
-                        nodeID: destNode.data.id,
-                        connectorIndex: destConnectorIndex
-                    },
-                    dest: {
-                        nodeID: sourceNode.data.id,
-                        connectorIndex: sourceConnectorIndex
-                    }
-                }
+			if (sourceFlag == true ){
+				if(destFlag == true){
+					var connectionDataModel = {
+						// apply the output connector value to the connection
+						//value: sourceConnector.data.value,
+						source: {
+							nodeID: sourceNode.data.id,
+							connectorIndex: sourceConnectorIndex
+						},
+						dest: {
+							nodeID: destNode.data.id,
+							connectorIndex: destConnectorIndex
+						}
+					};
+					connectionsDataModel.push(connectionDataModel);
+					var connectionViewModel = new flowchart.ConnectionViewModel(connectionDataModel, sourceConnector, destConnector);
+					connectionsViewModel.push(connectionViewModel);
+				}
+			}
+			else if( destFlag == false) {
+				var connectionDataModel = {
+					// apply the output connector value to the connection
+					//value: destConnector.data.value,
+					source: {
+						nodeID: destNode.data.id,
+						connectorIndex: destConnectorIndex
+					},
+					dest: {
+						nodeID: sourceNode.data.id,
+						connectorIndex: sourceConnectorIndex
+					}
+				}
 
-                connectionsDataModel.push(connectionDataModel);
-                var connectionViewModel = new flowchart.ConnectionViewModel(connectionDataModel, destConnector, sourceConnector);
-                connectionsViewModel.push(connectionViewModel);
+				connectionsDataModel.push(connectionDataModel);
+				var connectionViewModel = new flowchart.ConnectionViewModel(connectionDataModel, destConnector, sourceConnector);
+				connectionsViewModel.push(connectionViewModel);
 
-            }
+			}
 
 			//
-			// @ vidamo
+			// @ mobius
 			//
-            // store and all the connection edges for topological sort
-            edgeList = [];
-            for(var i=0;i<this.data.connections.length;i++){
-                edgeList.push([this.data.connections[i].source.nodeID, this.data.connections[i].dest.nodeID]);
-            }
-        };
+			// store and all the connection edges for topological sort
+			edgeList = [];
+			for(var i=0;i<this.data.connections.length;i++){
+				edgeList.push([this.data.connections[i].source.nodeID, this.data.connections[i].dest.nodeID]);
+			}
+		};
 
 		//
 		// Add a node to the view model.
@@ -644,35 +663,15 @@ var flowchart = {
 			// Update the view model.
 			//
 			this.nodes.push(new flowchart.NodeViewModel(nodeDataModel));
-
-
-            //
-            // iterate through the nodes and print out the input and output of each node
-            //
-            console.log("========================== test msg ===========================");
-            for(var i=0; i < this.nodes.length; i++){
-                console.log("node id: ", this.nodes[i].data.id);
-                //for(var input=0; input < this.nodes[i].data.inputConnectors.length;input++){
-                //    //console.log("inputs: ", this.nodes[i].data.inputConnectors[input].value)
-                //}
-                //for(var output=0; output < this.nodes[i].data.outputConnectors.length;output++){
-                //    //console.log("outputs: ", this.nodes[i].data.outputConnectors[output].value)
-                //}
-            }
-		}
+		};
 
 		//
-        //	@ vidamo
-        //  topological sort: current setting: add/delete
-        //
-
-        this.topoSort = function topoSort (){
-
-            // console.log('-------------------- msg from topoSort() ----------------------');
-            //console.log('current edges: ', edgeList);
-
+		//	@ mobius
+		//  topological sort: current setting: add/delete
+		//
+		this.topoSort = function topoSort (){
 			//
-			// @ vidamo
+			// @ mobius
 			// Update the edgeList
 			edgeList = [];
 
@@ -680,50 +679,50 @@ var flowchart = {
 				edgeList.push([this.data.connections[j].source.nodeID, this.data.connections[j].dest.nodeID]);
 			}
 
-            // copy the node and edge lists
-            var edges = edgeList.slice();
-            var nodes = [];
-            for(var i = 0; i < this.nodes.length; i++){
-                nodes.push(this.nodes[i].data.id);
-            }
+			// copy the node and edge lists
+			var edges = edgeList.slice();
+			var nodes = [];
+			for(var i = 0; i < this.nodes.length; i++){
+				nodes.push(this.nodes[i].data.id);
+			}
 
-            // topological sort
-            var cursor = nodes.length
-                , sorted = new Array(cursor)
-                , visited = {}
-                , i = cursor
+			// topological sort
+			var cursor = nodes.length
+				, sorted = new Array(cursor)
+				, visited = {}
+				, i = cursor
 
-            while (i--) {
-                if (!visited[i]) visit(nodes[i], i, [])
-            }
+			while (i--) {
+				if (!visited[i]) visit(nodes[i], i, [])
+			}
 
-            //console.log("after sorting:", sorted);
+			//console.log("after sorting:", sorted);
 
-            return sorted;
+			return sorted;
 
-            function visit(node, i, predecessors) {
-                if(predecessors.indexOf(node) >= 0) {
-                    throw new Error('Error: Cyclic dependency')
-                }
+			function visit(node, i, predecessors) {
+				if(predecessors.indexOf(node) >= 0) {
+					throw new Error('Error: Cyclic dependency')
+				}
 
-                if (visited[i]) return;
-                visited[i] = true
+				if (visited[i]) return;
+				visited[i] = true
 
-                // outgoing edges
-                var outgoing = edges.filter(function(edge){
-                    return edge[0] === node
-                })
-                if (i = outgoing.length) {
-                    var preds = predecessors.concat(node)
-                    do {
-                        var child = outgoing[--i][1]
-                        visit(child, nodes.indexOf(child), preds)
-                    } while (i)
-                }
+				// outgoing edges
+				var outgoing = edges.filter(function(edge){
+					return edge[0] === node
+				})
+				if (i = outgoing.length) {
+					var preds = predecessors.concat(node)
+					do {
+						var child = outgoing[--i][1]
+						visit(child, nodes.indexOf(child), preds)
+					} while (i)
+				}
 
-                sorted[--cursor] = node
-            }
-        };
+				sorted[--cursor] = node
+			}
+		};
 
 		//
 		// Select all nodes and connections in the chart.
@@ -740,11 +739,11 @@ var flowchart = {
 			for (var i = 0; i < connections.length; ++i) {
 				var connection = connections[i];
 				connection.select();
-			}			
+			}
 		}
 
 		//
-		// @ vidamo
+		// @ mobius
 		// Deselect all nodes connections, connectors in the chart.
 		//
 		this.deselectAll = function () {
@@ -803,7 +802,7 @@ var flowchart = {
 			// This is the way Z-order is done in SVG.
 
 			var nodeIndex = this.nodes.indexOf(node);
-            return nodeIndex;
+			return nodeIndex;
 
 //			if (nodeIndex == -1) {
 //				throw new Error("Failed to find node in view model!");
@@ -814,7 +813,7 @@ var flowchart = {
 		};
 
 		//
-		// @ vidamo handle right click, prevent deselection
+		// @ mobius handle right click, prevent deselection
 		//
 		this.handleNodeRightClicked = function (node, ctrlKey) {
 
@@ -831,7 +830,7 @@ var flowchart = {
 
 
 		//
-		// @ vidamo : Handle mouse drag on a particular node/ prevent deselection
+		// @ mobius : Handle mouse drag on a particular node/ prevent deselection
 		//
 		this.handleNodeDragged = function (node, ctrlKey) {
 
@@ -861,7 +860,7 @@ var flowchart = {
 		};
 
 		//
-		// @ vidamo
+		// @ mobius
 		// Handle mouse down on a connector
 		//
 		this.handleConnectorClicked = function (connector, ctrlKey) {
@@ -876,7 +875,7 @@ var flowchart = {
 		};
 
 		//
-		// @vidamo rename selected element (node/connector)
+		// @mobius rename selected element (node/connector)
 		//
 		this.renameSelected = function(newName){
 			for (var nodeIndex = 0; nodeIndex < this.nodes.length; ++nodeIndex) {
@@ -900,9 +899,9 @@ var flowchart = {
 				for(var inputIndex = 0; inputIndex < node.inputConnectors.length; inputIndex ++){
 					if (node.inputConnectors[inputIndex].selected()) {
 						renameObj.isConnector = true;
-                        renameObj.nodeIndex = nodeIndex;
+						renameObj.nodeIndex = nodeIndex;
 						this.data.nodes[nodeIndex].inputConnectors[inputIndex].name = newName;
-                        this.nodes[nodeIndex].data = this.data.nodes[nodeIndex];
+						this.nodes[nodeIndex].data = this.data.nodes[nodeIndex];
 						return renameObj;
 					}
 				}
@@ -913,7 +912,7 @@ var flowchart = {
 						renameObj.isConnector = true;
 						renameObj.nodeIndex = nodeIndex;
 						this.data.nodes[nodeIndex].outputConnectors[outputIndex].name = newName;
-                        this.nodes[nodeIndex].data = this.data.nodes[nodeIndex];
+						this.nodes[nodeIndex].data = this.data.nodes[nodeIndex];
 						return renameObj;
 					}
 				}
@@ -937,7 +936,7 @@ var flowchart = {
 
 			//
 			// remove node that are selected, retain deleted node id for connections
-			// @ vidamo Remove connectors that are selected, retain deleted connector id for connections
+			// @ mobius Remove connectors that are selected, retain deleted connector id for connections
 			//
 
 			for (var nodeIndex = 0; nodeIndex < this.nodes.length; ++nodeIndex) {
@@ -946,6 +945,9 @@ var flowchart = {
 
 				var newInputConnectorDataModels = [];
 				var newOutputConnectorDataModels = [];
+
+				var newInputConnectorViewModels = [];
+				var newOutputConnectorViewModels = [];
 
 				// node deletion
 				if (!node.selected()) {
@@ -963,14 +965,15 @@ var flowchart = {
 
 					if (!inputConnector.selected()) {
 						newInputConnectorDataModels.push(inputConnector.data);
+						newInputConnectorViewModels.push(inputConnector);
 					}
 
 					else{
 						returnIndex = nodeIndex;
 						deletedInputConnectors.push({
-												nodeId:node.data.id,
-												inputConnectorIndex:node.inputConnectors.indexOf(inputConnector)
-												});
+							nodeId:node.data.id,
+							inputConnectorIndex:node.inputConnectors.indexOf(inputConnector)
+						});
 					}
 				}
 
@@ -980,6 +983,7 @@ var flowchart = {
 
 					if (!outputConnector.selected()) {
 						newOutputConnectorDataModels.push(outputConnector.data);
+						newOutputConnectorViewModels.push(outputConnector);
 					}
 
 					else{
@@ -1002,10 +1006,14 @@ var flowchart = {
 				// generate connector view model using new connector data model
 				for(var newInputIndex = 0; newInputIndex < newInputConnectorDataModels.length; newInputIndex++){
 					node.addInputConnector(newInputConnectorDataModels[newInputIndex]);
+					//node.data.inputConnectors.push(newInputConnectorDataModels[newInputIndex]);
+					//node.inputConnectors.push(newInputConnectorViewModels[newInputIndex]);
 				}
 
 				for(var newOutputIndex = 0; newOutputIndex < newOutputConnectorDataModels.length; newOutputIndex++){
 					node.addOutputConnector(newOutputConnectorDataModels[newOutputIndex]);
+					//node.data.outputConnectors.push(newOutputConnectorDataModels[newOutputIndex]);
+					//node.outputConnectors.push(newOutputConnectorViewModels[newOutputIndex]);
 				}
 			}
 
@@ -1022,17 +1030,16 @@ var flowchart = {
 				var connection = this.connections[connectionIndex];
 
 				if (// connection is not selected
-					!connection.selected() &&
+				!connection.selected() &&
 					// connected node is not deleted
-					deletedNodeIds.indexOf(connection.data.source.nodeID) === -1 &&
-					deletedNodeIds.indexOf(connection.data.dest.nodeID) === -1
+				deletedNodeIds.indexOf(connection.data.source.nodeID) === -1 &&
+				deletedNodeIds.indexOf(connection.data.dest.nodeID) === -1
 				){
 					// The nodes this connection is attached to, where not deleted,
 					// so keep the connection for now then check the connectors
 
 					var flag = true;
 
-					// connected node is not deleted
 					for(var i = 0; i < deletedInputConnectors.length; i ++){
 						if(deletedInputConnectors[i].nodeId === connection.data.dest.nodeID &&
 							deletedInputConnectors[i].inputConnectorIndex === connection.data.dest.connectorIndex){
@@ -1041,9 +1048,12 @@ var flowchart = {
 					}
 
 					for(var j = 0; j < deletedOutputConnectors.length; j++){
-						if(deletedOutputConnectors[i].nodeId === connection.data.source.nodeID &&
-							deletedOutputConnectors[i].outputConnectorIndex === connection.data.source.connectorIndex){
+						if(deletedOutputConnectors[j].nodeId === connection.data.source.nodeID &&
+							deletedOutputConnectors[j].outputConnectorIndex === connection.data.source.connectorIndex){
 							flag = false;
+							// connection will be deleted, so reset the current connected input connector
+							this.findInputConnector(connection.data.dest.nodeID,connection.data.dest.connectorIndex)
+								.data.connected=false;
 						}
 					}
 
@@ -1051,17 +1061,65 @@ var flowchart = {
 						newConnectionViewModels.push(connection);
 						newConnectionDataModels.push(connection.data);
 					}
+				}else{
+					// set the connected of dest connector of deleted connection to false
+					if(	this.findInputConnector(connection.data.dest.nodeID,connection.data.dest.connectorIndex)){
+						this.findInputConnector(connection.data.dest.nodeID,connection.data.dest.connectorIndex)
+							.data.connected=false;
+					}
+
+				}
+			}
+
+			// Update nodes
+			this.nodes = newNodeViewModels;
+			this.data.nodes = newNodeDataModels;
+
+			// update connections
+			this.connections = newConnectionViewModels;
+			this.data.connections = newConnectionDataModels;
+
+
+
+
+			//
+			// @ mobius update the connection id for connectors
+			//
+
+			for(var i = 0; i < this.connections.length; i++){
+
+				for(var j = 0; j < deletedInputConnectors.length ; j++){
+					var destDecreaseIn = 0;
+
+					if(this.connections[i].data.dest.nodeID === deletedInputConnectors[j].nodeId){
+						if(this.connections[i].data.dest.connectorIndex > deletedInputConnectors[j].inputConnectorIndex){
+							destDecreaseIn ++;
+						}
+					}
+
+					this.connections[i].data.dest.connectorIndex -= destDecreaseIn;
+					this.connections[i].dest = this.findInputConnector(this.connections[i].data.dest.nodeID,
+						this.connections[i].data.dest.connectorIndex);
+				}
+
+				for(var j = 0; j < deletedOutputConnectors.length ; j++){
+					var sourceDecreaseIn = 0;
+
+					if(this.connections[i].data.source.nodeID === deletedOutputConnectors[j].nodeId){
+						if(this.connections[i].data.source.connectorIndex > deletedOutputConnectors[j].outputConnectorIndex){
+							sourceDecreaseIn ++;
+						}
+					}
+
+					this.connections[i].data.source.connectorIndex -= sourceDecreaseIn;
+					this.connections[i].source = this.findOutputConnector(this.connections[i].data.source.nodeID,
+						this.connections[i].data.source.connectorIndex);
 				}
 			}
 
 
-			//
-            // @ vidamo
-			// todo rethink of the id/ sort/ update implementation
-			//
-
 			// Update the node index
-            for(var i = 0; i < this.nodes.length ;i++){
+			for(var i = 0; i < this.nodes.length ;i++){
 
 				var decreaseIn = 0;
 
@@ -1072,10 +1130,11 @@ var flowchart = {
 				}
 
 				this.nodes[i].data.id = this.nodes[i].data.id - decreaseIn;
-            }
+			}
+
 
 			//
-			// @ vidamo update the connection id
+			// @ mobius update the connection id for nodes
 			//
 
 			for(var i = 0; i < this.connections.length; i++){
@@ -1102,14 +1161,8 @@ var flowchart = {
 				this.connections[i].data.dest.nodeID = this.connections[i].data.dest.nodeID - destDecreaseIn;
 			}
 
-			// Update nodes and connections.
-			this.nodes = newNodeViewModels;
-			this.data.nodes = newNodeDataModels;
-			this.connections = newConnectionViewModels;
-			this.data.connections = newConnectionDataModels;
-
 			//
-			// @ vidamo
+			// @ mobius
 			//
 			// update edgeList for topological sort
 			edgeList = [];
@@ -1117,7 +1170,7 @@ var flowchart = {
 				edgeList.push([this.data.connections[j].source.nodeID, this.data.connections[j].dest.nodeID]);
 			}
 
-            return {
+			return {
 				deletedNodeIds:deletedNodeIds,
 				nodeIndex:returnIndex
 			};
@@ -1133,8 +1186,8 @@ var flowchart = {
 
 			for (var i = 0; i < this.nodes.length; ++i) {
 				var node = this.nodes[i];
-				if (node.x() >= selectionRect.x && 
-					node.y() >= selectionRect.y && 
+				if (node.x() >= selectionRect.x &&
+					node.y() >= selectionRect.y &&
 					node.x() + node.width() <= selectionRect.x + selectionRect.width &&
 					node.y() + node.height() <= selectionRect.y + selectionRect.height)
 				{
@@ -1143,7 +1196,7 @@ var flowchart = {
 					index = node.data.id;
 				}
 
-				// @ vidamo select connectors within the selection rect.
+				// @ mobius select connectors within the selection rect.
 				for(var inputIndex = 0; inputIndex < node.inputConnectors.length; inputIndex++){
 
 					var inputConnector = node.inputConnectors[inputIndex];
@@ -1215,7 +1268,7 @@ var flowchart = {
 		};
 
 		//
-		// @ vidamo get the array of input connectors that currently selected.
+		// @ mobius get the array of input connectors that currently selected.
 		//
 		this.getSelectedInputConnectors = function () {
 			var selectedInputConnector = [];
@@ -1234,7 +1287,7 @@ var flowchart = {
 		};
 
 		//
-		// @ vidamo get the array of output connectors that currently selected.
+		// @ mobius get the array of output connectors that currently selected.
 		//
 		this.getSelectedOutputConnectors = function () {
 			var selectedOutputConnector = [];

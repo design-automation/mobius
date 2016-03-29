@@ -21,7 +21,9 @@
 
         g.verb = f()
     }
-})(function(){
+})
+
+(function(){
 
     var verb = {};
 

@@ -18,7 +18,7 @@ angular.module('flowChart', ['dragging'] )
   	//
   	// Controller for the flowchart directive.
   	// Having a separate controller is better for unit testing, otherwise
-  	// it is painful to unit test a directive without instantiating the DOM 
+  	// it is painful to unit test a directive without instantiating the DOM
   	// (which is possible, just not ideal).
   	//
   	controller: 'FlowChartController',
@@ -74,68 +74,8 @@ angular.module('flowChart', ['dragging'] )
 //
 // Controller for the flowchart directive.
 //
-.controller('FlowChartController', ['$scope', 'dragging', '$element','$rootScope', function FlowChartController ($scope, dragging, $element,$rootScope) {
-
-    //
-	// @ vidamo for context menu
-	//
-    // todo shall integrate into one module? Or communicate between controllers
-
-    // menu for right click on node
-	$scope.nodeMenuOptions = [
-		['Add input connector', function () {
-            $scope.$emit("newInputConnector"); // -> graph controller
-		}],
-		['Add output connector', function () {
-            $scope.$emit("newOutputConnector"); // -> graph controller
-		}],
-        ['Delete', function () {
-            $scope.$emit("deleteSelected"); // -> graph controller
-        }],
-        ['Rename', function () {
-            $scope.$emit("renameSelected"); // -> graph controller
-        }],
-		['Save as new type', function () {
-			$scope.$emit("saveAsNewType"); // -> graph controller
-		}],
-		// todo when multiple nodes selected, this option should be grey out
-		['Overwrite the original type', function () {
-			$scope.$emit("overWriteProcedure"); // -> graph controller
-		}],
-		['Edit Procedure', function () {
-			$scope.$emit("editProcedure"); // -> graph controller
-		}]
-	];
-
-	$scope.deleteSelected = function(evt){
-		//if(evt.KeyCode === ){
-		//	$scope.$emit("deleteSelected"); // -> graph controller
-		//}
-	};
-
-    // menu for right click on connector
-    $scope.connectorMenuOptions = [
-        ['Delete', function () {
-            $scope.$emit("deleteSelected");
-        }],
-        ['Rename', function () {
-            $scope.$emit("renameSelected");
-        }]
-    ];
-
-	// menu for right click on connection
-	$scope.connectionMenuOptions = [
-		['Delete', function () {
-		$scope.$emit("deleteSelected");
-	}]
-	];
-
-    // test menu for right click on canvas
-    $scope.canvasMenuOptions = [
-        ['no operation', function () {
-        }]
-    ];
-
+.controller('FlowChartController', ['$scope', 'dragging', '$element','$rootScope','$timeout',
+	function FlowChartController ($scope, dragging, $element,$rootScope,$timeout) {
 	var controller = this;
 
 	//
@@ -154,15 +94,16 @@ angular.module('flowChart', ['dragging'] )
 	// Init data-model variables.
 	//
 	$scope.draggingConnection = false;
-	$scope.connectorSize = 6;
+	$scope.connectorSize = 4;
 	$scope.dragSelecting = false;
 
-	// @ vidamo for zoom and pan
-    $rootScope.$on("Update", function(event, message) {
+	//
+	// @ mobius: fetching zoom scale factor for the controling the size of 'double click menu'
+    //
+		$rootScope.$on("Update", function(event, message) {
         $scope.scaleFactor = message;
-
         //
-        // @ vidamo scale the new node dropdown
+        // @ mobius scale the new node dropdown
         // fixme
 
         // todo shall hide dropdown when zoom?
@@ -180,7 +121,7 @@ angular.module('flowChart', ['dragging'] )
 	*/
 
 	//
-	// @ vidamo test for double click menu
+	// @mobius test for double click menu
 	//
 	$scope.dbClickMenu = {
 		x:0,
@@ -190,7 +131,7 @@ angular.module('flowChart', ['dragging'] )
 	};
 
 	//
-	// @ vidamo clean dropdown menu after node added or cancelled
+	// @mobius clean dropdown menu after node added or cancelled
 	//
 	$scope.$on('cleanGraph',function(){
         document.getElementById("node-creator").style.display = "none";
@@ -202,8 +143,6 @@ angular.module('flowChart', ['dragging'] )
 	$scope.mouseOverConnector = null;
 	$scope.mouseOverConnection = null;
 	$scope.mouseOverNode = null;
-
-
 
 	//
 	// The class for connections and connectors.
@@ -224,7 +163,7 @@ angular.module('flowChart', ['dragging'] )
 			return null;
 		}
 
-		// 
+		//
 		// Check if the element has the class that identifies it as a connector.
 		//
 		if (hasClassSVG(element, parentClass)) {
@@ -280,9 +219,10 @@ angular.module('flowChart', ['dragging'] )
 	};
 
 	//
-	// @ vidamo double click to toggle dropdown for new node
+	// @ mobius: double click to toggle dropdown for new node
 	//
 	$scope.doubleClick = function(evt){
+
 
         // make sure double click not on node/connection
         // todo
@@ -298,29 +238,34 @@ angular.module('flowChart', ['dragging'] )
 		$scope.dbClickMenu.x = dBclickPoint.x * (1/$scope.scaleFactor) 	- (90-90/$scope.scaleFactor);
 		$scope.dbClickMenu.y = dBclickPoint.y *(1/$scope.scaleFactor );
 
-		// enable dropdown
 		document.getElementById("node-creator").style.display = "inline-block";
 
         // node location
         $scope.chart.newPos.x = dBclickPoint.x * (1/$scope.scaleFactor);
         $scope.chart.newPos.y = $scope.dbClickMenu.y;
+
+		// enable dropdown
+		var ele = document.getElementById("node-dropdown");
+
+		setTimeout(function(){
+			angular.element(ele).find('input').click();
+			$(ele).find('input').click()
+			$('#node-dropdown').find('input').click();
+		},0);
+
+		$scope.$broadcast('SetFocus');
 	};
 
 	// Called on mouse down in the chart.
-	// @ vidamo scale factor
+	// @mobius scale factor
 
 	$scope.mouseDown = function (evt) {
 
 		if(evt.which == 1){
 			$scope.chart.deselectAll();
-		//	setTimeout(
-		//		function(){
-		//			$scope.$emit("nodeIndex",false);
-		//		},0
-		//);
 
 			//
-            // @ vidamo toggle new node dropdown
+            // @ mobius toggle new node dropdown
             // fixme
 
             var mouseOverElement = controller.hitTest(evt.clientX, evt.clientY);
@@ -350,7 +295,7 @@ angular.module('flowChart', ['dragging'] )
 						x: startPoint.x*(1/$scope.scaleFactor ),
 						y: startPoint.y*(1/$scope.scaleFactor ),
 						width: 0,
-						height: 0,
+						height: 0
 					};
 				},
 
@@ -385,7 +330,7 @@ angular.module('flowChart', ['dragging'] )
 	};
 
 	//	Called for each mouse move on the svg element.
-	// @ vidamo scale factor
+	// @mobius scale factor
 	$scope.mouseMove = function (evt) {
 
 		//
@@ -436,7 +381,7 @@ angular.module('flowChart', ['dragging'] )
 	//
 	$scope.nodeMouseDown = function (evt, node) {
         //
-        // @ vidamo toggle new node dropdown
+        // @ mobius toggle new node dropdown
         // fixme control
         document.getElementById("node-creator").style.display = "none";
 
@@ -452,7 +397,7 @@ angular.module('flowChart', ['dragging'] )
 
 				lastMouseCoords = controller.translateCoordinates(x, y);
 				//
-				// If nothing is selected when dragging starts, 
+				// If nothing is selected when dragging starts,
 				// at least select the node we are dragging.
 				//
 				if (!node.selected()) {
@@ -460,7 +405,7 @@ angular.module('flowChart', ['dragging'] )
 					node.select();
 				}
 			},
-			
+
 			//
 			// Dragging selected nodes... update their x,y coordinates.
 			//
@@ -476,7 +421,7 @@ angular.module('flowChart', ['dragging'] )
 
 				lastMouseCoords = curCoords;
 
-				// @vidamo dragging is considered as clicked (selected)
+				// @mobius dragging is considered as clicked (selected)
 				var nodeIndex = chart.handleNodeDragged(node, evt.ctrlKey);
 				$scope.$emit("nodeIndex", nodeIndex);
 			},
@@ -492,7 +437,7 @@ angular.module('flowChart', ['dragging'] )
 				if(evt.which === 3){
 					var nodeIndex = chart.handleNodeRightClicked(node, evt.ctrlKey);
 				}
-				// @ vidamo let controller know the current node
+				// @mobius let controller know the current node
 				$scope.$emit("nodeIndex", nodeIndex);
 
 			}
@@ -512,7 +457,7 @@ angular.module('flowChart', ['dragging'] )
 	//
 	$scope.connectionMouseDown = function (evt, connection) {
         //
-        // @ vidamo toggle new node dropdown
+        // @ mobius toggle new node dropdown
         // fixme control
         document.getElementById("node-creator").style.display = "none";
 
@@ -527,10 +472,10 @@ angular.module('flowChart', ['dragging'] )
 
 	//
 	// Handle mousedown on an input connector.
-	// @ vidamo scale factor
+	// @ mobius scale factor
 	$scope.connectorMouseDown = function (evt, node, connector, connectorIndex, isInputConnector) {
         //
-        // @ vidamo toggle new node dropdown
+        // @ mobius toggle new node dropdown
         // fixme control
         document.getElementById("node-creator").style.display = "none";
 
@@ -568,7 +513,7 @@ angular.module('flowChart', ['dragging'] )
 					var startCoords = controller.translateCoordinates(x, y);
 
 					//
-					// @ vidamo communicate with pan&zoom controller to correct scale
+					// @ mobius communicate with pan&zoom controller to correct scale
 					//
 					$rootScope.$on("Update", function(event, message) {
 						$scope.scaleFactor = message;
@@ -588,7 +533,7 @@ angular.module('flowChart', ['dragging'] )
 			//
 			dragEnded: function () {
 
-				if ($scope.mouseOverConnector && 
+				if ($scope.mouseOverConnector &&
 					$scope.mouseOverConnector !== connector) {
 
 					//

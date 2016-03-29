@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+	<title>Mobius 0.1.0</title>
+	<link href="mobiusHelpStyleSheet.css" rel="stylesheet" type="text/css">
+
+<body id="body">
+
+
+	<div id="index" class="sidebar">
+		<div id="mobius">
+			<div id="title>"<a href="http://phtj.github.io/mobius">Mobius</a></div>
+		<div id="version">v0.1.0</div>
+		<a href="http://github.com/phtj/mobius">Github</a>
+	</div>
+
+	<ul>
+
+		<li><a href="MobiusHelp.html#mobiusIntro">Mobius v0.1.0</a></li>
+		<li><a href="MobiusHelp.html#mobiusDataObject">What is a Mobius Object?</a></li>
+		<li><a href="MobiusHelp.html#three">Geometry</a>
+			<ul>
+				<li><a href="MobiusHelp.html#geometry_creation">Making Geometry</a></li>
+				<li><a href="MobiusHelp.html#geometry_csg">CSG Operations</a></li>
+				<li><a href="MobiusHelp.html#geometry_analysis">Analyzing Geometry</a></li>
+			</ul></li>
+		<li><a href="MobiusHelp.html#nurbs">Curves and Surfaces</a>
+			<ul>
+				<li><a href="MobiusHelp.html#nurbs_creation">Making NURBS</a></li>
+				<li><a href="MobiusHelp.html#nurbs_analysis">Analyzing NURBS</a></li>
+			</ul></li>
+		<li><a href="MobiusHelp.html#transformations">Transformations</a></li>
+		<li><a href="MobiusHelp.html#general">General Functions</a>
+			<ul>
+				<li><a href="MobiusHelp.html#general_maths">Mathematical Functions</a></li>
+				<li><a href="MobiusHelp.html#general_list">List Functions</a></li>
+				<li><a href="MobiusHelp.html#general_display">Display Functions</a></li>
+			</ul></li>
+
+	</ul>
+</div>
+
+<div id="content">
+	<h1 id="mobiusIntro">Mobius</h1>
+	<p> Visual Dataflow Modelling Tool for Designers </p>
+
+	<h1 id="mobiusDataObject">What is a Mobius Data Object?</h1>
+	<p> The MobiusDataObject is the internal datastructure used by Mobius. It has the following public properites and methods:
+		<li> <p>geometry : Stores the underlying geometry of the object - could be normal geometry or NURBS geometry</p></li>
+	<li> <p>geometryUpdated: Stores a boolean as status of the geometry - set to true of the geometry has been updated.</p></li>
+	<li> <p>extractGeometry() : Stores the visual representation of the object as a mesh</p></li>
+	<li> <p>extractData() : Stores the data associated with the object</p></li>
+	</p>
+
+	<h1 id="three">Geometry</h2>
+		<h2 id="geometry_creation">Making Geometry</h2>
+		<ul>
+			<li>makePositionVector(x, y, z)
+				<p> Input: x, y, z coordinates </p>
+				<p> Output: MobiusDataObject with Geometry </p>
+				<p> Description: Creates a vector to a position in space </p>
+				<p> Example: makePositionVector( 10, 10, 10)</p>
+			</li>
+
+			<li>makePositionVectorsFromPoints ( list_of_points )
+				<p> Input: List of x, y, z coordinates</p>
+				<p> Output: List of MobiusDataObjects with Geometry </p>
+				<p> Description: Creates a list of vectors to a position in space </p>
+				<p> Example: makePositionVectorsFromPoints([12,0,0], [1,23,0], [12, 5, 3])</p>
+			</li>
+
+			<li>makeCircle (radius, segments)
+				<p> Input: Radius and number of segments </p>
+				<p> Output: MobiusDataObject with Circle geometry</p>
+				<p> Description: Creates a circular shape; Fine-ness depends on the number of segments. </p>
+				<p> Example: makeCircle (12, 30)</p>
+			</li>
+
+			<li>makePolyline (arrOfPoints)
+				<p> Input: List of points </p>
+				<p> Output: MobiusDataObject with Polyline Geometry </p>
+				<p> Description: Creates a polyline from a list of 3D points</p>
+				<p> Example: makePolyline ([[0,0,0], [10,0,0], [10,0,10], [7,0,15], [3,0,6]])</p>
+			</li>
+
+			<li>makeBox (length, breadth, height)
+				<p> Input: Dimensions of the box</p>
+				<p> Output: MobiusDataObject with Box geometry</p>
+				<p> Description: Creates a box at the origin with the given dimensions</p>
+				<p> Example: makeBox (12, 12, 12) </p>
+			</li>
+
+
+			<li>makeSphere (radius)
+				<p> Input: Radius of the sphere</p>
+				<p> Output: MobiusDataObject with Sphere geometry</p>
+				<p> Description: Creates a sphere at the origin with the given radius</p>
+				<p> Example: makeSphere (15) </p>
+			</li>
+
+			<li>makePolygonByPoints ( pointsXY )
+				<p> Input: 2D coordinates of the polygon. The x Direction is outward from the screen; the y direction points upwards. Points have to specified anticlockwise</p>
+				<p> Output: MobiusDataObject with flat Shape Geometry </p>
+				<p> Description: Creates a MobiusDataObject with 2D polygon which can be passed further to extrude function under geometry to get a solid 3D object</p>
+				<p> Example: makePolygonByPoints ( pointsXY ) </p>
+			</li>
+
+			<li>extrudePolygon (mObj, thickness, bevel )
+				<p> Input: MobiusDataObject with 2D Polygon Shape</p>
+				<p> Output: MobiusDataObject with Geometry </p>
+				<p> Description: Extrudes a polygon in a particular direction; Currently, extrusion in only z-direction is supported</p>
+				<p> Example: extrudePolygon( mobiusDataObject, 12, true) </p>
+			</li>
+
+			<li>makeLathe ( points, segments )
+				<p> Input:  </p>
+				<p> Output: </p>
+				<p> Description: </p>
+				<p> Example: </p>
+			</li>
+
+			<li>makePlane ( width, height )
+				<p> Input: Dimensions of the plane </p>
+				<p> Output: </p>
+				<p> Description: </p>
+				<p> Example: </p>
+			</li>
+
+			<li>makePolyhedron ( verticesOfCube, indicesOfFaces )
+				<p> Input: </p>
+				<p> Output: </p>
+				<p> Description: </p>
+				<p> Example: </p>
+			</li>
+
+			<li>make2DRing ( innerRadius, outerRadius, segments )
+				<p> Input: </p>
+				<p> Output: </p>
+				<p> Description: </p>
+				<p> Example: </p>
+			</li>
+
+			<li>makeTetrahedron ( radius )
+				<p> Input: </p>
+				<p> Output: </p>
+				<p> Description: </p>
+				<p> Example: </p>
+			</li>
+
+			<li>makeTorus (radius, tube, radialSegments, tubularSegments)
+				<p> Input: </p>
+				<p> Output: </p>
+				<p> Description: </p>
+				<p> Example: </p>
+			</li>
+
+			<li>makeTorusKnot ( radius, tube, radialSegments, tubularSegments )
+				<p> Input: </p>
+				<p> Output: </p>
+				<p> Description: </p>
+				<p> Example: </p>
+			</li>
+		</ul>
+
+		<h2 id="geometry_csg">CSG Operations</h2>
+		<ul>
+			<li>objectUnion( mObj1, mObj2 )
+				<p> Input: MobiusDataObject with Geometry </p>
+				<p> Output: MobiusDataObject </p>
+				<p> Description: Computes union of two objects. Currently, doesn't support objects generated by NURBS. </p>
+				<p> Example: </p>
+			</li>
+
+			<li>objectSubtract( mObj1, mObj2 )
+				<p> Input: MobiusDataObject with Geometry </p>
+				<p> Output: MobiusDataObject </p>
+				<p> Description: Computes subtraction of the second object from the first. Currently, doesn't support objects generated by NURBS. </p>
+				<p> Example: </p>
+			</li>
+
+			<li>objectIntersect( mObj1, mObj2 )
+				<p> Input: MobiusDataObject with Geometry </p>
+				<p> Output: MobiusDataObject </p>
+				<p> Description: Computes intersection of the two objects. Currently, doesn't support objects generated by NURBS. </p>
+				<p> Example: </p>
+			</li>
+		</ul>
+
+		<h2 id="geometry_analysis">Analyzing Geometry</h2>
+		<ul>
+			<li>getCentre(mObj)
+				<p> Input: MobiusDataObject with geometry or Nurbs </p>
+				<p> Output: Coordinates of the centre point </p>
+				<p> Description: Computes coordinates of the centre point of a Nurbs Curve, Nurbs Surface or a Geometry </p>
+				<p> Example: </p>
+			</li>
+
+			<li>distanceBetweenTwoPoints( point1, point2)
+				<p> Input: Two points </p>
+				<p> Output: Distance value </p>
+				<p> Description: Computes distance between two points in 3D space </p>
+				<p> Example: </p>
+			</li>
+
+			<li>getLength( mObj )
+				<p> Input: MobiusDataObject with NURBS Curve or Position Vector</p>
+				<p> Output: Length value </p>
+				<p> Description: Computes length of the curve or vector </p>
+				<p> Example: </p>
+			</li>
+		</ul>
+
+		<h1 id="nurbs">Curves and Surfaces</h1>
+
+		<h2 id="nurbs_creation">Making NURBS</h2>
+		<ul>
+			<li>makeLine(startPoint, endPoint)
+				<p> Input: Numeric Array </p>
+				<p> Output: MobiusDataObject with NURBS Geometry </p>
+				<p> Description: Creates a NURBS Line </p>
+				<p> Example: makeLine( [0, 0, 0], [10, 12, 14])</p>
+			</li>
+
+			<li>makeArc(centerPoint, xaxis, yaxis, radius, minAngle, maxAngle)
+				<p> Input: Center Coordinates, xAxis, yAxis, radius, min & maxAngle in Radians</p>
+				<p> Output: MobiusDataObject with NURBS Geometry</p>
+				<p> Description: Creates a NURBS Arc </p>
+				<p> Example: makeArc([0,0,0], [1,0,0], [0,1,0], 12, 0, 3.14)</p>
+			</li>
+
+			<li>makeBezierCurve(points, weights)
+				<p> Input: List of Points along which bezier curve is to be drawn; weights (can be set to 'undefined')</p>
+				<p> Output: MobiusDataObject with NURBS Curve </p>
+				<p> Description: Draws a Bezier curve along the points given </p>
+				<p> Example: </p>
+			</li>
+
+			<li>makeCircleBoundary(centerPoint,xaxis,yaxis,radius)
+				<p> Input: </p>
+				<p> Output: MobiusDataObject with NURBS Curve Geometry </p>
+				<p> Description: Creates a circular curve </p>
+				<p> Example: </p>
+			</li>
+
+			<li>makeEllipse( centerPoint ,xaxis,yaxis )
+				<p> Input: centre of the ellipse, xAxis & yAxis (lengths of the xAxis and yAxis are computed internally) </p>
+				<p> Output: MobiusDataObject with NURBS Curve  </p>
+				<p> Description: Creates an elliptical curve </p>
+				<p> Example: makeEllipse([0,0,0], [2,0,0], [0,0,10]) -- returns ---> Ellipse with x-axis length 4 units and y-axis length 20 units, centred at origin</p>
+			</li>
+
+
+			<li>makeEllipseArc( centerPoint,xaxis,yaxis,minAngle,maxAngle )
+				<p> Input: centre of the ellipse, xAxis & yAxis (lengths of the xAxis and yAxis are computed internally), angles in radians </p>
+				<p> Output:  MobiusDataObject with NURBS Curve  </p>
+				<p> Description: Similar to making an ellipse - with starting and ending angles specified for a partial ellipse</p>
+				<p> Example: </p>
+			</li>
+
+			<li>makeCurveByPoints( points, degree )
+				<p> Input: List of Points through which curve is to be drawn; degree (can be set to 'undefined'; defaults to 3)</p>
+				<p> Output: MobiusDataObject with NURBS Curve </p>
+				<p> Description: Draws a curve of degree specified through the points given </p>
+				<p> Example: </p>
+			</li>
+
+			<li>makeCurveByKnotsControlPointsWeights(degree,knots,controlPoints,weights )
+				<p> Input: </p>
+				<p> Output: MobiusDataObject with Nurbs Curve </p>
+				<p> Description: Draws a curve of degree specified, according to control points, knots and weights  </p>
+				<p> Example: </p>
+			</li>
+
+			<li>makeSurfaceByKnotsControlPointsWeights( degreeU,degreeV,knotsU,knotsV,controlPoints,weights )
+				<p> Input: </p>
+				<p> Output: MobiusDataObject with Nurbs Surface </p>
+				<p> Description: Draws a surface of degrees specified, according to control points, knots and weights  </p>
+				<p> Example: </p>
+			</li>
+
+			<li>makeSurfaceByCorners( point0, point1, point2, point3 )
+				<p> Input: CornerPoints [x,y,z] </p>
+				<p> Output: MobiusDataObject with Nurbs Surface  </p>
+				<p> Description: Draws a surface with the given corner points </p>
+				<p> Example: </p>
+			</li>
+
+			<li>makeSurfaceByRevolution( mObj, centerPoint, axis, angle )
+				<p> Input: MobiusDataObject with Nurbs Curve, centrePoint and axis in [x,y,z] form, angle in radians</p>
+				<p> Output: MobiusDataObject with NURBS Surface</p>
+				<p> Description: Makes a surface by revolving the given NURBS Curve about the given axis by the given angle </p>
+				<p> Example: </p>
+			</li>
+
+			<li>makeSurfaceBySweep( mObjProfile, mObjRail)
+				<p> Input: MobiusDataObjects with Nurbs Curves</p>
+				<p> Output: MobiusDataObject with NURBS Surface</p>
+				<p> Description: Makes a surface by sweeping the given profile NURBS Curve along the rail NURBS curve </p>
+				<p> Example: </p>
+			</li>
+
+			<li>makeSurfaceByLoft(listOfCurves, degree)
+				<p> Input: List MobiusDataObjects with Nurbs Curves, degree ( maybe 'undefined' )</p>
+				<p> Output: MobiusDataObject with NURBS Surface</p>
+				<p> Description: Makes a surface by lofting through the NURBS Curve specified </p>
+				<p> Example: </p>
+			</li>
+
+			<li>makeSurfaceByExtrusion( mObjProfile, direction)
+				<p> Input: MobiusDataObject with Nurbs Curve, direction in [x,y,z] form</p>
+				<p> Output: MobiusDataObject with NURBS Surface</p>
+				<p> Description: Makes a surface by extruding the given profile NURBS Curve along direction specified.
+					Distance of extrusion is computed by the length of the direction vector. </p>
+				<p> Example: </p>
+			</li>
+
+			<li>makeSurfaceAsSphere(centrePoint, radius)
+				<p> Input: </p>
+				<p> Output: </p>
+				<p> Description: </p>
+				<p> Example: </p>
+			</li>
+
+			<li>makeSurfaceAsCone( axis,xaxis,base,height,radius )
+				<p> Input: </p>
+				<p> Output: </p>
+				<p> Description: </p>
+				<p> Example: </p>
+			</li>
+
+			<li>makeSurfaceAsCylinder( axis, xaxis, base, height, radius )
+				<p> Input: </p>
+				<p> Output: </p>
+				<p> Description: </p>
+				<p> Example: </p>
+			</li>
+
+		</ul>
+
+		<h2 id="nurbs_analysis">Analysing NURBS</h2>
+		<ul>
+			<li>getPointOnSurface( surface, u, v )
+				<p> Input: MobiusDataObject with NURBS Curve, parameters on surface</p>
+				<p> Output: Point [x, y, z] </p>
+				<p> Description: Gives the point on the surface at the particular uv-value. u and v, both range from 0-1.</p>
+				<p> Example: </p>
+			</li>
+
+			<li>getPointOnCurve( curve, t )
+				<p> Input: MobiusDataObject with NURBS Curve, parameter on curve</p>
+				<p> Output: Point [x, y, z] </p>
+				<p> Description: Gives the point on the curve at the particular t-value. t ranges from 0-1.</p>
+				<p> Example: </p>
+			</li>
+
+			<li>divideCurveByEqualArcLength( curve, divisions )
+				<p> Input: MobiusDataObject with NURBS Curve, number of divisions</p>
+				<p> Output: List of t-values </p>
+				<p> Description: Gives a list of t-values. Between two consecutive t-values, the length of the curve the same.</p>
+				<p> Example: </p>
+			</li>
+
+			<li>divideCurveByArcLength( curve, arcLength )
+				<p> Input: MobiusDataObject with NURBS Curve, length of each division</p>
+				<p> Output: List of t-values </p>
+				<p> Description: Gives a list of t-values. Between two consecutive t-values, the length of the curve is as specified by the user.</p>
+				<p> Example: </p>
+			</li>
+
+			<li>getTangentAtCurveParameter( curve, t )
+				<p> Input: MobiusDataObject with NURBS Curve, parameter along t</p>
+				<p> Output: Tangent point [x, y, z]</p>
+				<p> Description: Gives the tangent to the curve at the given parameter (u,v) </p>
+				<p> Example: </p>
+			</li>
+
+
+			<li>getNormalAtSurfaceParameter( surface, u, v )
+				<p> Input: MobiusDataObject with NURBS Surface, parameter along u-direction, parameter along v-direction</p>
+				<p> Output: Normal point [x, y, z]</p>
+				<p> Description: Gives the normal to the surface at the given parameter (u,v) </p>
+				<p> Example: </p>
+			</li>
+
+			<li>makeMeshBySubdivision( mObj, ugrid, vgrid )
+				<p> Input: MobiusDataObject with NURBS Surface, number in u direction, number in v direction </p>
+				<p> Output: List of MobiusDataObject with NURBS surfaces (polysurface)</p>
+				<p> Description: Divides a NURBS surfaces into u*v smaller surfaces </p>
+				<p> Example: </p>
+			</li>
+
+			<li>makeTubeByLine( mObj, radius )
+				<p> Input: MobiusDataObject with NURBS Line, radius value </p>
+				<p> Output: MobiusDataObject with NURBS Cylinderical Surface </p>
+				<p> Description: </p>
+				<p> Example: </p>
+			</li>
+
+			<li>getCornerPointsFromSurface( mObj )
+				<p> Input: MobiusDataObject with NURBS geometry</p>
+				<p> Output: List of Points</p>
+				<p> Description: Returns a list with the corner points of the surface </p>
+				<p> Example: </p>
+			</li>
+
+			<li>makePoint(x, y, z)
+				<p> Input: x, y, z values</p>
+				<p> Output: Number Array</p>
+				<p> Description: Returns a point from the x, y, z values</p>
+				<p> Example: makePoint(12, 13, 14) -- returns --> [12, 13, 14]</p>
+			</li>
+
+		</ul>
+
+		<h1 id="transformations">Tranformations</h1>
+		<ul>
+			<li>makeCopy(mObj, xCoord, yCoord, zCoord)
+				<p> Input: MobiusDataObject, point at which copy is required relative to the original geometry</p>
+				<p> Output: -- </p>
+				<p> Description: Creates a unique copy with the same geometry and transformations as the given object and places it at the distances specified relative to the original geometry</p>
+				<p> Example: </p>
+			</li>
+
+			<li>shiftObject(mObj, shiftX, shiftY, shiftZ)
+				<p> Input: MobiusDataObject, translation values along each of the axes</p>
+				<p> Output: -- </p>
+				<p> Description: Moves the object relative to its current position. Underlying geometry remains unchanged</p>
+				<p> Example: </p>
+			</li>
+
+			<li>moveObjectToPoint(mObj, xCoord, yCoord, zCoord)
+				<p> Input: MobiusDataObject, x,y,z coordinates of the point to which the object needs to be shifted</p>
+				<p> Output: -- </p>
+				<p> Description: Moves the object to the point given. Underlying geometry remains unchanged</p>
+				<p> Example: </p>
+			</li>
+
+			<li>scaleObject(mObj, scaleX, scaleY, scaleZ)
+				<p> Input: MobiusDataObject, Scaling factor along xAxis, yAxis and zAxis (should be set to 1 if no scaling is desired)</p>
+				<p> Output: -- </p>
+				<p> Description: Scales object along the three axes according to the values specied. Underlying geometry remains unchanged</p>
+				<p> Example: </p>
+			</li>
+
+			<li>rotateObject(mObj, xAxis, yAxis, zAxis)
+				<p> Input: MobiusDataObject, Angle in Radians about xAxis, yAxis and zAxis</p>
+				<p> Output: -- </p>
+				<p> Description: Rotates object about the three axes according to the angles specied. Underlying geometry remains unchanged</p>
+				<p> Example: </p>
+			</li>
+
+
+			<li>makeFrame()
+				<p> Input: </p>
+				<p> Output: MobiusDataObject with a local frame of reference</p>
+				<p> Description: Creates a local frame of reference </p>
+				<p> Example: </p>
+			</li>
+
+			<li>orientObjectTowards( object, lookAtPoint )
+				<p> Input: MobiusDataObject</p>
+				<p> Output: -- </p>
+				<p> Description: Rotates the given object in such a way that the y-axis of the object looks towards the point specified</p>
+				<p> Example: </p>
+			</li>
+
+			<li>addToFrame( frame, object )
+				<p> Input: MobiusDataObject with a local frame</p>
+				<p> Output: -- </p>
+				<p> Description: Adds the given object into the local frame of reference</p>
+				<p> Example: </p>
+			</li>
+
+		</ul>
+
+		<h1 id="general">General Functions</h1>
+
+		<h2 id="general_maths">Mathematical Functions</h2>
+		<ul>
+			<li>convertDegreesToRadians( degrees )
+				<p> Input: degrees </p>
+				<p> Output: radians </p>
+				<p> Description: Converts degrees into radians </p>
+				<p> Example: </p>
+			</li>
+
+			<li>convertRadiansToDegrees( radians )
+				<p> Input: radians </p>
+				<p> Output: degrees </p>
+				<p> Description: Converts radians into degrees </p>
+				<p> Example: </p>
+			</li>
+
+			<li>getAbsoluteValue( number )
+				<p> Input:  </p>
+				<p> Output: </p>
+				<p> Description: Returns the absolute value of a number</p>
+				<p> Example: </p>
+			</li>
+
+			<li>getSignificantDigits( number, digits)
+				<p> Input:  </p>
+				<p> Output: </p>
+				<p> Description: Returns the value of a given number with the specified number of significant digits </p>
+				<p> Example: </p>
+			</li>
+
+			<li>getDotProduct( mat1, mat2 )
+				<p> Input: </p>
+				<p> Output: </p>
+				<p> Description: Computes the dot product of two matrices </p>
+				<p> Example: </p>
+			</li>
+
+			<li>getCrossProduct( mat1, mat2 )
+				<p> Input: </p>
+				<p> Output: </p>
+				<p> Description: Computes the Cross Product of the two matrices </p>
+				<p> Example: getCrossProduct([0,1,0], [1,0,0]) ---returns value---> [0,0,1]</p>
+			</li>
+		</ul>
+
+		<h2 id="general_list">List Functions</h2>
+		<ul>
+			<li>makeSequence(start, end, stepSize)
+				<p> Input: start value, end value and step size </p>
+				<p> Output: List </p>
+				<p> Description: Creates a sequence of numbers </p>
+				<p> Example: </p>
+			</li>
+
+			<li>addToList( list, object )
+				<p> Input: list and object/value to be added</p>
+				<p> Output: </p>
+				<p> Description: Adds a value or object to the given list </p>
+				<p> Example: </p>
+			</li>
+
+			<li>indexOfObject( list, object )
+				<p> Input: list, value/object</p>
+				<p> Output: number </p>
+				<p> Description: Index of the first occurence of the object/value in the list</p>
+				<p> Example: </p>
+			</li>
+
+			<li>removeIndexFromList( list, index )
+				<p> Input: number </p>
+				<p> Output: </p>
+				<p> Description: Removes the value/object at the given index in the given list </p>
+				<p> Example: </p>
+			</li>
+
+			<li>getMaxValue( valueList )
+				<p> Input: list of numbers </p>
+				<p> Output: number </p>
+				<p> Description: Returns the maximum number from a list of numbers </p>
+				<p> Example: </p>
+			</li>
+
+			<li>getMinValue( valueList )
+				<p> Input: list of numbers </p>
+				<p> Output: number </p>
+				<p> Description: Returns the minium number from a list of numbers </p>
+				<p> Example: </p>
+			</li>
+
+			<li>sumList( valueList )
+				<p> Input: list of numbers </p>
+				<p> Output: number </p>
+				<p> Description: Returns the sum of a list of numbers </p>
+				<p> Example: </p>
+			</li>
+
+			<li>averageList( valueList )
+				<p> Input: list of numbers </p>
+				<p> Output: number </p>
+				<p> Description: Returns the average of a list of numbers </p>
+				<p> Example: </p>
+			</li>
+
+			<li>rangeOfList( valueList )
+				<p> Input: list of numbers </p>
+				<p> Output: number </p>
+				<p> Description: Returns the difference between the maximum value and minimum value in a list of numbers </p>
+				<p> Example: </p>
+			</li>
+
+			<li>getListLength( valueList )
+				<p> Input: List </p>
+				<p> Output: Length of list </p>
+				<p> Description: Returns the length of a given list </p>
+				<p> Example: </p>
+			</li>
+
+		</ul>
+
+		<h2 id="general_display">Display Functions</h2>
+		<ul>
+			<li>print (content)
+				<p> Input: String / text </p>
+				<p> Output: -- </p>
+				<p> Description: Prints a message to console </p>
+				<p> Example: print( "hello world!" ) </p>
+			</li>
+
+			<li>addMaterial (obj, material_type, wireframe, color, transparent)
+				<p> Input: MobiusDataObject,
+					material_type ("MeshBasicMaterial", "MeshNormalMaterial", "MeshLambertMaterial" for Meshes),
+					wireframe: true or false,
+					color: hex-code for color,
+					transparent: true or false</p>
+				<p> Output: -- </p>
+				<p> Description: Attaches material to the MobiusDataObject</p>
+				<p> Example: </p>
+			</li>
+
+			<li>addData (obj, dataName, dataValue)
+				<p> Input: MobiusDataObject </p>
+				<p> Output: -- </p>
+				<p> Description: Attaches data to the MobiusDataObject</p>
+				<p> Example: </p>
+			</li>
+		</ul>
+
+</div>
+</div>
+
+</body>
+</html>
