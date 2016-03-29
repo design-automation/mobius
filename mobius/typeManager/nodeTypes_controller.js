@@ -7,6 +7,7 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
     if($scope.typeList[0]){
         $scope.definition = $scope.typeList[0].procedureDataModel;
         $scope.arguments = $scope.typeList[0].interfaceDataModel;
+        $scope.typeName =  $scope.typeList[0].nodeType;
     }
 
 
@@ -34,10 +35,12 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
             $scope.typeList[0].selected = true;
                 $scope.definition = $scope.typeList[0].procedureDataModel;
                 $scope.arguments = $scope.typeList[0].interfaceDataModel;
+                $scope.typeName =  $scope.typeList[0].nodeType;
         }else{
             $scope.definition = [];
             $scope.arguments = [];
             $scope.jsCode = $scope.generateCode();
+            $scope.typeName =  '';
         }
 
 
@@ -86,6 +89,7 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
                     // fixme confirmation, override, unchange, cancel
                     $scope.definition = $scope.typeList[i].procedureDataModel;
                     $scope.arguments = $scope.typeList[i].interfaceDataModel;
+                    $scope.typeName =  $scope.typeList[i].nodeType;
                 }
             }
         }

@@ -25,20 +25,24 @@
     display: inline-block;
     position: absolute !important;
     top: 0;
-    right: 164px;
+    right: 90px;
     white-space: nowrap;
-    width:63px;
 }
 
+.button-action:hover>.dropdown-menu{
+    display:block !important;
+}
 
+.button-control:hover>.dropdown-menu{
+    display:block !important;
+}
 
 .button-control{
     display: inline-block;
     position: absolute !important;
     top: 0;
-    right:105px;
+    right:60px;
     white-space: nowrap;
-    width:60px;
 }
 
 
@@ -60,7 +64,7 @@
     display: inline-block;
     position: absolute;
     top:0;
-    right: 48px;
+    right: 30px;
 }
 
 .code-area .codeEditor {

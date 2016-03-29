@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="assets/css/bootstrap/font-awesome.min.css">
 
     <!-- stylesheet -->
+    <link rel="stylesheet" href="assets/css/bootstrap/custom_font.css">
     <link rel="stylesheet" href="assets/css/mobius-layout.css">
     <link rel="stylesheet" href="assets/css/menu.css">
     <link rel="stylesheet" href="assets/css/view.css">
@@ -34,7 +35,7 @@
 <div >
     <!-- dropdown Menu -->
     <div ng-controller="menuCtrl" class = "menubar">
-        <span  class="menu" >
+        <span class="menu" >
             <div dropdown-toggle class = "menuTitle">  File </div>
             <ul class="dropdown-menu">
                 <li>
@@ -151,12 +152,14 @@
                                 <!--viewport menu-->
                                 <span ng-if="viewportControl.layout === 'singleView'"
                                       dropdown on-toggle="toggled(open)" class="viewportMenu">
-                                     <button class="btn btn-default btn-xs viewport-menu-button" dropdown-toggle>
-                                         {{viewportControl.currentCate}}
+                                     <button class="button viewport-menu-button" dropdown-toggle
+                                            style="width: 40px !important;">
+                                         <!--{{viewportControl.currentCate}}-->
+                                         <i class="fa fa-eye fa-lg"></i>
                                          <span class="caret"></span>
                                      </button>
 
-                                    <ul class="dropdown-menu" >
+                                    <ul class="dropdown-menu" style="left: 42px;top:-3px">
                                         <li class="dropdown-submenu">
                                             <a href="#"> Set Viewport </a>
                                             <ul class="dropdown-menu" style="top:-2px">
@@ -476,7 +479,10 @@
                                     <div>Console</div>
                                     <button class="button"
                                             id = "clear"
-                                            ng-click="clearConsole()"> Clear </button>
+                                            title="clear console"
+                                            ng-click="clearConsole()">
+                                        <i class="fa fa-eraser"></i>
+                                    </button>
                                  </div>
                                 <div class="console" id = 'log' ></div>
                             </div>
@@ -546,7 +552,7 @@
                                             ng-click="run()"
                                             style="outline: none!important;"
                                             title="Run program">
-                                        Run
+                                        <i class="fa fa-play"></i>
                                     </button>
                                 </span>
 

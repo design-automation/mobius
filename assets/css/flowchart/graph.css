@@ -62,7 +62,6 @@ CSS For ui-flowchart [left pane graph area]
 	stroke: #777777;
 	stroke-width: 2;
 	stroke-dasharray:5,1;
-
 }
 
 .selected-func-connector-circle {
@@ -191,7 +190,7 @@ Drag selection rectangle.
 
 .drag-selection-rect {
 	stroke: #aaa;
-	stroke-width: 1;
+	stroke-width: 0.7;
 	stroke-dasharray:3,3;
 	fill: transparent;
 	border-radius: 0 !important;

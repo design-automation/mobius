@@ -9,17 +9,12 @@
 }
 
 #nodeTypeList{
-    height: 95%;
-}
-
-
-#typeManager pre span {
-    /*padding-left:17px;*/
+    height: 100%;
 }
 
 .doormat > input{
     position:absolute;
-    right:19px;
+    left:12px;
     display: inline-block;
     top:5px
 }
@@ -28,36 +23,32 @@
     overflow: auto;
     position: absolute;
     width: 100%;
-    bottom: 5%;
-    top:28px;
+    top:32px;
+    bottom: 0;
 }
 
-#typeManage_buttons{
-    position: absolute;
-    width: 100%;
-    bottom:0;
-    height:5%;
-    padding: 5px;
+
+#typeManage_buttons button{
+    top: -1px;
+    display: inline-block;
+    white-space: nowrap;
+    position: absolute !important;
 }
 
 #typeManage_buttons  button:nth-child(1){
-    position: absolute;
-    left: 5%;
+    right: 90px;
 }
 
 #typeManage_buttons  button:nth-child(2){
-    position: absolute;
-     left: 27%
+    right: 60px
 }
 
 #typeManage_buttons  button:nth-child(3){
-    position: absolute;
-    left: 49%
+    right:30px
 }
 
 #typeManage_buttons  button:nth-child(4){
-    position: absolute;
-    left: 77%
+    right: 0
 }
 
 #typeManager #tree-root-procedure-type{

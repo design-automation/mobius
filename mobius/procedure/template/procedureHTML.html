@@ -7,8 +7,8 @@
                         <div>
                              {{currentNodeType}}  {{currentNodeVersion}}
                         </div>
-                        <button class="button pull-right button-input" ng-click="newInterface('Input')">
-                            Input
+                        <button class="button pull-right button-input" ng-click="newInterface('Input')" title="Add Input">
+                            <i class="fa fa-sign-in fa-lg fa-rotate-90"></i>
                         </button>
                     </div>
                 </div>
@@ -16,8 +16,8 @@
                 <div ng-if = "!currentNodeName">
                     <div class="doormat">
                         <div>No Node Selected</div>
-                        <button class="button pull-right button-input" ng-click="newInterface('Input')">
-                            Input
+                        <button class="button pull-right button-input" ng-click="newInterface('Input')" title="Add Input">
+                            <i class="fa fa-sign-in fa-lg fa-rotate-90"></i>
                         </button>
                     </div>
                 </div>
@@ -46,32 +46,39 @@
                         </div>
                     </div>
 
-                    <ui-select ng-model="method.selected"
-                               class="button-action"
-                               on-select="newItem('Action',$select.selected)">
-                        <ui-select-match placeholder="Function" >Function</ui-select-match>
-                        <ui-select-choices
-                                group-by="'category'"
-                                repeat="method in methods | propsFilter: {name: $select.search, category: $select.search}">
-                            <span ng-bind-html="method.name| highlight: $select.search"></span>
-                        </ui-select-choices>
-                    </ui-select>
-
-                    <ui-select ng-model="controlType" class="button-control"
-                               on-select="newItem('Control',$select.selected)">
-                        <ui-select-match placeholder="Control">Control</ui-select-match>
-                        <ui-select-choices
-                                repeat="controlType in controlTypes| filter: $select.search">
-                            <span ng-bind-html="controlType| highlight: $select.search"></span>
-                        </ui-select-choices>
-                    </ui-select>
-
-                    <button class="button pull-right button-output" ng-click="newItem('Output')">
-                        Output
+                    <button class="button pull-right button-action" dropdown-toggle="dropdown" title="Add Function">
+                        <i class="icon-function fa-lg"></i>
+                        <ui-select ng-model="method.selected"
+                                   class="dropdown-menu"
+                                   on-select="newItem('Action',$select.selected)">
+                            <ui-select-match placeholder="Function" >Function</ui-select-match>
+                            <ui-select-choices
+                                    group-by="'category'"
+                                    repeat="method in methods | propsFilter: {name: $select.search, category: $select.search}">
+                                <span ng-bind-html="method.name| highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
                     </button>
 
-                    <button class="button pull-right button-variable"
-                            ng-click="newItem('Data')">Variable
+                    <button class="button pull-right button-control" dropdown-toggle="dropdown" title="Add Control">
+                        <i class="fa fa-retweet fa-lg"></i>
+                        <ui-select ng-model="controlType" class="dropdown-menu"
+                                   on-select="newItem('Control',$select.selected)">
+                            <ui-select-match placeholder="Control">Control</ui-select-match>
+                            <ui-select-choices
+                                    repeat="controlType in controlTypes| filter: $select.search">
+                                <span ng-bind-html="controlType| highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </button>
+
+                    <button class="button pull-right button-output" ng-click="newItem('Output')" title="Add Output">
+                        <i class="fa fa-sign-out fa-lg fa-rotate-90"></i>
+                    </button>
+
+                    <button class="button pull-right button-variable" title="Add Variable"
+                            ng-click="newItem('Data')">
+                        <i class="icon-variable fa-lg"></i>
                     </button>
                 </div>
 
@@ -80,33 +87,39 @@
                             <div>No Node Selected</div>
                     </div>
 
-                    <ui-select ng-model="method.selected"
-                               class="button-action"
-                               on-select="newItem('Action',$select.selected)"
-                    >
-                        <ui-select-match placeholder="Function" >Function</ui-select-match>
-                        <ui-select-choices
-                                group-by="'category'"
-                                repeat="method in methods | propsFilter: {name: $select.search, category: $select.search}">
-                            <span ng-bind-html="method.name| highlight: $select.search"></span>
-                        </ui-select-choices>
-                    </ui-select>
-
-                    <ui-select ng-model="controlType" class="button-control"
-                               on-select="newItem('Control',$select.selected)">
-                        <ui-select-match placeholder="Control">Control</ui-select-match>
-                        <ui-select-choices
-                                repeat="controlType in controlTypes| filter: $select.search">
-                            <span ng-bind-html="controlType| highlight: $select.search"></span>
-                        </ui-select-choices>
-                    </ui-select>
-
-                    <button class="button pull-right button-output" ng-click="newItem('Output')">
-                        Output
+                    <button class="button pull-right button-action" dropdown-toggle="dropdown" title="Add Function">
+                        <i class="icon-function fa-lg"></i>
+                        <ui-select ng-model="method.selected"
+                                   class="dropdown-menu"
+                                   on-select="newItem('Action',$select.selected)">
+                            <ui-select-match placeholder="Function" >Function</ui-select-match>
+                            <ui-select-choices
+                                    group-by="'category'"
+                                    repeat="method in methods | propsFilter: {name: $select.search, category: $select.search}">
+                                <span ng-bind-html="method.name| highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
                     </button>
 
-                    <button class="button pull-right button-variable"
-                            ng-click="newItem('Data')">Variable
+                    <button class="button pull-right button-control" dropdown-toggle="dropdown" title="Add Control">
+                        <i class="fa fa-lg fa-retweet"></i>
+                        <ui-select ng-model="controlType" class="dropdown-menu"
+                                   on-select="newItem('Control',$select.selected)">
+                            <ui-select-match placeholder="Control">Control</ui-select-match>
+                            <ui-select-choices
+                                    repeat="controlType in controlTypes| filter: $select.search">
+                                <span ng-bind-html="controlType| highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </button>
+
+                    <button class="button pull-right button-output" ng-click="newItem('Output')" title="Add Output">
+                        <i class="fa fa-lg fa-sign-out fa-rotate-90"></i>
+                    </button>
+
+                    <button class="button pull-right button-variable" title="Add Varible"
+                            ng-click="newItem('Data')">
+                        <i class="icon-variable fa-lg"></i>
                     </button>
                 </div>
 

@@ -32,9 +32,7 @@
         </span>
 
         <!--delete key-->
-        <div class="procedure-delete-key" data-nodrag ng-click="removeInput(this)">
-            <span> &times; </span>
-        </div>
+
 
         <span ng-if="node.option.name === 'dropdown'">
             &nbsp;menu options:
@@ -47,6 +45,10 @@
                     </pre>
                 </a>
         </span>
+
+        <div class="procedure-delete-key" data-nodrag ng-click="removeInput(this)">
+            <span> &times; </span>
+        </div>
 
         <div ui-tree-nodes=""  ng-model="node.nodes" ng-class="{hidden: collapsed}">
             <div ng-repeat="node in node.nodes"
