@@ -3,6 +3,7 @@
 }
 
 .dropdown-menu {
+    cursor: pointer !important;
     font-size: 12px !important;
     border:0 !important;
     background-clip: border-box !important;
@@ -16,6 +17,7 @@
 
 
 .dropdown-submenu{
+    cursor: pointer !important;
     position:relative;
 }
 
