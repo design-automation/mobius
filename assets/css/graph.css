@@ -14,10 +14,11 @@
     position: absolute;
 }
 
-.graph-area .flow-chart{
+.flow-chart{
     position: absolute;
     width:4000px;
-    height: 4000px
+    height: 4000px;
+    overflow: hidden;
 }
 
 

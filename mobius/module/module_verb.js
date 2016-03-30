@@ -341,8 +341,12 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.srf.nurbsBySweep = function( sectionCurve, railCurve ){
 		
-		var profile = sectionCurve.getGeometry();
-		var rail = railCurve.getGeometry();
+		var profile = sectionCurve;
+		if(sectionCurve.getGeometry != undefined)
+			profile = sectionCurve.getGeometry();
+		var rail = railCurve;
+		if(railCurve.getGeometry != undefined)
+			rail = railCurve.getGeometry();
 		
 		return new mObj_geom_Surface( new verb.geom.SweptSurface ( profile, rail ) ) ;
 		
@@ -396,8 +400,7 @@ var MOBIUS = ( function (mod){
 
 	};
 
-	/************* unchecked portion ***********/
-	/**
+/**
 	 * Creates a circular pipe along a given path 
 	 * @param { curve object } centreCurve  - Curve Object which determines the path of the pipe
 	 * @param { float } radius - Radius of the pipe
@@ -406,21 +409,44 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.srf.nurbsPipe = function(centreCurve, radius){
 
-		var origin = centreCurve.getGeometry().point(0);
-		var zaxis = centreCurve.getGeometry().tangent(0);
+		centreCurve = centreCurve.getGeometry();
+
+		var origin = centreCurve.point(0);
+		var zaxis = centreCurve.tangent(0);
+
+		zaxis = verb.core.Vec.normalized( zaxis );
+		var xaxis;
+		if( zaxis[2] != 0 )
+			xaxis = [1,1, (-zaxis[0]-zaxis[1])/zaxis[2] ];  
+		else if( zaxis[1] != 0 )
+			xaxis = [ 1, (-zaxis[0]-zaxis[2])/zaxis[1], 1 ];
+		else if( zaxis[0] != 0 )
+			xaxis = [ (-zaxis[0]-zaxis[1])/zaxis[0], 1, 1 ];
+		else
+			console.log("invalid tangent in pipe function")
+
+
+		var frame = new mObj_frame( origin, xaxis, undefined, zaxis );
+		var sectionCurve = MOBIUS.crv.circle( frame, radius );
 
 		// compute some random vector perpendicular to the z-vector
-		var sectionCurves  = [];
+/*		var sectionCurves  = [];
 		for( var i=0; i<5; i++){
+
+			var origin = centreCurve.point(i/5);
+			var zaxis = centreCurve.tangent(i/5);
+
 			zaxis = verb.core.Vec.normalized( zaxis );
 			var xaxis = [1,1, ((-zaxis[0]-zaxis[1])/zaxis[2])]; 
 
 			var frame = new mObj_frame( origin, xaxis, undefined, zaxis );
 			var sectionCurve = MOBIUS.crv.circle( frame, radius );
-		}
+
+			sectionCurves.push( sectionCurve );
+		}*/
 
 
-		return MOBIUS.srf.nurbsBySweep( sectionCurve, centreCurve);
+		return MOBIUS.srf.nurbsBySweep( sectionCurve, centreCurve );
 
 	};
 

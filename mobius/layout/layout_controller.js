@@ -55,6 +55,7 @@ mobius.controller('layoutCtrl',['$scope','hotkeys',
 
 
         $scope.$on('editProcedure', function(evt,message){
+            console.log(message)
             if(message === false || $scope.displayProcedure === true){
                     $scope.displayProcedure = false;
                     $scope.viewportSize += $scope.procedureSize;
@@ -64,12 +65,10 @@ mobius.controller('layoutCtrl',['$scope','hotkeys',
 
                 $scope.displayProcedure = true;
                 if($scope.viewportSize > $scope.bodySize * 0.25){
-
                     $scope.viewportSize -= $scope.bodySize * 0.25;
                     $scope.procedureSize += $scope.bodySize * 0.25;
                 }
                 else if($scope.graphSize > $scope.bodySize * 0.25){
-
                       $scope.graphSize -= $scope.bodySize * 0.25;
                     $scope.procedureSize = $scope.bodySize * 0.25;
                 }
@@ -78,7 +77,6 @@ mobius.controller('layoutCtrl',['$scope','hotkeys',
             $scope.viewportWidth = $scope.viewportSize +'px';
             $scope.procedureWidth = $scope.procedureSize +'px';
             $scope.graphWidth = $scope.graphSize +'px';
-
         });
 
     }]);
