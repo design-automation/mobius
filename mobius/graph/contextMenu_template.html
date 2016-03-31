@@ -1,8 +1,8 @@
-<div class="dropdown position-fixed " id="menu-node" >
+<div class="position-fixed" id="menu-node" >
     <ul class="dropdown-menu">
         <li class="dropdown-submenu">
             <a> Show Input </a>
-            <ul class="dropdown-menu" ng-if="disableAddInput()">
+            <ul class="dropdown-menu " ng-if="disableAddInput()">
                 <li ng-repeat="input in inputs"
                     ng-if="input.title ==='Input' && checkDupInput(input)"
                     ng-click="addInputConnector(input)">
@@ -13,7 +13,7 @@
 
         <li class="dropdown-submenu" >
             <a> Show Output </a>
-            <ul class="dropdown-menu " ng-if="disableAddOutput()">
+            <ul class="dropdown-menu" ng-if="disableAddOutput()">
                 <li ng-repeat="procedure in procedures"
                     ng-if="procedure.title ==='Output' && checkDupOutput(procedure)"
                     ng-click="addOutputConnector(procedure)"
@@ -39,9 +39,6 @@
         <li>
             <a ng-click="delete()"> Hide </a>
         </li>
-        <!--<li>-->
-        <!--<a ng-click="rename()"> Rename </a>-->
-        <!--</li>-->
     </ul>
 </div>
 

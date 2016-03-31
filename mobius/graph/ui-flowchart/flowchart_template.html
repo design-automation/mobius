@@ -35,7 +35,7 @@
       ng-attr-width="{{node.width()}}"
       ng-attr-height="{{node.height()}}"
       fill="#f5f5f5"
-      context-menu
+      context-menu = "onshow($event)"
       data-target="menu-node"
       ng-dblclick ="nodeDoubleClick($event)">
     </rect>

@@ -24,7 +24,7 @@ angular
               menuElement.addClass('open');
 
               // fixme offset for menu
-              var left = Math.max(event.pageX , 0),
+              var left = Math.max(event.pageX + 10 , 0),
                   top = Math.max(event.pageY - 24, 0);
 
 

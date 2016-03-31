@@ -569,4 +569,24 @@ angular.module('flowChart', ['dragging'] )
 			}
 		});
 	};
+
+	// context menu positioning
+	$scope.onshow= function(event){
+		var width = window.innerWidth,
+			height = window.innerHeight;
+
+		document.getElementById('menu-node').className = ' position-fixed';
+
+		if(event.clientY > height-300){
+			document.getElementById('menu-node').className += ' menu-up';
+		}
+
+		//if(event.clientX > width-160){
+		//	document.getElementById('menu-node').className += ' menu-left';
+		//}
+
+		if(event.clientX > width-200){
+			document.getElementById('menu-node').className += ' submenu-left';
+		}
+	}
 }]);

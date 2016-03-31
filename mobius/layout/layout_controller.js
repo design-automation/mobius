@@ -55,7 +55,6 @@ mobius.controller('layoutCtrl',['$scope','hotkeys',
 
 
         $scope.$on('editProcedure', function(evt,message){
-            console.log(message)
             if(message === false || $scope.displayProcedure === true){
                     $scope.displayProcedure = false;
                     $scope.viewportSize += $scope.procedureSize;
