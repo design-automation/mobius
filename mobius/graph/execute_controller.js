@@ -2,13 +2,11 @@
 // Execute generated code ('run' button)
 //
 
-mobius.controller('executeCtrl',['$scope','$rootScope','executeService','consoleMsg','usSpinnerService','generateCode','hotkeys',
-    function($scope,$rootScope,executeService,consoleMsg,usSpinnerService,generateCode,hotkeys) {
-
-        // one-way binding of generated javascript code
-
+mobius.controller('executeCtrl',['$scope','$rootScope','$q','executeService','consoleMsg','usSpinnerService','generateCode','hotkeys',
+    function($scope,$rootScope,$q,executeService,consoleMsg,usSpinnerService,generateCode,hotkeys) {
         $scope.showSpinner = false;
 
+        // one-way binding of generated javascript code
         $scope.$watch(function () { return generateCode.getJavascriptCode(); }, function () {
             $scope.javascriptCode = generateCode.getJavascriptCode();
         });
@@ -47,60 +45,54 @@ mobius.controller('executeCtrl',['$scope','$rootScope','executeService','console
             })
         });
 
-
         $scope.run = function(){
-            $scope.showSpinner = true;
-            // clean output buffer
             $scope.outputs = [];
 
-            executeService.execute( $scope.javascriptCode,$scope.geomListCode)
-                .then(function (data) {
+            $scope.showSpinner = true;
+
+            // send to web worker
+            setTimeout(function(){
+                executeService.execute($scope.javascriptCode + $scope.geomListCode + '\n return dataConversion(geomList);')
+                    .then(function (data) {
                         console.log('running done');
                         $scope.showSpinner = false;
                         $scope.outputs = data;
-                    }
-                ).then(function() {
-                console.log('display');
+                    })
+                    .then(function() {
+                        console.log('display');
 
-                //display in the viewport according to node selection
-                //setTimeout(function(){
-                var scope = angular.element(document.getElementById('threeViewport')).scope();
-                var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
+                        //display in the viewport according to node selection
+                        var scope = angular.element(document.getElementById('threeViewport')).scope();
+                        var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
 
-                scope.viewportControl.refreshView();
-                scopeTopo.topoViewportControl.refreshView();
-                //},0);
+                        scope.viewportControl.refreshView();
+                        scopeTopo.topoViewportControl.refreshView();
 
-                var selectedNodes = $scope.chartViewModel.getSelectedNodes();
+                        var selectedNodes = $scope.chartViewModel.getSelectedNodes();
 
-                var scope = angular.element(document.getElementById('threeViewport')).scope();
-                var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
+                        var scope = angular.element(document.getElementById('threeViewport')).scope();
+                        var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
 
-                for(var i = 0; i < $scope.outputs.length; i++){
+                        for(var i = 0; i < $scope.outputs.length; i++){
 
-                    for(var j =0; j < selectedNodes.length; j++){
-                        if($scope.outputs[i].name === selectedNodes[j].data.name){
+                            for(var j =0; j < selectedNodes.length; j++){
+                                if($scope.outputs[i].name === selectedNodes[j].data.name){
 
-                            var p = 0;
+                                    var p = 0;
 
-                            for(var k in $scope.outputs[i].value){
-                                //scope.$apply(function(){
-                                scope.viewportControl.
-                                addGeometryToScene($scope.outputs[i].value[k],
-                                    $scope.outputs[i].geom[p],
-                                    $scope.outputs[i].geomData[p]);
-                                //} );
+                                    for(var k in $scope.outputs[i].value){
+                                        scope.viewportControl.addGeometryToScene($scope.outputs[i].value[k],
+                                            $scope.outputs[i].geom[p],
+                                            $scope.outputs[i].geomData[p]);
 
-                                //scopeTopo.$apply(function(){
-                                scopeTopo.topoViewportControl.
-                                addGeometryToScene($scope.outputs[i].value[k],
-                                    $scope.outputs[i].topo[p]);
-                                //} );
-                                p++;
+                                        scopeTopo.topoViewportControl.addGeometryToScene($scope.outputs[i].value[k],
+                                            $scope.outputs[i].topo[p]);
+                                        p++;
+                                    }
+                                }
                             }
                         }
-                    }
-                }
-            });
+                    });
+            },100);
         }
     }]);
