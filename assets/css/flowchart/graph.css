@@ -22,7 +22,14 @@ CSS For ui-flowchart [left pane graph area]
 .selected-node-rect {
     fill:white;
 	stroke: #3F98F3;
-	stroke-width: 1;
+	stroke-width: 0.7;
+	cursor: default !important;
+}
+
+.primary-selected-node-rect{
+	fill:white;
+	stroke: #3F98F3;
+	stroke-width: 1.5 !important;
 	cursor: default !important;
 }
 

@@ -6,18 +6,19 @@
 .menubar .dropdown{
     z-index: 10001;
 }
+
 .menuTitle{
     height: 100%;
     display: inline-block;
     margin: 0;
     padding: 5px;
     font-size: 13px;
-    /*letter-spacing: 1px;*/
     color: #888;
+    -webkit-user-select: none;
 }
 
 
-#importNode, #importNodeLib, #openSceneJson{
+#importNodeLib, #openSceneJson{
     visibility: hidden;
     width: 1px;
     height: 1px;

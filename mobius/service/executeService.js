@@ -1,10 +1,18 @@
 mobius.factory('executeService', function ($q) {
+
+    var worker = new Worker('mobius/service/executeWorker.js');
+    var defer = $q.defer();
+
+    worker.addEventListener('message', function(e) {
+        defer.resolve(e.data);
+    }, false);
+
+
     return{
-        execute: function(jsCode, geomCode){
-            var deferred = $q.defer();
-            var outputs = new Function(  jsCode + geomCode + '\n return dataConversion(geomList);')();
-            deferred.resolve(outputs);
-            return deferred.promise;
+        execute: function(code){
+            worker.postMessage(code);
+            return defer.promise;
         }
     }
 });
+

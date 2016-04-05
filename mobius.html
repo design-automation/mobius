@@ -35,7 +35,7 @@
 <div >
     <!-- dropdown Menu -->
     <div ng-controller="menuCtrl" class = "menubar">
-        <span class="menu" >
+        <span class="menu">
             <div dropdown-toggle class = "menuTitle">  File </div>
             <ul class="dropdown-menu">
                 <li>
@@ -548,7 +548,14 @@
                                     </div>
                                 </div>
 
+
                                 <span ng-controller="executeCtrl" id="run-button">
+                                    <span us-spinner
+                                          spinner-on="showSpinner"
+                                          spinner-key="executeSpin"
+                                          style="position: absolute;right:70px;top:20px">
+                                    </span>
+
                                     <button class="button"
                                             ng-click="run()"
                                             style="outline: none!important;"
@@ -684,6 +691,10 @@
 <script src="assets/js/angular-material/angular-material.min.js"></script>
 <script src="assets/js/angular-material/angular-animate.min.js"></script>
 <script src="assets/js/angular-material/angular-aria.min.js"></script>
+
+<!-- spin wheel -->
+<script src="assets/js/spin/spin.js"></script>
+<script src="assets/js/spin/angular-spinner.js"></script>
 
 </body>
 

@@ -23,21 +23,19 @@
     ng-attr-transform="translate({{node.x()}}, {{node.y()}})"
     >
     <rect
-      ng-attr-class="{{(!node.disabled()) && (node.selected() && 'selected-node-rect')
+      ng-attr-class="{{ (!node.disabled()) && ((node.selected() && (node.data.id === primarySelectedIndex)) && 'primary-selected-node-rect')
+                        ||(!node.disabled()) && (node.selected() && 'selected-node-rect')
                         || ((!node.disabled()) && (node == mouseOverNode && 'mouseover-node-rect'|| 'node-rect'))
                         || (node.disabled()) && (node.selected() && 'selected-disabled-node-rect')
                         || ((node.disabled()) && (node == mouseOverNode && 'mouseover-disabled-node-rect'|| 'disabled-node-rect'))
 }}"
-      ry="0"
-      rx="0"
-      x="0"
-      y="0"
+      ry="0" rx="0" x="0" y="0"
       ng-attr-width="{{node.width()}}"
       ng-attr-height="{{node.height()}}"
       fill="#f5f5f5"
       context-menu = "onshow($event)"
       data-target="menu-node"
-      ng-dblclick ="nodeDoubleClick($event)">
+      ng-dblclick ="nodeDoubleClick($event)">{{node.data.id}}
     </rect>
 
         <text

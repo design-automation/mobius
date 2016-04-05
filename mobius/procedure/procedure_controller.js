@@ -50,9 +50,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         // pass by reference
         // deep watch chartViewModel.data instead of chartViewModel to prevent stack limit exceeded
         $scope.chartViewModel= generateCode.getChartViewModel();
-        //$scope.$watch('chartViewModel.data', function () {
-        //    generateCode.generateCode();
-        //},true);
 
         // currently selected node ID
         $scope.nodeIndex = '';
@@ -130,7 +127,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
 
         // watch change of procedure data tree, if change update the flattenData, update version
-
         $scope.$watch('data',function(){
             updateVersion();
             //generateCode.generateCode();
@@ -333,7 +329,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         //
         // procedure manipulation
         //
-
         $scope.removeOutput = function(scope) {
             scope.remove();
 
@@ -726,7 +721,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         };
 
         // interface design options
-
         $scope.interfaceOptions = [{name:'none'},
                                    {name:'slider'},
                                    {name:'dropdown'},
@@ -757,19 +751,4 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
             return $scope.currentHighestId;
         };
-
-        //
-        //$scope.generateUUID = function(){
-        //    var d = new Date().getTime();
-        //    if(window.performance && typeof window.performance.now === "function"){
-        //        d += performance.now();; //use high-precision timer if available
-        //    }
-        //    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        //        var r = (d + Math.random()*16)%16 | 0;
-        //        d = Math.floor(d/16);
-        //        return (c=='x' ? r : (r&0x3|0x8)).toString(16);
-        //    });
-        //    return uuid;
-        //};
-
     }]);

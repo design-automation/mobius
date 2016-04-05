@@ -943,19 +943,24 @@ mobius.directive('viewport', function factory() {
                         }
                     }
                 }
+                console.log(scene)
             };
 
             //
             // takes in single data object and categorizes and displays accordingly
             //
             scope.internalControl.displayObject = function(singleGeomObject, singleGeomDataObject){
+                var loader = new THREE.ObjectLoader();
+                var obj = loader.parse( singleGeomObject );
+                //console.log(model)
+                //var obj = new THREE.Object3D(model.geometry, model.materials);
 
                 // update the 3d viewport
-                if(singleGeomObject instanceof THREE.Mesh
-                    || singleGeomObject instanceof THREE.Line
-                    || singleGeomObject instanceof THREE.PointCloud
-                    || singleGeomObject instanceof THREE.Object3D){
-                    scene.add(singleGeomObject);
+                if(obj instanceof THREE.Mesh
+                    || obj instanceof THREE.Line
+                    || obj instanceof THREE.PointCloud
+                    || obj instanceof THREE.Object3D){
+                    scene.add(obj);
                 }
                 // update the data table viewport
                 if(singleGeomDataObject.length !== 0){

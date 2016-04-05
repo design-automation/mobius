@@ -50,6 +50,7 @@
                         <i class="icon-function fa-lg"></i>
                         <ui-select ng-model="method.selected"
                                    class="dropdown-menu"
+                                   focus-on='SetFocus'
                                    on-select="newItem('Action',$select.selected)">
                             <ui-select-match placeholder="Function" >Function</ui-select-match>
                             <ui-select-choices
@@ -62,8 +63,10 @@
 
                     <button class="button pull-right button-control" dropdown-toggle="dropdown" title="Add Control">
                         <i class="fa fa-retweet fa-lg"></i>
-                        <ui-select ng-model="controlType" class="dropdown-menu"
-                                   on-select="newItem('Control',$select.selected)">
+                        <ui-select ng-model="controlType"
+                                   class="dropdown-menu"
+                                   on-select="newItem('Control',$select.selected)"
+                                   focus-on='SetFocus'>
                             <ui-select-match placeholder="Control">Control</ui-select-match>
                             <ui-select-choices
                                     repeat="controlType in controlTypes| filter: $select.search">
@@ -91,7 +94,8 @@
                         <i class="icon-function fa-lg"></i>
                         <ui-select ng-model="method.selected"
                                    class="dropdown-menu"
-                                   on-select="newItem('Action',$select.selected)">
+                                   on-select="newItem('Action',$select.selected)"
+                                   focus-on='SetFocus'>
                             <ui-select-match placeholder="Function" >Function</ui-select-match>
                             <ui-select-choices
                                     group-by="'category'"
@@ -104,7 +108,8 @@
                     <button class="button pull-right button-control" dropdown-toggle="dropdown" title="Add Control">
                         <i class="fa fa-lg fa-retweet"></i>
                         <ui-select ng-model="controlType" class="dropdown-menu"
-                                   on-select="newItem('Control',$select.selected)">
+                                   on-select="newItem('Control',$select.selected)"
+                                   focus-on='SetFocus'>
                             <ui-select-match placeholder="Control">Control</ui-select-match>
                             <ui-select-choices
                                     repeat="controlType in controlTypes| filter: $select.search">
