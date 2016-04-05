@@ -18,7 +18,8 @@ var mobius = angular.module('mobius',
                                 'ngMaterial',
                                 'ngRoute',
                                 'ng-context-menu',
-                                'decipher.history'
+                                'decipher.history',
+                                'angularSpinner'
                             ]);
 
     mobius.filter('propsFilter', function() {
@@ -102,40 +103,46 @@ var mobius = angular.module('mobius',
 
     // check for the various browser support.
     function checkBrowser(){
-        // html5 file api
+        // file api
         if (window.File && window.FileReader && window.FileList && window.Blob) {
             console.log('File APIs are fully supported in this browser.');
         } else {
             alert('File APIs are not fully supported in this browser.');
         }
 
-        // html5 localstorage
+        // localstorage
         if( 'localStorage' in window && window['localStorage'] !== null){
             console.log('Local storage is supported in this browser.');
         } else {
             alert('Local storage is not supported in this browser');
         }
 
-            var ua= navigator.userAgent, tem,
-                M= ua.match(/(opera|chrome|safari|firefox|msie|trident|Edge(?=\/))\/?\s*(\d+)/i) || [];
+        if(typeof(Worker) !== "undefined") {
+            console.log('Web Worker is supported in this browser.');
+        } else {
+            alert('Web Worker is not supported in this browser');
+        }
 
-            if(M[1]=== 'Chrome'){
-                tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
-                if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
-                console.log('Chrome detected, your browser is supported.')
-            }else{
-                if(/trident/i.test(M[1])){
-                    tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
-                     var browserId = 'IE '+(tem[1] || '');
-                }
-                else{
-                    M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
-                    if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
-                    var browserId = M.join(' ');
-                }
-                alert('Your browser is ' + browserId +', Mobius currently only supports chrome.');
-                window.location.href = "../../index.html"
+        var ua= navigator.userAgent, tem,
+            M= ua.match(/(opera|chrome|safari|firefox|msie|trident|Edge(?=\/))\/?\s*(\d+)/i) || [];
+
+        if(M[1]=== 'Chrome'){
+            tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
+            if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+            console.log('Chrome detected, your browser is supported.')
+        }else{
+            if(/trident/i.test(M[1])){
+                tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+                 var browserId = 'IE '+(tem[1] || '');
             }
+            else{
+                M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+                if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
+                var browserId = M.join(' ');
+            }
+            alert('Your browser is ' + browserId +', Mobius currently only supports chrome.');
+            window.location.href = "../../index.html"
+        }
     }
 
 

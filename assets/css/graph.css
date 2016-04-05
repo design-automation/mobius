@@ -1,7 +1,3 @@
-.graph-area{
-    /*border-radius: 3px;*/
-}
-
 .graph-area .znpController{
     width:100%;
     height:100%;
@@ -27,8 +23,6 @@
     position: absolute;
     height: 100%;
     width: 100%;
-    /*border: 1px solid #cccccc;*/
-    /*border-radius: 4px;*/
     margin-top:1px;
 }
 
@@ -41,8 +35,6 @@
 }
 
 .graph-area #canvas{
-    /*border: 1px solid #cccccc;*/
-    /*border-radius: 4px;*/
     margin-top:1px;
 }
 

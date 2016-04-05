@@ -15,7 +15,6 @@
     padding-bottom: 0 !important;
 }
 
-
 .dropdown-submenu{
     cursor: pointer !important;
     position:relative;
@@ -89,5 +88,3 @@
     top:auto;
     bottom: 100%;
 }
-
-/* node menu */

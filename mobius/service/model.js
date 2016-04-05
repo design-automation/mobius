@@ -153,14 +153,14 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                             // first get the return object
                             data.javascriptCode += 'var ' + return_obj_name + ' = ';
                             data.geomListCode += 'geomList.push({'
-                                                + 'name:'
-                                                + node_name +'.name,'
-                                                + 'value: angular.copy('
-                                                + return_obj_name + '),'
-                                                + 'geom:[],'
-                                                + 'geomData:[],'
-                                                + 'topo:[]'
-                                                +'});'
+                                + 'name:'
+                                + node_name +'.name,'
+                                + 'value: angular.copy('
+                                + return_obj_name + '),'
+                                + 'geom:[],'
+                                + 'geomData:[],'
+                                + 'topo:[]'
+                                +'});'
                         }
 
                         // case where the node has no output

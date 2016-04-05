@@ -1975,7 +1975,7 @@ var MOBIUS = ( function (mod){
 
 	return mod;
 
-})(window.MOBIUS || {});
+})(MOBIUS || {});
 
 
 /*
