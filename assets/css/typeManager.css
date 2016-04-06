@@ -53,14 +53,15 @@
 
 #typeManager #tree-root-procedure-type{
     overflow: auto;
-    height:100%
+    height:100%;
+    padding-bottom: 32px;
 }
 
 #typeManager #tree-root-parameter-type{
     overflow: auto;
-    height:100%
+    height:100%;
+    padding-bottom: 32px;
 }
-
 
 #menu-typeManager{
     z-index: 10010;

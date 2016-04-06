@@ -7,6 +7,16 @@
 mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg','generateCode','nodeCollection',
     function($scope,$rootScope,$filter,consoleMsg,generateCode,nodeCollection) {
 
+        $scope.info=function(input){
+            if(input){
+                document.getElementById('choices').style.display = 'inline';
+                $scope.toggleDropdown = false;
+            }else{
+                document.getElementById('choices').style.display = 'none';
+                $scope.toggleDropdown = true;
+            }
+        };
+
         $scope.functionCodeList =[];
 
         // toggle code view
@@ -62,13 +72,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         $scope.getMethods = function(){
             var props = Object.getOwnPropertyNames(MOBIUS);
 
-            // remove private usage functions
-            for(var i =0; i < props.length;i++){
-                if(props[i] === 'dataConversion'){
-                    props.splice(i, 1);
-                }
-            }
-
             var expression = [{category:'msc',name:'expression'}];
 
             // fixme sub category temp solution
@@ -78,17 +81,50 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                     for(var j = 0; j < subProps.length; j++){
                         if(typeof MOBIUS[props[i]][subProps[j]] == 'function'){
                             expression.push({category:props[i],
-                                             name:subProps[j],
-                                             return:MOBIUS[props[i]][subProps[j]].prototype.return});
+                                             name:subProps[j]
+                                             //,return:MOBIUS[props[i]][subProps[j]].prototype.return
+                            });
                         }
                     }
                 }
             }
-
             return expression;
         };
 
+        $scope.getMethodList = function(){
+            var props = Object.getOwnPropertyNames(MOBIUS);
+
+            var expression = [{category:'msc',methods:['expression']}];
+
+            // fixme sub category temp solution
+            for(var i = 0; i < props.length; i++){
+                if(typeof MOBIUS[props[i]] != 'function'){
+                    var subProps = Object.getOwnPropertyNames(MOBIUS[props[i]]);
+
+                    if(props[i] !== 'msc'){
+                        expression.push({category:props[i],methods:[]});
+                        for(var j = 0; j < subProps.length; j++){
+                            if(typeof MOBIUS[props[i]][subProps[j]] == 'function'){
+                                expression[expression.length-1].methods.push(subProps[j]);
+                            }
+                        }
+                    }else{
+                        for(var j = 0; j < subProps.length; j++){
+                            if(typeof MOBIUS[props[i]][subProps[j]] == 'function'){
+                                expression[0].methods.push(subProps[j]);
+                            }
+                        }
+                    }
+                }
+            }
+            return expression;
+        };
+
+
         $scope.methods = $scope.getMethods();
+        $scope.methodList = $scope.getMethodList();
+
+
 
         $scope.$on("clearProcedure", function(){
             $scope.nodeIndex = undefined;
@@ -459,10 +495,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         $scope.toggle = function(scope) {
             scope.toggle();
         };
-
-        //$scope.$on('copyProcedure',function(event,cate,subCate){
-            //$scope.newItem(cate,subCate);
-        //});
 
         $scope.$on('copyProcedure',function(event,content) {
             $scope.newItem(undefined,undefined,true,content);

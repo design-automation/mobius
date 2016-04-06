@@ -1,7 +1,6 @@
 //
 // Execute generated code ('run' button)
 //
-
 mobius.controller('executeCtrl',['$scope','$rootScope','$q','executeService','consoleMsg','usSpinnerService','generateCode','hotkeys',
     function($scope,$rootScope,$q,executeService,consoleMsg,usSpinnerService,generateCode,hotkeys) {
         $scope.showSpinner = false;
@@ -48,13 +47,14 @@ mobius.controller('executeCtrl',['$scope','$rootScope','$q','executeService','co
         $scope.run = function(){
             $scope.outputs = [];
 
+            document.getElementById('waiting').style.display='inline';
             $scope.showSpinner = true;
 
-            // send to web worker
             setTimeout(function(){
                 executeService.execute($scope.javascriptCode + $scope.geomListCode + '\n return dataConversion(geomList);')
                     .then(function (data) {
                         console.log('running done');
+                        document.getElementById('waiting').style.display='none';
                         $scope.showSpinner = false;
                         $scope.outputs = data;
                     })

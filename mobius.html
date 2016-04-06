@@ -552,8 +552,18 @@
                                 <span ng-controller="executeCtrl" id="run-button">
                                     <span us-spinner
                                           spinner-on="showSpinner"
-                                          style="position: absolute;right:70px;top:20px">
+                                          style="position: fixed;right:50%;top:50%;z-index:10005">
                                     </span>
+                                    <div style="position:fixed;
+                                                top:0;
+                                                left:0;
+                                                height: 100%;
+                                                width:100%;background-color:white;
+                                                opacity: 0.8;
+                                                z-index:10004;
+                                                display: none;
+                                                " id='waiting'>
+                                    </div>
 
                                     <button class="button"
                                             ng-click="run()"

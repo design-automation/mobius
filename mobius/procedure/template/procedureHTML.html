@@ -1,163 +1,133 @@
-<div class="code-area">
+<div class="code-area" >
     <div ui-layout="{ flow : 'row', dividerSize:'1',disableToggle:true}" >
-        <div ui-layout-container size = "25%">
-            <div>
-                <div ng-if = "currentNodeName">
-                    <div class="doormat">
-                        <div>
-                             {{currentNodeType}}  {{currentNodeVersion}}
-                        </div>
-                        <button class="button pull-right button-input" ng-click="newInterface('Input')" title="Add Input">
-                            <i class="fa fa-sign-in fa-lg fa-rotate-90"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div ng-if = "!currentNodeName">
-                    <div class="doormat">
-                        <div>No Node Selected</div>
-                        <button class="button pull-right button-input" ng-click="newInterface('Input')" title="Add Input">
-                            <i class="fa fa-sign-in fa-lg fa-rotate-90"></i>
-                        </button>
-                    </div>
-                </div>
-
-
-            </div>
-
-            <div id="argument-area">
-                <div ui-tree id="tree-root-parameter">
-                    <div ui-tree-nodes="" ng-model="interface">
-                        <div ng-repeat="node in interface"
-                             ui-tree-node
-                             ng-include="'mobius/procedure/template/parameter_template.html'">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div ui-layout-container >
-            <div>
-                <div ng-if = "currentNodeName">
-                    <div class="doormat">
-                        <div>
-                            {{currentNodeType}} {{currentNodeVersion}}
+            <div ui-layout-container size = "25%">
+                <div>
+                    <div ng-if = "currentNodeName">
+                        <div class="doormat">
+                            <div>
+                                 {{currentNodeType}}  {{currentNodeVersion}}
+                            </div>
+                            <button class="button pull-right button-input" ng-click="newInterface('Input')" title="Add Input">
+                                <i class="fa fa-sign-in fa-lg fa-rotate-90"></i>
+                            </button>
                         </div>
                     </div>
 
-                    <button class="button pull-right button-action" dropdown-toggle="dropdown" title="Add Function">
-                        <i class="icon-function fa-lg"></i>
-                        <ui-select ng-model="method.selected"
-                                   class="dropdown-menu"
-                                   focus-on='SetFocus'
-                                   on-select="newItem('Action',$select.selected)">
-                            <ui-select-match placeholder="Function" >Function</ui-select-match>
-                            <ui-select-choices
-                                    group-by="'category'"
-                                    repeat="method in methods | propsFilter: {name: $select.search, category: $select.search}">
-                                <span ng-bind-html="method.name| highlight: $select.search"></span>
-                            </ui-select-choices>
-                        </ui-select>
-                    </button>
-
-                    <button class="button pull-right button-control" dropdown-toggle="dropdown" title="Add Control">
-                        <i class="fa fa-retweet fa-lg"></i>
-                        <ui-select ng-model="controlType"
-                                   class="dropdown-menu"
-                                   on-select="newItem('Control',$select.selected)"
-                                   focus-on='SetFocus'>
-                            <ui-select-match placeholder="Control">Control</ui-select-match>
-                            <ui-select-choices
-                                    repeat="controlType in controlTypes| filter: $select.search">
-                                <span ng-bind-html="controlType| highlight: $select.search"></span>
-                            </ui-select-choices>
-                        </ui-select>
-                    </button>
-
-                    <button class="button pull-right button-output" ng-click="newItem('Output')" title="Add Output">
-                        <i class="fa fa-sign-out fa-lg fa-rotate-90"></i>
-                    </button>
-
-                    <button class="button pull-right button-variable" title="Add Variable"
-                            ng-click="newItem('Data')">
-                        <i class="icon-variable fa-lg"></i>
-                    </button>
-                </div>
-
-                <div ng-if = "!currentNodeName">
-                    <div class="doormat">
+                    <div ng-if = "!currentNodeName">
+                        <div class="doormat">
                             <div>No Node Selected</div>
+                            <button class="button pull-right button-input" ng-click="newInterface('Input')" title="Add Input">
+                                <i class="fa fa-sign-in fa-lg fa-rotate-90"></i>
+                            </button>
+                        </div>
                     </div>
 
-                    <button class="button pull-right button-action" dropdown-toggle="dropdown" title="Add Function">
-                        <i class="icon-function fa-lg"></i>
-                        <ui-select ng-model="method.selected"
-                                   class="dropdown-menu"
-                                   on-select="newItem('Action',$select.selected)"
-                                   focus-on='SetFocus'>
-                            <ui-select-match placeholder="Function" >Function</ui-select-match>
-                            <ui-select-choices
-                                    group-by="'category'"
-                                    repeat="method in methods | propsFilter: {name: $select.search, category: $select.search}">
-                                <span ng-bind-html="method.name| highlight: $select.search"></span>
-                            </ui-select-choices>
-                        </ui-select>
-                    </button>
 
-                    <button class="button pull-right button-control" dropdown-toggle="dropdown" title="Add Control">
-                        <i class="fa fa-lg fa-retweet"></i>
-                        <ui-select ng-model="controlType" class="dropdown-menu"
-                                   on-select="newItem('Control',$select.selected)"
-                                   focus-on='SetFocus'>
-                            <ui-select-match placeholder="Control">Control</ui-select-match>
-                            <ui-select-choices
-                                    repeat="controlType in controlTypes| filter: $select.search">
-                                <span ng-bind-html="controlType| highlight: $select.search"></span>
-                            </ui-select-choices>
-                        </ui-select>
-                    </button>
-
-                    <button class="button pull-right button-output" ng-click="newItem('Output')" title="Add Output">
-                        <i class="fa fa-lg fa-sign-out fa-rotate-90"></i>
-                    </button>
-
-                    <button class="button pull-right button-variable" title="Add Varible"
-                            ng-click="newItem('Data')">
-                        <i class="icon-variable fa-lg"></i>
-                    </button>
                 </div>
 
-
-            </div>
-
-
-            <div class="tabArea" id="procedure-area">
-                <!-- procedure -->
-                <div ui-tree id="tree-root-procedure" >
-                    <div ui-tree-nodes="" ng-model="data">
-                        <div ng-repeat="node in data"
-                             ui-tree-node
-                             ng-include="'mobius/procedure/template/procedure_template.html'"
-                             context-menu
-                             data-target="menu-procedure">
+                <div id="argument-area">
+                    <div ui-tree id="tree-root-parameter">
+                        <div ui-tree-nodes="" ng-model="interface">
+                            <div ng-repeat="node in interface"
+                                 ui-tree-node
+                                 ng-include="'mobius/procedure/template/parameter_template.html'">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div ui-layout-container >
+                <div ng-if = "currentNodeName">
+                <div class="doormat">
+                    <div>
+                        {{currentNodeType}} {{currentNodeVersion}}
+                    </div>
+                </div>
+            </div>
+                <div ng-if = "!currentNodeName">
+                <div class="doormat">
+                        <div>No Node Selected</div>
+                </div>
         </div>
 
-        <div ui-layout-container size = "32px" class="monitor" >
+                <button class="button pull-right button-action"
+                        dropdown-toggle="dropdown"
+                        title="Add Function">
+                    <i class="icon-function fa-lg"></i>
+                    <ui-select ng-model="method.selected"
+                               class="dropdown-menu"
+                               on-select="newItem('Action',$select.selected)">
+                        <ui-select-match placeholder="Search" ></ui-select-match>
+                        <ui-select-choices
+                                id="choices"
+                                refresh="info($select.search)"
+                                refresh-delay="0"
+                                group-by="'category'"
+                                repeat="method in methods | propsFilter: {name: $select.search, category: $select.search}">
+                            <span ng-bind-html="method.name| highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
 
-            <div class="doormat">
-                    <div> Function Code</div>
+                    <ul class="dropdown-menu action-dropdown narrow-menu" ng-if="toggleDropdown">
+                        <li class="dropdown-submenu" ng-repeat="cate in methodList">
+                            <a>{{cate.category}}</a>
+                            <ul class="dropdown-menu narrow-menu" >
+                                <li ng-repeat="method in cate.methods">
+                                    <a ng-click="newItem('Action',{category:cate.category,name:method})">{{method}}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </button>
+
+                <button class="button pull-right button-control" dropdown-toggle="dropdown" title="Add Control">
+                    <i class="fa fa-retweet fa-lg"></i>
+                    <ui-select ng-model="controlType"
+                               class="dropdown-menu"
+                               on-select="newItem('Control',$select.selected)"
+                               focus-on='SetFocus'>
+                        <ui-select-match placeholder="Control">Control</ui-select-match>
+                        <ui-select-choices
+                                repeat="controlType in controlTypes| filter: $select.search">
+                            <span ng-bind-html="controlType| highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </button>
+
+                <button class="button pull-right button-output" ng-click="newItem('Output')" title="Add Output">
+                    <i class="fa fa-sign-out fa-lg fa-rotate-90"></i>
+                </button>
+
+                <button class="button pull-right button-variable" title="Add Variable"
+                        ng-click="newItem('Data')">
+                    <i class="icon-variable fa-lg"></i>
+                </button>
+
+                <div class="tabArea" id="procedure-area">
+                    <!-- procedure -->
+                    <div ui-tree id="tree-root-procedure" >
+                        <div ui-tree-nodes="" ng-model="data">
+                            <div ng-repeat="node in data"
+                                 ui-tree-node
+                                 ng-include="'mobius/procedure/template/procedure_template.html'"
+                                 context-menu
+                                 data-target="menu-procedure">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'tomorrow' }"
-                 ng-model= "functionCodeList[nodeIndex]"
-                 readonly="{{true}}">
+            <div ui-layout-container size = "32px" class="monitor" >
+                <div class="doormat">
+                        <div> Function Code</div>
+                </div>
+
+                <div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'tomorrow' }"
+                     ng-model= "functionCodeList[nodeIndex]"
+                     readonly="{{true}}">
+                </div>
             </div>
-        </div>`
     </div>
 </div>
-

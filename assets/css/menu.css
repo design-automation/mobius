@@ -18,11 +18,13 @@
 }
 
 
-#importNodeLib, #openSceneJson{
+#importNodeLib, #openSceneJson,#importNode{
     visibility: hidden;
     width: 1px;
     height: 1px;
 }
+
+
 
 #mobiusInfo{
     position:absolute;

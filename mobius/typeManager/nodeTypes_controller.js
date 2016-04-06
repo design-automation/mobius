@@ -1,6 +1,16 @@
 mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','consoleMsg','$mdDialog',
     function($scope,$rootScope,nodeCollection,consoleMsg,$mdDialog){
 
+    $scope.info=function(input){
+        if(input){
+            document.getElementById('type-choices').style.display = 'inline';
+            $scope.toggleDropdown = false;
+        }else{
+            document.getElementById('type-choices').style.display = 'none';
+            $scope.toggleDropdown = true;
+        }
+    };
+
     $scope.selectAll = false;
 
     $scope.typeList = JSON.parse(localStorage.mobiusNodeTypes);
@@ -323,7 +333,39 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
         }
         return expression;
     };
+
+    $scope.getMethodList = function(){
+        var props = Object.getOwnPropertyNames(MOBIUS);
+
+        var expression = [{category:'msc',methods:['expression']}];
+
+        // fixme sub category temp solution
+        for(var i = 0; i < props.length; i++){
+            if(typeof MOBIUS[props[i]] != 'function'){
+                var subProps = Object.getOwnPropertyNames(MOBIUS[props[i]]);
+
+                if(props[i] !== 'msc'){
+                    expression.push({category:props[i],methods:[]});
+                    for(var j = 0; j < subProps.length; j++){
+                        if(typeof MOBIUS[props[i]][subProps[j]] == 'function'){
+                            expression[expression.length-1].methods.push(subProps[j]);
+                        }
+                    }
+                }else{
+                    for(var j = 0; j < subProps.length; j++){
+                        if(typeof MOBIUS[props[i]][subProps[j]] == 'function'){
+                            expression[0].methods.push(subProps[j]);
+                        }
+                    }
+                }
+            }
+        }
+        return expression;
+    };
+
     $scope.methods = $scope.getMethods();
+    $scope.methodList = $scope.getMethodList();
+
     $scope.controlTypes = ['for each', 'if else'];
     $scope.newItem = function(cate,subCate,isCopy,content) {
         $scope.currentHighestId = 0;
