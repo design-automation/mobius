@@ -19,6 +19,8 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
     var outputGeom = [];
 
+    var rootGraph = {};
+
     var data = {
         javascriptCode: '// To generate code,\n' + '// create nodes & procedures and run!\n',
         geomListCode: "var geomList = [];\n",
@@ -37,6 +39,18 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
 
     return {
+        archiveRootGraph:function(){
+            angular.copy(data,rootGraph);
+        },
+
+        goRoot:function(){
+            angular.copy(rootGraph.dataList,data.dataList);
+
+            angular.copy(rootGraph.interfaceList,data.interfaceList);
+
+            angular.copy(rootGraph.chartViewModel,data.chartViewModel);
+        },
+
         getData: function(){
             return data;
         },
@@ -59,10 +73,6 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
         getGeomListCode: function () {
             return data.geomListCode;
-        },
-
-        setJavascriptCode: function (value) {
-            data.javascriptCode = value;
         },
 
         getInnerCodeList: function () {
@@ -105,13 +115,6 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
             angular.copy(value,data.chartViewModel);
         },
 
-        getChartDataModel: function () {
-            return chartDataModel;
-        },
-
-        setChartDataModel: function (value) {
-            chartDataModel= value;
-        },
         getFunctionCodeList: function(){
             var functionCode = [];
             for(var i = 0; i< data.outerCodeList.length; i++){

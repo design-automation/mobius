@@ -1,5 +1,7 @@
 <div class="position-fixed" id="menu-node" >
     <ul class="dropdown-menu">
+        <li ng-if="isSubGraph()"><a ng-click="openSubGraph()"> Open Sub-Graph</a></li>
+
         <li class="dropdown-submenu">
             <a> Show Input </a>
             <ul class="dropdown-menu " ng-if="disableAddInput()">

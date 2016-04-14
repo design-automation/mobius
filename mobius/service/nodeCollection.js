@@ -41,6 +41,14 @@ mobius.factory('nodeCollection', function () {
             nodes = JSON.parse(localStorage.mobiusNodeTypes);
         },
 
+        ifSubGraph: function(typeName){
+            for(var i = 0; i < nodes.length; i++){
+                if(nodes[i].nodeType == typeName){
+                    return nodes[i].subGraph;
+                }
+            }
+        },
+
         // return node types for graph
         getNodeTypes: function(){
             var nodeTypes = [];
@@ -101,19 +109,77 @@ mobius.factory('nodeCollection', function () {
             }
         },
 
+        getSubGraphModel: function(typeName){
+            for(var i = 0; i < nodes.length; i++){
+                if(nodes[i].nodeType == typeName){
+                    var obj = {};
+                    angular.copy(nodes[i].subGraphModel,obj);
+                    return obj;
+                }
+            }
+        },
+
         // install node for create new node type / import node
-        installNewNodeType: function(type, input, output, procedureList, interfaceList){
-            var newNode = {
-                nodeType: type,
-                version:0,
-                overwrite:true,
+        installNewNodeType: function(type, subGraph, input, output, procedureList, interfaceList,subGraphModel){
+            var newNode = {};
+            if(!subGraph){
+                 newNode = {
+                    nodeType: type,
+                    version:0,
+                    overwrite:true,
 
-                inputConnectors: input,
-                outputConnectors: output,
+                    inputConnectors:  input === undefined ? [] : input,
+                    outputConnectors: output === undefined ? [] : output,
 
-                procedureDataModel: procedureList === undefined ? [] : procedureList,
-                interfaceDataModel: interfaceList === undefined ? [] : interfaceList
-        };
+                    procedureDataModel: procedureList === undefined ? [] : procedureList,
+                    interfaceDataModel: interfaceList === undefined ? [] : interfaceList
+                };
+            }else{
+                 newNode = {
+                    nodeType: type,
+                    version:0,
+                    overwrite:true,
+                    subGraph:true,
+
+                    inputConnectors:  input === undefined ? [] : input,
+                    outputConnectors: output === undefined ? [] : output,
+
+                    procedureDataModel: procedureList === undefined ? [] : procedureList,
+                    interfaceDataModel: interfaceList === undefined ? [] : interfaceList,
+                    subGraphModel:subGraphModel === undefined ?
+                    {
+                        javascriptCode: '// To generate code,\n' + '// create nodes & procedures and run!\n',
+                        geomListCode: "var geomList = [];\n",
+                        innerCodeList:[],
+                        outerCodeList:[],
+                        dataList:[],
+                        interfaceList:[],
+                        chartDataModel: {"nodes": [], "connections": []},
+                    //chartViewModel: new flowchart.ChartViewModel({"nodes": [], "connections": []}),
+
+                    //    chartViewModel: new flowchart.ChartViewModel({"nodes": [
+                    //    {
+                    //        "id": 0,
+                    //        "name": "fake0",
+                    //        "x": 2103.4991362628075,
+                    //        "y": 2045.5925781058293,
+                    //        "inputConnectors": [],
+                    //        "outputConnectors": [],
+                    //        "type": "fake",
+                    //        "version": 0,
+                    //        "overwrite": true,
+                    //        "disabled": false,
+                    //        "subGraphModel": {}
+                    //    }
+                    //],
+                    // "connections": []}),
+
+
+                        nodeIndex:undefined
+                    } : subGraphModel
+                };
+            }
+
             nodes.push(newNode);
             localStorage.mobiusNodeTypes = JSON.stringify(nodes);
         },

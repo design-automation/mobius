@@ -275,7 +275,6 @@ mobius.controller(  'graphCtrl',
                 });
         });
 
-
         $scope.$on("saveAsNewType",function(){
             $mdDialog.show({
                 controller: DialogController,
@@ -432,4 +431,26 @@ mobius.controller(  'graphCtrl',
             scope.$apply(function(){scope.viewportControl.refreshView();} );
             scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
         });
+
+
+        $scope.$on('openSubGraph',function(){
+
+            var temp = {};
+            angular.copy($scope.chartViewModel.nodes[$scope.nodeIndex].data.subGraphModel,temp);
+
+            generateCode.archiveRootGraph();
+
+            // update the procedure
+            generateCode.setDataList(temp.dataList);
+
+            // update the interface
+            generateCode.setInterfaceList(temp.interfaceList);
+
+            // update the graph
+            generateCode.setChartViewModel(new flowchart.ChartViewModel(temp.chartDataModel));
+        });
+
+        $scope.goRoot = function(){
+            generateCode.goRoot();
+        };
     }]);

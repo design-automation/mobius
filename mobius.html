@@ -561,9 +561,14 @@
                                                 width:100%;background-color:white;
                                                 opacity: 0.8;
                                                 z-index:10004;
-                                                display: none;
-                                                " id='waiting'>
+                                                display: none;"
+                                         id='waiting'>
                                     </div>
+
+                                    <button class="button"
+                                            ng-click="goRoot()">
+                                        go Root
+                                    </button>
 
                                     <button class="button"
                                             ng-click="run()"
@@ -578,7 +583,7 @@
                                              model="panzoomModel"
                                              class="panzoom">
                                         <div id="canvas">
-                                            <flow-chart chart="chartViewModel" class = "flow-chart" >
+                                            <flow-chart chart="chartViewModel" class = "flow-chart">
                                             </flow-chart>
                                         </div>
                                     </panzoom>

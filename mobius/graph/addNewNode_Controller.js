@@ -41,15 +41,13 @@ mobius.controller('newNodeCtrl',[
 
         // graph flowchart view model
         $scope.chartViewModel= generateCode.getChartViewModel();
-        //$scope.$watch('chartViewModel.data', function () {
-        //    generateCode.generateCode();
-        //},true);
 
         // synchronization with node collection
         // new node type
         $scope.nodeTypes = function(){
             var x = angular.copy(nodeCollection.getNodeTypes());
             x.splice(0,0,"create new type");
+            x.splice(1,0,"create new sub-graph");
             return x;
         };
 
@@ -88,7 +86,6 @@ mobius.controller('newNodeCtrl',[
             }
         };
 
-
         // Add a new node to the chart.
         $scope.addNewNode = function (type) {
             if(type === 'create new type'){
@@ -109,17 +106,41 @@ mobius.controller('newNodeCtrl',[
                         return;
                     }
 
-                    var newProcedureDataModel =  [];
-                    var newInterfaceDataModel = [];
-
-                    nodeCollection.installNewNodeType(newTypeName,newProcedureDataModel,newInterfaceDataModel);
+                    nodeCollection.installNewNodeType(newTypeName);
                     if(newTypeName !== undefined){
                         type = newTypeName;
                     }
 
                     addNode(type);
                 });
-            }else{
+            }
+            else if(type === 'create new sub-graph'){
+                $mdDialog.show({
+                    controller: DialogController,
+                    templateUrl: 'mobius/dialog/inputName_dialog.tmpl.html',
+                    parent: angular.element(document.body),
+                    clickOutsideToClose:false,
+                    focusOnOpen:false
+                }).then(function(newTypeName){
+                    if (!isValidName(newTypeName)) {
+                        consoleMsg.errorMsg('invalidName');
+                        return;}
+
+                    if ($scope.nodeTypes().indexOf(newTypeName) >= 0 ){
+                        consoleMsg.errorMsg('dupName');
+                        return;
+                    }
+
+                    // pass in subGraph flag
+                    nodeCollection.installNewNodeType(newTypeName,true);
+                    if(newTypeName !== undefined){
+                        type = newTypeName;
+                    }
+
+                    addNode(type);
+                });
+            }
+            else{
                 addNode(type);
             }
 
@@ -148,6 +169,8 @@ mobius.controller('newNodeCtrl',[
                 newNodeDataModel.version = 0;
                 newNodeDataModel.overwrite = nodeCollection.getOverwrite(type);
                 newNodeDataModel.disabled = false;
+                newNodeDataModel.subGraph = nodeCollection.ifSubGraph(type);
+                newNodeDataModel.subGraphModel = nodeCollection.getSubGraphModel(type);
 
                 // when new node added, increase the number of procedure list by one
                 $scope.dataList.push(nodeCollection.getProcedureDataModel(type));
@@ -193,8 +216,6 @@ mobius.controller('newNodeCtrl',[
                     for (var j = 0; j < $scope.chartViewModel.nodes[i].inputConnectors.length; j++) {
                         for (var k = 0; k <  $scope.interfaceList[i].length; k++) {
                             if ($scope.interfaceList[i][k].title === 'Input') {
-
-
                                 if ($scope.chartViewModel.nodes[i].inputConnectors[j].data.id
                                     === $scope.interfaceList[i][k].id) {
                                     $scope.chartViewModel.nodes[i].inputConnectors[j].data =

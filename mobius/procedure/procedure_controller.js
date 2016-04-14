@@ -120,7 +120,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
             return expression;
         };
 
-
         $scope.methods = $scope.getMethods();
         $scope.methodList = $scope.getMethodList();
 
@@ -160,7 +159,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                 //$scope.$emit("editProcedure",false);
             }
         });
-
 
         // watch change of procedure data tree, if change update the flattenData, update version
         $scope.$watch('data',function(){
@@ -423,7 +421,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
             $scope.chartViewModel.connections = newConnectionViewModels;
             $scope.chartViewModel.data.connections = newConnectionDataModels;
         };
-
 
         $scope.removeInput = function(scope) {
             scope.remove();
