@@ -53,6 +53,11 @@ mobius.controller(  'graphCtrl',
         // version of selected node, hence update the chartViewModel.data
         // watch chartViewModel.data instead of chartViewModel to prevent stack limit exceeded
         $scope.chartViewModel = generateCode.getChartViewModel();
+
+        $scope.$watch(function(){return generateCode.getChartViewModel()},function(){
+            $scope.chartViewModel = generateCode.getChartViewModel();
+        });
+
         $scope.$watch('chartViewModel.data', function (newValue, oldValue) {
             if(!angular.equals(newValue.connections,oldValue.connections)){
                 generateCode.generateCode();
@@ -434,20 +439,7 @@ mobius.controller(  'graphCtrl',
 
 
         $scope.$on('openSubGraph',function(){
-
-            var temp = {};
-            angular.copy($scope.chartViewModel.nodes[$scope.nodeIndex].data.subGraphModel,temp);
-
-            generateCode.archiveRootGraph();
-
-            // update the procedure
-            generateCode.setDataList(temp.dataList);
-
-            // update the interface
-            generateCode.setInterfaceList(temp.interfaceList);
-
-            // update the graph
-            generateCode.setChartViewModel(new flowchart.ChartViewModel(temp.chartDataModel));
+            generateCode.openNewChart($scope.chartViewModel.nodes[$scope.nodeIndex].data.subGraphModel);
         });
 
         $scope.goRoot = function(){

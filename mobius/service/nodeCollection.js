@@ -154,27 +154,25 @@ mobius.factory('nodeCollection', function () {
                         outerCodeList:[],
                         dataList:[],
                         interfaceList:[],
-                        chartDataModel: {"nodes": [], "connections": []},
+                        //chartDataModel: {"nodes": [], "connections": []},
                     //chartViewModel: new flowchart.ChartViewModel({"nodes": [], "connections": []}),
 
-                    //    chartViewModel: new flowchart.ChartViewModel({"nodes": [
-                    //    {
-                    //        "id": 0,
-                    //        "name": "fake0",
-                    //        "x": 2103.4991362628075,
-                    //        "y": 2045.5925781058293,
-                    //        "inputConnectors": [],
-                    //        "outputConnectors": [],
-                    //        "type": "fake",
-                    //        "version": 0,
-                    //        "overwrite": true,
-                    //        "disabled": false,
-                    //        "subGraphModel": {}
-                    //    }
-                    //],
-                    // "connections": []}),
-
-
+                        chartDataModel: {"nodes": [
+                        {
+                            "id": 0,
+                            "name": "fake0",
+                            "x": 2103.4991362628075,
+                            "y": 2045.5925781058293,
+                            "inputConnectors": [],
+                            "outputConnectors": [],
+                            "type": "fake",
+                            "version": 0,
+                            "overwrite": true,
+                            "disabled": false,
+                            "subGraphModel": {}
+                        }
+                    ],
+                     "connections": []},
                         nodeIndex:undefined
                     } : subGraphModel
                 };

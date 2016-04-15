@@ -10,13 +10,6 @@
 mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
     // mobius application data pool
-
-    var chartDataModel = {
-        nodes: [],
-        connections: []
-    };
-
-
     var outputGeom = [];
 
     var rootGraph = {};
@@ -28,9 +21,19 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
         outerCodeList:[],
         dataList:[],
         interfaceList:[],
-        chartViewModel: new flowchart.ChartViewModel(chartDataModel),
+        chartViewModel: new flowchart.ChartViewModel({
+            nodes: [],
+            connections: []
+        }),
         nodeIndex:undefined
     };
+
+    var current = {
+        chartViewModel: data.chartViewModel,
+        dataList: data.dataList,
+        interfaceList: data.interfaceList
+    };
+
 
     // todo refactor nodeindexing direct $watch from graph controller and procedure controller
     $rootScope.$on("nodeIndex", function(event, message) {
@@ -39,20 +42,19 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
 
     return {
-        archiveRootGraph:function(){
-            angular.copy(data,rootGraph);
-        },
 
         goRoot:function(){
-            angular.copy(rootGraph.dataList,data.dataList);
-
-            angular.copy(rootGraph.interfaceList,data.interfaceList);
-
-            angular.copy(rootGraph.chartViewModel,data.chartViewModel);
+            current = {
+                chartViewModel: data.chartViewModel,
+                dataList: data.dataList,
+                interfaceList: data.interfaceList
+            };
         },
 
-        getData: function(){
-            return data;
+        openNewChart:function(chartModel){
+            current.dataList = chartModel.dataList;
+            current.interfaceList = chartModel.dataList;
+            current.chartViewModel = new flowchart.ChartViewModel(chartModel.chartDataModel);
         },
 
         getNodeIndex: function(){
@@ -92,7 +94,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
         },
 
         getDataList: function () {
-            return data.dataList;
+            return current.dataList;
         },
 
         setDataList: function (value) {
@@ -100,7 +102,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
         },
 
         getInterfaceList: function () {
-            return data.interfaceList;
+            return current.interfaceList;
         },
 
         setInterfaceList: function (value) {
@@ -108,7 +110,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
         },
 
         getChartViewModel: function () {
-            return data.chartViewModel;
+            return current.chartViewModel;
         },
 
         setChartViewModel: function (value) {
