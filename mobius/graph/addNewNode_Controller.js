@@ -43,7 +43,6 @@ mobius.controller('newNodeCtrl',[
         $scope.chartViewModel= generateCode.getChartViewModel();
 
         $scope.$watch(function(){return generateCode.getChartViewModel()},function(){
-            console.log('update!');
             $scope.chartViewModel = generateCode.getChartViewModel();
         });
 

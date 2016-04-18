@@ -3,6 +3,15 @@
     font-size: 14px !important;
 }
 
+a:focus{
+    outline: none !important;
+}
+
+a{
+    color:#888 !important;
+    font-size: 13px !important;
+}
+
 .button{
     text-align: center;
     text-decoration: none;

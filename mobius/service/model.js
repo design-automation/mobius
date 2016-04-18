@@ -9,10 +9,10 @@
 
 mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
-    // mobius application data pool
     var outputGeom = [];
 
-    var rootGraph = {};
+    // track of subgraphs
+    var graphList = [];
 
     var data = {
         javascriptCode: '// To generate code,\n' + '// create nodes & procedures and run!\n',
@@ -29,36 +29,77 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
     };
 
     var current = {
+        javascriptCode:data.javascriptCode,
+        geomListCode: data.geomListCode,
+        innerCodeList:data.innerCodeList,
+        outerCodeList:data.outerCodeList,
         chartViewModel: data.chartViewModel,
         dataList: data.dataList,
-        interfaceList: data.interfaceList
+        interfaceList: data.interfaceList,
+        nodeIndex:undefined
     };
 
 
     // todo refactor nodeindexing direct $watch from graph controller and procedure controller
     $rootScope.$on("nodeIndex", function(event, message) {
-        data.nodeIndex = message;
+        current.nodeIndex = message;
     });
 
 
     return {
 
+        getGraphList:function(){
+            return graphList;
+        },
+
         goRoot:function(){
+            graphList.length = 0;
             current = {
+                javascriptCode:data.javascriptCode,
+                geomListCode: data.geomListCode,
+                innerCodeList:data.innerCodeList,
+                outerCodeList:data.outerCodeList,
                 chartViewModel: data.chartViewModel,
                 dataList: data.dataList,
-                interfaceList: data.interfaceList
+                interfaceList: data.interfaceList,
+                nodeIndex:undefined
             };
         },
 
         openNewChart:function(chartModel){
-            current.dataList = chartModel.dataList;
-            current.interfaceList = chartModel.dataList;
-            current.chartViewModel = new flowchart.ChartViewModel(chartModel.chartDataModel);
+            graphList.push(chartModel);
+
+            current = {
+                javascriptCode:graphList[graphList.length-1].subGraphModel.javascriptCode,
+                geomListCode:graphList[graphList.length-1].subGraphModel.geomListCode,
+                innerCodeList:graphList[graphList.length-1].subGraphModel.innerCodeList,
+                outerCodeList:graphList[graphList.length-1].subGraphModel.outerCodeList,
+                chartViewModel: new flowchart.ChartViewModel(graphList[graphList.length-1].subGraphModel.chartDataModel),
+                dataList: graphList[graphList.length-1].subGraphModel.dataList,
+                interfaceList: graphList[graphList.length-1].subGraphModel.interfaceList,
+                nodeIndex:undefined
+            };
+        },
+
+        changeGraphView: function (index) {
+
+                graphList.length = index + 1;
+
+
+            current = {
+                javascriptCode:graphList[graphList.length-1].subGraphModel.javascriptCode,
+                geomListCode:graphList[graphList.length-1].subGraphModel.geomListCode,
+                innerCodeList:graphList[graphList.length-1].subGraphModel.innerCodeList,
+                outerCodeList:graphList[graphList.length-1].subGraphModel.outerCodeList,
+                chartViewModel: new flowchart.ChartViewModel(graphList[graphList.length-1].subGraphModel.chartDataModel),
+                dataList: graphList[graphList.length-1].subGraphModel.dataList,
+                interfaceList: graphList[graphList.length-1].subGraphModel.interfaceList,
+                nodeIndex:undefined
+            };
         },
 
         getNodeIndex: function(){
-            return data.nodeIndex;
+            return current.nodeIndex;
         },
 
         getOutputGeom: function(){
@@ -70,27 +111,27 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
         },
 
         getJavascriptCode: function () {
-            return data.javascriptCode;
+            return current.javascriptCode;
         },
 
         getGeomListCode: function () {
-            return data.geomListCode;
+            return current.geomListCode;
         },
 
         getInnerCodeList: function () {
-            return data.innerCodeList;
+            return current.innerCodeList;
         },
 
         getOuterCodeList: function () {
-            return data.outerCodeList;
+            return current.outerCodeList;
         },
 
         setInnerCodeList: function (value) {
-            data.innerCodeList = value;
+            current.innerCodeList = value;
         },
 
         setOuterCodeList: function (value) {
-            data.outerCodeList = value;
+            current.outerCodeList = value;
         },
 
         getDataList: function () {
@@ -119,8 +160,8 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
         getFunctionCodeList: function(){
             var functionCode = [];
-            for(var i = 0; i< data.outerCodeList.length; i++){
-                functionCode.push(data.outerCodeList[i] + data.innerCodeList[i]);
+            for(var i = 0; i< current.outerCodeList.length; i++){
+                functionCode.push(current.outerCodeList[i] + current.innerCodeList[i]);
             }
             return functionCode;
         },

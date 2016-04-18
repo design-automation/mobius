@@ -34,6 +34,8 @@ mobius.controller(  'graphCtrl',
             }
         });
 
+        $scope.graphList = generateCode.getGraphList();
+
         // procedure data list
         $scope.dataList = generateCode.getDataList();
 
@@ -439,10 +441,15 @@ mobius.controller(  'graphCtrl',
 
 
         $scope.$on('openSubGraph',function(){
-            generateCode.openNewChart($scope.chartViewModel.nodes[$scope.nodeIndex].data.subGraphModel);
+            generateCode.openNewChart($scope.chartViewModel.nodes[$scope.nodeIndex].data);
         });
 
         $scope.goRoot = function(){
             generateCode.goRoot();
+        };
+
+        $scope.changeGraphView = function(index){
+            console.log('index is : ', index);
+            generateCode.changeGraphView(index);
         };
     }]);

@@ -536,15 +536,16 @@
                         <div mouse-capture
                              ui-layout-container size = "75%">
                             <div ng-controller="graphCtrl">
-                                <div ng-if = "currentNodeName">
-                                    <div class="doormat">
-                                        <div> {{currentNodeName}} </div>
-                                    </div>
-                                </div>
+                                <div class="doormat">
+                                    <div >
+                                        <a style="cursor: default" ng-click="goRoot()"> Graph </a>
 
-                                <div ng-if = "!currentNodeName">
-                                    <div class="doormat">
-                                        <div> Graph </div>
+                                        <a ng-repeat="graph in graphList"
+                                           style="padding: 0 5px;
+                                                    cursor: default"
+                                           ng-click="changeGraphView($index)">
+                                            {{graph.name}}
+                                        </a>
                                     </div>
                                 </div>
 
@@ -565,10 +566,7 @@
                                          id='waiting'>
                                     </div>
 
-                                    <button class="button"
-                                            ng-click="goRoot()">
-                                        go Root
-                                    </button>
+
 
                                     <button class="button"
                                             ng-click="run()"
