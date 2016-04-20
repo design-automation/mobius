@@ -113,6 +113,7 @@ mobius.factory('nodeCollection', function () {
             for(var i = 0; i < nodes.length; i++){
                 if(nodes[i].nodeType == typeName){
                     var obj = {};
+                    console.log('fetch: ',nodes[i].subGraphModel);
                     angular.copy(nodes[i].subGraphModel,obj);
                     return obj;
                 }
@@ -154,27 +155,7 @@ mobius.factory('nodeCollection', function () {
                         outerCodeList:[],
                         dataList:[],
                         interfaceList:[],
-                        //chartDataModel: {"nodes": [], "connections": []},
-                    //chartViewModel: new flowchart.ChartViewModel({"nodes": [], "connections": []}),
-
-                        chartDataModel: {"nodes": [
-                        {
-                            "id": 0,
-                            "name": "fake0",
-                            "x": 2103.4991362628075,
-                            "y": 2045.5925781058293,
-                            "inputConnectors": [],
-                            "outputConnectors": [],
-                            "type": "fake",
-                            "version": 0,
-                            "overwrite": true,
-                            "disabled": false,
-                            "subGraphModel": {}
-                        }
-                    ],
-                     "connections": []},
-                        nodeIndex:undefined
-                    } : subGraphModel
+                        chartDataModel: {"nodes": [], "connections": []}, nodeIndex:undefined} : subGraphModel
                 };
             }
 
@@ -188,17 +169,20 @@ mobius.factory('nodeCollection', function () {
         },
 
         // update node procedure content
-        updateNodeType: function(oldType,newType, input, output, newProcedureList,newInterfaceList){
+        updateNodeType: function(oldType,newType, input, output, newProcedureList,newInterfaceList,isSubGraph,newSubGraphModel){
             for(var i = 0; i < nodes.length; i++){
                 if(nodes[i].nodeType == oldType){
+                    nodes[i].subGraph = isSubGraph;
                     nodes[i].nodeType = newType;
                     nodes[i].inputConnectors = input;
                     nodes[i].outputConnectors = output;
                     nodes[i].procedureDataModel = newProcedureList;
                     nodes[i].interfaceDataModel = newInterfaceList;
+                    nodes[i].subGraphModel = newSubGraphModel;
+                    console.log('install: ', nodes[i].chartDataModel);
                 }
-                localStorage.mobiusNodeTypes = JSON.stringify(nodes);
             }
+            localStorage.mobiusNodeTypes = JSON.stringify(nodes);
         },
 
         // delete node type

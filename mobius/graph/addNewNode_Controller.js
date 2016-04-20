@@ -17,6 +17,15 @@ mobius.controller('newNodeCtrl',[
 
         // inner function code for procedures
         $scope.innerCodeList = generateCode.getInnerCodeList();
+        // procedure data list
+        $scope.dataList = generateCode.getDataList();
+
+        // interface data list
+        $scope.interfaceList= generateCode.getInterfaceList();
+
+        // graph flowchart view model
+        $scope.chartViewModel= generateCode.getChartViewModel();
+
         $scope.$watch('innerCodeList', function () {
             generateCode.setInnerCodeList($scope.innerCodeList);
         },true);
@@ -29,22 +38,24 @@ mobius.controller('newNodeCtrl',[
         $scope.$watch('outerCodeList', function () {
             generateCode.setOuterCodeList($scope.outerCodeList);
         },true);
+
         $scope.$watch(function () { return generateCode.getOuterCodeList(); }, function () {
             $scope.outerCodeList = generateCode.getOuterCodeList();
         },true);
 
-        // procedure data list
-        $scope.dataList = generateCode.getDataList();
-
-        // interface data list
-        $scope.interfaceList= generateCode.getInterfaceList();
-
-        // graph flowchart view model
-        $scope.chartViewModel= generateCode.getChartViewModel();
-
         $scope.$watch(function(){return generateCode.getChartViewModel()},function(){
             $scope.chartViewModel = generateCode.getChartViewModel();
+            $scope.dataList = generateCode.getDataList();
+            $scope.interfaceList= generateCode.getInterfaceList();
         });
+
+        $scope.$watch(function () { return generateCode.getDataList(); }, function () {
+            $scope.dataList = generateCode.getDataList();
+        },true);
+
+        $scope.$watch(function () { return generateCode.getInterfaceList(); }, function () {
+            $scope.interfaceList= generateCode.getInterfaceList();
+        },true);
 
         // synchronization with node collection
         // new node type
@@ -176,6 +187,7 @@ mobius.controller('newNodeCtrl',[
                 newNodeDataModel.subGraph = nodeCollection.ifSubGraph(type);
                 newNodeDataModel.subGraphModel = nodeCollection.getSubGraphModel(type);
 
+                console.log('create : ',newNodeDataModel.subGraphModel);
                 // when new node added, increase the number of procedure list by one
                 $scope.dataList.push(nodeCollection.getProcedureDataModel(type));
 

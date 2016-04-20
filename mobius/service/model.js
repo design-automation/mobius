@@ -53,22 +53,24 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
         },
 
         goRoot:function(){
+            //current = {
+            //    javascriptCode:data.javascriptCode,
+            //    geomListCode: data.geomListCode,
+            //    innerCodeList:data.innerCodeList,
+            //    outerCodeList:data.outerCodeList,
+            //    chartViewModel: data.chartViewModel,
+            //    dataList: data.dataList,
+            //    interfaceList: data.interfaceList,
+            //    nodeIndex:undefined
+            //};
+
+            current = data;
+
             graphList.length = 0;
-            current = {
-                javascriptCode:data.javascriptCode,
-                geomListCode: data.geomListCode,
-                innerCodeList:data.innerCodeList,
-                outerCodeList:data.outerCodeList,
-                chartViewModel: data.chartViewModel,
-                dataList: data.dataList,
-                interfaceList: data.interfaceList,
-                nodeIndex:undefined
-            };
         },
 
         openNewChart:function(chartModel){
             graphList.push(chartModel);
-
             current = {
                 javascriptCode:graphList[graphList.length-1].subGraphModel.javascriptCode,
                 geomListCode:graphList[graphList.length-1].subGraphModel.geomListCode,
@@ -82,9 +84,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
         },
 
         changeGraphView: function (index) {
-
-                graphList.length = index + 1;
-
+            graphList.length = index + 1;
 
             current = {
                 javascriptCode:graphList[graphList.length-1].subGraphModel.javascriptCode,
@@ -126,10 +126,12 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
             return current.outerCodeList;
         },
 
+        // todo testing
         setInnerCodeList: function (value) {
             current.innerCodeList = value;
         },
 
+        // todo testing
         setOuterCodeList: function (value) {
             current.outerCodeList = value;
         },
@@ -138,24 +140,38 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
             return current.dataList;
         },
 
-        setDataList: function (value) {
-            angular.copy(value,data.dataList);
-        },
 
         getInterfaceList: function () {
             return current.interfaceList;
+        },
+
+
+        getChartViewModel: function () {
+            return current.chartViewModel;
+        },
+
+        setDataList: function (value) {
+            angular.copy(value,data.dataList);
         },
 
         setInterfaceList: function (value) {
             angular.copy(value,data.interfaceList);
         },
 
-        getChartViewModel: function () {
-            return current.chartViewModel;
-        },
-
         setChartViewModel: function (value) {
             angular.copy(value,data.chartViewModel);
+        },
+
+        getRootDataList: function(){
+            return data.dataList;
+        },
+
+        getRootInterfaceList: function(){
+            return data.interfaceList;
+        },
+
+        getRootChartViewModel: function(){
+            return data.chartViewModel;
         },
 
         getFunctionCodeList: function(){
@@ -168,37 +184,37 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
         generateCode: function (){
             // copy the sorted order
-            var sortedOrder = data.chartViewModel.topoSort().slice();
+            var sortedOrder = current.chartViewModel.topoSort().slice();
 
             generate_execution_code();
             generate_outer_function_code();
             generate_inner_function_code();
 
-            for(var i = 0; i < data.dataList.length; i++){
-                data.javascriptCode += data.outerCodeList[i];
+            for(var i = 0; i < current.dataList.length; i++){
+                current.javascriptCode += current.outerCodeList[i];
             }
 
-            for(var i = 0; i < data.dataList.length; i++){
-                data.javascriptCode += data.innerCodeList[i];
+            for(var i = 0; i < current.dataList.length; i++){
+                current.javascriptCode += current.innerCodeList[i];
             }
 
             // execution based topological sort
             function generate_execution_code(){
-                data.javascriptCode = '// execution: \n';
-                data.geomListCode = "var geomList = [];\n";
+                current.javascriptCode = '// execution: \n';
+                current.geomListCode = "var geomList = [];\n";
                 for(var n = 0; n < sortedOrder.length; n++) {
                     // first check if the node is disabled
-                    if((data.chartViewModel.nodes[sortedOrder[n]].disabled() === false) ||
-                        !data.chartViewModel.nodes[sortedOrder[n]].disabled()){
+                    if((current.chartViewModel.nodes[sortedOrder[n]].disabled() === false) ||
+                        !current.chartViewModel.nodes[sortedOrder[n]].disabled()){
                         // case where the node has output
-                        var output_port_num = data.chartViewModel.nodes[sortedOrder[n]].outputConnectors.length;
-                        var node_name = data.chartViewModel.nodes[sortedOrder[n]].data.name;
-                        var return_obj_name = 'output_' + data.chartViewModel.nodes[sortedOrder[n]].data.name;
+                        var output_port_num = current.chartViewModel.nodes[sortedOrder[n]].outputConnectors.length;
+                        var node_name = current.chartViewModel.nodes[sortedOrder[n]].data.name;
+                        var return_obj_name = 'output_' + current.chartViewModel.nodes[sortedOrder[n]].data.name;
 
                         if (output_port_num != 0) {
                             // first get the return object
-                            data.javascriptCode += 'var ' + return_obj_name + ' = ';
-                            data.geomListCode += 'geomList.push({'
+                            current.javascriptCode += 'var ' + return_obj_name + ' = ';
+                            current.geomListCode += 'geomList.push({'
                                 + 'name:'
                                 + node_name +'.name,'
                                 + 'value:'
@@ -210,50 +226,50 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                         }
 
                         // case where the node has no output
-                        data.javascriptCode += data.chartViewModel.nodes[sortedOrder[n]].data.name + "(";
+                        current.javascriptCode += current.chartViewModel.nodes[sortedOrder[n]].data.name + "(";
 
                         // print all the parameters/inputs
 
-                        var input_port_num = data.chartViewModel.nodes[sortedOrder[n]].inputConnectors.length;
+                        var input_port_num = current.chartViewModel.nodes[sortedOrder[n]].inputConnectors.length;
 
                         for (var m = 0; m < input_port_num; m++) {
 
-                            var input_port_name = data.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.name;
+                            var input_port_name = current.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.name;
 
-                            if(data.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.connected === true){
+                            if(current.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.connected === true){
                                 if(m != input_port_num-1){
-                                    data.javascriptCode += input_port_name + ',';
+                                    current.javascriptCode += input_port_name + ',';
                                 }
                                 else{
-                                    data.javascriptCode += input_port_name;
+                                    current.javascriptCode += input_port_name;
                                 }
                             }
                         }
 
-                        if( data.javascriptCode.slice(-1) === ','){
-                            data.javascriptCode = data.javascriptCode.substring(0, data.javascriptCode.length - 1);
+                        if( current.javascriptCode.slice(-1) === ','){
+                            current.javascriptCode = current.javascriptCode.substring(0, current.javascriptCode.length - 1);
                         }
 
-                        data.javascriptCode +=  ");\n";
+                        current.javascriptCode +=  ");\n";
 
                         // extract items from return through label
                         // fixme name duplication or undefined name
                         for(var m =0; m < output_port_num; m++){
 
-                            var output_port_node_id = data.chartViewModel.nodes[sortedOrder[n]].data.id;
-                            var output_port_name = data.chartViewModel.nodes[sortedOrder[n]].outputConnectors[m].data.name;
+                            var output_port_node_id = current.chartViewModel.nodes[sortedOrder[n]].data.id;
+                            var output_port_name = current.chartViewModel.nodes[sortedOrder[n]].outputConnectors[m].data.name;
 
-                            for (var l = 0; l < data.chartViewModel.connections.length; l++) {
+                            for (var l = 0; l < current.chartViewModel.connections.length; l++) {
 
-                                if (output_port_name === data.chartViewModel.connections[l].source.name()
-                                    && output_port_node_id === data.chartViewModel.connections[l].data.source.nodeID) {
-                                    var connected_input_name = data.chartViewModel.connections[l].dest.data.name;
+                                if (output_port_name === current.chartViewModel.connections[l].source.name()
+                                    && output_port_node_id === current.chartViewModel.connections[l].data.source.nodeID) {
+                                    var connected_input_name = current.chartViewModel.connections[l].dest.data.name;
 
-                                    var destNodeId =  data.chartViewModel.connections[l].data.dest.nodeID
+                                    var destNodeId =  current.chartViewModel.connections[l].data.dest.nodeID;
                                     // if connection dest node is not disabled
-                                    if((data.chartViewModel.nodes[destNodeId].disabled() === false) ||
-                                        data.chartViewModel.nodes[destNodeId].disabled() === undefined){
-                                        data.javascriptCode +=  'var '
+                                    if((current.chartViewModel.nodes[destNodeId].disabled() === false) ||
+                                        current.chartViewModel.nodes[destNodeId].disabled() === undefined){
+                                        current.javascriptCode +=  'var '
                                             + connected_input_name +' = MOBIUS.obj.copy('
                                             + return_obj_name
                                             + '.'
@@ -262,119 +278,119 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                                 }
                             }
                         }
-                        data.javascriptCode +=  "\n";
+                        current.javascriptCode +=  "\n";
                     }
-                    data.javascriptCode += '\n';
+                    current.javascriptCode += '\n';
                 }
             }
 
             // outer function code with parameters-definition and invoking of procedure function
             function generate_outer_function_code(){
 
-                for(var i = 0; i < data.dataList.length; i++){
+                for(var i = 0; i < current.dataList.length; i++){
                     // function name
-                    data.outerCodeList[i]='// This is definition for function '
-                        + data.chartViewModel.nodes[i].data.name + '\n';
+                    current.outerCodeList[i]='// This is definition for function '
+                        + current.chartViewModel.nodes[i].data.name + '\n';
 
-                    data.outerCodeList[i] += 'function ' + data.chartViewModel.nodes[i].data.name +' (';
+                    current.outerCodeList[i] += 'function ' + current.chartViewModel.nodes[i].data.name +' (';
 
                     // function inputs
 
-                    var num_input_ports = data.chartViewModel.nodes[i].inputConnectors.length;
+                    var num_input_ports = current.chartViewModel.nodes[i].inputConnectors.length;
 
                     if(num_input_ports){
                         for(var k = 0; k < num_input_ports; k++){
 
-                            if(data.chartViewModel.nodes[i].inputConnectors[k].data.connected === true){
+                            if(current.chartViewModel.nodes[i].inputConnectors[k].data.connected === true){
                                 if( k != num_input_ports-1){
-                                    data.outerCodeList[i] += data.chartViewModel.nodes[i].inputConnectors[k].data.name + ',';
+                                    current.outerCodeList[i] += current.chartViewModel.nodes[i].inputConnectors[k].data.name + ',';
                                 }
                                 else{
-                                    data.outerCodeList[i] += data.chartViewModel.nodes[i].inputConnectors[k].data.name;
+                                    current.outerCodeList[i] += current.chartViewModel.nodes[i].inputConnectors[k].data.name;
                                 }
                             }
                         }
 
-                        if(data.outerCodeList[i].slice(-1) === ','){
-                            data.outerCodeList[i] =  data.outerCodeList[i].substring(0, data.outerCodeList[i].length - 1);
+                        if(current.outerCodeList[i].slice(-1) === ','){
+                            current.outerCodeList[i] =  current.outerCodeList[i].substring(0, current.outerCodeList[i].length - 1);
                         }
 
-                        data.outerCodeList[i] += '){\n'
+                        current.outerCodeList[i] += '){\n'
 
                     }else{
-                        data.outerCodeList[i] +=  '){\n';
+                        current.outerCodeList[i] +=  '){\n';
                     }
 
                     // parameters code
                     // todo assign or create new variable
-                    for(var j = 0; j < data.interfaceList[i].length;j++){
+                    for(var j = 0; j < current.interfaceList[i].length;j++){
 
-                        if(data.interfaceList[i][j].connected === false){
+                        if(current.interfaceList[i][j].connected === false){
                             // creating new parameters
                             var codeBlock = "    " + "var "
-                                + data.interfaceList[i][j].name
+                                + current.interfaceList[i][j].name
                                 + " = ";
-                            if(data.interfaceList[i][j].option.name === 'color picker'){
-                                var color = "'" + data.interfaceList[i][j].color + "' ;\n" ;
+                            if(current.interfaceList[i][j].option.name === 'color picker'){
+                                var color = "'" + current.interfaceList[i][j].color + "' ;\n" ;
                                 codeBlock += color.replace('#','0x').replace("'",'').replace("'",'')
                             }
                             else{
-                                codeBlock += data.interfaceList[i][j].dataValue + ";\n";
+                                codeBlock += current.interfaceList[i][j].dataValue + ";\n";
                             }
 
-                            data.outerCodeList[i] += codeBlock;
+                            current.outerCodeList[i] += codeBlock;
                         }
 
                     }
 
                     // code for invoking inner function
-                    var identifier = '_' + data.chartViewModel.nodes[i].data.version;
-                    if(data.chartViewModel.nodes[i].data.version === 0){
+                    var identifier = '_' + current.chartViewModel.nodes[i].data.version;
+                    if(current.chartViewModel.nodes[i].data.version === 0){
                         identifier = '';
                     }
 
-                    data.outerCodeList[i] += '    return ' + data.chartViewModel.nodes[i].data.type + identifier + '(';
+                    current.outerCodeList[i] += '    return ' + current.chartViewModel.nodes[i].data.type + identifier + '(';
 
-                    for(var j = 0; j < data.interfaceList[i].length; j++){
-                        data.outerCodeList[i] += data.interfaceList[i][j].name;
-                        if(j !=  data.interfaceList[i].length-1){
-                            data.outerCodeList[i] += ', '
+                    for(var j = 0; j < current.interfaceList[i].length; j++){
+                        current.outerCodeList[i] += current.interfaceList[i][j].name;
+                        if(j !=  current.interfaceList[i].length-1){
+                            current.outerCodeList[i] += ', '
                         }
                     }
 
-                    data.outerCodeList[i] +=   ');' + '\n}\n\n';
+                    current.outerCodeList[i] +=   ');' + '\n}\n\n';
                 }
             }
 
             // inner function code generation and procedure content code
             function generate_inner_function_code(){
                 // inner(type) function definition: linking with parameters
-                for(var i = 0; i < data.dataList.length; i++) {
+                for(var i = 0; i < current.dataList.length; i++) {
 
-                    data.innerCodeList[i] = '// This is definition for type '
-                        + data.chartViewModel.nodes[i].data.type + '\n'
-                        + '// version: ' + data.chartViewModel.nodes[i].data.version + '\n';
+                    current.innerCodeList[i] = '// This is definition for type '
+                        + current.chartViewModel.nodes[i].data.type + '\n'
+                        + '// version: ' + current.chartViewModel.nodes[i].data.version + '\n';
 
-                    var identifier = '_' + data.chartViewModel.nodes[i].data.version;
-                    if(data.chartViewModel.nodes[i].data.version === 0){
+                    var identifier = '_' + current.chartViewModel.nodes[i].data.version;
+                    if(current.chartViewModel.nodes[i].data.version === 0){
                         identifier = '';
                     }
 
-                    data.innerCodeList[i] += 'function ' + data.chartViewModel.nodes[i].data.type + identifier + '( ';
+                    current.innerCodeList[i] += 'function ' + current.chartViewModel.nodes[i].data.type + identifier + '( ';
 
-                    for (var j = 0; j < data.interfaceList[i].length; j++) {
-                        data.innerCodeList[i] += data.interfaceList[i][j].name;
-                        if (j != data.interfaceList[i].length - 1) {
-                            data.innerCodeList[i] += ', '
+                    for (var j = 0; j < current.interfaceList[i].length; j++) {
+                        current.innerCodeList[i] += current.interfaceList[i][j].name;
+                        if (j != current.interfaceList[i].length - 1) {
+                            current.innerCodeList[i] += ', '
                         }
                     }
 
-                    data.innerCodeList[i] += ' ){\n';
-                    data.innerCodeList[i] += '    var FUNC_OUTPUT = ';
-                    data.innerCodeList[i] += data.chartViewModel.nodes[i].data.type + identifier + ';\n';
+                    current.innerCodeList[i] += ' ){\n';
+                    current.innerCodeList[i] += '    var FUNC_OUTPUT = ';
+                    current.innerCodeList[i] += current.chartViewModel.nodes[i].data.type + identifier + ';\n';
 
                     // define return items according to output port
-                    var num_output_ports = data.chartViewModel.nodes[i].outputConnectors.length;
+                    var num_output_ports = current.chartViewModel.nodes[i].outputConnectors.length;
 
                     //if(num_output_ports){
                     //    for(var k = 0; k < num_output_ports; k++){
@@ -386,45 +402,45 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                     //}
 
                     // inner function content
-                    for (var j = 0; j < data.dataList[i].length; j++) {
+                    for (var j = 0; j < current.dataList[i].length; j++) {
 
                         // data procedure
 
-                        if(data.dataList[i][j].title === 'Output'){
-                            procedure_output(data.dataList[i][j], i, false);
+                        if(current.dataList[i][j].title === 'Output'){
+                            procedure_output(current.dataList[i][j], i, false);
                         }
 
-                        if (data.dataList[i][j].title == "Data") {
-                            procedure_data(data.dataList[i][j], i, false);
+                        if (current.dataList[i][j].title == "Data") {
+                            procedure_data(current.dataList[i][j], i, false);
                         }
 
                         // action procedure
 
-                        if (data.dataList[i][j].title == 'Action') {
-                            procedure_action(data.dataList[i][j], i, false);
+                        if (current.dataList[i][j].title == 'Action') {
+                            procedure_action(current.dataList[i][j], i, false);
                         }
 
                         // control procedure
 
-                        if (data.dataList[i][j].title == 'Control') {
-                            procedure_control(data.dataList[i][j], i, false);
+                        if (current.dataList[i][j].title == 'Control') {
+                            procedure_control(current.dataList[i][j], i, false);
                         }
                     }
 
                     // return value
                     if(num_output_ports){
-                        data.innerCodeList[i] = data.innerCodeList[i] + '\n    return {\n';
+                        current.innerCodeList[i] = current.innerCodeList[i] + '\n    return {\n';
 
                         for(var k = 0; k < num_output_ports; k++){
-                            data.innerCodeList[i] +=
-                                '        ' + data.chartViewModel.nodes[i].outputConnectors[k].data.name
+                            current.innerCodeList[i] +=
+                                '        ' + current.chartViewModel.nodes[i].outputConnectors[k].data.name
                                 + ':'
-                                + data.chartViewModel.nodes[i].outputConnectors[k].data.name
+                                + current.chartViewModel.nodes[i].outputConnectors[k].data.name
                                 + ',\n'
                         }
-                        data.innerCodeList[i] += '    };\n' + '}\n\n'
+                        current.innerCodeList[i] += '    };\n' + '}\n\n'
                     }else{
-                        data.innerCodeList[i] += '}\n\n';
+                        current.innerCodeList[i] += '}\n\n';
                     }
                 }
             }
@@ -451,7 +467,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                             + " = "
                             + procedure.dataValue + ";\n";
 
-                        data.innerCodeList[nodeIndex] += codeBlock;
+                        current.innerCodeList[nodeIndex] += codeBlock;
                     }else{
                         // creating new variable
                         codeBlock = intentation + "    " + "var "
@@ -459,7 +475,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                             + " = "
                             + procedure.dataValue + ";\n";
 
-                        data.innerCodeList[nodeIndex] += codeBlock;
+                        current.innerCodeList[nodeIndex] += codeBlock;
                     }
                 }
             }
@@ -485,7 +501,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                         + " = "
                         + procedure.dataValue + ";\n";
 
-                    data.innerCodeList[nodeIndex] += codeBlock;
+                    current.innerCodeList[nodeIndex] += codeBlock;
                 }
             }
 
@@ -531,7 +547,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                 }
 
 
-                data.innerCodeList[nodeIndex] += codeBlock;
+                current.innerCodeList[nodeIndex] += codeBlock;
             }
 
             // control procedure
@@ -548,7 +564,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                 }
 
                 if(procedure.controlType === 'for each'){
-                    data.innerCodeList[nodeIndex] +=  intentation + '    ' + 'for( var ' +
+                    current.innerCodeList[nodeIndex] +=  intentation + '    ' + 'for( var ' +
                         procedure.dataName + ' of '
                         + procedure.forList + '){\n';
 
@@ -560,11 +576,11 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                         }
                     }
 
-                    data.innerCodeList[nodeIndex] += intentation + '    }\n';
+                    current.innerCodeList[nodeIndex] += intentation + '    }\n';
                 }
 
                 else if (procedure.controlType === 'if else'){
-                    data.innerCodeList[nodeIndex] +=  intentation + '    ' + 'if( ' +
+                    current.innerCodeList[nodeIndex] +=  intentation + '    ' + 'if( ' +
                         procedure.nodes[0].ifExpression + ' ){\n';
 
 
@@ -576,7 +592,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                         }
                     }
 
-                    data.innerCodeList[nodeIndex] += intentation + '    }else{\n';
+                    current.innerCodeList[nodeIndex] += intentation + '    }else{\n';
 
                     if(procedure.nodes[1].nodes.length > 0){
                         for(var m = 0; m < procedure.nodes[1].nodes.length; m++){
@@ -586,7 +602,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                         }
                     }
 
-                    data.innerCodeList[nodeIndex] += intentation + '    }\n';
+                    current.innerCodeList[nodeIndex] += intentation + '    }\n';
                 }
             }
         }

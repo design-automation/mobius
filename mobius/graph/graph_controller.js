@@ -40,7 +40,7 @@ mobius.controller(  'graphCtrl',
         $scope.dataList = generateCode.getDataList();
 
         $scope.$watch(function () { return generateCode.getDataList(); }, function () {
-                $scope.dataList = generateCode.getDataList();
+            $scope.dataList = generateCode.getDataList();
         },true);
 
         // interface data list
@@ -57,6 +57,8 @@ mobius.controller(  'graphCtrl',
         $scope.chartViewModel = generateCode.getChartViewModel();
 
         $scope.$watch(function(){return generateCode.getChartViewModel()},function(){
+            $scope.dataList = generateCode.getDataList();
+            $scope.interfaceList= generateCode.getInterfaceList();
             $scope.chartViewModel = generateCode.getChartViewModel();
         });
 
@@ -305,10 +307,14 @@ mobius.controller(  'graphCtrl',
                 var index = $scope.chartViewModel.getSelectedNodes()[0].data.id;
                 var newProcedureDataModel =  $scope.dataList[index];
                 var newInterfaceDataModel = $scope.interfaceList[index];
+                var isSubGraph = $scope.chartViewModel.getSelectedNodes()[0].data.subGraph;
+                var subGraphModel = $scope.chartViewModel.getSelectedNodes()[0].data.subGraphModel;
 
-                nodeCollection.installNewNodeType(newTypeName,input,output,newProcedureDataModel,newInterfaceDataModel);
+                nodeCollection.
+                    installNewNodeType(
+                        newTypeName,isSubGraph,input,output,
+                        newProcedureDataModel,newInterfaceDataModel,subGraphModel);
             });
-
         });
 
         // todo when multi-selection should throw error to user that only one node can be saved
@@ -340,14 +346,18 @@ mobius.controller(  'graphCtrl',
                 var index = $scope.chartViewModel.getSelectedNodes()[0].data.id;
                 var newProcedureDataModel = $scope.dataList[index];
                 var newInterfaceDataModel = $scope.interfaceList[index];
+                var isSubGraph = $scope.chartViewModel.getSelectedNodes()[0].data.subGraph;
+                var newSubGraphModel =  $scope.chartViewModel.getSelectedNodes()[0].data.subGraphModel;
+                console.log('copy for overwrite: ', newSubGraphModel);
 
-                nodeCollection.updateNodeType(oldTypeName, newTypeName, input,output,newProcedureDataModel,newInterfaceDataModel);
+                nodeCollection.updateNodeType(oldTypeName, newTypeName, input,output,newProcedureDataModel,newInterfaceDataModel, isSubGraph,newSubGraphModel);
 
                 // update this node
                 $scope.chartViewModel.getSelectedNodes()[0].data.type = newTypeName;
                 $scope.chartViewModel.getSelectedNodes()[0].data.version = 0;
 
                 // update other nodes with original type and version 0
+                // todo fix for subgraph
                 for(var i = 0; i < $scope.chartViewModel.nodes.length; i++){
                     var node = $scope.chartViewModel.nodes[i];
                     if(node.data.type === oldTypeName){
@@ -449,7 +459,6 @@ mobius.controller(  'graphCtrl',
         };
 
         $scope.changeGraphView = function(index){
-            console.log('index is : ', index);
             generateCode.changeGraphView(index);
         };
     }]);

@@ -52,14 +52,26 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
         // procedure data list
         $scope.dataList = generateCode.getDataList();
+        $scope.$watch(function () { return generateCode.getDataList(); }, function () {
+            $scope.dataList= generateCode.getDataList();
+        },true);
 
         // interface data list
         $scope.interfaceList= generateCode.getInterfaceList();
+        $scope.$watch(function () { return generateCode.getInterfaceList(); }, function () {
+            $scope.interfaceList= generateCode.getInterfaceList();
+        },true);
 
         // graph flowchart view model
         // pass by reference
         // deep watch chartViewModel.data instead of chartViewModel to prevent stack limit exceeded
         $scope.chartViewModel= generateCode.getChartViewModel();
+
+        $scope.$watch(function(){return generateCode.getChartViewModel()},function(){
+            $scope.interfaceList= generateCode.getInterfaceList();
+            $scope.dataList= generateCode.getDataList();
+            $scope.chartViewModel = generateCode.getChartViewModel();
+        });
 
         // currently selected node ID
         $scope.nodeIndex = '';
@@ -122,8 +134,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
         $scope.methods = $scope.getMethods();
         $scope.methodList = $scope.getMethodList();
-
-
 
         $scope.$on("clearProcedure", function(){
             $scope.nodeIndex = undefined;
@@ -716,7 +726,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         // todo seperate interface as another controller
         // add new item in interface
         $scope.newInterface = function(cate) {
-
             try{
                 if(cate === 'Input'){
 
