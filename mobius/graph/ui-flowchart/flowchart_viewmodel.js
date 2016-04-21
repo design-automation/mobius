@@ -13,6 +13,11 @@ var flowchart = {};
 	flowchart.nodeHeight =20;
 
 	//
+	// height of input /output port height for subgraph
+	//
+	flowchart.portHeight = 20;
+
+	//
 	// Amount of space reserved for displaying the node's name.
 	//
 	flowchart.nodeNameWidth = 50;
@@ -133,7 +138,6 @@ var flowchart = {};
 	// View model for a node.
 	//
 	flowchart.NodeViewModel = function (nodeDataModel) {
-
 		this.data = nodeDataModel;
 		this.inputConnectors = createConnectorsViewModel(this.data.inputConnectors, 0, this);
 		this.outputConnectors = createConnectorsViewModel(this.data.outputConnectors, flowchart.nodeHeight, this);
@@ -171,14 +175,14 @@ var flowchart = {};
 					this.inputConnectors.length,
 					this.outputConnectors.length);
 			return flowchart.computeConnectorX(numConnectors)-5;
-		}
+		};
 
 		//
 		// Height of the node.
 		//
 		this.height = function () {
 			return flowchart.nodeHeight;
-		}
+		};
 
 		//
 		// Select the node.
@@ -263,7 +267,6 @@ var flowchart = {};
 			}
 			this._addConnector(connectorDataModel, flowchart.nodeHeight, this.data.outputConnectors, this.outputConnectors);
 		};
-
 	};
 
 	//
@@ -280,6 +283,218 @@ var flowchart = {};
 
 		return nodesViewModel;
 	};
+
+
+	//
+	// todo view model for input in subgraph
+	// provide output connectors
+	flowchart.InputViewModel = function (inputDataModel){
+		this.data = inputDataModel;
+		this.outputConnectors = createConnectorsViewModel(this.data.outputConnectors, flowchart.portHeight, this);
+
+		// Set to true when the node is selected.
+		this._selected = false;
+
+		//
+		// X coordinate of the node.
+		//
+		this.x = function () {
+			return this.data.x;
+		};
+
+		//
+		// Y coordinate of the node.
+		//
+		this.y = function () {
+			return this.data.y;
+		};
+
+		//
+		// Width of the node.
+		//
+		this.width = function () {
+			var numConnectors = this.outputConnectors.length;
+			return flowchart.computeConnectorX(numConnectors)-5;
+		};
+
+		//
+		// Height of the node.
+		//
+		this.height = function () {
+			return flowchart.portHeight;
+		};
+
+		//
+		// Select the node.
+		//
+		this.select = function () {
+			this._selected = true;
+		};
+
+		//
+		// Deselect the node.
+		//
+		this.deselect = function () {
+			this._selected = false;
+		};
+
+		//
+		// Toggle the selection state of the node.
+		//
+		this.toggleSelected = function () {
+			this._selected = !this._selected;
+		};
+
+		//
+		// Returns true if the node is selected.
+		//
+		this.selected = function () {
+			return this._selected;
+		};
+
+
+		//
+		// Internal function to add a connector.
+		//
+		this._addConnector = function (connectorDataModel, y, connectorsDataModel, connectorsViewModel) {
+			var connectorViewModel =
+				new flowchart.ConnectorViewModel(connectorDataModel,
+					flowchart.computeConnectorX(connectorsViewModel.length),y, this);
+
+			connectorsDataModel.push(connectorDataModel);
+
+			// Add to node's view model.
+			connectorsViewModel.push(connectorViewModel);
+		};
+
+		//
+		// Add an output connector to the node.
+		//
+		this.addOutputConnector = function (connectorDataModel) {
+
+			if (!this.data.outputConnectors) {
+				this.data.outputConnectors = [];
+			}
+			this._addConnector(connectorDataModel, flowchart.portHeight, this.data.outputConnectors, this.outputConnectors);
+		};
+	};
+
+	//
+	// todo view model for output in subgraph
+	// provide input connectors
+	flowchart.OutputViewModel = function (outputDataModel){
+		this.data = outputDataModel;
+		this.inputConnectors = createConnectorsViewModel(this.data.inputConnectors, 0, this);
+
+		// Set to true when the node is selected.
+		this._selected = false;
+
+		//
+		// X coordinate of the node.
+		//
+		this.x = function () {
+			return this.data.x;
+		};
+
+		//
+		// Y coordinate of the node.
+		//
+		this.y = function () {
+			return this.data.y;
+		};
+
+		//
+		// Width of the node.
+		//
+		this.width = function () {
+			var numConnectors = this.inputConnectors.length;
+			return flowchart.computeConnectorX(numConnectors)-5;
+		};
+
+		//
+		// Height of the node.
+		//
+		this.height = function () {
+			return flowchart.portHeight;
+		};
+
+		//
+		// Select the node.
+		//
+		this.select = function () {
+			this._selected = true;
+		};
+
+		//
+		// Deselect the node.
+		//
+		this.deselect = function () {
+			this._selected = false;
+		};
+
+		//
+		// Toggle the selection state of the node.
+		//
+		this.toggleSelected = function () {
+			this._selected = !this._selected;
+		};
+
+		//
+		// Returns true if the node is selected.
+		//
+		this.selected = function () {
+			return this._selected;
+		};
+
+		//
+		// Internal function to add a connector.
+		this._addConnector = function (connectorDataModel, y, connectorsDataModel, connectorsViewModel) {
+			var connectorViewModel =
+				new flowchart.ConnectorViewModel(connectorDataModel,
+					flowchart.computeConnectorX(connectorsViewModel.length),y, this);
+
+			connectorsDataModel.push(connectorDataModel);
+
+			// Add to node's view model.
+			connectorsViewModel.push(connectorViewModel);
+		};
+
+		//
+		// Add an input connector to the node.
+		//
+		this.addInputConnector = function (connectorDataModel) {
+
+			if (!this.data.inputConnectors) {
+				this.data.inputConnectors = [];
+			}
+			this._addConnector(connectorDataModel, 0, this.data.inputConnectors, this.inputConnectors);
+		};
+	};
+
+	//
+	// todo wrap inputs data-model in view-model
+	//
+	var createInputViewModel = function (inputDataModel){
+
+		if (inputDataModel) {
+			var inputViewModel = new flowchart.InputViewModel(inputDataModel);
+		}
+
+		return inputViewModel;
+	};
+
+	//
+	// todo wrap outputs data-model in view-model
+	//
+	var createOutputViewModel = function (outputsDataModel){
+		if (outputsDataModel) {
+			var inputViewModel = new flowchart.OutputViewModel(outputsDataModel);
+		}
+
+		return inputViewModel;
+	};
+
+
 
 	//
 	// View model for a connection.
@@ -446,11 +661,7 @@ var flowchart = {};
 	//
 	flowchart.ChartViewModel = function (chartDataModel) {
 
-		//
-		// @ mobius
-		//
-
-		// variable for topological sort
+		// @ mobius variable for topological sort
 		var edgeList = [];
 
 
