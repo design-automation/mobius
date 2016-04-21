@@ -113,7 +113,6 @@ mobius.factory('nodeCollection', function () {
             for(var i = 0; i < nodes.length; i++){
                 if(nodes[i].nodeType == typeName){
                     var obj = {};
-                    console.log('fetch: ',nodes[i].subGraphModel);
                     angular.copy(nodes[i].subGraphModel,obj);
                     return obj;
                 }
@@ -155,8 +154,27 @@ mobius.factory('nodeCollection', function () {
                         outerCodeList:[],
                         dataList:[],
                         interfaceList:[],
-                        chartDataModel: {"nodes": [], "connections": []}, nodeIndex:undefined} : subGraphModel
+                        chartDataModel: {
+                            "nodes": [],
+                            "connections": [],
+                            "inputPort": {
+                                x:1900,
+                                y:2100,
+                                inputList:[]
+                            },
+                            "outputPort": {
+                                x:1900,
+                                y:1900,
+                                outputList:[]
+                            }
+                        },
+                        nodeIndex:undefined
+                    } : subGraphModel
                 };
+
+                // todo input/ouput port not copy by reference, instead, update data/ view model by actions
+                // newNode.subGraphModel.chartDataModel.inputPort.outputList = newNode.procedureDataModel;
+                // newNode.subGraphModel.chartDataModel.outputPort.inputList = newNode.interfaceDataModel;
             }
 
             nodes.push(newNode);
@@ -179,7 +197,6 @@ mobius.factory('nodeCollection', function () {
                     nodes[i].procedureDataModel = newProcedureList;
                     nodes[i].interfaceDataModel = newInterfaceList;
                     nodes[i].subGraphModel = newSubGraphModel;
-                    console.log('install: ', nodes[i].chartDataModel);
                 }
             }
             localStorage.mobiusNodeTypes = JSON.stringify(nodes);

@@ -24,6 +24,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
         chartViewModel: new flowchart.ChartViewModel({
             nodes: [],
             connections: []
+            // todo input/output ports goes here
         }),
         nodeIndex:undefined
     };
@@ -53,20 +54,10 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
         },
 
         goRoot:function(){
-            //current = {
-            //    javascriptCode:data.javascriptCode,
-            //    geomListCode: data.geomListCode,
-            //    innerCodeList:data.innerCodeList,
-            //    outerCodeList:data.outerCodeList,
-            //    chartViewModel: data.chartViewModel,
-            //    dataList: data.dataList,
-            //    interfaceList: data.interfaceList,
-            //    nodeIndex:undefined
-            //};
-
             current = data;
 
             graphList.length = 0;
+            console.log(current.chartViewModel.data)
         },
 
         openNewChart:function(chartModel){
@@ -81,6 +72,8 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                 interfaceList: graphList[graphList.length-1].subGraphModel.interfaceList,
                 nodeIndex:undefined
             };
+
+            console.log(current.chartViewModel.data)
         },
 
         changeGraphView: function (index) {
@@ -96,6 +89,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                 interfaceList: graphList[graphList.length-1].subGraphModel.interfaceList,
                 nodeIndex:undefined
             };
+            console.log(current.chartViewModel.data)
         },
 
         getNodeIndex: function(){

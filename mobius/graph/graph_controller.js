@@ -79,6 +79,26 @@ mobius.controller(  'graphCtrl',
                         !angular.equals(newValue.nodes[i].outputConnectors,oldValue.nodes[i].outputConnectors)
                     ){
                         generateCode.generateCode();
+
+                        //
+                        // pass connector list to subgraph chartdatamodel input/output port
+                        //
+                        if(!angular.equals(newValue.nodes[i].outputConnectors,oldValue.nodes[i].outputConnectors)){
+                            var outputList = [];
+                            for (var j = 0; j < $scope.dataList[$scope.nodeIndex].length;j++){
+                                if($scope.dataList[$scope.nodeIndex][j].title === 'Output'){
+                                    outputList.push($scope.dataList[$scope.nodeIndex][j]);
+                                }
+                            }
+
+                            $scope.chartViewModel.nodes[i].data.subGraphModel.chartDataModel.outputPort.outputList
+                                = outputList;
+                        }
+
+                        if(!angular.equals(newValue.nodes[i].inputConnectors,oldValue.nodes[i].inputConnectors)){
+                            $scope.chartViewModel.nodes[i].data.subGraphModel.chartDataModel.inputPort.inputList
+                                =  $scope.interfaceList[$scope.nodeIndex];
+                        }
                         break;
                     }
                 }

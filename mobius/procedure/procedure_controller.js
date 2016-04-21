@@ -172,14 +172,13 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
         // watch change of procedure data tree, if change update the flattenData, update version
         $scope.$watch('data',function(){
+
             updateVersion();
-            //generateCode.generateCode();
             flattenData();
         } , true);
 
         $scope.$watch('interface',function(){
             updateVersion();
-            //generateCode.generateCode();
             flattenData();
         },true);
 
@@ -576,24 +575,9 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                 }
 
                 else if(cate === 'Output'){
-                    //if($scope.data.length !== 0){
-                    //    var maxId = $scope.data[0].id;
-                    //    for(var i = 1;i < $scope.data.length; i ++){
-                    //        if(maxId < $scope.data[i].id){
-                    //            maxId = $scope.data[i].id;
-                    //        }
-                    //    }
-                    //}else{
-                    //    maxId = 0;
-                    //}
-
-
                     var outputObj = {
                         id:$scope.maxId($scope.data) + 1,
                         title: 'Output'
-                        //name: undefined,
-                        //dataValue:undefined,
-                        //type:undefined
                     };
 
                     if(insertIndex !== undefined){

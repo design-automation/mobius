@@ -187,7 +187,6 @@ mobius.controller('newNodeCtrl',[
                 newNodeDataModel.subGraph = nodeCollection.ifSubGraph(type);
                 newNodeDataModel.subGraphModel = nodeCollection.getSubGraphModel(type);
 
-                console.log('create : ',newNodeDataModel.subGraphModel);
                 // when new node added, increase the number of procedure list by one
                 $scope.dataList.push(nodeCollection.getProcedureDataModel(type));
 
