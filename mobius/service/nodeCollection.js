@@ -159,22 +159,18 @@ mobius.factory('nodeCollection', function () {
                             "connections": [],
                             "inputPort": {
                                 x:1900,
-                                y:2100,
-                                inputList:[]
+                                y:1900,
+                                inputConnectors:[]
                             },
                             "outputPort": {
                                 x:1900,
-                                y:1900,
-                                outputList:[]
+                                y:2300,
+                                outputConnectors:[]
                             }
                         },
                         nodeIndex:undefined
                     } : subGraphModel
                 };
-
-                // todo input/ouput port not copy by reference, instead, update data/ view model by actions
-                // newNode.subGraphModel.chartDataModel.inputPort.outputList = newNode.procedureDataModel;
-                // newNode.subGraphModel.chartDataModel.outputPort.inputList = newNode.interfaceDataModel;
             }
 
             nodes.push(newNode);

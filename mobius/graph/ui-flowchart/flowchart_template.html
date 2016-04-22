@@ -4,11 +4,11 @@
   ng-mousedown="mouseDown($event)"
   ng-mousemove="mouseMove($event)"
   oncontextmenu="return false;">
-  <defs>
+    <defs>
       <pattern id="dots-4-11" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
           <circle cx="5" cy="5" r="0.7" style="stroke:none; fill:#aaaaaa;" />
       </pattern>
-  </defs>
+    </defs>
 
     <rect x="0" y="0"
           height="4000" width="4000"
@@ -17,11 +17,9 @@
           class="position-fixed"
     />
 
-    <g
-    ng-repeat="node in chart.nodes"
+    <g  ng-repeat="node in chart.nodes"
     ng-mousedown="nodeMouseDown($event, node)"
-    ng-attr-transform="translate({{node.x()}}, {{node.y()}})"
-    >
+    ng-attr-transform="translate({{node.x()}}, {{node.y()}})">
     <rect
       ng-attr-class="{{ (!node.disabled()) && ((node.selected() && (node.data.id === primarySelectedIndex)) && 'primary-selected-node-rect')
                         ||(!node.disabled()) && (node.selected() && 'selected-node-rect')
@@ -48,89 +46,165 @@
           {{node.name()}}
         </text>
 
-    <g
-      ng-repeat="connector in node.inputConnectors"
-      ng-mousedown="connectorMouseDown($event, node, connector, $index, true)"
-      class="connector"
-      >
+<g ng-repeat="connector in node.inputConnectors"
+   ng-mousedown="connectorMouseDown($event, node, connector, $index, true)"
+   class="connector">
 
-        <circle
-            ng-attr-class="{{connector.selected() && 'selected-connector-circle' ||
-                    (connector == mouseOverConnector && 'mouseover-connector-circle' || 'connector-circle')}}"
-            ng-attr-r="{{connectorSize}}"
-            ng-attr-cx="{{connector.x()}}"
-            ng-attr-cy="{{connector.y()}}"
-            context-menu
-            data-target="menu-connector"
+    <circle
+        ng-attr-class="{{connector.selected() && 'selected-connector-circle' ||
+                (connector == mouseOverConnector && 'mouseover-connector-circle' || 'connector-circle')}}"
+        ng-attr-r="{{connectorSize}}"
+        ng-attr-cx="{{connector.x()}}"
+        ng-attr-cy="{{connector.y()}}"
+        context-menu
+        data-target="menu-connector"/>
+
+    <text   ng-attr-x="{{connector.x()}}"
+            ng-attr-y="{{connector.y()-13}}"
+            text-anchor="middle"
+            alignment-baseline="middle"
+            class = "connector-text">
+        {{connector.name()}}
+    </text>
+
+</g>
+
+<g
+  ng-repeat="connector in node.outputConnectors"
+  ng-mousedown="connectorMouseDown($event, node, connector, $index, false)"
+  class="connector"
+  >
+<circle
+        ng-if="connector.data.name !== 'FUNC_OUTPUT'"
+        ng-attr-class="{{connector.selected() && 'selected-connector-circle' ||
+                (connector == mouseOverConnector && 'mouseover-connector-circle' || 'connector-circle')}}"
+        ng-attr-r="{{connectorSize}}"
+        ng-attr-cx="{{connector.x()}}"
+        ng-attr-cy="{{connector.y()}}"
+        context-menu
+        data-target="menu-connector"
         />
 
-        <text
-                ng-attr-x="{{connector.x()}}"
-                ng-attr-y="{{connector.y()-13}}"
-                text-anchor="middle"
-                alignment-baseline="middle"
-                class = "connector-text">
-            {{connector.name()}}
-        </text>
 
-    </g>
+<circle
+        ng-if="connector.data.name === 'FUNC_OUTPUT'"
+        ng-attr-class="{{connector.selected() && 'selected-func-connector-circle' ||
+            (connector == mouseOverConnector && 'mouseover-func-connector-circle' || 'func-connector-circle')}}"
+        ng-attr-r="{{connectorSize}}"
+        ng-attr-cx="{{connector.x()}}"
+        ng-attr-cy="{{connector.y()}}"
+        context-menu
+        data-target="menu-connector"
+/>
 
-    <g
-      ng-repeat="connector in node.outputConnectors"
-      ng-mousedown="connectorMouseDown($event, node, connector, $index, false)"
-      class="connector"
-      >
-    <circle
-            ng-if="connector.data.name !== 'FUNC_OUTPUT'"
-            ng-attr-class="{{connector.selected() && 'selected-connector-circle' ||
-                    (connector == mouseOverConnector && 'mouseover-connector-circle' || 'connector-circle')}}"
-            ng-attr-r="{{connectorSize}}"
-            ng-attr-cx="{{connector.x()}}"
-            ng-attr-cy="{{connector.y()}}"
-            context-menu
-            data-target="menu-connector"
+
+  <text
+    ng-attr-x="{{connector.x()}}"
+    ng-attr-y="{{connector.y()+13}}"
+    text-anchor="middle"
+    alignment-baseline="middle"
+    class = "connector-text"
+    >
+    {{connector.name()}}
+  </text>
+</g>
+</g>
+
+    <g  ng-model="chart.inputPort"
+        ng-mousedown="nodeMouseDown($event, chart.inputPort, true)"
+        ng-attr-transform="translate({{chart.inputPort.x()}}, {{chart.inputPort.y()}})">
+        <rect
+                ng-attr-class="{{
+                        (chart.inputPort.selected() && 'selected-node-rect')
+                        || (chart.inputPort == mouseOverNode && 'mouseover-node-rect'|| 'node-rect')
+                        || (chart.inputPort.selected() && 'selected-disabled-node-rect')
+                        || (chart.inputPort == mouseOverNode && 'mouseover-disabled-node-rect'|| 'disabled-node-rect')}}"
+                ry="0" rx="0" x="0" y="0"
+                ng-attr-width="{{chart.inputPort.width()}}"
+                ng-attr-height="{{chart.inputPort.height()}}"
+                fill="#f5f5f5"
+                context-menu = "onshow($event)"
+                data-target="menu-node"></rect>
+
+        <g ng-repeat="connector in chart.inputPort.inputConnectors"
+           ng-mousedown="connectorMouseDown($event, chart.inputPort, connector, $index, false, true)"
+           class="connector">
+            <circle
+                    ng-attr-class="{{connector.selected() && 'selected-connector-circle' ||
+                (connector == mouseOverConnector && 'mouseover-connector-circle' || 'connector-circle')}}"
+                    ng-attr-r="{{connectorSize}}"
+                    ng-attr-cx="{{connector.x()}}"
+                    ng-attr-cy="{{connector.y()}}"
+                    context-menu
+                    data-target="menu-connector"
             />
 
-
-    <circle
-            ng-if="connector.data.name === 'FUNC_OUTPUT'"
-            ng-attr-class="{{connector.selected() && 'selected-func-connector-circle' ||
-                (connector == mouseOverConnector && 'mouseover-func-connector-circle' || 'func-connector-circle')}}"
-            ng-attr-r="{{connectorSize}}"
-            ng-attr-cx="{{connector.x()}}"
-            ng-attr-cy="{{connector.y()}}"
-            context-menu
-            data-target="menu-connector"
-    />
-
-
-      <text
-        ng-attr-x="{{connector.x()}}"
-        ng-attr-y="{{connector.y()+13}}"
-        text-anchor="middle"
-        alignment-baseline="middle"
-        class = "connector-text"
-        >
-        {{connector.name()}}
-      </text>
+            <text   ng-attr-x="{{connector.x()}}"
+                    ng-attr-y="{{connector.y()+13}}"
+                    text-anchor="middle"
+                    alignment-baseline="middle"
+                    class = "connector-text">
+                {{connector.name()}}
+            </text>
+        </g>
     </g>
-  </g>
+
+
+    <g  ng-model="chart.outputPort"
+        ng-mousedown="nodeMouseDown($event, chart.outputPort, true)"
+        ng-attr-transform="translate({{chart.outputPort.x()}}, {{chart.outputPort.y()}})">
+        <rect
+                ng-attr-class="{{
+                        (chart.outputPort.selected() && 'selected-node-rect')
+                        || (chart.outputPort == mouseOverNode && 'mouseover-node-rect'|| 'node-rect')
+                        || (chart.outputPort.selected() && 'selected-disabled-node-rect')
+                        || (chart.outputPort == mouseOverNode && 'mouseover-disabled-node-rect'|| 'disabled-node-rect')}}"
+                ry="0" rx="0" x="0" y="0"
+                ng-attr-width="{{chart.outputPort.width()}}"
+                ng-attr-height="{{chart.outputPort.height()}}"
+                fill="#f5f5f5"
+                context-menu = "onshow($event)"
+                data-target="menu-node"></rect>
+
+        <g ng-repeat="connector in chart.outputPort.outputConnectors"
+           ng-mousedown="connectorMouseDown($event, chart.outputPort, connector, $index, true ,true)"
+           class="connector">
+            <circle
+                    ng-attr-class="{{connector.selected() && 'selected-connector-circle' ||
+                (connector == mouseOverConnector && 'mouseover-connector-circle' || 'connector-circle')}}"
+                    ng-attr-r="{{connectorSize}}"
+                    ng-attr-cx="{{connector.x()}}"
+                    ng-attr-cy="{{connector.y()}}"
+                    context-menu
+                    data-target="menu-connector"
+            />
+
+            <text   ng-attr-x="{{connector.x()}}"
+                    ng-attr-y="{{connector.y()+13}}"
+                    text-anchor="middle"
+                    alignment-baseline="middle"
+                    class = "connector-text">
+                {{connector.name()}}
+            </text>
+        </g>
+    </g>
+
 
     <g
-      ng-repeat="connection in chart.connections"
-      class="connection"
-      ng-mousedown="connectionMouseDown($event, connection)"
-      context-menu
-      data-target="menu-connection"
-      >
+            ng-repeat="connection in chart.connections"
+            class="connection"
+            ng-mousedown="connectionMouseDown($event, connection)"
+            context-menu
+            data-target="menu-connection"
+    >
         <path
-          ng-if="connection.source.name() !== 'FUNC_OUTPUT'"
-          ng-attr-class="{{connection.selected() && 'selected-connection-line' || (connection == mouseOverConnection && 'mouseover-connection-line' || 'connection-line')}}"
-          ng-attr-d="M {{connection.sourceCoordX()}}, {{connection.sourceCoordY()}}
+                ng-if="connection.source.name() !== 'FUNC_OUTPUT'"
+                ng-attr-class="{{connection.selected() && 'selected-connection-line' || (connection == mouseOverConnection && 'mouseover-connection-line' || 'connection-line')}}"
+                ng-attr-d="M {{connection.sourceCoordX()}}, {{connection.sourceCoordY()}}
                      C {{connection.sourceTangentX()}}, {{connection.sourceTangentY()}}
                        {{connection.destTangentX()}}, {{connection.destTangentY()}}
                        {{connection.destCoordX()}}, {{connection.destCoordY()}}"
-          >
+        >
         </path>
 
         <path
@@ -144,60 +218,57 @@
         </path>
 
         <circle
-            ng-attr-class="{{connection.selected() && 'selected-connection-endpoint' || (connection == mouseOverConnection && 'mouseover-connection-endpoint' || 'connection-endpoint')}}"
-            r="1.5"
-            ng-attr-cx="{{connection.sourceCoordX()}}"
-            ng-attr-cy="{{connection.sourceCoordY()}}"
-            >
+                ng-attr-class="{{connection.selected() && 'selected-connection-endpoint' || (connection == mouseOverConnection && 'mouseover-connection-endpoint' || 'connection-endpoint')}}"
+                r="1.5"
+                ng-attr-cx="{{connection.sourceCoordX()}}"
+                ng-attr-cy="{{connection.sourceCoordY()}}"
+        >
         </circle>
 
         <circle
-            ng-attr-class="{{connection.selected() && 'selected-connection-endpoint' || (connection == mouseOverConnection && 'mouseover-connection-endpoint' || 'connection-endpoint')}}"
-            r="1.5"
-            ng-attr-cx="{{connection.destCoordX()}}"
-            ng-attr-cy="{{connection.destCoordY()}}"
-            >
+                ng-attr-class="{{connection.selected() && 'selected-connection-endpoint' || (connection == mouseOverConnection && 'mouseover-connection-endpoint' || 'connection-endpoint')}}"
+                r="1.5"
+                ng-attr-cx="{{connection.destCoordX()}}"
+                ng-attr-cy="{{connection.destCoordY()}}"
+        >
         </circle>
     </g>
 
-  <g
-    ng-if="draggingConnection"
-    >
-    <path
-      class="dragging-connection dragging-connection-line"
-      ng-attr-d="M {{dragPoint1.x}}, {{dragPoint1.y}}
+    <g ng-if="draggingConnection">
+        <path
+                class="dragging-connection dragging-connection-line"
+                ng-attr-d="M {{dragPoint1.x}}, {{dragPoint1.y}}
                  C {{dragTangent1.x}}, {{dragTangent1.y}}
                    {{dragTangent2.x}}, {{dragTangent2.y}}
-                   {{dragPoint2.x}}, {{dragPoint2.y}}"
-      >
-    </path>
+                   {{dragPoint2.x}}, {{dragPoint2.y}}">
+        </path>
 
-    <circle
-        class="dragging-connection dragging-connection-endpoint"
-        r="2"
-        ng-attr-cx="{{dragPoint1.x}}" 
-        ng-attr-cy="{{dragPoint1.y}}" 
+        <circle
+                class="dragging-connection dragging-connection-endpoint"
+                r="2"
+                ng-attr-cx="{{dragPoint1.x}}"
+                ng-attr-cy="{{dragPoint1.y}}"
         >
-    </circle>
+        </circle>
 
-    <circle
-        class="dragging-connection dragging-connection-endpoint"
-        r="2"
-        ng-attr-cx="{{dragPoint2.x}}" 
-        ng-attr-cy="{{dragPoint2.y}}" 
+        <circle
+                class="dragging-connection dragging-connection-endpoint"
+                r="2"
+                ng-attr-cx="{{dragPoint2.x}}"
+                ng-attr-cy="{{dragPoint2.y}}"
         >
-    </circle>
-  </g>
+        </circle>
+    </g>
 
-  <rect
-      ng-if="dragSelecting"
-      class="drag-selection-rect"
-      ng-attr-x="{{dragSelectionRect.x}}"
-      ng-attr-y="{{dragSelectionRect.y}}"
-      ng-attr-width="{{dragSelectionRect.width}}"
-      ng-attr-height="{{dragSelectionRect.height}}"
+    <rect
+            ng-if="dragSelecting"
+            class="drag-selection-rect"
+            ng-attr-x="{{dragSelectionRect.x}}"
+            ng-attr-y="{{dragSelectionRect.y}}"
+            ng-attr-width="{{dragSelectionRect.width}}"
+            ng-attr-height="{{dragSelectionRect.height}}"
     >
-  </rect>
+    </rect>
 
     <foreignObject
         ng-attr-x="{{dbClickMenu.x}}"

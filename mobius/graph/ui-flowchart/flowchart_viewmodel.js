@@ -15,7 +15,7 @@ var flowchart = {};
 	//
 	// height of input /output port height for subgraph
 	//
-	flowchart.portHeight = 20;
+	flowchart.portHeight = 6;
 
 	//
 	// Amount of space reserved for displaying the node's name.
@@ -38,10 +38,10 @@ var flowchart = {};
 	//
 	// Compute the position of a connector in the graph.
 	//
-	flowchart.computeConnectorPos = function (node, connectorIndex, inputConnector) {
+	flowchart.computeConnectorPos = function (node, connectorIndex, inputConnector, isPort) {
 		return {
 			x: node.x() + flowchart.computeConnectorX(connectorIndex),
-			y: node.y() + (inputConnector ? 0 : flowchart.nodeHeight)
+			y: isPort === true ? node.y() + (inputConnector ? 0 : flowchart.portHeight) : node.y() + (inputConnector ? 0 : flowchart.nodeHeight)
 		};
 	};
 
@@ -122,7 +122,6 @@ var flowchart = {};
 	//
 	var createConnectorsViewModel = function (connectorDataModels, y, parentNode) {
 		var viewModels = [];
-
 		if (connectorDataModels) {
 			for (var i = 0; i < connectorDataModels.length; ++i) {
 				var connectorViewModel =
@@ -251,6 +250,7 @@ var flowchart = {};
 		//
 		this.addInputConnector = function (connectorDataModel) {
 
+			console.log(connectorDataModel)
 			if (!this.data.inputConnectors) {
 				this.data.inputConnectors = [];
 			}
@@ -289,100 +289,7 @@ var flowchart = {};
 	// provide output connectors
 	flowchart.InputPortViewModel = function (inputDataModel){
 		this.data = inputDataModel;
-		this.outputConnectors = createConnectorsViewModel(this.data.outputConnectors, flowchart.portHeight, this);
-
-		// Set to true when the node is selected.
-		this._selected = false;
-
-		//
-		// X coordinate of the node.
-		//
-		this.x = function () {
-			return this.data.x;
-		};
-
-		//
-		// Y coordinate of the node.
-		//
-		this.y = function () {
-			return this.data.y;
-		};
-
-		//
-		// Width of the node.
-		//
-		this.width = function () {
-			var numConnectors = this.outputConnectors.length;
-			return flowchart.computeConnectorX(numConnectors)-5;
-		};
-
-		//
-		// Height of the node.
-		//
-		this.height = function () {
-			return flowchart.portHeight;
-		};
-
-		//
-		// Select the node.
-		//
-		this.select = function () {
-			this._selected = true;
-		};
-
-		//
-		// Deselect the node.
-		//
-		this.deselect = function () {
-			this._selected = false;
-		};
-
-		//
-		// Toggle the selection state of the node.
-		//
-		this.toggleSelected = function () {
-			this._selected = !this._selected;
-		};
-
-		//
-		// Returns true if the node is selected.
-		//
-		this.selected = function () {
-			return this._selected;
-		};
-
-		//
-		// Internal function to add a connector.
-		//
-		this._addConnector = function (connectorDataModel, y, connectorsDataModel, connectorsViewModel) {
-			var connectorViewModel =
-				new flowchart.ConnectorViewModel(connectorDataModel,
-					flowchart.computeConnectorX(connectorsViewModel.length),y, this);
-
-			connectorsDataModel.push(connectorDataModel);
-
-			// Add to node's view model.
-			connectorsViewModel.push(connectorViewModel);
-		};
-
-		//
-		// Add an output connector to the node.
-		//
-		this.addOutputConnector = function (connectorDataModel) {
-
-			if (!this.data.outputConnectors) {
-				this.data.outputConnectors = [];
-			}
-			this._addConnector(connectorDataModel, flowchart.portHeight, this.data.outputConnectors, this.outputConnectors);
-		};
-	};
-
-	//
-	// fixme view model for output in subgraph
-	// provide input connectors
-	flowchart.OutputPortViewModel = function (outputPortDataModel){
-		this.data = outputPortDataModel;
-		this.inputConnectors = createConnectorsViewModel(this.data.inputConnectors, 0, this);
+		this.inputConnectors = createConnectorsViewModel(this.data.inputConnectors, flowchart.portHeight, this);
 
 		// Set to true when the node is selected.
 		this._selected = false;
@@ -443,29 +350,73 @@ var flowchart = {};
 		this.selected = function () {
 			return this._selected;
 		};
+	};
+
+	//
+	// fixme view model for output in subgraph
+	// provide input connectors
+	flowchart.OutputPortViewModel = function (outputPortDataModel){
+		this.data = outputPortDataModel;
+		this.outputConnectors = createConnectorsViewModel(this.data.outputConnectors, 0, this);
+
+		// Set to true when the node is selected.
+		this._selected = false;
 
 		//
-		// Internal function to add a connector.
-		this._addConnector = function (connectorDataModel, y, connectorsDataModel, connectorsViewModel) {
-			var connectorViewModel =
-				new flowchart.ConnectorViewModel(connectorDataModel,
-					flowchart.computeConnectorX(connectorsViewModel.length),y, this);
-
-			connectorsDataModel.push(connectorDataModel);
-
-			// Add to node's view model.
-			connectorsViewModel.push(connectorViewModel);
+		// X coordinate of the node.
+		//
+		this.x = function () {
+			return this.data.x;
 		};
 
 		//
-		// Add an input connector to the node.
+		// Y coordinate of the node.
 		//
-		this.addInputConnector = function (connectorDataModel) {
+		this.y = function () {
+			return this.data.y;
+		};
 
-			if (!this.data.inputConnectors) {
-				this.data.inputConnectors = [];
-			}
-			this._addConnector(connectorDataModel, 0, this.data.inputConnectors, this.inputConnectors);
+		//
+		// Width of the node.
+		//
+		this.width = function () {
+			var numConnectors = this.outputConnectors.length;
+			return flowchart.computeConnectorX(numConnectors)-5;
+		};
+
+		//
+		// Height of the node.
+		//
+		this.height = function () {
+			return flowchart.portHeight;
+		};
+
+		//
+		// Select the node.
+		//
+		this.select = function () {
+			this._selected = true;
+		};
+
+		//
+		// Deselect the node.
+		//
+		this.deselect = function () {
+			this._selected = false;
+		};
+
+		//
+		// Toggle the selection state of the node.
+		//
+		this.toggleSelected = function () {
+			this._selected = !this._selected;
+		};
+
+		//
+		// Returns true if the node is selected.
+		//
+		this.selected = function () {
+			return this._selected;
 		};
 	};
 
@@ -984,21 +935,33 @@ var flowchart = {};
 
 		//
 		// Update the location of the node and its connectors.
-		// todo change for subgraph input/output ports
-		this.updateSelectedNodesLocation = function (deltaX, deltaY) {
+		//
+		this.updateSelectedNodesLocation = function (deltaX, deltaY,isPort) {
 
-			var selectedNodes = this.getSelectedNodes();
+			if(!isPort){
+				var selectedNodes = this.getSelectedNodes();
 
-			for (var i = 0; i < selectedNodes.length; ++i) {
-				var node = selectedNodes[i];
-				node.data.x += deltaX;
-				node.data.y += deltaY;
+				for (var i = 0; i < selectedNodes.length; ++i) {
+					var node = selectedNodes[i];
+					node.data.x += deltaX;
+					node.data.y += deltaY;
+				}
+			}else{
+				// update position for input/output port
+				if(this.inputPort.selected()){
+					this.inputPort.data.x += deltaX;
+					this.inputPort.data.y += deltaY;
+				}
+				if(this.outputPort.selected()){
+					this.outputPort.data.x += deltaX;
+					this.outputPort.data.y += deltaY;
+				}
 			}
 		};
 
 		//
 		// Handle mouse click on a particular node.
-		// todo change for subgraph input/output ports
+		//
 		this.handleNodeLeftClicked = function (node, ctrlKey) {
 
 			if (ctrlKey) {
@@ -1009,25 +972,14 @@ var flowchart = {};
 				node.select();
 			}
 
-			// Move node to the end of the list so it is rendered after all the other.
-			// This is the way Z-order is done in SVG.
-
 			var nodeIndex = this.nodes.indexOf(node);
 			return nodeIndex;
-
-//			if (nodeIndex == -1) {
-//				throw new Error("Failed to find node in view model!");
-//			}
-//			this.nodes.splice(nodeIndex, 1);
-//			this.nodes.push(node);
-
 		};
 
 		//
 		// @ mobius handle right click, prevent deselection
-		// todo change for subgraph input/output ports
+		//
 		this.handleNodeRightClicked = function (node, ctrlKey) {
-
 			if (ctrlKey) {
 				node.toggleSelected();
 			}
@@ -1042,9 +994,8 @@ var flowchart = {};
 
 		//
 		// @ mobius : Handle mouse drag on a particular node/ prevent deselection
-		// todo change for subgraph input/output ports
+		//
 		this.handleNodeDragged = function (node, ctrlKey) {
-
 			if (ctrlKey) {
 				node.toggleSelected();
 			}

@@ -83,7 +83,8 @@ mobius.controller(  'graphCtrl',
                         //
                         // pass connector list to subgraph chartdatamodel input/output port
                         //
-                        if(!angular.equals(newValue.nodes[i].outputConnectors,oldValue.nodes[i].outputConnectors)){
+                        if(!angular.equals(newValue.nodes[i].outputConnectors,oldValue.nodes[i].outputConnectors)
+                            && $scope.chartViewModel.nodes[i].data.subGraph === true){
                             var outputList = [];
                             for (var j = 0; j < $scope.dataList[$scope.nodeIndex].length;j++){
                                 if($scope.dataList[$scope.nodeIndex][j].title === 'Output'){
@@ -91,12 +92,13 @@ mobius.controller(  'graphCtrl',
                                 }
                             }
 
-                            $scope.chartViewModel.nodes[i].data.subGraphModel.chartDataModel.outputPort.outputList
+                            $scope.chartViewModel.nodes[i].data.subGraphModel.chartDataModel.outputPort.outputConnectors
                                 = outputList;
                         }
 
-                        if(!angular.equals(newValue.nodes[i].inputConnectors,oldValue.nodes[i].inputConnectors)){
-                            $scope.chartViewModel.nodes[i].data.subGraphModel.chartDataModel.inputPort.inputList
+                        if(!angular.equals(newValue.nodes[i].inputConnectors,oldValue.nodes[i].inputConnectors)
+                            && $scope.chartViewModel.nodes[i].data.subGraph === true){
+                            $scope.chartViewModel.nodes[i].data.subGraphModel.chartDataModel.inputPort.inputConnectors
                                 =  $scope.interfaceList[$scope.nodeIndex];
                         }
                         break;

@@ -380,29 +380,24 @@ angular.module('flowChart', ['dragging'] )
 	};
 
 	//
-	// Handle mousedown on a node.
+	// Handle mousedown on a node / port
 	//
-	$scope.nodeMouseDown = function (evt, node) {
+	$scope.nodeMouseDown = function (evt, node, isPort) {
         //
         // @ mobius toggle new node dropdown
-        // fixme control
+        //
         document.getElementById("node-creator").style.display = "none";
 
 		var chart = $scope.chart;
 		var lastMouseCoords;
 
 		dragging.startDrag(evt, {
-
 			//
 			// Node dragging has commenced.
 			//
 			dragStarted: function (x, y) {
 
 				lastMouseCoords = controller.translateCoordinates(x, y);
-				//
-				// If nothing is selected when dragging starts,
-				// at least select the node we are dragging.
-				//
 				if (!node.selected()) {
 					chart.deselectAll();
 					node.select();
@@ -420,29 +415,34 @@ angular.module('flowChart', ['dragging'] )
                 });
 				var deltaX = curCoords.x*(1/$scope.scaleFactor )- lastMouseCoords.x*(1/$scope.scaleFactor);
 				var deltaY = curCoords.y*(1/$scope.scaleFactor)- lastMouseCoords.y*(1/$scope.scaleFactor);
-				chart.updateSelectedNodesLocation(deltaX, deltaY);
+				chart.updateSelectedNodesLocation(deltaX, deltaY,isPort);
 
 				lastMouseCoords = curCoords;
 
-				// @mobius dragging is considered as clicked (selected)
-				var nodeIndex = chart.handleNodeDragged(node, evt.ctrlKey);
-				$scope.$emit("nodeIndex", nodeIndex);
+				// fixme subgraph: better approach than just disable emitting
+				if(!isPort){
+					// @mobius dragging is considered as clicked (selected)
+					var nodeIndex = chart.handleNodeDragged(node, evt.ctrlKey);
+					$scope.$emit("nodeIndex", nodeIndex);
+				}
 			},
 
 			//
 			// The node wasn't dragged... it was clicked.
 			//
 			clicked: function () {
-				if(evt.which === 1){
-					var nodeIndex = chart.handleNodeLeftClicked(node, evt.ctrlKey);
-				}
-
-				if(evt.which === 3){
-					var nodeIndex = chart.handleNodeRightClicked(node, evt.ctrlKey);
-				}
 				// @mobius let controller know the current node
-				$scope.$emit("nodeIndex", nodeIndex);
+				// fixme subgraph: better approach than just disable emitting
+				if(!isPort){
+					if(evt.which === 1){
+						var nodeIndex = chart.handleNodeLeftClicked(node, evt.ctrlKey);
+					}
 
+					if(evt.which === 3){
+						var nodeIndex = chart.handleNodeRightClicked(node, evt.ctrlKey);
+					}
+					$scope.$emit("nodeIndex", nodeIndex);
+				}
 			}
 
 		});
@@ -476,7 +476,7 @@ angular.module('flowChart', ['dragging'] )
 	//
 	// Handle mousedown on an input connector.
 	// @ mobius scale factor
-	$scope.connectorMouseDown = function (evt, node, connector, connectorIndex, isInputConnector) {
+	$scope.connectorMouseDown = function (evt, node, connector, connectorIndex, isInputConnector, isPort) {
         //
         // @ mobius toggle new node dropdown
         // fixme control
@@ -491,6 +491,7 @@ angular.module('flowChart', ['dragging'] )
 				// Called when the mouse has moved greater than the threshold distance
 				// and dragging has commenced.
 				//
+
 				dragStarted: function (x, y) {
 
 					var curCoords = controller.translateCoordinates(x, y);
@@ -500,7 +501,7 @@ angular.module('flowChart', ['dragging'] )
 					});
 
 					$scope.draggingConnection = true;
-					$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector);
+					$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector,isPort);
 					$scope.dragPoint2 = {
 						x: curCoords.x*(1/$scope.scaleFactor ),
 						y: curCoords.y*(1/$scope.scaleFactor )
@@ -522,7 +523,7 @@ angular.module('flowChart', ['dragging'] )
 						$scope.scaleFactor = message;
 					});
 
-					$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector);
+					$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector,isPort);
 					$scope.dragPoint2 = {
 					x: startCoords.x*(1/$scope.scaleFactor ),
 					y: startCoords.y*(1/$scope.scaleFactor )
