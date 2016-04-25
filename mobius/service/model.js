@@ -57,7 +57,6 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
             current = data;
 
             graphList.length = 0;
-            console.log(current.chartViewModel.data)
         },
 
         openNewChart:function(chartModel){
@@ -72,8 +71,6 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                 interfaceList: graphList[graphList.length-1].subGraphModel.interfaceList,
                 nodeIndex:undefined
             };
-
-            console.log(current.chartViewModel.data)
         },
 
         changeGraphView: function (index) {
@@ -89,7 +86,6 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                 interfaceList: graphList[graphList.length-1].subGraphModel.interfaceList,
                 nodeIndex:undefined
             };
-            console.log(current.chartViewModel.data)
         },
 
         getNodeIndex: function(){

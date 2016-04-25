@@ -323,7 +323,6 @@ angular.module('flowChart', ['dragging'] )
 						$scope.$emit("nodeIndex", index);
 
 					$scope.primarySelectedIndex = index;
-					console.log($scope.primarySelectedIndex)
 					delete $scope.dragSelectionStartPoint;
 					delete $scope.dragSelectionRect;
 				},
@@ -419,7 +418,6 @@ angular.module('flowChart', ['dragging'] )
 
 				lastMouseCoords = curCoords;
 
-				// fixme subgraph: better approach than just disable emitting
 				if(!isPort){
 					// @mobius dragging is considered as clicked (selected)
 					var nodeIndex = chart.handleNodeDragged(node, evt.ctrlKey);
@@ -432,15 +430,15 @@ angular.module('flowChart', ['dragging'] )
 			//
 			clicked: function () {
 				// @mobius let controller know the current node
-				// fixme subgraph: better approach than just disable emitting
-				if(!isPort){
-					if(evt.which === 1){
-						var nodeIndex = chart.handleNodeLeftClicked(node, evt.ctrlKey);
-					}
+				if(evt.which === 1){
+					var nodeIndex = chart.handleNodeLeftClicked(node, evt.ctrlKey);
+				}
 
-					if(evt.which === 3){
-						var nodeIndex = chart.handleNodeRightClicked(node, evt.ctrlKey);
-					}
+				if(evt.which === 3){
+					var nodeIndex = chart.handleNodeRightClicked(node, evt.ctrlKey);
+				}
+
+				if(!isPort){
 					$scope.$emit("nodeIndex", nodeIndex);
 				}
 			}

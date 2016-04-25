@@ -250,7 +250,6 @@ var flowchart = {};
 		//
 		this.addInputConnector = function (connectorDataModel) {
 
-			console.log(connectorDataModel)
 			if (!this.data.inputConnectors) {
 				this.data.inputConnectors = [];
 			}
@@ -285,79 +284,16 @@ var flowchart = {};
 	};
 
 	//
-	// fixme view model for input in subgraph
-	// provide output connectors
+	// view model for input in subgraph
+	// provide output connectors but title is still input
 	flowchart.InputPortViewModel = function (inputDataModel){
 		this.data = inputDataModel;
-		this.inputConnectors = createConnectorsViewModel(this.data.inputConnectors, flowchart.portHeight, this);
+		this.data.id = 'inputPort';
+		for(var i = 0; i < this.data.inputConnectors.length; i++){
+			this.data.inputConnectors[i].title = 'Output';
+		}
 
-		// Set to true when the node is selected.
-		this._selected = false;
-
-		//
-		// X coordinate of the node.
-		//
-		this.x = function () {
-			return this.data.x;
-		};
-
-		//
-		// Y coordinate of the node.
-		//
-		this.y = function () {
-			return this.data.y;
-		};
-
-		//
-		// Width of the node.
-		//
-		this.width = function () {
-			var numConnectors = this.inputConnectors.length;
-			return flowchart.computeConnectorX(numConnectors)-5;
-		};
-
-		//
-		// Height of the node.
-		//
-		this.height = function () {
-			return flowchart.portHeight;
-		};
-
-		//
-		// Select the node.
-		//
-		this.select = function () {
-			this._selected = true;
-		};
-
-		//
-		// Deselect the node.
-		//
-		this.deselect = function () {
-			this._selected = false;
-		};
-
-		//
-		// Toggle the selection state of the node.
-		//
-		this.toggleSelected = function () {
-			this._selected = !this._selected;
-		};
-
-		//
-		// Returns true if the node is selected.
-		//
-		this.selected = function () {
-			return this._selected;
-		};
-	};
-
-	//
-	// fixme view model for output in subgraph
-	// provide input connectors
-	flowchart.OutputPortViewModel = function (outputPortDataModel){
-		this.data = outputPortDataModel;
-		this.outputConnectors = createConnectorsViewModel(this.data.outputConnectors, 0, this);
+		this.outputConnectors = createConnectorsViewModel(this.data.inputConnectors, flowchart.portHeight, this);
 
 		// Set to true when the node is selected.
 		this._selected = false;
@@ -421,7 +357,79 @@ var flowchart = {};
 	};
 
 	//
-	// fixme wrap inputs data-model in view-model
+	// view model for output in subgraph
+	// provide input connectors but title is still output
+	flowchart.OutputPortViewModel = function (outputPortDataModel){
+		this.data = outputPortDataModel;
+		this.data.id = 'outputPort';
+		for(var i = 0; i < this.data.outputConnectors.length; i++){
+			this.data.outputConnectors[i].title = 'Input';
+		}
+		this.inputConnectors = createConnectorsViewModel(this.data.outputConnectors, 0, this);
+
+		// Set to true when the node is selected.
+		this._selected = false;
+
+		//
+		// X coordinate of the node.
+		//
+		this.x = function () {
+			return this.data.x;
+		};
+
+		//
+		// Y coordinate of the node.
+		//
+		this.y = function () {
+			return this.data.y;
+		};
+
+		//
+		// Width of the node.
+		//
+		this.width = function () {
+			var numConnectors = this.inputConnectors.length;
+			return flowchart.computeConnectorX(numConnectors)-5;
+		};
+
+		//
+		// Height of the node.
+		//
+		this.height = function () {
+			return flowchart.portHeight;
+		};
+
+		//
+		// Select the node.
+		//
+		this.select = function () {
+			this._selected = true;
+		};
+
+		//
+		// Deselect the node.
+		//
+		this.deselect = function () {
+			this._selected = false;
+		};
+
+		//
+		// Toggle the selection state of the node.
+		//
+		this.toggleSelected = function () {
+			this._selected = !this._selected;
+		};
+
+		//
+		// Returns true if the node is selected.
+		//
+		this.selected = function () {
+			return this._selected;
+		};
+	};
+
+	//
+	// wrap inputs data-model in view-model
 	//
 	var createInputPortViewModel = function (inputPortDataModel){
 		if (inputPortDataModel) {
@@ -432,7 +440,7 @@ var flowchart = {};
 	};
 
 	//
-	// fixme wrap outputs data-model in view-model
+	// wrap outputs data-model in view-model
 	//
 	var createOutputPortViewModel = function (outputPortDataModel){
 		if (outputPortDataModel) {
@@ -503,7 +511,7 @@ var flowchart = {};
 				x: this.destCoordX(),
 				y: this.destCoordY()
 			};
-		}
+		};
 
 		this.destTangentX = function () {
 			return flowchart.computeConnectionDestTangentX(this.sourceCoord(), this.destCoord());
@@ -615,13 +623,23 @@ var flowchart = {};
 
 		//
 		// Find a specific node within the chart.
-		// todo find input/output port
+		//
 		this.findNode = function (nodeID) {
 
 			for (var i = 0; i < this.nodes.length; ++i) {
 				var node = this.nodes[i];
-				if (node.data.id == nodeID) {
+				if (node.data.id === nodeID) {
 					return node;
+				}
+			}
+
+			if(this.inputPort){
+				if (this.inputPort.data.id === nodeID) {
+					return this.inputPort;
+				}
+
+				if (this.outputPort.data.id === nodeID) {
+					return this.inputPort;
 				}
 			}
 
@@ -631,7 +649,7 @@ var flowchart = {};
 		//
 		// Find a specific input connector within the chart.
 		//
-		// todo find input connector in output port
+		//
 		this.findInputConnector = function (nodeID, connectorIndex) {
 
 			var node = this.findNode(nodeID);
@@ -647,7 +665,7 @@ var flowchart = {};
 		//
 		// Find a specific output connector within the chart.
 		//
-		// todo find output connector in input port
+		//
 		this.findOutputConnector = function (nodeID, connectorIndex) {
 
 			var node = this.findNode(nodeID);
@@ -662,7 +680,7 @@ var flowchart = {};
 
 		//
 		// Create a view model for connection from the data model.
-		// todo changes for subgraph input/output port connectors
+		//
 		this._createConnectionViewModel = function(connectionDataModel) {
 
 			var sourceConnector = this.findOutputConnector(connectionDataModel.source.nodeID, connectionDataModel.source.connectorIndex);
@@ -672,7 +690,7 @@ var flowchart = {};
 
 		//
 		// Wrap the connections data-model in a view-model.
-		// todo changes for subgraph input/output port connectors
+		//
 		this._createConnectionsViewModel = function (connectionsDataModel) {
 
 			var connectionsViewModel = [];
@@ -695,15 +713,20 @@ var flowchart = {};
 		// Create a view-model for connections.
 		this.connections = this._createConnectionsViewModel(this.data.connections);
 
-		// fixme create a view-model for input ports
-		this.inputPort = createInputPortViewModel(this.data.inputPort);
+		// create a view-model for input ports
+		if(this.data.inputPort && this.data.inputPort.inputConnectors.length !== 0){
+			this.inputPort = createInputPortViewModel(this.data.inputPort);
+		}
 
-		// fixme create a view-model for output ports
-		this.outputPort = createOutputPortViewModel(this.data.outputPort);
+		// create a view-model for output ports
+		if(this.data.inputPort && this.data.outputPort.outputConnectors.length !== 0){
+			this.outputPort = createOutputPortViewModel(this.data.outputPort);
+		}
+
 
 		//
 		// Create a view model for a new connection.
-		// fixme potential change for input/output port
+		//
 		this.createNewConnection = function (sourceConnector, destConnector) {
 
 			debug.assertObjectValid(sourceConnector);
@@ -717,7 +740,6 @@ var flowchart = {};
 			}
 
 			// @ mobius : flag for input connector is connected
-
 			destConnector.data.connected = true;
 
 			var connectionsDataModel = this.data.connections;
@@ -852,7 +874,7 @@ var flowchart = {};
 			var cursor = nodes.length
 				, sorted = new Array(cursor)
 				, visited = {}
-				, i = cursor
+				, i = cursor;
 
 			while (i--) {
 				if (!visited[i]) visit(nodes[i], i, [])
@@ -864,20 +886,23 @@ var flowchart = {};
 
 			function visit(node, i, predecessors) {
 				if(predecessors.indexOf(node) >= 0) {
+					console.log(predecessors)
+					console.log(node)
 					throw new Error('Error: Cyclic dependency')
 				}
 
 				if (visited[i]) return;
-				visited[i] = true
+				visited[i] = true;
 
 				// outgoing edges
 				var outgoing = edges.filter(function(edge){
 					return edge[0] === node
-				})
+				});
+
 				if (i = outgoing.length) {
-					var preds = predecessors.concat(node)
+					var preds = predecessors.concat(node);
 					do {
-						var child = outgoing[--i][1]
+						var child = outgoing[--i][1];
 						visit(child, nodes.indexOf(child), preds)
 					} while (i)
 				}
@@ -902,14 +927,26 @@ var flowchart = {};
 				var connection = connections[i];
 				connection.select();
 			}
-		}
+
+			if(this.inputPort){
+				this.inputPort.select();
+				this.outputPort.select();
+
+				for(var j = 0; j < this.inputPort.outputConnectors.length; j ++){
+					this.inputPort.outputConnectors[j].select();
+				}
+
+				for(var j = 0; j < this.outputPort.inputConnectors.length; j ++){
+					this.outputPort.inputConnectors[j].select();
+				}
+			}
+		};
 
 		//
 		// @ mobius
 		// Deselect all nodes connections, connectors in the chart.
-		// todo change for subgraph input/output ports
+		//
 		this.deselectAll = function () {
-
 			var nodes = this.nodes;
 			for (var i = 0; i < nodes.length; ++i) {
 				var node = nodes[i];
@@ -923,6 +960,19 @@ var flowchart = {};
 				for(var k = 0; k < node.outputConnectors.length; k++){
 					var output = node.outputConnectors[k];
 					output.deselect();
+				}
+			}
+
+			if(this.inputPort){
+				this.inputPort.deselect();
+				this.outputPort.deselect();
+
+				for(var j = 0; j < this.inputPort.outputConnectors.length; j ++){
+					this.inputPort.outputConnectors[j].deselect();
+				}
+
+				for(var j = 0; j < this.outputPort.inputConnectors.length; j ++){
+					this.outputPort.inputConnectors[j].deselect();
 				}
 			}
 
@@ -1009,7 +1059,7 @@ var flowchart = {};
 
 		//
 		// Handle mouse down on a connection.
-		// todo change for subgraph input/output ports
+		//
 		this.handleConnectionMouseDown = function (connection, ctrlKey) {
 
 			if (ctrlKey) {
@@ -1024,7 +1074,7 @@ var flowchart = {};
 		//
 		// @ mobius
 		// Handle mouse down on a connector
-		// todo change for subgraph input/output ports
+		//
 		this.handleConnectorClicked = function (connector, ctrlKey) {
 			if (ctrlKey) {
 				connector.toggleSelected();
@@ -1038,7 +1088,7 @@ var flowchart = {};
 
 		//
 		// @mobius rename selected element (node/connector)
-		// todo change for subgraph input/output ports
+		//
 		this.renameSelected = function(newName){
 			for (var nodeIndex = 0; nodeIndex < this.nodes.length; ++nodeIndex) {
 
@@ -1083,7 +1133,7 @@ var flowchart = {};
 
 		//
 		// Delete all nodes and connections that are selected.
-		// todo change for subgraph input/output ports
+		//
 		this.deleteSelected = function () {
 
 			var newNodeViewModels = [];
@@ -1339,7 +1389,7 @@ var flowchart = {};
 
 		//
 		// Select nodes and connections that fall within the selection rect.
-		// todo change for subgraph input/output ports
+		//
 		this.applySelectionRect = function (selectionRect) {
 
 			this.deselectAll();
@@ -1393,12 +1443,28 @@ var flowchart = {};
 				}
 			}
 
+			if (this.inputPort.x() >= selectionRect.x &&
+				this.inputPort.y() >= selectionRect.y &&
+				this.inputPort.x() + this.inputPort.width() <= selectionRect.x + selectionRect.width &&
+				this.inputPort.y() + this.inputPort.height() <= selectionRect.y + selectionRect.height)
+			{
+				this.inputPort.select();
+			}
+
+			if (this.outputPort.x() >= selectionRect.x &&
+				this.outputPort.y() >= selectionRect.y &&
+				this.outputPort.x() + this.outputPort.width() <= selectionRect.x + selectionRect.width &&
+				this.outputPort.y() + this.outputPort.height() <= selectionRect.y + selectionRect.height)
+			{
+				this.outputPort.select();
+			}
+
 			return index;
 		};
 
 		//
 		// Get the array of nodes that are currently selected.
-		// todo change for subgraph input/output ports
+		//
 		this.getSelectedNodes = function () {
 			var selectedNodes = [];
 
@@ -1430,7 +1496,7 @@ var flowchart = {};
 
 		//
 		// @ mobius get the array of input connectors that currently selected.
-		// todo change for subgraph input/output ports
+		//
 		this.getSelectedInputConnectors = function () {
 			var selectedInputConnector = [];
 
@@ -1449,7 +1515,7 @@ var flowchart = {};
 
 		//
 		// @ mobius get the array of output connectors that currently selected.
-		// todo change for subgraph input/output ports
+		//
 		this.getSelectedOutputConnectors = function () {
 			var selectedOutputConnector = [];
 
