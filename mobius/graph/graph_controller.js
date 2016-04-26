@@ -473,6 +473,7 @@ mobius.controller(  'graphCtrl',
 
 
         $scope.$on('openSubGraph',function(){
+            console.log('subgraph: ', $scope.chartViewModel.nodes[$scope.nodeIndex].data);
             generateCode.openNewChart($scope.chartViewModel.nodes[$scope.nodeIndex].data);
         });
 
