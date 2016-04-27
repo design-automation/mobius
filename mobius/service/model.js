@@ -50,12 +50,11 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
         var model = {};
 
         if(subgraph){
-            model = subgraph;
+            angular.copy(subgraph,model);
             model.chartViewModel = new flowchart.ChartViewModel(model.chartDataModel);
-        }else{
+        }else {
             model = data;
         }
-
         var sortedOrder = model.chartViewModel.topoSort().slice();
 
         generate_execution_code();
@@ -77,8 +76,10 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
             model.geomListCode = "var geomList = [];\n";
             for(var n = 0; n < sortedOrder.length; n++) {
                 // first check if the node is disabled
-                if((model.chartViewModel.nodes[sortedOrder[n]].disabled() === false) ||
-                    !model.chartViewModel.nodes[sortedOrder[n]].disabled()){
+
+                if( sortedOrder[n] !== 'outputPort' &&
+                    (model.chartViewModel.nodes[sortedOrder[n]].disabled() === false ||
+                    !model.chartViewModel.nodes[sortedOrder[n]].disabled()) ){
                     // case where the node has output
                     var output_port_num = model.chartViewModel.nodes[sortedOrder[n]].outputConnectors.length;
                     var node_name = model.chartViewModel.nodes[sortedOrder[n]].data.name;

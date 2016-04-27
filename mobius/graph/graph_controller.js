@@ -92,14 +92,16 @@ mobius.controller(  'graphCtrl',
                                 }
                             }
 
-                            $scope.chartViewModel.nodes[i].data.subGraphModel.chartDataModel.outputPort.outputConnectors
-                                = outputList;
+                            angular.copy(outputList,
+                                $scope.chartViewModel.nodes[i].data.subGraphModel.chartDataModel.outputPort.inputConnectors);
                         }
 
                         if(!angular.equals(newValue.nodes[i].inputConnectors,oldValue.nodes[i].inputConnectors)
                             && $scope.chartViewModel.nodes[i].data.subGraph === true){
-                            $scope.chartViewModel.nodes[i].data.subGraphModel.chartDataModel.inputPort.inputConnectors
-                                =  $scope.interfaceList[$scope.nodeIndex];
+                            angular.copy(
+                                $scope.interfaceList[$scope.nodeIndex],
+                                $scope.chartViewModel.nodes[i].data.subGraphModel.chartDataModel.inputPort.outputConnectors
+                            )
                         }
                         break;
                     }
@@ -370,7 +372,6 @@ mobius.controller(  'graphCtrl',
                 var newInterfaceDataModel = $scope.interfaceList[index];
                 var isSubGraph = $scope.chartViewModel.getSelectedNodes()[0].data.subGraph;
                 var newSubGraphModel =  $scope.chartViewModel.getSelectedNodes()[0].data.subGraphModel;
-                console.log('copy for overwrite: ', newSubGraphModel);
 
                 nodeCollection.updateNodeType(oldTypeName, newTypeName, input,output,newProcedureDataModel,newInterfaceDataModel, isSubGraph,newSubGraphModel);
 
@@ -473,7 +474,6 @@ mobius.controller(  'graphCtrl',
 
 
         $scope.$on('openSubGraph',function(){
-            console.log('subgraph: ', $scope.chartViewModel.nodes[$scope.nodeIndex].data);
             generateCode.openNewChart($scope.chartViewModel.nodes[$scope.nodeIndex].data);
         });
 

@@ -172,7 +172,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
         // watch change of procedure data tree, if change update the flattenData, update version
         $scope.$watch('data',function(){
-
             updateVersion();
             flattenData();
         } , true);
@@ -199,7 +198,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                     var d = new Date();
                     $scope.chartViewModel.nodes[$scope.nodeIndex].data.version = d.getTime();
                 }
-
 
                 $scope.currentNodeVersion = $scope.chartViewModel.nodes[$scope.nodeIndex].data.version === 0?'':'*';
             }

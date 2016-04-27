@@ -160,12 +160,12 @@ mobius.factory('nodeCollection', function () {
                             "inputPort": {
                                 x:1900,
                                 y:1900,
-                                inputConnectors:[]
+                                outputConnectors:[]
                             },
                             "outputPort": {
                                 x:1900,
                                 y:2300,
-                                outputConnectors:[]
+                                inputConnectors:[]
                             }
                         },
                         nodeIndex:undefined

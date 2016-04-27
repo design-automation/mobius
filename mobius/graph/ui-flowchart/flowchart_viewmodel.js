@@ -289,11 +289,11 @@ var flowchart = {};
 	flowchart.InputPortViewModel = function (inputDataModel){
 		this.data = inputDataModel;
 		this.data.id = 'inputPort';
-		for(var i = 0; i < this.data.inputConnectors.length; i++){
-			this.data.inputConnectors[i].title = 'Output';
+		for(var i = 0; i < this.data.outputConnectors.length; i++){
+			this.data.outputConnectors[i].title = 'Output';
 		}
 
-		this.outputConnectors = createConnectorsViewModel(this.data.inputConnectors, flowchart.portHeight, this);
+		this.outputConnectors = createConnectorsViewModel(this.data.outputConnectors, flowchart.portHeight, this);
 
 		// Set to true when the node is selected.
 		this._selected = false;
@@ -362,10 +362,10 @@ var flowchart = {};
 	flowchart.OutputPortViewModel = function (outputPortDataModel){
 		this.data = outputPortDataModel;
 		this.data.id = 'outputPort';
-		for(var i = 0; i < this.data.outputConnectors.length; i++){
-			this.data.outputConnectors[i].title = 'Input';
+		for(var i = 0; i < this.data.inputConnectors.length; i++){
+			this.data.inputConnectors[i].title = 'Input';
 		}
-		this.inputConnectors = createConnectorsViewModel(this.data.outputConnectors, 0, this);
+		this.inputConnectors = createConnectorsViewModel(this.data.inputConnectors, 0, this);
 
 		// Set to true when the node is selected.
 		this._selected = false;
@@ -621,6 +621,19 @@ var flowchart = {};
 		// @ mobius new node position
 		this.newPos = {x:1900,y:2100};
 
+		// Reference to the underlying data.
+		this.data = chartDataModel;
+
+		// create a view-model for input ports
+		if(this.data.inputPort && this.data.inputPort.outputConnectors.length !== 0){
+			this.inputPort = createInputPortViewModel(this.data.inputPort);
+		}
+
+		// create a view-model for output ports
+		if(this.data.inputPort && this.data.outputPort.inputConnectors.length !== 0){
+			this.outputPort = createOutputPortViewModel(this.data.outputPort);
+		}
+
 		//
 		// Find a specific node within the chart.
 		//
@@ -633,13 +646,16 @@ var flowchart = {};
 				}
 			}
 
+			// fixme how come this.inputPort got undefined > . <
 			if(this.inputPort){
 				if (this.inputPort.data.id === nodeID) {
 					return this.inputPort;
 				}
+			}
 
+			if(this.outputPort){
 				if (this.outputPort.data.id === nodeID) {
-					return this.inputPort;
+					return this.outputPort;
 				}
 			}
 
@@ -683,8 +699,10 @@ var flowchart = {};
 		//
 		this._createConnectionViewModel = function(connectionDataModel) {
 
+			console.log(connectionDataModel)
 			var sourceConnector = this.findOutputConnector(connectionDataModel.source.nodeID, connectionDataModel.source.connectorIndex);
 			var destConnector = this.findInputConnector(connectionDataModel.dest.nodeID, connectionDataModel.dest.connectorIndex);
+
 			return new flowchart.ConnectionViewModel(connectionDataModel, sourceConnector, destConnector);
 		};
 
@@ -704,25 +722,12 @@ var flowchart = {};
 			return connectionsViewModel;
 		};
 
-		// Reference to the underlying data.
-		this.data = chartDataModel;
 
 		// Create a view-model for nodes.
 		this.nodes = createNodesViewModel(this.data.nodes);
 
 		// Create a view-model for connections.
 		this.connections = this._createConnectionsViewModel(this.data.connections);
-
-		// create a view-model for input ports
-		if(this.data.inputPort && this.data.inputPort.inputConnectors.length !== 0){
-			this.inputPort = createInputPortViewModel(this.data.inputPort);
-		}
-
-		// create a view-model for output ports
-		if(this.data.inputPort && this.data.outputPort.outputConnectors.length !== 0){
-			this.outputPort = createOutputPortViewModel(this.data.outputPort);
-		}
-
 
 		//
 		// Create a view model for a new connection.
@@ -867,7 +872,7 @@ var flowchart = {};
 			var edges = edgeList.slice();
 			var nodes = [];
 			for(var i = 0; i < this.nodes.length; i++){
-				nodes.push(this.nodes[i].data.id);
+					nodes.push(this.nodes[i].data.id);
 			}
 
 			// topological sort
@@ -880,14 +885,10 @@ var flowchart = {};
 				if (!visited[i]) visit(nodes[i], i, [])
 			}
 
-			//console.log("after sorting:", sorted);
-
 			return sorted;
 
 			function visit(node, i, predecessors) {
 				if(predecessors.indexOf(node) >= 0) {
-					console.log(predecessors)
-					console.log(node)
 					throw new Error('Error: Cyclic dependency')
 				}
 
@@ -1217,14 +1218,10 @@ var flowchart = {};
 				// generate connector view model using new connector data model
 				for(var newInputIndex = 0; newInputIndex < newInputConnectorDataModels.length; newInputIndex++){
 					node.addInputConnector(newInputConnectorDataModels[newInputIndex]);
-					//node.data.inputConnectors.push(newInputConnectorDataModels[newInputIndex]);
-					//node.inputConnectors.push(newInputConnectorViewModels[newInputIndex]);
 				}
 
 				for(var newOutputIndex = 0; newOutputIndex < newOutputConnectorDataModels.length; newOutputIndex++){
 					node.addOutputConnector(newOutputConnectorDataModels[newOutputIndex]);
-					//node.data.outputConnectors.push(newOutputConnectorDataModels[newOutputIndex]);
-					//node.outputConnectors.push(newOutputConnectorViewModels[newOutputIndex]);
 				}
 			}
 
@@ -1443,21 +1440,24 @@ var flowchart = {};
 				}
 			}
 
-			if (this.inputPort.x() >= selectionRect.x &&
-				this.inputPort.y() >= selectionRect.y &&
-				this.inputPort.x() + this.inputPort.width() <= selectionRect.x + selectionRect.width &&
-				this.inputPort.y() + this.inputPort.height() <= selectionRect.y + selectionRect.height)
-			{
-				this.inputPort.select();
+			if(this.inputPort && this.outputPort){
+				if (this.inputPort.x() >= selectionRect.x &&
+					this.inputPort.y() >= selectionRect.y &&
+					this.inputPort.x() + this.inputPort.width() <= selectionRect.x + selectionRect.width &&
+					this.inputPort.y() + this.inputPort.height() <= selectionRect.y + selectionRect.height)
+				{
+					this.inputPort.select();
+				}
+
+				if (this.outputPort.x() >= selectionRect.x &&
+					this.outputPort.y() >= selectionRect.y &&
+					this.outputPort.x() + this.outputPort.width() <= selectionRect.x + selectionRect.width &&
+					this.outputPort.y() + this.outputPort.height() <= selectionRect.y + selectionRect.height)
+				{
+					this.outputPort.select();
+				}
 			}
 
-			if (this.outputPort.x() >= selectionRect.x &&
-				this.outputPort.y() >= selectionRect.y &&
-				this.outputPort.x() + this.outputPort.width() <= selectionRect.x + selectionRect.width &&
-				this.outputPort.y() + this.outputPort.height() <= selectionRect.y + selectionRect.height)
-			{
-				this.outputPort.select();
-			}
 
 			return index;
 		};
