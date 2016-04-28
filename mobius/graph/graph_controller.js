@@ -274,8 +274,6 @@ mobius.controller(  'graphCtrl',
                 for(var i = deletedObj.deletedNodeIds.length -1; i >= 0 ; i--){
                     // update scene data structure
                     $scope.dataList.splice(deletedObj.deletedNodeIds[i],1);
-                    //$scope.innerCodeList.splice(deletedObj.deletedNodeIds[i],1);
-                    //$scope.outerCodeList.splice(deletedObj.deletedNodeIds[i],1);
                     $scope.interfaceList.splice(deletedObj.deletedNodeIds[i],1);
                 }
             }

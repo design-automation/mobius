@@ -671,8 +671,7 @@ var flowchart = {};
 			var node = this.findNode(nodeID);
 
 			if (!node.inputConnectors || node.inputConnectors.length <= connectorIndex) {
-				//throw new Error("Node " + nodeID + " has invalid input connectors.");
-				return false;
+				throw new Error("Node " + nodeID + " has invalid input connectors.");
 			}
 
 			return node.inputConnectors[connectorIndex];
@@ -687,8 +686,7 @@ var flowchart = {};
 			var node = this.findNode(nodeID);
 
 			if (!node.outputConnectors || node.outputConnectors.length <= connectorIndex) {
-				//throw new Error("Node " + nodeID + " has invalid output connectors.");
-				return false;
+				throw new Error("Node " + nodeID + " has invalid output connectors.");
 			}
 
 			return node.outputConnectors[connectorIndex];
@@ -698,8 +696,6 @@ var flowchart = {};
 		// Create a view model for connection from the data model.
 		//
 		this._createConnectionViewModel = function(connectionDataModel) {
-
-			console.log(connectionDataModel)
 			var sourceConnector = this.findOutputConnector(connectionDataModel.source.nodeID, connectionDataModel.source.connectorIndex);
 			var destConnector = this.findInputConnector(connectionDataModel.dest.nodeID, connectionDataModel.dest.connectorIndex);
 
@@ -722,11 +718,14 @@ var flowchart = {};
 			return connectionsViewModel;
 		};
 
-
+		//
 		// Create a view-model for nodes.
+		//
 		this.nodes = createNodesViewModel(this.data.nodes);
 
+		//
 		// Create a view-model for connections.
+		//
 		this.connections = this._createConnectionsViewModel(this.data.connections);
 
 		//
@@ -779,10 +778,6 @@ var flowchart = {};
 				}
 			}
 
-			//
-			// @ mobius transfer data value through conenctions
-			// fixme no longer in use
-			//
 			if (sourceFlag == true ){
 				if(destFlag == true){
 					var connectionDataModel = {
@@ -819,7 +814,6 @@ var flowchart = {};
 				connectionsDataModel.push(connectionDataModel);
 				var connectionViewModel = new flowchart.ConnectionViewModel(connectionDataModel, destConnector, sourceConnector);
 				connectionsViewModel.push(connectionViewModel);
-
 			}
 
 			//
@@ -931,11 +925,14 @@ var flowchart = {};
 
 			if(this.inputPort){
 				this.inputPort.select();
-				this.outputPort.select();
 
 				for(var j = 0; j < this.inputPort.outputConnectors.length; j ++){
 					this.inputPort.outputConnectors[j].select();
 				}
+			}
+
+			if(this.outputPort){
+				this.outputPort.select();
 
 				for(var j = 0; j < this.outputPort.inputConnectors.length; j ++){
 					this.outputPort.inputConnectors[j].select();
@@ -966,12 +963,13 @@ var flowchart = {};
 
 			if(this.inputPort){
 				this.inputPort.deselect();
-				this.outputPort.deselect();
-
 				for(var j = 0; j < this.inputPort.outputConnectors.length; j ++){
 					this.inputPort.outputConnectors[j].deselect();
 				}
+			}
 
+			if(this.outputPort){
+				this.outputPort.deselect();
 				for(var j = 0; j < this.outputPort.inputConnectors.length; j ++){
 					this.outputPort.inputConnectors[j].deselect();
 				}
@@ -1042,7 +1040,6 @@ var flowchart = {};
 			return nodeIndex;
 		};
 
-
 		//
 		// @ mobius : Handle mouse drag on a particular node/ prevent deselection
 		//
@@ -1062,7 +1059,7 @@ var flowchart = {};
 		// Handle mouse down on a connection.
 		//
 		this.handleConnectionMouseDown = function (connection, ctrlKey) {
-
+			console.log('before right clicked: ', this)
 			if (ctrlKey) {
 				connection.toggleSelected();
 			}
@@ -1070,6 +1067,7 @@ var flowchart = {};
 				this.deselectAll();
 				connection.select();
 			}
+			console.log('after right clicked: ', this)
 		};
 
 		//
@@ -1136,6 +1134,9 @@ var flowchart = {};
 		// Delete all nodes and connections that are selected.
 		//
 		this.deleteSelected = function () {
+
+			console.log(this)
+			console.log(this.data)
 
 			var newNodeViewModels = [];
 			var newNodeDataModels = [];
@@ -1233,6 +1234,7 @@ var flowchart = {};
 			var newConnectionViewModels = [];
 			var newConnectionDataModels = [];
 
+			// fixme subgraph connection deletion fix
 			for (var connectionIndex = 0; connectionIndex < this.connections.length; ++connectionIndex) {
 
 				var connection = this.connections[connectionIndex];
@@ -1271,6 +1273,7 @@ var flowchart = {};
 					}
 				}else{
 					// set the connected of dest connector of deleted connection to false
+
 					if(	this.findInputConnector(connection.data.dest.nodeID,connection.data.dest.connectorIndex)){
 						this.findInputConnector(connection.data.dest.nodeID,connection.data.dest.connectorIndex)
 							.data.connected=false;
@@ -1286,9 +1289,6 @@ var flowchart = {};
 			// update connections
 			this.connections = newConnectionViewModels;
 			this.data.connections = newConnectionDataModels;
-
-
-
 
 			//
 			// @ mobius update the connection id for connectors
@@ -1325,7 +1325,6 @@ var flowchart = {};
 				}
 			}
 
-
 			// Update the node index
 			for(var i = 0; i < this.nodes.length ;i++){
 
@@ -1339,7 +1338,6 @@ var flowchart = {};
 
 				this.nodes[i].data.id = this.nodes[i].data.id - decreaseIn;
 			}
-
 
 			//
 			// @ mobius update the connection id for nodes
@@ -1355,7 +1353,10 @@ var flowchart = {};
 					}
 				}
 
-				this.connections[i].data.source.nodeID = this.connections[i].data.source.nodeID - sourceDecreaseIn;
+				if(this.connections[i].data.source.nodeID !== 'inputPort' && this.connections[i].data.source.nodeID !== 'outputPort'){
+					this.connections[i].data.source.nodeID = this.connections[i].data.source.nodeID - sourceDecreaseIn;
+				}
+
 
 
 				var destDecreaseIn = 0;
@@ -1366,7 +1367,9 @@ var flowchart = {};
 					}
 				}
 
-				this.connections[i].data.dest.nodeID = this.connections[i].data.dest.nodeID - destDecreaseIn;
+				if(this.connections[i].data.dest.nodeID !== 'inputPort' && this.connections[i].data.dest.nodeID !== 'outputPort'){
+					this.connections[i].data.dest.nodeID = this.connections[i].data.dest.nodeID - destDecreaseIn;
+				}
 			}
 
 			//
@@ -1480,7 +1483,7 @@ var flowchart = {};
 
 		//
 		// Get the array of connections that are currently selected.
-		//
+		// fixme should i leave or should i stay
 		this.getSelectedConnections = function () {
 			var selectedConnections = [];
 
@@ -1496,7 +1499,7 @@ var flowchart = {};
 
 		//
 		// @ mobius get the array of input connectors that currently selected.
-		//
+		// fixme should i leave or should i stay
 		this.getSelectedInputConnectors = function () {
 			var selectedInputConnector = [];
 
@@ -1515,7 +1518,7 @@ var flowchart = {};
 
 		//
 		// @ mobius get the array of output connectors that currently selected.
-		//
+		// fixme should i leave or should i stay
 		this.getSelectedOutputConnectors = function () {
 			var selectedOutputConnector = [];
 

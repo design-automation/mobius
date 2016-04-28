@@ -295,6 +295,10 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
                 // generate code for subgraph and append to inner function code
                 if(model.chartViewModel.nodes[i].data.subGraph){
+                    // todo var son_input = mother_input
+                    // todo execution order
+                    //
+
                     model.innerCodeList[i] += generateCode(model.chartViewModel.nodes[i].data.subGraphModel);
                 }
 
@@ -504,6 +508,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                 interfaceList: graphList[graphList.length-1].subGraphModel.interfaceList,
                 nodeIndex:undefined
             };
+            console.log(current.chartViewModel)
         },
 
         changeGraphView: function (index) {
