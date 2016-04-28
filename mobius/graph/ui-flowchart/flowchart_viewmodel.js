@@ -1059,7 +1059,6 @@ var flowchart = {};
 		// Handle mouse down on a connection.
 		//
 		this.handleConnectionMouseDown = function (connection, ctrlKey) {
-			console.log('before right clicked: ', this)
 			if (ctrlKey) {
 				connection.toggleSelected();
 			}
@@ -1067,7 +1066,6 @@ var flowchart = {};
 				this.deselectAll();
 				connection.select();
 			}
-			console.log('after right clicked: ', this)
 		};
 
 		//
@@ -1134,9 +1132,6 @@ var flowchart = {};
 		// Delete all nodes and connections that are selected.
 		//
 		this.deleteSelected = function () {
-
-			console.log(this)
-			console.log(this.data)
 
 			var newNodeViewModels = [];
 			var newNodeDataModels = [];
@@ -1356,8 +1351,6 @@ var flowchart = {};
 				if(this.connections[i].data.source.nodeID !== 'inputPort' && this.connections[i].data.source.nodeID !== 'outputPort'){
 					this.connections[i].data.source.nodeID = this.connections[i].data.source.nodeID - sourceDecreaseIn;
 				}
-
-
 
 				var destDecreaseIn = 0;
 
