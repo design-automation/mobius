@@ -665,39 +665,63 @@ var flowchart = {};
 		//
 		// Find a specific input connector within the chart.
 		//
-		//
-		this.findInputConnector = function (nodeID, connectorIndex) {
+		// todo accommodates the portConnectorID
+		this.findInputConnector = function (nodeID, connectorIndex,portConnectorID) {
 
 			var node = this.findNode(nodeID);
 
-			if (!node.inputConnectors || node.inputConnectors.length <= connectorIndex) {
-				throw new Error("Node " + nodeID + " has invalid input connectors.");
+			if(portConnectorID === undefined){
+				if (!node.inputConnectors || node.inputConnectors.length <= connectorIndex) {
+					throw new Error("Node " + nodeID + " has invalid input connectors.");
+				}else{
+					return node.inputConnectors[connectorIndex];
+				}
+			}else{
+				if(portConnectorID === node.inputConnectors[connectorIndex].data.id){
+					return node.inputConnectors[connectorIndex];
+				}else{
+					for(var i =0; i < node.inputConnectors.length;i++){
+						if(node.inputConnectors[i].data.id === portConnectorID){
+							return node.inputConnectors[i]
+						}
+					}
+				}
 			}
-
-			return node.inputConnectors[connectorIndex];
 		};
 
 		//
 		// Find a specific output connector within the chart.
 		//
-		//
-		this.findOutputConnector = function (nodeID, connectorIndex) {
+		// todo accommodates the portConnectorID
+		this.findOutputConnector = function (nodeID, connectorIndex,portConnectorID) {
 
 			var node = this.findNode(nodeID);
 
-			if (!node.outputConnectors || node.outputConnectors.length <= connectorIndex) {
-				throw new Error("Node " + nodeID + " has invalid output connectors.");
+			if(portConnectorID === undefined){
+				if (!node.outputConnectors || node.outputConnectors.length <= connectorIndex) {
+					throw new Error("Node " + nodeID + " has invalid input connectors.");
+				}else{
+					return node.outputConnectors[connectorIndex];
+				}
+			}else{
+				if(portConnectorID === node.outputConnectors[connectorIndex].data.id){
+					return node.outputConnectors[connectorIndex];
+				}else{
+					for(var i =0; i < node.outputConnectors.length;i++){
+						if(node.outputConnectors[i].data.id=== portConnectorID){
+							return node.outputConnectors[i]
+						}
+					}
+				}
 			}
-
-			return node.outputConnectors[connectorIndex];
 		};
 
 		//
 		// Create a view model for connection from the data model.
 		//
 		this._createConnectionViewModel = function(connectionDataModel) {
-			var sourceConnector = this.findOutputConnector(connectionDataModel.source.nodeID, connectionDataModel.source.connectorIndex);
-			var destConnector = this.findInputConnector(connectionDataModel.dest.nodeID, connectionDataModel.dest.connectorIndex);
+			var sourceConnector = this.findOutputConnector(connectionDataModel.source.nodeID, connectionDataModel.source.connectorIndex,connectionDataModel.source.portConnectorID);
+			var destConnector = this.findInputConnector(connectionDataModel.dest.nodeID, connectionDataModel.dest.connectorIndex,connectionDataModel.dest.portConnectorID);
 
 			return new flowchart.ConnectionViewModel(connectionDataModel, sourceConnector, destConnector);
 		};
@@ -766,6 +790,8 @@ var flowchart = {};
 					throw new Error("Failed to find source connector within either inputConnectors or outputConnectors of source node.");
 				}
 			}
+			// if source node is inputPort, the id of the connector in its parent's procedure/ parameter list need to be recorded
+			// in case renaming / repositioning in its parent's procedure/ paramter list
 
 			var destNode = destConnector.parentNode();
 			var destConnectorIndex = destNode.inputConnectors.indexOf(destConnector);
@@ -778,6 +804,15 @@ var flowchart = {};
 				}
 			}
 
+			// fixme pass in port connector hashkey when src/dest node is a port
+			if(sourceNode.data.id === 'inputPort'){
+				var sourcePortConnectorID = sourceConnector.data.id;
+			}
+
+			if(destNode.data.id === 'outputPort'){
+				var destPortConnectorID = destConnector.data.id;
+			}
+
 			if (sourceFlag == true ){
 				if(destFlag == true){
 					var connectionDataModel = {
@@ -785,13 +820,16 @@ var flowchart = {};
 						//value: sourceConnector.data.value,
 						source: {
 							nodeID: sourceNode.data.id,
-							connectorIndex: sourceConnectorIndex
+							connectorIndex: sourceConnectorIndex,
+							portConnectorID:sourcePortConnectorID
 						},
 						dest: {
 							nodeID: destNode.data.id,
-							connectorIndex: destConnectorIndex
+							connectorIndex: destConnectorIndex,
+							portConnectorID:destPortConnectorID
 						}
 					};
+
 					connectionsDataModel.push(connectionDataModel);
 					var connectionViewModel = new flowchart.ConnectionViewModel(connectionDataModel, sourceConnector, destConnector);
 					connectionsViewModel.push(connectionViewModel);
@@ -803,13 +841,15 @@ var flowchart = {};
 					//value: destConnector.data.value,
 					source: {
 						nodeID: destNode.data.id,
-						connectorIndex: destConnectorIndex
+						connectorIndex: destConnectorIndex,
+						portConnectorID:sourcePortConnectorID
 					},
 					dest: {
 						nodeID: sourceNode.data.id,
-						connectorIndex: sourceConnectorIndex
+						connectorIndex: sourceConnectorIndex,
+						portConnectorID:destPortConnectorID
 					}
-				}
+				};
 
 				connectionsDataModel.push(connectionDataModel);
 				var connectionViewModel = new flowchart.ConnectionViewModel(connectionDataModel, destConnector, sourceConnector);
