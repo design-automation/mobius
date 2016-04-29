@@ -471,13 +471,16 @@ mobius.controller(  'graphCtrl',
 
         $scope.$on('openSubGraph',function(){
             generateCode.openNewChart($scope.chartViewModel.nodes[$scope.nodeIndex].data);
+            $scope.$emit('clearProcedure');
         });
 
         $scope.goRoot = function(){
             generateCode.goRoot();
+            $scope.$emit('clearProcedure');
         };
 
         $scope.changeGraphView = function(index){
             generateCode.changeGraphView(index);
+            $scope.$emit('clearProcedure');
         };
     }]);

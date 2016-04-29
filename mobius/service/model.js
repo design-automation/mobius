@@ -508,7 +508,6 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                 interfaceList: graphList[graphList.length-1].subGraphModel.interfaceList,
                 nodeIndex:undefined
             };
-            console.log(current.chartViewModel)
         },
 
         changeGraphView: function (index) {
