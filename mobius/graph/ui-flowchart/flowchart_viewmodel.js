@@ -717,16 +717,6 @@ var flowchart = {};
 		};
 
 		//
-		// Create a view model for connection from the data model.
-		//
-		this._createConnectionViewModel = function(connectionDataModel) {
-			var sourceConnector = this.findOutputConnector(connectionDataModel.source.nodeID, connectionDataModel.source.connectorIndex,connectionDataModel.source.portConnectorID);
-			var destConnector = this.findInputConnector(connectionDataModel.dest.nodeID, connectionDataModel.dest.connectorIndex,connectionDataModel.dest.portConnectorID);
-
-			return new flowchart.ConnectionViewModel(connectionDataModel, sourceConnector, destConnector);
-		};
-
-		//
 		// Wrap the connections data-model in a view-model.
 		//
 		this._createConnectionsViewModel = function (connectionsDataModel) {
@@ -735,7 +725,17 @@ var flowchart = {};
 
 			if (connectionsDataModel) {
 				for (var i = 0; i < connectionsDataModel.length; ++i) {
-					connectionsViewModel.push(this._createConnectionViewModel(connectionsDataModel[i]));
+
+					var sourceConnector = this.findOutputConnector(connectionsDataModel[i].source.nodeID, connectionsDataModel[i].source.connectorIndex,connectionsDataModel[i].source.portConnectorID);
+					var destConnector = this.findInputConnector(connectionsDataModel[i].dest.nodeID, connectionsDataModel[i].dest.connectorIndex,connectionsDataModel[i].dest.portConnectorID);
+
+					// if found source and dest connector add new view-model, else exclude connection-data-model
+					if(sourceConnector && destConnector){
+						connectionsViewModel.push(new flowchart.ConnectionViewModel(connectionsDataModel[i], sourceConnector, destConnector));
+					}else{
+						connectionsViewModel.splice(i, 1);
+					}
+
 				}
 			}
 
