@@ -892,7 +892,7 @@ var flowchart = {};
 		//	@ mobius
 		//  topological sort: current setting: add/delete
 		//
-		this.topoSort = function topoSort (){
+		this.topoSort = function topoSort (subgraph){
 			//
 			// @ mobius
 			// Update the edgeList
@@ -905,9 +905,17 @@ var flowchart = {};
 			// copy the node and edge lists
 			var edges = edgeList.slice();
 			var nodes = [];
-			for(var i = 0; i < this.nodes.length; i++){
-					nodes.push(this.nodes[i].data.id);
+
+			if(subgraph){
+				nodes.push('inputPort');
+				nodes.push('outputPort');
 			}
+
+			for(var i = 0; i < this.nodes.length; i++){
+				nodes.push(this.nodes[i].data.id);
+			}
+
+
 
 			// topological sort
 			var cursor = nodes.length

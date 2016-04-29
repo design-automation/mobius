@@ -3,10 +3,6 @@
 // code generation module
 //
 
-// todo restructure chartDataModel and chartViewModel
-// todo restructure core data and other code lists
-
-
 mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
     var outputGeom = [];
@@ -48,14 +44,16 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
     function generateCode (subgraph){
         var model = {};
+        var sortedOrder = [];
 
         if(subgraph){
             angular.copy(subgraph,model);
             model.chartViewModel = new flowchart.ChartViewModel(model.chartDataModel);
+            sortedOrder = model.chartViewModel.topoSort(true).slice();
         }else {
             model = data;
+            sortedOrder = model.chartViewModel.topoSort().slice();
         }
-        var sortedOrder = model.chartViewModel.topoSort().slice();
 
         generate_execution_code();
         generate_outer_function_code();
@@ -74,87 +72,141 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
         function generate_execution_code(){
             model.javascriptCode = '// execution: \n';
             model.geomListCode = "var geomList = [];\n";
-            for(var n = 0; n < sortedOrder.length; n++) {
-                // first check if the node is disabled
 
-                if( sortedOrder[n] !== 'outputPort' &&
-                    (model.chartViewModel.nodes[sortedOrder[n]].disabled() === false ||
-                    !model.chartViewModel.nodes[sortedOrder[n]].disabled()) ){
-                    // case where the node has output
-                    var output_port_num = model.chartViewModel.nodes[sortedOrder[n]].outputConnectors.length;
-                    var node_name = model.chartViewModel.nodes[sortedOrder[n]].data.name;
-                    var return_obj_name = 'output_' + model.chartViewModel.nodes[sortedOrder[n]].data.name;
+            // generate code for input-port
+            // todo test: not connected
+            if(sortedOrder.indexOf('inputPort') > -1){
+                var output_port_num = model.chartViewModel.inputPort.outputConnectors.length;
 
-                    if (output_port_num != 0) {
-                        // first get the return object
-                        model.javascriptCode += 'var ' + return_obj_name + ' = ';
-                        model.geomListCode += 'geomList.push({'
-                            + 'name:'
-                            + node_name +'.name,'
-                            + 'value:'
-                            + return_obj_name + ','
-                            + 'geom:[],'
-                            + 'geomData:[],'
-                            + 'topo:[]'
-                            +'});'
-                    }
+                for(var m =0; m < output_port_num; m++){
+                    var output_port_name = model.chartViewModel.inputPort.outputConnectors[m].data.name;
 
-                    // case where the node has no output
-                    model.javascriptCode += model.chartViewModel.nodes[sortedOrder[n]].data.name + "(";
+                    for (var l = 0; l < model.chartViewModel.connections.length; l++) {
+                        if (output_port_name === model.chartViewModel.connections[l].source.name()
+                            && model.chartViewModel.connections[l].data.source.nodeID === 'inputPort') {
+                            var connected_input_name = model.chartViewModel.connections[l].dest.data.name;
 
-                    // print all the parameters/inputs
+                            var destNodeId =  model.chartViewModel.connections[l].data.dest.nodeID;
 
-                    var input_port_num = model.chartViewModel.nodes[sortedOrder[n]].inputConnectors.length;
-
-                    for (var m = 0; m < input_port_num; m++) {
-
-                        var input_port_name = model.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.name;
-
-                        if(model.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.connected === true){
-                            if(m != input_port_num-1){
-                                model.javascriptCode += input_port_name + ',';
-                            }
-                            else{
-                                model.javascriptCode += input_port_name;
+                            if((model.chartViewModel.nodes[destNodeId].disabled() === false) ||
+                                model.chartViewModel.nodes[destNodeId].disabled() === undefined){
+                                model.javascriptCode +=  'var '
+                                    + connected_input_name +' = MOBIUS.obj.copy('
+                                    + output_port_name + ');\n';
                             }
                         }
                     }
+                }
+            }
 
-                    if( model.javascriptCode.slice(-1) === ','){
-                        model.javascriptCode = model.javascriptCode.substring(0, model.javascriptCode.length - 1);
-                    }
+            for(var n = 0; n < sortedOrder.length; n++) {
+                // first check if the node is disabled
+                if(sortedOrder[n] !== 'outputPort' && sortedOrder[n] !== 'inputPort'){
+                    if((model.chartViewModel.nodes[sortedOrder[n]].disabled() === false ||
+                        !model.chartViewModel.nodes[sortedOrder[n]].disabled()) ){
 
-                    model.javascriptCode +=  ");\n";
+                        // case where the node has output
+                        var output_port_num = model.chartViewModel.nodes[sortedOrder[n]].outputConnectors.length;
+                        var node_name = model.chartViewModel.nodes[sortedOrder[n]].data.name;
+                        var return_obj_name = 'output_' + model.chartViewModel.nodes[sortedOrder[n]].data.name;
 
-                    // extract items from return through label
-                    // fixme name duplication or undefined name
-                    for(var m =0; m < output_port_num; m++){
+                        if (output_port_num != 0) {
+                            // first get the return object
+                            model.javascriptCode += 'var ' + return_obj_name + ' = ';
+                            model.geomListCode += 'geomList.push({'
+                                + 'name:'
+                                + node_name +'.name,'
+                                + 'value:'
+                                + return_obj_name + ','
+                                + 'geom:[],'
+                                + 'geomData:[],'
+                                + 'topo:[]'
+                                +'});'
+                        }
 
-                        var output_port_node_id = model.chartViewModel.nodes[sortedOrder[n]].data.id;
-                        var output_port_name = model.chartViewModel.nodes[sortedOrder[n]].outputConnectors[m].data.name;
+                        // case where the node has no output
+                        model.javascriptCode += model.chartViewModel.nodes[sortedOrder[n]].data.name + "(";
 
-                        for (var l = 0; l < model.chartViewModel.connections.length; l++) {
+                        // print all the parameters/inputs
+                        var input_port_num = model.chartViewModel.nodes[sortedOrder[n]].inputConnectors.length;
 
-                            if (output_port_name === model.chartViewModel.connections[l].source.name()
-                                && output_port_node_id === model.chartViewModel.connections[l].data.source.nodeID) {
-                                var connected_input_name = model.chartViewModel.connections[l].dest.data.name;
+                        for (var m = 0; m < input_port_num; m++) {
 
-                                var destNodeId =  model.chartViewModel.connections[l].data.dest.nodeID;
-                                // if connection dest node is not disabled
-                                if((model.chartViewModel.nodes[destNodeId].disabled() === false) ||
-                                    model.chartViewModel.nodes[destNodeId].disabled() === undefined){
-                                    model.javascriptCode +=  'var '
-                                        + connected_input_name +' = MOBIUS.obj.copy('
-                                        + return_obj_name
-                                        + '.'
-                                        + output_port_name + ');\n';
+                            var input_port_name = model.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.name;
+
+                            if(model.chartViewModel.nodes[sortedOrder[n]].inputConnectors[m].data.connected === true){
+                                if(m != input_port_num-1){
+                                    model.javascriptCode += input_port_name + ',';
+                                }
+                                else{
+                                    model.javascriptCode += input_port_name;
                                 }
                             }
                         }
+
+                        if( model.javascriptCode.slice(-1) === ','){
+                            model.javascriptCode = model.javascriptCode.substring(0, model.javascriptCode.length - 1);
+                        }
+
+                        model.javascriptCode +=  ");\n";
+
+                        // extract items from return through label
+                        // fixme name duplication or undefined name
+                        for(var m =0; m < output_port_num; m++){
+                            var output_port_node_id = model.chartViewModel.nodes[sortedOrder[n]].data.id;
+                            var output_port_name = model.chartViewModel.nodes[sortedOrder[n]].outputConnectors[m].data.name;
+
+                            for (var l = 0; l < model.chartViewModel.connections.length; l++) {
+                                if (output_port_name === model.chartViewModel.connections[l].source.name()
+                                    && output_port_node_id === model.chartViewModel.connections[l].data.source.nodeID) {
+                                    var connected_input_name = model.chartViewModel.connections[l].dest.data.name;
+
+                                    var destNodeId =  model.chartViewModel.connections[l].data.dest.nodeID;
+                                    // if connection dest node is not disabled
+
+                                    if(destNodeId !== 'outputPort'&& destNodeId !== 'inputPort'){
+                                        if((model.chartViewModel.nodes[destNodeId].disabled() === false) ||
+                                            model.chartViewModel.nodes[destNodeId].disabled() === undefined){
+                                            model.javascriptCode +=  'var '
+                                                + connected_input_name +' = MOBIUS.obj.copy('
+                                                + return_obj_name
+                                                + '.'
+                                                + output_port_name + ');\n';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        model.javascriptCode +=  "\n";
                     }
-                    model.javascriptCode +=  "\n";
                 }
                 model.javascriptCode += '\n';
+            }
+
+            // generate code for output-port
+            // todo test: not connected
+            if(sortedOrder.indexOf('outputPort') > -1){
+                var input_port_num = model.chartViewModel.outputPort.inputConnectors.length;
+
+                for(var m =0; m < input_port_num; m++){
+                    var input_port_name = model.chartViewModel.outputPort.inputConnectors[m].data.name;
+
+                    for (var l = 0; l < model.chartViewModel.connections.length; l++) {
+                        if (input_port_name === model.chartViewModel.connections[l].dest.name()
+                            && model.chartViewModel.connections[l].data.dest.nodeID === 'outputPort') {
+                            var connected_output_name = model.chartViewModel.connections[l].source.data.name;
+
+                            var sourceNodeId =  model.chartViewModel.connections[l].data.source.nodeID;
+
+                            if((model.chartViewModel.nodes[sourceNodeId].disabled() === false) ||
+                                model.chartViewModel.nodes[sourceNodeId].disabled() === undefined){
+                                model.javascriptCode +=
+                                    input_port_name +' = MOBIUS.obj.copy('
+                                    + connected_output_name + ');\n';
+                            }
+                        }
+                    }
+                }
             }
         }
 
