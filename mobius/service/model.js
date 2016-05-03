@@ -11,7 +11,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
     var graphList = [];
 
     var data = {
-        javascriptCode: '// To generate code,\n' + '// create nodes & procedures and run!\n',
+        javascriptCode: '// Create nodes & procedures to to generate code!\n',
         geomListCode: "var geomList = [];\n",
         innerCodeList:[],
         outerCodeList:[],
@@ -20,7 +20,6 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
         chartViewModel: new flowchart.ChartViewModel({
             nodes: [],
             connections: []
-            // todo input/output ports goes here
         }),
         nodeIndex:undefined
     };
@@ -56,6 +55,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
         }
 
         generate_execution_code();
+        model.javascriptCode +=  "\n";
         generate_outer_function_code();
         generate_inner_function_code();
 
@@ -68,13 +68,21 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
             model.javascriptCode += model.innerCodeList[i];
         }
 
+        // beautify code
+        if(!subgraph){
+            model.javascriptCode = js_beautify(model.javascriptCode);
+        }
         // execution based topological sort
         function generate_execution_code(){
-            model.javascriptCode = '// execution: \n';
-            model.geomListCode = "var geomList = [];\n";
+            if(subgraph){
+                model.javascriptCode = '\n';
+                model.javascriptCode += '\n// sub-graph execution: \n';
+            }else{
+                model.javascriptCode = '\n// execution: \n';
+            }
+            model.geomListCode = "var geomList = [];";
 
             // generate code for input-port
-            // todo test: not connected
             if(sortedOrder.indexOf('inputPort') > -1){
                 var output_port_num = model.chartViewModel.inputPort.outputConnectors.length;
 
@@ -88,11 +96,16 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
                             var destNodeId =  model.chartViewModel.connections[l].data.dest.nodeID;
 
-                            if((model.chartViewModel.nodes[destNodeId].disabled() === false) ||
-                                model.chartViewModel.nodes[destNodeId].disabled() === undefined){
-                                model.javascriptCode +=  'var '
-                                    + connected_input_name +' = MOBIUS.obj.copy('
-                                    + output_port_name + ');\n';
+                            if(destNodeId !== 'outputPort'){
+                                if((model.chartViewModel.nodes[destNodeId].disabled() === false) ||
+                                    model.chartViewModel.nodes[destNodeId].disabled() === undefined){
+                                    model.javascriptCode +=  'var '
+                                        + connected_input_name +' = MOBIUS.obj.copy('
+                                        + output_port_name + ');';
+                                }
+                            }else{
+                                model.javascriptCode += connected_input_name +' = MOBIUS.obj.copy('
+                                    + output_port_name + ');';
                             }
                         }
                     }
@@ -148,7 +161,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                             model.javascriptCode = model.javascriptCode.substring(0, model.javascriptCode.length - 1);
                         }
 
-                        model.javascriptCode +=  ");\n";
+                        model.javascriptCode +=  ");";
 
                         // extract items from return through label
                         // fixme name duplication or undefined name
@@ -171,7 +184,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                                                 + connected_input_name +' = MOBIUS.obj.copy('
                                                 + return_obj_name
                                                 + '.'
-                                                + output_port_name + ');\n';
+                                                + output_port_name + ');';
                                         }
                                     }
                                 }
@@ -180,11 +193,9 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                         model.javascriptCode +=  "\n";
                     }
                 }
-                model.javascriptCode += '\n';
             }
 
             // generate code for output-port
-            // todo test: not connected
             if(sortedOrder.indexOf('outputPort') > -1){
                 var input_port_num = model.chartViewModel.outputPort.inputConnectors.length;
 
@@ -198,8 +209,9 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
                             var sourceNodeId =  model.chartViewModel.connections[l].data.source.nodeID;
 
-                            if((model.chartViewModel.nodes[sourceNodeId].disabled() === false) ||
-                                model.chartViewModel.nodes[sourceNodeId].disabled() === undefined){
+                            if(sourceNodeId !== 'inputPort'&&
+                                ((model.chartViewModel.nodes[sourceNodeId].disabled() === false) ||
+                                model.chartViewModel.nodes[sourceNodeId].disabled() === undefined)){
                                 model.javascriptCode +=
                                     input_port_name +' = MOBIUS.obj.copy('
                                     + connected_output_name + ');\n';
@@ -241,10 +253,10 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                         model.outerCodeList[i] =  model.outerCodeList[i].substring(0, model.outerCodeList[i].length - 1);
                     }
 
-                    model.outerCodeList[i] += '){\n'
+                    model.outerCodeList[i] += '){'
 
                 }else{
-                    model.outerCodeList[i] +=  '){\n';
+                    model.outerCodeList[i] +=  '){';
                 }
 
                 // parameters code
@@ -257,11 +269,11 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                             + model.interfaceList[i][j].name
                             + " = ";
                         if(model.interfaceList[i][j].option.name === 'color picker'){
-                            var color = "'" + model.interfaceList[i][j].color + "' ;\n" ;
+                            var color = "'" + model.interfaceList[i][j].color + "' ;" ;
                             codeBlock += color.replace('#','0x').replace("'",'').replace("'",'')
                         }
                         else{
-                            codeBlock += model.interfaceList[i][j].dataValue + ";\n";
+                            codeBlock += model.interfaceList[i][j].dataValue + ";";
                         }
 
                         model.outerCodeList[i] += codeBlock;
@@ -284,7 +296,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                     }
                 }
 
-                model.outerCodeList[i] +=   ');' + '\n}\n\n';
+                model.outerCodeList[i] +=   ');' + '}\n';
             }
         }
 
@@ -293,7 +305,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
             // inner(type) function definition: linking with parameters
             for(var i = 0; i < model.dataList.length; i++) {
 
-                model.innerCodeList[i] = '// This is definition for type '
+                model.innerCodeList[i] = '\n// This is definition for type '
                     + model.chartViewModel.nodes[i].data.type + '\n'
                     + '// version: ' + model.chartViewModel.nodes[i].data.version + '\n';
 
@@ -311,9 +323,9 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                     }
                 }
 
-                model.innerCodeList[i] += ' ){\n';
+                model.innerCodeList[i] += ' ){';
                 model.innerCodeList[i] += '    var FUNC_OUTPUT = ';
-                model.innerCodeList[i] += model.chartViewModel.nodes[i].data.type + identifier + ';\n';
+                model.innerCodeList[i] += model.chartViewModel.nodes[i].data.type + identifier + ';';
 
                 // define return items according to output port
                 var num_output_ports = model.chartViewModel.nodes[i].outputConnectors.length;
@@ -347,27 +359,23 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
                 // generate code for subgraph and append to inner function code
                 if(model.chartViewModel.nodes[i].data.subGraph){
-                    // todo var son_input = mother_input
-                    // todo execution order
-                    //
-
                     model.innerCodeList[i] += generateCode(model.chartViewModel.nodes[i].data.subGraphModel);
                 }
 
                 // return value
                 if(num_output_ports){
-                    model.innerCodeList[i] = model.innerCodeList[i] + '\n    return {\n';
+                    model.innerCodeList[i] = model.innerCodeList[i] + 'return {';
 
                     for(var k = 0; k < num_output_ports; k++){
                         model.innerCodeList[i] +=
                             '        ' + model.chartViewModel.nodes[i].outputConnectors[k].data.name
                             + ':'
                             + model.chartViewModel.nodes[i].outputConnectors[k].data.name
-                            + ',\n'
+                            + ','
                     }
-                    model.innerCodeList[i] += '    };\n' + '}\n\n'
+                    model.innerCodeList[i] += '    };' + '}\n'
                 }else{
-                    model.innerCodeList[i] += '}\n\n';
+                    model.innerCodeList[i] += '}\n';
                 }
             }
         }
@@ -392,7 +400,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                     codeBlock = intentation + "    "
                         + procedure.dataName
                         + " = "
-                        + procedure.dataValue + ";\n";
+                        + procedure.dataValue + ";";
 
                     model.innerCodeList[nodeIndex] += codeBlock;
                 }else{
@@ -400,7 +408,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                     codeBlock = intentation + "    " + "var "
                         + procedure.dataName
                         + " = "
-                        + procedure.dataValue + ";\n";
+                        + procedure.dataValue + ";";
 
                     model.innerCodeList[nodeIndex] += codeBlock;
                 }
@@ -426,7 +434,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                 codeBlock = intentation + "    " + "var "
                     + procedure.name
                     + " = "
-                    + procedure.dataValue + ";\n";
+                    + procedure.dataValue + ";";
 
                 model.innerCodeList[nodeIndex] += codeBlock;
             }
@@ -466,7 +474,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                     }
                 }
 
-                codeBlock += ');\n';
+                codeBlock += ');';
             }else if(procedure.method === 'expression'){
                 if(procedure.expression !== undefined && procedure.expression !== ''){
                     codeBlock += procedure.expression + ';';
@@ -493,7 +501,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
             if(procedure.controlType === 'for each'){
                 model.innerCodeList[nodeIndex] +=  intentation + '    ' + 'for( var ' +
                     procedure.dataName + ' of '
-                    + procedure.forList + '){\n';
+                    + procedure.forList + '){';
 
                 if(procedure.nodes.length > 0){
                     for(var m = 0; m < procedure.nodes.length; m++){
@@ -503,12 +511,12 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                     }
                 }
 
-                model.innerCodeList[nodeIndex] += intentation + '    }\n';
+                model.innerCodeList[nodeIndex] += intentation + '}';
             }
 
             else if (procedure.controlType === 'if else'){
                 model.innerCodeList[nodeIndex] +=  intentation + '    ' + 'if( ' +
-                    procedure.nodes[0].ifExpression + ' ){\n';
+                    procedure.nodes[0].ifExpression + ' ){';
 
 
                 if(procedure.nodes[0].nodes.length > 0){
@@ -519,7 +527,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                     }
                 }
 
-                model.innerCodeList[nodeIndex] += intentation + '    }else{\n';
+                model.innerCodeList[nodeIndex] += intentation + '    }else{';
 
                 if(procedure.nodes[1].nodes.length > 0){
                     for(var m = 0; m < procedure.nodes[1].nodes.length; m++){
@@ -529,7 +537,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                     }
                 }
 
-                model.innerCodeList[nodeIndex] += intentation + '    }\n';
+                model.innerCodeList[nodeIndex] += intentation + '}';
             }
         }
 

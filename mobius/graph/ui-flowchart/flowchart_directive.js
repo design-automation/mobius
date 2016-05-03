@@ -422,6 +422,8 @@ angular.module('flowChart', ['dragging'] )
 					// @mobius dragging is considered as clicked (selected)
 					var nodeIndex = chart.handleNodeDragged(node, evt.ctrlKey);
 					$scope.$emit("nodeIndex", nodeIndex);
+				}else{
+					$scope.$emit("clearProcedure");
 				}
 			},
 
@@ -440,6 +442,8 @@ angular.module('flowChart', ['dragging'] )
 
 				if(!isPort){
 					$scope.$emit("nodeIndex", nodeIndex);
+				}else{
+					$scope.$emit("clearProcedure");
 				}
 			}
 

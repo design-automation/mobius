@@ -630,7 +630,7 @@ var flowchart = {};
 		}
 
 		// create a view-model for output ports
-		if(this.data.inputPort && this.data.outputPort.inputConnectors.length !== 0){
+		if(this.data.outputPort && this.data.outputPort.inputConnectors.length !== 0){
 			this.outputPort = createOutputPortViewModel(this.data.outputPort);
 		}
 
@@ -665,7 +665,6 @@ var flowchart = {};
 		//
 		// Find a specific input connector within the chart.
 		//
-		// todo accommodates the portConnectorID
 		this.findInputConnector = function (nodeID, connectorIndex,portConnectorID) {
 
 			var node = this.findNode(nodeID);
@@ -692,7 +691,6 @@ var flowchart = {};
 		//
 		// Find a specific output connector within the chart.
 		//
-		// todo accommodates the portConnectorID
 		this.findOutputConnector = function (nodeID, connectorIndex,portConnectorID) {
 
 			var node = this.findNode(nodeID);
@@ -906,16 +904,17 @@ var flowchart = {};
 			var edges = edgeList.slice();
 			var nodes = [];
 
-			if(subgraph){
+			if(subgraph && this.data.inputPort && this.data.inputPort.outputConnectors.length !== 0){
 				nodes.push('inputPort');
+			}
+
+			if(subgraph && this.data.outputPort && this.data.outputPort.inputConnectors.length !== 0){
 				nodes.push('outputPort');
 			}
 
 			for(var i = 0; i < this.nodes.length; i++){
 				nodes.push(this.nodes[i].data.id);
 			}
-
-
 
 			// topological sort
 			var cursor = nodes.length
