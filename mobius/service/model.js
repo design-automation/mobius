@@ -100,12 +100,15 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                                 if((model.chartViewModel.nodes[destNodeId].disabled() === false) ||
                                     model.chartViewModel.nodes[destNodeId].disabled() === undefined){
                                     model.javascriptCode +=  'var '
-                                        + connected_input_name +' = MOBIUS.obj.copy('
-                                        + output_port_name + ');';
+                                        + connected_input_name +' = '
+                                        + output_port_name + ';';
                                 }
                             }else{
-                                model.javascriptCode += connected_input_name +' = MOBIUS.obj.copy('
-                                    + output_port_name + ');';
+                                model.javascriptCode += connected_input_name
+                                    // + ' = MOBIUS.obj.copy('
+                                    +' = '
+                                    + output_port_name
+                                    + ';';
                             }
                         }
                     }
@@ -212,9 +215,13 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                             if(sourceNodeId !== 'inputPort'&&
                                 ((model.chartViewModel.nodes[sourceNodeId].disabled() === false) ||
                                 model.chartViewModel.nodes[sourceNodeId].disabled() === undefined)){
-                                model.javascriptCode +=
-                                    input_port_name +' = MOBIUS.obj.copy('
-                                    + connected_output_name + ');\n';
+                                model.javascriptCode += input_port_name
+                                    //+' = MOBIUS.obj.copy('
+                                    + ' = '
+                                    + 'output_' + model.chartViewModel.nodes[sourceNodeId].data.name
+                                    + '.'
+                                    + connected_output_name
+                                    + ';\n';
                             }
                         }
                     }
