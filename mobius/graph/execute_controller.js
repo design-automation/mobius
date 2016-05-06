@@ -51,7 +51,7 @@ mobius.controller('executeCtrl',['$scope','$rootScope','$q','executeService','co
             $scope.showSpinner = true;
 
             setTimeout(function(){
-                executeService.execute($scope.javascriptCode + $scope.geomListCode + '\n return dataConversion(geomList);')
+                executeService.execute($scope.javascriptCode+ '\n return dataConversion(geomList);')
                     .then(function (data) {
                         console.log('running done');
                         document.getElementById('waiting').style.display='none';

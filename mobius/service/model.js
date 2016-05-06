@@ -5,7 +5,11 @@
 
 mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
+    // code generated geometry data list
     var outputGeom = [];
+
+    // geometry data list for current graph
+    var currentOutputGeom = [];
 
     // track of subgraphs
     var graphList = [];
@@ -34,7 +38,6 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
         interfaceList: data.interfaceList,
         nodeIndex:undefined
     };
-
 
     // todo refactor nodeindexing direct $watch from graph controller and procedure controller
     $rootScope.$on("nodeIndex", function(event, message) {
@@ -68,31 +71,6 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
             model.javascriptCode += model.innerCodeList[i];
         }
 
-        if(subgraph){
-            angular.copy(model.innerCodeList,subgraph.innerCodeList );
-            angular.copy(model.outerCodeList,subgraph.outerCodeList );
-
-            for(var i = 0; i < subgraph.innerCodeList.length; i++){
-                subgraph.innerCodeList[i] = js_beautify(subgraph.innerCodeList[i])
-            }
-
-            for(var j = 0; j < subgraph.innerCodeList.length; j++){
-                subgraph.outerCodeList[j] = js_beautify(subgraph.outerCodeList[j])
-            }
-        }
-
-        // beautify code
-        if(!subgraph){
-            model.javascriptCode = js_beautify(model.javascriptCode);
-
-            for(var i = 0; i < model.innerCodeList.length; i++){
-                model.innerCodeList[i] = js_beautify(model.innerCodeList[i])
-            }
-
-            for(var j = 0; j < model.innerCodeList.length; j++){
-                model.outerCodeList[j] = js_beautify(model.outerCodeList[j])
-            }
-        }
         // execution based topological sort
         function generate_execution_code(){
             if(subgraph){
@@ -101,7 +79,12 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
             }else{
                 model.javascriptCode = '\n// execution: \n';
             }
-            model.geomListCode = "var geomList = [];";
+
+            if(!subgraph){
+                model.geomListCode = "var geomList = [];";//[];
+            }else{
+                model.geomListCode = "var geomList = [];";//[];
+            }
 
             // generate code for input-port
             if(sortedOrder.indexOf('inputPort') > -1){
@@ -150,15 +133,19 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                         if (output_port_num != 0) {
                             // first get the return object
                             model.javascriptCode += 'var ' + return_obj_name + ' = ';
-                            model.geomListCode += 'geomList.push({'
+                            model.geomListCode +=  'geomList.push(' +
+                                '{'
                                 + 'name:'
                                 + node_name +'.name,'
                                 + 'value:'
                                 + return_obj_name + ','
                                 + 'geom:[],'
                                 + 'geomData:[],'
-                                + 'topo:[]'
-                                +'});'
+                                + 'topo:[]';
+                            //if(model.chartViewModel.nodes[sortedOrder[n]].data.subGraph){
+                            //    model.geomListCode += ',subgraphGeomList:'+ return_obj_name + '.geomList';
+                            //}
+                            model.geomListCode += '})\n'
                         }
 
                         // case where the node has no output
@@ -399,9 +386,9 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                             + model.chartViewModel.nodes[i].outputConnectors[k].data.name
                             + ','
                     }
-                    model.innerCodeList[i] += '    };' + '}\n'
+                    model.innerCodeList[i] += ' geomList:geomList   };' + '}\n'
                 }else{
-                    model.innerCodeList[i] += '}\n';
+                    model.innerCodeList[i] += ' }\n';
                 }
             }
         }
@@ -567,21 +554,21 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
             }
         }
 
-        return model.javascriptCode;
+        return model.javascriptCode + '\n ' + model.geomListCode;
     }
 
     return {
-
         getGraphList:function(){
             return graphList;
         },
 
+        // todo navigation of output geometry list
         goRoot:function(){
             current = data;
-
             graphList.length = 0;
         },
 
+        // todo navigation of output geometry list
         openNewChart:function(chartModel){
             graphList.push(chartModel);
             current = {
@@ -596,9 +583,9 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
             };
         },
 
+        // todo navigation of output geometry list
         changeGraphView: function (index) {
             graphList.length = index + 1;
-
             current = {
                 javascriptCode:graphList[graphList.length-1].subGraphModel.javascriptCode,
                 geomListCode:graphList[graphList.length-1].subGraphModel.geomListCode,
@@ -617,6 +604,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
         getOutputGeom: function(){
             return outputGeom;
+            //return currentOutputGeom;
         },
 
         setOutputGeom: function(value){
@@ -624,13 +612,11 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
         },
 
         getJavascriptCode: function () {
-            return data.javascriptCode;
+            return js_beautify(data.javascriptCode + '\n' +  data.geomListCode);
         },
 
         getGeomListCode: function () {
-            //console.log('root: ', data.geomListCode)
-            //console.log('current: ', current.geomListCode);
-            return data.geomListCode;
+            return 'var geomList = '+ data.geomListCode;
         },
 
         getInnerCodeList: function () {
@@ -688,7 +674,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
         getFunctionCodeList: function(){
             var functionCode = [];
             for(var i = 0; i< current.outerCodeList.length; i++){
-                functionCode.push(current.outerCodeList[i] + '\n' +current.innerCodeList[i]);
+                functionCode.push(js_beautify(current.outerCodeList[i] + '\n' +current.innerCodeList[i]));
             }
             return functionCode;
         },

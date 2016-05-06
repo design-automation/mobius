@@ -4,16 +4,14 @@
 var dataConversion = (function(data){
     for(var i = 0; i < data.length; i++) {
         for (var m in data[i].value) {
-
             if (data[i].value[m] !== undefined) {
-
                 if (data[i].value[m].constructor !== Array) {
                     extract(data[i].value[m],
                         data[i].geom,
                         data[i].geomData,
                         data[i].topo);
                 }
-                else {
+                else if(m !== 'geomList'){
                     var tempGeom = [];
                     var tempData = [];
                     var tempTopo = []
@@ -28,6 +26,8 @@ var dataConversion = (function(data){
                     data[i].geom.push(tempGeom);
                     data[i].geomData.push(tempData);
                     data[i].topo.push(tempTopo);
+                }else if(m === 'geomList' && data[i].value[m] !== undefined){
+                    dataConversion(data[i].value[m]);
                 }
             }
         }
