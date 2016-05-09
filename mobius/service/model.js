@@ -14,6 +14,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
     // track of subgraphs
     var graphList = [];
 
+    // root graph data model
     var data = {
         javascriptCode: '// Create nodes & procedures to to generate code!\n',
         geomListCode: "var geomList = [];\n",
@@ -28,6 +29,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
         nodeIndex:undefined
     };
 
+    // current graph data model
     var current = {
         javascriptCode:data.javascriptCode,
         geomListCode: data.geomListCode,
@@ -130,7 +132,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                         var node_name = model.chartViewModel.nodes[sortedOrder[n]].data.name;
                         var return_obj_name = 'output_' + model.chartViewModel.nodes[sortedOrder[n]].data.name;
 
-                        if (output_port_num != 0) {
+                        //if (output_port_num != 0) {
                             // first get the return object
                             model.javascriptCode += 'var ' + return_obj_name + ' = ';
                             model.geomListCode +=  'geomList.push(' +
@@ -146,7 +148,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                             //    model.geomListCode += ',subgraphGeomList:'+ return_obj_name + '.geomList';
                             //}
                             model.geomListCode += '})\n'
-                        }
+                        //}
 
                         // case where the node has no output
                         model.javascriptCode += model.chartViewModel.nodes[sortedOrder[n]].data.name + "(";
@@ -376,7 +378,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                 }
 
                 // return value
-                if(num_output_ports){
+                //if(num_output_ports){
                     model.innerCodeList[i] = model.innerCodeList[i] + 'return {';
 
                     for(var k = 0; k < num_output_ports; k++){
@@ -387,9 +389,9 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                             + ','
                     }
                     model.innerCodeList[i] += ' geomList:geomList   };' + '}\n'
-                }else{
-                    model.innerCodeList[i] += ' }\n';
-                }
+                //}else{
+                //    model.innerCodeList[i] += ' }\n';
+                //}
             }
         }
 
@@ -557,18 +559,42 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
         return model.javascriptCode + '\n ' + model.geomListCode;
     }
 
+    function findCurrentOutputGeom(){
+        // when in root graph
+        if(graphList.length === 0){
+            currentOutputGeom = outputGeom;
+        }else{
+            // navigate to current graph
+            var temp = outputGeom;
+
+            for(var i = 0; i < graphList.length; i++){
+                for(var j = 0; j< temp.length; j++){
+                    if(temp[j].name === graphList[i].name){
+                        // fixme is only matching the node name safe?
+                        temp = temp[j].value.geomList;
+                        break;
+                    }
+                    else if(j === temp.length-1){
+                        // todo proper error handle
+                        console.error('abort: fail tracking current graph')
+                    }
+                }
+            }
+            currentOutputGeom = temp;
+        }
+    }
+
     return {
         getGraphList:function(){
             return graphList;
         },
 
-        // todo navigation of output geometry list
         goRoot:function(){
             current = data;
             graphList.length = 0;
+            findCurrentOutputGeom();
         },
 
-        // todo navigation of output geometry list
         openNewChart:function(chartModel){
             graphList.push(chartModel);
             current = {
@@ -581,9 +607,9 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                 interfaceList: graphList[graphList.length-1].subGraphModel.interfaceList,
                 nodeIndex:undefined
             };
+            findCurrentOutputGeom();
         },
 
-        // todo navigation of output geometry list
         changeGraphView: function (index) {
             graphList.length = index + 1;
             current = {
@@ -596,6 +622,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                 interfaceList: graphList[graphList.length-1].subGraphModel.interfaceList,
                 nodeIndex:undefined
             };
+            findCurrentOutputGeom();
         },
 
         getNodeIndex: function(){
@@ -603,12 +630,13 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
         },
 
         getOutputGeom: function(){
-            return outputGeom;
-            //return currentOutputGeom;
+            //return outputGeom;
+            return currentOutputGeom;
         },
 
         setOutputGeom: function(value){
             outputGeom = value;
+            findCurrentOutputGeom();
         },
 
         getJavascriptCode: function () {

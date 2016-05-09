@@ -57,6 +57,7 @@ mobius.controller('executeCtrl',['$scope','$rootScope','$q','executeService','co
                         document.getElementById('waiting').style.display='none';
                         $scope.showSpinner = false;
                         $scope.outputs = data;
+                        console.log(data)
                     })
                     .then(function() {
                         console.log('display');
