@@ -950,7 +950,6 @@ mobius.directive('viewport', function factory() {
             // takes in single data object and categorizes and displays accordingly
             //
             scope.internalControl.displayObject = function(singleGeomObject, singleGeomDataObject){
-
                 // update the 3d viewport
                 if(singleGeomObject instanceof THREE.Mesh
                     || singleGeomObject instanceof THREE.Line

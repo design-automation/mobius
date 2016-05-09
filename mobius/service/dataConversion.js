@@ -52,15 +52,16 @@ var dataConversion = (function(data){
             obj instanceof mObj_geom_Solid ||
             obj instanceof mObj_geom_Vertex ||
             obj instanceof mObj_frame){
-            geom.push( obj.extractThreeGeometry() );
+
+            geom.push(obj.extractThreeGeometry());
             geomData.push( obj.extractData() );
             topo.push(obj.extractTopology());
+
         }else{
             for(var key in obj){
                 extract(obj[key],geom,geomData,topo);
             }
         }
     }
-
     return data;
 });

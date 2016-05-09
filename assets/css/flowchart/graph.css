@@ -10,17 +10,27 @@ CSS For ui-flowchart [left pane graph area]
 	stroke: #aaaaaa;
 	stroke-width: 1;
 	border-radius: 0 !important;
+	cursor: default !important;
 }
 
 .mouseover-node-rect {
 	stroke: #777777;
 	stroke-width: 1;
+	cursor: default !important;
 }
 
 .selected-node-rect {
     fill:white;
 	stroke: #3F98F3;
-	stroke-width: 1;
+	stroke-width: 0.7;
+	cursor: default !important;
+}
+
+.primary-selected-node-rect{
+	fill:white;
+	stroke: #3F98F3;
+	stroke-width: 1.5 !important;
+	cursor: default !important;
 }
 
 .disabled-node-rect {
@@ -28,6 +38,7 @@ CSS For ui-flowchart [left pane graph area]
 	stroke: #aaaaaa;
 	border-radius: 0 !important;
 	stroke-width: 1;
+	cursor: default !important;
 }
 
 .mouseover-disabled-node-rect {
@@ -35,6 +46,7 @@ CSS For ui-flowchart [left pane graph area]
 	stroke: #777777;
 	stroke-width: 1;
 	border-radius: 0 !important;
+	cursor: default !important;
 }
 
 .selected-disabled-node-rect {
@@ -42,12 +54,14 @@ CSS For ui-flowchart [left pane graph area]
 	stroke: #3F98F3;
 	stroke-width: 1;
 	border-radius: 0 !important;
+	cursor: default !important;
 }
 
 .connector-circle {
     fill: white;
     stroke: #777777;
     stroke-width: 1;
+	cursor: default !important;
 }
 
 .func-connector-circle {
@@ -55,6 +69,7 @@ CSS For ui-flowchart [left pane graph area]
 	stroke: #777777;
 	stroke-width: 1;
 	stroke-dasharray:5,1;
+	cursor: default !important;
 }
 
 .mouseover-func-connector-circle {
@@ -62,7 +77,7 @@ CSS For ui-flowchart [left pane graph area]
 	stroke: #777777;
 	stroke-width: 2;
 	stroke-dasharray:5,1;
-
+	cursor: default !important;
 }
 
 .selected-func-connector-circle {
@@ -70,6 +85,7 @@ CSS For ui-flowchart [left pane graph area]
 	stroke: red;
 	stroke-width: 1;
 	stroke-dasharray:5,1;
+	cursor: default !important;
 }
 
 
@@ -77,16 +93,19 @@ CSS For ui-flowchart [left pane graph area]
 	 fill: white;
 	 stroke: #777777;
 	 stroke-width: 2;
+	cursor: default !important;
  }
 .connector-text{
 	visibility: hidden;
 	font-size: 8px;
 	font-weight: 300;
+	cursor: default !important;
 }
 .connector:hover > .connector-text {
 	visibility: visible;
 	font-size: 8px;
 	font-weight: 300;
+	cursor: default !important;
 }
 
 
@@ -94,9 +113,8 @@ CSS For ui-flowchart [left pane graph area]
 	fill: white;
 	stroke: red;
 	stroke-width: 1;
+	cursor: default !important;
 }
-
-
 
 
 /*
@@ -104,12 +122,14 @@ Style for connections.
 */
 
 .connection {
+	cursor: default !important;
 }
 
 .connection-line {
 	stroke: #555555;
 	stroke-width: 1;
 	fill: transparent;
+	cursor: default !important;
 }
 
 .func-connection-line {
@@ -117,13 +137,14 @@ Style for connections.
 	stroke-width: 1;
 	fill: transparent;
 	stroke-dasharray:3,1;
-
+	cursor: default !important;
 }
 
 .mouseover-connection-line {
 	stroke: gray;
 	stroke-width: 2;
 	fill: transparent;
+	cursor: default !important;
 }
 
 .mouseover-func-connection-line {
@@ -131,12 +152,14 @@ Style for connections.
 	stroke-width: 2;
 	fill: transparent;
 	stroke-dasharray:3,1;
+	cursor: default !important;
 }
 
 .selected-connection-line {
 	stroke: red;
 	stroke-width: 2;
 	fill: transparent;
+	cursor: default !important;
 }
 
 .selected-func-connection-line {
@@ -144,18 +167,22 @@ Style for connections.
 	stroke-width: 2;
 	fill: transparent;
 	stroke-dasharray:3,1;
+	cursor: default !important;
 }
 
 .connection-endpoint {
 	fill: #555555;
+	cursor: default !important;
 }
 
 .selected-connection-endpoint {
 	fill: red;
+	cursor: default !important;
 }	
 
 .mouseover-connection-endpoint {
 	fill: gray;
+	cursor: default !important;
 }
 
 /*
@@ -164,16 +191,19 @@ Style for the connection being dragged out.
 
 .dragging-connection {
 	pointer-events: none;
+	cursor: default !important;
 }
 
 .dragging-connection-line {
 	stroke: gray;
 	stroke-width: 2;
 	fill: transparent;
+	cursor: default !important;
 }	
 
 .dragging-connection-endpoint {
 	fill: gray;
+	cursor: default !important;
 }
 
 /*
@@ -191,10 +221,11 @@ Drag selection rectangle.
 
 .drag-selection-rect {
 	stroke: #aaa;
-	stroke-width: 1;
+	stroke-width: 0.7;
 	stroke-dasharray:3,3;
 	fill: transparent;
 	border-radius: 0 !important;
+	cursor: default !important;
 }
 
 /*canvas background*/
@@ -207,4 +238,5 @@ Drag selection rectangle.
 
 #node-creator{
 	width:180px;
+	cursor: default !important;
 }

@@ -258,7 +258,7 @@ angular.module('flowChart', ['dragging'] )
 
 	// Called on mouse down in the chart.
 	// @mobius scale factor
-
+		$scope.primarySelectedIndex = undefined;
 	$scope.mouseDown = function (evt) {
 
 		if(evt.which == 1){
@@ -277,11 +277,11 @@ angular.module('flowChart', ['dragging'] )
 			}
 
 			dragging.startDrag(evt, {
-
 				//
 				// Commence dragging... setup variables to display the drag selection rect.
 				//
 				dragStarted: function (x, y) {
+					$scope.primarySelectedIndex= undefined;
 
 					// msg from pan and zoom
 					$rootScope.$on("Update", function(event, message) {
@@ -321,6 +321,9 @@ angular.module('flowChart', ['dragging'] )
 					$scope.dragSelecting = false;
 					var index = $scope.chart.applySelectionRect($scope.dragSelectionRect);
 						$scope.$emit("nodeIndex", index);
+
+					$scope.primarySelectedIndex = index;
+					console.log($scope.primarySelectedIndex)
 					delete $scope.dragSelectionStartPoint;
 					delete $scope.dragSelectionRect;
 				},
@@ -569,4 +572,24 @@ angular.module('flowChart', ['dragging'] )
 			}
 		});
 	};
+
+	// context menu positioning
+	$scope.onshow= function(event){
+		var width = window.innerWidth,
+			height = window.innerHeight;
+
+		document.getElementById('menu-node').className = ' position-fixed';
+
+		if(event.clientY > height-300){
+			document.getElementById('menu-node').className += ' menu-up';
+		}
+
+		if(event.clientX > width-120){
+			document.getElementById('menu-node').className += ' menu-left';
+		}
+
+		if(event.clientX > width-200){
+			document.getElementById('menu-node').className += ' submenu-left';
+		}
+	}
 }]);

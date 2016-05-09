@@ -135,16 +135,15 @@ mobius.controller(  'graphCtrl',
                  displayGeometry();
              }else if(message === undefined){
                  $scope.nodeIndex = message;
-                $scope.currentNodeName = '';
+                 $scope.currentNodeName = '';
 
-                $scope.$emit("editProcedure",false);
+                 $scope.$emit("editProcedure",false);
 
                  var scope = angular.element(document.getElementById('threeViewport')).scope();
                  var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
 
                  scope.$apply(function(){scope.viewportControl.refreshView();} );
                  scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
-
              }
 
              function displayGeometry(){

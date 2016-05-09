@@ -102,7 +102,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
         },
 
         setChartViewModel: function (value) {
-             angular.copy(value,data.chartViewModel);
+            angular.copy(value,data.chartViewModel);
         },
 
         getChartDataModel: function () {
@@ -153,14 +153,14 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                             // first get the return object
                             data.javascriptCode += 'var ' + return_obj_name + ' = ';
                             data.geomListCode += 'geomList.push({'
-                                                + 'name:'
-                                                + node_name +'.name,'
-                                                + 'value: angular.copy('
-                                                + return_obj_name + '),'
-                                                + 'geom:[],'
-                                                + 'geomData:[],'
-                                                + 'topo:[]'
-                                                +'});'
+                                + 'name:'
+                                + node_name +'.name,'
+                                + 'value:'
+                                + return_obj_name + ','
+                                + 'geom:[],'
+                                + 'geomData:[],'
+                                + 'topo:[]'
+                                +'});'
                         }
 
                         // case where the node has no output
@@ -297,7 +297,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                     }
 
                     data.outerCodeList[i] +=   ');' + '\n}\n\n';
-            }
+                }
             }
 
             // inner function code generation and procedure content code
@@ -434,20 +434,20 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                 var codeBlock = '';
 
                 if(procedure.title == "Output"){
-                     codeBlock = intentation + "    " + "var "
-                            + procedure.name
-                            + " = "
-                            + procedure.dataValue + ";\n";
+                    codeBlock = intentation + "    " + "var "
+                        + procedure.name
+                        + " = "
+                        + procedure.dataValue + ";\n";
 
-                        data.innerCodeList[nodeIndex] += codeBlock;
+                    data.innerCodeList[nodeIndex] += codeBlock;
                 }
             }
 
             // action procedure
-             function procedure_action(procedure,nodeIndex,fromLoop){
-                 if(procedure.disabled === true){
-                     return;
-                 }
+            function procedure_action(procedure,nodeIndex,fromLoop){
+                if(procedure.disabled === true){
+                    return;
+                }
 
                 // todo this is only a dummy intentation
                 if(fromLoop){
@@ -456,37 +456,37 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                     var intentation = '';
                 }
 
-                 var codeBlock = '';
-                 if(procedure.method !== 'print' &&
-                     procedure.method !== 'expression' &&
-                     procedure.return !== false){
+                var codeBlock = '';
+                if(procedure.method !== 'print' &&
+                    procedure.method !== 'expression' &&
+                    procedure.return !== false){
                     codeBlock += intentation  + '    '  + 'var ' + procedure.result + ' = ';
-                 }else{
-                     codeBlock += intentation  + '    ';
-                 }
+                }else{
+                    codeBlock += intentation  + '    ';
+                }
 
-                 if(procedure.method !== 'expression'){
+                if(procedure.method !== 'expression'){
 
-                     codeBlock +=  'MOBIUS.' + procedure.category + '.' +procedure.method + '(';
+                    codeBlock +=  'MOBIUS.' + procedure.category + '.' +procedure.method + '(';
 
-                     for(var j = 0; j< procedure.parameters.length; j++){
-                         if(j != procedure.parameters.length - 1 ){
-                             codeBlock +=  procedure.parameters[j].value + ', ';
-                         }else{
-                             codeBlock += procedure.parameters[j].value;
-                         }
-                     }
+                    for(var j = 0; j< procedure.parameters.length; j++){
+                        if(j != procedure.parameters.length - 1 ){
+                            codeBlock +=  procedure.parameters[j].value + ', ';
+                        }else{
+                            codeBlock += procedure.parameters[j].value;
+                        }
+                    }
 
-                     codeBlock += ');\n';
-                 }else if(procedure.method === 'expression'){
-                     if(procedure.expression !== undefined && procedure.expression !== ''){
-                         codeBlock += procedure.expression + ';';
-                     }
-                 }
+                    codeBlock += ');\n';
+                }else if(procedure.method === 'expression'){
+                    if(procedure.expression !== undefined && procedure.expression !== ''){
+                        codeBlock += procedure.expression + ';';
+                    }
+                }
 
 
-                 data.innerCodeList[nodeIndex] += codeBlock;
-             }
+                data.innerCodeList[nodeIndex] += codeBlock;
+            }
 
             // control procedure
             function procedure_control(procedure,nodeIndex,fromLoop){
@@ -503,45 +503,45 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
                 if(procedure.controlType === 'for each'){
                     data.innerCodeList[nodeIndex] +=  intentation + '    ' + 'for( var ' +
-                                            procedure.dataName + ' of '
-                                            + procedure.forList + '){\n';
+                        procedure.dataName + ' of '
+                        + procedure.forList + '){\n';
 
-                     if(procedure.nodes.length > 0){
-                         for(var m = 0; m < procedure.nodes.length; m++){
-                             if(procedure.nodes[m].title == 'Action'){procedure_action(procedure.nodes[m],nodeIndex,true)}
-                             if(procedure.nodes[m].title == 'Data'){procedure_data(procedure.nodes[m],nodeIndex,true)}
-                             if(procedure.nodes[m].title == 'Control'){procedure_control(procedure.nodes[m],nodeIndex,true)}
-                         }
-                     }
+                    if(procedure.nodes.length > 0){
+                        for(var m = 0; m < procedure.nodes.length; m++){
+                            if(procedure.nodes[m].title == 'Action'){procedure_action(procedure.nodes[m],nodeIndex,true)}
+                            if(procedure.nodes[m].title == 'Data'){procedure_data(procedure.nodes[m],nodeIndex,true)}
+                            if(procedure.nodes[m].title == 'Control'){procedure_control(procedure.nodes[m],nodeIndex,true)}
+                        }
+                    }
 
-                     data.innerCodeList[nodeIndex] += intentation + '    }\n';
+                    data.innerCodeList[nodeIndex] += intentation + '    }\n';
                 }
 
-                 else if (procedure.controlType === 'if else'){
-                     data.innerCodeList[nodeIndex] +=  intentation + '    ' + 'if( ' +
-                         procedure.nodes[0].ifExpression + ' ){\n';
+                else if (procedure.controlType === 'if else'){
+                    data.innerCodeList[nodeIndex] +=  intentation + '    ' + 'if( ' +
+                        procedure.nodes[0].ifExpression + ' ){\n';
 
 
-                     if(procedure.nodes[0].nodes.length > 0){
-                         for(var i = 0; i < procedure.nodes[0].nodes.length; i++){
-                             if(procedure.nodes[0].nodes[i].title == 'Action'){procedure_action(procedure.nodes[0].nodes[i],nodeIndex,true)}
-                             if(procedure.nodes[0].nodes[i].title == 'Data'){procedure_data(procedure.nodes[0].nodes[i],nodeIndex,true)}
-                             if(procedure.nodes[0].nodes[i].title == 'Control'){procedure_control(procedure.nodes[0].nodes[i],nodeIndex,true)}
-                         }
-                     }
+                    if(procedure.nodes[0].nodes.length > 0){
+                        for(var i = 0; i < procedure.nodes[0].nodes.length; i++){
+                            if(procedure.nodes[0].nodes[i].title == 'Action'){procedure_action(procedure.nodes[0].nodes[i],nodeIndex,true)}
+                            if(procedure.nodes[0].nodes[i].title == 'Data'){procedure_data(procedure.nodes[0].nodes[i],nodeIndex,true)}
+                            if(procedure.nodes[0].nodes[i].title == 'Control'){procedure_control(procedure.nodes[0].nodes[i],nodeIndex,true)}
+                        }
+                    }
 
-                     data.innerCodeList[nodeIndex] += intentation + '    }else{\n';
+                    data.innerCodeList[nodeIndex] += intentation + '    }else{\n';
 
-                     if(procedure.nodes[1].nodes.length > 0){
-                         for(var m = 0; m < procedure.nodes[1].nodes.length; m++){
-                             if(procedure.nodes[1].nodes[m].title == 'Action'){procedure_action(procedure.nodes[1].nodes[m],nodeIndex,true)}
-                             if(procedure.nodes[1].nodes[m].title == 'Data'){procedure_data(procedure.nodes[1].nodes[m],nodeIndex,true)}
-                             if(procedure.nodes[1].nodes[m].title == 'Control'){procedure_control(procedure.nodes[1].nodes[m],nodeIndex,true)}
-                         }
-                     }
+                    if(procedure.nodes[1].nodes.length > 0){
+                        for(var m = 0; m < procedure.nodes[1].nodes.length; m++){
+                            if(procedure.nodes[1].nodes[m].title == 'Action'){procedure_action(procedure.nodes[1].nodes[m],nodeIndex,true)}
+                            if(procedure.nodes[1].nodes[m].title == 'Data'){procedure_data(procedure.nodes[1].nodes[m],nodeIndex,true)}
+                            if(procedure.nodes[1].nodes[m].title == 'Control'){procedure_control(procedure.nodes[1].nodes[m],nodeIndex,true)}
+                        }
+                    }
 
-                     data.innerCodeList[nodeIndex] += intentation + '    }\n';
-                 }
+                    data.innerCodeList[nodeIndex] += intentation + '    }\n';
+                }
             }
         }
     };

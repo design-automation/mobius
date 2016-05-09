@@ -1,12 +1,23 @@
 mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','consoleMsg','$mdDialog',
     function($scope,$rootScope,nodeCollection,consoleMsg,$mdDialog){
 
+    $scope.info=function(input){
+        if(input){
+            document.getElementById('type-choices').style.display = 'inline';
+            $scope.toggleDropdown = false;
+        }else{
+            document.getElementById('type-choices').style.display = 'none';
+            $scope.toggleDropdown = true;
+        }
+    };
+
     $scope.selectAll = false;
 
     $scope.typeList = JSON.parse(localStorage.mobiusNodeTypes);
     if($scope.typeList[0]){
         $scope.definition = $scope.typeList[0].procedureDataModel;
         $scope.arguments = $scope.typeList[0].interfaceDataModel;
+        $scope.typeName =  $scope.typeList[0].nodeType;
     }
 
 
@@ -34,10 +45,12 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
             $scope.typeList[0].selected = true;
                 $scope.definition = $scope.typeList[0].procedureDataModel;
                 $scope.arguments = $scope.typeList[0].interfaceDataModel;
+                $scope.typeName =  $scope.typeList[0].nodeType;
         }else{
             $scope.definition = [];
             $scope.arguments = [];
             $scope.jsCode = $scope.generateCode();
+            $scope.typeName =  '';
         }
 
 
@@ -86,6 +99,7 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
                     // fixme confirmation, override, unchange, cancel
                     $scope.definition = $scope.typeList[i].procedureDataModel;
                     $scope.arguments = $scope.typeList[i].interfaceDataModel;
+                    $scope.typeName =  $scope.typeList[i].nodeType;
                 }
             }
         }
@@ -250,7 +264,8 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
                 controller: DialogController,
                 templateUrl: 'mobius/dialog/inputName_dialog.tmpl.html',
                 parent: angular.element(document.body),
-                clickOutsideToClose:false
+                clickOutsideToClose:false,
+                focusOnOpen:false
             })
             .then(function(newTypeName) {
                 if (!isValidName(newTypeName)) {
@@ -318,7 +333,39 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
         }
         return expression;
     };
+
+    $scope.getMethodList = function(){
+        var props = Object.getOwnPropertyNames(MOBIUS);
+
+        var expression = [{category:'msc',methods:['expression']}];
+
+        // fixme sub category temp solution
+        for(var i = 0; i < props.length; i++){
+            if(typeof MOBIUS[props[i]] != 'function'){
+                var subProps = Object.getOwnPropertyNames(MOBIUS[props[i]]);
+
+                if(props[i] !== 'msc'){
+                    expression.push({category:props[i],methods:[]});
+                    for(var j = 0; j < subProps.length; j++){
+                        if(typeof MOBIUS[props[i]][subProps[j]] == 'function'){
+                            expression[expression.length-1].methods.push(subProps[j]);
+                        }
+                    }
+                }else{
+                    for(var j = 0; j < subProps.length; j++){
+                        if(typeof MOBIUS[props[i]][subProps[j]] == 'function'){
+                            expression[0].methods.push(subProps[j]);
+                        }
+                    }
+                }
+            }
+        }
+        return expression;
+    };
+
     $scope.methods = $scope.getMethods();
+    $scope.methodList = $scope.getMethodList();
+
     $scope.controlTypes = ['for each', 'if else'];
     $scope.newItem = function(cate,subCate,isCopy,content) {
         $scope.currentHighestId = 0;

@@ -3,8 +3,8 @@
 // procedure and graph data are not affected in this controller
 //
 
-mobius.controller('nodeMenuCtrl',['$scope','$rootScope','generateCode',
-    function($scope,$rootScope,generateCode) {
+mobius.controller('nodeMenuCtrl',['$scope','$rootScope','$document','generateCode',
+    function($scope,$rootScope,$document,generateCode) {
 
         // procedure data list
         $scope.dataList = generateCode.getDataList();

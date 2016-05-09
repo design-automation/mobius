@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="assets/css/bootstrap/font-awesome.min.css">
 
     <!-- stylesheet -->
+    <link rel="stylesheet" href="assets/css/bootstrap/custom_font.css">
     <link rel="stylesheet" href="assets/css/mobius-layout.css">
     <link rel="stylesheet" href="assets/css/menu.css">
     <link rel="stylesheet" href="assets/css/view.css">
@@ -34,7 +35,7 @@
 <div >
     <!-- dropdown Menu -->
     <div ng-controller="menuCtrl" class = "menubar">
-        <span dropdown on-toggle="toggled(open)" class="menu" >
+        <span class="menu">
             <div dropdown-toggle class = "menuTitle">  File </div>
             <ul class="dropdown-menu">
                 <li>
@@ -59,7 +60,8 @@
                     </a>
 
                     <ul class="dropdown-menu" style="top:-2px">
-                        <li><a ng-click="loadExample('00_KillianRoof.json')"> Killian Roof </a></li>
+                        <li><a ng-click="loadExample('00_KillianRoof.json')"> Killian Roof v1</a></li>
+                        <li><a ng-click="loadExample('04_HigherOrderKillian.json')"> Killian Roof v2</a></li>
                         <li><a ng-click="loadExample('03_SimpleTower.json')"> Simple Tower </a></li>
                         <li><a ng-click="loadExample('01_SpiralTowers.json')"> Spiral Towers </a></li>
                         <li><a ng-click="loadExample('02_Extrusions.json')"> Extrusion Example </a></li>
@@ -69,7 +71,7 @@
         </span>
 
 
-        <span dropdown on-toggle="toggled(open)" class="menu">
+        <span  class="menu">
             <div class = "menuTitle"  dropdown-toggle>  View </div>
             <ul class="dropdown-menu">
                 <li>
@@ -82,19 +84,12 @@
             </ul>
         </span>
 
-        <span dropdown on-toggle="toggled(open)" class="menu">
+        <span class="menu">
               <div class = "menuTitle"  dropdown-toggle>  Node </div>
               <ul class="dropdown-menu">
                   <li>
                       <a href="" ng-click="openTypeManager()"> Type Manager </a>
                   </li>
-
-                  <!--todo when no node selected grey out-->
-                  <!--<li>-->
-                      <!--<a ng-href="{{nodeUrl}}" download="node.json" ng-click = "exportNode()">-->
-                          <!--Export Selected Node-->
-                      <!--</a>-->
-                  <!--</li>-->
 
                   <li>
                       <input type="file" id="importNodeLib"
@@ -110,7 +105,7 @@
               </ul>
         </span>
 
-        <span dropdown on-toggle="toggled(open)" class="menu" >
+        <span class="menu" >
             <div class = "menuTitle"  dropdown-toggle>  Code </div>
             <ul class="dropdown-menu">
                 <li id = "downloadJs">
@@ -127,7 +122,7 @@
             </ul>
         </span>
 
-        <span dropdown on-toggle="toggled(open)" class="menu">
+        <span  class="menu">
             <div class = "menuTitle"  dropdown-toggle>  Help </div>
 
             <ul class="dropdown-menu">
@@ -158,12 +153,14 @@
                                 <!--viewport menu-->
                                 <span ng-if="viewportControl.layout === 'singleView'"
                                       dropdown on-toggle="toggled(open)" class="viewportMenu">
-                                     <button class="btn btn-default btn-xs viewport-menu-button" dropdown-toggle>
-                                         {{viewportControl.currentCate}}
+                                     <button class="button viewport-menu-button" dropdown-toggle
+                                            style="width: 40px !important;">
+                                         <!--{{viewportControl.currentCate}}-->
+                                         <i class="fa fa-eye fa-lg"></i>
                                          <span class="caret"></span>
                                      </button>
 
-                                    <ul class="dropdown-menu" >
+                                    <ul class="dropdown-menu" style="left: 42px;top:-3px">
                                         <li class="dropdown-submenu">
                                             <a href="#"> Set Viewport </a>
                                             <ul class="dropdown-menu" style="top:-2px">
@@ -483,7 +480,10 @@
                                     <div>Console</div>
                                     <button class="button"
                                             id = "clear"
-                                            ng-click="clearConsole()"> Clear </button>
+                                            title="clear console"
+                                            ng-click="clearConsole()">
+                                        <i class="fa fa-eraser"></i>
+                                    </button>
                                  </div>
                                 <div class="console" id = 'log' ></div>
                             </div>
@@ -548,12 +548,28 @@
                                     </div>
                                 </div>
 
+
                                 <span ng-controller="executeCtrl" id="run-button">
+                                    <span us-spinner
+                                          spinner-on="showSpinner"
+                                          style="position: fixed;right:50%;top:50%;z-index:10005">
+                                    </span>
+                                    <div style="position:fixed;
+                                                top:0;
+                                                left:0;
+                                                height: 100%;
+                                                width:100%;background-color:white;
+                                                opacity: 0.8;
+                                                z-index:10004;
+                                                display: none;
+                                                " id='waiting'>
+                                    </div>
+
                                     <button class="button"
                                             ng-click="run()"
                                             style="outline: none!important;"
                                             title="Run program">
-                                        Run
+                                        <i class="fa fa-play"></i>
                                     </button>
                                 </span>
 
@@ -580,7 +596,7 @@
 <div id="typeManager" ng-controller="nodeTypesCtrl" ng-include="'mobius/typeManager/typeManager_template.html'"></div>
 
 <!--context menu-->
-<div ng-controller="nodeMenuCtrl" style="position: absolute" ng-include="'mobius/graph/contextMenu_template.html'"></div>
+<div ng-controller="nodeMenuCtrl" style="position: absolute;" ng-include="'mobius/graph/contextMenu_template.html'"></div>
 <div ng-controller="procedureMenuCtrl" style="position: absolute" ng-include="'mobius/procedure/template/procedureMenu_template.html'" ></div>
 
 <!-- jquery -->
@@ -692,6 +708,10 @@
 <script src="assets/js/angular-material/angular-material.min.js"></script>
 <script src="assets/js/angular-material/angular-animate.min.js"></script>
 <script src="assets/js/angular-material/angular-aria.min.js"></script>
+
+<!-- spin wheel -->
+<script src="assets/js/spin/spin.js"></script>
+<script src="assets/js/spin/angular-spinner.js"></script>
 
 </body>
 

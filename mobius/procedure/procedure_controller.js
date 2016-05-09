@@ -7,6 +7,16 @@
 mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg','generateCode','nodeCollection',
     function($scope,$rootScope,$filter,consoleMsg,generateCode,nodeCollection) {
 
+        $scope.info=function(input){
+            if(input){
+                document.getElementById('choices').style.display = 'inline';
+                $scope.toggleDropdown = false;
+            }else{
+                document.getElementById('choices').style.display = 'none';
+                $scope.toggleDropdown = true;
+            }
+        };
+
         $scope.functionCodeList =[];
 
         // toggle code view
@@ -50,9 +60,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         // pass by reference
         // deep watch chartViewModel.data instead of chartViewModel to prevent stack limit exceeded
         $scope.chartViewModel= generateCode.getChartViewModel();
-        //$scope.$watch('chartViewModel.data', function () {
-        //    generateCode.generateCode();
-        //},true);
 
         // currently selected node ID
         $scope.nodeIndex = '';
@@ -65,13 +72,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         $scope.getMethods = function(){
             var props = Object.getOwnPropertyNames(MOBIUS);
 
-            // remove private usage functions
-            for(var i =0; i < props.length;i++){
-                if(props[i] === 'dataConversion'){
-                    props.splice(i, 1);
-                }
-            }
-
             var expression = [{category:'msc',name:'expression'}];
 
             // fixme sub category temp solution
@@ -81,17 +81,50 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                     for(var j = 0; j < subProps.length; j++){
                         if(typeof MOBIUS[props[i]][subProps[j]] == 'function'){
                             expression.push({category:props[i],
-                                             name:subProps[j],
-                                             return:MOBIUS[props[i]][subProps[j]].prototype.return});
+                                             name:subProps[j]
+                                             //,return:MOBIUS[props[i]][subProps[j]].prototype.return
+                            });
                         }
                     }
                 }
             }
-
             return expression;
         };
 
+        $scope.getMethodList = function(){
+            var props = Object.getOwnPropertyNames(MOBIUS);
+
+            var expression = [{category:'msc',methods:['expression']}];
+
+            // fixme sub category temp solution
+            for(var i = 0; i < props.length; i++){
+                if(typeof MOBIUS[props[i]] != 'function'){
+                    var subProps = Object.getOwnPropertyNames(MOBIUS[props[i]]);
+
+                    if(props[i] !== 'msc'){
+                        expression.push({category:props[i],methods:[]});
+                        for(var j = 0; j < subProps.length; j++){
+                            if(typeof MOBIUS[props[i]][subProps[j]] == 'function'){
+                                expression[expression.length-1].methods.push(subProps[j]);
+                            }
+                        }
+                    }else{
+                        for(var j = 0; j < subProps.length; j++){
+                            if(typeof MOBIUS[props[i]][subProps[j]] == 'function'){
+                                expression[0].methods.push(subProps[j]);
+                            }
+                        }
+                    }
+                }
+            }
+            return expression;
+        };
+
+
         $scope.methods = $scope.getMethods();
+        $scope.methodList = $scope.getMethodList();
+
+
 
         $scope.$on("clearProcedure", function(){
             $scope.nodeIndex = undefined;
@@ -130,7 +163,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
 
         // watch change of procedure data tree, if change update the flattenData, update version
-
         $scope.$watch('data',function(){
             updateVersion();
             //generateCode.generateCode();
@@ -333,7 +365,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         //
         // procedure manipulation
         //
-
         $scope.removeOutput = function(scope) {
             scope.remove();
 
@@ -464,10 +495,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         $scope.toggle = function(scope) {
             scope.toggle();
         };
-
-        //$scope.$on('copyProcedure',function(event,cate,subCate){
-            //$scope.newItem(cate,subCate);
-        //});
 
         $scope.$on('copyProcedure',function(event,content) {
             $scope.newItem(undefined,undefined,true,content);
@@ -726,7 +753,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         };
 
         // interface design options
-
         $scope.interfaceOptions = [{name:'none'},
                                    {name:'slider'},
                                    {name:'dropdown'},
@@ -757,19 +783,4 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
             return $scope.currentHighestId;
         };
-
-        //
-        //$scope.generateUUID = function(){
-        //    var d = new Date().getTime();
-        //    if(window.performance && typeof window.performance.now === "function"){
-        //        d += performance.now();; //use high-precision timer if available
-        //    }
-        //    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        //        var r = (d + Math.random()*16)%16 | 0;
-        //        d = Math.floor(d/16);
-        //        return (c=='x' ? r : (r&0x3|0x8)).toString(16);
-        //    });
-        //    return uuid;
-        //};
-
     }]);

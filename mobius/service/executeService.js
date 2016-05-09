@@ -1,8 +1,8 @@
 mobius.factory('executeService', function ($q) {
     return{
-        execute: function(jsCode, geomCode){
+        execute: function(code){
             var deferred = $q.defer();
-            var outputs = new Function(  jsCode + geomCode + '\n return dataConversion(geomList);')();
+            var outputs = new Function(code)();
             deferred.resolve(outputs);
             return deferred.promise;
         }
