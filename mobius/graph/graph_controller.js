@@ -78,11 +78,7 @@ mobius.controller(  'graphCtrl',
                         !angular.equals(newValue.nodes[i].inputConnectors,oldValue.nodes[i].inputConnectors) ||
                         !angular.equals(newValue.nodes[i].outputConnectors,oldValue.nodes[i].outputConnectors)
                     ){
-                        generateCode.generateCode();
-
-                        //
                         // pass connector list to subgraph chartdatamodel input/output port
-                        //
                         if($scope.chartViewModel.nodes[i].data.subGraph === true){
                             var outputList = [];
                             for (var j = 0; j < $scope.dataList[$scope.nodeIndex].length;j++){
@@ -101,6 +97,8 @@ mobius.controller(  'graphCtrl',
                                 $scope.chartViewModel.nodes[i].data.subGraphModel.chartDataModel.inputPort.outputConnectors
                             )
                         }
+
+                        generateCode.generateCode();
                         break;
                     }
                 }

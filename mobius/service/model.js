@@ -209,6 +209,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
             }
 
             // generate code for output-port
+            //console.log(sortedOrder)
             if(sortedOrder.indexOf('outputPort') > -1){
                 var input_port_num = model.chartViewModel.outputPort.inputConnectors.length;
 

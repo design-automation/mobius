@@ -638,7 +638,6 @@ var flowchart = {};
 		// Find a specific node within the chart.
 		//
 		this.findNode = function (nodeID) {
-
 			for (var i = 0; i < this.nodes.length; ++i) {
 				var node = this.nodes[i];
 				if (node.data.id === nodeID) {
@@ -659,7 +658,7 @@ var flowchart = {};
 				}
 			}
 
-			throw new Error("Failed to find node " + nodeID);
+			//throw new Error("Failed to find node " + nodeID);
 		};
 
 		//
@@ -669,19 +668,21 @@ var flowchart = {};
 
 			var node = this.findNode(nodeID);
 
-			if(portConnectorID === undefined){
-				if (!node.inputConnectors || node.inputConnectors.length <= connectorIndex) {
-					throw new Error("Node " + nodeID + " has invalid input connectors.");
+			if(node){
+				if(portConnectorID === undefined){
+					if (!node.inputConnectors || node.inputConnectors.length <= connectorIndex) {
+						throw new Error("Node " + nodeID + " has invalid input connectors.");
+					}else{
+						return node.inputConnectors[connectorIndex];
+					}
 				}else{
-					return node.inputConnectors[connectorIndex];
-				}
-			}else{
-				if(portConnectorID === node.inputConnectors[connectorIndex].data.id){
-					return node.inputConnectors[connectorIndex];
-				}else{
-					for(var i =0; i < node.inputConnectors.length;i++){
-						if(node.inputConnectors[i].data.id === portConnectorID){
-							return node.inputConnectors[i]
+					if(portConnectorID === node.inputConnectors[connectorIndex].data.id){
+						return node.inputConnectors[connectorIndex];
+					}else{
+						for(var i =0; i < node.inputConnectors.length;i++){
+							if(node.inputConnectors[i].data.id === portConnectorID){
+								return node.inputConnectors[i]
+							}
 						}
 					}
 				}
@@ -695,19 +696,21 @@ var flowchart = {};
 
 			var node = this.findNode(nodeID);
 
-			if(portConnectorID === undefined){
-				if (!node.outputConnectors || node.outputConnectors.length <= connectorIndex) {
-					throw new Error("Node " + nodeID + " has invalid input connectors.");
-				}else{
-					return node.outputConnectors[connectorIndex];
-				}
-			}else{
-				if(portConnectorID === node.outputConnectors[connectorIndex].data.id){
-					return node.outputConnectors[connectorIndex];
-				}else{
-					for(var i =0; i < node.outputConnectors.length;i++){
-						if(node.outputConnectors[i].data.id=== portConnectorID){
-							return node.outputConnectors[i]
+			if(node) {
+				if (portConnectorID === undefined) {
+					if (!node.outputConnectors || node.outputConnectors.length <= connectorIndex) {
+						throw new Error("Node " + nodeID + " has invalid input connectors.");
+					} else {
+						return node.outputConnectors[connectorIndex];
+					}
+				} else {
+					if (portConnectorID === node.outputConnectors[connectorIndex].data.id) {
+						return node.outputConnectors[connectorIndex];
+					} else {
+						for (var i = 0; i < node.outputConnectors.length; i++) {
+							if (node.outputConnectors[i].data.id === portConnectorID) {
+								return node.outputConnectors[i]
+							}
 						}
 					}
 				}
@@ -732,8 +735,8 @@ var flowchart = {};
 						connectionsViewModel.push(new flowchart.ConnectionViewModel(connectionsDataModel[i], sourceConnector, destConnector));
 					}else{
 						connectionsViewModel.splice(i, 1);
+						connectionsDataModel.splice(i, 1);
 					}
-
 				}
 			}
 
