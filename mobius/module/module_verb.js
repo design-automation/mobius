@@ -222,18 +222,6 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.srf.nurbsByData = function ( frame, degreeU, degreeV, knotsU, knotsV, controlPoints, weights ){
 		
-		var controlPoints = controlPoints.map( function(p){ 
-								
-								if(p.getGeometry != undefined) 
-									return p.getGeometry(); 
-								else 
-									return p; } )
-
-		var srf = new verb.geom.NurbsSurface.byKnotsControlPointsWeights( degreeU,degreeV,knotsU,knotsV,controlPoints, weights )
-
-		srf.transform( frame.toLocal() );
-
-		return new mObj_geom_Surface( srf ) ;
 	};
 
 
