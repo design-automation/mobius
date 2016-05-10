@@ -1,5 +1,5 @@
 /*
- *	Module, with verb.js
+ *	Module, for Urban Design 
  */
 
 var MOBIUS = ( function (mod){	
