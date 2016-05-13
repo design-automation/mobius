@@ -269,6 +269,70 @@ var MOBIUS = ( function (mod){
 		return new mObj_geom_Surface( shape ) ;
 	};
 
+	mod.srf.offset = function( surface, offset ){
+
+		//var poly = polygon.getGeometry() // this is a THREE.Shape object
+
+		// convert the poly into Clipper.Path
+		//
+		//
+		//	convert jsclipper path to shape in three.js 
+		//
+		//
+		var convertPathToShape = function( paths ){
+
+			//console.log("these are paths ", paths);
+
+			// for now, lets consider only one path is passed => pathPoints lengh == 1
+			pathPoints = paths.map( function( sln ){
+
+				return sln.map( function(pnt){  
+					return new THREE.Vector2(pnt.X, pnt.Y) 
+				} )
+
+			})
+
+			var path = new THREE.Path( )
+			path.fromPoints( pathPoints[0] );	
+
+			return path.toShapes()[0];
+		}
+
+		//
+		//
+		//	convert shape to path in js clipper
+		//
+		//
+		convertShapeToPath = function( shape ){
+
+			var subj = new ClipperLib.Paths();	
+			subj[0] = shape.actions.map( function( a ){
+						//console.log(a);
+						return { "X": a.args[0], "Y": a.args[1] }
+			});
+			//[{"X":348,"Y":257},{"X":364,"Y":148},{"X":362,"Y":148},{"X":326,"Y":241},{"X":295,"Y":219},{"X":258,"Y":88},{"X":440,"Y":129},{"X":370,"Y":196},{"X":372,"Y":275}];
+			return subj;
+		}
+
+		//var subj = new ClipperLib.Paths();
+		var solution = new ClipperLib.Paths();
+		//subj is an array
+		var subj = convertShapeToPath( surface.getGeometry() ); 
+		
+		var scale = 100;
+		ClipperLib.JS.ScaleUpPaths(subj, scale);
+		var co = new ClipperLib.ClipperOffset(2, 0.25);
+		co.AddPaths(subj, ClipperLib.JoinType.jtRound, ClipperLib.EndType.etClosedPolygon);
+		co.Execute(solution, offset);
+		ClipperLib.JS.ScaleDownPaths(solution, scale);
+
+		//draw solution with your own drawing function...
+		var result = convertPathToShape( solution );
+
+		return new mObj_geom_Surface( result ); //result is a three.js shape
+
+	};
+
 
 	/**
 	 * Divides the surface into a grid, based number of divisions in the u and v directions and  
