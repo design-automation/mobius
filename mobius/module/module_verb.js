@@ -14,22 +14,18 @@ var MOBIUS = ( function (mod){
 
 	//
 	//
-	//
+	//loadGeoJSON
+	//getFeatures
+	//for feature in Features
+	//	getGeometry
+	//  ?offset
+	//  ?subdivide
+	//	extrude
+	//	makeComposite
 	mod.urb = {};
 
-	mod.urb.readJSON = function(){
-
-		var finalGeom = [];
-
-	    var translateLat = function(lat){
-	        if(!lat){lat = 0;}
-	        return (lat-13.36)*100;
-	    },
-	    translateLng = function(lng){
-	        if(!lng){lng = 0;}
-	        return (lng-52.53)*100;
-	    };
-
+	mod.urb.loadGeoJSON = function( filename ){
+		
 		var json = {
 			"type": "FeatureCollection",
 			"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
@@ -39,30 +35,15 @@ var MOBIUS = ( function (mod){
 			{ "type": "Feature", "properties": { "gml_id": "re_einwohnerdichte2013.0100980011000200", "spatial_name": "0100980011000200", "spatial_alias": "0100980011000200", "spatial_type": "Polygon", "EW2013": null, "EW2012": null, "EW2011": null, "EW2010": null, "HA2013": null, "EW_HA2013": null, "EW_HA2012": null, "EW_HA2011": null, "EW_HA2010": null }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 13.368439352519529, 52.534489409577496 ], [ 13.368745103892127, 52.53461571044825 ], [ 13.368979254136494, 52.534400566315703 ], [ 13.36900239882087, 52.534376070911009 ], [ 13.369753440055828, 52.53469081532878 ], [ 13.369097508383989, 52.535268940951809 ], [ 13.369078134645068, 52.535285534407592 ], [ 13.368414417034556, 52.535868381912614 ], [ 13.368261823488456, 52.536001930110523 ], [ 13.367271583161246, 52.535570544612305 ], [ 13.368439352519529, 52.534489409577496 ] ] ] } }
 			]}
 
-		var features = json.features; 
-		for(var s=0; s < features.length; s++){
-			
-			var feature = features[s]; 
-			var coords = feature.geometry.coordinates;  //[ [ [], [], [], ... ],  coords[0]... <= actual shape
-														// 	[ [], [], [], ... ],  coords[1]... <= holes in the shape
-														//  [ [], [], [], ... ] ... ]   
+		return new mObj_data( 'geojson', json);
+	};
 
-			var points = [];
-			for(var i=0; i<coords.length; i++){
+	mod.urb.getProperty = function( dataObject, propertyName ){
 
-				// processing for the main shape
-				if(i==0){
-					for(var j=0; j<coords[i].length; j++){
-						if(json.features[s].geometry.coordinates[0][i][0] && json.features[s].geometry.coordinates[0][i][1] && json.features[s].geometry.coordinates[0][i][0]>0 && json.features[s].geometry.coordinates[0][i][1]>0){
-							points.push( new THREE.Vector2 ( translateLat(json.features[s].geometry.coordinates[0][i][0]), translateLng(json.features[s].geometry.coordinates[0][i][1])) );	
-						}
-					}			
-				}
-			}
-			finalGeom.push( new mObj_geom_Solid( new THREE.Mesh( new THREE.Shape( points ) ) ) );
-		} 
-
-		return finalGeom;
+		if(dataObject.is_mObj)
+			return dataObject.getData()[propertyName];
+		else
+			return dataObject[propertyName]
 
 	};
 
@@ -222,8 +203,20 @@ var MOBIUS = ( function (mod){
 	 * @returns { solid object }  - Solid object 
 	 * @memberof sld
 	 */
-	mod.sld.byExtrusion = function(surface, frame, xDistance, yDistance, zDistance){
+	mod.sld.byExtrusion = function(frame, surface, xDistance, yDistance, zDistance){
 
+		// extrude path later to extrude along different directions
+
+		var extrusionSettings = {
+			amount: yDistance, 
+			size: 1, height: 1, curveSegments: 3,
+			bevelThickness: 1, bevelSize: 2, bevelEnabled: false,
+			material: 0, extrudeMaterial: 1
+		};
+
+		var exGeom = new THREE.ExtrudeGeometry( surface.getGeometry(), extrusionSettings );
+
+		return new mObj_geom_Solid( exGeom );
 
 	};
 
@@ -246,48 +239,34 @@ var MOBIUS = ( function (mod){
 	mod.srf = {};
 
 	/**
-	 * Creates a Nurbs surface from user-specified data
-	 * @param {frame object} - Local coordinate system for the object
-	 * @param {int} degreeU - Degree of the surface in the u-Direction 
-	 * @param {int} degreeV - Degree of the surface in the v-Direction 
-	 * @param {array} knotsU - Knots in the u-Direction 
-	 * @param {array} knotsV - Knots in the v-Direction 
-	 * @param {array} controlPoints - Array of points / vertex objects through which the curve passes ( [[x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4], ...] )
-	 * @param {array} weights - Weights ( optional parameter; maybe 'undefined' )
-	 * @returns { surface object }  - Surface object
-	 * @memberof srf
-	 */
-	mod.srf.nurbsByData = function ( frame, degreeU, degreeV, knotsU, knotsV, controlPoints, weights ){
-		
-	};
-
-
-	/**
 	 * Creates a Nurbs surface using the corner-points
 	 * @param {frame object} - Local coordinate system for the object
 	 * @param {array} cornerpoints - Array of points / vertex objects ( [ [x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4] ] )
 	 * @returns { surface object }  - Surface object
 	 * @memberof srf
 	 */
-	mod.srf.nurbsByCorners = function ( cornerpoints ){
+	mod.srf.polygonByPoints = function ( frame, points, holes ){
 
-		return new mObj_geom_Surface( srf ) ;
-	};
+		var points = points.map( function(coordinate){
+			return new THREE.Vector2(coordinate[0], coordinate[1]);
+		});
 
-	/**
-	 * Creates a surface by extruding a curve along x, y, z vectors of the given local coordinate system
-	 * @param { frame object } frame - Local coordinate system 
-	 * @param { curve object } curve - Curve to be extruded
-	 * @param { float } xDistance - Amount of extrusion in the direction of the x-Axis of the frame
-	 * @param { float } yDistance - Amount of extrusion in the direction of the y-Axis of the frame
-	 * @param { float } zDistance - Amount of extrusion in the direction of the z-Axis of the frame
-	 * @returns { surface object }  - Surface object 
-	 * @memberof sld
-	 */
-	mod.srf.nurbsByExtrusion  = function(frame, curve, xDistance, yDistance, zDistance){
+		var holes = holes.map( function(hole){
+			return hole.map(function(coordinate){
+				return new THREE.Vector2(coordinate[0], coordinate[1]);
+			});
+		});
 
-		return new mObj_geom_Surface( srf ) ;
+		var shape = new THREE.Shape( points );
+		
+		for(hole in holes){
+			
+			punchedHole = new THREE.Path(hole);
+			shape.holes.push(punchedHole);		
+	
+		}
 
+		return new mObj_geom_Surface( shape ) ;
 	};
 
 
@@ -1366,15 +1345,18 @@ var convertGeomToThree = function( geom ){
 
 		if( singleDataObject instanceof THREE.Mesh )
 			return singleDataObject;
-		else if(singleDataObject instanceof Array){
-
+		else if( singleDataObject instanceof THREE.Shape )
+			return new THREE.Mesh(new THREE.ShapeGeometry(singleDataObject));
+		else if(singleDataObject instanceof THREE.Geometry)
+			return new THREE.Mesh( singleDataObject );
+/*		else if(singleDataObject instanceof Array){
 			if(singleDataObject[0] instanceof THREE.Mesh)
 				return singleDataObject;
 			// means it is a point
 			var dotGeometry = new THREE.Geometry();
 			dotGeometry.vertices.push( new THREE.Vector3(singleDataObject[0], singleDataObject[1], singleDataObject[2]) ); console.log("here");
 			return new THREE.PointCloud( dotGeometry );
-		}
+		}*/
 		else {
 			console.log("Module doesnt recognise either!", singleDataObject);
 		}
@@ -1390,7 +1372,7 @@ var convertGeomToThree = function( geom ){
 //
 var convertTopoToThree = function( topology ){
 
-	return topo;
+	return topology;
 
 }
 
@@ -1399,7 +1381,7 @@ var convertTopoToThree = function( topology ){
 //
 var computeTopology = function( mObj ){
 
-	return topology;
+	return mObj;
 }
 
 

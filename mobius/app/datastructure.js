@@ -14,7 +14,19 @@ var mObj = function mObj( type ){
 	this.getType = function(){
 		return type;
 	}
-}
+};
+
+var mObj_data = function mObj_data(type, data){
+    
+    mObj.call(this, type);
+
+    var data = data;  
+    
+    this.getData = function(){
+        return data;
+    }
+
+};
 
 var mObj_frame = function mObj_frame( origin, xaxis, yaxis, zaxis ){
 
@@ -400,7 +412,7 @@ var mObj_geom_Surface = function mObj_geom_Surface( geometry ){
 	
     var defaultSurfaceMaterial = new THREE.MeshLambertMaterial( {
     side: THREE.DoubleSide,
-    wireframe: false,
+    wireframe: true,
     //shading: THREE.SmoothShading,
     transparent: false,
     color: 0x003399
