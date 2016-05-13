@@ -56,6 +56,7 @@ mobius.controller(  'graphCtrl',
         // watch chartViewModel.data instead of chartViewModel to prevent stack limit exceeded
         $scope.chartViewModel = generateCode.getChartViewModel();
 
+        // fixme confirm socket usage
         $scope.$watch(function(){return generateCode.getChartViewModel()},function(){
             $scope.dataList = generateCode.getDataList();
             $scope.interfaceList= generateCode.getInterfaceList();
@@ -470,15 +471,18 @@ mobius.controller(  'graphCtrl',
         $scope.$on('openSubGraph',function(){
             generateCode.openNewChart($scope.chartViewModel.nodes[$scope.nodeIndex].data);
             $scope.$emit('clearProcedure');
+            $scope.$broadcast('Extend');
         });
 
         $scope.goRoot = function(){
             generateCode.goRoot();
             $scope.$emit('clearProcedure');
+            $scope.$broadcast('Extend');
         };
 
         $scope.changeGraphView = function(index){
             generateCode.changeGraphView(index);
             $scope.$emit('clearProcedure');
+            $scope.$broadcast('Extend');
         };
     }]);

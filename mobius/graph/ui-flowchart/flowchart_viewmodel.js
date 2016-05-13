@@ -1577,6 +1577,49 @@ var flowchart = {};
 
 			return selectedOutputConnector;
 		};
+
+		this.calculateExtendView = function(){
+			var view = {}, sumX = 0, sumY = 0, xList = [], yList = [],length = this.nodes.length;
+
+			console.log(length)
+			for(var i = 0; i < length;i++){
+				xList.push(this.nodes[i].data.x);
+				yList.push(this.nodes[i].data.y);
+
+				sumX += this.nodes[i].data.x;
+				sumY += this.nodes[i].data.y;
+			}
+
+			if(this.inputPort){
+				sumX += this.inputPort.data.x;
+				sumY += this.inputPort.data.y;
+				xList.push(this.inputPort.data.x);
+				yList.push(this.inputPort.data.y);
+				length ++;
+			}
+
+			if(this.outputPort){
+				sumX += this.outputPort.data.x;
+				sumY += this.outputPort.data.y;
+				xList.push(this.outputPort.data.x);
+				yList.push(this.outputPort.data.y);
+				length ++;
+			}
+
+			var minX = Math.min.apply(Math, xList);
+			var maxX = Math.max.apply(Math, xList);
+			var minY = Math.min.apply(Math, yList);
+			var maxY = Math.max.apply(Math, yList);
+
+			view.x = sumX / length;
+			view.y = sumY / length;
+
+			view.width = maxX - minX;
+			view.height = maxY - minY;
+
+			console.log(view.x, view.y)
+			return view;
+		};
 	};
 
 })
