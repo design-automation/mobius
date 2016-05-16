@@ -180,6 +180,8 @@ angular.module('panzoom', ['monospaced.mousewheel'])
 
                             var scale = getCssScale($scope.model.zoomLevel);
 
+                            $rootScope.$broadcast("Update", scale);
+
                             var scaleString = 'scale(' + scale + ')';
 
                             if (navigator.userAgent.indexOf('Chrome') !== -1) {

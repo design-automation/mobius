@@ -239,4 +239,5 @@ Drag selection rectangle.
 #node-creator{
 	width:180px;
 	cursor: default !important;
+	display: none;
 }

@@ -1581,7 +1581,6 @@ var flowchart = {};
 		this.calculateExtendView = function(){
 			var view = {}, sumX = 0, sumY = 0, xList = [], yList = [],length = this.nodes.length;
 
-			console.log(length)
 			for(var i = 0; i < length;i++){
 				xList.push(this.nodes[i].data.x);
 				yList.push(this.nodes[i].data.y);
@@ -1599,11 +1598,11 @@ var flowchart = {};
 			}
 
 			if(this.outputPort){
-				sumX += this.outputPort.data.x;
-				sumY += this.outputPort.data.y;
+				//sumX += this.outputPort.data.x;
+				//sumY += this.outputPort.data.y;
 				xList.push(this.outputPort.data.x);
 				yList.push(this.outputPort.data.y);
-				length ++;
+				//length ++;
 			}
 
 			var minX = Math.min.apply(Math, xList);
@@ -1611,13 +1610,18 @@ var flowchart = {};
 			var minY = Math.min.apply(Math, yList);
 			var maxY = Math.max.apply(Math, yList);
 
-			view.x = sumX / length;
-			view.y = sumY / length;
+			//view.x = sumX / length;
+			//view.y = sumY / length;
 
-			view.width = maxX - minX;
-			view.height = maxY - minY;
+			view.x = minX;
+			view.y = minY;
 
-			console.log(view.x, view.y)
+			view.width = (maxX - minX)*1.25 + 50;
+			view.height = (maxY - minY)*1.25 + 50;
+
+			view.width <100 ? view.width = 100 : view.width = view.width;
+			view.height <100 ? view.height = 100 : view.height = view.height;
+
 			return view;
 		};
 	};

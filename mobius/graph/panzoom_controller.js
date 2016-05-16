@@ -12,19 +12,21 @@ mobius.controller('znpController', ['$scope', 'PanZoomService','generateCode',
             $scope.scaleFactor = message;
         });
 
-        var zoomToFitZoomLevelFactor = 1.5;
+        var zoomToFitZoomLevelFactor = 1;
 
         $scope.panzoomModel = {};
 
-        var rect = { x : 0,
+        var rect = {
+            x : 0,
             y : 0,
             width: document.getElementById('PanZoom').clientWidth,
-            height: document.getElementById('PanZoom').clientHeight};
+            height: document.getElementById('PanZoom').clientHeight
+        };
 
         $scope.panzoomConfig = {
             initialZoomToFit: rect,
             zoomToFitZoomLevelFactor:zoomToFitZoomLevelFactor,
-            neutralZoomLevel:1.5,
+            neutralZoomLevel:2,
             zoomOnDoubleClick:false,
             invertMouseWheel:true,
             zoomLevels:12,
@@ -63,63 +65,31 @@ mobius.controller('znpController', ['$scope', 'PanZoomService','generateCode',
 
         // if no nodes in the graph, reset to initial positon
         $scope.$on('Extend',function(){
-            $scope.chartViewModel = generateCode.getChartViewModel();
-            console.log($scope.scaleFactor)
-
-            var view = $scope.chartViewModel.calculateExtendView();
-            var width = document.getElementById('PanZoom').offsetWidth;
-            var height = document.getElementById('PanZoom').offsetHeight;
-
-            if($scope.chartViewModel.nodes.length === 0 &&
-               !$scope.chartViewModel.inputPort &&
-               !$scope.chartViewModel.outputPort
-            ){
-                $scope.reset();
-            }else{
-                PanZoomService.getAPI('PanZoom').then(function (api) {
-                    api.zoomToFit({
-                        x :(view.x*$scope.scaleFactor/zoomToFitZoomLevelFactor - width/2),
-                        y :(view.y*$scope.scaleFactor/zoomToFitZoomLevelFactor - height/2),
-                        width: width,
-                        height:height
-                    });
-
-                    api.zoomToFit({
-                        x :(view.x*$scope.scaleFactor/zoomToFitZoomLevelFactor - width/2),
-                        y :(view.y*$scope.scaleFactor/zoomToFitZoomLevelFactor - height/2),
-                        width: width,
-                        height:height
-                    });
-
-                });
-            }
+            $scope.extend()
         });
 
         $scope.extend = function(){
             $scope.chartViewModel = generateCode.getChartViewModel();
+
             var view = $scope.chartViewModel.calculateExtendView();
-            var width = document.getElementById('PanZoom').offsetWidth;
-            var height = document.getElementById('PanZoom').offsetHeight;
+            //var width = document.getElementById('PanZoom').offsetWidth;
+            //var height = document.getElementById('PanZoom').offsetHeight;
+
+            var width = view.width;
+            var height =  view.height;
 
             if($scope.chartViewModel.nodes.length === 0 &&
                 !$scope.chartViewModel.inputPort &&
                 !$scope.chartViewModel.outputPort
             ){
-                console.log('reset!');
+                console.log('reset')
                 $scope.reset();
             }else{
-                console.log('to fit!');
+                console.log('extended')
                 PanZoomService.getAPI('PanZoom').then(function (api) {
                     api.zoomToFit({
-                        x :(view.x/$scope.scaleFactor - width/2)*zoomToFitZoomLevelFactor,
-                        y :(view.y/$scope.scaleFactor - height/2)*zoomToFitZoomLevelFactor,
-                        width: width,
-                        height:height
-                    });
-
-                    api.zoomToFit({
-                        x :(view.x/$scope.scaleFactor - width/2)*zoomToFitZoomLevelFactor,
-                        y :(view.y/$scope.scaleFactor - height/2)*zoomToFitZoomLevelFactor,
+                        x :view.x,
+                        y :view.y ,
                         width: width,
                         height:height
                     });
