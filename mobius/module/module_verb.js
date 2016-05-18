@@ -142,11 +142,13 @@ var MOBIUS = ( function (mod){
 	mod.urb = {};
 
 	mod.urb.loadGeoJSON = function( jsonOpt ){
-
+		console.log( "Geojson is defiened", geojsondata );
 		if (jsonOpt == 1)
 			return new mObj_data( 'geojson', json1);
 		if (jsonOpt == 2)
 			return new mObj_data( 'geojson', json2);
+		if (jsonOpt == 3)
+			return new mObj_data( 'geojson', geojsondata);
 		
 	};
 
@@ -363,25 +365,27 @@ var MOBIUS = ( function (mod){
 			return new THREE.Vector2(coordinate[0], coordinate[1]);
 		});
 
-		var holes = holes.map( function(hole){
+/*		var holes = holes.map( function(hole){
 			return hole.map(function(coordinate){
 				return new THREE.Vector2(coordinate[0], coordinate[1]);
 			});
-		});
+		});*/
 
 		var shape = new THREE.Shape( points );
 		
-		for(hole in holes){
+/*		for(hole in holes){
 			
 			punchedHole = new THREE.Path(hole);
 			shape.holes.push(punchedHole);		
 	
-		}
+		}*/
+		//console.log(shape);
 
+		// check that this shouldn't have curves.length == 0
 		return new mObj_geom_Surface( shape ) ;
 	};
 
-	mod.srf.offset = function( surface, offset ){
+	mod.srf.offset = function( surface, offset, scale ){
 
 		//var poly = polygon.getGeometry() // this is a THREE.Shape object
 
@@ -419,7 +423,7 @@ var MOBIUS = ( function (mod){
 
 			var subj = new ClipperLib.Paths();	
 			subj[0] = shape.actions.map( function( a ){
-						//console.log(a);
+						//console.log(a.args == undefined);
 						return { "X": a.args[0], "Y": a.args[1] }
 			});
 			//[{"X":348,"Y":257},{"X":364,"Y":148},{"X":362,"Y":148},{"X":326,"Y":241},{"X":295,"Y":219},{"X":258,"Y":88},{"X":440,"Y":129},{"X":370,"Y":196},{"X":372,"Y":275}];
@@ -431,17 +435,22 @@ var MOBIUS = ( function (mod){
 		//subj is an array
 		var subj = convertShapeToPath( surface.getGeometry() ); 
 		
-		var scale = 1000;
+		if (scale == undefined)
+			scale = 1000;
 		ClipperLib.JS.ScaleUpPaths(subj, scale);
 		var co = new ClipperLib.ClipperOffset(2, 0.25);
 		co.AddPaths(subj, ClipperLib.JoinType.jtRound, ClipperLib.EndType.etClosedPolygon);
-		co.Execute(solution, offset);
+		co.Execute(solution, offset); 
 		ClipperLib.JS.ScaleDownPaths(solution, scale);
 
-		//draw solution with your own drawing function...
-		var result = convertPathToShape( solution );
+		if(solution.length == 0)
+			return null;
+		else{
+			//draw solution with your own drawing function...
+			var result = convertPathToShape( solution ); 
 
-		return new mObj_geom_Surface( result ); //result is a three.js shape
+			return new mObj_geom_Surface( result ); //result is a three.js shape			
+		}
 
 	};
 
@@ -1521,8 +1530,11 @@ var convertGeomToThree = function( geom ){
 
 		if( singleDataObject instanceof THREE.Mesh )
 			return singleDataObject;
-		else if( singleDataObject instanceof THREE.Shape )
+		else if( singleDataObject instanceof THREE.Shape ){
+			//console.log("Shape -> Geometry")
+			//console.log(new THREE.Mesh(new THREE.ShapeGeometry(singleDataObject)));
 			return new THREE.Mesh(new THREE.ShapeGeometry(singleDataObject));
+		}
 		else if(singleDataObject instanceof THREE.Geometry)
 			return new THREE.Mesh( singleDataObject );
 /*		else if(singleDataObject instanceof Array){

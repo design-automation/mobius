@@ -412,7 +412,7 @@ var mObj_geom_Surface = function mObj_geom_Surface( geometry ){
 	
     var defaultSurfaceMaterial = new THREE.MeshLambertMaterial( {
     side: THREE.DoubleSide,
-    wireframe: true,
+    wireframe: false,
     //shading: THREE.SmoothShading,
     transparent: false,
     color: 0x003399

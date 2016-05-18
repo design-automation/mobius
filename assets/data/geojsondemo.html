@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - geometry - shapes</title>
+		<meta charset="utf-8">
+		<style>
+			html,body {
+				margin: 0;
+				padding: 0;
+				background-color: red;
+				overflow: hidden;
+				width:100%;
+				height:100%;
+			}
+
+			#background, .background_canvas, #clouds, canvas{
+				margin:0;
+				padding:0;
+				width:1920px;
+				height:1080px;
+				position:absolute;
+				left:0;
+				top:0;
+			}
+
+			#offscreen{
+				visibility: hidden;
+			}
+
+
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r76/three.min.js"></script>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.3.min.js"   integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
+
+		<div id="background">
+			<canvas width="1920" height="1080" class="background_canvas" id="background_canvas"></canvas>
+		</div>
+		<textarea id="txt" style="width:100%; height:100%;"></textarea>
+
+		<script>
+
+			//GLOBALS
+
+			var THREETUT = THREETUT || {};
+THREETUT.Shaders = {
+	Pink: {
+		'vertex': ["void main() {",
+				    "gl_Position = projectionMatrix *",
+				                  "modelViewMatrix *",
+				                  "vec4(position,1.0);",
+				   "}"].join("\n"),
+				   
+		'fragment': ["void main() {",
+		             "gl_FragColor = vec4(1.0, 0.0, 1.0, 1.0);",
+				   "}"].join("\n")
+	},
+	Lit: {
+		'vertex': ["varying vec3 vNormal;",
+		            "void main() {",
+		            "vNormal = normal;",
+				    "gl_Position = projectionMatrix *",
+				                  "modelViewMatrix *",
+				                  "vec4(position,1.0);",
+				   "}"].join("\n"),
+				   
+		'fragment': ["varying vec3 vNormal;",
+		             "void main() {",
+		             "vec3 light = vec3(0.5,0.2,1.0);",
+		             "light = normalize(light);",
+		             "float dProd = max(0.0, dot(vNormal, light));",
+		             "gl_FragColor = vec4(dProd, dProd, dProd, 1.0);",
+				   "}"].join("\n")
+	},
+	LitAttribute: {
+		'vertex': ["attribute float displacement;", 
+		           "varying vec3 vNormal;",
+		            "void main() {",
+		            "vNormal = normal;",
+		            "vec3 newPosition = position + normal * vec3(displacement);",
+				    "gl_Position = projectionMatrix *",
+				                  "modelViewMatrix *",
+				                  "vec4(newPosition,1.0);",
+				   "}"].join("\n"),
+				   
+		'fragment': ["varying vec3 vNormal;",
+		             "void main() {",
+		             "vec3 light = vec3(0.5,0.2,-1.0);",
+		             "light = normalize(light);",
+		             "float dProd = max(0.4, dot(vNormal, light));",
+		             "gl_FragColor = vec4(dProd, dProd, dProd, 1.0);",
+				   "}"].join("\n")
+	},
+	LitAttributeAnimated: {
+		'vertex': ["uniform float amplitude;",
+		           "attribute float displacement;", 
+		           "varying vec3 vNormal;",
+		            "void main() {",
+		            "vNormal = normal;",
+		            "vec3 newPosition = position + normal * vec3(displacement * amplitude);",
+				    "gl_Position = projectionMatrix *",
+				                  "modelViewMatrix *",
+				                  "vec4(newPosition,1.0);",
+				   "}"].join("\n"),
+				   
+		'fragment': ["varying vec3 vNormal;",
+		             "void main() {",
+		             "vec3 light = vec3(0.5,0.2,1.0);",
+		             "light = normalize(light);",
+		             "float dProd = max(0.0, dot(vNormal, light));",
+		             "gl_FragColor = vec4(dProd, dProd, dProd, 1.0);",
+				   "}"].join("\n")
+	}
+};
+
+			var width = 1920;
+			var height = 1080;
+
+			//BACKGROUND
+
+			var angle = 0;
+			var size = 0.7;
+			var counter = 190;
+
+			var i_width = 5000;
+			var i_height = 4406;
+
+			/*var bg_canvas = $("#background_canvas")[0];
+			var bg_context = bg_canvas.getContext('2d');
+			var bg_images = [];
+			for(var i = 0; i<=9; i++){
+				bg_images.push(new Image());
+				bg_images[i].src = "material/ZoomView_"+i+"_low.jpg";
+			}
+
+			var rotationspeed = 0.25;
+			var counterspeed = 0.2;
+
+			var animationEnd = 110;
+
+			function animateBackground(){
+				if(counter < Math.pow(2,9)){
+					size = Math.pow((counter/1024), 6)*1024;
+				}
+
+				var draw = false;
+				for(var i = 0; i<=9; i++){
+					if(Math.pow(2,i)>(size*16) && !draw){
+						draw = true;
+						bg_context.save();
+						bg_context.translate(width/2, height/2);
+						bg_context.rotate(Math.PI/180*angle);
+						bg_context.drawImage(bg_images[i], 
+							-((i_width/Math.pow(2,i))/2)*size*16, 
+							-((i_height/Math.pow(2,i))/2)*size*16, 
+							i_width/Math.pow(2,i)*size*16, 
+							i_height/Math.pow(2,i)*size*16);
+						bg_context.restore();
+					}
+				}
+			}
+
+			setTimeout(function(){animateBackground();}, 2000);*/
+
+			var container, stats;
+
+			var camera, scene, renderer;
+
+			var group, text, plane;
+
+			var targetRotation = 0;
+			var targetRotationOnMouseDown = 0;
+
+			var mouseX = 0;
+			var mouseXOnMouseDown = 0;
+
+			var egh;
+
+			var windowHalfX = window.innerWidth / 2;
+			var windowHalfY = window.innerHeight / 2;
+
+			var json;
+			var berlinTexture;
+			var mesh;
+
+			console.log("hello world!");
+			$.getJSON( "json.js", function( data ) {
+  				console.log("Loading....")
+  				json = data;
+  				init();
+			});
+
+			var mats = [];
+
+			var banimate = true;
+
+			var max_z = 900;
+
+			var z_max = 500.0;
+			var z_rel = 0.01;
+
+			var scale_factor = 0.1;
+
+			var scale_x = 209;
+			var scale_y = 350;
+
+			var root = 1/2.5;
+
+			var width = 1920;
+			var height = 1080;
+			var ratio = width/height;
+
+			var offset_x = -45;
+			var offset_y = 59;
+			var offset_z = 0;
+
+			var fast = false;
+
+			var masterGeometry;
+			var material;
+
+			var scaler = 0;
+
+			var mouse = new THREE.Vector2();
+
+			var r = 0; //(Math.PI/180)*-60;
+
+			function init() {
+
+				/*for(var i = 0.0; i<101.0; i++){
+					var red = Math.round((i/100.0)*255.0);
+					var blue = Math.round(255.0-(i/100.0)*255.0);
+					var color = "rgb("+red+",0,"+blue+")";
+					mats.push(
+						[ 
+							new THREE.MeshBasicMaterial( { color: color, ambient: color, opacity: ((i/100.0)*0.6 + 0.2), transparent:true } ), 
+							new THREE.MeshBasicMaterial( { color: color, ambient: color, opacity: ((i/100.0)*0.6 + 0.2), transparent:true } )
+						]
+					);
+				}*/
+
+
+				camera = new THREE.PerspectiveCamera( 50, ratio, 1, 1000 );
+				camera.position.set( 0, 100, 500 );
+
+				scene = new THREE.Scene();
+
+				/*var light = new THREE.AmbientLight( 0xeef0ff  ); /*0xf0f0f0*/
+				/*scene.add( light );
+
+				var light1 = new THREE.DirectionalLight( 0xffffff, 2 );
+				light1.position.set( 1, 1, 1 );
+				scene.add( light1 );*/
+
+				// light
+				//scene.add(new THREE.AmbientLight(0x222222));
+
+				// light
+
+				group = new THREE.Object3D();
+				group.position.y = 50;
+				group.position.z = 0;
+				scene.add( group );
+
+				renderer = new THREE.WebGLRenderer( { antialias: false, preserveDrawingBuffer: true, alpha: true } );
+				renderer.setSize( width, height );
+				renderer.shadowMapEnabled = true;
+				renderer.shadowMapType = THREE.PCFSoftShadowMap;
+				renderer.setViewport( 0,0,width, height );
+
+				masterGeometry = new THREE.Geometry();
+
+				//var maxEx = 0;
+
+				/*var minLat = translateLng(52.3382365501687);
+				var maxLat = translateLng(52.675451948013);
+				var minLng = translateLat(13.0882073999633);
+				var maxLng = translateLat(13.7611322957903);
+
+				var texHeight = maxLng - minLng;
+				var texWidth = maxLat - minLat;
+
+				/*var berlinPts = [
+					new THREE.Vector2 (minLng, minLat), 
+					new THREE.Vector2 (minLng, maxLat), 
+					new THREE.Vector2 (maxLng, maxLat), 
+					new THREE.Vector2 (maxLng, minLat)
+				];*/
+
+				//var maxAnisotropy = renderer.getMaxAnisotropy();
+
+				
+				//var berlinMaterial = new THREE.MeshBasicMaterial( { color:"rgb(255,0,0)", ambient:"rgb(255,0,0)" } );
+				//ambient: 0xffffff, 
+				/*var berlinMaterial = new THREE.MeshPhongMaterial( { map: berlinTexture, color:0x111111 } );
+
+				berlinTexture.anisotropy = maxAnisotropy;
+				//berlinTexture.wrapS = berlinTexture.wrapT = THREE.RepeatWrapping;
+				berlinTexture.repeat.set( 1, 1 );
+				//2037, 1677
+				berlinTexture.needsUpdate = true;
+
+				var berlinShape = new THREE.Shape( berlinPts );
+				var berlinGeometry = new THREE.ShapeGeometry( berlinShape );
+
+				//berlinGeometry = new THREE.PlaneGeometry( 100, 100 );
+
+				var berlinUV = [
+					new THREE.Vector2(0, 0),
+					new THREE.Vector2(1, 0),
+					new THREE.Vector2(1, 1),
+					new THREE.Vector2(0, 1)
+				];
+
+				berlinGeometry.faceVertexUvs[0] = [];
+				berlinGeometry.faceVertexUvs[0][0] = [berlinUV[0],berlinUV[1],berlinUV[2]];
+				berlinGeometry.faceVertexUvs[0][1] = [berlinUV[2],berlinUV[3],berlinUV[0]];
+
+				var mesh = new THREE.Mesh(berlinGeometry, berlinMaterial);
+				mesh.position.set( offset_x, offset_y, offset_z );
+				mesh.rotation.set( r, 0, 0 );
+				mesh.scale.set(scale_factor,scale_factor,scale_factor);
+				group.add( mesh );*/
+
+				/*var points = [
+					[52.436436, 13.257252],
+					[52.515064, 13.356815],
+					[52.418014, 13.439899],
+					[52.581036, 13.523670],
+					[52.443918, 13.591685],
+					[52.424871, 13.139185],
+					[52.433506, 13.695331]
+				];
+
+				var lineMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
+
+				for(var p = 0; p<points.length; p++){
+					var lineGeometry = new THREE.Geometry();
+					lineGeometry.vertices.push(new THREE.Vector3(translateLat(points[p][1]), translateLng(points[p][0]), 0));
+					lineGeometry.vertices.push(new THREE.Vector3(translateLat(points[p][1]), translateLng(points[p][0]), 200));
+
+					var line = new THREE.Line(lineGeometry, lineMaterial);
+					line.position.set( offset_x, offset_y, offset_z );
+					line.rotation.set( r, 0, 0 );
+					line.scale.set(scale_factor,scale_factor,scale_factor);
+					group.add( line );
+				}*/
+
+				buildShape();
+
+			}
+
+			function addShape( shape, extrude, color, x, y, z, rx, ry, rz, s ) {
+
+				//var materials = material; //mats[Math.round(((extrude/(z_rel*z_max))*100.0))];
+
+				var extrudeSettings = {
+					amount			: extrude*50,
+					steps			: 1,
+					material		: 0,
+					extrudeMaterial : 1,
+					bevelEnabled	: false
+				};
+
+				//var geometry = new THREE.ShapeGeometry( shape );
+				var geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+
+				for(var f = 0; f<geometry.faces.length; f++){
+					geometry.faces[f].color.setRGB(color.r, color.g, color.b);
+				}
+
+				//geometry.updateMatrix();
+				masterGeometry.merge( geometry, geometry.matrix );
+
+			}
+
+			function translateLat(lat){
+				if(!lat){lat = 0;}
+				return (lat-13.36)*100;
+			}
+
+			function translateLng(lng){
+				if(!lng){lng = 0;}
+				return (lng-52.53)*100;
+			}
+
+			var shapeCount = 0;
+
+			var shapes = [];
+
+			function buildShape(){
+				if(shapeCount<1500/*json.features.length*/){
+					var shapeSession = 0;
+					for(var s = shapeCount; s < json.features.length && shapeSession < 5000; s++){
+						shapeSession++;
+						shapeCount++;
+						var good = true;
+						var californiaPts = [];
+						if(json.features[s].geometry.coordinates.length<1 || json.features[s].geometry.coordinates[0]<1){
+							good = false;
+						}else{
+							for(var i = 0; i<json.features[s].geometry.coordinates[0].length; i++){
+								if(json.features[s].geometry.coordinates[0][i][0] && json.features[s].geometry.coordinates[0][i][1] && json.features[s].geometry.coordinates[0][i][0]>0 && json.features[s].geometry.coordinates[0][i][1]>0){
+									californiaPts.push( new THREE.Vector2 ( translateLat(json.features[s].geometry.coordinates[0][i][0]), translateLng(json.features[s].geometry.coordinates[0][i][1])) );	
+								}else{
+									good = false;
+								}
+							}
+						}
+
+						if(good){
+							var h = Math.pow(parseFloat(json.features[s].properties.EW_HA2013),root);
+							if(isNaN(parseFloat(json.features[s].properties.EW_HA2013))){
+								if(fast){
+									good = false;
+								}
+								h = 0;
+							}
+							var max = Math.pow(max_z, root);
+							
+							if(!h || h < 0){
+								if(fast){
+									good = false;
+								}
+								h = 0;
+							}
+
+							if(h>max){
+								h = max;
+							}
+
+							//REMOVE THE BLUE
+							if(h==0 && fast){
+								good = false;
+							}
+						}
+
+						if(good){
+							//shapes.push(new THREE.Shape( californiaPts ));
+
+							var z = ((h/max)*z_max);
+							//console.log(z+"/"+h+"/"+max+"/"+z_max);
+							if(!z || z<1){z = 0;}
+							
+							var red = Math.round((h/max)*255.0);
+							var blue = Math.round(255.0-(h/max)*255.0);
+							var color = new THREE.Color("rgb("+red+",0,"+blue+")");
+
+							addShape( new THREE.Shape( californiaPts ), z*z_rel, color, 0, 50, 0, r, 0, 0, 1 );
+						}
+					}
+					console.log(shapeCount);
+					setTimeout(function(){ buildShape(); }, 100);
+				}else{
+
+					console.log("buildMesh:"+shapeCount+"/"+json.features.length);
+
+					//var geometry = new THREE.ShapeGeometry( shapes );
+
+					var shaderMaterial = new THREE.ShaderMaterial({
+						attributes: 	{},
+						uniforms:		{},
+						vertexShader:   THREETUT.Shaders.Lit.vertex,
+					    fragmentShader: THREETUT.Shaders.Lit.fragment
+					    ,side: THREE.FrontSide
+					});
+
+					var materials = [
+						new THREE.MeshLambertMaterial({vertexColors: THREE.VertexColors, color: "rgb(0.2,0.2,0.2)",ambient: "rgb(0.2,0.2,0.2)", shininess: 1, lights:true}),
+						//shaderMaterial,
+						new THREE.MeshLambertMaterial({vertexColors: THREE.VertexColors, color: "rgb(0.5,0.5,0.5)",ambient: "rgb(0.5,0.5,0.5)", shininess: 1, lights:true})
+						//new THREE.MeshBasicMaterial( { color: "rgb(0,0,0)", ambient: "rgb(0,0,0)", opacity:1 } ),
+						//new THREE.MeshBasicMaterial( { color: "rgb(0,0.5,0.5)", ambient: "rgb(0,0.5,0.5)", opacity:1 } )
+					];
+					var material = new THREE.MeshFaceMaterial(materials);
+
+					//material = new THREE.MeshBasicMaterial( { color: 0x00ee00, wireframe: true, transparent: true } ); 
+
+    				//window.open( "data:application/plain;charset=utf-8," + escape( JSON.stringify(masterGeometry.toJSON()) ), '_blank' );
+
+					mesh = new THREE.Mesh( masterGeometry, material );
+
+					mesh.position.set( offset_x*3, offset_y*3, offset_z*3 );
+					mesh.rotation.set( r, 0, 0 );
+					mesh.scale.set(scale_factor * scale_x,scale_factor * scale_y,0);
+					mesh.castShadow = true;
+					mesh.receiveShadow = true;
+
+					scene.add( mesh );
+
+					/*var light = new THREE.PointLight(0xeeeeee,  10);
+					light.position.set(0, 0, 450);
+					scene.add(light);*/
+					
+					var directionalLight = new THREE.DirectionalLight(0xeeeeee, 1);
+					directionalLight.position.set(0, 400, 200);
+					directionalLight.target = mesh;
+					directionalLight.castShadow = true;
+					directionalLight.shadowDarkness = 0.5;
+					//directionalLight.shadowCameraVisible = true;
+					scene.add( directionalLight );
+					
+
+					/*egh = new THREE.EdgesHelper( mesh, 0xff0000 );
+					egh.material.linewidth = 0.5;
+					egh.material.opacity = 0.5;
+					scene.add( egh );*/
+
+					document.body.appendChild( renderer.domElement );
+
+					/*o_material = new THREE.MeshBasicMaterial( { color: "rgb(0,0,0)", ambient: "rgb(0,0,0)", opacity:0.5 } );
+					o_mesh = new THREE.Mesh( masterGeometry, o_material );
+
+					o_mesh.scale.set(scale_factor * scale_x,scale_factor * scale_y,scale_factor);
+					o_mesh.position.set( offset_x*3, offset_y*3, offset_z*3 );
+
+					scene.add(o_mesh);*/
+
+					animate();
+
+					renderer.domElement.addEventListener( 'mousemove', onDocumentMouseMove, false );
+
+				}
+			}
+
+			function onDocumentMouseMove( event ) {
+
+				event.preventDefault();
+
+				//mouse.x = ( event.clientX / window.innerWidth ) * Math.PI*4;
+				//mouse.y = ( event.clientY / window.innerHeight ) * Math.PI*4;
+			}
+
+
+
+			function animate() {
+
+				setTimeout( function() {
+					requestAnimationFrame( animate );
+				}, 1000/30 );
+
+				if(banimate){
+
+					mesh.rotation.x = mouse.y;
+					//egh.rotation.x += (Math.PI/180)/10;
+
+					mesh.rotation.y = mouse.x;
+					//egh.rotation.y += (Math.PI/180)/10;
+
+					scaler += 0.001;
+					mesh.scale.set(scale_factor * scale_x,scale_factor * scale_y,scaler);
+
+					renderer.render( scene, camera );
+
+					console.log("animate");
+				}
+
+				//setTimeout(function(){ saveObj(); }, 2000);
+
+			}
+
+			function saveObj(){
+				console.log("save");
+				var j = JSON.stringify(mesh.toJSON());
+				var fcount = 100;
+				for(var f = 0; f<fcount; f++){
+					var ff = f;
+					if(f<10){ff = "0"+f;}
+					$.ajax({
+						type: "POST",
+						url: "save.php",
+						data: {content: j.substring((j.length/fcount)*f,(j.length/fcount)*(f+1)), name:"model_"+ff+".json"}
+					});
+				}
+			}
+
+		</script>
+
+	</body>
+</html>
