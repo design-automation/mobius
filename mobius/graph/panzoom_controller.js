@@ -33,7 +33,6 @@ mobius.controller('znpController', ['$scope', 'PanZoomService','generateCode',
             useHardwareAcceleration:true,
             chromeUseTransform:true,
             keepInBounds:true
-            //disableZoomAnimation:true
         };
 
         $scope.view = { zoomLevel: undefined,

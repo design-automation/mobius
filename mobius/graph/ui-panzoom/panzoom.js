@@ -153,12 +153,11 @@ angular.module('panzoom', ['monospaced.mousewheel'])
                                 // spot a
                                 if ($scope.config.keepInBounds) {
                                     var topLeftCornerView = getViewPosition({ x: 0, y: 0 });
-                                    var canvasWidth = 1000;
-                                    var canvasHeight = 1000;
+                                    var canvasWidth = 4000;
+                                    var canvasHeight = 4000;
                                     viewportWidth = document.getElementById('PanZoom').offsetWidth;
                                     viewportHeight = document.getElementById('PanZoom').offsetHeight;
                                     var bottomRightCornerView = getViewPosition({ x: canvasWidth, y: canvasHeight});
-                                    console.log(canvasHeight)
 
                                     if (topLeftCornerView.x > 0) {
                                         $scope.model.pan.x = 0;
@@ -430,8 +429,8 @@ angular.module('panzoom', ['monospaced.mousewheel'])
 
                                 if ($scope.config.keepInBounds && !$scope.dragging) {
                                     var topLeftCornerView = getViewPosition({ x: 0, y: 0 });
-                                    var canvasWidth = 1000;
-                                    var canvasHeight = 1000;
+                                    var canvasWidth = 4000;
+                                    var canvasHeight = 4000;
                                     viewportWidth = document.getElementById('PanZoom').offsetWidth;
                                     viewportHeight = document.getElementById('PanZoom').offsetHeight;
                                     var bottomRightCornerView = getViewPosition({ x: canvasWidth, y: canvasHeight});
@@ -614,8 +613,8 @@ angular.module('panzoom', ['monospaced.mousewheel'])
 
                             if ($scope.config.keepInBounds) {
                                 var topLeftCornerView = getViewPosition({ x: 0, y: 0 });
-                                var canvasWidth = 1000;
-                                var canvasHeight = 1000;
+                                var canvasWidth = 4000;
+                                var canvasHeight = 4000;
                                 viewportWidth = document.getElementById('PanZoom').offsetWidth;
                                 viewportHeight = document.getElementById('PanZoom').offsetHeight;
                                 var bottomRightCornerView = getViewPosition({ x: canvasWidth, y: canvasHeight});

@@ -1044,16 +1044,37 @@ var flowchart = {};
 					var node = selectedNodes[i];
 					node.data.x += deltaX;
 					node.data.y += deltaY;
+
+					if(node.data.x < 0){
+						node.data.x = 0;
+					}
+
+					if(node.data.y < 0){
+						node.data.y = 0;
+					}
 				}
 			}else{
 				// update position for input/output port
 				if(this.inputPort.selected()){
 					this.inputPort.data.x += deltaX;
 					this.inputPort.data.y += deltaY;
+					if(this.inputPort.data.x < 0){
+						this.inputPort.data.x = 0;
+					}
+					if(this.inputPort.data.y <0 ){
+						this.inputPort.data.y = 0;
+					}
 				}
 				if(this.outputPort.selected()){
 					this.outputPort.data.x += deltaX;
 					this.outputPort.data.y += deltaY;
+
+					if(this.outputPort.data.x < 0){
+						this.outputPort.data.x = 0;
+					}
+					if(this.outputPort.data.y <0 ){
+						this.outputPort.data.y = 0;
+					}
 				}
 			}
 		};
@@ -1526,7 +1547,7 @@ var flowchart = {};
 
 		//
 		// Get the array of connections that are currently selected.
-		// fixme should i leave or should i stay
+		// fixme refactor
 		this.getSelectedConnections = function () {
 			var selectedConnections = [];
 
@@ -1542,7 +1563,7 @@ var flowchart = {};
 
 		//
 		// @ mobius get the array of input connectors that currently selected.
-		// fixme should i leave or should i stay
+		// fixme refactor
 		this.getSelectedInputConnectors = function () {
 			var selectedInputConnector = [];
 
@@ -1561,7 +1582,7 @@ var flowchart = {};
 
 		//
 		// @ mobius get the array of output connectors that currently selected.
-		// fixme should i leave or should i stay
+		// fixme refactor
 		this.getSelectedOutputConnectors = function () {
 			var selectedOutputConnector = [];
 
