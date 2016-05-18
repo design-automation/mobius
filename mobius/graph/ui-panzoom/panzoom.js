@@ -135,7 +135,6 @@ angular.module('panzoom', ['monospaced.mousewheel'])
                             y: $scope.base.pan.y
                         };
 
-
                         // FIXME why declare these on $scope? They could be private vars
                         $scope.previousPosition = undefined;
                         $scope.dragging = false;
@@ -151,9 +150,15 @@ angular.module('panzoom', ['monospaced.mousewheel'])
                                 $scope.model.pan.x = $scope.base.pan.x + deltaT.x;
                                 $scope.model.pan.y = $scope.base.pan.y + deltaT.y;
 
+                                // spot a
                                 if ($scope.config.keepInBounds) {
                                     var topLeftCornerView = getViewPosition({ x: 0, y: 0 });
-                                    var bottomRightCornerView = getViewPosition({ x: viewportWidth, y: viewportHeight });
+                                    var canvasWidth = 1000;
+                                    var canvasHeight = 1000;
+                                    viewportWidth = document.getElementById('PanZoom').offsetWidth;
+                                    viewportHeight = document.getElementById('PanZoom').offsetHeight;
+                                    var bottomRightCornerView = getViewPosition({ x: canvasWidth, y: canvasHeight});
+                                    console.log(canvasHeight)
 
                                     if (topLeftCornerView.x > 0) {
                                         $scope.model.pan.x = 0;
@@ -241,7 +246,6 @@ angular.module('panzoom', ['monospaced.mousewheel'])
                                 $scope.base.zoomLevel = $scope.model.zoomLevel;
                                 $scope.base.pan.x = $scope.model.pan.x;
                                 $scope.base.pan.y = $scope.model.pan.y;
-
                                 $scope.zoomAnimation = undefined;
                             }
 
@@ -323,7 +327,7 @@ angular.module('panzoom', ['monospaced.mousewheel'])
 
                         var getViewPosition = function (modelPosition) {
                             //  p' = p * s + t
-                            var p = modelPosition.pan;
+                            var p = modelPosition;
                             var s = getCssScale($scope.base.zoomLevel);
                             var t = $scope.base.pan;
 
@@ -369,6 +373,7 @@ angular.module('panzoom', ['monospaced.mousewheel'])
                         };
 
                         var scopeIsDestroyed = false;
+
                         var AnimationTick = function () {
                             var lastTick = null;
 
@@ -423,26 +428,32 @@ angular.module('panzoom', ['monospaced.mousewheel'])
                                     }
                                 }
 
-                                //if ($scope.config.keepInBounds && !$scope.dragging) {
-                                //    var topLeftCornerView = getViewPosition({ x: 0, y: 0 });
-                                //    var bottomRightCornerView = getViewPosition({ x: viewportWidth, y: viewportHeight });
-                                //
-                                //    if (topLeftCornerView.x > 0) {
-                                //        $scope.base.pan.x -= $scope.config.keepInBoundsRestoreForce * topLeftCornerView.x;
-                                //    }
-                                //
-                                //    if (topLeftCornerView.y > 0) {
-                                //        $scope.base.pan.y -= $scope.config.keepInBoundsRestoreForce * topLeftCornerView.y;
-                                //    }
-                                //
-                                //    if (bottomRightCornerView.x < viewportWidth) {
-                                //        $scope.base.pan.x -= $scope.config.keepInBoundsRestoreForce * (bottomRightCornerView.x - viewportWidth);
-                                //    }
-                                //
-                                //    if (bottomRightCornerView.y < viewportHeight) {
-                                //        $scope.base.pan.y -= $scope.config.keepInBoundsRestoreForce * (bottomRightCornerView.y - viewportHeight);
-                                //    }
-                                //}
+                                if ($scope.config.keepInBounds && !$scope.dragging) {
+                                    var topLeftCornerView = getViewPosition({ x: 0, y: 0 });
+                                    var canvasWidth = 1000;
+                                    var canvasHeight = 1000;
+                                    viewportWidth = document.getElementById('PanZoom').offsetWidth;
+                                    viewportHeight = document.getElementById('PanZoom').offsetHeight;
+                                    var bottomRightCornerView = getViewPosition({ x: canvasWidth, y: canvasHeight});
+
+                                    //spot b
+
+                                    if (topLeftCornerView.x > 0) {
+                                        $scope.base.pan.x -= $scope.config.keepInBoundsRestoreForce * topLeftCornerView.x;
+                                    }
+
+                                    if (topLeftCornerView.y > 0) {
+                                        $scope.base.pan.y -= $scope.config.keepInBoundsRestoreForce * topLeftCornerView.y;
+                                    }
+
+                                    if (bottomRightCornerView.x < viewportWidth) {
+                                        $scope.base.pan.x -= $scope.config.keepInBoundsRestoreForce * (bottomRightCornerView.x - viewportWidth);
+                                    }
+
+                                    if (bottomRightCornerView.y < viewportHeight) {
+                                        $scope.base.pan.y -= $scope.config.keepInBoundsRestoreForce * (bottomRightCornerView.y - viewportHeight);
+                                    }
+                                }
 
                                 syncModelToDOM();
 
@@ -508,7 +519,6 @@ angular.module('panzoom', ['monospaced.mousewheel'])
                                 };
                             }
                         };
-
 
                         $scope.onTouchMove = function($event) {
                             $event.preventDefault();
@@ -579,6 +589,7 @@ angular.module('panzoom', ['monospaced.mousewheel'])
 
                             return false;
                         };
+
                         var pan = function (delta) {
                             delta.x = delta.x || 0;
                             delta.y = delta.y || 0;
@@ -603,8 +614,13 @@ angular.module('panzoom', ['monospaced.mousewheel'])
 
                             if ($scope.config.keepInBounds) {
                                 var topLeftCornerView = getViewPosition({ x: 0, y: 0 });
-                                var bottomRightCornerView = getViewPosition({ x: viewportWidth, y: viewportHeight });
+                                var canvasWidth = 1000;
+                                var canvasHeight = 1000;
+                                viewportWidth = document.getElementById('PanZoom').offsetWidth;
+                                viewportHeight = document.getElementById('PanZoom').offsetHeight;
+                                var bottomRightCornerView = getViewPosition({ x: canvasWidth, y: canvasHeight});
 
+                                // spot c
                                 if (topLeftCornerView.x > 0 && dragDelta.x > 0) {
                                     dragDelta.x *= Math.min(Math.pow(topLeftCornerView.x, -$scope.config.keepInBoundsDragPullback), 1);
                                 }
@@ -721,8 +737,8 @@ angular.module('panzoom', ['monospaced.mousewheel'])
                 link: function (scope, element, attrs) {
                     scope.elementId = attrs.id;
 
-                    viewportHeight = element.find('.zoom-element').children().height();
-                    viewportWidth = element.find('.zoom-element').children().width();
+                    viewportHeight = document.getElementsByClassName('flow-chart').offsetHeight;
+                    viewportWidth = document.getElementsByClassName('flow-chart').offsetWidth;
 
                     if (scope.elementId) {
                         PanZoomService.registerAPI(scope.elementId, api);
