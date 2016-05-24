@@ -2,7 +2,14 @@
  *	Module, for Urban Design 
  */
 
-var MOBIUS = ( function (mod){	
+var MOBIUS = ( function (mod){
+
+	//
+	//	Requirements
+	//	Function names should remain the same
+	//
+
+	mod.TOPOLOGY_DEF = {"vertices":[], "edges":[], "faces":[]};
 
 	/*
 	 *
@@ -1272,10 +1279,11 @@ var MOBIUS = ( function (mod){
 					obj[i].setData( new_data );
 			}
 		} else{
-			if(obj.getData() == undefined)
-				var new_data = {};
-				new_data[dataName] = dataValue;
-				obj.setData( new_data );
+			var new_data = obj.getData();
+			if(new_data == undefined)
+				new_data = {};
+			new_data[dataName] = dataValue;
+			obj.setData( new_data );
 		}
 	};
 
@@ -1989,12 +1997,6 @@ var MOBIUS = ( function (mod){
 //	Dependent on the modules being used for geometry and topology
 //
 
-//
-//	Requirements
-//	Function names should remain the same
-//
-
-var TOPOLOGY_DEF = {"vertices":[], "edges":[], "faces":[]}
 //
 //	Function to convert module geometry into three.js Mesh geometry
 //  Add another if-else condition for each new geometry

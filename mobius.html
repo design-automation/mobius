@@ -460,12 +460,26 @@
                                     </div>
                                 </div>
 
-                                <div ng-if="showData" class="dataViewport">
-                                    <div ui-grid="gridOptions"
-                                         ui-grid-resize-columns
-                                         ui-grid-auto-resize
-                                         class="dataGrid-main">
-                                    </div>
+                                <div ng-if="showData" class="dataViewport" >
+                                    <!--todo category re-route -->
+                                    <!--todo data table display-->
+
+                                    <md-tabs flex layout="column" layout-fill>
+
+                                        <md-tab ng-repeat="header in tableHeader" flex layout="column" label={{header}}
+                                            ng-click="generateDataTable(header)">
+                                            <md-tab-content flex layout-fill style="overflow: hidden!important;">
+                                                <div
+                                                    ui-grid="gridOptions"
+                                                    ui-grid-resize-columns
+                                                    ui-grid-auto-resize
+                                                    class="dataGrid-main">
+                                                </div>
+                                            </md-tab-content>
+                                        </md-tab>
+
+                                    </md-tabs>
+
                                 </div>
                             </div>
                         </div>

@@ -13,13 +13,88 @@ mobius.controller('viewportCtrl',[
             "geometryData":[]
         };
 
-        $scope.gridOptions = {data: 'viewportControl.geometryData',
-                            columnDefs:
-                                [{ field: 'Property', displayName: 'Property'},
-                                { field: 'Value', displayName: 'Value'},
-                                { field: 'attachedTo', displayName: 'AttachedTo'}]};
+        var columnDefs = [];
+        $scope.geometryData = [];
 
+        $scope.tableHeader = [];
+        for(var topo in MOBIUS.TOPOLOGY_DEF) {
+            $scope.tableHeader.push(topo);
+        }
+        $scope.tableHeader.push('object');
 
+        $rootScope.$on('Update Datatable', function(){
+            $scope.generateDataTable($scope.tableHeader[0])
+        });
+
+        $scope.generateDataTable = function(header){
+            $scope.geometryData = [];
+            angular.copy($scope.viewportControl.geometryData,$scope.geometryData);
+
+            console.log($scope.viewportControl.geometryData)
+
+            if(header !== undefined){
+                for(var i = 0; i < $scope.geometryData.length; i++){
+                    if($scope.geometryData[i].cate !== header){
+                        $scope.geometryData.splice(i,1);
+                        i--;
+                    }
+                }
+            }
+
+            var propertyList = [];
+
+            for(var i = 0; i < $scope.geometryData.length; i++){
+                if($scope.geometryData[i].Property !== undefined){
+                    if(propertyList.indexOf($scope.geometryData[i].Property) === -1){
+                        propertyList.push($scope.geometryData[i].Property);
+                    }
+                }
+            }
+
+            var columnDefs = [ { field: 'attachedTo', displayName: 'AttachedTo'}];
+            for(var i = 0; i <propertyList.length;i++){
+                columnDefs.push({
+                    field:propertyList[i],
+                    displayName:propertyList[i]
+                })
+            }
+
+            var table = [];
+            for(var i = 0; i < $scope.geometryData.length; i++){
+                if(table.length === 0){
+                    table.push({attachedTo: $scope.geometryData[i].attachedTo});
+
+                    table[0][$scope.geometryData[i].Property]
+                        = $scope.geometryData[i].Value;
+                }
+
+                for(var j = 0; j < table.length; j++){
+                    if(table[j].attachedTo === $scope.geometryData[i].attachedTo){
+                        table[j][$scope.geometryData[i].Property] = $scope.geometryData[i].Value;
+                        break;
+                    }else{
+                        if(j === table.length-1){
+                            table.push({attachedTo: $scope.geometryData[i].attachedTo});
+
+                            table[table.length-1][$scope.geometryData[i].Property]
+                                = $scope.geometryData[i].Value;
+                        }
+                    }
+                }
+            }
+
+            $scope.geometryData = table;
+
+            $scope.gridOptions = {
+                data: 'geometryData',
+                columnDefs:columnDefs,
+            };
+        };
+
+        $scope.gridOptions = {
+                                data: 'geometryData',
+                                columnDefs:columnDefs,
+                            };
 
         $scope.viewportControl.layout = 'singleView';
         $scope.topoViewportControl.layout = 'singleView';

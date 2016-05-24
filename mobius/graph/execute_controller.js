@@ -78,24 +78,26 @@ mobius.controller('executeCtrl',['$scope','$rootScope','$q','executeService','co
                         var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
 
                         for(var i = 0; i < $scope.outputs.length; i++){
-
                             for(var j =0; j < selectedNodes.length; j++){
                                 if($scope.outputs[i].name === selectedNodes[j].data.name){
 
                                     var p = 0;
 
                                     for(var k in $scope.outputs[i].value){
-                                        scope.viewportControl.addGeometryToScene($scope.outputs[i].value[k],
-                                            $scope.outputs[i].geom[p],
-                                            $scope.outputs[i].geomData[p]);
+                                        if($scope.outputs[i].value[k] !== undefined){
+                                            scope.viewportControl.addGeometryToScene($scope.outputs[i].value[k],
+                                                $scope.outputs[i].geom[p],
+                                                $scope.outputs[i].geomData[p]);
 
-                                        scopeTopo.topoViewportControl.addGeometryToScene($scope.outputs[i].value[k],
-                                            $scope.outputs[i].topo[p]);
+                                            scopeTopo.topoViewportControl.addGeometryToScene($scope.outputs[i].value[k],
+                                                $scope.outputs[i].topo[p]);
+                                        }
                                         p++;
                                     }
                                 }
                             }
                         }
+                        $rootScope.$broadcast('Update Datatable');
                     });
             },100);
         }

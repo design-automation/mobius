@@ -253,7 +253,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
     }
 
     // Dynamic Topology !
-   for(var property in TOPOLOGY_DEF){
+   for(var property in MOBIUS.TOPOLOGY_DEF){
        
         var propFunc = new Function( 'return this.getTopology()["' + property + '"];' );
        
@@ -325,7 +325,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
     // Extracts data at MobiusDataObject level and topology level, converts it into a JSON object and returns it to the calling function
     // Doesnot require any bridging functions from the module
     //
-    this.extractData = function(){
+    this.extractData = function(connectorName){
 
         var dataTable = [];
 
@@ -336,9 +336,11 @@ var mObj_geom = function mObj_geom( geometry, material ){
             if (data != undefined){
                 for(var property in data){
                     var jsonObject = {
-                        'attachedTo' : self,
+                        'attachedTo' : 'object',
                         'Property' : property,
-                        'Value' : data[property]
+                        'Value' : data[property],
+                        'cate': 'object',
+                        'connectorName':connectorName
                     };
                     dataTable.push(jsonObject);
                 }
@@ -352,9 +354,11 @@ var mObj_geom = function mObj_geom( geometry, material ){
                         if (topoData != undefined){
                             for( var property in topoData ){
                                 var jsonObject = {
-                                    'attachedTo' : topoElement+index,
+                                    'attachedTo' : topoElement + index,
+                                    'cate': topoElement,
                                     'Property' : property,
-                                    'Value' : topoData[property]
+                                    'Value' : topoData[property],
+                                    'connectorName':connectorName
                                 };
                                 dataTable.push(jsonObject);
                             }

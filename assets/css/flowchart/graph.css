@@ -228,8 +228,8 @@ Drag selection rectangle.
 
 /*canvas background*/
 .background{
-	stroke-width:1px;
-	stroke:#dddddd;
+	stroke-width:px;
+	stroke:#000000;
 	fill:url(#dots-4-11);
 	overflow: hidden;
 }

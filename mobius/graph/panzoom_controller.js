@@ -1,5 +1,4 @@
 // mobius zoom and pan controller for left-panel
-
 mobius.controller('znpController', ['$scope', 'PanZoomService','generateCode',
     function($scope,PanZoomService,generateCode) {
         $scope.chartViewModel = generateCode.getChartViewModel();
@@ -17,8 +16,8 @@ mobius.controller('znpController', ['$scope', 'PanZoomService','generateCode',
         $scope.panzoomModel = {};
 
         var rect = {
-            x : 0,
-            y : 0,
+            x : 2000,
+            y : 2000,
             width: document.getElementById('PanZoom').clientWidth,
             height: document.getElementById('PanZoom').clientHeight
         };
@@ -57,8 +56,8 @@ mobius.controller('znpController', ['$scope', 'PanZoomService','generateCode',
 
         $scope.reset = function(){
             PanZoomService.getAPI('PanZoom').then(function (api) {
-                api.zoomToFit({ x : 0,
-                                y : 0,
+                api.zoomToFit({ x : 2000,
+                                y : 2000,
                                 width: document.getElementById('PanZoom').offsetWidth,
                                 height:document.getElementById('PanZoom').offsetHeight});
             });
@@ -73,8 +72,6 @@ mobius.controller('znpController', ['$scope', 'PanZoomService','generateCode',
             $scope.chartViewModel = generateCode.getChartViewModel();
 
             var view = $scope.chartViewModel.calculateExtendView();
-            //var width = document.getElementById('PanZoom').offsetWidth;
-            //var height = document.getElementById('PanZoom').offsetHeight;
 
             var width = view.width;
             var height =  view.height;
@@ -83,10 +80,8 @@ mobius.controller('znpController', ['$scope', 'PanZoomService','generateCode',
                 !$scope.chartViewModel.inputPort &&
                 !$scope.chartViewModel.outputPort
             ){
-                console.log('reset')
                 $scope.reset();
             }else{
-                console.log('extended')
                 PanZoomService.getAPI('PanZoom').then(function (api) {
                     api.zoomToFit({
                         x :view.x,

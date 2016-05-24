@@ -919,12 +919,15 @@ mobius.directive('viewport', function factory() {
                 }
             };
 
+            scope.internalControl.refreshData = function(){
+                scope.internalControl.geometryData = [];
+            };
+
             //
             // supporting function for geometry from verb to three.js
             //
             // fixme geom here is not used
             scope.internalControl.addGeometryToScene = function(geom,value,geomData){
-                scope.internalControl.geometryData = [{Property:'', Value:'',attachedTo:''}];
 
                 if(value !== undefined){
                     if(value.constructor === Array){
