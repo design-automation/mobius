@@ -82,12 +82,18 @@ mobius.controller('executeCtrl',['$scope','$rootScope','$q','executeService','co
                                 if($scope.outputs[i].name === selectedNodes[j].data.name){
 
                                     var p = 0;
+                                    scope.viewportControl.geometryData = {};
 
                                     for(var k in $scope.outputs[i].value){
+                                        // store selected node's output connector name for data table display
+                                        if(k !== 'geomList'){
+                                            scope.viewportControl.geometryData[k] = [];
+                                        }
+
                                         if($scope.outputs[i].value[k] !== undefined){
                                             scope.viewportControl.addGeometryToScene($scope.outputs[i].value[k],
                                                 $scope.outputs[i].geom[p],
-                                                $scope.outputs[i].geomData[p]);
+                                                $scope.outputs[i].geomData[p],k);
 
                                             scopeTopo.topoViewportControl.addGeometryToScene($scope.outputs[i].value[k],
                                                 $scope.outputs[i].topo[p]);

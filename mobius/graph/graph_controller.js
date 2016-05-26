@@ -193,14 +193,18 @@ mobius.controller(  'graphCtrl',
 
                          if($scope.outputGeom[i].name === selectedNodes[j].data.name){
                              var p =0;
-                             scope.viewportControl.geometryData = [];
+                             scope.viewportControl.geometryData = {};
 
                              for(var k in $scope.outputGeom[i].value){
+                                 if(k !== 'geomList'){
+                                     scope.viewportControl.geometryData[k] = [];
+                                 }
+
                                  if($scope.outputGeom[i].value[k] !== undefined) {
                                      scope.viewportControl
                                          .addGeometryToScene($scope.outputGeom[i].value[k],
                                              $scope.outputGeom[i].geom[p],
-                                             $scope.outputGeom[i].geomData[p]);
+                                             $scope.outputGeom[i].geomData[p],k);
 
                                      scopeTopo.topoViewportControl.addGeometryToScene($scope.outputGeom[i].value[k],
                                          $scope.outputGeom[i].topo[p]);

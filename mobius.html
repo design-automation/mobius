@@ -461,19 +461,19 @@
                                 </div>
 
                                 <div ng-if="showData" class="dataViewport" >
-                                    <!--todo category re-route -->
-                                    <!--todo data table display-->
-
                                     <md-tabs flex layout="column" layout-fill>
 
                                         <md-tab ng-repeat="header in tableHeader" flex layout="column" label={{header}}
-                                            ng-click="generateDataTable(header)">
+                                                md-on-select="generateDataTable(header)">
                                             <md-tab-content flex layout-fill style="overflow: hidden!important;">
                                                 <div
-                                                    ui-grid="gridOptions"
+                                                    ng-repeat="grid in gridOptions"
+                                                    ui-grid="grid"
                                                     ui-grid-resize-columns
                                                     ui-grid-auto-resize
-                                                    class="dataGrid-main">
+                                                    class="dataGrid-main"
+                                                    style="height: 40% !important;position: relative!important;"
+                                                >
                                                 </div>
                                             </md-tab-content>
                                         </md-tab>

@@ -14,10 +14,9 @@ var dataConversion = (function(data){
                 else if(m !== 'geomList'){
                     var tempGeom = [];
                     var tempData = [];
-                    var tempTopo = []
+                    var tempTopo = [];
 
                     for (var n = 0; n < data[i].value[m].length; n++) {
-
                         extract(data[i].value[m][n],
                             tempGeom,
                             tempData,
