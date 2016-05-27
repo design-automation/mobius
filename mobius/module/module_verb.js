@@ -172,22 +172,14 @@ var MOBIUS = ( function (mod){
 		    console.log("done!");
 		    objmesh = objectmesh;
 		});*/
+		var request = new XMLHttpRequest();
+		request.open('GET', 'http://localhost/mobius/assets/data/test_model.obj', false);  // `false` makes the request synchronous
+		request.send(null);
 
-		$.getJSON( "http://localhost/mobius/assets/data/json.js", function( data ) {
-  				console.log("Loaded")
-  				objmesh = data;
-  				//init();
-			});
-
-		var count=0;
-		while(objmesh === undefined){
-			console.log("polling!", objmesh);
-			count++;
-			if(count > 100000)
-				break;
+		if (request.status === 200) {
+		  console.log(request.responseText);
+		  return "hello world";
 		}
-		console.log("spell broken!");
-		return objmesh;
 	}
 
 	mod.urb.loadGeoJSON = function( jsonOpt ){
