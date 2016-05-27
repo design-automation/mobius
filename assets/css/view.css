@@ -106,3 +106,8 @@
     top:0;
     display: inline-block;
 }
+
+
+.md-tab {
+    text-align: left !important;
+}

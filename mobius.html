@@ -461,23 +461,28 @@
                                 </div>
 
                                 <div ng-if="showData" class="dataViewport" >
-                                    <md-tabs flex layout="column" layout-fill>
-
-                                        <md-tab ng-repeat="header in tableHeader" flex layout="column" label={{header}}
-                                                md-on-select="generateDataTable(header)">
+                                    <md-tabs flex layout="column" layout-fill md-stretch-tabs="always" >
+                                        <md-tab ng-repeat="connectorName in connectorNames" flex layout="column" label={{connectorName}}
+                                                md-on-select="selectDataTable(connectorName)"  class="tab-text-left">
                                             <md-tab-content flex layout-fill style="overflow: hidden!important;">
-                                                <div
-                                                    ng-repeat="grid in gridOptions"
-                                                    ui-grid="grid"
-                                                    ui-grid-resize-columns
-                                                    ui-grid-auto-resize
-                                                    class="dataGrid-main"
-                                                    style="height: 40% !important;position: relative!important;"
-                                                >
-                                                </div>
+
+                                                    <md-tabs flex layout="column" layout-fill>
+                                                        <md-tab ng-repeat="header in tableHeader" flex layout="column" label={{header}}
+                                                                md-on-select="generateDataTable(header)">
+                                                            <md-tab-content flex layout-fill style="overflow: hidden!important;">
+                                                                <div
+                                                                ui-grid="gridOptions"
+                                                                ui-grid-resize-columns
+                                                                ui-grid-auto-resize
+                                                                class="dataGrid-main">
+                                                                </div>
+                                                            </md-tab-content>
+                                                        </md-tab>
+                                                    </md-tabs>
+
+
                                             </md-tab-content>
                                         </md-tab>
-
                                     </md-tabs>
 
                                 </div>

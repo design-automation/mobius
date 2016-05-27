@@ -13,9 +13,11 @@ mobius.controller('viewportCtrl',[
             "geometryData":{},
         };
 
-        $scope.geometryData = {};
+        $scope.geometryData = [];
 
         $scope.tableHeader = [];
+        $scope.connectorNames = [];
+
         for(var topo in MOBIUS.TOPOLOGY_DEF) {
             $scope.tableHeader.push(topo);
         }
@@ -23,85 +25,90 @@ mobius.controller('viewportCtrl',[
         $scope.currentHeader = $scope.tableHeader[0];
 
         $rootScope.$on('Update Datatable', function(){
+            generateTableStructure();
             $scope.generateDataTable( $scope.currentHeader)
         });
 
-        $scope.generateDataTable = function(header){
+        function generateTableStructure(){
+            $scope.connectorNames = [];
+            for(var connectorName in $scope.viewportControl.geometryData){
+                $scope.connectorNames.push(connectorName);
+            }
+        }
 
-            // todo create different data table
+        $scope.selectDataTable = function(connectorName){
+            $scope.currentConnector = connectorName;
+        };
+
+        $scope.generateDataTable = function(header){
+            if($scope.currentConnector === undefined){
+                $scope.currentConnector = $scope.connectorNames[0]
+            }
 
             $scope.currentHeader = header;
-            var propertyList = {};
-            var columnDefs = {};
+            var propertyList = [];
+            var columnDefs = [];
             $scope.gridOptions = [];
-            var table = {};
+            var table = [];
 
-            angular.copy($scope.viewportControl.geometryData,$scope.geometryData);
+            angular.copy($scope.viewportControl.geometryData[$scope.currentConnector],$scope.geometryData);
 
-            for(var port in $scope.geometryData){
-                propertyList[port] = [];
-                columnDefs[port] = [];
-                table[port] = [];
-
-                if(header !== undefined){
-                    for(var i = 0; i < $scope.geometryData[port].length; i++){
-                        if($scope.geometryData[port][i].cate !== header){
-                            $scope.geometryData[port].splice(i,1);
-                            i--;
-                        }
+            if(header !== undefined){
+                for(var i = 0; i < $scope.geometryData.length; i++){
+                    if($scope.geometryData[i].cate !== header){
+                        $scope.geometryData.splice(i,1);
+                        i--;
                     }
                 }
-
-                for(var i = 0; i < $scope.geometryData[port].length; i++){
-                    if($scope.geometryData[port][i].Property !== undefined){
-                        if(propertyList[port].indexOf($scope.geometryData[port][i].Property) === -1){
-                            propertyList[port].push($scope.geometryData[port][i].Property);
-                        }
-                    }
-                }
-
-                columnDefs[port] = [{ field: 'attachedTo', displayName: 'AttachedTo'}];
-
-                for(var i = 0; i < propertyList[port].length;i++){
-                    columnDefs[port].push({
-                        field:propertyList[port][i],
-                        displayName:propertyList[port][i]
-                    })
-                }
-
-                for(var i = 0; i < $scope.geometryData[port].length; i++){
-                    if(table[port].length === 0){
-                        table[port].push({attachedTo: $scope.geometryData[port][i].attachedTo});
-
-                        table[port][0][$scope.geometryData[port][i].Property]
-                            = $scope.geometryData[port][i].Value;
-                    }
-
-                    for(var j = 0; j < table[port].length; j++){
-                        if(table[port][j].attachedTo === $scope.geometryData[port][i].attachedTo ){
-                            table[port][j][$scope.geometryData[port][i].Property] = $scope.geometryData[port][i].Value;
-                            break;
-                        }else{
-                            if(j === table[port].length-1){
-                                table[port].push({attachedTo: $scope.geometryData[port][i].attachedTo});
-
-                                table[port][table[port].length-1][$scope.geometryData[port][i].Property]
-                                    = $scope.geometryData[port][i].Value;
-                            }
-                        }
-                    }
-                }
-
-                $scope.gridOptions.push( {
-                    data: "geometryData['"+ port +"']",
-                    columnDefs:columnDefs[port]
-                });
             }
+
+            for(var i = 0; i < $scope.geometryData.length; i++){
+                if($scope.geometryData[i].Property !== undefined){
+                    if(propertyList.indexOf($scope.geometryData[i].Property) === -1){
+                        propertyList.push($scope.geometryData[i].Property);
+                    }
+                }
+            }
+
+            columnDefs = [{ field: 'attachedTo', displayName: 'AttachedTo'}];
+
+            for(var i = 0; i < propertyList.length;i++){
+                columnDefs.push({
+                    field:propertyList[i],
+                    displayName:propertyList[i]
+                })
+            }
+
+            for(var i = 0; i < $scope.geometryData.length; i++){
+                if(table.length === 0){
+                    table.push({attachedTo: $scope.geometryData[i].attachedTo});
+
+                    table[0][$scope.geometryData[i].Property]
+                        = $scope.geometryData[i].Value;
+                }
+
+                for(var j = 0; j < table.length; j++){
+                    if(table[j].attachedTo === $scope.geometryData[i].attachedTo ){
+                        table[j][$scope.geometryData[i].Property] = $scope.geometryData[i].Value;
+                        break;
+                    }else{
+                        if(j === table.length-1){
+                            table.push({attachedTo: $scope.geometryData[i].attachedTo});
+
+                            table[table.length-1][$scope.geometryData[i].Property]
+                                = $scope.geometryData[i].Value;
+                        }
+                    }
+                }
+            }
+
+            $scope.gridOptions = {
+                data: "geometryData",
+                columnDefs: columnDefs
+            };
 
             $scope.geometryData = table;
         };
-
-        //$scope.gridOptions = [];
 
 
         $scope.viewportControl.layout = 'singleView';
