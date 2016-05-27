@@ -78,24 +78,32 @@ mobius.controller('executeCtrl',['$scope','$rootScope','$q','executeService','co
                         var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
 
                         for(var i = 0; i < $scope.outputs.length; i++){
-
                             for(var j =0; j < selectedNodes.length; j++){
                                 if($scope.outputs[i].name === selectedNodes[j].data.name){
 
                                     var p = 0;
+                                    scope.viewportControl.geometryData = {};
 
                                     for(var k in $scope.outputs[i].value){
-                                        scope.viewportControl.addGeometryToScene($scope.outputs[i].value[k],
-                                            $scope.outputs[i].geom[p],
-                                            $scope.outputs[i].geomData[p]);
+                                        // store selected node's output connector name for data table display
+                                        if(k !== 'geomList'){
+                                            scope.viewportControl.geometryData[k] = [];
+                                        }
 
-                                        scopeTopo.topoViewportControl.addGeometryToScene($scope.outputs[i].value[k],
-                                            $scope.outputs[i].topo[p]);
+                                        if($scope.outputs[i].value[k] !== undefined){
+                                            scope.viewportControl.addGeometryToScene($scope.outputs[i].value[k],
+                                                $scope.outputs[i].geom[p],
+                                                $scope.outputs[i].geomData[p],k);
+
+                                            scopeTopo.topoViewportControl.addGeometryToScene($scope.outputs[i].value[k],
+                                                $scope.outputs[i].topo[p]);
+                                        }
                                         p++;
                                     }
                                 }
                             }
                         }
+                        $rootScope.$broadcast('Update Datatable');
                     });
             },100);
         }

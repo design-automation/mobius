@@ -10,15 +10,105 @@ mobius.controller('viewportCtrl',[
         $scope.topoViewportControl = {};
 
         $scope.viewportControl = {
-            "geometryData":[]
+            "geometryData":{},
         };
 
-        $scope.gridOptions = {data: 'viewportControl.geometryData',
-                            columnDefs:
-                                [{ field: 'Property', displayName: 'Property'},
-                                { field: 'Value', displayName: 'Value'},
-                                { field: 'attachedTo', displayName: 'AttachedTo'}]};
+        $scope.geometryData = [];
 
+        $scope.tableHeader = [];
+        $scope.connectorNames = [];
+
+        for(var topo in MOBIUS.TOPOLOGY_DEF) {
+            $scope.tableHeader.push(topo);
+        }
+        $scope.tableHeader.push('object');
+        $scope.currentHeader = $scope.tableHeader[0];
+
+        $rootScope.$on('Update Datatable', function(){
+            generateTableStructure();
+            $scope.generateDataTable( $scope.currentHeader)
+        });
+
+        function generateTableStructure(){
+            $scope.connectorNames = [];
+            for(var connectorName in $scope.viewportControl.geometryData){
+                $scope.connectorNames.push(connectorName);
+            }
+        }
+
+        $scope.selectDataTable = function(connectorName){
+            $scope.currentConnector = connectorName;
+        };
+
+        $scope.generateDataTable = function(header){
+            if($scope.currentConnector === undefined){
+                $scope.currentConnector = $scope.connectorNames[0]
+            }
+
+            $scope.currentHeader = header;
+            var propertyList = [];
+            var columnDefs = [];
+            $scope.gridOptions = [];
+            var table = [];
+
+            angular.copy($scope.viewportControl.geometryData[$scope.currentConnector],$scope.geometryData);
+
+            if(header !== undefined){
+                for(var i = 0; i < $scope.geometryData.length; i++){
+                    if($scope.geometryData[i].cate !== header){
+                        $scope.geometryData.splice(i,1);
+                        i--;
+                    }
+                }
+            }
+
+            for(var i = 0; i < $scope.geometryData.length; i++){
+                if($scope.geometryData[i].Property !== undefined){
+                    if(propertyList.indexOf($scope.geometryData[i].Property) === -1){
+                        propertyList.push($scope.geometryData[i].Property);
+                    }
+                }
+            }
+
+            columnDefs = [{ field: 'attachedTo', displayName: 'AttachedTo'}];
+
+            for(var i = 0; i < propertyList.length;i++){
+                columnDefs.push({
+                    field:propertyList[i],
+                    displayName:propertyList[i]
+                })
+            }
+
+            for(var i = 0; i < $scope.geometryData.length; i++){
+                if(table.length === 0){
+                    table.push({attachedTo: $scope.geometryData[i].attachedTo});
+
+                    table[0][$scope.geometryData[i].Property]
+                        = $scope.geometryData[i].Value;
+                }
+
+                for(var j = 0; j < table.length; j++){
+                    if(table[j].attachedTo === $scope.geometryData[i].attachedTo ){
+                        table[j][$scope.geometryData[i].Property] = $scope.geometryData[i].Value;
+                        break;
+                    }else{
+                        if(j === table.length-1){
+                            table.push({attachedTo: $scope.geometryData[i].attachedTo});
+
+                            table[table.length-1][$scope.geometryData[i].Property]
+                                = $scope.geometryData[i].Value;
+                        }
+                    }
+                }
+            }
+
+            $scope.gridOptions = {
+                data: "geometryData",
+                columnDefs: columnDefs
+            };
+
+            $scope.geometryData = table;
+        };
 
 
         $scope.viewportControl.layout = 'singleView';

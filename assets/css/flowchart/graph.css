@@ -211,8 +211,6 @@ The element (in this case the SVG element) that contains the draggable elements.
 */
 
 .draggable-container {
-	border: solid 5px #aaaaaa;
-	border-radius: 0 !important;
 }
 
 /*
@@ -230,8 +228,8 @@ Drag selection rectangle.
 
 /*canvas background*/
 .background{
-	stroke-width:1;
-	stroke:black;
+	stroke-width:px;
+	stroke:#000000;
 	fill:url(#dots-4-11);
 	overflow: hidden;
 }
@@ -239,4 +237,5 @@ Drag selection rectangle.
 #node-creator{
 	width:180px;
 	cursor: default !important;
+	display: none;
 }

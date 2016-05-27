@@ -4,6 +4,7 @@
 
 mobius.controller(  'graphCtrl',
                     ['$scope',
+                    '$rootScope',
                     '$timeout',
                     'consoleMsg',
                     'hotkeys',
@@ -12,7 +13,7 @@ mobius.controller(  'graphCtrl',
                     'prompt',
                     '$mdDialog',
                     'History',
-    function($scope,$timeout,consoleMsg,hotkeys,generateCode,nodeCollection,prompt,$mdDialog, History) {
+    function($scope,$rootScope,$timeout,consoleMsg,hotkeys,generateCode,nodeCollection,prompt,$mdDialog, History) {
 
         // temp holder for name input
         // todo seperated service for hotkeys
@@ -56,6 +57,7 @@ mobius.controller(  'graphCtrl',
         // watch chartViewModel.data instead of chartViewModel to prevent stack limit exceeded
         $scope.chartViewModel = generateCode.getChartViewModel();
 
+        // fixme confirm socket usage
         $scope.$watch(function(){return generateCode.getChartViewModel()},function(){
             $scope.dataList = generateCode.getDataList();
             $scope.interfaceList= generateCode.getInterfaceList();
@@ -173,6 +175,7 @@ mobius.controller(  'graphCtrl',
 
                  scope.$apply(function(){scope.viewportControl.refreshView();} );
                  scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
+                 scopeTopo.$apply(function(){scopeTopo.viewportControl.refreshData();} );
              }
 
              function displayGeometry(){
@@ -190,22 +193,30 @@ mobius.controller(  'graphCtrl',
 
                          if($scope.outputGeom[i].name === selectedNodes[j].data.name){
                              var p =0;
+                             scope.viewportControl.geometryData = {};
+
                              for(var k in $scope.outputGeom[i].value){
+                                 if(k !== 'geomList'){
+                                     scope.viewportControl.geometryData[k] = [];
+                                 }
+
+                                 if($scope.outputGeom[i].value[k] !== undefined) {
                                      scope.viewportControl
                                          .addGeometryToScene($scope.outputGeom[i].value[k],
-                                         $scope.outputGeom[i].geom[p],
-                                         $scope.outputGeom[i].geomData[p]);
+                                             $scope.outputGeom[i].geom[p],
+                                             $scope.outputGeom[i].geomData[p],k);
 
-                                     scopeTopo.topoViewportControl.
-                                         addGeometryToScene($scope.outputGeom[i].value[k],
+                                     scopeTopo.topoViewportControl.addGeometryToScene($scope.outputGeom[i].value[k],
                                          $scope.outputGeom[i].topo[p]);
+                                 }
                                  p ++;
                              }
                          }
                      }
                  }
              }
-         });
+            $rootScope.$broadcast('Update Datatable');
+        });
 
         // Add an input connector to selected nodes.
         $scope.$on("newInputConnector",function (event,connectorModel) {
@@ -470,15 +481,18 @@ mobius.controller(  'graphCtrl',
         $scope.$on('openSubGraph',function(){
             generateCode.openNewChart($scope.chartViewModel.nodes[$scope.nodeIndex].data);
             $scope.$emit('clearProcedure');
+            $scope.$broadcast('Extend');
         });
 
         $scope.goRoot = function(){
             generateCode.goRoot();
             $scope.$emit('clearProcedure');
+            $scope.$broadcast('Extend');
         };
 
         $scope.changeGraphView = function(index){
             generateCode.changeGraphView(index);
             $scope.$emit('clearProcedure');
+            $scope.$broadcast('Extend');
         };
     }]);

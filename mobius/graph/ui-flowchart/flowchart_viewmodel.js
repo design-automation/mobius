@@ -1044,16 +1044,37 @@ var flowchart = {};
 					var node = selectedNodes[i];
 					node.data.x += deltaX;
 					node.data.y += deltaY;
+
+					if(node.data.x < 0){
+						node.data.x = 0;
+					}
+
+					if(node.data.y < 0){
+						node.data.y = 0;
+					}
 				}
 			}else{
 				// update position for input/output port
 				if(this.inputPort.selected()){
 					this.inputPort.data.x += deltaX;
 					this.inputPort.data.y += deltaY;
+					if(this.inputPort.data.x < 0){
+						this.inputPort.data.x = 0;
+					}
+					if(this.inputPort.data.y <0 ){
+						this.inputPort.data.y = 0;
+					}
 				}
 				if(this.outputPort.selected()){
 					this.outputPort.data.x += deltaX;
 					this.outputPort.data.y += deltaY;
+
+					if(this.outputPort.data.x < 0){
+						this.outputPort.data.x = 0;
+					}
+					if(this.outputPort.data.y <0 ){
+						this.outputPort.data.y = 0;
+					}
 				}
 			}
 		};
@@ -1526,7 +1547,7 @@ var flowchart = {};
 
 		//
 		// Get the array of connections that are currently selected.
-		// fixme should i leave or should i stay
+		// fixme refactor
 		this.getSelectedConnections = function () {
 			var selectedConnections = [];
 
@@ -1542,7 +1563,7 @@ var flowchart = {};
 
 		//
 		// @ mobius get the array of input connectors that currently selected.
-		// fixme should i leave or should i stay
+		// fixme refactor
 		this.getSelectedInputConnectors = function () {
 			var selectedInputConnector = [];
 
@@ -1561,7 +1582,7 @@ var flowchart = {};
 
 		//
 		// @ mobius get the array of output connectors that currently selected.
-		// fixme should i leave or should i stay
+		// fixme refactor
 		this.getSelectedOutputConnectors = function () {
 			var selectedOutputConnector = [];
 
@@ -1576,6 +1597,53 @@ var flowchart = {};
 			}
 
 			return selectedOutputConnector;
+		};
+
+		this.calculateExtendView = function(){
+			var view = {}, sumX = 0, sumY = 0, xList = [], yList = [],length = this.nodes.length;
+
+			for(var i = 0; i < length;i++){
+				xList.push(this.nodes[i].data.x);
+				yList.push(this.nodes[i].data.y);
+
+				sumX += this.nodes[i].data.x;
+				sumY += this.nodes[i].data.y;
+			}
+
+			if(this.inputPort){
+				sumX += this.inputPort.data.x;
+				sumY += this.inputPort.data.y;
+				xList.push(this.inputPort.data.x);
+				yList.push(this.inputPort.data.y);
+				length ++;
+			}
+
+			if(this.outputPort){
+				//sumX += this.outputPort.data.x;
+				//sumY += this.outputPort.data.y;
+				xList.push(this.outputPort.data.x);
+				yList.push(this.outputPort.data.y);
+				//length ++;
+			}
+
+			var minX = Math.min.apply(Math, xList);
+			var maxX = Math.max.apply(Math, xList);
+			var minY = Math.min.apply(Math, yList);
+			var maxY = Math.max.apply(Math, yList);
+
+			//view.x = sumX / length;
+			//view.y = sumY / length;
+
+			view.x = minX;
+			view.y = minY;
+
+			view.width = (maxX - minX)*1.25 + 50;
+			view.height = (maxY - minY)*1.25 + 50;
+
+			view.width <100 ? view.width = 100 : view.width = view.width;
+			view.height <100 ? view.height = 100 : view.height = view.height;
+
+			return view;
 		};
 	};
 

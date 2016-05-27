@@ -20,7 +20,6 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
         });
 
         // create new scene
-
         $scope.newScene = function () {
             $mdDialog.show({
                 controller: DialogController,
@@ -53,6 +52,7 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
 
             function newScene(){
                 $rootScope.$broadcast('clearProcedure');
+                $rootScope.$broadcast('Extend');
 
                 // reset procedure / interface / graph and refresh viewport
                 generateCode.setChartViewModel(new flowchart.ChartViewModel({
@@ -153,6 +153,8 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                         scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
                        // $rootScope.$broadcast('runNewScene');
                     },0);
+
+                    $rootScope.$broadcast('Extend');
                 }
             );
         };
@@ -231,6 +233,7 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                         consoleMsg.errorMsg('invalidFileType');
                     }
                     generateCode.generateCode();
+                    $rootScope.$broadcast('Extend');
                 };
             })(f);
 
@@ -308,7 +311,6 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
 
             $scope.nodeLibUrl = URL.createObjectURL(typesBlob);
         };
-
 
         // import node library to current local storage
         $scope.importNodeLib = function(files){

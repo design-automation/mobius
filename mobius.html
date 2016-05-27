@@ -460,12 +460,31 @@
                                     </div>
                                 </div>
 
-                                <div ng-if="showData" class="dataViewport">
-                                    <div ui-grid="gridOptions"
-                                         ui-grid-resize-columns
-                                         ui-grid-auto-resize
-                                         class="dataGrid-main">
-                                    </div>
+                                <div ng-if="showData" class="dataViewport" >
+                                    <md-tabs flex layout="column" layout-fill md-stretch-tabs="always" >
+                                        <md-tab ng-repeat="connectorName in connectorNames" flex layout="column" label={{connectorName}}
+                                                md-on-select="selectDataTable(connectorName)"  class="tab-text-left">
+                                            <md-tab-content flex layout-fill style="overflow: hidden!important;">
+
+                                                    <md-tabs flex layout="column" layout-fill>
+                                                        <md-tab ng-repeat="header in tableHeader" flex layout="column" label={{header}}
+                                                                md-on-select="generateDataTable(header)">
+                                                            <md-tab-content flex layout-fill style="overflow: hidden!important;">
+                                                                <div
+                                                                ui-grid="gridOptions"
+                                                                ui-grid-resize-columns
+                                                                ui-grid-auto-resize
+                                                                class="dataGrid-main">
+                                                                </div>
+                                                            </md-tab-content>
+                                                        </md-tab>
+                                                    </md-tabs>
+
+
+                                            </md-tab-content>
+                                        </md-tab>
+                                    </md-tabs>
+
                                 </div>
                             </div>
                         </div>
@@ -546,7 +565,6 @@
                                     </div>
                                 </div>
 
-
                                 <span ng-controller="executeCtrl" id="run-button">
                                     <span us-spinner
                                           spinner-on="showSpinner"
@@ -574,7 +592,8 @@
                                 <div ng-controller="znpController" class="znpController">
                                     <panzoom config="panzoomConfig"
                                              model="panzoomModel"
-                                             class="panzoom">
+                                             class="panzoom"
+                                             id="PanZoom">
                                         <div id="canvas">
                                             <flow-chart chart="chartViewModel" class = "flow-chart">
                                             </flow-chart>

@@ -919,20 +919,21 @@ mobius.directive('viewport', function factory() {
                 }
             };
 
+            scope.internalControl.refreshData = function(){
+                scope.internalControl.geometryData = [];
+            };
+
             //
             // supporting function for geometry from verb to three.js
             //
-            // fixme geom here is not used
-            scope.internalControl.addGeometryToScene = function(geom,value,geomData){
-                scope.internalControl.geometryData = [{Property:'', Value:'',attachedTo:''}];
-
+            scope.internalControl.addGeometryToScene = function(geom,value,geomData,connectorName){
                 if(value !== undefined){
                     if(value.constructor === Array){
                         for(var i = 0; i< value.length ;i++){
-                            scope.internalControl.displayObject(value[i],geomData[i]);
+                            scope.internalControl.displayObject(value[i],geomData[i],connectorName);
                         }
                     } else {
-                        scope.internalControl.displayObject(value,geomData);
+                        scope.internalControl.displayObject(value,geomData,connectorName);
                     }
                 }
 
@@ -948,7 +949,7 @@ mobius.directive('viewport', function factory() {
             //
             // takes in single data object and categorizes and displays accordingly
             //
-            scope.internalControl.displayObject = function(singleGeomObject, singleGeomDataObject){
+            scope.internalControl.displayObject = function(singleGeomObject, singleGeomDataObject,connectorName){
                 // update the 3d viewport
                 if(singleGeomObject instanceof THREE.Mesh
                     || singleGeomObject instanceof THREE.Line
@@ -958,7 +959,7 @@ mobius.directive('viewport', function factory() {
                 }
                 // update the data table viewport
                 if(singleGeomDataObject.length !== 0){
-                    scope.internalControl.geometryData = scope.internalControl.geometryData.concat(singleGeomDataObject);
+                    scope.internalControl.geometryData[connectorName] = scope.internalControl.geometryData[connectorName].concat(singleGeomDataObject);
                 }
             };
         }
