@@ -129,6 +129,7 @@ var MOBIUS = ( function (mod){
 			{ "type": "Feature", "properties": { "gml_id": "re_einwohnerdichte2013.0100980081000200", "spatial_name": "0100980081000200", "spatial_alias": "0100980081000200", "spatial_type": "Polygon", "EW2013": "426", "EW2012": "424", "EW2011": "419", "EW2010": "419", "HA2013": "1.42", "EW_HA2013": "299", "EW_HA2012": "298", "EW_HA2011": "294", "EW_HA2010": "294" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 13.377571189449384, 52.530788094279181 ], [ 13.378476850236677, 52.531146341855113 ], [ 13.37887320025348, 52.531282099941777 ], [ 13.37923553274225, 52.531414324912788 ], [ 13.378734105433724, 52.53180421919911 ], [ 13.379209418789348, 52.532023173231288 ], [ 13.379583124477398, 52.532151961067107 ], [ 13.3793073762546, 52.532363620532443 ], [ 13.377989239661233, 52.53189122447916 ], [ 13.3777425587134, 52.531786911505172 ], [ 13.37668752231995, 52.531399492146839 ], [ 13.377042414684967, 52.531129083003449 ], [ 13.377417706757656, 52.53084312556733 ], [ 13.377485840505814, 52.530832890431284 ], [ 13.377525570742078, 52.530829514219299 ], [ 13.377571189449384, 52.530788094279181 ] ] ] } }
 			]}
 
+
 	//
 	//
 	//loadGeoJSON
@@ -141,14 +142,64 @@ var MOBIUS = ( function (mod){
 	//	makeComposite
 	mod.urb = {};
 
+	mod.urb.loadObj = function(){
+		
+		var objmesh;
+		// instantiate a loader
+	    var objLoader = new THREE.OBJLoader();
+		//'http://localhost/mobius/assets/data/test_model.obj'
+/*	    objLoader.setPath( "http://threejs.org/examples/obj/walt/" );
+		objLoader.load( 'WaltHead.obj', function ( objectmesh ) {
+		//objLoader.setPath( "http://localhost/mobius/assets/data/" );
+		//objLoader.load( 'test_model.obj', function ( objectmesh ) {
+			console.log(objmesh);
+			objmesh.scale.x = 0.1;
+			objmesh.scale.y = 0.1;
+			objmesh.scale.z = 0.1;
+			objmesh.translateX(-1300);
+			objmesh.translateY(-2200);
+			objmesh = new mObj_geom_Solid(objmesh);
+			console.log(objmesh);
+		    //return objmesh;
+		    scene.add( mesh );
+		    console.log("done!");
+		    objmesh = objectmesh;
+		});*/
+
+		$.getJSON( "http://localhost/mobius/assets/data/json.js", function( data ) {
+  				console.log("Loaded")
+  				objmesh = data;
+  				//init();
+			});
+
+		var count=0;
+		while(objmesh === undefined){
+			console.log("polling!", objmesh);
+			count++;
+			if(count > 100000)
+				break;
+		}
+		console.log("spell broken!");
+		return objmesh;
+	}
+
 	mod.urb.loadGeoJSON = function( jsonOpt ){
-		console.log( "Geojson is defiened", geojsondata );
+
+/*		$.getJSON( "json.js", function( data ) {
+  				console.log("Loading....")
+  				json = data;
+  				init();
+			});*/
+
+		console.log( "Geojson is defined", geojsondata );
 		if (jsonOpt == 1)
 			return new mObj_data( 'geojson', json1);
 		if (jsonOpt == 2)
 			return new mObj_data( 'geojson', json2);
 		if (jsonOpt == 3)
 			return new mObj_data( 'geojson', geojsondata);
+		if (jsonOpt == 4)
+			return new mObj_data( 'geojson', json3);
 		
 	};
 
@@ -321,6 +372,8 @@ var MOBIUS = ( function (mod){
 
 		// extrude path later to extrude along different directions
 
+		// can do it only if surface is a shape
+
 		var extrusionSettings = {
 			amount: yDistance, 
 			size: 1, height: 1, curveSegments: 3,
@@ -329,6 +382,18 @@ var MOBIUS = ( function (mod){
 		};
 
 		var exGeom = new THREE.ExtrudeGeometry( surface.getGeometry(), extrusionSettings );
+
+		var m = new THREE.Matrix4();
+		var arr = [];
+		var frameArr = frame.toLocal();
+		for(var i=0; i<4; i++){
+			for(var j=0; j<4; j++)
+				arr.push(frameArr[j][i]);
+		}
+
+		m.fromArray(arr)
+
+		exGeom.applyMatrix( m );
 
 		return new mObj_geom_Solid( exGeom );
 
@@ -382,14 +447,12 @@ var MOBIUS = ( function (mod){
 		//console.log(shape);
 
 		// check that this shouldn't have curves.length == 0
+		shape.frame = frame; 
 		return new mObj_geom_Surface( shape ) ;
 	};
 
 	mod.srf.offset = function( surface, offset, scale ){
 
-		//var poly = polygon.getGeometry() // this is a THREE.Shape object
-
-		// convert the poly into Clipper.Path
 		//
 		//
 		//	convert jsclipper path to shape in three.js 
@@ -423,14 +486,13 @@ var MOBIUS = ( function (mod){
 
 			var subj = new ClipperLib.Paths();	
 			subj[0] = shape.actions.map( function( a ){
-						//console.log(a.args == undefined);
+
 						return { "X": a.args[0], "Y": a.args[1] }
 			});
-			//[{"X":348,"Y":257},{"X":364,"Y":148},{"X":362,"Y":148},{"X":326,"Y":241},{"X":295,"Y":219},{"X":258,"Y":88},{"X":440,"Y":129},{"X":370,"Y":196},{"X":372,"Y":275}];
+			
 			return subj;
 		}
 
-		//var subj = new ClipperLib.Paths();
 		var solution = new ClipperLib.Paths();
 		//subj is an array
 		var subj = convertShapeToPath( surface.getGeometry() ); 
@@ -446,8 +508,9 @@ var MOBIUS = ( function (mod){
 		if(solution.length == 0)
 			return null;
 		else{
-			//draw solution with your own drawing function...
+			
 			var result = convertPathToShape( solution ); 
+			result.frame = surface.getGeometry().frame;
 
 			return new mObj_geom_Surface( result ); //result is a three.js shape			
 		}
@@ -822,16 +885,25 @@ var MOBIUS = ( function (mod){
 			return object;
 		}
 
+		var getCopy = function(obj){
+
+			if(obj instanceof THREE.Geometry)
+				return obj.clone();
+			else
+				return obj;
+		}
+
 		// fix: make this into one line code with 'eval'
 		var newcopy;
 		if(object instanceof mObj_geom_Vertex)
-			newcopy = new mObj_geom_Vertex( object.getGeometry() );
+			newcopy = new mObj_geom_Vertex( getCopy(object.getGeometry()) );
 		else if(object instanceof mObj_geom_Curve)
-			newcopy = new mObj_geom_Curve( object.getGeometry() );
+			newcopy = new mObj_geom_Curve( getCopy(object.getGeometry()) );
 		else if(object instanceof mObj_geom_Surface)
-			newcopy = new mObj_geom_Surface( object.getGeometry() );
-		else if(object instanceof mObj_geom_Solid)
-			newcopy = new mObj_geom_Solid( object.getGeometry() );
+			newcopy = new mObj_geom_Surface( getCopy(object.getGeometry()) );
+		else if(object instanceof mObj_geom_Solid){
+			newcopy = new mObj_geom_Solid( getCopy(object.getGeometry()) );
+		}
 
 		newcopy.setData( object.getData() );
 		newcopy.setMaterial( object.getMaterial() );	
@@ -981,11 +1053,12 @@ var MOBIUS = ( function (mod){
 							[ 0, 0, -1, 0],
 								[0, 0, 0, 1]
 					];
-						
+		
 
-		geom = geom.transform( frame.toGlobal() );
-		geom = geom.transform( trnMat ); 
-		geom = geom.transform( frame.toLocal() );
+
+		geom.applyMatrix( getThreeMatrix(frame.toGlobal()) );
+		geom.applyMatrix( getThreeMatrix(trnMat) ); 
+		geom.applyMatrix( getThreeMatrix(frame.toLocal()) );
 		
 		object.setGeometry( geom ); 
 
@@ -1041,13 +1114,13 @@ var MOBIUS = ( function (mod){
 		}
 		
 
-		geom = geom.transform( frame.toGlobal() );
+		geom.applyMatrix( getThreeMatrix(frame.toGlobal()) );
 
-		geom = geom.transform( getRotationMatrix([0,0,1], angleZ) );
-		geom = geom.transform( getRotationMatrix([0,1,0], angleY) );
-		geom = geom.transform( getRotationMatrix([1,0,0], angleX) );
+		geom.applyMatrix( getThreeMatrix(getRotationMatrix([0,0,1], angleZ)) );
+		geom.applyMatrix( getThreeMatrix(getRotationMatrix([0,1,0], angleY)) );
+		geom.applyMatrix( getThreeMatrix(getRotationMatrix([1,0,0], angleX)) );
 				
-		geom = geom.transform( frame.toLocal() );
+		geom.applyMatrix( frame.toLocal() );
 		
 		object.setGeometry( geom ); 
 
@@ -1093,9 +1166,9 @@ var MOBIUS = ( function (mod){
 								[ 0, 0, 0, 1 ]
 					];
 			
-		geom = geom.transform( frame.toGlobal() );
-		geom = geom.transform( trnMat );
-		geom = geom.transform( frame.toLocal() );
+		geom.applyMatrix( getThreeMatrix(frame.toGlobal()) );
+		geom.applyMatrix( getThreeMatrix(trnMat) );
+		geom.applyMatrix( getThreeMatrix(frame.toLocal()) );
 	
 		object.setGeometry( geom ); 
 
@@ -1117,8 +1190,8 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.trn.shift = function(object, frame, shiftX, shiftY, shiftZ, copy){
 
-		if (object instanceof mObj_geom_Solid)
-			object = object.getGeometry();
+		if( copy )
+			object = MOBIUS.obj.copy( object );
 
 		if (object instanceof Array){
 
@@ -1130,23 +1203,27 @@ var MOBIUS = ( function (mod){
 			return newobject;
 		}
 		
-		if( copy )
-			object = MOBIUS.obj.copy( object );
-
 		var geom = object.getGeometry();
+		if(geom instanceof THREE.ExtrudeGeometry){
+			geom.boundingBox = new THREE.Box3();			
+			geom.boundingSphere = new THREE.Sphere();
+			geom.morphTargets = [];
+			geom.morphNormals = [];
+			geom.skinIndices = [];
+			geom.skinWeights = [];
+		}
 
 		var trnMat = [ [ 1, 0, 0, shiftX ], 
 							[ 0, 1, 0, shiftY ], 
 								[ 0, 0, 1, shiftZ ], 
 									[ 0, 0, 0, 1 ]
 					 	] 
-	
-		geom = geom.transform( frame.toGlobal() );
-		geom = geom.transform( trnMat );
-		geom = geom.transform( frame.toLocal() );
-		
-		object.setGeometry( geom ); 
 
+		//geom.applyMatrix( getThreeMatrix(frame.toGlobal()) );
+	    //geom.applyMatrix( getThreeMatrix(trnMat ) );
+		//geom.applyMatrix( getThreeMatrix(frame.toLocal()) );
+		geom.translate(shiftX, shiftY, shiftZ);
+		console.log(object);
 		return object;
 		
 	};
@@ -1528,23 +1605,34 @@ var convertGeomToThree = function( geom ){
 	// internal function
 	var convertToThree = function(singleDataObject){
 
-		if( singleDataObject instanceof THREE.Mesh )
+		if( singleDataObject instanceof THREE.Mesh || singleDataObject instanceof THREE.Line || singleDataObject instanceof THREE.Group)
 			return singleDataObject;
 		else if( singleDataObject instanceof THREE.Shape ){
-			//console.log("Shape -> Geometry")
-			//console.log(new THREE.Mesh(new THREE.ShapeGeometry(singleDataObject)));
-			return new THREE.Mesh(new THREE.ShapeGeometry(singleDataObject));
+			//
+			//	Changes shape according to frame
+			//
+			var m = new THREE.Matrix4();
+			var arr = [];
+			var frame = singleDataObject.frame.toLocal();
+			for(var i=0; i<4; i++){
+				for(var j=0; j<4; j++)
+					arr.push(frame[j][i]);
+			}
+			m.fromArray(arr);
+			var shapeGeom = new THREE.ShapeGeometry(singleDataObject);
+			shapeGeom.applyMatrix( m );
+			return new THREE.Mesh(shapeGeom);
 		}
 		else if(singleDataObject instanceof THREE.Geometry)
 			return new THREE.Mesh( singleDataObject );
-/*		else if(singleDataObject instanceof Array){
+		else if(singleDataObject instanceof Array){
 			if(singleDataObject[0] instanceof THREE.Mesh)
 				return singleDataObject;
 			// means it is a point
 			var dotGeometry = new THREE.Geometry();
-			dotGeometry.vertices.push( new THREE.Vector3(singleDataObject[0], singleDataObject[1], singleDataObject[2]) ); console.log("here");
-			return new THREE.PointCloud( dotGeometry );
-		}*/
+			dotGeometry.vertices.push( new THREE.Vector3(singleDataObject[0], singleDataObject[1], singleDataObject[2]) );
+			return new THREE.Points( dotGeometry ); 
+		}
 		else {
 			console.log("Module doesnt recognise either!", singleDataObject);
 		}
@@ -1560,18 +1648,314 @@ var convertGeomToThree = function( geom ){
 //
 var convertTopoToThree = function( topology ){
 
-	return topology;
+	var topo = new THREE.Object3D();
 
+	// convert vertices
+	var topoPointMaterial = new THREE.PointsMaterial( { size: 5, sizeAttenuation: false, color:0xCC3333 } );
+	var dotGeometry = new THREE.Geometry(); 
+	for(var v = 0; v < topology.vertices.length; v++){
+		var vertice = topology.vertices[v];
+		dotGeometry.vertices.push( new THREE.Vector3( vertice.x, vertice.y, vertice.z) ); 
+	}
+	var allVertices = new THREE.Points( dotGeometry, topoPointMaterial ); 
+	topo.add(allVertices);
+
+ 	
+	// convert edges
+	var topoEdgeMaterial = new THREE.LineBasicMaterial({
+							    side: THREE.DoubleSide,
+							    linewidth: 100,
+							    color: 0x000000
+							    });
+	for(var e = 0; e < topology.edges.length; e++){ 
+		var edge = topology.edges[e]; 
+		if(edge instanceof THREE.Object3D)
+			topo.add(edge);
+		else
+			topo.add(edge.extractThreeGeometry());
+
+	} 
+
+	// convert faces
+	var topoSurfaceMaterial = new THREE.MeshLambertMaterial( {
+									    side: THREE.DoubleSide,
+									    wireframe: false,
+									    transparent: false,
+									    color: 0x6666FF
+									    } );
+
+	for(var f = 0; f < topology.faces.length; f++){ 
+		var face = convertGeomToThree(topology.faces[f].getGeometry());
+		
+		face.material = topoSurfaceMaterial;
+		if(face.geometry.vertices!=undefined && face.geometry.faces!=undefined){
+
+			var material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
+
+			topo.add(face);
+		}
+			
+	} 
+
+
+	return topo;
 }
 
 //
-//	Takes native geometry ( geometry from module ) and converts it into native topology - edges, faces, vertices
+//	Takes native geometry ( geometry from module ) and converts it into mobius topology - edges, faces, vertices
 //
 var computeTopology = function( mObj ){
+	
+	var geom = mObj.getGeometry(); // THREE.Geometry 
+	var topology = {};
 
-	return mObj;
+
+	if(mObj instanceof mObj_geom_Vertex){
+
+		// no further setting of topology needed
+		topology.vertices = [];
+		topology.edges = [];
+		topology.faces = [];
+	}
+	else if(mObj instanceof mObj_geom_Curve){
+
+		// no further topology setting needed
+		topology.vertices = [];
+		for(var i=0; i<mObj.extractThreeGeometry().geometry.vertices.length; i++){
+			topology.vertices.push(new mObj_geom_Vertex([mObj.extractThreeGeometry()[i].geometry.vertices.x, 
+														mObj.extractThreeGeometry()[i].geometry.vertices.y, 
+														mObj.extractThreeGeometry()[i].geometry.vertices.z]));   // THREE.Vector3
+		}
+		topology.edges = [ mObj ];
+		topology.faces = [];
+	}	
+	else if(mObj instanceof mObj_geom_Surface){
+
+		// first compute vertices - create vertex objects
+		// use vertice objects to set topology of the edges
+		topology.vertices = []; 
+		for(var i=0; i<mObj.extractThreeGeometry().geometry.vertices.length; i++){
+			topology.vertices.push(new mObj_geom_Vertex([mObj.extractThreeGeometry().geometry.vertices[i].x, 
+														mObj.extractThreeGeometry().geometry.vertices[i].y, 
+														mObj.extractThreeGeometry().geometry.vertices[i].z]));
+		}
+
+		if(mObj.getGeometry() instanceof THREE.Shape){
+			topology.edges = mObj.getGeometry().curves.map( function(e){
+				
+				var geometry = new THREE.Geometry();
+				geometry.vertices.push(
+					new THREE.Vector3(e.v1.x, e.v1.y, 0),
+					new THREE.Vector3(e.v2.x, e.v2.y, 0)
+				);
+				var line = new THREE.Line( geometry );
+
+				return new mObj_geom_Curve(line); 
+			});			
+		}
+		else
+			topology.edges = new THREE.EdgesHelper( mObj.extractThreeGeometry(), 0x00ff00 );
+
+		topology.faces = [ mObj ];
+
+	}	
+	else if(mObj instanceof mObj_geom_Solid){
+
+		console.log("Computing topology of solid");
+
+		topology.vertices = [];
+		var geometry = mObj.getGeometry()
+		for(var i=0; i< geometry.vertices.length; i++){
+			topology.vertices.push(new mObj_geom_Vertex([ geometry.vertices[i].x, 
+															geometry.vertices[i].y, 
+																geometry.vertices[i].z]));
+		}
+		
+		topology.edges = [];
+		var topoEdgeCombinations = {};
+
+		// figuring out the faces for a geometry
+		var normals = [];
+
+		var vertices = geometry.vertices;
+
+		for(var f=0; f<geometry.faces.length; f++){   
+
+			var o= normals[geometry.faces[f].normal.x.toString()+geometry.faces[f].normal.y.toString()+geometry.faces[f].normal.z.toString()]; 
+			//console.log(o);
+			
+			if(o==undefined) 	
+				normals[geometry.faces[f].normal.x.toString()+geometry.faces[f].normal.y.toString()+geometry.faces[f].normal.z.toString()] = []
+
+			normals[geometry.faces[f].normal.x.toString()+geometry.faces[f].normal.y.toString()+geometry.faces[f].normal.z.toString()].push([geometry.faces[f].a, geometry.faces[f].b, geometry.faces[f].c] );
+
+		}
+
+		var finalFaces = []; 
+		var keys = Object.keys(normals);
+
+		for(var k=0; k < keys.length; k++){
+			key = keys[k];
+			//console.log(key);
+			var faces = normals[key];
+			var geom = new THREE.Geometry();
+
+			geom.vertices = []; 
+			geom.faces = [];
+			var vert_map = {};
+
+			var face_topo = {};
+			face_topo.vertices = [];
+			face_topo.edges = [];
+			face_topo.faces = [];
+
+			var connections = [];
+
+			faces.map( function(face){
+
+				for(var c=0; c<3; c++){
+					
+					// if vertex doesn't exist, add the vertex in this geometry
+					if(vert_map[face[c]] == undefined){
+						vert_map[face[c]] = geom.vertices.length; 
+						geom.vertices.push( vertices[face[c]]);
+
+						face_topo.vertices.push(topology.vertices[face[c]]); 
+
+					}
+					
+					face[c] = vert_map[face[c]]; // index of corresponding vertex in this geometry					
+				}
+
+				geom.faces.push(new THREE.Face3(face[0], face[1], face[2]));
+				
+				connections.push([face[0], face[1]]);
+				connections.push([face[0], face[2]]);
+				connections.push([face[1], face[2]]);			
+				
+			});
+
+			geom.computeFaceNormals();
+
+			var arr = {};
+			for (c in connections){ 
+				if(arr[connections[c]] == undefined) 
+					arr[connections[c]] = 0; 
+				arr[connections[c]]++; 
+			}
+
+
+			for(key in arr){ 
+				if(isNaN(parseInt(key[0])) || isNaN(parseInt(key[2])))
+					continue;
+				if(arr[key]>1) 
+					delete arr[key]; 
+				else{
+					// convert combination to real verts
+					//console.log(key);
+					var local1 = key[0]; 
+					var local2 = key[2];
+					var gl1 = undefined; 
+					var gl2 = undefined;
+
+					for(pos in vert_map){
+
+						if(vert_map[pos] == local1){
+							gl1 = pos;
+							if(gl2)
+								break;
+						}
+						else if(vert_map[pos] == local2){
+							gl2 = pos;
+							if(gl1)
+								break;
+						}
+					}
+
+					var topoEdge = undefined; 
+					if(topoEdgeCombinations[[gl1,gl2]] || topoEdgeCombinations[[gl2,gl1]])
+						topoEdge = topology.edges[topoEdgeCombinations[[gl1,gl2]] || topoEdgeCombinations[[gl2,gl1]]]
+					//console.log("topoEdgeCombinations", topoEdgeCombinations, gl1, gl2);
+					// means edge not yet present
+					if(topoEdge == undefined){
+						//console.log("Defining edge");
+						var pnt1 = vertices[gl1]; 
+						var pnt2 = vertices[gl2];
+
+						var lineGeom = new THREE.Geometry();
+						lineGeom.vertices.push(
+							pnt1,
+							pnt2
+						);
+
+						var line = new THREE.Line( geometry ); 
+						var topoEdge = new mObj_geom_Curve(line);
+						var tep = {}
+						tep.vertices = [topology.vertices[gl1], topology.vertices[gl2]];
+						tep.edges = [topoEdge];
+						tep.faces = [];
+						topoEdge.setTopology(tep);
+						
+						topoEdgeCombinations[[gl1, gl2]] = topology.edges.length;
+						topology.edges.push(topoEdge);
+
+						face_topo.edges.push(topoEdge);
+					}
+				}
+			}
+
+
+
+			var fface = new mObj_geom_Surface(geom);
+			face_topo.faces.push(fface);			
+			fface.setTopology(face_topo);
+
+			finalFaces.push(new mObj_geom_Surface(geom));
+
+		}
+		
+		topology.faces = finalFaces;
+		//console.log("Final topology ", topology);
+	}
+
+	return topology;
 }
 
+var getThreeMatrix = function(DS_Matrix){
+
+	//console.log("Matrix", DS_Matrix);
+
+	var m = new THREE.Matrix4();
+	var arr = [];
+	for(var i=0; i<4; i++){
+		for(var j=0; j<4; j++)
+			arr.push(DS_Matrix[j][i]);
+	}
+	m.fromArray(arr);
+
+	//console.log("Matrix", m);
+
+	return m;
+}
+
+var getDSMatrix = function(three_matrix){
+
+	console.log("Matrix", m);
+
+	var m = new THREE.Matrix4();
+	var arr = [];
+	for(var i=0; i<4; i++){
+		for(var j=0; j<4; j++)
+			arr.push(DS_Matrix[j][i]);
+	}
+	m.fromArray(arr);
+
+	console.log("Matrix", m);
+	
+	return m;
+}
 
 
 var GLOBAL = MOBIUS.frm.byXYAxes( [0,0,0], [1,0,0], [0,1,0] );
+
+

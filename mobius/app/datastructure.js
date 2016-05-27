@@ -241,7 +241,13 @@ var mObj_geom = function mObj_geom( geometry, material ){
             topology = computeTopology( self );       
         return topology;
     }
-    
+
+    this.setTopology = function(customTopo){
+        topology = customTopo;
+        //topology = computeTopology( self );       
+        //return topology;
+    }
+
     this.getData = function(){
         return data;
     }
