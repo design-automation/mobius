@@ -1814,4 +1814,3 @@ var getDSMatrix = function(three_matrix){
 
 var GLOBAL = MOBIUS.frm.byXYAxes( [0,0,0], [1,0,0], [0,1,0] );
 
-

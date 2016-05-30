@@ -273,7 +273,7 @@
                 <ui-select ng-model="type.selected"
                            id = "node-dropdown"
                            theme="selectize"
-                           focus-on='SetFocus'
+                           skip-focusser = true
                            on-select="addNewNode(this.type.selected)">
                     <ui-select-match   placeholder="New node" >New node</ui-select-match>
                     <ui-select-choices repeat="type in nodeTypes()| filter: $select.search">

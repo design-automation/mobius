@@ -31,8 +31,10 @@ mobius.controller('viewportCtrl',[
 
         function generateTableStructure(){
             $scope.connectorNames = [];
-            for(var connectorName in $scope.viewportControl.geometryData){
-                $scope.connectorNames.push(connectorName);
+            if($scope.viewportControl.geometryData.length !== 0){
+                for(var connectorName in $scope.viewportControl.geometryData){
+                    $scope.connectorNames.push(connectorName);
+                }
             }
         }
 
@@ -70,7 +72,21 @@ mobius.controller('viewportCtrl',[
                 }
             }
 
-            columnDefs = [{ field: 'attachedTo', displayName: 'AttachedTo'}];
+            if(header !== 'object'){
+                columnDefs = [
+                        { field: 'cate', displayName: 'Category'},
+                        { field: 'index', displayName:'Id'},
+                        {   field: 'belongsTo',
+                            displayName: 'belongsTo',
+                            grouping:{ groupPriority: 0 },
+                            cellTemplate: '<div><div ng-if="!col.grouping || col.grouping.groupPriority === undefined || col.grouping.groupPriority === null || ( row.groupHeader && col.grouping.groupPriority === row.treeLevel )" class="ui-grid-cell-contents" title="TOOLTIP">{{COL_FIELD CUSTOM_FILTERS}}</div></div>'}
+                ];
+            }else{
+                columnDefs = [
+                    { field: 'cate', displayName: 'Category'},
+                    { field: 'index', displayName:'Id'}];
+            }
+
 
             for(var i = 0; i < propertyList.length;i++){
                 columnDefs.push({
@@ -85,10 +101,20 @@ mobius.controller('viewportCtrl',[
 
                     table[0][$scope.geometryData[i].Property]
                         = $scope.geometryData[i].Value;
+
+                    table[0].belongsTo
+                        = $scope.geometryData[i].belongsTo;
+
+                    table[0].index
+                        = $scope.geometryData[i].index;
+
+                    table[0].cate
+                        = $scope.geometryData[i].cate;
                 }
 
                 for(var j = 0; j < table.length; j++){
-                    if(table[j].attachedTo === $scope.geometryData[i].attachedTo ){
+                    if(table[j].belongsTo === $scope.geometryData[i].belongsTo &&
+                        table[j].attachedTo === $scope.geometryData[i].attachedTo){
                         table[j][$scope.geometryData[i].Property] = $scope.geometryData[i].Value;
                         break;
                     }else{
@@ -97,6 +123,15 @@ mobius.controller('viewportCtrl',[
 
                             table[table.length-1][$scope.geometryData[i].Property]
                                 = $scope.geometryData[i].Value;
+
+                            table[table.length-1].belongsTo
+                                = $scope.geometryData[i].belongsTo;
+
+                            table[table.length-1].index
+                                = $scope.geometryData[i].index;
+
+                            table[table.length-1].cate
+                                = $scope.geometryData[i].cate;
                         }
                     }
                 }

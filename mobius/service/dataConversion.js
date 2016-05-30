@@ -41,6 +41,7 @@ var dataConversion = (function(data){
 
             for(var k = 0; k < obj.length ; k++){
                 extract(obj[k],tempGeom0,tempData0,tempTopo0,connectorName);
+
             }
 
             geom.push(tempGeom0);
