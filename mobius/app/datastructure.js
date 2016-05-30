@@ -388,7 +388,6 @@ var mObj_geom = function mObj_geom( geometry, material ){
             for(topoElement in topology){
                 if(topology.hasOwnProperty(topoElement)){
                     for( var index=0; index < topology[topoElement].length; index++){
-                        console.log(topoElement, index);
                         var topoData = topology[topoElement][index].getData();
                         if (topoData != undefined){
                             for( var property in topoData ){
