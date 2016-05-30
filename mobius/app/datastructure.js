@@ -5,16 +5,47 @@
 
 // Main mObj Class definition
 // mObj maybe geometry, ifcModel, data / charts etc
-var mObj = function mObj( type ){
-	
-    var type = type;
-	
-    this.is_mObj = true; 
+var i=0;
 
-	this.getType = function(){
-		return type;
-	}
-}
+var mObj = function mObj( type ){
+
+    var type = type;
+
+    this.is_mObj = true;
+
+    this.getType = function(){
+        return type;
+    }
+
+    function guid() {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+                .toString(16)
+                .substring(1);
+        }
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+            s4() + '-' + s4() + s4() + s4();
+    }
+
+    // for datatables
+    var guid =  guid();
+
+    this.getGUID = function(){
+        return guid;
+    }
+};
+
+var mObj_data = function mObj_data(type, data){
+
+    mObj.call(this, type);
+
+    var data = data;
+
+    this.getData = function(){
+        return data;
+    }
+
+};
 
 var mObj_frame = function mObj_frame( origin, xaxis, yaxis, zaxis ){
 
@@ -29,80 +60,80 @@ var mObj_frame = function mObj_frame( origin, xaxis, yaxis, zaxis ){
         zaxis = verb.core.Vec.cross( xaxis, yaxis );
 
     // creating unit vectors
-    var _xaxis = verb.core.Vec.normalized( xaxis ); 
-    var _yaxis = verb.core.Vec.normalized( yaxis ); 
-    var _zaxis = verb.core.Vec.normalized( zaxis ); 
+    var _xaxis = verb.core.Vec.normalized( xaxis );
+    var _yaxis = verb.core.Vec.normalized( yaxis );
+    var _zaxis = verb.core.Vec.normalized( zaxis );
 
     function invertMatrix(m) {
-          
-          var r = [16]; 
 
-          r[0] = m[1][1]*m[2][2]*m[3][3] - m[1][1]*m[3][2]*m[2][3] - m[1][2]*m[2][1]*m[3][3] + m[1][2]*m[3][1]*m[2][3] + m[1][3]*m[2][1]*m[3][2] - m[1][3]*m[3][1]*m[2][2];
-          r[1] = -m[0][1]*m[2][2]*m[3][3] + m[0][1]*m[3][2]*m[2][3] + m[0][2]*m[2][1]*m[3][3] - m[0][2]*m[3][1]*m[2][3] - m[0][3]*m[2][1]*m[3][2] + m[0][3]*m[3][1]*m[2][2];
-          r[2] = m[0][1]*m[1][2]*m[3][3] - m[0][1]*m[3][2]*m[1][3] - m[0][2]*m[1][1]*m[3][3] + m[0][2]*m[3][1]*m[1][3] + m[0][3]*m[1][1]*m[3][2] - m[0][3]*m[3][1]*m[1][2] ;
-          r[3] = -m[0][1]*m[1][2]*m[2][3] + m[0][1]*m[2][2]*m[1][3] + m[0][2]*m[1][1]*m[2][3] - m[0][2]*m[2][1]*m[1][3] - m[0][3]*m[1][1]*m[2][2] + m[0][3]*m[2][1]*m[1][2] ;
+        var r = [16];
 
-          r[4] = -m[1][0]*m[2][2]*m[3][3] + m[1][0]*m[3][2]*m[2][3] + m[1][2]*m[2][0]*m[3][3] - m[1][2]*m[3][0]*m[2][3] - m[1][3]*m[2][0]*m[3][2] + m[1][3]*m[3][0]*m[2][2];
-          r[5] = m[0][0]*m[2][2]*m[3][3] - m[0][0]*m[3][2]*m[2][3] - m[0][2]*m[2][0]*m[3][3] + m[0][2]*m[3][0]*m[2][3] + m[0][3]*m[2][0]*m[3][2] - m[0][3]*m[3][0]*m[2][2];
-          r[6] = -m[0][0]*m[1][2]*m[3][3] + m[0][0]*m[3][2]*m[1][3] + m[0][2]*m[1][0]*m[3][3] - m[0][2]*m[3][0]*m[1][3] - m[0][3]*m[1][0]*m[3][2] + m[0][3]*m[3][0]*m[1][2] ;
-          r[7] = m[0][0]*m[1][2]*m[2][3] - m[0][0]*m[2][2]*m[1][3] - m[0][2]*m[1][0]*m[2][3] + m[0][2]*m[2][0]*m[1][3] + m[0][3]*m[1][0]*m[2][2] - m[0][3]*m[2][0]*m[1][2] ;
+        r[0] = m[1][1]*m[2][2]*m[3][3] - m[1][1]*m[3][2]*m[2][3] - m[1][2]*m[2][1]*m[3][3] + m[1][2]*m[3][1]*m[2][3] + m[1][3]*m[2][1]*m[3][2] - m[1][3]*m[3][1]*m[2][2];
+        r[1] = -m[0][1]*m[2][2]*m[3][3] + m[0][1]*m[3][2]*m[2][3] + m[0][2]*m[2][1]*m[3][3] - m[0][2]*m[3][1]*m[2][3] - m[0][3]*m[2][1]*m[3][2] + m[0][3]*m[3][1]*m[2][2];
+        r[2] = m[0][1]*m[1][2]*m[3][3] - m[0][1]*m[3][2]*m[1][3] - m[0][2]*m[1][1]*m[3][3] + m[0][2]*m[3][1]*m[1][3] + m[0][3]*m[1][1]*m[3][2] - m[0][3]*m[3][1]*m[1][2] ;
+        r[3] = -m[0][1]*m[1][2]*m[2][3] + m[0][1]*m[2][2]*m[1][3] + m[0][2]*m[1][1]*m[2][3] - m[0][2]*m[2][1]*m[1][3] - m[0][3]*m[1][1]*m[2][2] + m[0][3]*m[2][1]*m[1][2] ;
 
-          r[8] = m[1][0]*m[2][1]*m[3][3] - m[1][0]*m[3][1]*m[2][3] - m[1][1]*m[2][0]*m[3][3] + m[1][1]*m[3][0]*m[2][3] + m[1][3]*m[2][0]*m[3][1] - m[1][3]*m[3][0]*m[2][1] ;
-          r[9] = -m[0][0]*m[2][1]*m[3][3] + m[0][0]*m[3][1]*m[2][3] + m[0][1]*m[2][0]*m[3][3] - m[0][1]*m[3][0]*m[2][3] - m[0][3]*m[2][0]*m[3][1] + m[0][3]*m[3][0]*m[2][1] ;
-          r[10] = m[0][0]*m[1][1]*m[3][3] - m[0][0]*m[3][1]*m[1][3] - m[0][1]*m[1][0]*m[3][3] + m[0][1]*m[3][0]*m[1][3] + m[0][3]*m[1][0]*m[3][1] - m[0][3]*m[3][0]*m[1][1] ;
-          r[11] = -m[0][0]*m[1][1]*m[2][3] + m[0][0]*m[2][1]*m[1][3] + m[0][1]*m[1][0]*m[2][3] - m[0][1]*m[2][0]*m[1][3] - m[0][3]*m[1][0]*m[2][1] + m[0][3]*m[2][0]*m[1][1] ;
+        r[4] = -m[1][0]*m[2][2]*m[3][3] + m[1][0]*m[3][2]*m[2][3] + m[1][2]*m[2][0]*m[3][3] - m[1][2]*m[3][0]*m[2][3] - m[1][3]*m[2][0]*m[3][2] + m[1][3]*m[3][0]*m[2][2];
+        r[5] = m[0][0]*m[2][2]*m[3][3] - m[0][0]*m[3][2]*m[2][3] - m[0][2]*m[2][0]*m[3][3] + m[0][2]*m[3][0]*m[2][3] + m[0][3]*m[2][0]*m[3][2] - m[0][3]*m[3][0]*m[2][2];
+        r[6] = -m[0][0]*m[1][2]*m[3][3] + m[0][0]*m[3][2]*m[1][3] + m[0][2]*m[1][0]*m[3][3] - m[0][2]*m[3][0]*m[1][3] - m[0][3]*m[1][0]*m[3][2] + m[0][3]*m[3][0]*m[1][2] ;
+        r[7] = m[0][0]*m[1][2]*m[2][3] - m[0][0]*m[2][2]*m[1][3] - m[0][2]*m[1][0]*m[2][3] + m[0][2]*m[2][0]*m[1][3] + m[0][3]*m[1][0]*m[2][2] - m[0][3]*m[2][0]*m[1][2] ;
 
-          r[12] = -m[1][0]*m[2][1]*m[3][2] + m[1][0]*m[3][1]*m[2][2] + m[1][1]*m[2][0]*m[3][2] - m[1][1]*m[3][0]*m[2][2] - m[1][2]*m[2][0]*m[3][1] + m[1][2]*m[3][0]*m[2][1] ;
-          r[13] = m[0][0]*m[2][1]*m[3][2] - m[0][0]*m[3][1]*m[2][2] - m[0][1]*m[2][0]*m[3][2] + m[0][1]*m[3][0]*m[2][2] + m[0][2]*m[2][0]*m[3][1] - m[0][2]*m[3][0]*m[2][1] ;
-          r[14] = -m[0][0]*m[1][1]*m[3][2] + m[0][0]*m[3][1]*m[1][2] + m[0][1]*m[1][0]*m[3][2] - m[0][1]*m[3][0]*m[1][2] - m[0][2]*m[1][0]*m[3][1] + m[0][2]*m[3][0]*m[1][1] ;
-          r[15] = m[0][0]*m[1][1]*m[2][2] - m[0][0]*m[2][1]*m[1][2] - m[0][1]*m[1][0]*m[2][2] + m[0][1]*m[2][0]*m[1][2] + m[0][2]*m[1][0]*m[2][1] - m[0][2]*m[2][0]*m[1][1] ;
+        r[8] = m[1][0]*m[2][1]*m[3][3] - m[1][0]*m[3][1]*m[2][3] - m[1][1]*m[2][0]*m[3][3] + m[1][1]*m[3][0]*m[2][3] + m[1][3]*m[2][0]*m[3][1] - m[1][3]*m[3][0]*m[2][1] ;
+        r[9] = -m[0][0]*m[2][1]*m[3][3] + m[0][0]*m[3][1]*m[2][3] + m[0][1]*m[2][0]*m[3][3] - m[0][1]*m[3][0]*m[2][3] - m[0][3]*m[2][0]*m[3][1] + m[0][3]*m[3][0]*m[2][1] ;
+        r[10] = m[0][0]*m[1][1]*m[3][3] - m[0][0]*m[3][1]*m[1][3] - m[0][1]*m[1][0]*m[3][3] + m[0][1]*m[3][0]*m[1][3] + m[0][3]*m[1][0]*m[3][1] - m[0][3]*m[3][0]*m[1][1] ;
+        r[11] = -m[0][0]*m[1][1]*m[2][3] + m[0][0]*m[2][1]*m[1][3] + m[0][1]*m[1][0]*m[2][3] - m[0][1]*m[2][0]*m[1][3] - m[0][3]*m[1][0]*m[2][1] + m[0][3]*m[2][0]*m[1][1] ;
 
-          var det = m[0][0]*r[0] + m[0][1]*r[4] + m[0][2]*r[8] + m[0][3]*r[12];
-          for (var i = 0; i < 16; i++) r[i] /= det;
-          
-          return [ [ r[0], r[1], r[2], r[3]],
-                        [ r[4], r[5], r[6], r[7]],
-                            [ r[8], r[9], r[10], r[11]],
-                                [ r[12], r[13], r[14], r[15] ]
-                    ];
+        r[12] = -m[1][0]*m[2][1]*m[3][2] + m[1][0]*m[3][1]*m[2][2] + m[1][1]*m[2][0]*m[3][2] - m[1][1]*m[3][0]*m[2][2] - m[1][2]*m[2][0]*m[3][1] + m[1][2]*m[3][0]*m[2][1] ;
+        r[13] = m[0][0]*m[2][1]*m[3][2] - m[0][0]*m[3][1]*m[2][2] - m[0][1]*m[2][0]*m[3][2] + m[0][1]*m[3][0]*m[2][2] + m[0][2]*m[2][0]*m[3][1] - m[0][2]*m[3][0]*m[2][1] ;
+        r[14] = -m[0][0]*m[1][1]*m[3][2] + m[0][0]*m[3][1]*m[1][2] + m[0][1]*m[1][0]*m[3][2] - m[0][1]*m[3][0]*m[1][2] - m[0][2]*m[1][0]*m[3][1] + m[0][2]*m[3][0]*m[1][1] ;
+        r[15] = m[0][0]*m[1][1]*m[2][2] - m[0][0]*m[2][1]*m[1][2] - m[0][1]*m[1][0]*m[2][2] + m[0][1]*m[2][0]*m[1][2] + m[0][2]*m[1][0]*m[2][1] - m[0][2]*m[2][0]*m[1][1] ;
+
+        var det = m[0][0]*r[0] + m[0][1]*r[4] + m[0][2]*r[8] + m[0][3]*r[12];
+        for (var i = 0; i < 16; i++) r[i] /= det;
+
+        return [ [ r[0], r[1], r[2], r[3]],
+            [ r[4], r[5], r[6], r[7]],
+            [ r[8], r[9], r[10], r[11]],
+            [ r[12], r[13], r[14], r[15] ]
+        ];
     };
 
 
     // compute translation
     var mat_trans = [ [ 1, 0, 0, -origin[0] ],
-                        [ 0, 1, 0, -origin[1] ],
-                            [ 0, 0, 1, -origin[2] ],
-                                [ 0, 0, 0, 1 ]
-      
-                        ]; 
+        [ 0, 1, 0, -origin[1] ],
+        [ 0, 0, 1, -origin[2] ],
+        [ 0, 0, 0, 1 ]
+
+    ];
 
     var mat_trans_inv = [ [ 1, 0, 0, origin[0] ],
-                            [ 0, 1, 0, origin[1] ],
-                                [ 0, 0, 1, origin[2] ],
-                                    [ 0, 0, 0, 1 ]
-                    ]; 
+        [ 0, 1, 0, origin[1] ],
+        [ 0, 0, 1, origin[2] ],
+        [ 0, 0, 0, 1 ]
+    ];
 
-    var world_space_matrix = [ [ _xaxis[0], _xaxis[1], _xaxis[2], 0], 
-                                  [ _yaxis[0], _yaxis[1], _yaxis[2], 0], 
-                                    [ _zaxis[0], _zaxis[1], _zaxis[2], 0],
-                                      [ 0, 0, 0, 1 ] ]
-    
+    var world_space_matrix = [ [ _xaxis[0], _xaxis[1], _xaxis[2], 0],
+        [ _yaxis[0], _yaxis[1], _yaxis[2], 0],
+        [ _zaxis[0], _zaxis[1], _zaxis[2], 0],
+        [ 0, 0, 0, 1 ] ]
+
     world_space_matrix = verb.core.Mat.mult(world_space_matrix, mat_trans);
-    
+
     var local_space_matrix = invertMatrix( world_space_matrix );
 
 
-                        
-    var planes = { 'xy' : {'a': _zaxis[0], 'b': _zaxis[1], 'c': _zaxis[2], 'd':_zaxis[0]*origin[0] + _zaxis[1]*origin[1] + _zaxis[2]*origin[2] }, 
-                        'yz' : {'a': _xaxis[0], 'b': _xaxis[1], 'c': _xaxis[2], 'd':_xaxis[0]*origin[0] + _xaxis[1]*origin[1] + _xaxis[2]*origin[2] },
-                            'zx' : {'a': _yaxis[0], 'b': _yaxis[1], 'c': _yaxis[2], 'd':_yaxis[0]*origin[0] + _yaxis[1]*origin[1] + _yaxis[2]*origin[2] }
-    }  
+
+    var planes = { 'xy' : {'a': _zaxis[0], 'b': _zaxis[1], 'c': _zaxis[2], 'd':_zaxis[0]*origin[0] + _zaxis[1]*origin[1] + _zaxis[2]*origin[2] },
+        'yz' : {'a': _xaxis[0], 'b': _xaxis[1], 'c': _xaxis[2], 'd':_xaxis[0]*origin[0] + _xaxis[1]*origin[1] + _xaxis[2]*origin[2] },
+        'zx' : {'a': _yaxis[0], 'b': _yaxis[1], 'c': _yaxis[2], 'd':_yaxis[0]*origin[0] + _yaxis[1]*origin[1] + _yaxis[2]*origin[2] }
+    }
 
 
 
 
-    this.toLocal = function( ){ 
-       return local_space_matrix; 
+    this.toLocal = function( ){
+        return local_space_matrix;
     }
 
     this.toGlobal = function(){
@@ -133,16 +164,16 @@ var mObj_frame = function mObj_frame( origin, xaxis, yaxis, zaxis ){
 
         function buildAxis( src, dst, colorHex, dashed ) {
             var geom = new THREE.Geometry(),
-                mat; 
+                mat;
 
             if(dashed) {
-                    mat = new THREE.LineDashedMaterial({ linewidth: 3, color: colorHex, dashSize: 3, gapSize: 3 });
+                mat = new THREE.LineDashedMaterial({ linewidth: 3, color: colorHex, dashSize: 3, gapSize: 3 });
             } else {
-                    mat = new THREE.LineBasicMaterial({ linewidth: 3, color: colorHex });
+                mat = new THREE.LineBasicMaterial({ linewidth: 3, color: colorHex });
             }
 
             geom.vertices.push( src.clone() );
-            geom.vertices.push( dst.clone() ); 
+            geom.vertices.push( dst.clone() );
             geom.computeLineDistances(); // This one is SUPER important, otherwise dashed lines will appear as simple plain lines
 
             var axis = new THREE.Line( geom, mat, THREE.LineSegments );
@@ -153,7 +184,7 @@ var mObj_frame = function mObj_frame( origin, xaxis, yaxis, zaxis ){
 
         function buildAxes( length ) {
             var axes = new THREE.Object3D();
-            
+
             axes.is_mObj = true;
 
             var or = new THREE.Vector3( origin[0], origin[1], origin[2] )
@@ -191,10 +222,10 @@ var mObj_frame = function mObj_frame( origin, xaxis, yaxis, zaxis ){
 // mObj Geometry Class
 // geometry is stored in geometry format native to module
 var mObj_geom = function mObj_geom( geometry, material ){
-	
-	mObj.call(this, 'geometry');
 
-	var geometry = geometry; 
+    mObj.call(this, 'geometry');
+
+    var geometry = geometry;
     var material = material;
 
     var self = this;
@@ -226,14 +257,20 @@ var mObj_geom = function mObj_geom( geometry, material ){
 
     this.getTopology = function(){
         if(topology == undefined)
-            topology = computeTopology( self );       
+            topology = computeTopology( self );
         return topology;
     }
-    
+
+    this.setTopology = function(customTopo){
+        topology = customTopo;
+        //topology = computeTopology( self );
+        //return topology;
+    }
+
     this.getData = function(){
         return data;
     }
-    
+
     this.setData = function( new_data ){
         data = new_data;
     }
@@ -253,15 +290,15 @@ var mObj_geom = function mObj_geom( geometry, material ){
     }
 
     // Dynamic Topology !
-   for(var property in MOBIUS.TOPOLOGY_DEF){
-       
+    for(var property in MOBIUS.TOPOLOGY_DEF){
+
         var propFunc = new Function( 'return this.getTopology()["' + property + '"];' );
-       
+
         Object.defineProperty(this, property,  {
-                get: propFunc,
-                set: undefined
+            get: propFunc,
+            set: undefined
         });
-   }
+    }
 
 
 
@@ -277,25 +314,25 @@ var mObj_geom = function mObj_geom( geometry, material ){
         // if threeGeometry hasn't been computed before or native geometry has been transformed so that new conversion is required
         // the function defines it and caches it
         if( threeGeometry == undefined ){
-           
-            // means it is a solid 
+
+            // means it is a solid
             if( geometry instanceof Array && (geometry[0] instanceof mObj_geom_Surface)){
-                var threeGeometry = new THREE.Object3D(); 
+                var threeGeometry = new THREE.Object3D();
                 for(var srf=0; srf < geometry.length; srf++){
                     var geom = geometry[srf];
                     var exGeom = geom.extractThreeGeometry();
                     if(material)
                         exGeom.material = material;
-                    threeGeometry.add( exGeom ); 
-                } 
+                    threeGeometry.add( exGeom );
+                }
             }else{
                 threeGeometry = convertGeomToThree( geometry );  // calls a function in the module to convert native geom into accepted three format
                 if(material)
                     threeGeometry.material = material;
             }
-                
+
         }
-			 
+
 
         // if material has been assigned to this data object, assigns the same material to the converted geometry
         threeGeometry.is_mObj = true;
@@ -314,7 +351,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
             topology = computeTopology(self);
 
         if( threeTopology == undefined )
-             threeTopology = convertTopoToThree( topology );  // calls a function in the module to convert native geom into accepted three format
+            threeTopology = convertTopoToThree( topology );  // calls a function in the module to convert native geom into accepted three format
 
         threeTopology.is_mObj = true;
 
@@ -336,7 +373,8 @@ var mObj_geom = function mObj_geom( geometry, material ){
             if (data != undefined){
                 for(var property in data){
                     var jsonObject = {
-                        'attachedTo' : 'object',
+                        'attachedTo' : 'object_' + this.getGUID(),
+                        'belongsTo' : this.getGUID(),
                         'Property' : property,
                         'Value' : data[property],
                         'cate': 'object',
@@ -349,82 +387,112 @@ var mObj_geom = function mObj_geom( geometry, material ){
             // generalized - irrespective of topology object configuration
             for(topoElement in topology){
                 if(topology.hasOwnProperty(topoElement)){
-                    for( var index=0; index < topology[topoElement].length; index++){ 
-                        var topoData = topology[topoElement][index].getData(); 
+                    for( var index=0; index < topology[topoElement].length; index++){
+                        console.log(topoElement, index);
+                        var topoData = topology[topoElement][index].getData();
                         if (topoData != undefined){
                             for( var property in topoData ){
+
                                 var jsonObject = {
                                     'attachedTo' : topoElement + index,
+                                    'belongsTo' : this.getGUID(),
                                     'cate': topoElement,
                                     'Property' : property,
                                     'Value' : topoData[property],
                                     'connectorName':connectorName
                                 };
                                 dataTable.push(jsonObject);
+
+                                // pushing null values for other counterparts
+                                for( var i=0; i < topology[topoElement].length; i++){
+
+                                    if(i==index)
+                                        continue;
+
+                                    var emptyObject = {
+                                        'attachedTo' : topoElement + i,
+                                        'belongsTo' : this.getGUID(),
+                                        'cate': topoElement,
+                                        'Property' : property,
+                                        'Value' : "",
+                                        'connectorName':connectorName
+                                    };
+                                    dataTable.push(emptyObject);
+                                }
+
                             }
+                        }
+                        else{
+                            var emptyObject = {
+                                'attachedTo' : topoElement + index,
+                                'belongsTo' : this.getGUID(),
+                                'cate': topoElement,
+                                'connectorName':connectorName
+                            };
+                            dataTable.push(emptyObject);
                         }
                     }
                 }
-            } 
+            }
         }
         return dataTable;
     }
 
 
-   
 
-    // topology is always computed 
+
+    // topology is always computed
     update();
-	
+
 }
 
 var mObj_geom_Vertex = function mObj_geom_Vertex( geometry ){
-   var defaultVertexMaterial = new THREE.PointsMaterial( { size: 5, sizeAttenuation: false } );
-    
-    mObj_geom.call( this, geometry, defaultVertexMaterial  ); 
+    var defaultVertexMaterial = new THREE.PointsMaterial( { size: 5, sizeAttenuation: false } );
+
+    mObj_geom.call( this, geometry, defaultVertexMaterial  );
 
     this.x = geometry[0];
     this.y = geometry[1];
     this.z = geometry[2];
 }
- 
+
 var mObj_geom_Curve = function mObj_geom_Curve( geometry ){
-    
+
     var defaultCurveMaterial = new THREE.LineBasicMaterial({
-    side: THREE.DoubleSide,
-    linewidth: 100,
-    color: 0x003399
+        side: THREE.DoubleSide,
+        linewidth: 100,
+        color: 0x003399
     });
-	
-    mObj_geom.call( this, geometry, defaultCurveMaterial  ); 
-	
+
+    mObj_geom.call( this, geometry, defaultCurveMaterial  );
+
 }
 
 var mObj_geom_Surface = function mObj_geom_Surface( geometry ){
-	
+
     var defaultSurfaceMaterial = new THREE.MeshLambertMaterial( {
-    side: THREE.DoubleSide,
-    wireframe: false,
-    //shading: THREE.SmoothShading,
-    transparent: false,
-    color: 0x003399
+        side: THREE.DoubleSide,
+        wireframe: false,
+        //shading: THREE.SmoothShading,
+        transparent: false,
+        color: 0x003399
     } );
 
-	mObj_geom.call( this, geometry, defaultSurfaceMaterial  );
+    mObj_geom.call( this, geometry, defaultSurfaceMaterial  );
 
 }
 
 var mObj_geom_Solid = function mObj_geom_Solid( geometry){
 
     var defaultSolidMaterial = new THREE.MeshLambertMaterial( {
-    side: THREE.DoubleSide,
-    wireframe: false,
-    //shading: THREE.SmoothShading,
-    transparent: false,
-    color: 0xCC6600
+        side: THREE.DoubleSide,
+        wireframe: false,
+        //shading: THREE.SmoothShading,
+        transparent: false,
+        color: 0xCC6600
     } );
 
-	mObj_geom.call( this, geometry, defaultSolidMaterial );
+    mObj_geom.call( this, geometry, defaultSolidMaterial );
 
 }
 

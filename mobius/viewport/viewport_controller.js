@@ -31,13 +31,17 @@ mobius.controller('viewportCtrl',[
 
         function generateTableStructure(){
             $scope.connectorNames = [];
-            for(var connectorName in $scope.viewportControl.geometryData){
-                $scope.connectorNames.push(connectorName);
+            console.log('output data:', $scope.viewportControl.geometryData)
+            if($scope.viewportControl.geometryData.length !== 0){
+                for(var connectorName in $scope.viewportControl.geometryData){
+                    $scope.connectorNames.push(connectorName);
+                }
             }
         }
 
         $scope.selectDataTable = function(connectorName){
             $scope.currentConnector = connectorName;
+            console.log('current connector: ' , $scope.currentConnector)
         };
 
         $scope.generateDataTable = function(header){
@@ -85,10 +89,15 @@ mobius.controller('viewportCtrl',[
 
                     table[0][$scope.geometryData[i].Property]
                         = $scope.geometryData[i].Value;
+
+                    table[0].belongsTo
+                        = $scope.geometryData[i].belongsTo;
+                    console.log(table)
                 }
 
                 for(var j = 0; j < table.length; j++){
-                    if(table[j].attachedTo === $scope.geometryData[i].attachedTo ){
+                    if(table[j].belongsTo === $scope.geometryData[i].belongsTo &&
+                        table[j].attachedTo === $scope.geometryData[i].attachedTo){
                         table[j][$scope.geometryData[i].Property] = $scope.geometryData[i].Value;
                         break;
                     }else{
@@ -97,6 +106,9 @@ mobius.controller('viewportCtrl',[
 
                             table[table.length-1][$scope.geometryData[i].Property]
                                 = $scope.geometryData[i].Value;
+
+                            table[table.length-1].belongsTo
+                                = $scope.geometryData[i].belongsTo;
                         }
                     }
                 }
@@ -107,6 +119,7 @@ mobius.controller('viewportCtrl',[
                 columnDefs: columnDefs
             };
 
+            console.log('organized data:', table)
             $scope.geometryData = table;
         };
 
