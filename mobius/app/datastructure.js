@@ -374,6 +374,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
                 for(var property in data){
                     var jsonObject = {
                         'attachedTo' : 'object_' + this.getGUID(),
+                        'index':this.getGUID(),
                         'belongsTo' : this.getGUID(),
                         'Property' : property,
                         'Value' : data[property],
@@ -394,7 +395,8 @@ var mObj_geom = function mObj_geom( geometry, material ){
 
                                 var jsonObject = {
                                     'attachedTo' : topoElement + index,
-                                    'belongsTo' : this.getGUID(),
+                                    'index' : index,
+                                    'belongsTo':this.getGUID(),
                                     'cate': topoElement,
                                     'Property' : property,
                                     'Value' : topoData[property],
@@ -410,6 +412,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
 
                                     var emptyObject = {
                                         'attachedTo' : topoElement + i,
+                                        'index': i,
                                         'belongsTo' : this.getGUID(),
                                         'cate': topoElement,
                                         'Property' : property,
@@ -426,6 +429,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
                                 'attachedTo' : topoElement + index,
                                 'belongsTo' : this.getGUID(),
                                 'cate': topoElement,
+                                'index':index,
                                 'connectorName':connectorName
                             };
                             dataTable.push(emptyObject);

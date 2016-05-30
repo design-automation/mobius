@@ -72,7 +72,21 @@ mobius.controller('viewportCtrl',[
                 }
             }
 
-            columnDefs = [{ field: 'attachedTo', displayName: 'AttachedTo'}];
+            if(header !== 'object'){
+                columnDefs = [
+                        { field: 'cate', displayName: 'Category'},
+                        { field: 'index', displayName:'Id'},
+                        {   field: 'belongsTo',
+                            displayName: 'belongsTo',
+                            grouping:{ groupPriority: 0 },
+                            cellTemplate: '<div><div ng-if="!col.grouping || col.grouping.groupPriority === undefined || col.grouping.groupPriority === null || ( row.groupHeader && col.grouping.groupPriority === row.treeLevel )" class="ui-grid-cell-contents" title="TOOLTIP">{{COL_FIELD CUSTOM_FILTERS}}</div></div>'}
+                ];
+            }else{
+                columnDefs = [
+                    { field: 'cate', displayName: 'Category'},
+                    { field: 'index', displayName:'Id'}];
+            }
+
 
             for(var i = 0; i < propertyList.length;i++){
                 columnDefs.push({
@@ -90,6 +104,12 @@ mobius.controller('viewportCtrl',[
 
                     table[0].belongsTo
                         = $scope.geometryData[i].belongsTo;
+
+                    table[0].index
+                        = $scope.geometryData[i].index;
+
+                    table[0].cate
+                        = $scope.geometryData[i].cate;
                 }
 
                 for(var j = 0; j < table.length; j++){
@@ -106,6 +126,12 @@ mobius.controller('viewportCtrl',[
 
                             table[table.length-1].belongsTo
                                 = $scope.geometryData[i].belongsTo;
+
+                            table[table.length-1].index
+                                = $scope.geometryData[i].index;
+
+                            table[table.length-1].cate
+                                = $scope.geometryData[i].cate;
                         }
                     }
                 }
