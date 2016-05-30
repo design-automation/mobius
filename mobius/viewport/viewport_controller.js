@@ -26,6 +26,7 @@ mobius.controller('viewportCtrl',[
 
         $rootScope.$on('Update Datatable', function(){
             generateTableStructure();
+            $scope.currentConnector = $scope.connectorNames[0];
             $scope.generateDataTable( $scope.currentHeader)
         });
 
@@ -142,6 +143,7 @@ mobius.controller('viewportCtrl',[
                 columnDefs: columnDefs
             };
 
+            console.log(table)
             $scope.geometryData = table;
         };
 
