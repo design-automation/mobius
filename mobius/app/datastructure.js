@@ -5,6 +5,8 @@
 
 // Main mObj Class definition
 // mObj maybe geometry, ifcModel, data / charts etc
+var i=0; 
+
 var mObj = function mObj( type ){
 	
     var type = type;
@@ -14,6 +16,23 @@ var mObj = function mObj( type ){
 	this.getType = function(){
 		return type;
 	}
+
+    function guid() {
+      function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+          .toString(16)
+          .substring(1);
+      }
+      return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+        s4() + '-' + s4() + s4() + s4();
+    }
+
+    // for datatables
+    var guid =  guid();
+
+    this.getGUID = function(){
+        return guid;
+    }
 };
 
 var mObj_data = function mObj_data(type, data){
@@ -355,6 +374,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
                 for(var property in data){
                     var jsonObject = {
                         'attachedTo' : 'object',
+                        'belongsTo' : this.getGUID(),
                         'Property' : property,
                         'Value' : data[property],
                         'cate': 'object',
@@ -368,18 +388,48 @@ var mObj_geom = function mObj_geom( geometry, material ){
             for(topoElement in topology){
                 if(topology.hasOwnProperty(topoElement)){
                     for( var index=0; index < topology[topoElement].length; index++){ 
+                        console.log(topoElement, index);
                         var topoData = topology[topoElement][index].getData(); 
                         if (topoData != undefined){
                             for( var property in topoData ){
+                                
                                 var jsonObject = {
                                     'attachedTo' : topoElement + index,
+                                    'belongsTo' : this.getGUID(),
                                     'cate': topoElement,
                                     'Property' : property,
                                     'Value' : topoData[property],
                                     'connectorName':connectorName
                                 };
                                 dataTable.push(jsonObject);
+
+                                // pushing null values for other counterparts
+                                for( var i=0; i < topology[topoElement].length; i++){ 
+
+                                    if(i==index)
+                                        continue;
+
+                                    var emptyObject = {
+                                        'attachedTo' : topoElement + i,
+                                        'belongsTo' : this.getGUID(),
+                                        'cate': topoElement,
+                                        'Property' : property,
+                                        'Value' : "",
+                                        'connectorName':connectorName
+                                    };
+                                    dataTable.push(emptyObject);
+                                }
+
                             }
+                        }
+                        else{
+                            var emptyObject = {
+                                'attachedTo' : topoElement + index,
+                                'belongsTo' : this.getGUID(),
+                                'cate': topoElement,
+                                'connectorName':connectorName
+                            };
+                            dataTable.push(emptyObject);                            
                         }
                     }
                 }
