@@ -869,10 +869,22 @@ var MOBIUS = ( function (mod){
 
 		if(geometry.center != undefined)
 			return geometry.center();
-		else if(geometry instanceof verb.geom.NurbsCurve)
-			return geometry.point(0.5);
-		else if(geometry instanceof verb.geom.NurbsSurface)
-			return geometry.point(0.5, 0.5);
+		else if(geometry.vertices != undefined){
+			var x = 0, y = 0, z = 0;
+			for(var vert=0; vert < geometry.vertices.length; vert++ ){
+
+				x += vert.x; 
+				y += vert.y;
+				z += vert.z;
+			}
+
+			x = x/geometry.vertices.length; 
+			y = y/geometry.vertices.length; 
+			z = z/geometry.vertices.length; 
+			
+			return [x, y, z]
+
+		}
 		else
 			return "Invalid Input"
 	};
@@ -894,10 +906,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {object} - Transformed Object or Copy 
 	 * @memberof trn
 	 */
-/*	mod.trn.reflect = function(object, frame, copy){
-
-		if (object instanceof mObj_geom_Solid)
-			object = object.getGeometry();
+	mod.trn.reflect = function(object, frame, copy){
 
 		if (object instanceof Array){
 
@@ -914,20 +923,14 @@ var MOBIUS = ( function (mod){
 
 		var geom; 
 		if(object.getGeometry != undefined)
-			geom = object.getGeometry();
-
-		if(geom.scale != undefined){
-			console.log("I can be reflected! ");
-			geom.scale(scaleX, scaleY, scaleZ);
-			return object; 
-		}
+			geom = object.getGeometry();  // THREE.Geometry
 
 		var trnMat = [ [ 1, 0, 0, 0],
 						[ 0, 1, 0, 0],
 							[ 0, 0, -1, 0],
 								[0, 0, 0, 1]
 					];
-		
+		console.log("geom", geom);
 
 
 		geom.applyMatrix( getThreeMatrix(frame.toGlobal()) );
@@ -938,7 +941,7 @@ var MOBIUS = ( function (mod){
 
 		return object;
 	
-	};*/
+	};
 
 
 	/**
@@ -972,11 +975,6 @@ var MOBIUS = ( function (mod){
 		if(object.getGeometry != undefined)
 			geom = object.getGeometry();
 
-		if(geom.rotate != undefined){
-			console.log("I can be rotated! ");
-			geom.rotate.set(angleX, angleY, angleZ);
-			return object; 
-		}
 
 		function getRotationMatrix( axis, angle){
 				angle = 0.0174533*angle;
@@ -1022,9 +1020,6 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.trn.scale = function(object, frame, scaleX, scaleY, scaleZ, copy) {
 
-		//if (object instanceof mObj_geom_Solid)
-			//object = object.getGeometry();
-
 		if (object instanceof Array){
 
 			var newobject = [];
@@ -1042,26 +1037,19 @@ var MOBIUS = ( function (mod){
 		if(object.getGeometry != undefined)
 			geom = object.getGeometry();
 
-		if(geom.scale != undefined){
-			console.log("I can be scaled! ");
-			geom.scale.set(new THREE.Vector3(scaleX, scaleY, scaleZ));
-			return object; 
-		}
-		else{
-			var trnMat = [ [ scaleX, 0, 0, 0 ],
-							[ 0, scaleY, 0, 0],
-								[ 0, 0, scaleZ, 0 ],
-									[ 0, 0, 0, 1 ]
-						];
-				
-			geom.applyMatrix( getThreeMatrix(frame.toGlobal()) );
-			geom.applyMatrix( getThreeMatrix(trnMat) );
-			geom.applyMatrix( getThreeMatrix(frame.toLocal()) );
-		
-			object.setGeometry( geom ); 
+		var trnMat = [ [ scaleX, 0, 0, 0 ],
+						[ 0, scaleY, 0, 0],
+							[ 0, 0, scaleZ, 0 ],
+								[ 0, 0, 0, 1 ]
+					];
+			
+		geom.applyMatrix( getThreeMatrix(frame.toGlobal()) );
+		geom.applyMatrix( getThreeMatrix(trnMat) );
+		geom.applyMatrix( getThreeMatrix(frame.toLocal()) );
+	
+		object.setGeometry( geom ); 
 
-			return object;			
-		}
+		return object;			
 
 	};
 
@@ -1096,23 +1084,17 @@ var MOBIUS = ( function (mod){
 			geom = object.getGeometry();
 
 
-		if(geom.translate != undefined){
-			console.log("I can be translated!");
-			geom.translate(shiftX, shiftY, shiftZ);
-			return object; 
-		}
-
 		var trnMat = [ [ 1, 0, 0, shiftX ], 
 							[ 0, 1, 0, shiftY ], 
 								[ 0, 0, 1, shiftZ ], 
 									[ 0, 0, 0, 1 ]
 					 	] 
 
-		//geom.applyMatrix( getThreeMatrix(frame.toGlobal()) );
-	    //geom.applyMatrix( getThreeMatrix(trnMat ) );
-		//geom.applyMatrix( getThreeMatrix(frame.toLocal()) );
+		geom.applyMatrix( getThreeMatrix(frame.toGlobal()) );
+	    geom.applyMatrix( getThreeMatrix(trnMat ) );
+		geom.applyMatrix( getThreeMatrix(frame.toLocal()) );
 		
-		//console.log(object);
+		console.log(object);
 		return object;
 		
 	};
@@ -1128,17 +1110,14 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.trn.move = function(object, point, copy){
 
+		if( copy )
+			object = MOBIUS.obj.copy( object );
+
 		var geom; 
 		if(object.getGeometry != undefined)
 			geom = object.getGeometry();
 
-		if(geom.position != undefined){
-			console.log("I can be positioned! ");
-			geom.position.set(new THREE.Vector3(point[0], point[1], point[2]));
-			return object; 
-		}
-	
-		var orCenter = MOBIUS.obj.getCentre(object);
+		var orCenter = MOBIUS.obj.getCentre(object); 
 			
 		// frame definition
 		var frame = MOBIUS.frm.byXYAxes([0,0,0], [1,0,0], [0,1,0])
@@ -1597,7 +1576,12 @@ var convertTopoToThree = function( topology ){
 //
 var computeTopology = function( mObj ){
 	
-	var geom = mObj.getGeometry(); // THREE.Geometry 
+	var geom;
+	if(mObj.getGeometry != undefined)
+		geom = mObj.getGeometry(); // THREE.Geometry 
+	else
+		geom = mObj; 
+
 	var topology = {};
 
 
@@ -1617,7 +1601,7 @@ var computeTopology = function( mObj ){
 														mObj.extractThreeGeometry()[i].geometry.vertices.y, 
 														mObj.extractThreeGeometry()[i].geometry.vertices.z]));   // THREE.Vector3
 		}
-		topology.edges = [ mObj ];
+		topology.edges = [];
 		topology.faces = [];
 	}	
 	else if(mObj instanceof mObj_geom_Surface){
