@@ -1608,8 +1608,13 @@ var computeTopology = function( mObj ){
 
 		// first compute vertices - create vertex objects
 		// use vertice objects to set topology of the edges
-		topology.vertices = []; 
+		topology.vertices = [];
+		topology.points = []; 
 		for(var i=0; i<mObj.extractThreeGeometry().geometry.vertices.length; i++){
+			topology.points.push(new mObj_geom_Vertex([mObj.extractThreeGeometry().geometry.vertices[i].x, 
+											mObj.extractThreeGeometry().geometry.vertices[i].y, 
+											mObj.extractThreeGeometry().geometry.vertices[i].z]));
+
 			topology.vertices.push(new mObj_geom_Vertex([mObj.extractThreeGeometry().geometry.vertices[i].x, 
 														mObj.extractThreeGeometry().geometry.vertices[i].y, 
 														mObj.extractThreeGeometry().geometry.vertices[i].z]));
