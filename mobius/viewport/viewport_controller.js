@@ -140,7 +140,8 @@ mobius.controller('viewportCtrl',[
 
             $scope.gridOptions = {
                 data: "geometryData",
-                columnDefs: columnDefs
+                columnDefs: columnDefs,
+                enableHorizontalScrollbar: 0
             };
 
             console.log(table)

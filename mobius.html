@@ -81,6 +81,17 @@
                 <li>
                     <a ng-click = "fourViews()"> Four Views </a>
                 </li>
+                <li class="dropdown-submenu">
+                    <a>
+                        Set View Port
+                    </a>
+                    <ul class="dropdown-menu" >
+                        <li><a   href="#" ng-click = "toggleGeometry('main')">Geometry</a></li>
+                        <li><a   href="#" ng-click = "toggleTopology('main')">Topology</a></li>
+                        <li><a   href="#" ng-click = "toggleData('main')">Data</a></li>
+                        <li><a   href="#" ng-click = "toggleFullCode('main')">Generated Code</a></li>
+                    </ul>
+                </li>
             </ul>
         </span>
 
@@ -149,10 +160,10 @@
                     <div ui-layout="{ flow : 'row', dividerSize:'1', disableToggle:true}" >
                         <!-- threejs editor view port -->
                         <div ui-layout-container size = "85%" id="viewportLayout">
-                            <div ng-controller="viewportCtrl">
+                            <div ng-controller="viewportCtrl" id="eyeButton">
                                 <!--viewport menu-->
-                                <span ng-if="viewportControl.layout === 'singleView'"
-                                      dropdown on-toggle="toggled(open)" class="viewportMenu">
+                                <span ng-if="viewportControl.layout === 'singleView' && !showData"
+                                      dropdown on-toggle="toggled(open)" class="viewportMenu" >
                                      <button class="button viewport-menu-button" dropdown-toggle
                                             style="width: 40px !important;">
                                          <!--{{viewportControl.currentCate}}-->
@@ -161,7 +172,7 @@
                                      </button>
 
                                     <ul class="dropdown-menu" style="left: 42px;top:-3px">
-                                        <li class="dropdown-submenu">
+                                        <li class="dropdown-submenu" >
                                             <a href="#"> Set Viewport </a>
                                             <ul class="dropdown-menu" style="top:-2px">
                                                 <li><a   href="#" ng-click = "toggleGeometry('main')">Geometry</a></li>
@@ -464,11 +475,10 @@
                                     <md-tabs flex layout="column" layout-fill md-stretch-tabs="always" >
                                         <md-tab ng-repeat="connectorName in connectorNames" flex layout="column" label={{connectorName}}
                                                 md-on-select="selectDataTable(connectorName)"  class="tab-text-left">
-                                            <md-tab-content flex layout-fill style="overflow: hidden!important;">
-
+                                            <md-tab-content flex layout-fill style="overflow: auto!important;">
                                                     <md-tabs flex layout="column" layout-fill>
                                                         <md-tab ng-repeat="header in tableHeader" flex layout="column" label={{header}}
-                                                                md-on-select="generateDataTable(header)">
+                                                                md-on-select="generateDataTable(header)" >
                                                             <md-tab-content flex layout-fill style="overflow: hidden!important;">
                                                                 <div
                                                                 ui-grid="gridOptions"

@@ -370,7 +370,6 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
             hotkeys.toggleCheatSheet();
         };
 
-
         // emit to viewport controller for view splitting
         $scope.singleView = function(){
             $rootScope.$broadcast('singleView');
@@ -382,6 +381,26 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
 
         $scope.openTypeManager = function(){
             document.getElementById('typeManager').style.display = " inline";
+        };
+
+        $scope.toggleGeometry=function(){
+            var scope = angular.element(document.getElementById('eyeButton')).scope();
+            scope.toggleGeometry('main');
+        };
+
+        $scope.toggleTopology=function(){
+            var scope = angular.element(document.getElementById('eyeButton')).scope();
+            scope.toggleTopology('main');
+        };
+
+        $scope.toggleData =function(){
+            var scope = angular.element(document.getElementById('eyeButton')).scope();
+            scope.toggleData('main');
+        };
+
+        $scope.toggleFullCode = function(){
+            var scope = angular.element(document.getElementById('eyeButton')).scope();
+            scope.toggleFullCode('main');
         };
 
     }]);
