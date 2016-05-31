@@ -41,7 +41,7 @@
     left:0;
     position: absolute;
     bottom: 0;
-    top:35px;
+    top:0px;
 }
 
 .view-area .dataGrid{
@@ -54,7 +54,6 @@
     height: 100%;
     width: 100%;
     bottom: 0;
-    overflow: auto;
     font-size: 12px;
     position:absolute;
     top:0;left:0;right:0;
@@ -110,4 +109,9 @@
 
 .md-tab {
     text-align: left !important;
+}
+
+/*data table*/
+.md-tab {
+    padding: 4px 24px !important;
 }
