@@ -291,7 +291,14 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.srf.polygonByPoints = function ( frame, points, holes ){
 
-		var points = points.map( function(coordinate){
+		// if vertex is passed
+		if(points[0] instanceof mObj_geom_Vertex){
+			points = points.map( function( vert ){
+				return [vert.x, vert.y, vert.z];
+			})
+		}
+
+		points = points.map( function(coordinate){
 			return new THREE.Vector2(coordinate[0], coordinate[1]);
 		});
 
