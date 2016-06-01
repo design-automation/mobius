@@ -1,0 +1,1061 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "geoData0",
+            "x": 2120.6304806118155,
+            "y": 1885.0276014708083,
+            "inputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Input",
+                    "name": "file",
+                    "connected": false,
+                    "dataValue": " 3",
+                    "option": {
+                        "name": "dropdown"
+                    },
+                    "color": "#000000",
+                    "menuOptionText": "1, 2, 3",
+                    "selected": true
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "id": 17,
+                    "title": "Output",
+                    "selected": false,
+                    "type": "new",
+                    "name": "geoData"
+                }
+            ],
+            "type": "geoData",
+            "version": 1463650697438,
+            "overwrite": true,
+            "disabled": false,
+            "subGraphModel": {}
+        },
+        {
+            "id": 1,
+            "name": "polygons0",
+            "x": 2119.2154155839457,
+            "y": 1931.4265392936222,
+            "inputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Input",
+                    "name": "geoData",
+                    "connected": true,
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "selected": false
+                },
+                {
+                    "id": 2,
+                    "title": "Input",
+                    "name": "start",
+                    "connected": false,
+                    "dataValue": "0",
+                    "option": {
+                        "name": "slider"
+                    },
+                    "color": "#000000",
+                    "selected": false,
+                    "min": "0",
+                    "max": "geoData.features.length-2",
+                    "step": "1"
+                },
+                {
+                    "id": 3,
+                    "title": "Input",
+                    "name": "end",
+                    "connected": false,
+                    "dataValue": "100",
+                    "option": {
+                        "name": "slider"
+                    },
+                    "color": "#000000",
+                    "selected": true,
+                    "min": "1",
+                    "max": "geoData.features.length-1",
+                    "step": "1"
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "id": 23,
+                    "title": "Output",
+                    "type": "new",
+                    "selected": false,
+                    "name": "poly",
+                    "dataValue": "[]"
+                }
+            ],
+            "type": "polygons",
+            "version": 1463650999704,
+            "overwrite": true,
+            "disabled": false,
+            "subGraphModel": {}
+        },
+        {
+            "id": 2,
+            "name": "buildings0",
+            "x": 2119.076242387595,
+            "y": 2005.9525213191223,
+            "inputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Input",
+                    "name": "polygons",
+                    "connected": false,
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "selected": true
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "id": 17,
+                    "title": "Output",
+                    "selected": false,
+                    "type": "new",
+                    "name": "buildings",
+                    "dataValue": "[]"
+                }
+            ],
+            "type": "buildings",
+            "version": 1463650994821,
+            "overwrite": true,
+            "disabled": false,
+            "subGraphModel": {}
+        },
+        {
+            "id": 3,
+            "name": "offset0",
+            "x": 2119.9657775971746,
+            "y": 1971.6925953319499,
+            "inputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Input",
+                    "name": "polygons",
+                    "connected": true,
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "selected": false
+                },
+                {
+                    "id": 2,
+                    "title": "Input",
+                    "name": "offset",
+                    "connected": false,
+                    "dataValue": "-350",
+                    "option": {
+                        "name": "slider"
+                    },
+                    "color": "#000000",
+                    "selected": true,
+                    "min": "-500",
+                    "max": "100",
+                    "step": "150"
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "id": 3,
+                    "title": "Output",
+                    "selected": false,
+                    "type": "new",
+                    "name": "oPolygons",
+                    "dataValue": "[]"
+                }
+            ],
+            "type": "offset",
+            "version": 1463650978420,
+            "overwrite": true,
+            "disabled": false,
+            "subGraphModel": {}
+        }
+    ],
+    "connections": [
+        {
+            "source": {
+                "nodeID": 0,
+                "connectorIndex": 0
+            },
+            "dest": {
+                "nodeID": 1,
+                "connectorIndex": 0
+            }
+        },
+        {
+            "source": {
+                "nodeID": 1,
+                "connectorIndex": 0
+            },
+            "dest": {
+                "nodeID": 3,
+                "connectorIndex": 0
+            }
+        },
+        {
+            "source": {
+                "nodeID": 3,
+                "connectorIndex": 0
+            },
+            "dest": {
+                "nodeID": 2,
+                "connectorIndex": 0
+            }
+        }
+    ]
+}
+
+//procedure json
+[
+    [
+        {
+            "id": 17,
+            "title": "Output",
+            "selected": false,
+            "type": "new",
+            "name": "geoData",
+            "$$hashKey": "object:2515"
+        },
+        {
+            "id": 2,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "loadGeoJSON",
+            "category": "urb",
+            "parameters": [
+                {
+                    "value": "file",
+                    "type": "filename",
+                    "$$hashKey": "object:2564"
+                }
+            ],
+            "result": "geoData",
+            "selected": true,
+            "$$hashKey": "object:2516"
+        }
+    ],
+    [
+        {
+            "id": 23,
+            "title": "Output",
+            "type": "new",
+            "selected": false,
+            "name": "poly",
+            "dataValue": "[]",
+            "$$hashKey": "object:857"
+        },
+        {
+            "id": 31,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "groupGeometry",
+            "dataValue": "new THREE.Geometry()",
+            "type": "new",
+            "selected": false,
+            "$$hashKey": "object:858"
+        },
+        {
+            "id": 3,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "getProperty",
+            "category": "urb",
+            "parameters": [
+                {
+                    "value": "geoData",
+                    "type": "dataObject",
+                    "$$hashKey": "object:1184"
+                },
+                {
+                    "value": "\"features\"",
+                    "type": "propertyName",
+                    "$$hashKey": "object:1185"
+                }
+            ],
+            "result": "features",
+            "selected": false,
+            "disabled": false,
+            "$$hashKey": "object:859"
+        },
+        {
+            "id": 6,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "count",
+            "dataValue": "start",
+            "type": "new",
+            "selected": false,
+            "disabled": false,
+            "$$hashKey": "object:860"
+        },
+        {
+            "id": 25,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "sequence",
+            "category": "lst",
+            "parameters": [
+                {
+                    "value": "0",
+                    "type": "start",
+                    "$$hashKey": "object:1206"
+                },
+                {
+                    "value": "features.length-1",
+                    "type": "end",
+                    "$$hashKey": "object:1207"
+                },
+                {
+                    "value": "1",
+                    "type": "stepSize",
+                    "$$hashKey": "object:1208"
+                }
+            ],
+            "result": "seq",
+            "selected": false,
+            "$$hashKey": "object:861"
+        },
+        {
+            "id": 5,
+            "title": "Control",
+            "nodes": [
+                {
+                    "id": 26,
+                    "title": "Data",
+                    "nodes": [],
+                    "dataName": "feature",
+                    "dataValue": "features[feature_key]",
+                    "selected": false,
+                    "$$hashKey": "object:1222"
+                },
+                {
+                    "id": 8,
+                    "title": "Action",
+                    "nodes": [],
+                    "expression": "",
+                    "method": "getProperty",
+                    "category": "urb",
+                    "parameters": [
+                        {
+                            "value": "feature",
+                            "type": "dataObject",
+                            "$$hashKey": "object:1294"
+                        },
+                        {
+                            "value": "\"geometry\"",
+                            "type": "propertyName",
+                            "$$hashKey": "object:1295"
+                        }
+                    ],
+                    "result": "geometry",
+                    "selected": false,
+                    "disabled": false,
+                    "$$hashKey": "object:1223"
+                },
+                {
+                    "id": 9,
+                    "title": "Action",
+                    "nodes": [],
+                    "expression": "",
+                    "method": "getProperty",
+                    "category": "urb",
+                    "parameters": [
+                        {
+                            "value": "geometry",
+                            "type": "dataObject",
+                            "$$hashKey": "object:1309"
+                        },
+                        {
+                            "value": "\"coordinates\"",
+                            "type": "propertyName",
+                            "$$hashKey": "object:1310"
+                        }
+                    ],
+                    "result": "coord",
+                    "selected": false,
+                    "disabled": false,
+                    "$$hashKey": "object:1224"
+                },
+                {
+                    "id": 11,
+                    "title": "Data",
+                    "nodes": [],
+                    "dataName": "scaled",
+                    "dataValue": "[]",
+                    "selected": false,
+                    "disabled": false,
+                    "$$hashKey": "object:1225"
+                },
+                {
+                    "id": 10,
+                    "title": "Control",
+                    "nodes": [
+                        {
+                            "id": 12,
+                            "title": "Data",
+                            "nodes": [],
+                            "dataName": "x",
+                            "dataValue": "0.1*coordinate[0] - 1300",
+                            "selected": false,
+                            "disabled": false,
+                            "$$hashKey": "object:1328"
+                        },
+                        {
+                            "id": 13,
+                            "title": "Data",
+                            "nodes": [],
+                            "dataName": "y",
+                            "dataValue": "0.1*coordinate[1] - 3200",
+                            "selected": false,
+                            "disabled": false,
+                            "$$hashKey": "object:1329"
+                        },
+                        {
+                            "id": 14,
+                            "title": "Action",
+                            "nodes": [],
+                            "expression": "",
+                            "method": "append",
+                            "category": "lst",
+                            "parameters": [
+                                {
+                                    "value": "scaled",
+                                    "type": "list",
+                                    "$$hashKey": "object:1427"
+                                },
+                                {
+                                    "value": "[x,y]",
+                                    "type": "itemOrList",
+                                    "$$hashKey": "object:1428"
+                                }
+                            ],
+                            "result": "_",
+                            "selected": false,
+                            "disabled": false,
+                            "$$hashKey": "object:1330"
+                        },
+                        {
+                            "id": 33,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "console.log(x, y)",
+                            "method": "expression",
+                            "category": "msc",
+                            "parameters": [],
+                            "$$hashKey": "object:2974",
+                            "selected": true,
+                            "disabled": true
+                        }
+                    ],
+                    "controlType": "for each",
+                    "dataName": "coordinate",
+                    "forList": "coord[0]",
+                    "selected": false,
+                    "disabled": false,
+                    "$$hashKey": "object:1226"
+                },
+                {
+                    "id": 15,
+                    "title": "Action",
+                    "nodes": [],
+                    "expression": "",
+                    "method": "polygonByPoints",
+                    "category": "srf",
+                    "parameters": [
+                        {
+                            "value": "GLOBAL",
+                            "type": "frame",
+                            "$$hashKey": "object:1350"
+                        },
+                        {
+                            "value": "scaled",
+                            "type": "points",
+                            "$$hashKey": "object:1351"
+                        },
+                        {
+                            "value": "[]",
+                            "type": "holes",
+                            "$$hashKey": "object:1352"
+                        }
+                    ],
+                    "result": "polygon",
+                    "selected": false,
+                    "disabled": false,
+                    "$$hashKey": "object:1227"
+                },
+                {
+                    "id": 24,
+                    "title": "Control",
+                    "nodes": [
+                        {
+                            "id": 24,
+                            "title": "Control",
+                            "controlType": "if",
+                            "nodes": [
+                                {
+                                    "id": 16,
+                                    "title": "Action",
+                                    "nodes": [],
+                                    "type": "new",
+                                    "expression": "",
+                                    "method": "append",
+                                    "category": "lst",
+                                    "parameters": [
+                                        {
+                                            "value": "poly",
+                                            "type": "list",
+                                            "$$hashKey": "object:1482"
+                                        },
+                                        {
+                                            "value": "polygon",
+                                            "type": "itemOrList",
+                                            "$$hashKey": "object:1483"
+                                        }
+                                    ],
+                                    "result": "_",
+                                    "selected": false,
+                                    "disabled": false,
+                                    "$$hashKey": "object:1439"
+                                },
+                                {
+                                    "id": 32,
+                                    "title": "Data",
+                                    "nodes": [],
+                                    "dataName": "geometry",
+                                    "dataValue": "polygon.extractThreeGeometry().geometry",
+                                    "selected": false,
+                                    "$$hashKey": "object:1440"
+                                },
+                                {
+                                    "id": 29,
+                                    "title": "Action",
+                                    "nodes": [],
+                                    "type": "new",
+                                    "expression": "groupGeometry.merge(geometry, geometry.matrix)",
+                                    "method": "expression",
+                                    "category": "msc",
+                                    "parameters": [],
+                                    "selected": false,
+                                    "disabled": false,
+                                    "$$hashKey": "object:1441"
+                                }
+                            ],
+                            "ifExpression": "polygon.getGeometry().curves.length != 0",
+                            "selected": false,
+                            "$$hashKey": "object:1366"
+                        },
+                        {
+                            "id": 24,
+                            "title": "Control",
+                            "controlType": "else",
+                            "nodes": [],
+                            "selected": false,
+                            "$$hashKey": "object:1367"
+                        }
+                    ],
+                    "controlType": "if else",
+                    "selected": false,
+                    "$$hashKey": "object:1228"
+                },
+                {
+                    "id": 7,
+                    "title": "Data",
+                    "nodes": [],
+                    "dataName": "count",
+                    "dataValue": "count+1",
+                    "type": "new",
+                    "selected": false,
+                    "disabled": false,
+                    "$$hashKey": "object:1229"
+                }
+            ],
+            "type": "assign",
+            "controlType": "for each",
+            "dataName": "feature_key",
+            "forList": "seq",
+            "selected": false,
+            "disabled": false,
+            "$$hashKey": "object:862"
+        }
+    ],
+    [
+        {
+            "id": 17,
+            "title": "Output",
+            "selected": false,
+            "type": "new",
+            "name": "buildings",
+            "dataValue": "[]",
+            "$$hashKey": "object:7358"
+        },
+        {
+            "id": 5,
+            "title": "Control",
+            "nodes": [
+                {
+                    "id": 22,
+                    "title": "Action",
+                    "nodes": [],
+                    "expression": "",
+                    "method": "getProperty",
+                    "category": "urb",
+                    "parameters": [
+                        {
+                            "value": "polygon",
+                            "type": "dataObject",
+                            "$$hashKey": "object:7434"
+                        },
+                        {
+                            "value": "\"height\"",
+                            "type": "propertyName",
+                            "$$hashKey": "object:7435"
+                        }
+                    ],
+                    "result": "height",
+                    "selected": false,
+                    "disabled": false,
+                    "$$hashKey": "object:7393"
+                },
+                {
+                    "id": 23,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "expression": "",
+                    "method": "byExtrusion",
+                    "category": "sld",
+                    "parameters": [
+                        {
+                            "value": "GLOBAL",
+                            "type": "frame",
+                            "$$hashKey": "object:7449"
+                        },
+                        {
+                            "value": "polygon",
+                            "type": "surface",
+                            "$$hashKey": "object:7450"
+                        },
+                        {
+                            "value": "0",
+                            "type": "xDistance",
+                            "$$hashKey": "object:7451"
+                        },
+                        {
+                            "value": "height",
+                            "type": "yDistance",
+                            "$$hashKey": "object:7452"
+                        },
+                        {
+                            "value": "0",
+                            "type": "zDistance",
+                            "$$hashKey": "object:7453"
+                        }
+                    ],
+                    "result": "building",
+                    "selected": false,
+                    "disabled": false,
+                    "$$hashKey": "object:7394"
+                },
+                {
+                    "id": 27,
+                    "title": "Control",
+                    "nodes": [
+                        {
+                            "id": 27,
+                            "title": "Control",
+                            "controlType": "if",
+                            "nodes": [
+                                {
+                                    "id": 26,
+                                    "title": "Action",
+                                    "nodes": [],
+                                    "expression": "",
+                                    "method": "addMaterial",
+                                    "category": "obj",
+                                    "parameters": [
+                                        {
+                                            "value": "building",
+                                            "type": "obj",
+                                            "$$hashKey": "object:7543"
+                                        },
+                                        {
+                                            "value": "\"MeshBasicMaterial\"",
+                                            "type": "material_type",
+                                            "$$hashKey": "object:7544"
+                                        },
+                                        {
+                                            "value": "false",
+                                            "type": "wireframe",
+                                            "$$hashKey": "object:7545"
+                                        },
+                                        {
+                                            "value": "\"#00ff00\"",
+                                            "type": "color_hex",
+                                            "$$hashKey": "object:7546"
+                                        },
+                                        {
+                                            "value": "false",
+                                            "type": "transparent",
+                                            "$$hashKey": "object:7547"
+                                        }
+                                    ],
+                                    "result": "_",
+                                    "selected": false,
+                                    "disabled": false,
+                                    "$$hashKey": "object:7512"
+                                }
+                            ],
+                            "ifExpression": "height < 2",
+                            "selected": false,
+                            "disabled": false,
+                            "$$hashKey": "object:7473"
+                        },
+                        {
+                            "id": 27,
+                            "title": "Control",
+                            "controlType": "else",
+                            "nodes": [],
+                            "selected": false,
+                            "disabled": false,
+                            "$$hashKey": "object:7474"
+                        }
+                    ],
+                    "controlType": "if else",
+                    "selected": false,
+                    "disabled": false,
+                    "$$hashKey": "object:7395"
+                },
+                {
+                    "id": 25,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "expression": "",
+                    "method": "append",
+                    "category": "lst",
+                    "parameters": [
+                        {
+                            "value": "buildings",
+                            "type": "list",
+                            "$$hashKey": "object:7491"
+                        },
+                        {
+                            "value": "building",
+                            "type": "itemOrList",
+                            "$$hashKey": "object:7492"
+                        }
+                    ],
+                    "result": "_",
+                    "selected": false,
+                    "disabled": false,
+                    "$$hashKey": "object:7396"
+                }
+            ],
+            "type": "assign",
+            "controlType": "for each",
+            "dataName": "polygon",
+            "forList": "polygons",
+            "selected": true,
+            "disabled": false,
+            "$$hashKey": "object:7359"
+        }
+    ],
+    [
+        {
+            "id": 3,
+            "title": "Output",
+            "selected": false,
+            "type": "new",
+            "name": "oPolygons",
+            "dataValue": "[]",
+            "$$hashKey": "object:1738"
+        },
+        {
+            "id": 1,
+            "title": "Control",
+            "nodes": [
+                {
+                    "id": 9,
+                    "title": "Action",
+                    "nodes": [],
+                    "expression": "",
+                    "method": "offset",
+                    "category": "srf",
+                    "parameters": [
+                        {
+                            "value": "polygon",
+                            "type": "surface",
+                            "$$hashKey": "object:3181"
+                        },
+                        {
+                            "value": "-15",
+                            "type": "offset",
+                            "$$hashKey": "object:3182"
+                        },
+                        {
+                            "value": "10",
+                            "type": "scale",
+                            "$$hashKey": "object:3183"
+                        }
+                    ],
+                    "result": "offsetPolygon",
+                    "selected": false,
+                    "$$hashKey": "object:3152"
+                },
+                {
+                    "id": 7,
+                    "title": "Control",
+                    "nodes": [
+                        {
+                            "id": 7,
+                            "title": "Control",
+                            "controlType": "if",
+                            "nodes": [
+                                {
+                                    "id": 8,
+                                    "title": "Control",
+                                    "nodes": [
+                                        {
+                                            "id": 8,
+                                            "title": "Control",
+                                            "controlType": "if",
+                                            "nodes": [
+                                                {
+                                                    "id": 5,
+                                                    "title": "Action",
+                                                    "nodes": [],
+                                                    "expression": "",
+                                                    "method": "addData",
+                                                    "category": "obj",
+                                                    "parameters": [
+                                                        {
+                                                            "value": "offsetPolygon",
+                                                            "type": "obj",
+                                                            "$$hashKey": "object:3310"
+                                                        },
+                                                        {
+                                                            "value": "\"height\"",
+                                                            "type": "dataName",
+                                                            "$$hashKey": "object:3311"
+                                                        },
+                                                        {
+                                                            "value": "Math.floor(Math.random(1)*10+1)",
+                                                            "type": "dataValue",
+                                                            "$$hashKey": "object:3312"
+                                                        }
+                                                    ],
+                                                    "result": "_",
+                                                    "selected": false,
+                                                    "disabled": false,
+                                                    "$$hashKey": "object:3273"
+                                                },
+                                                {
+                                                    "id": 4,
+                                                    "title": "Action",
+                                                    "nodes": [],
+                                                    "expression": "",
+                                                    "method": "append",
+                                                    "category": "lst",
+                                                    "parameters": [
+                                                        {
+                                                            "value": "oPolygons",
+                                                            "type": "list",
+                                                            "$$hashKey": "object:3329"
+                                                        },
+                                                        {
+                                                            "value": "offsetPolygon",
+                                                            "type": "itemOrList",
+                                                            "$$hashKey": "object:3330"
+                                                        }
+                                                    ],
+                                                    "result": "_",
+                                                    "selected": false,
+                                                    "$$hashKey": "object:3274"
+                                                }
+                                            ],
+                                            "ifExpression": "offsetPolygon.getGeometry().curves.length != 0",
+                                            "selected": false,
+                                            "$$hashKey": "object:3249"
+                                        },
+                                        {
+                                            "id": 8,
+                                            "title": "Control",
+                                            "controlType": "else",
+                                            "nodes": [],
+                                            "selected": false,
+                                            "$$hashKey": "object:3250"
+                                        }
+                                    ],
+                                    "controlType": "if else",
+                                    "selected": false,
+                                    "$$hashKey": "object:3221"
+                                }
+                            ],
+                            "ifExpression": "offsetPolygon!=null",
+                            "selected": false,
+                            "$$hashKey": "object:3197"
+                        },
+                        {
+                            "id": 7,
+                            "title": "Control",
+                            "controlType": "else",
+                            "nodes": [],
+                            "selected": false,
+                            "$$hashKey": "object:3198"
+                        }
+                    ],
+                    "controlType": "if else",
+                    "selected": false,
+                    "$$hashKey": "object:3153"
+                }
+            ],
+            "type": "new",
+            "controlType": "for each",
+            "dataName": "polygon",
+            "forList": "polygons",
+            "selected": true,
+            "$$hashKey": "object:1739"
+        }
+    ]
+]
+
+//interface json
+[
+    [
+        {
+            "id": 1,
+            "title": "Input",
+            "name": "file",
+            "connected": false,
+            "dataValue": " 3",
+            "option": {
+                "name": "dropdown"
+            },
+            "color": "#000000",
+            "menuOptionText": "1, 2, 3",
+            "selected": true,
+            "$$hashKey": "object:2511"
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Input",
+            "name": "geoData",
+            "connected": true,
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "selected": false,
+            "$$hashKey": "object:843"
+        },
+        {
+            "id": 2,
+            "title": "Input",
+            "name": "start",
+            "connected": false,
+            "dataValue": "0",
+            "option": {
+                "name": "slider"
+            },
+            "color": "#000000",
+            "selected": false,
+            "min": "0",
+            "max": "geoData.features.length-2",
+            "step": "1",
+            "$$hashKey": "object:844"
+        },
+        {
+            "id": 3,
+            "title": "Input",
+            "name": "end",
+            "connected": false,
+            "dataValue": "100",
+            "option": {
+                "name": "slider"
+            },
+            "color": "#000000",
+            "selected": true,
+            "min": "1",
+            "max": "geoData.features.length-1",
+            "step": "1",
+            "$$hashKey": "object:845"
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Input",
+            "name": "polygons",
+            "connected": true,
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "selected": true,
+            "$$hashKey": "object:7355"
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Input",
+            "name": "polygons",
+            "connected": true,
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "selected": false,
+            "$$hashKey": "object:1714"
+        },
+        {
+            "id": 2,
+            "title": "Input",
+            "name": "offset",
+            "connected": false,
+            "dataValue": "-350",
+            "option": {
+                "name": "slider"
+            },
+            "color": "#000000",
+            "selected": true,
+            "min": "-500",
+            "max": "100",
+            "step": "150",
+            "$$hashKey": "object:1715"
+        },
+        {
+            "id": 3,
+            "title": "Input",
+            "name": "heightFn",
+            "connected": false,
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "selected": false,
+            "$$hashKey": "object:1716"
+        }
+    ]
+]

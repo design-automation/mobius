@@ -5,7 +5,7 @@
 
 // Main mObj Class definition
 // mObj maybe geometry, ifcModel, data / charts etc
-var i=0;
+var globalID = 0;
 
 var mObj = function mObj( type ){
 
@@ -18,13 +18,14 @@ var mObj = function mObj( type ){
     }
 
     function guid() {
-        function s4() {
+/*        function s4() {
             return Math.floor((1 + Math.random()) * 0x10000)
                 .toString(16)
                 .substring(1);
         }
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-            s4() + '-' + s4() + s4() + s4();
+            s4() + '-' + s4() + s4() + s4();*/
+        return ++globalID;
     }
 
     // for datatables
@@ -263,8 +264,6 @@ var mObj_geom = function mObj_geom( geometry, material ){
 
     this.setTopology = function(customTopo){
         topology = customTopo;
-        //topology = computeTopology( self );
-        //return topology;
     }
 
     this.getData = function(){
@@ -375,7 +374,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
                     var jsonObject = {
                         'attachedTo' : 'object_' + this.getGUID(),
                         'index':this.getGUID(),
-                        'belongsTo' : this.getGUID(),
+                        'belongsTo' : 'object_' + this.getGUID(),
                         'Property' : property,
                         'Value' : data[property],
                         'cate': 'object',
@@ -396,7 +395,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
                                 var jsonObject = {
                                     'attachedTo' : topoElement + index,
                                     'index' : index,
-                                    'belongsTo':this.getGUID(),
+                                    'belongsTo': 'object_' + this.getGUID(),
                                     'cate': topoElement,
                                     'Property' : property,
                                     'Value' : topoData[property],
@@ -406,14 +405,13 @@ var mObj_geom = function mObj_geom( geometry, material ){
 
                                 // pushing null values for other counterparts
                                 for( var i=0; i < topology[topoElement].length; i++){
-
                                     if(i==index)
                                         continue;
 
                                     var emptyObject = {
                                         'attachedTo' : topoElement + i,
                                         'index': i,
-                                        'belongsTo' : this.getGUID(),
+                                        'belongsTo' : 'object_' +  this.getGUID(),
                                         'cate': topoElement,
                                         'Property' : property,
                                         'Value' : "",
@@ -427,7 +425,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
                         else{
                             var emptyObject = {
                                 'attachedTo' : topoElement + index,
-                                'belongsTo' : this.getGUID(),
+                                'belongsTo' : 'object_' +  this.getGUID(),
                                 'cate': topoElement,
                                 'index':index,
                                 'connectorName':connectorName
