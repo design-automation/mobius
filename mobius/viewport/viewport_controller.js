@@ -76,16 +76,20 @@ mobius.controller('viewportCtrl',[
             if(header !== 'object'){
                 columnDefs = [
                         { field: 'cate', displayName: 'Category'},
-                        { field: 'index', displayName:'Id'},
-                        {   field: 'belongsTo',
-                            displayName: 'belongsTo',
-                            grouping:{ groupPriority: 0 },
-                            cellTemplate: '<div><div ng-if="!col.grouping || col.grouping.groupPriority === undefined || col.grouping.groupPriority === null || ( row.groupHeader && col.grouping.groupPriority === row.treeLevel )" class="ui-grid-cell-contents" title="TOOLTIP">{{COL_FIELD CUSTOM_FILTERS}}</div></div>'}
+                        { field: 'id', displayName:'Id'},
+                        { field: 'index', displayName:'Index'},
+                        { field: 'belongsTo',
+                            displayName: 'belongsTo'
+                            //grouping:{ groupPriority: 0 },
+                            //cellTemplate: '<div><div ng-if="!col.grouping || col.grouping.groupPriority === undefined || col.grouping.groupPriority === null || ( row.groupHeader && col.grouping.groupPriority === row.treeLevel )" class="ui-grid-cell-contents" title="TOOLTIP">{{COL_FIELD CUSTOM_FILTERS}}</div></div>'
+                        }
                 ];
             }else{
                 columnDefs = [
                     { field: 'cate', displayName: 'Category'},
-                    { field: 'index', displayName:'Id'}];
+                    { field: 'id', displayName:'Id'},
+                    { field: 'index', displayName:'Index'}
+                ];
             }
 
 
@@ -138,13 +142,16 @@ mobius.controller('viewportCtrl',[
                 }
             }
 
+            for(var i = 0; i <table.length; i++){
+                table[i].id = i;
+            }
+
             $scope.gridOptions = {
                 data: "geometryData",
                 columnDefs: columnDefs,
                 enableHorizontalScrollbar: 0
             };
 
-            console.log(table)
             $scope.geometryData = table;
         };
 

@@ -53,10 +53,10 @@
 .view-area .dataGrid-main{
     height: 100%;
     width: 100%;
-    bottom: 0;
+    bottom: 0 !important;
+    position: absolute;
     font-size: 12px;
-    position:absolute;
-    top:0;left:0;right:0;
+    top:75px;
 }
 
 .view-area #topoContainer{
@@ -106,12 +106,32 @@
     display: inline-block;
 }
 
-
-.md-tab {
-    text-align: left !important;
-}
-
 /*data table*/
 .md-tab {
     padding: 4px 24px !important;
+    width: 150px !important;
+    max-width: 1000px !important;
 }
+
+
+.nav > li > a {
+    padding: 6px 15px !important;
+    width:100px !important;
+    border-radius: 0 !important;
+}
+
+.nav-tabs > li.active > a {
+    color: #555!important;
+}
+
+
+.tab-content{
+    padding-top: 4px !important;
+}
+
+
+
+
+
+
+
