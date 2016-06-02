@@ -9,7 +9,7 @@ var MOBIUS = ( function (mod){
 	//	Function names should remain the same
 	//
 
-	mod.TOPOLOGY_DEF = {"points": [], "vertices":[], "edges":[], "faces":[]};
+	mod.TOPOLOGY_DEF = {"points": [], "vertices":[], "edges":[], "wires":[], "faces":[]};
 
 	/*
 	 *
@@ -1482,8 +1482,29 @@ var convertGeomToThree = function( geom ){
 	// internal function
 	var convertToThree = function(singleDataObject){
 
-		if( singleDataObject instanceof THREE.Mesh || singleDataObject instanceof THREE.Line || singleDataObject instanceof THREE.Group)
+		if( singleDataObject instanceof THREE.Mesh || singleDataObject instanceof THREE.Line || singleDataObject instanceof THREE.Group){
+						if(singleDataObject instanceof THREE.Group){
+				//console.log("before edges" , singleDataObject);
+				var alledges = [];
+				for(var i=0; i<singleDataObject.children.length; i++){
+					var edges = new THREE.EdgesHelper( singleDataObject.children[i], "black");
+					edges.material.linewidth = 2;
+					alledges.push(edges);				
+				}
+				for(var e=0; e<alledges.length; e++)
+					singleDataObject.add(new THREE.LineSegments(alledges[e].geometry, 
+															 new THREE.LineBasicMaterial({
+															        side: THREE.DoubleSide,
+															        linewidth: 2,
+															        color: 0x000000
+															    })
+															 ));
+
+				//console.log("after edges", singleDataObject);
+			}
 			return singleDataObject;
+
+		}
 		else if( singleDataObject instanceof THREE.Shape ){
 			//
 			//	Changes shape according to frame
