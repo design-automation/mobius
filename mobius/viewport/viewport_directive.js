@@ -75,7 +75,7 @@ mobius.directive('viewport', function factory() {
                 var VIEW_ANGLE = 45,
                     ASPECT = VIEWPORT_WIDTH / VIEWPORT_HEIGHT,
                     NEAR = 1,
-                    FAR = 10000;
+                    FAR = 50000;
 
                 camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
                 camera.position.set(-120, -200, 60);
