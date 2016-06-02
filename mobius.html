@@ -202,12 +202,16 @@
                                                 <li><a   ng-click="viewportControl.toggleRender()">Render</a></li>
                                             </ul>
                                         </li>
+
+                                        <li ng-if="showGeometry">
+                                            <a ng-click="viewportControl.toggleGrid('main')"> Toggle Grid</a>
+                                        </li>
                                     </ul>
                                 </span>
 
                                 <!--viewports-->
                                 <viewport control="viewportControl"
-                                          id="threeViewport">
+                                          id="threeViewport" style="z-index:-1">
 
                                     <div ng-if="viewportControl.layout === 'fourViews'" >
                                         <!--LT-->
@@ -472,29 +476,45 @@
                                 </div>
 
                                 <div ng-if="showData" class="dataViewport" >
-                                    <md-tabs flex layout="column" layout-fill md-stretch-tabs="always" >
-                                        <md-tab ng-repeat="connectorName in connectorNames" flex layout="column" label={{connectorName}}
-                                                md-on-select="selectDataTable(connectorName)"  class="tab-text-left">
-                                            <md-tab-content flex layout-fill style="overflow: auto!important;">
-                                                    <md-tabs flex layout="column" layout-fill>
-                                                        <md-tab ng-repeat="header in tableHeader" flex layout="column" label={{header}}
-                                                                md-on-select="generateDataTable(header)" >
-                                                            <md-tab-content flex layout-fill style="overflow: hidden!important;">
-                                                                <div
-                                                                ui-grid="gridOptions"
-                                                                ui-grid-resize-columns
-                                                                ui-grid-auto-resize
-                                                                ui-grid-grouping
-                                                                class="dataGrid-main">
-                                                                </div>
-                                                            </md-tab-content>
-                                                        </md-tab>
-                                                    </md-tabs>
+
+                                    <tabset style="padding-top: 2px">
+                                        <tab  ng-repeat="connectorName in connectorNames" heading="{{connectorName}}" select="selectDataTable(connectorName)">
+                                            <tabset>
+                                                <tab ng-repeat="header in tableHeader" heading="{{header}}" select="generateDataTable(header)">
+                                                    <div
+                                                    ui-grid="gridOptions"
+                                                    ui-grid-resize-columns
+                                                    ui-grid-auto-resize
+                                                    ui-grid-grouping
+                                                    class="dataGrid-main">
+                                                    </div>
+                                                </tab>
+                                            </tabset>
+                                        </tab>
+                                    </tabset>
 
 
-                                            </md-tab-content>
-                                        </md-tab>
-                                    </md-tabs>
+                                    <!--<md-tabs flex layout="column" layout-fill >-->
+                                        <!--<md-tab ng-repeat="connectorName in connectorNames" flex layout="column" label={{connectorName}}-->
+                                                <!--md-on-select="selectDataTable(connectorName)"  >-->
+                                            <!--<md-tab-content flex layout-fill >-->
+                                                    <!--<md-tabs flex layout="column" layout-fill>-->
+                                                        <!--<md-tab ng-repeat="header in tableHeader" flex layout="column" label={{header}}-->
+                                                                <!--md-on-select="generateDataTable(header)" >-->
+                                                            <!--<md-tab-content flex layout-fill style="overflow: hidden!important;">-->
+                                                                <!--<div-->
+                                                                <!--ui-grid="gridOptions"-->
+                                                                <!--ui-grid-resize-columns-->
+                                                                <!--ui-grid-auto-resize-->
+                                                                <!--ui-grid-grouping-->
+                                                                <!--class="dataGrid-main">-->
+                                                                <!--</div>-->
+                                                            <!--</md-tab-content>-->
+                                                        <!--</md-tab>-->
+                                                    <!--</md-tabs>-->
+                                            <!--</md-tab-content>-->
+                                        <!--</md-tab>-->
+                                    <!--</md-tabs>-->
 
                                 </div>
                             </div>
@@ -637,7 +657,7 @@
 
 <!-- angular-ui -->
 <script type="application/javascript" src="mobius/layout/ui-layout.js"></script>
-<script src="assets/js/angular-ui/ui-bootstrap/ui-bootstrap-tpls-0.13.3.min.js"></script>
+<script src="assets/js/angular-ui/ui-bootstrap/ui-bootstrap-tpls-1.3.3.js"></script>
 <script type="text/javascript" src="mobius/procedure/angular-ui-tree.js"></script>
 <script type="text/javascript" src="assets/js/angular-ui/ui-select/select.js"></script>
 <script type="text/javascript" src="assets/js/angular-ui/angular-xeditable/xeditable.js"></script>

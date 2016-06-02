@@ -61,6 +61,7 @@ mobius.directive('viewport', function factory() {
             var orthographicRB = true;  // start with right
 
             var wireframe = false;
+            var gridHelper;
 
             init();
             animate();
@@ -220,23 +221,23 @@ mobius.directive('viewport', function factory() {
                 var ambientLight = new THREE.AmbientLight( 0xbbbbbb );
                 scene.add( ambientLight );
 
-                var lights = [];
-                lights[0] = new THREE.PointLight( 0xececec, 0.25, 0 );
-                lights[1] = new THREE.PointLight( 0xececec, 0.25, 0 );
-                lights[2] = new THREE.PointLight( 0xececec, 0.25, 0 );
-
-                lights[0].position.set( 0, 100, 0 );
-                lights[1].position.set( 100, 200, 100 );
-                lights[2].position.set( -100, -200, -100 );
-
-                scene.add( lights[0] );
-                scene.add( lights[1] );
-                scene.add( lights[2] );
+                //var lights = [];
+                //lights[0] = new THREE.PointLight( 0xececec, 0.25, 0 );
+                //lights[1] = new THREE.PointLight( 0xececec, 0.25, 0 );
+                //lights[2] = new THREE.PointLight( 0xececec, 0.25, 0 );
+                //
+                //lights[0].position.set( 0, 100, 0 );
+                //lights[1].position.set( 100, 200, 100 );
+                //lights[2].position.set( -100, -200, -100 );
+                //
+                //scene.add( lights[0] );
+                //scene.add( lights[1] );
+                //scene.add( lights[2] );
 
                 // add helpers:
 
                 // GridHelper
-                var gridHelper = new THREE.GridHelper(100, 10); // 100 is grid size, 10 is grid step
+                gridHelper = new THREE.GridHelper(100, 10); // 100 is grid size, 10 is grid step
                 gridHelper.name = 'helper';
                 gridHelper.setColors(0x999999,0xaaaaaa);
                 gridHelper.rotation.x = Math.PI/2;//new THREE.Euler(0, 0 ,   0);
@@ -694,6 +695,10 @@ mobius.directive('viewport', function factory() {
                         scene.children[i].material.wireframe = false;
                     }
                 }
+            };
+
+            scope.internalControl.toggleGrid = function(){
+                gridHelper.visible = !gridHelper.visible;
             };
 
             scope.internalControl.topView('LT');
