@@ -75,9 +75,9 @@ mobius.controller('viewportCtrl',[
 
             if(header !== 'object'){
                 columnDefs = [
-                        { field: 'cate', displayName: 'Category'},
+                        //{ field: 'cate', displayName: 'Category'},
                         { field: 'id', displayName:'Id'},
-                        { field: 'index', displayName:'Index'},
+                        //{ field: 'index', displayName:'Index'},
                         { field: 'belongsTo',
                             displayName: 'belongsTo'
                             //grouping:{ groupPriority: 0 },
@@ -86,9 +86,9 @@ mobius.controller('viewportCtrl',[
                 ];
             }else{
                 columnDefs = [
-                    { field: 'cate', displayName: 'Category'},
-                    { field: 'id', displayName:'Id'},
-                    { field: 'index', displayName:'Index'}
+                    //{ field: 'cate', displayName: 'Category'},
+                    { field: 'id', displayName:'Id'}
+                    //{ field: 'index', displayName:'Index'}
                 ];
             }
 
