@@ -56,7 +56,7 @@
     bottom: 0 !important;
     position: absolute;
     font-size: 12px;
-    top:77px;
+    top:74px;
 }
 
 .view-area #topoContainer{
@@ -118,6 +118,9 @@
     padding: 6px 15px !important;
     width:100px !important;
     border-radius: 0 !important;
+    text-align: center;
+    color: #888 !important;
+    font-size: 13px;
 }
 
 .nav-tabs > li.active > a {
