@@ -805,6 +805,7 @@ var MOBIUS = ( function (mod){
 		
 		obj.setMaterial(material);
 
+
 		//return obj;
 	};
 
