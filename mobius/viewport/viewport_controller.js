@@ -76,13 +76,13 @@ mobius.controller('viewportCtrl',[
             if(header !== 'object'){
                 columnDefs = [
                         //{ field: 'cate', displayName: 'Category'},
-                        { field: 'id', displayName:'Id'},
+                        { field: 'id', displayName:'Id'}
                         //{ field: 'index', displayName:'Index'},
-                        { field: 'belongsTo',
-                            displayName: 'belongsTo'
+                        // { field: 'belongsTo',
+                            // displayName: 'belongsTo'
                             //grouping:{ groupPriority: 0 },
                             //cellTemplate: '<div><div ng-if="!col.grouping || col.grouping.groupPriority === undefined || col.grouping.groupPriority === null || ( row.groupHeader && col.grouping.groupPriority === row.treeLevel )" class="ui-grid-cell-contents" title="TOOLTIP">{{COL_FIELD CUSTOM_FILTERS}}</div></div>'
-                        }
+                        // }
                 ];
             }else{
                 columnDefs = [

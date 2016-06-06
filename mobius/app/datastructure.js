@@ -374,7 +374,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
                     var jsonObject = {
                         'attachedTo' : 'object_' + this.getGUID(),
                         'index':this.getGUID(),
-                        'belongsTo' : 'object_' + this.getGUID(),
+                        //'belongsTo' : 'object_' + this.getGUID(),
                         'Property' : property,
                         'Value' : data[property],
                         'cate': 'object',
@@ -395,7 +395,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
                                 var jsonObject = {
                                     'attachedTo' : topoElement + index,
                                     'index' : index,
-                                    'belongsTo': 'object_' + this.getGUID(),
+                                    //'belongsTo': 'object_' + this.getGUID(),
                                     'cate': topoElement,
                                     'Property' : property,
                                     'Value' : topoData[property],
@@ -411,7 +411,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
                                     var emptyObject = {
                                         'attachedTo' : topoElement + i,
                                         'index': i,
-                                        'belongsTo' : 'object_' +  this.getGUID(),
+                                        //'belongsTo' : 'object_' +  this.getGUID(),
                                         'cate': topoElement,
                                         'Property' : property,
                                         'Value' : "",
@@ -425,7 +425,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
                         else{
                             var emptyObject = {
                                 'attachedTo' : topoElement + index,
-                                'belongsTo' : 'object_' +  this.getGUID(),
+                                //'belongsTo' : 'object_' +  this.getGUID(),
                                 'cate': topoElement,
                                 'index':index,
                                 'connectorName':connectorName
