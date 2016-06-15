@@ -3,9 +3,10 @@
 }
 
 .view-area .viewportMenu{
-    left:5px;
-    top:10px;
+    position: absolute!important;
+    right:10px;
 }
+
 .view-area .viewport-menu-button{
     background: #eee;
     color: #888;
@@ -14,7 +15,7 @@
 .view-area #threeViewport {
     padding: 0;
     margin: 0;
-    line-height:0;
+    /*line-height:0;*/
     position: absolute;
     top: 0;
     bottom: 0;
@@ -29,7 +30,7 @@
 
 .view-area .codeViewport{
     width: 100%;
-    top:35px;
+    top:0;
     left:0;
     bottom: 0;
     position: absolute;

@@ -45,7 +45,7 @@ mobius.controller('viewportCtrl',[
 
         $scope.generateDataTable = function(header){
             if($scope.currentConnector === undefined){
-                $scope.currentConnector = $scope.connectorNames[0]
+                $scope.currentConnector = $scope.connectorNames[0];
             }
 
             $scope.currentHeader = header;
