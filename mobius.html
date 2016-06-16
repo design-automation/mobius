@@ -257,11 +257,11 @@
 
                                             <div ng-if="showDataLT" class="dataViewport">
                                                 <tabset style="padding-top: 2px">
-                                                    <tab  ng-repeat="connectorName in connectorNames" heading="{{connectorName}}" select="selectDataTable(connectorName)">
+                                                    <tab  ng-repeat="connectorName in connectorNames" heading="{{connectorName}}" select="selectDataTable(connectorName,'LT')">
                                                         <tabset>
-                                                            <tab ng-repeat="header in tableHeader" heading="{{header}}" select="generateDataTable(header)">
+                                                            <tab ng-repeat="header in tableHeader" heading="{{header}}" select="generateDataTable(header,'LT')">
                                                                 <div
-                                                                        ui-grid="gridOptions"
+                                                                        ui-grid="gridOptionsLT"
                                                                         ui-grid-resize-columns
                                                                         ui-grid-auto-resize
                                                                         ui-grid-grouping
@@ -330,11 +330,11 @@
 
                                             <div ng-if="showDataRT" class="dataViewport">
                                                 <tabset style="padding-top: 2px">
-                                                    <tab  ng-repeat="connectorName in connectorNames" heading="{{connectorName}}" select="selectDataTable(connectorName)">
+                                                    <tab  ng-repeat="connectorName in connectorNames" heading="{{connectorName}}" select="selectDataTable(connectorName,'RT')">
                                                         <tabset>
-                                                            <tab ng-repeat="header in tableHeader" heading="{{header}}" select="generateDataTable(header)">
+                                                            <tab ng-repeat="header in tableHeader" heading="{{header}}" select="generateDataTable(header,'RT')">
                                                                 <div
-                                                                        ui-grid="gridOptions"
+                                                                        ui-grid="gridOptionsRT"
                                                                         ui-grid-resize-columns
                                                                         ui-grid-auto-resize
                                                                         ui-grid-grouping
@@ -402,11 +402,11 @@
 
                                             <div ng-if="showDataLB" class="dataViewport">
                                                 <tabset style="padding-top: 2px">
-                                                    <tab  ng-repeat="connectorName in connectorNames" heading="{{connectorName}}" select="selectDataTable(connectorName)">
+                                                    <tab  ng-repeat="connectorName in connectorNames" heading="{{connectorName}}" select="selectDataTable(connectorName,'LB')">
                                                         <tabset>
-                                                            <tab ng-repeat="header in tableHeader" heading="{{header}}" select="generateDataTable(header)">
+                                                            <tab ng-repeat="header in tableHeader" heading="{{header}}" select="generateDataTable(header,'LB')">
                                                                 <div
-                                                                        ui-grid="gridOptions"
+                                                                        ui-grid="gridOptionsLB"
                                                                         ui-grid-resize-columns
                                                                         ui-grid-auto-resize
                                                                         ui-grid-grouping
@@ -474,11 +474,11 @@
 
                                             <div ng-if="showDataRB" class="dataViewport">
                                                 <tabset style="padding-top: 2px">
-                                                    <tab  ng-repeat="connectorName in connectorNames" heading="{{connectorName}}" select="selectDataTable(connectorName)">
+                                                    <tab  ng-repeat="connectorName in connectorNames" heading="{{connectorName}}" select="selectDataTable(connectorName,'RB')">
                                                         <tabset>
-                                                            <tab ng-repeat="header in tableHeader" heading="{{header}}" select="generateDataTable(header)">
+                                                            <tab ng-repeat="header in tableHeader" heading="{{header}}" select="generateDataTable(header,'RB')">
                                                                 <div
-                                                                        ui-grid="gridOptions"
+                                                                        ui-grid="gridOptionsRB"
                                                                         ui-grid-resize-columns
                                                                         ui-grid-auto-resize
                                                                         ui-grid-grouping

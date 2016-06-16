@@ -13,7 +13,13 @@ mobius.controller('viewportCtrl',[
             "geometryData":{},
         };
 
-        $scope.geometryData = [];
+        $scope.geometryData = {
+            main:[],
+            LT:[],
+            RT:[],
+            LB:[],
+            RB:[]
+        };
 
         $scope.tableHeader = [];
         $scope.connectorNames = [];
@@ -39,14 +45,24 @@ mobius.controller('viewportCtrl',[
             }
         }
 
-        $scope.selectDataTable = function(connectorName){
-            $scope.currentConnector = connectorName;
+        $scope.selectDataTable = function(connectorName, viewport){
+            if(viewport === undefined){
+                $scope.currentConnector = connectorName;
+            }else{
+                switch (viewport){
+                    case 'LT': $scope.currentConnectorLT = connectorName;break;
+                    case 'RT': $scope.currentConnectorRT = connectorName;break;
+                    case 'LB': $scope.currentConnectorLB = connectorName;break;
+                    case 'RB': $scope.currentConnectorRB = connectorName;break;
+                }
+            }
         };
 
-        $scope.generateDataTable = function(header){
-            if($scope.currentConnector === undefined){
-                $scope.currentConnector = $scope.connectorNames[0];
-            }
+        $scope.generateDataTable = function(header,viewport){
+            // fixme: is it necessary to check status of current selected connector
+            //if($scope.currentConnector === undefined){
+                //$scope.currentConnector = $scope.connectorNames[0];
+            //}
 
             $scope.currentHeader = header;
             var propertyList = [];
@@ -54,21 +70,59 @@ mobius.controller('viewportCtrl',[
             $scope.gridOptions = [];
             var table = [];
 
-            angular.copy($scope.viewportControl.geometryData[$scope.currentConnector],$scope.geometryData);
+            var dataHolder = [];
+            //if(viewport === undefined){
+            //    angular.copy($scope.viewportControl.geometryData[$scope.currentConnector],$scope.geometryData.main);
+            //} else{
+            //    switch (viewport){
+            //        case 'LT':
+            //            angular.copy($scope.viewportControl.geometryData[$scope.currentConnectorLT],$scope.geometryData.LT);;
+            //            break;
+            //        case 'RT':
+            //            angular.copy($scope.viewportControl.geometryData[$scope.currentConnectorRT],$scope.geometryData.RT);
+            //            break;
+            //        case 'LB':
+            //            angular.copy($scope.viewportControl.geometryData[$scope.currentConnectorLB],$scope.geometryData.LB);
+            //            break;
+            //        case 'RB':
+            //            angular.copy($scope.viewportControl.geometryData[$scope.currentConnectorRB],$scope.geometryData.RB);
+            //            break;
+            //    }
+            //}
 
+            if(viewport === undefined){
+                angular.copy($scope.viewportControl.geometryData[$scope.currentConnector],dataHolder);
+            } else{
+                switch (viewport){
+                    case 'LT':
+                        angular.copy($scope.viewportControl.geometryData[$scope.currentConnectorLT],dataHolder);
+                        break;
+                    case 'RT':
+                        angular.copy($scope.viewportControl.geometryData[$scope.currentConnectorRT],dataHolder);
+                        break;
+                    case 'LB':
+                        angular.copy($scope.viewportControl.geometryData[$scope.currentConnectorLB],dataHolder);
+                        break;
+                    case 'RB':
+                        angular.copy($scope.viewportControl.geometryData[$scope.currentConnectorRB],dataHolder);
+                        break;
+                }
+            }
+
+            // fixme replace all $scope.geometryData with dataHolder
             if(header !== undefined){
-                for(var i = 0; i < $scope.geometryData.length; i++){
-                    if($scope.geometryData[i].cate !== header){
-                        $scope.geometryData.splice(i,1);
+                for(var i = 0; i < dataHolder.length; i++){
+                    if(dataHolder[i].cate !== header){
+                        dataHolder.splice(i,1);
                         i--;
                     }
                 }
             }
 
-            for(var i = 0; i < $scope.geometryData.length; i++){
-                if($scope.geometryData[i].Property !== undefined){
-                    if(propertyList.indexOf($scope.geometryData[i].Property) === -1){
-                        propertyList.push($scope.geometryData[i].Property);
+            for(var i = 0; i < dataHolder.length; i++){
+                if(dataHolder[i].Property !== undefined){
+                    if(propertyList.indexOf(dataHolder[i].Property) === -1){
+                        propertyList.push(dataHolder[i].Property);
                     }
                 }
             }
@@ -100,43 +154,43 @@ mobius.controller('viewportCtrl',[
                 })
             }
 
-            for(var i = 0; i < $scope.geometryData.length; i++){
+            for(var i = 0; i < dataHolder.length; i++){
                 if(table.length === 0){
-                    table.push({attachedTo: $scope.geometryData[i].attachedTo});
+                    table.push({attachedTo: dataHolder[i].attachedTo});
 
-                    table[0][$scope.geometryData[i].Property]
-                        = $scope.geometryData[i].Value;
+                    table[0][dataHolder[i].Property]
+                        = dataHolder[i].Value;
 
                     table[0].belongsTo
-                        = $scope.geometryData[i].belongsTo;
+                        = dataHolder[i].belongsTo;
 
                     table[0].index
-                        = $scope.geometryData[i].index;
+                        = dataHolder[i].index;
 
                     table[0].cate
-                        = $scope.geometryData[i].cate;
+                        = dataHolder[i].cate;
                 }
 
                 for(var j = 0; j < table.length; j++){
-                    if(table[j].belongsTo === $scope.geometryData[i].belongsTo &&
-                        table[j].attachedTo === $scope.geometryData[i].attachedTo){
-                        table[j][$scope.geometryData[i].Property] = $scope.geometryData[i].Value;
+                    if(table[j].belongsTo === dataHolder[i].belongsTo &&
+                        table[j].attachedTo === dataHolder[i].attachedTo){
+                        table[j][dataHolder[i].Property] = dataHolder[i].Value;
                         break;
                     }else{
                         if(j === table.length-1){
-                            table.push({attachedTo: $scope.geometryData[i].attachedTo});
+                            table.push({attachedTo: dataHolder[i].attachedTo});
 
-                            table[table.length-1][$scope.geometryData[i].Property]
-                                = $scope.geometryData[i].Value;
+                            table[table.length-1][dataHolder[i].Property]
+                                = dataHolder[i].Value;
 
                             table[table.length-1].belongsTo
-                                = $scope.geometryData[i].belongsTo;
+                                = dataHolder[i].belongsTo;
 
                             table[table.length-1].index
-                                = $scope.geometryData[i].index;
+                                = dataHolder[i].index;
 
                             table[table.length-1].cate
-                                = $scope.geometryData[i].cate;
+                                = dataHolder[i].cate;
                         }
                     }
                 }
@@ -146,13 +200,50 @@ mobius.controller('viewportCtrl',[
                 table[i].id = i;
             }
 
-            $scope.gridOptions = {
-                data: "geometryData",
-                columnDefs: columnDefs,
-                enableHorizontalScrollbar: 0
-            };
+            if(viewport === undefined){
+                $scope.geometryData.main = table;
 
-            $scope.geometryData = table;
+                $scope.gridOptions = {
+                    data: "geometryData.main",
+                    columnDefs: columnDefs,
+                    enableHorizontalScrollbar: 0
+                };
+            } else{
+                switch (viewport){
+                    case 'LT':
+                        $scope.geometryData.LT = table;
+                        $scope.gridOptionsLT = {
+                            data: "geometryData.LT",
+                            columnDefs: columnDefs,
+                            enableHorizontalScrollbar: 0
+                        };
+                        break;
+                    case 'RT':
+                        $scope.geometryData.RT = table;
+                        $scope.gridOptionsRT = {
+                            data: "geometryData.RT",
+                            columnDefs: columnDefs,
+                            enableHorizontalScrollbar: 0
+                        };
+                        break;
+                    case 'LB':
+                        $scope.geometryData.LB = table;
+                        $scope.gridOptionsLB = {
+                            data: "geometryData.LB",
+                            columnDefs: columnDefs,
+                            enableHorizontalScrollbar: 0
+                        };
+                        break;
+                    case 'RB':
+                        $scope.geometryData.RB = table;
+                        $scope.gridOptionsRB = {
+                            data: "geometryData.RB",
+                            columnDefs: columnDefs,
+                            enableHorizontalScrollbar: 0
+                        };
+                        break;
+                }
+            }
         };
 
 
