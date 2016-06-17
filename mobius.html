@@ -243,6 +243,10 @@
                                                         <li><a   ng-click="viewportControl.renderOption('LT')">Render</a></li>
                                                     </ul>
                                                 </li>
+
+                                                <li ng-if="showGeometry">
+                                                    <a ng-click="viewportControl.toggleGrid('LT')"> Toggle Grid</a>
+                                                </li>
                                             </ul>
                                         </span>
 
@@ -316,6 +320,10 @@
                                                         <li><a   ng-click="viewportControl.renderOption('RT')">Render</a></li>
                                                     </ul>
                                                 </li>
+
+                                                <li ng-if="showGeometry">
+                                                    <a ng-click="viewportControl.toggleGrid('RT')"> Toggle Grid</a>
+                                                </li>
                                             </ul>
                                         </span>
 
@@ -388,6 +396,10 @@
                                                         <li><a   ng-click="viewportControl.renderOption('LB')">Render</a></li>
                                                     </ul>
                                                 </li>
+
+                                                <li ng-if="showGeometry">
+                                                    <a ng-click="viewportControl.toggleGrid('LB')"> Toggle Grid</a>
+                                                </li>
                                             </ul>
                                         </span>
 
@@ -459,6 +471,10 @@
                                                          <li><a    ng-click="viewportControl.wireframeOption('RB')">Wireframe</a></li>
                                                          <li><a   ng-click="viewportControl.renderOption('RB')">Render</a></li>
                                                      </ul>
+                                                 </li>
+
+                                                 <li ng-if="showGeometry">
+                                                     <a ng-click="viewportControl.toggleGrid('RB')"> Toggle Grid</a>
                                                  </li>
                                              </ul>
                                         </span>
@@ -731,6 +747,7 @@
 <script src="mobius/menu/menu_controller.js"></script>
 <script src="mobius/procedure/procedure_controller.js"></script>
 <script src="mobius/graph/panzoom_controller.js"></script>
+<script src="mobius/graph/subgraphPanzoomController.js"></script>
 <script src="mobius/graph/execute_controller.js"></script>
 <script src="mobius/viewport/console_controller.js"></script>
 <script src="mobius/viewport/viewport_controller.js"></script>

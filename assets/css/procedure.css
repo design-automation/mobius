@@ -32,6 +32,15 @@
     padding-bottom: 32px;
 }
 
+#subgraphToggle{
+    display: inline-block;
+    position: absolute !important;
+    top: 0;
+    right:120px;
+    white-space: nowrap;
+    width: 60px !important;
+}
+
 .button-action{
     display: inline-block;
     position: absolute !important;

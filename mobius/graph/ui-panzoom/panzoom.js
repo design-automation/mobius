@@ -16,7 +16,8 @@ angular.module('panzoom', ['monospaced.mousewheel'])
                 transclude: true,
                 scope: {
                     config: '=',
-                    model: '='
+                    model: '=',
+                    readonly:'='
                 },
                 controller: ['$scope', '$element','$rootScope',
                     function ($scope, $element,$rootScope) {
@@ -44,7 +45,10 @@ angular.module('panzoom', ['monospaced.mousewheel'])
                         var getCssScale = function (zoomLevel) {
                             var scaleFactor = Math.pow($scope.config.scalePerZoomLevel, zoomLevel - $scope.config.neutralZoomLevel);
                             // @mobius update scale factor to graph
-                            $rootScope.$broadcast("Update", scaleFactor);
+                            if($scope.readonly !== true){
+                                $rootScope.$broadcast("Update", scaleFactor);
+                            }
+
                             return scaleFactor;
                         };
 
@@ -184,7 +188,10 @@ angular.module('panzoom', ['monospaced.mousewheel'])
 
                             var scale = getCssScale($scope.model.zoomLevel);
 
-                            $rootScope.$broadcast("Update", scale);
+                            if($scope.readonly !== true){
+                                $rootScope.$broadcast("Update", scale);
+                            }
+
 
                             var scaleString = 'scale(' + scale + ')';
 

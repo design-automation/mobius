@@ -221,19 +221,6 @@ mobius.directive('viewport', function factory() {
                 var ambientLight = new THREE.AmbientLight( 0xbbbbbb );
                 scene.add( ambientLight );
 
-                //var lights = [];
-                //lights[0] = new THREE.PointLight( 0xececec, 0.25, 0 );
-                //lights[1] = new THREE.PointLight( 0xececec, 0.25, 0 );
-                //lights[2] = new THREE.PointLight( 0xececec, 0.25, 0 );
-                //
-                //lights[0].position.set( 0, 100, 0 );
-                //lights[1].position.set( 100, 200, 100 );
-                //lights[2].position.set( -100, -200, -100 );
-                //
-                //scene.add( lights[0] );
-                //scene.add( lights[1] );
-                //scene.add( lights[2] );
-
                 // add helpers:
 
                 // GridHelper

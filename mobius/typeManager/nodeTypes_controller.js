@@ -761,7 +761,6 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
     $scope.generateCode =  function (){
         var selectedType;
 
-        // fixme case where no type selected
         for(var i = 0; i< $scope.typeList.length; i++){
             if(  $scope.typeList[i].selected === true){
                 selectedType = $scope.typeList[i];

@@ -39,17 +39,26 @@
 
             <div ui-layout-container >
                 <div ng-if = "currentNodeName">
-                <div class="doormat">
-                    <div>
-                        {{currentNodeType}} {{currentNodeVersion}}
+                    <div class="doormat">
+                        <div>
+                            {{currentNodeType}} {{currentNodeVersion}}
+                        </div>
+
+                        <div ng-if="currentIsSubgraph">
+                            <button class="button"
+                                    id="subgraphToggle"
+                                    ng-click="subgraphToggle()">
+                                {{toggleTo}}
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
+
                 <div ng-if = "!currentNodeName">
-                <div class="doormat">
+                    <div class="doormat">
                         <div>No Node Selected</div>
+                    </div>
                 </div>
-        </div>
 
                 <button class="button pull-right button-action"
                         dropdown-toggle="dropdown"
@@ -105,7 +114,6 @@
                 </button>
 
                 <div class="tabArea" id="procedure-area">
-                    <!-- procedure -->
                     <div ui-tree id="tree-root-procedure" >
                         <div ui-tree-nodes="" ng-model="data">
                             <div ng-repeat="node in data"
@@ -116,6 +124,25 @@
                             </div>
                         </div>
                     </div>
+
+                    <div ng-controller="subgraphZnpController"
+                         class="znpController"
+                         style="display: none"
+                         id="subgraph-flow-chart">
+                        <panzoom config="panzoomConfig"
+                                 model="panzoomModel"
+                                 readonly="true"
+                                 class="panzoom"
+                                 id="subgraphPanZoom">
+                            <div id="canvas">
+                                <flow-chart chart="currentSubgraphChartViewModel"
+                                            readonly="true"
+                                            class = "flow-chart">
+                                </flow-chart>
+                            </div>
+                        </panzoom>
+                    </div>
+
                 </div>
             </div>
 
