@@ -1,5 +1,5 @@
-mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','consoleMsg','$mdDialog',
-    function($scope,$rootScope,nodeCollection,consoleMsg,$mdDialog){
+mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','consoleMsg','$mdDialog','generateCode',
+    function($scope,$rootScope,nodeCollection,consoleMsg,$mdDialog,generateCode){
 
     $scope.info=function(input){
         if(input){
@@ -268,6 +268,23 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
         $scope.nodeUrl = URL.createObjectURL(blob);
     };
 
+    $scope.toggleTo = 'subgraph';
+    $scope.subgraphToggle = function(reset){
+        if($scope.toggleTo === 'procedure' || reset === true){
+            $scope.toggleTo = 'subgraph';
+
+            document.getElementById('typeCode').style.display= 'block';
+            document.getElementById('type-subgraph-flow-chart').style.display='none';
+        }else{
+            $scope.toggleTo = 'procedure';
+
+            document.getElementById('typeCode').style.display= 'none';
+            document.getElementById('type-subgraph-flow-chart').style.display='block';
+
+            $scope.$broadcast('type-subgraphExtend',$scope.currentSubgraphChartViewModel);
+        }
+    };
+
     // only there is checked item then toggle export nodes
     // fixme warning
     // fixme directly from javascript
@@ -384,6 +401,7 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
     };
 
     $scope.methods = $scope.getMethods();
+
     $scope.methodList = $scope.getMethodList();
 
     $scope.controlTypes = ['for each', 'if else'];
@@ -783,6 +801,8 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
             }
         }
     };
+
+
     $scope.generateCode =  function (){
         var selectedType;
 
@@ -851,6 +871,11 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
             }
         }
 
+        // generate code for subgraph and append to inner function code
+        if(selectedType.subGraph){
+            jsCode += generateCode.generateCode(selectedType.subGraphModel);
+        }
+
         // return value
         if(num_output_ports){
             jsCode += '\n    return {\n';
@@ -866,8 +891,6 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
         }else{
             jsCode += '}\n\n';
         }
-
-
 
         // data procedure
         function procedure_data(procedure,fromLoop){
@@ -1033,24 +1056,8 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
             }
         }
 
-        return jsCode;
+        return js_beautify(jsCode);
     };
 
-    $scope.toggleTo = 'subgraph';
-    $scope.subgraphToggle = function(reset){
-        if($scope.toggleTo === 'procedure' || reset === true){
-            $scope.toggleTo = 'subgraph';
-
-            document.getElementById('typeCode').style.display= 'block';
-            document.getElementById('type-subgraph-flow-chart').style.display='none';
-        }else{
-            $scope.toggleTo = 'procedure';
-
-            document.getElementById('typeCode').style.display= 'none';
-            document.getElementById('type-subgraph-flow-chart').style.display='block';
-
-            $scope.$broadcast('type-subgraphExtend',$scope.currentSubgraphChartViewModel);
-        }
-    };
 
 }]);

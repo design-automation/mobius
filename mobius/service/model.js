@@ -708,8 +708,8 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
             return functionCode;
         },
 
-        generateCode: function (){
-            generateCode();
+        generateCode: function (subgraphModel){
+            return generateCode(subgraphModel);
         }
     };
 }]);
