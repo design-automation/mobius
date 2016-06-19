@@ -135,13 +135,41 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
-        <div ui-layout-container>
+
+        <div ui-layout-container id="subgraph-code-container">
+            <div ng-if="currentIsSubgraph">
+                <button class="button"
+                        style="position: absolute;right: 10px;top:5px;width: 60px!important;z-index: 9999!important;"
+                        ng-click="subgraphToggle()">
+                    {{toggleTo}}
+                </button>
+            </div>
+
             <div style="height: 100%; width: 100%;"
                  ng-model="jsCode"
+                 id="typeCode"
                  ui-ace="{ mode: 'javascript',theme: 'tomorrow',  showGutter: false,}"
                  readonly="{{true}}">
+            </div>
+
+            <div ng-controller="typeManagerSubgraphZnpController"
+                 style="height: 100%; width: 100%;display: none"
+                id="type-subgraph-flow-chart">
+                <panzoom config="panzoomConfig"
+                model="panzoomModel"
+                readonly="true"
+                class="panzoom"
+                id="typeManagerSubgraphPanZoom">
+                    <div id="canvas">
+                        <flow-chart chart="currentSubgraphChartViewModel"
+                        readonly="true"
+                        class = "flow-chart">
+                        </flow-chart>
+                    </div>
+                </panzoom>
             </div>
         </div>
     </div>
