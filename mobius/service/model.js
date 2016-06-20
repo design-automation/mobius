@@ -710,6 +710,31 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
         generateCode: function (subgraphModel){
             return generateCode(subgraphModel);
+        },
+
+        displayError: function (graphTrace){
+            var currentGraph = data.chartViewModel;
+
+            for(var i = 0; i < graphTrace.length; i++){
+                for(var j =0; j < currentGraph.nodes.length; j++){
+                    if(currentGraph.data){
+                        if(currentGraph.data.nodes[j].name === graphTrace[i].nodeName &&
+                            currentGraph.data.nodes[j].type === graphTrace[i].typeName){
+                            currentGraph.data.nodes[j].error = true;
+                            currentGraph = currentGraph.nodes[j].data.subGraphModel.chartDataModel;
+                            break;
+                        }
+                    }else{
+                        if(currentGraph.nodes[j].name === graphTrace[i].nodeName &&
+                            currentGraph.nodes[j].type === graphTrace[i].typeName){
+                            currentGraph.nodes[j].error = true;
+                            currentGraph = currentGraph.nodes[j].subGraphModel.chartDataModel;
+                            break;
+                        }
+                    }
+
+                }
+            }
         }
     };
 }]);

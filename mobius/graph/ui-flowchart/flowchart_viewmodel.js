@@ -232,6 +232,10 @@ var flowchart = {};
 			return nodeDataModel.disabled;
 		};
 
+		this.error = function () {
+			return nodeDataModel.error;
+		};
+
 		//
 		// Internal function to add a connector.
 		this._addConnector = function (connectorDataModel, y, connectorsDataModel, connectorsViewModel) {

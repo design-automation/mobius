@@ -27,7 +27,6 @@ mobius.controller('executeCtrl',['$scope','$rootScope','$q','executeService','co
 
         $scope.outputs = [];
 
-
         // shortcut keys
         hotkeys.add({
             combo: 'ctrl+enter',
@@ -60,7 +59,8 @@ mobius.controller('executeCtrl',['$scope','$rootScope','$q','executeService','co
                     }, function(msg){
                         document.getElementById('waiting').style.display='none';
                         $scope.showSpinner = false;
-                        console.error(msg)
+                        console.error(msg);
+                        generateCode.displayError(msg);
                     })
                     .then(function() {
                         console.log('display');
