@@ -27,7 +27,6 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
         }
     }
 
-
     $scope.$watch(function(){return localStorage.mobiusNodeTypes}, function(){
         var  uiStatus = [];
         angular.copy($scope.typeList,uiStatus);

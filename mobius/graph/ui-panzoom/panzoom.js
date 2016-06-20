@@ -76,10 +76,11 @@ angular.module('panzoom', ['monospaced.mousewheel'])
                         $scope.config.initialPanX = $scope.config.initialPanX !== undefined ? $scope.config.initialPanX  : 0;
                         $scope.config.initialPanY = $scope.config.initialPanY || 0;
                         $scope.config.keepInBounds = $scope.config.keepInBounds ? $scope.config.keepInBounds : false;
-                        if ($scope.config.keepInBounds && $scope.config.neutralZoomLevel !== 0) {
-                            console.warn('You have set keepInBounds to true and neutralZoomLevel to ' + $scope.config.neutralZoomLevel +
-                                '. Be aware that the zoom level cannot below ' + $scope.config.neutralZoomLevel);
-                        }
+                        // fixme temporay disabled
+                        //if ($scope.config.keepInBounds && $scope.config.neutralZoomLevel !== 0) {
+                        //    console.warn('You have set keepInBounds to true and neutralZoomLevel to ' + $scope.config.neutralZoomLevel +
+                        //        '. Be aware that the zoom level cannot below ' + $scope.config.neutralZoomLevel);
+                        //}
                         $scope.config.keepInBoundsRestoreForce =
                             $scope.config.keepInBoundsRestoreForce !== undefined ? $scope.config.keepInBoundsRestoreForce : 0.5;
                         $scope.config.keepInBoundsDragPullback =
