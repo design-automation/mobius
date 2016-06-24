@@ -22,7 +22,7 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
         // create new scene
         $scope.newScene = function () {
             $mdDialog.show({
-                controller: DialogController,
+                //controller: DialogController,
                 templateUrl: 'mobius/dialog/newScene_dialog.tmpl.html',
                 parent: angular.element(document.body),
                 //targetEvent: ev,

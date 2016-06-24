@@ -104,9 +104,10 @@ mobius.controller('newNodeCtrl',[
         // Add a new node to the chart.
         $scope.addNewNode = function (type) {
             if(type === 'create new type'){
+                $scope.$emit('cleanGraph');
                 // install new node type and update type
                 $mdDialog.show({
-                    controller: DialogController,
+                    //controller: DialogController,
                     templateUrl: 'mobius/dialog/inputName_dialog.tmpl.html',
                     parent: angular.element(document.body),
                     clickOutsideToClose:false,
@@ -130,8 +131,9 @@ mobius.controller('newNodeCtrl',[
                 });
             }
             else if(type === 'create new sub-graph'){
+                $scope.$emit('cleanGraph');
                 $mdDialog.show({
-                    controller: DialogController,
+                    //controller: DialogController,
                     templateUrl: 'mobius/dialog/inputName_dialog.tmpl.html',
                     parent: angular.element(document.body),
                     clickOutsideToClose:false,

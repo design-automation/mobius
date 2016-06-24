@@ -293,7 +293,7 @@ mobius.controller(  'graphCtrl',
 
         $scope.$on("renameSelected",function(){
             $mdDialog.show({
-                    controller: DialogController,
+                    //controller: DialogController,
                     templateUrl: 'mobius/dialog/inputName_dialog.tmpl.html',
                     parent: angular.element(document.body),
                     clickOutsideToClose:false,
@@ -315,7 +315,7 @@ mobius.controller(  'graphCtrl',
 
         $scope.$on("saveAsNewType",function(){
             $mdDialog.show({
-                controller: DialogController,
+                //controller: 'DialogController',
                 templateUrl: 'mobius/dialog/inputName_dialog.tmpl.html',
                 parent: angular.element(document.body),
                 clickOutsideToClose:false,
@@ -324,7 +324,7 @@ mobius.controller(  'graphCtrl',
                 .then(function(newTypeName){
                 if (!isValidName(newTypeName)) {return;}
                 if ($scope.nodeTypes().indexOf(newTypeName) >= 0 ){
-                    consoleMsg.errorMsg('dupName');
+                    $rootScope.$broadcast("overWriteProcedure");
                     return;
                 }else{
                     consoleMsg.confirmMsg('typeAdded');
@@ -352,8 +352,9 @@ mobius.controller(  'graphCtrl',
                 // get new type name, by default the original type name
                 var instanceName =  $scope.chartViewModel.getSelectedNodes()[0].data.name;
                 var oldTypeName = $scope.chartViewModel.getSelectedNodes()[0].data.type;
+
                 $mdDialog.show({
-                        controller: DialogController,
+                        //controller: DialogController,
                         templateUrl: 'mobius/dialog/overwrite_dialog.tmpl.html',
                         parent: angular.element(document.body),
                         clickOutsideToClose:false,

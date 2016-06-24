@@ -56,7 +56,6 @@ mobius.controller('typeManagerSubgraphZnpController', ['$scope', 'PanZoomService
 
         // if no nodes in the graph, reset to initial positon
         $scope.$on('type-subgraphExtend',function(event,chartViewModel){
-            console.log('ed')
             $scope.extend(chartViewModel);
         });
 

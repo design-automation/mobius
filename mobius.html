@@ -88,7 +88,7 @@
               <div class = "menuTitle"  dropdown-toggle>  Node </div>
               <ul class="dropdown-menu">
                   <li>
-                      <a href="" ng-click="openTypeManager()"> Type Manager </a>
+                      <a href="" ng-click="openTypeManager()"> Node Library </a>
                   </li>
 
                   <li>
@@ -670,6 +670,7 @@
 
 
 <div id="typeManager" ng-controller="nodeTypesCtrl" ng-include="'mobius/typeManager/typeManager_template.html'"></div>
+<div ng-include="'mobius/dialog/inputName_dialog.tmpl.html'"></div>
 
 <script src="assets/js/stackframe.min.js"></script>
 <script src="assets/js/error-stack-parser.js"></script>

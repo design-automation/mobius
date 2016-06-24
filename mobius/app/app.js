@@ -20,7 +20,7 @@ var mobius = angular.module('mobius',
                                 'ngRoute',
                                 'ng-context-menu',
                                 'decipher.history',
-                                'angularSpinner',
+                                'angularSpinner'
                             ]);
 
     mobius.filter('propsFilter', function() {
