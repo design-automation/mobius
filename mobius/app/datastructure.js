@@ -365,6 +365,9 @@ var mObj_geom = function mObj_geom( geometry, material ){
 
         var dataTable = [];
 
+        if(topology == undefined)
+            this.extractTopology();
+
         // LIMITATION - Data can only be added to the topology
         if( topology == undefined && data == undefined )
             return dataTable;
@@ -385,9 +388,28 @@ var mObj_geom = function mObj_geom( geometry, material ){
             }
 
             // generalized - irrespective of topology object configuration
-            for(topoElement in topology){
+            for(topoElement in topology){ 
                 if(topology.hasOwnProperty(topoElement)){
-                    for( var index=0; index < topology[topoElement].length; index++){
+                    for( var index=0; index < topology[topoElement].length; index++){ 
+
+                        
+                        if(topoElement == "points"){
+
+
+                            var jsonObject = {
+                                                    'attachedTo' : topoElement + index,
+                                                    'index' : index,
+                                                    //'belongsTo': 'object_' + this.getGUID(),
+                                                    'cate': topoElement,
+                                                    'Property' : 'Location',
+                                                    'Value' : topology[topoElement][index],
+                                                    'connectorName':connectorName
+                                                };
+                            dataTable.push(jsonObject); 
+                            continue;
+
+                        };
+
                         var topoData = topology[topoElement][index].getData();
                         if (topoData != undefined){
                             for( var property in topoData ){
@@ -404,10 +426,10 @@ var mObj_geom = function mObj_geom( geometry, material ){
                                 dataTable.push(jsonObject);
 
                                 // pushing null values for other counterparts
-                                for( var i=0; i < topology[topoElement].length; i++){
+/*                                for( var i=0; i < topology[topoElement].length; i++){
                                     if(i==index)
                                         continue;
-
+                                    
                                     var emptyObject = {
                                         'attachedTo' : topoElement + i,
                                         'index': i,
@@ -418,11 +440,11 @@ var mObj_geom = function mObj_geom( geometry, material ){
                                         'connectorName':connectorName
                                     };
                                     dataTable.push(emptyObject);
-                                }
+                                }*/
 
                             }
                         }
-                        else{
+/*                        else{
                             var emptyObject = {
                                 'attachedTo' : topoElement + index,
                                 //'belongsTo' : 'object_' +  this.getGUID(),
@@ -431,7 +453,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
                                 'connectorName':connectorName
                             };
                             dataTable.push(emptyObject);
-                        }
+                        }*/
                     }
                 }
             }
