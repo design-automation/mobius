@@ -286,6 +286,14 @@ mobius.controller(  'graphCtrl',
             }
         });
 
+        $scope.$on("node-dbClick", function(){
+            if($scope.chartViewModel.getSelectedNodes()[0].data.subGraph){
+                $scope.$emit('openSubGraph')
+            }else{
+                $scope.$emit("editProcedure");
+            }
+        });
+
         // todo what is it?
         $scope.$on('clearProcedure', function(){
             $scope.currentNodeName = '';
