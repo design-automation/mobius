@@ -65,6 +65,7 @@ mobius.factory('nodeCollection', function () {
                     return nodes[i].overwrite;
                 }
             }
+            return true;
         },
 
         getInputConnectors: function(type){
@@ -75,6 +76,7 @@ mobius.factory('nodeCollection', function () {
                     return input;
                 }
             }
+            return [];
         },
 
         getOutputConnectors: function(type){
@@ -85,6 +87,7 @@ mobius.factory('nodeCollection', function () {
                     return output;
                 }
             }
+            return [];
         },
 
         // return procedure data model for procedure
@@ -96,6 +99,7 @@ mobius.factory('nodeCollection', function () {
                     return obj;
                 }
             }
+            return [];
         },
 
         // return interface data model for interface
@@ -107,6 +111,7 @@ mobius.factory('nodeCollection', function () {
                     return obj;
                 }
             }
+            return [];
         },
 
         getSubGraphModel: function(typeName){

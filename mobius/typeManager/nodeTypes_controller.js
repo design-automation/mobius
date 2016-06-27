@@ -136,7 +136,7 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
                     var originalType = JSON.parse(localStorage.mobiusNodeTypes)[j];
 
                     $mdDialog.show({
-                            controller: DialogController,
+                            //controller: DialogController,
                             templateUrl: 'mobius/dialog/typeOverwrite_dialog.tmpl.html',
                             parent: angular.element(document.body),
                             clickOutsideToClose:false

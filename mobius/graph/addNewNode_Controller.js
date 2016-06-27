@@ -122,12 +122,12 @@ mobius.controller('newNodeCtrl',[
                         return;
                     }
 
-                    nodeCollection.installNewNodeType(newTypeName);
+                    //nodeCollection.installNewNodeType(newTypeName);
                     if(newTypeName !== undefined){
                         type = newTypeName;
                     }
 
-                    addNode(type);
+                    addNode(type,false);
                 });
             }
             else if(type === 'create new sub-graph'){
@@ -149,19 +149,19 @@ mobius.controller('newNodeCtrl',[
                     }
 
                     // pass in subGraph flag
-                    nodeCollection.installNewNodeType(newTypeName,true);
+                    // nodeCollection.installNewNodeType(newTypeName,true);
                     if(newTypeName !== undefined){
                         type = newTypeName;
                     }
 
-                    addNode(type);
+                    addNode(type, true);
                 });
             }
             else{
                 addNode(type);
             }
 
-            function addNode(type){
+            function addNode(type, ifSubgraph){
                 // add node to graph
                 var tempIndex = 0;
                 for(var i =0; i < $scope.chartViewModel.nodes.length; i++){
@@ -180,14 +180,48 @@ mobius.controller('newNodeCtrl',[
                 // fixme canvas reconfiguration requried
                 newNodeDataModel.x = 1900;
                 newNodeDataModel.y = 2100;
+
                 newNodeDataModel.inputConnectors = nodeCollection.getInputConnectors(type);
                 newNodeDataModel.outputConnectors = nodeCollection.getOutputConnectors(type);
+                newNodeDataModel.overwrite = nodeCollection.getOverwrite(type);
                 newNodeDataModel.type = type;
                 newNodeDataModel.version = 0;
-                newNodeDataModel.overwrite = nodeCollection.getOverwrite(type);
                 newNodeDataModel.disabled = false;
-                newNodeDataModel.subGraph = nodeCollection.ifSubGraph(type);
-                newNodeDataModel.subGraphModel = nodeCollection.getSubGraphModel(type);
+
+                if(nodeCollection.ifSubGraph(type) !== undefined){
+                    newNodeDataModel.subGraph = nodeCollection.ifSubGraph(type);
+                    newNodeDataModel.subGraphModel = nodeCollection.getSubGraphModel(type);
+                }else{
+                    newNodeDataModel.subGraph = ifSubgraph;
+                    if(ifSubgraph){
+                        newNodeDataModel.subGraphModel = {
+                            javascriptCode: '// To generate code,\n' + '// create nodes & procedures and run!\n',
+                            geomListCode: "var geomList = [];\n",
+                            innerCodeList: [],
+                            outerCodeList: [],
+                            dataList: [],
+                            interfaceList: [],
+                            chartDataModel: {
+                                "nodes": [],
+                                "connections": [],
+                                "inputPort": {
+                                    x: 1900,
+                                    y: 1900,
+                                    outputConnectors: []
+                                },
+                                "outputPort": {
+                                    x: 1900,
+                                    y: 2300,
+                                    inputConnectors: []
+                                }
+                            }
+                        }
+                    }else{
+                        newNodeDataModel.subGraphModel = undefined;
+                    }
+                }
+
+
 
                 // when new node added, increase the number of procedure list by one
                 $scope.dataList.push(nodeCollection.getProcedureDataModel(type));
@@ -248,5 +282,6 @@ mobius.controller('newNodeCtrl',[
 
                 $scope.nextNodeId++;
             }
+
         };
     }]);
