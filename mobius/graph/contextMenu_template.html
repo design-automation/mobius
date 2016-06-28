@@ -1,6 +1,7 @@
 <div class="position-fixed" id="menu-node" >
     <ul class="dropdown-menu">
         <li ng-if="isSubGraph()"><a ng-click="openSubGraph()"> Open Sub-Graph</a></li>
+        <li ng-if="!isSubGraph()"><a ng-click="editProcedure()"> Edit procedure</a></li>
 
         <li class="dropdown-submenu">
             <a> Show Input </a>
@@ -30,7 +31,6 @@
         <li><a ng-click="rename()"> Rename </a></li>
         <li><a ng-click="saveAsNew()"> Save to Node Library</a></li>
         <!--<li><a ng-click="overwrite()"> Overwrite original type</a></li>-->
-        <li><a ng-click="editProcedure()"> Edit procedure</a></li>
         <li><a ng-if="!checkDisabled()" ng-click="disableNode()"> Disable </a></li>
         <li><a ng-if="checkDisabled()" ng-click="enableNode()"> Enable </a></li>
     </ul>

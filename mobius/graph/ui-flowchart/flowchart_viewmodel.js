@@ -999,7 +999,6 @@ var flowchart = {};
 		// Deselect all nodes connections, connectors in the chart.
 		//
 		this.deselectAll = function () {
-			console.log('deselect all')
 			var nodes = this.nodes;
 			for (var i = 0; i < nodes.length; ++i) {
 				var node = nodes[i];
