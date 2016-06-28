@@ -385,7 +385,6 @@ angular.module('flowChart', ['dragging'] )
 		// Handle mousedown on a node / port
 		//
 		$scope.nodeMouseDown = function (evt, node, isPort) {
-
 			if($scope.readonly !== true) {
 				//
 				// @ mobius toggle new node dropdown
@@ -400,7 +399,6 @@ angular.module('flowChart', ['dragging'] )
 					// Node dragging has commenced.
 					//
 					dragStarted: function (x, y) {
-
 						lastMouseCoords = controller.translateCoordinates(x, y);
 						if (!node.selected()) {
 							chart.deselectAll();
@@ -412,7 +410,6 @@ angular.module('flowChart', ['dragging'] )
 					// Dragging selected nodes... update their x,y coordinates.
 					//
 					dragging: function (x, y) {
-
 						var curCoords = controller.translateCoordinates(x, y);
 						$rootScope.$on("Update", function (event, message) {
 							$scope.scaleFactor = message;
@@ -427,8 +424,6 @@ angular.module('flowChart', ['dragging'] )
 							// @mobius dragging is considered as clicked (selected)
 							var nodeIndex = chart.handleNodeDragged(node, evt.ctrlKey);
 							$scope.$emit("nodeIndex", nodeIndex);
-						} else {
-							$scope.$emit("clearProcedure");
 						}
 					},
 
@@ -447,8 +442,6 @@ angular.module('flowChart', ['dragging'] )
 
 						if (!isPort) {
 							$scope.$emit("nodeIndex", nodeIndex);
-						} else {
-							$scope.$emit("clearProcedure");
 						}
 					}
 

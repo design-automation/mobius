@@ -629,12 +629,12 @@ var flowchart = {};
 		this.data = chartDataModel;
 
 		// create a view-model for input ports
-		if(this.data.inputPort && this.data.inputPort.outputConnectors.length !== 0){
+		if(this.data.inputPort ){
 			this.inputPort = createInputPortViewModel(this.data.inputPort);
 		}
 
 		// create a view-model for output ports
-		if(this.data.outputPort && this.data.outputPort.inputConnectors.length !== 0){
+		if(this.data.outputPort ){
 			this.outputPort = createOutputPortViewModel(this.data.outputPort);
 		}
 
@@ -999,6 +999,7 @@ var flowchart = {};
 		// Deselect all nodes connections, connectors in the chart.
 		//
 		this.deselectAll = function () {
+			console.log('deselect all')
 			var nodes = this.nodes;
 			for (var i = 0; i < nodes.length; ++i) {
 				var node = nodes[i];
