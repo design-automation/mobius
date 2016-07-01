@@ -18,10 +18,10 @@ mobius.controller('viewportCtrl',[
         $scope.tableHeader = [];
         $scope.connectorNames = [];
 
+        $scope.tableHeader.push('Model');
         for(var topo in MOBIUS.TOPOLOGY_DEF) {
             $scope.tableHeader.push(topo);
         }
-        $scope.tableHeader.push('object');
         $scope.currentHeader = $scope.tableHeader[0];
 
         $rootScope.$on('Update Datatable', function(){

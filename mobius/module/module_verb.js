@@ -9,7 +9,7 @@ var MOBIUS = ( function (mod){
 	//	Function names should remain the same
 	//
 
-	mod.TOPOLOGY_DEF = {"points": [], "vertices":[], "edges":[], "wires":[], "faces":[]};
+	mod.TOPOLOGY_DEF = {"points": [], "vertices":[], "edges":[], "wires":[], "faces":[], "objects":[]};
 
 	/*
 	 *
@@ -661,7 +661,7 @@ var MOBIUS = ( function (mod){
 	 * @memberof vec
 	 */
 	mod.vec.angle = function(vector1, vector2){
-		var dotP = MOBIUS.mtx.dot( vector1,  vector2 );
+		var dotP = MOBIUS.mtx.dot( vector1,  vector2 ); 
 		var cos_t = dotP / (MOBIUS.vec.length( vector1 ) * MOBIUS.vec.length( vector2 ) );
 		return Math.cosh(cos_t);
 	};	
@@ -734,6 +734,12 @@ var MOBIUS = ( function (mod){
 	mod.vec.normalize = function(vector){
 		return verb.core.Vec.normalized( vector );
 	}
+
+	mod.mod = {};
+
+	mod.mod.makeModel = function(array_of_elements){
+		return new mObj_geom_Compound( array_of_elements );
+	};
 
 
 	//
@@ -1483,8 +1489,11 @@ var convertGeomToThree = function( geom ){
 	// internal function
 	var convertToThree = function(singleDataObject){
 
-		if( singleDataObject instanceof THREE.Mesh || singleDataObject instanceof THREE.Line || singleDataObject instanceof THREE.Group){
-						if(singleDataObject instanceof THREE.Group){
+		// normal three.js objects - for lines and curves
+		if( singleDataObject instanceof THREE.Mesh || singleDataObject instanceof THREE.Line || singleDataObject instanceof THREE.Group ){
+			
+			// to get lines in the mesh of the obj import
+			if(singleDataObject instanceof THREE.Group){
 				//console.log("before edges" , singleDataObject);
 				var alledges = [];
 				for(var i=0; i<singleDataObject.children.length; i++){
@@ -1506,6 +1515,7 @@ var convertGeomToThree = function( geom ){
 			return singleDataObject;
 
 		}
+		// three.js shapes may also be used for creating surfaces
 		else if( singleDataObject instanceof THREE.Shape ){
 			//
 			//	Changes shape according to frame
@@ -1522,8 +1532,10 @@ var convertGeomToThree = function( geom ){
 			shapeGeom.applyMatrix( m );
 			return new THREE.Mesh(shapeGeom);
 		}
+		// creating a three.js geometry from scratch - usually for solids
 		else if(singleDataObject instanceof THREE.Geometry)
 			return new THREE.Mesh( singleDataObject );
+		// 
 		else if(singleDataObject instanceof Array){
 			if(singleDataObject[0] instanceof THREE.Mesh)
 				return singleDataObject;
@@ -1619,22 +1631,64 @@ var computeTopology = function( mObj ){
 
 	//console.log("Initializing Topology");
 	var topology = {};
+	topology.objects = [];
 	topology.faces = [];
 	topology.wires = [];
 	topology.edges = [];
 	topology.vertices = [];
 	topology.points = [];
 
+	if(mObj instanceof mObj_geom_Compound){
+		
+		for( var element=0; element < geom.length; element++ ){
 
+			var elemTopo; 
+			if(geom[element].getTopology() == undefined){
+				console.log("Computing topology")
+				elemTopo = computeTopology(geom[element]);
+			}
+			else{
+				console.log("Topology already computed; ")
+				elemTopo = geom[element].getTopology();
+			}
+
+
+			MOBIUS.obj.addData( geom[element], "belongsTo", [element]);
+
+			// these will be mObj objects -  final index corresponding to model level needs to be added from MOBIUS side
+			topology.objects.push(geom[element]); 
+
+			["faces", "wires", "edges", "vertices"].map( function(el){
+
+				elemTopo[el].map( function(wire){ 
+					if(wire.getData() != undefined){
+						var bTo = wire.getData()["belongsTo"];
+						bTo.push(element);
+						MOBIUS.obj.addData( wire, "belongsTo", bTo );									
+					}
+					else{ 
+						console.log(el, " data not defined")
+					}
+				});	
+				
+				topology[el] = topology[el].concat(elemTopo[el]);	
+				console.log(el, " added to topology");
+
+			});
+
+			topology.points = topology.points.concat(elemTopo.points);
+		}
+
+	}
 	// geom is a native mobius geometry object - could be a vertex, curve, surface or solid
-	if(mObj instanceof mObj_geom_Solid){
+	else if(mObj instanceof mObj_geom_Solid){
 
 		console.log("Received a solid - will compute faces... ");
 		// get the faces of this solid
 		if(mObj.getGeometry() instanceof THREE.Group)
 			return { points:[], vertices: [], edges: [], faces: [] };
 
-		//console.log("Computing topology of solid");
+		// POINTS - has to be repeated everywhere. Isn't a added-on set.
 		topology.points = [];
 		var geometry = mObj.getGeometry();
 		for(var i=0; i< geometry.vertices.length; i++){
@@ -1782,7 +1836,7 @@ var computeTopology = function( mObj ){
 
 			//face_topo.faces.push(fface);			
 			//fface.setTopology(face_topo);
-			MOBIUS.obj.addData( fface, "belongsTo", [topology.faces.length]);
+			MOBIUS.obj.addData( fface, "belongsTo", [topology.faces.length]); 
 
 
 			//finalFaces.push(new mObj_geom_Surface(geom));
@@ -1809,7 +1863,9 @@ var computeTopology = function( mObj ){
 				});	
 				
 				console.log(el, " added to solid topology");
-				topology[el] = topology[el].concat(face_topo[el]);					
+				topology[el] = topology[el].concat(face_topo[el]);			
+
+
 			});
 		}
 
@@ -1819,8 +1875,10 @@ var computeTopology = function( mObj ){
 	else if(mObj instanceof mObj_geom_Surface){
 
 		console.log("Surface received. Wires will be computed.");
-		topology.faces = [mObj];
-
+		topology.faces = [ MOBIUS.obj.copy(mObj) ];
+		//allot this value only if it is previous undefined - actual object is further up in the heirarchy
+		if(mObj.getData() == undefined || mObj.getData()["belongsTo"] == undefined)
+			MOBIUS.obj.addData(topology.faces[0], 'belongsTo', [0]);
 		// first compute vertices - create vertex objects
 		// use vertice objects to set topology of the edges
 		for(var i=0; i<mObj.extractThreeGeometry().geometry.vertices.length; i++){
@@ -1842,23 +1900,71 @@ var computeTopology = function( mObj ){
 			});	
 
 			wire.vertices.push(wire.vertices[0]);
-			topology.wires.push(new mObj_geom_Curve(new THREE.Line(wire)) );
+			wire = new mObj_geom_Curve(new THREE.Line(wire));
+
+			topology.wires.push(wire);
 		}
 		else{
 
 			var wire = new THREE.Geometry(); 
 
 			// TODO - IMPORTANT - ARRANGE VERTICES IN CLOCKWISE ORDER ALGORITHMICALLY
-			wire.vertices[0] = geom.vertices[0];
-			wire.vertices[1] = geom.vertices[1];
-			wire.vertices[2] = geom.vertices[3];
-			wire.vertices[3] = geom.vertices[2];
-			wire.vertices[4] = geom.vertices[0];
+			function orderVerts(){
 
+				var verts = geom.vertices.map( function(v){
+					return [v.x, v.y, v.z];
+				})
 
+				// process and add to orderedVerts
+				var centrePoint = [0,0,0];
+				for(var vpt=0; vpt<verts.length; vpt++){
 
-			//wire.vertices.push(wire.vertices[0]);
-			
+					centrePoint[0] += verts[vpt][0];
+					centrePoint[1] += verts[vpt][1];
+					centrePoint[2] += verts[vpt][2];
+
+				}
+
+				centrePoint[0] = centrePoint[0]/verts.length;
+				centrePoint[1] = centrePoint[1]/verts.length;
+				centrePoint[2] = centrePoint[2]/verts.length;
+
+				var angles = [0];
+				var vector1 = [ verts[0][0] - centrePoint[0], verts[0][1] - centrePoint[1], verts[0][2] - centrePoint[2] ]; 
+
+				// compute and push angle 
+				for(var vpt=1; vpt<verts.length; vpt++){
+
+					var vector2 = [ verts[vpt][0] - centrePoint[0], verts[vpt][1] - centrePoint[1], verts[vpt][2] - centrePoint[2]  ];
+					var angle = MOBIUS.vec.angle(vector1, vector2);
+
+					console.log(vector2)
+
+					angles.push(angle);
+				}
+
+				// sort angles and sort the points side-by-side
+				var sortedAngles = angles.sort(function(a, b){return a-b}); 
+				var oVerts = verts; 
+				for(var a=0; a<angles.length; a++){
+
+					var corrPos = sortedAngles.indexOf( angles[a] );
+					if(corrPos != -1)
+						oVerts[corrPos] = verts[a];
+					else
+						console.log("Error in coordinate-sorting.");
+
+				}
+
+				oVerts = oVerts.map( function(v){
+					var vectVert = new THREE.Vector3(v[0], v[1], v[2]);
+					wire.vertices.push(vectVert);
+				})
+
+			}
+
+			orderVerts();
+
 			var wire_curve = new mObj_geom_Curve(new THREE.Line(wire)); 
 			topology.wires.push( wire_curve );
 
@@ -1889,6 +1995,7 @@ var computeTopology = function( mObj ){
 					
 					topology[el] = topology[el].concat(wire_topo[el]);	
 					console.log(el, " added to surface topology");				
+				
 				});
 			}
 		}
@@ -1961,10 +2068,21 @@ var computeTopology = function( mObj ){
 				topology.vertices.push(vert);   // THREE.Vector3
 			}
 			topology.points = topology.vertices; 				
-		}
-
-		
+		}	
 	}
+	else if(mObj instanceof mObj_geom_Vertex){
+		
+		topology.vertices = [mObj];
+		
+		MOBIUS.obj.addData(topology.vertices[0], 'belongsTo', []);	
+
+		topology.points = [[mObj.extractThreeGeometry().geometry.vertices[i].x, 
+											mObj.extractThreeGeometry().geometry.vertices[i].y, 
+											mObj.extractThreeGeometry().geometry.vertices[i].z]];
+
+	}
+	else 
+		console.log("Unrecognised geometry passed to Module")
 	
 	return topology;
 }

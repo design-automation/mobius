@@ -25,7 +25,14 @@ var mObj = function mObj( type ){
         }
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
             s4() + '-' + s4() + s4() + s4();*/
-        return ++globalID;
+
+        function randomString(length, chars) {
+            var result = '';
+            for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+            return result;
+        }
+        return randomString(5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');;
+        //return ++globalID;
     }
 
     // for datatables
@@ -258,7 +265,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
 
     this.getTopology = function(){
         if(topology == undefined)
-            topology = computeTopology( self );
+            topology = computeTopology( self, this.getGUID() );
         return topology;
     }
 
@@ -308,7 +315,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
     //
     // Converts the geometry of the MobiusDataObject - to three.js Mesh by calling a bridging function 'convertGeomtoThreeMesh' in the module
     //
-    this.extractThreeGeometry = function(){
+    this.extractThreeGeometry = function(){ 
 
         // if threeGeometry hasn't been computed before or native geometry has been transformed so that new conversion is required
         // the function defines it and caches it
@@ -347,7 +354,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
         // if threeGeometry hasn't been computed before or native geometry has been transformed so that new conversion is required
         // the function defines it and caches it
         if(topology == undefined)
-            topology = computeTopology(self);
+            topology = computeTopology(self, this.getGUID());
 
         if( threeTopology == undefined )
             threeTopology = convertTopoToThree( topology );  // calls a function in the module to convert native geom into accepted three format
@@ -380,7 +387,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
                         //'belongsTo' : 'object_' + this.getGUID(),
                         'Property' : property,
                         'Value' : data[property],
-                        'cate': 'object',
+                        'cate': 'Model',
                         'connectorName':connectorName
                     };
                     dataTable.push(jsonObject);
@@ -504,8 +511,8 @@ var mObj_geom_Surface = function mObj_geom_Surface( geometry ){
     mObj_geom.call( this, geometry, defaultSurfaceMaterial  );
 
 }
-
-var mObj_geom_Solid = function mObj_geom_Solid( geometry){
+ 
+var mObj_geom_Solid = function mObj_geom_Solid( geometry ){
 
     var defaultSolidMaterial = new THREE.MeshLambertMaterial( {
         side: THREE.DoubleSide,
@@ -516,6 +523,41 @@ var mObj_geom_Solid = function mObj_geom_Solid( geometry){
     } );
 
     mObj_geom.call( this, geometry, defaultSolidMaterial );
+
+}
+
+var mObj_geom_Compound = function mObj_geom_Compound( geometry ){
+
+    var defaultSolidMaterial = new THREE.MeshLambertMaterial( {
+        side: THREE.DoubleSide,
+        wireframe: false,
+        //shading: THREE.SmoothShading,
+        transparent: false,
+        color: 0xCC6600
+    } );
+
+    mObj_geom.call( this, geometry, defaultSolidMaterial );
+
+
+    // has it's own extraction function
+    this.extractThreeGeometry = function(){ 
+
+        if( geometry instanceof Array ){
+
+            var threeGeometry = new THREE.Object3D();
+            
+            for(var element=0; element < geometry.length; element++){
+                var geom = geometry[element];
+                var exGeom = geom.extractThreeGeometry();
+                //if(material)
+                    //exGeom.material = material;
+                threeGeometry.add( exGeom );
+            }
+        
+        }
+        
+        return threeGeometry; 
+    }
 
 }
 
