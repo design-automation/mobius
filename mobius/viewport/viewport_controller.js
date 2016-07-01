@@ -107,8 +107,8 @@ mobius.controller('viewportCtrl',[
                     table[0][$scope.geometryData[i].Property]
                         = $scope.geometryData[i].Value;
 
-                    table[0].belongsTo
-                        = $scope.geometryData[i].belongsTo;
+                    // table[0].belongsTo
+                    //     = $scope.geometryData[i].belongsTo;
 
                     table[0].index
                         = $scope.geometryData[i].index;
@@ -118,7 +118,8 @@ mobius.controller('viewportCtrl',[
                 }
 
                 for(var j = 0; j < table.length; j++){
-                    if(table[j].belongsTo === $scope.geometryData[i].belongsTo &&
+                    if(
+                        // table[j].belongsTo === $scope.geometryData[i].belongsTo &&
                         table[j].attachedTo === $scope.geometryData[i].attachedTo){
                         table[j][$scope.geometryData[i].Property] = $scope.geometryData[i].Value;
                         break;
@@ -129,8 +130,8 @@ mobius.controller('viewportCtrl',[
                             table[table.length-1][$scope.geometryData[i].Property]
                                 = $scope.geometryData[i].Value;
 
-                            table[table.length-1].belongsTo
-                                = $scope.geometryData[i].belongsTo;
+                            // table[table.length-1].belongsTo
+                                // = $scope.geometryData[i].belongsTo;
 
                             table[table.length-1].index
                                 = $scope.geometryData[i].index;

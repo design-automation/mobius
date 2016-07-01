@@ -1869,6 +1869,10 @@ var computeTopology = function( mObj ){
 			});
 		}
 
+		if(topology.faces.length == 0){
+			
+		}
+
 		//console.log("Final topology ", topology);
 		return topology; 
 	}
