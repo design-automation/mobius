@@ -158,7 +158,7 @@ mobius.controller(  'graphCtrl',
 
         // listen to the graph, when a node is clicked, update the visual procedure/ code/ interface
         $scope.$on("nodeIndex", function(event, message) {
-             if($scope.nodeIndex !== message && message !== undefined){
+             if($scope.nodeIndex !== message && message !== undefined && message !== "port"){
                  $scope.nodeIndex = message;
                  $scope.currentNodeName = $scope.chartViewModel.data.nodes[$scope.nodeIndex].name;
                  $scope.currentNodeType = $scope.chartViewModel.data.nodes[$scope.nodeIndex].type;
@@ -176,6 +176,8 @@ mobius.controller(  'graphCtrl',
                  scope.$apply(function(){scope.viewportControl.refreshView();} );
                  scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
                  scopeTopo.$apply(function(){scopeTopo.viewportControl.refreshData();} );
+             }else if(message === 'port'){
+                 // todo input/output port configuration
              }
 
              function displayGeometry(){
@@ -488,7 +490,10 @@ mobius.controller(  'graphCtrl',
 
 
         $scope.$on('openSubGraph',function(){
-            generateCode.openNewChart($scope.chartViewModel.nodes[$scope.nodeIndex].data);
+            var inputPortProcedure = $scope.interfaceList[$scope.nodeIndex];
+            var outputPortProcedure = $scope.dataList[$scope.nodeIndex];
+            var nodeData = $scope.chartViewModel.nodes[$scope.nodeIndex].data;
+            generateCode.openNewChart(nodeData, inputPortProcedure, outputPortProcedure);
             $scope.$emit('clearProcedure');
             $scope.$broadcast('Extend');
         });

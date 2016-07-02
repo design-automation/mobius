@@ -24,10 +24,11 @@ mobius.controller('viewportCtrl',[
         $scope.tableHeader = [];
         $scope.connectorNames = [];
 
+        $scope.tableHeader.push('Model');
         for(var topo in MOBIUS.TOPOLOGY_DEF) {
             $scope.tableHeader.push(topo);
         }
-        $scope.tableHeader.push('object');
+
         $scope.currentHeader = $scope.tableHeader[0];
 
         $rootScope.$on('Update Datatable', function(){
@@ -130,13 +131,13 @@ mobius.controller('viewportCtrl',[
             if(header !== 'object'){
                 columnDefs = [
                         //{ field: 'cate', displayName: 'Category'},
-                        { field: 'id', displayName:'Id'},
+                        { field: 'id', displayName:'Id'}
                         //{ field: 'index', displayName:'Index'},
-                        { field: 'belongsTo',
-                            displayName: 'belongsTo'
+                        //{ field: 'belongsTo',
+                            //displayName: 'belongsTo'
                             //grouping:{ groupPriority: 0 },
                             //cellTemplate: '<div><div ng-if="!col.grouping || col.grouping.groupPriority === undefined || col.grouping.groupPriority === null || ( row.groupHeader && col.grouping.groupPriority === row.treeLevel )" class="ui-grid-cell-contents" title="TOOLTIP">{{COL_FIELD CUSTOM_FILTERS}}</div></div>'
-                        }
+                        //}
                 ];
             }else{
                 columnDefs = [
@@ -161,8 +162,8 @@ mobius.controller('viewportCtrl',[
                     table[0][dataHolder[i].Property]
                         = dataHolder[i].Value;
 
-                    table[0].belongsTo
-                        = dataHolder[i].belongsTo;
+                    //table[0].belongsTo
+                    //    = dataHolder[i].belongsTo;
 
                     table[0].index
                         = dataHolder[i].index;
@@ -172,7 +173,8 @@ mobius.controller('viewportCtrl',[
                 }
 
                 for(var j = 0; j < table.length; j++){
-                    if(table[j].belongsTo === dataHolder[i].belongsTo &&
+                    if(
+                        //table[j].belongsTo === dataHolder[i].belongsTo &&
                         table[j].attachedTo === dataHolder[i].attachedTo){
                         table[j][dataHolder[i].Property] = dataHolder[i].Value;
                         break;
@@ -183,8 +185,8 @@ mobius.controller('viewportCtrl',[
                             table[table.length-1][dataHolder[i].Property]
                                 = dataHolder[i].Value;
 
-                            table[table.length-1].belongsTo
-                                = dataHolder[i].belongsTo;
+                            //table[table.length-1].belongsTo
+                            //    = dataHolder[i].belongsTo;
 
                             table[table.length-1].index
                                 = dataHolder[i].index;
@@ -199,6 +201,7 @@ mobius.controller('viewportCtrl',[
             for(var i = 0; i <table.length; i++){
                 table[i].id = i;
             }
+
 
             if(viewport === undefined){
                 $scope.geometryData.main = table;

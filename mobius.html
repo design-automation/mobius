@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="assets/css/angular-material/angular-material.min.css">
 </head>
 
-<body>
+<body style="overflow: hidden !important;">
 <div >
     <!-- dropdown Menu -->
     <div ng-controller="menuCtrl" class = "menubar">
@@ -578,7 +578,7 @@
                 <div class="graph-area" ui-layout-container  size={{graphWidth}} id="graph">
                     <!--interface-->
                     <div ui-layout="{ flow : 'row', dividerSize:'1',disableToggle:true}" >
-                        <div ui-layout-container size = "25%">
+                        <div ui-layout-container size = "20%" min-size="32px">
                             <div >
                                 <div ng-if = "currentNodeName">
                                     <div class="doormat">
@@ -609,7 +609,8 @@
 
                         <!-- pan & zoom field -->
                         <div mouse-capture
-                             ui-layout-container size = "75%">
+                             ui-layout-container
+                             min-size="32px">
                             <div ng-controller="graphCtrl">
                                 <div class="doormat">
                                     <div >
@@ -661,6 +662,14 @@
                                 </div>
                             </div>
                         </div>
+
+                        <ng-include
+                                     ui-layout-container
+                                     size="32px"
+                                     min-size="32px"
+                                     src = "procedureHTML.url"
+                                     id="procedure">
+                        </ng-include>
                     </div>
                 </div>
             </div>

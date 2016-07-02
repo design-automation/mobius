@@ -18,14 +18,21 @@ var mObj = function mObj( type ){
     }
 
     function guid() {
-/*        function s4() {
-            return Math.floor((1 + Math.random()) * 0x10000)
-                .toString(16)
-                .substring(1);
+        /*        function s4() {
+         return Math.floor((1 + Math.random()) * 0x10000)
+         .toString(16)
+         .substring(1);
+         }
+         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+         s4() + '-' + s4() + s4() + s4();*/
+
+        function randomString(length, chars) {
+            var result = '';
+            for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+            return result;
         }
-        return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-            s4() + '-' + s4() + s4() + s4();*/
-        return ++globalID;
+        return randomString(5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');;
+        //return ++globalID;
     }
 
     // for datatables
@@ -258,7 +265,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
 
     this.getTopology = function(){
         if(topology == undefined)
-            topology = computeTopology( self );
+            topology = computeTopology( self, this.getGUID() );
         return topology;
     }
 
@@ -347,7 +354,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
         // if threeGeometry hasn't been computed before or native geometry has been transformed so that new conversion is required
         // the function defines it and caches it
         if(topology == undefined)
-            topology = computeTopology(self);
+            topology = computeTopology(self, this.getGUID());
 
         if( threeTopology == undefined )
             threeTopology = convertTopoToThree( topology );  // calls a function in the module to convert native geom into accepted three format
@@ -365,6 +372,9 @@ var mObj_geom = function mObj_geom( geometry, material ){
 
         var dataTable = [];
 
+        if(topology == undefined)
+            this.extractTopology();
+
         // LIMITATION - Data can only be added to the topology
         if( topology == undefined && data == undefined )
             return dataTable;
@@ -374,10 +384,10 @@ var mObj_geom = function mObj_geom( geometry, material ){
                     var jsonObject = {
                         'attachedTo' : 'object_' + this.getGUID(),
                         'index':this.getGUID(),
-                        'belongsTo' : 'object_' + this.getGUID(),
+                        //'belongsTo' : 'object_' + this.getGUID(),
                         'Property' : property,
                         'Value' : data[property],
-                        'cate': 'object',
+                        'cate': 'Model',
                         'connectorName':connectorName
                     };
                     dataTable.push(jsonObject);
@@ -388,6 +398,25 @@ var mObj_geom = function mObj_geom( geometry, material ){
             for(topoElement in topology){
                 if(topology.hasOwnProperty(topoElement)){
                     for( var index=0; index < topology[topoElement].length; index++){
+
+
+                        if(topoElement == "points"){
+
+
+                            var jsonObject = {
+                                'attachedTo' : topoElement + index,
+                                'index' : index,
+                                //'belongsTo': 'object_' + this.getGUID(),
+                                'cate': topoElement,
+                                'Property' : 'Location',
+                                'Value' : topology[topoElement][index],
+                                'connectorName':connectorName
+                            };
+                            dataTable.push(jsonObject);
+                            continue;
+
+                        };
+
                         var topoData = topology[topoElement][index].getData();
                         if (topoData != undefined){
                             for( var property in topoData ){
@@ -395,7 +424,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
                                 var jsonObject = {
                                     'attachedTo' : topoElement + index,
                                     'index' : index,
-                                    'belongsTo': 'object_' + this.getGUID(),
+                                    //'belongsTo': 'object_' + this.getGUID(),
                                     'cate': topoElement,
                                     'Property' : property,
                                     'Value' : topoData[property],
@@ -404,34 +433,34 @@ var mObj_geom = function mObj_geom( geometry, material ){
                                 dataTable.push(jsonObject);
 
                                 // pushing null values for other counterparts
-                                for( var i=0; i < topology[topoElement].length; i++){
-                                    if(i==index)
-                                        continue;
+                                /*                                for( var i=0; i < topology[topoElement].length; i++){
+                                 if(i==index)
+                                 continue;
 
-                                    var emptyObject = {
-                                        'attachedTo' : topoElement + i,
-                                        'index': i,
-                                        'belongsTo' : 'object_' +  this.getGUID(),
-                                        'cate': topoElement,
-                                        'Property' : property,
-                                        'Value' : "",
-                                        'connectorName':connectorName
-                                    };
-                                    dataTable.push(emptyObject);
-                                }
+                                 var emptyObject = {
+                                 'attachedTo' : topoElement + i,
+                                 'index': i,
+                                 //'belongsTo' : 'object_' +  this.getGUID(),
+                                 'cate': topoElement,
+                                 'Property' : property,
+                                 'Value' : "",
+                                 'connectorName':connectorName
+                                 };
+                                 dataTable.push(emptyObject);
+                                 }*/
 
                             }
                         }
-                        else{
-                            var emptyObject = {
-                                'attachedTo' : topoElement + index,
-                                'belongsTo' : 'object_' +  this.getGUID(),
-                                'cate': topoElement,
-                                'index':index,
-                                'connectorName':connectorName
-                            };
-                            dataTable.push(emptyObject);
-                        }
+                        /*                        else{
+                         var emptyObject = {
+                         'attachedTo' : topoElement + index,
+                         //'belongsTo' : 'object_' +  this.getGUID(),
+                         'cate': topoElement,
+                         'index':index,
+                         'connectorName':connectorName
+                         };
+                         dataTable.push(emptyObject);
+                         }*/
                     }
                 }
             }
@@ -483,7 +512,7 @@ var mObj_geom_Surface = function mObj_geom_Surface( geometry ){
 
 }
 
-var mObj_geom_Solid = function mObj_geom_Solid( geometry){
+var mObj_geom_Solid = function mObj_geom_Solid( geometry ){
 
     var defaultSolidMaterial = new THREE.MeshLambertMaterial( {
         side: THREE.DoubleSide,
@@ -494,6 +523,41 @@ var mObj_geom_Solid = function mObj_geom_Solid( geometry){
     } );
 
     mObj_geom.call( this, geometry, defaultSolidMaterial );
+
+}
+
+var mObj_geom_Compound = function mObj_geom_Compound( geometry ){
+
+    var defaultSolidMaterial = new THREE.MeshLambertMaterial( {
+        side: THREE.DoubleSide,
+        wireframe: false,
+        //shading: THREE.SmoothShading,
+        transparent: false,
+        color: 0xCC6600
+    } );
+
+    mObj_geom.call( this, geometry, defaultSolidMaterial );
+
+
+    // has it's own extraction function
+    this.extractThreeGeometry = function(){
+
+        if( geometry instanceof Array ){
+
+            var threeGeometry = new THREE.Object3D();
+
+            for(var element=0; element < geometry.length; element++){
+                var geom = geometry[element];
+                var exGeom = geom.extractThreeGeometry();
+                //if(material)
+                //exGeom.material = material;
+                threeGeometry.add( exGeom );
+            }
+
+        }
+
+        return threeGeometry;
+    }
 
 }
 

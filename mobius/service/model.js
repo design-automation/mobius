@@ -596,7 +596,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
             findCurrentOutputGeom();
         },
 
-        openNewChart:function(chartModel){
+        openNewChart:function(chartModel,inputPortProcedure, outputPortProcedure){
             graphList.push(chartModel);
             current = {
                 javascriptCode:graphList[graphList.length-1].subGraphModel.javascriptCode,
@@ -606,7 +606,9 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                 chartViewModel: new flowchart.ChartViewModel(graphList[graphList.length-1].subGraphModel.chartDataModel),
                 dataList: graphList[graphList.length-1].subGraphModel.dataList,
                 interfaceList: graphList[graphList.length-1].subGraphModel.interfaceList,
-                nodeIndex:undefined
+                nodeIndex:undefined,
+                inputPortProcedure:inputPortProcedure,
+                outputPortProcedure:outputPortProcedure
             };
             findCurrentOutputGeom();
         },
@@ -710,6 +712,14 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
         generateCode: function (subgraphModel){
             return generateCode(subgraphModel);
+        },
+
+        getInputPortProcedure:function(){
+            return current.inputPortProcedure;
+        },
+
+        getOutputPortProcedure:function(){
+            return current.outputPortProcedure;
         },
 
         displayError: function (graphTrace){
