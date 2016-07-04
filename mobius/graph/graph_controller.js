@@ -292,7 +292,8 @@ mobius.controller(  'graphCtrl',
             if($scope.chartViewModel.getSelectedNodes()[0].data.subGraph){
                 $scope.$emit('openSubGraph')
             }else{
-                $scope.$emit("editProcedure");
+                $scope.$emit("showProcedure");
+                //$scope.$emit("editProcedure");
             }
         });
 

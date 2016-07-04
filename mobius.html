@@ -566,49 +566,22 @@
                     </div>
                 </div>
 
-                <!-- procedure area -->
-                <ng-include  ng-if="displayProcedure"
-                             ui-layout-container
-                             size={{procedureWidth}}
-                             src = "procedureHTML.url"
-                             id="procedure">
-                </ng-include>
+                <!--&lt;!&ndash;&lt;!&ndash; procedure area &ndash;&gt;&ndash;&gt;-->
+                <!--<ng-include  ng-if="true"-->
+                             <!--ui-layout-container-->
+                             <!--size={{procedureWidth}}-->
+                             <!--src = "procedureHTML.url"-->
+                             <!--id="procedure">-->
+                <!--</ng-include>-->
 
                 <!-- graph area -->
                 <div class="graph-area" ui-layout-container  size={{graphWidth}} id="graph">
                     <!--interface-->
                     <div ui-layout="{ flow : 'row', dividerSize:'1',disableToggle:true}" >
-                        <div ui-layout-container size = "20%" min-size="32px">
-                            <div >
-                                <div ng-if = "currentNodeName">
-                                    <div class="doormat">
-                                        <div>{{currentNodeType}} {{currentNodeVersion}} : &nbsp {{currentNodeName}} </div>
-                                    </div>
-                                </div>
-
-                                <div ng-if = "!currentNodeName">
-                                    <div class="doormat">
-                                        <div>No Node Selected</div>
-                                    </div>
-                                </div>
-
-                                <div id="interface">
-                                    <div ui-tree id="tree-root-interface"
-                                         data-nodrop-enabl2ed="true">
-                                        <div ui-tree-nodes="" ng-model="interface">
-                                            <div ng-repeat="node in interface"
-                                                 ui-tree-node
-                                                 ng-include="'mobius/procedure/template/interface_template.html'"
-                                                 ng-if="node.connected !== true">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- pan & zoom field -->
-                        <div mouse-capture
+                        <div size="{{graphHeight}}px"
+                             id="a"
+                             mouse-capture
                              ui-layout-container
                              min-size="32px">
                             <div ng-controller="graphCtrl">
@@ -663,13 +636,43 @@
                             </div>
                         </div>
 
-                        <ng-include
-                                     ui-layout-container
-                                     size="32px"
-                                     min-size="32px"
-                                     src = "procedureHTML.url"
-                                     id="procedure">
-                        </ng-include>
+                        <div ui-layout-container id ="b"  min-size="32px">
+                            <div>
+                                <div ng-if = "currentNodeName">
+                                    <div class="doormat">
+                                        <div>{{currentNodeType}} {{currentNodeVersion}} : &nbsp {{currentNodeName}} </div>
+                                    </div>
+                                </div>
+
+                                <div ng-if = "!currentNodeName">
+                                    <div class="doormat">
+                                        <div>No Node Selected</div>
+                                    </div>
+                                </div>
+
+                                <div id="interface">
+                                    <div ui-tree id="tree-root-interface"
+                                         data-nodrop-enabl2ed="true">
+                                        <div ui-tree-nodes="" ng-model="interface">
+                                            <div ng-repeat="node in interface"
+                                                 ui-tree-node
+                                                 ng-include="'mobius/procedure/template/interface_template.html'"
+                                                 ng-if="node.connected !== true">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ui-layout-container
+                             id="c"
+                             size="{{procedureHeight}}px"
+                             min-size="32px">
+                            <ng-include src = "procedureHTML.url"
+                                        id="procedure">
+                            </ng-include>
+                        </div>
                     </div>
                 </div>
             </div>

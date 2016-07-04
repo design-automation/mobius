@@ -459,7 +459,7 @@ angular.module('flowChart', ['dragging'] )
 		$scope.nodeDoubleClick = function(evt){
 			if($scope.readonly !== true) {
 				document.getElementById("node-creator").style.display = "none";
-				$scope.$emit("node-dbClick"); // -> layout controller
+				$scope.$emit("node-dbClick");
 			}
 		};
 
