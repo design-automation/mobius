@@ -27,20 +27,12 @@
   <section>
 
     <p>
-      Mobius is a visual programming environment that combines graph-based programming (nodes and wires) with block-based programming. The aim of Mobius is to test and explore new approaches to visual programming, capable of tackling more complex types of problems.
+      Möbius is a visual programming environment for creating parametric scripts for generating geometric models. The programming approach integrates imperative and associative programming styles. The associative style of programming is supported through graph-based programming, where the user constructs networks consisting of nodes and wires. (For example, see Sidefx Houdini.) The behaviour of each node is defined either by a set of sub-nodes or by an imperative procedure. The imperative style of programming is supported through blocks-based programming, where the user constructs procedures by creating sequences of code blocks. (For example, see Scratch.) 
+      The imperative procedure performs operations by calling functions in one or more underlying function modules. These function modules consist of files that contain a set of standard Javascript functions. Currently, Möbius includes two function modules: a poly module and nurbs module. The poly module includes a set of polygon modelling functions, and makes use of the jsclipper library. The nurbs module includes a set of nurbs modelling functions, and makes use of verb library.
+    </p>
     <p>
-
-    </p>
-      Mobius consists of a main display area, a dataflow graph area and a procedure panel. All views correspond to the selected node(s). The main display area displays the output of a node(s) - which maybe geometry, topology, text (displayed in the console), data-tables or the generated Javascript code. The dataflow graph area, on the right, contains the entire visual graph and the exposed parameters of the selected node for easy manipulation by the user. Double-clicking a node, opens up the Procedure Panel. Input and output ports can be added to the node in this panel. The panel contains the Interface Designer - used to design the parameters of the node and the Main Procedure - which contains a sequence of coding blocks making up the procedure. Three types of coding blocks are available: data blocks, action blocks, or control blocks. All these blocks can be rearranged by dragging.
+      http://mobius.design-automation.net/
     <p>
-
-    </p>
-      Double-clicking on the dataflow graph area allows the user to create a node or use an existing one. Once the node has been created, they are wired together to make a graph. Input and output ports of a node maybe hidden and higher order functions may be used by selecting the corresponding options in the right-click menu of a node. The graph is executed by clicking the Run button. Nodes can be easily managed by accessing the Type Manager under the Node Menu.
-    </p>
-
-    <p>
-      Mobius is a project being developed at the Department of Architecture, National University of Singapore. The Principal Investigator is Dr Patrick Janssen, and the lead software engineer is Ruize Li.
-    </p>
 
   </section>
 
