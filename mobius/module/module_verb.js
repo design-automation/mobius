@@ -18,16 +18,6 @@ var MOBIUS = ( function (mod){
 	 *
 	 */
 
-	//
-	//
-	//loadGeoJSON
-	//getFeatures
-	//for feature in Features
-	//	getGeometry
-	//  ?offset
-	//  ?subdivide
-	//	extrude
-	//	makeComposite
 	mod.urb = {};
 
 	mod.urb.loadObj = function( filepath ){
@@ -367,6 +357,12 @@ var MOBIUS = ( function (mod){
 
 		var solution = new ClipperLib.Paths();
 		//subj is an array
+		if(surface instanceof mObj_geom_Compound){
+
+			surface = surface.getGeometry()[0];
+			console.log("Compound received in offset. First geom instance has been taken.")
+		}
+
 		var subj = convertShapeToPath( surface.getGeometry() ); 
 		
 		if (scale == undefined)
@@ -374,8 +370,9 @@ var MOBIUS = ( function (mod){
 		ClipperLib.JS.ScaleUpPaths(subj, scale);
 		var co = new ClipperLib.ClipperOffset(2, 0.25);
 		co.AddPaths(subj, ClipperLib.JoinType.jtRound, ClipperLib.EndType.etClosedPolygon);
+
 		co.Execute(solution, offset); 
-		ClipperLib.JS.ScaleDownPaths(solution, scale);
+		ClipperLib.JS.ScaleDownPaths(solution, scale); 
 
 		if(solution.length == 0)
 			return null;
@@ -738,7 +735,19 @@ var MOBIUS = ( function (mod){
 	mod.mod = {};
 
 	mod.mod.makeModel = function(array_of_elements){
-		return new mObj_geom_Compound( array_of_elements );
+
+		// convert all nested arrays into one array
+		var new_array = [];
+		array_of_elements = array_of_elements.map( function(elem){
+
+				if(elem instanceof Array){
+					new_array.concat(elem);
+				}
+				else
+					new_array.push(elem);
+		});
+
+		return new mObj_geom_Compound( new_array );
 	};
 
 
@@ -781,6 +790,9 @@ var MOBIUS = ( function (mod){
 			newcopy = new mObj_geom_Surface( getCopy(object.getGeometry()) );
 		else if(object instanceof mObj_geom_Solid){
 			newcopy = new mObj_geom_Solid( getCopy(object.getGeometry()) );
+		}
+		else if(object instanceof mObj_geom_Compound){
+			newcopy = new mObj_geom_Compound( getCopy(object.getGeometry()) );
 		}
 
 		newcopy.setData( object.getData() );
@@ -853,6 +865,32 @@ var MOBIUS = ( function (mod){
 	 * @memberof obj
 	 */
 	mod.obj.getCentre = function(object){
+
+
+		console.log("Getting centre for object");
+
+		var threeGeom = object.extractThreeGeometry();
+		console.log(threeGeom);
+
+		var geometry = threeGeom.geometry;  
+
+		geometry.centroid = new THREE.Vector3(0,0,0);
+
+		for ( var l = 0; l < geometry.vertices.length; l ++ ) {
+
+
+			geometry.centroid.x += geometry.vertices[l].x;
+			geometry.centroid.y += geometry.vertices[l].y;
+			geometry.centroid.z += geometry.vertices[l].z;
+
+		} 
+
+			
+		geometry.centroid.divideScalar( geometry.vertices.length );
+		console.log("centre", geometry.centroid);
+
+
+		 /*
 		//calculate centre based on what kind of object
 		var geometry = object;
 		if(object.getGeometry != undefined)
@@ -900,7 +938,7 @@ var MOBIUS = ( function (mod){
 
 		}
 		else
-			return "Invalid Input"
+			return "Invalid Input" */
 	};
 
 
@@ -1627,7 +1665,7 @@ var computeTopology = function( mObj ){
 		geom = mObj; 
 	}
 
-	//console.log("Native module geometry has been extracted. Proceeding to compute topology ... ");
+    //console.log("Native module geometry has been extracted. Proceeding to compute topology ... ");
 
 	//console.log("Initializing Topology");
 	var topology = {};
@@ -1662,7 +1700,7 @@ var computeTopology = function( mObj ){
 
 				elemTopo[el].map( function(wire){ 
 					if(wire.getData() != undefined){
-						var bTo = wire.getData()["belongsTo"];
+						var bTo = wire.getData()["belongsTo"]; //console.log("data", wire.getData());
 						bTo.push(element);
 						MOBIUS.obj.addData( wire, "belongsTo", bTo );									
 					}
@@ -1846,7 +1884,11 @@ var computeTopology = function( mObj ){
 		
 		//topology.faces = finalFaces;
 		console.log("Computed ", topology.faces.length, "faces"); 
-		for( var f=0; f < topology.faces.length; f++ ){
+		var f=0;
+		do{
+
+			if(topology.faces.length == 0)
+				f = "undefined"; 
 
 			var face_topo = computeTopology(topology.faces[f]); // this will have wires, edges, vertices, points
 
@@ -1867,11 +1909,13 @@ var computeTopology = function( mObj ){
 
 
 			});
-		}
 
-		if(topology.faces.length == 0){
-			
-		}
+			if(f != "undefined" )
+				f++;
+			else
+				break;
+
+		}while(f < topology.faces.length);
 
 		//console.log("Final topology ", topology);
 		return topology; 
@@ -2017,7 +2061,7 @@ var computeTopology = function( mObj ){
 
 			console.log("Wire received. Edges will be computed.")
 			// break this up into edges
-			topology.wires = [mObj]; // contains self
+			topology.wires = [ MOBIUS.obj.copy(mObj) ]; // contains self
 			//console.log("Wire recieved. Will proceed to break into edges.");
 			
 			// for each wire, compute edges, get vertices, modify belongs to 
@@ -2061,7 +2105,7 @@ var computeTopology = function( mObj ){
 			console.log("Edge received. Vertices will be computed.");
 
 			// no wire
-			topology.edges = [mObj]; 
+			topology.edges = [ MOBIUS.obj.copy(mObj) ]; 
 			//console.log("Vertices computed for the edge - ", geom.vertices.length);
 			for(var i=0; i<geom.vertices.length; i++){
 				var vert = new mObj_geom_Vertex([geom.vertices[i].x, 
@@ -2076,7 +2120,7 @@ var computeTopology = function( mObj ){
 	}
 	else if(mObj instanceof mObj_geom_Vertex){
 		
-		topology.vertices = [mObj];
+		topology.vertices = [ MOBIUS.obj.copy(mObj) ];
 		
 		MOBIUS.obj.addData(topology.vertices[0], 'belongsTo', []);	
 

@@ -355,6 +355,8 @@ var mObj_geom = function mObj_geom( geometry, material ){
         // the function defines it and caches it
         if(topology == undefined)
             topology = computeTopology(self, this.getGUID());
+        else
+            console.log("Topology already defined");
 
         if( threeTopology == undefined )
             threeTopology = convertTopoToThree( topology );  // calls a function in the module to convert native geom into accepted three format
@@ -556,6 +558,7 @@ var mObj_geom_Compound = function mObj_geom_Compound( geometry ){
         
         }
         
+        threeGeometry.is_mObj = true;
         return threeGeometry; 
     }
 
