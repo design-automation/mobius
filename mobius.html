@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="assets/css/angular-material/angular-material.min.css">
 </head>
 
-<body>
+<body style="overflow: hidden !important;">
 <div >
     <!-- dropdown Menu -->
     <div ng-controller="menuCtrl" class = "menubar">
@@ -81,17 +81,6 @@
                 <li>
                     <a ng-click = "fourViews()"> Four Views </a>
                 </li>
-                <li class="dropdown-submenu">
-                    <a>
-                        Set View Port
-                    </a>
-                    <ul class="dropdown-menu" >
-                        <li><a   href="#" ng-click = "toggleGeometry('main')">Geometry</a></li>
-                        <li><a   href="#" ng-click = "toggleTopology('main')">Topology</a></li>
-                        <li><a   href="#" ng-click = "toggleData('main')">Data</a></li>
-                        <li><a   href="#" ng-click = "toggleFullCode('main')">Generated Code</a></li>
-                    </ul>
-                </li>
             </ul>
         </span>
 
@@ -99,7 +88,7 @@
               <div class = "menuTitle"  dropdown-toggle>  Node </div>
               <ul class="dropdown-menu">
                   <li>
-                      <a href="" ng-click="openTypeManager()"> Type Manager </a>
+                      <a href="" ng-click="openTypeManager()"> Node Library </a>
                   </li>
 
                   <li>
@@ -162,8 +151,8 @@
                         <div ui-layout-container size = "85%" id="viewportLayout">
                             <div ng-controller="viewportCtrl" id="eyeButton">
                                 <!--viewport menu-->
-                                <span ng-if="viewportControl.layout === 'singleView' && !showData"
-                                      dropdown on-toggle="toggled(open)" class="viewportMenu" >
+                                <span ng-if="viewportControl.layout === 'singleView'"
+                                      dropdown on-toggle="toggled(open)" class="viewportMenu menu-left" >
                                      <button class="button viewport-menu-button" dropdown-toggle
                                             style="width: 40px !important;">
                                          <!--{{viewportControl.currentCate}}-->
@@ -171,7 +160,7 @@
                                          <span class="caret"></span>
                                      </button>
 
-                                    <ul class="dropdown-menu" style="left: 42px;top:-3px">
+                                    <ul class="dropdown-menu " style="right: 42px!important;top:3px" >
                                         <li class="dropdown-submenu" >
                                             <a href="#"> Set Viewport </a>
                                             <ul class="dropdown-menu" style="top:-2px">
@@ -210,20 +199,20 @@
                                 </span>
 
                                 <!--viewports-->
-                                <viewport control="viewportControl"
-                                          id="threeViewport" style="z-index:-1">
+                                <viewport control="viewportControl" id="threeViewport" >
 
                                     <div ng-if="viewportControl.layout === 'fourViews'" >
                                         <!--LT-->
                                         <div id ="LT">
-                                        <span dropdown on-toggle="toggled(open)" class="viewportMenu">
-                                            <button class="btn btn-default btn-xs viewport-menu-button"
-                                                    dropdown-toggle>
-                                                {{viewportControl.LTcurrentCate}}
+                                            <span dropdown on-toggle="toggled(open)" class="viewportMenu menu-left">
+                                            <button class="button viewport-menu-button" dropdown-toggle
+                                                    style="width: 40px !important;">
+                                                <!--{{viewportControl.LTcurrentCate}}-->
+                                                <i class="fa fa-eye fa-lg"></i>
                                                 <span class="caret"></span>
                                             </button>
 
-                                            <ul class="dropdown-menu" >
+                                            <ul class="dropdown-menu" style="right: 0px!important;top:3px;position: relative!important;">
                                                 <li class="dropdown-submenu">
                                                     <a href="#"> Set Viewport </a>
                                                     <ul class="dropdown-menu" style="top:-2px">
@@ -254,6 +243,10 @@
                                                         <li><a   ng-click="viewportControl.renderOption('LT')">Render</a></li>
                                                     </ul>
                                                 </li>
+
+                                                <li ng-if="showGeometry">
+                                                    <a ng-click="viewportControl.toggleGrid('LT')"> Toggle Grid</a>
+                                                </li>
                                             </ul>
                                         </span>
 
@@ -267,23 +260,36 @@
                                             </div>
 
                                             <div ng-if="showDataLT" class="dataViewport">
-                                                <div ui-grid="gridOptions"
-                                                     ui-grid-resize-columns
-                                                     ui-grid-auto-resize
-                                                     class="dataGrid">
-                                                </div>
+                                                <tabset style="padding-top: 2px">
+                                                    <tab  ng-repeat="connectorName in connectorNames" heading="{{connectorName}}" select="selectDataTable(connectorName,'LT')">
+                                                        <tabset>
+                                                            <tab ng-repeat="header in tableHeader" heading="{{header}}" select="generateDataTable(header,'LT')">
+                                                                <div
+                                                                        ui-grid="gridOptionsLT"
+                                                                        ui-grid-resize-columns
+                                                                        ui-grid-auto-resize
+                                                                        ui-grid-grouping
+                                                                        class="dataGrid-main">
+                                                                </div>
+                                                            </tab>
+                                                        </tabset>
+                                                    </tab>
+                                                </tabset>
                                             </div>
                                         </div>
 
                                         <!--RT-->
                                         <div id ="RT">
-                                        <span dropdown on-toggle="toggled(open)" class="viewportMenu">
-                                             <button class="btn btn-default btn-xs viewport-menu-button" dropdown-toggle>
-                                                 {{viewportControl.RTcurrentCate}}
+                                        <span dropdown on-toggle="toggled(open)" class="viewportMenu menu-left">
+                                             <button class="button viewport-menu-button" dropdown-toggle
+                                                     style="width: 40px !important;">
+                                                 <!--{{viewportControl.RTcurrentCate}}-->
+                                                 <i class="fa fa-eye fa-lg"></i>
                                                  <span class="caret"></span>
                                              </button>
 
-                                            <ul class="dropdown-menu" >
+
+                                            <ul class="dropdown-menu" style="right: 0px!important;top:3px;position: relative!important;">
                                                 <li class="dropdown-submenu">
                                                     <a href="#"> Set Viewport </a>
                                                     <ul class="dropdown-menu" style="top:-2px">
@@ -314,6 +320,10 @@
                                                         <li><a   ng-click="viewportControl.renderOption('RT')">Render</a></li>
                                                     </ul>
                                                 </li>
+
+                                                <li ng-if="showGeometry">
+                                                    <a ng-click="viewportControl.toggleGrid('RT')"> Toggle Grid</a>
+                                                </li>
                                             </ul>
                                         </span>
 
@@ -327,23 +337,35 @@
                                             </div>
 
                                             <div ng-if="showDataRT" class="dataViewport">
-                                                <div ui-grid="gridOptions"
-                                                     ui-grid-resize-columns
-                                                     ui-grid-auto-resize
-                                                     class="dataGrid">
-                                                </div>
+                                                <tabset style="padding-top: 2px">
+                                                    <tab  ng-repeat="connectorName in connectorNames" heading="{{connectorName}}" select="selectDataTable(connectorName,'RT')">
+                                                        <tabset>
+                                                            <tab ng-repeat="header in tableHeader" heading="{{header}}" select="generateDataTable(header,'RT')">
+                                                                <div
+                                                                        ui-grid="gridOptionsRT"
+                                                                        ui-grid-resize-columns
+                                                                        ui-grid-auto-resize
+                                                                        ui-grid-grouping
+                                                                        class="dataGrid-main">
+                                                                </div>
+                                                            </tab>
+                                                        </tabset>
+                                                    </tab>
+                                                </tabset>
                                             </div>
                                         </div>
 
                                         <!--LB-->
                                         <div id ="LB">
-                                        <span dropdown on-toggle="toggled(open)" class="viewportMenu">
-                                            <button class="btn btn-default btn-xs viewport-menu-button" dropdown-toggle>
-                                                {{viewportControl.LBcurrentCate}}
+                                        <span dropdown on-toggle="toggled(open)" class="viewportMenu menu-left">
+                                            <button class="button viewport-menu-button" dropdown-toggle
+                                                    style="width: 40px !important;">
+                                                <!--{{viewportControl.LBcurrentCate}}-->
+                                                <i class="fa fa-eye fa-lg"></i>
                                                 <span class="caret"></span>
                                             </button>
 
-                                            <ul class="dropdown-menu" >
+                                            <ul class="dropdown-menu" style="right: 0px!important;top:3px;position: relative!important;">
                                                 <li class="dropdown-submenu">
                                                     <a href="#"> Set Viewport </a>
                                                     <ul class="dropdown-menu" style="top:-2px">
@@ -374,6 +396,10 @@
                                                         <li><a   ng-click="viewportControl.renderOption('LB')">Render</a></li>
                                                     </ul>
                                                 </li>
+
+                                                <li ng-if="showGeometry">
+                                                    <a ng-click="viewportControl.toggleGrid('LB')"> Toggle Grid</a>
+                                                </li>
                                             </ul>
                                         </span>
 
@@ -387,22 +413,35 @@
                                             </div>
 
                                             <div ng-if="showDataLB" class="dataViewport">
-                                                <div ui-grid="gridOptions"
-                                                     ui-grid-resize-columns
-                                                     ui-grid-auto-resize>
-                                                </div>
+                                                <tabset style="padding-top: 2px">
+                                                    <tab  ng-repeat="connectorName in connectorNames" heading="{{connectorName}}" select="selectDataTable(connectorName,'LB')">
+                                                        <tabset>
+                                                            <tab ng-repeat="header in tableHeader" heading="{{header}}" select="generateDataTable(header,'LB')">
+                                                                <div
+                                                                        ui-grid="gridOptionsLB"
+                                                                        ui-grid-resize-columns
+                                                                        ui-grid-auto-resize
+                                                                        ui-grid-grouping
+                                                                        class="dataGrid-main">
+                                                                </div>
+                                                            </tab>
+                                                        </tabset>
+                                                    </tab>
+                                                </tabset>
                                             </div>
                                         </div>
 
                                         <!--RB-->
                                         <div id ="RB">
-                                        <span dropdown on-toggle="toggled(open)" class="viewportMenu">
-                                             <button class="btn btn-default btn-xs viewport-menu-button" dropdown-toggle>
-                                                 {{viewportControl.RBcurrentCate}}
-                                                 <span class="caret"></span>
-                                             </button>
+                                        <span dropdown on-toggle="toggled(open)" class="viewportMenu menu-left">
+                                            <button class="button viewport-menu-button" dropdown-toggle
+                                                    style="width: 40px !important;">
+                                                <!--{{viewportControl.RBcurrentCate}}-->
+                                                <i class="fa fa-eye fa-lg"></i>
+                                                <span class="caret"></span>
+                                            </button>
 
-                                             <ul class="dropdown-menu" >
+                                             <ul class="dropdown-menu" style="right: 0px!important;top:3px;position: relative!important;">
                                                  <li class="dropdown-submenu">
                                                      <a href="#"> Set Viewport </a>
                                                      <ul class="dropdown-menu" style="top:-2px">
@@ -433,6 +472,10 @@
                                                          <li><a   ng-click="viewportControl.renderOption('RB')">Render</a></li>
                                                      </ul>
                                                  </li>
+
+                                                 <li ng-if="showGeometry">
+                                                     <a ng-click="viewportControl.toggleGrid('RB')"> Toggle Grid</a>
+                                                 </li>
                                              </ul>
                                         </span>
 
@@ -446,11 +489,21 @@
                                             </div>
 
                                             <div ng-if="showDataRB" class="dataViewport">
-                                                <div ui-grid="gridOptions"
-                                                     ui-grid-resize-columns
-                                                     ui-grid-auto-resize
-                                                     class="dataGrid">
-                                                </div>
+                                                <tabset style="padding-top: 2px">
+                                                    <tab  ng-repeat="connectorName in connectorNames" heading="{{connectorName}}" select="selectDataTable(connectorName,'RB')">
+                                                        <tabset>
+                                                            <tab ng-repeat="header in tableHeader" heading="{{header}}" select="generateDataTable(header,'RB')">
+                                                                <div
+                                                                        ui-grid="gridOptionsRB"
+                                                                        ui-grid-resize-columns
+                                                                        ui-grid-auto-resize
+                                                                        ui-grid-grouping
+                                                                        class="dataGrid-main">
+                                                                </div>
+                                                            </tab>
+                                                        </tabset>
+                                                    </tab>
+                                                </tabset>
                                             </div>
                                         </div>
                                     </div>
@@ -476,7 +529,6 @@
                                 </div>
 
                                 <div ng-if="showData" class="dataViewport" >
-
                                     <tabset style="padding-top: 2px">
                                         <tab  ng-repeat="connectorName in connectorNames" heading="{{connectorName}}" select="selectDataTable(connectorName)">
                                             <tabset>
@@ -492,30 +544,6 @@
                                             </tabset>
                                         </tab>
                                     </tabset>
-
-
-                                    <!--<md-tabs flex layout="column" layout-fill >-->
-                                        <!--<md-tab ng-repeat="connectorName in connectorNames" flex layout="column" label={{connectorName}}-->
-                                                <!--md-on-select="selectDataTable(connectorName)"  >-->
-                                            <!--<md-tab-content flex layout-fill >-->
-                                                    <!--<md-tabs flex layout="column" layout-fill>-->
-                                                        <!--<md-tab ng-repeat="header in tableHeader" flex layout="column" label={{header}}-->
-                                                                <!--md-on-select="generateDataTable(header)" >-->
-                                                            <!--<md-tab-content flex layout-fill style="overflow: hidden!important;">-->
-                                                                <!--<div-->
-                                                                <!--ui-grid="gridOptions"-->
-                                                                <!--ui-grid-resize-columns-->
-                                                                <!--ui-grid-auto-resize-->
-                                                                <!--ui-grid-grouping-->
-                                                                <!--class="dataGrid-main">-->
-                                                                <!--</div>-->
-                                                            <!--</md-tab-content>-->
-                                                        <!--</md-tab>-->
-                                                    <!--</md-tabs>-->
-                                            <!--</md-tab-content>-->
-                                        <!--</md-tab>-->
-                                    <!--</md-tabs>-->
-
                                 </div>
                             </div>
                         </div>
@@ -538,50 +566,24 @@
                     </div>
                 </div>
 
-                <!-- procedure area -->
-                <ng-include  ng-if="displayProcedure"
-                             ui-layout-container
-                             size={{procedureWidth}}
-                             src = "procedureHTML.url"
-                             id="procedure">
-                </ng-include>
+                <!--&lt;!&ndash;&lt;!&ndash; procedure area &ndash;&gt;&ndash;&gt;-->
+                <!--<ng-include  ng-if="true"-->
+                             <!--ui-layout-container-->
+                             <!--size={{procedureWidth}}-->
+                             <!--src = "procedureHTML.url"-->
+                             <!--id="procedure">-->
+                <!--</ng-include>-->
 
                 <!-- graph area -->
                 <div class="graph-area" ui-layout-container  size={{graphWidth}} id="graph">
                     <!--interface-->
                     <div ui-layout="{ flow : 'row', dividerSize:'1',disableToggle:true}" >
-                        <div ui-layout-container size = "25%">
-                            <div >
-                                <div ng-if = "currentNodeName">
-                                    <div class="doormat">
-                                        <div>{{currentNodeType}} {{currentNodeVersion}} : &nbsp {{currentNodeName}} </div>
-                                    </div>
-                                </div>
-
-                                <div ng-if = "!currentNodeName">
-                                    <div class="doormat">
-                                        <div>No Node Selected</div>
-                                    </div>
-                                </div>
-
-                                <div id="interface">
-                                    <div ui-tree id="tree-root-interface"
-                                         data-nodrop-enabl2ed="true">
-                                        <div ui-tree-nodes="" ng-model="interface">
-                                            <div ng-repeat="node in interface"
-                                                 ui-tree-node
-                                                 ng-include="'mobius/procedure/template/interface_template.html'"
-                                                 ng-if="node.connected !== true">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- pan & zoom field -->
-                        <div mouse-capture
-                             ui-layout-container size = "75%">
+                        <div size="{{graphHeight}}px"
+                             id="a"
+                             mouse-capture
+                             ui-layout-container
+                             min-size="32px">
                             <div ng-controller="graphCtrl">
                                 <div class="doormat">
                                     <div >
@@ -633,6 +635,44 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div ui-layout-container id ="b"  min-size="32px">
+                            <div>
+                                <div ng-if = "currentNodeName">
+                                    <div class="doormat">
+                                        <div>{{currentNodeType}} {{currentNodeVersion}} : &nbsp {{currentNodeName}} </div>
+                                    </div>
+                                </div>
+
+                                <div ng-if = "!currentNodeName">
+                                    <div class="doormat">
+                                        <div>No Node Selected</div>
+                                    </div>
+                                </div>
+
+                                <div id="interface">
+                                    <div ui-tree id="tree-root-interface"
+                                         data-nodrop-enabl2ed="true">
+                                        <div ui-tree-nodes="" ng-model="interface">
+                                            <div ng-repeat="node in interface"
+                                                 ui-tree-node
+                                                 ng-include="'mobius/procedure/template/interface_template.html'"
+                                                 ng-if="node.connected !== true">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ui-layout-container
+                             id="c"
+                             size="{{procedureHeight}}px"
+                             min-size="32px">
+                            <ng-include src = "procedureHTML.url"
+                                        id="procedure">
+                            </ng-include>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -642,6 +682,11 @@
 
 
 <div id="typeManager" ng-controller="nodeTypesCtrl" ng-include="'mobius/typeManager/typeManager_template.html'"></div>
+<!--<div ng-include="'mobius/dialog/inputName_dialog.tmpl.html'"></div>-->
+
+<script src="assets/js/stackframe.min.js"></script>
+<script src="assets/js/error-stack-parser.js"></script>
+<script src="assets/js/error-stack-parser.min.js.map"></script>
 
 <!--context menu-->
 <div ng-controller="nodeMenuCtrl" style="position: absolute;" ng-include="'mobius/graph/contextMenu_template.html'"></div>
@@ -719,6 +764,8 @@
 <script src="mobius/menu/menu_controller.js"></script>
 <script src="mobius/procedure/procedure_controller.js"></script>
 <script src="mobius/graph/panzoom_controller.js"></script>
+<script src="mobius/procedure/subgraphPanzoomController.js"></script>
+<script src="mobius/typeManager/typeManagerSubgraphZnpController.js"></script>
 <script src="mobius/graph/execute_controller.js"></script>
 <script src="mobius/viewport/console_controller.js"></script>
 <script src="mobius/viewport/viewport_controller.js"></script>

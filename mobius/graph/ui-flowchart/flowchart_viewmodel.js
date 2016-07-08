@@ -232,6 +232,10 @@ var flowchart = {};
 			return nodeDataModel.disabled;
 		};
 
+		this.error = function () {
+			return nodeDataModel.error;
+		};
+
 		//
 		// Internal function to add a connector.
 		this._addConnector = function (connectorDataModel, y, connectorsDataModel, connectorsViewModel) {
@@ -625,12 +629,12 @@ var flowchart = {};
 		this.data = chartDataModel;
 
 		// create a view-model for input ports
-		if(this.data.inputPort && this.data.inputPort.outputConnectors.length !== 0){
+		if(this.data.inputPort ){
 			this.inputPort = createInputPortViewModel(this.data.inputPort);
 		}
 
 		// create a view-model for output ports
-		if(this.data.outputPort && this.data.outputPort.inputConnectors.length !== 0){
+		if(this.data.outputPort ){
 			this.outputPort = createOutputPortViewModel(this.data.outputPort);
 		}
 

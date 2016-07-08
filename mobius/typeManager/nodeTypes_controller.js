@@ -1,5 +1,5 @@
-mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','consoleMsg','$mdDialog',
-    function($scope,$rootScope,nodeCollection,consoleMsg,$mdDialog){
+mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','consoleMsg','$mdDialog','generateCode',
+    function($scope,$rootScope,nodeCollection,consoleMsg,$mdDialog,generateCode){
 
     $scope.info=function(input){
         if(input){
@@ -14,12 +14,18 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
     $scope.selectAll = false;
 
     $scope.typeList = JSON.parse(localStorage.mobiusNodeTypes);
+
     if($scope.typeList[0]){
         $scope.definition = $scope.typeList[0].procedureDataModel;
         $scope.arguments = $scope.typeList[0].interfaceDataModel;
         $scope.typeName =  $scope.typeList[0].nodeType;
-    }
+        $scope.currentIsSubgraph =  $scope.typeList[0].subGraph;
 
+        if($scope.currentIsSubgraph === true){
+            $scope.currentSubgraphChartViewModel = new flowchart.ChartViewModel(
+                $scope.typeList[0].subGraphModel.chartDataModel);
+        }
+    }
 
     $scope.$watch(function(){return localStorage.mobiusNodeTypes}, function(){
         var  uiStatus = [];
@@ -46,14 +52,17 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
                 $scope.definition = $scope.typeList[0].procedureDataModel;
                 $scope.arguments = $scope.typeList[0].interfaceDataModel;
                 $scope.typeName =  $scope.typeList[0].nodeType;
+                $scope.currentIsSubgraph =  $scope.typeList[0].subGraph;
+                if($scope.currentIsSubgraph === true){
+                    $scope.currentSubgraphChartViewModel = new flowchart.ChartViewModel(
+                        $scope.typeList[0].subGraphModel.chartDataModel);
+                }
         }else{
             $scope.definition = [];
             $scope.arguments = [];
             $scope.jsCode = $scope.generateCode();
             $scope.typeName =  '';
         }
-
-
     });
 
     $scope.$watch('typeList',function(newList,oldList){
@@ -100,6 +109,16 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
                     $scope.definition = $scope.typeList[i].procedureDataModel;
                     $scope.arguments = $scope.typeList[i].interfaceDataModel;
                     $scope.typeName =  $scope.typeList[i].nodeType;
+                    $scope.currentIsSubgraph =  $scope.typeList[i].subGraph;
+
+                    if($scope.currentIsSubgraph === true){
+                        $scope.currentSubgraphChartViewModel = new flowchart.ChartViewModel(
+                            $scope.typeList[i].subGraphModel.chartDataModel);
+                    }
+
+                    if($scope.toggleTo === 'procedure'){
+                        $scope.subgraphToggle(true);
+                    }
                 }
             }
         }
@@ -117,7 +136,7 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
                     var originalType = JSON.parse(localStorage.mobiusNodeTypes)[j];
 
                     $mdDialog.show({
-                            controller: DialogController,
+                            //controller: DialogController,
                             templateUrl: 'mobius/dialog/typeOverwrite_dialog.tmpl.html',
                             parent: angular.element(document.body),
                             clickOutsideToClose:false
@@ -248,6 +267,23 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
         $scope.nodeUrl = URL.createObjectURL(blob);
     };
 
+    $scope.toggleTo = 'subgraph';
+    $scope.subgraphToggle = function(reset){
+        if($scope.toggleTo === 'procedure' || reset === true){
+            $scope.toggleTo = 'subgraph';
+
+            document.getElementById('typeCode').style.display= 'block';
+            document.getElementById('type-subgraph-flow-chart').style.display='none';
+        }else{
+            $scope.toggleTo = 'procedure';
+
+            document.getElementById('typeCode').style.display= 'none';
+            document.getElementById('type-subgraph-flow-chart').style.display='block';
+
+            $scope.$broadcast('type-subgraphExtend',$scope.currentSubgraphChartViewModel);
+        }
+    };
+
     // only there is checked item then toggle export nodes
     // fixme warning
     // fixme directly from javascript
@@ -364,9 +400,11 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
     };
 
     $scope.methods = $scope.getMethods();
+
     $scope.methodList = $scope.getMethodList();
 
     $scope.controlTypes = ['for each', 'if else'];
+
     $scope.newItem = function(cate,subCate,isCopy,content) {
         $scope.currentHighestId = 0;
         // fixme error handling
@@ -568,6 +606,7 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
         setTimeout(function(){
             procedureDiv.scrollTop = procedureDiv.scrollHeight;},0);
     };
+
     $scope.newInterface = function(cate) {
         // fixme error handling
         //try{
@@ -605,6 +644,7 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
         {name:'slider'},
         {name:'dropdown'},
         {name:'color picker'}];
+
     $scope.menuOptions = function (menuOptionText) {
         if(menuOptionText){
             return menuOptionText.split(",");
@@ -612,7 +652,9 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
             return [];
         }
     };
+
     $scope.currentHighestId = 0;
+
     $scope.maxId = function(tree){
         if(tree === undefined) return;
         if(tree.length > 0){
@@ -758,10 +800,11 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
             }
         }
     };
+
+
     $scope.generateCode =  function (){
         var selectedType;
 
-        // fixme case where no type selected
         for(var i = 0; i< $scope.typeList.length; i++){
             if(  $scope.typeList[i].selected === true){
                 selectedType = $scope.typeList[i];
@@ -827,6 +870,11 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
             }
         }
 
+        // generate code for subgraph and append to inner function code
+        if(selectedType.subGraph){
+            jsCode += generateCode.generateCode(selectedType.subGraphModel);
+        }
+
         // return value
         if(num_output_ports){
             jsCode += '\n    return {\n';
@@ -842,8 +890,6 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
         }else{
             jsCode += '}\n\n';
         }
-
-
 
         // data procedure
         function procedure_data(procedure,fromLoop){
@@ -1009,8 +1055,8 @@ mobius.controller('nodeTypesCtrl',['$scope','$rootScope','nodeCollection','conso
             }
         }
 
+        return js_beautify(jsCode);
+    };
 
-        return jsCode;
-    }
 
 }]);

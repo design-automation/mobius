@@ -16,7 +16,8 @@ angular.module('panzoom', ['monospaced.mousewheel'])
                 transclude: true,
                 scope: {
                     config: '=',
-                    model: '='
+                    model: '=',
+                    readonly:'='
                 },
                 controller: ['$scope', '$element','$rootScope',
                     function ($scope, $element,$rootScope) {
@@ -44,7 +45,10 @@ angular.module('panzoom', ['monospaced.mousewheel'])
                         var getCssScale = function (zoomLevel) {
                             var scaleFactor = Math.pow($scope.config.scalePerZoomLevel, zoomLevel - $scope.config.neutralZoomLevel);
                             // @mobius update scale factor to graph
-                            $rootScope.$broadcast("Update", scaleFactor);
+                            if($scope.readonly !== true){
+                                $rootScope.$broadcast("Update", scaleFactor);
+                            }
+
                             return scaleFactor;
                         };
 
@@ -72,10 +76,11 @@ angular.module('panzoom', ['monospaced.mousewheel'])
                         $scope.config.initialPanX = $scope.config.initialPanX !== undefined ? $scope.config.initialPanX  : 0;
                         $scope.config.initialPanY = $scope.config.initialPanY || 0;
                         $scope.config.keepInBounds = $scope.config.keepInBounds ? $scope.config.keepInBounds : false;
-                        if ($scope.config.keepInBounds && $scope.config.neutralZoomLevel !== 0) {
-                            console.warn('You have set keepInBounds to true and neutralZoomLevel to ' + $scope.config.neutralZoomLevel +
-                                '. Be aware that the zoom level cannot below ' + $scope.config.neutralZoomLevel);
-                        }
+                        // fixme temporay disabled
+                        //if ($scope.config.keepInBounds && $scope.config.neutralZoomLevel !== 0) {
+                        //    console.warn('You have set keepInBounds to true and neutralZoomLevel to ' + $scope.config.neutralZoomLevel +
+                        //        '. Be aware that the zoom level cannot below ' + $scope.config.neutralZoomLevel);
+                        //}
                         $scope.config.keepInBoundsRestoreForce =
                             $scope.config.keepInBoundsRestoreForce !== undefined ? $scope.config.keepInBoundsRestoreForce : 0.5;
                         $scope.config.keepInBoundsDragPullback =
@@ -184,7 +189,10 @@ angular.module('panzoom', ['monospaced.mousewheel'])
 
                             var scale = getCssScale($scope.model.zoomLevel);
 
-                            $rootScope.$broadcast("Update", scale);
+                            if($scope.readonly !== true){
+                                $rootScope.$broadcast("Update", scale);
+                            }
+
 
                             var scaleString = 'scale(' + scale + ')';
 

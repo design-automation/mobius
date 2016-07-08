@@ -13,6 +13,7 @@ angular.module('flowChart', ['dragging'] )
   	replace: true,
   	scope: {
   		chart: "=chart",
+		readonly:'='
   	},
 
   	//
@@ -21,7 +22,7 @@ angular.module('flowChart', ['dragging'] )
   	// it is painful to unit test a directive without instantiating the DOM
   	// (which is possible, just not ideal).
   	//
-  	controller: 'FlowChartController',
+  	controller: 'FlowChartController'
   };
 })
 
@@ -88,7 +89,7 @@ angular.module('flowChart', ['dragging'] )
 		//
 		this.jQuery = function (element) {
 			return $(element);
-		}
+		};
 
 		//
 		// Init data-model variables.
@@ -103,7 +104,7 @@ angular.module('flowChart', ['dragging'] )
 		$rootScope.$on("Update", function(event, message) {
 			$scope.scaleFactor = message;
 			//
-			// @ mobius scale the new node dropdown
+			// @ mobius scale the new node dropxdown
 			// fixme
 
 			// todo shall hide dropdown when zoom?
@@ -223,37 +224,36 @@ angular.module('flowChart', ['dragging'] )
 		//
 		$scope.doubleClick = function(evt){
 
-
-			// make sure double click not on node/connection
-			// todo
-
+			// todo: make sure double click not on node/connection
 
 			// update zoom factor
-			$rootScope.$on("Update", function(event, message) {
-				$scope.scaleFactor = message;
-			});
+			if($scope.readonly !== true){
+				$rootScope.$on("Update", function(event, message) {
+					$scope.scaleFactor = message;
+				});
 
-			// update dropdown location
-			var dBclickPoint = controller.translateCoordinates(evt.clientX, evt.clientY);
-			$scope.dbClickMenu.x = dBclickPoint.x * (1/$scope.scaleFactor) 	- (90-90/$scope.scaleFactor);
-			$scope.dbClickMenu.y = dBclickPoint.y *(1/$scope.scaleFactor );
+				// update dropdown location
+				var dBclickPoint = controller.translateCoordinates(evt.clientX, evt.clientY);
+				$scope.dbClickMenu.x = dBclickPoint.x * (1/$scope.scaleFactor) 	- (90-90/$scope.scaleFactor);
+				$scope.dbClickMenu.y = dBclickPoint.y *(1/$scope.scaleFactor );
 
-			document.getElementById("node-creator").style.display = "inline-block";
+				document.getElementById("node-creator").style.display = "inline-block";
 
-			// node location
-			$scope.chart.newPos.x = dBclickPoint.x * (1/$scope.scaleFactor);
-			$scope.chart.newPos.y = $scope.dbClickMenu.y;
+				// node location
+				$scope.chart.newPos.x = dBclickPoint.x * (1/$scope.scaleFactor);
+				$scope.chart.newPos.y = $scope.dbClickMenu.y;
 
-			// enable dropdown
-			var ele = document.getElementById("node-dropdown");
+				// enable dropdown
+				var ele = document.getElementById("node-dropdown");
 
-			setTimeout(function(){
-				angular.element(ele).find('input').click();
-				$(ele).find('input').click()
-				$('#node-dropdown').find('input').click();
-			},0);
+				setTimeout(function(){
+					angular.element(ele).find('input').click();
+					$(ele).find('input').click()
+					$('#node-dropdown').find('input').click();
+				},0);
 
-			$scope.$broadcast('SetFocus');
+				$scope.$broadcast('SetFocus');
+			}
 		};
 
 		//
@@ -262,122 +262,122 @@ angular.module('flowChart', ['dragging'] )
 		$scope.primarySelectedIndex = undefined;
 
 		$scope.mouseDown = function (evt) {
-
-			if(evt.which == 1){
-				$scope.chart.deselectAll();
-
-				//
-				// @ mobius toggle new node dropdown
-				// fixme
-
-				var mouseOverElement = controller.hitTest(evt.clientX, evt.clientY);
-				if(mouseOverElement instanceof SVGElement){
-					document.getElementById("node-creator").style.display = "none";
-					setTimeout(function(){
-						$scope.$emit("nodeIndex", undefined);
-					},0);
-				}
-
-				dragging.startDrag(evt, {
-					//
-					// Commence dragging... setup variables to display the drag selection rect.
-					//
-					dragStarted: function (x, y) {
-						$scope.primarySelectedIndex= undefined;
-
-						// msg from pan and zoom
-						$rootScope.$on("Update", function(event, message) {
-							$scope.scaleFactor = message;
-						});
-
-						$scope.dragSelecting = true;
-						var startPoint = controller.translateCoordinates(x, y, evt);
-						$scope.dragSelectionStartPoint = startPoint;
-						$scope.dragSelectionRect = {
-							x: startPoint.x*(1/$scope.scaleFactor ),
-							y: startPoint.y*(1/$scope.scaleFactor ),
-							width: 0,
-							height: 0
-						};
-					},
+			if($scope.readonly !== true) {
+				if (evt.which == 1) {
+					$scope.chart.deselectAll();
 
 					//
-					// Update the drag selection rect while dragging continues.
-					//
-					dragging: function (x, y) {
-						var startPoint = $scope.dragSelectionStartPoint;
-						var curPoint = controller.translateCoordinates(x, y, evt);
+					// @ mobius toggle new node dropdown
+					// fixme
 
-						$scope.dragSelectionRect = {
-							x: curPoint.x > startPoint.x ? startPoint.x*(1/$scope.scaleFactor ) : curPoint.x*(1/$scope.scaleFactor ),
-							y: curPoint.y > startPoint.y ? startPoint.y*(1/$scope.scaleFactor ) : curPoint.y*(1/$scope.scaleFactor ),
-							width: curPoint.x > startPoint.x ? curPoint.x*(1/$scope.scaleFactor ) - startPoint.x*(1/$scope.scaleFactor ) : startPoint.x - curPoint.x,
-							height: curPoint.y > startPoint.y ? curPoint.y*(1/$scope.scaleFactor ) - startPoint.y*(1/$scope.scaleFactor ) : startPoint.y*(1/$scope.scaleFactor ) - curPoint.y*(1/$scope.scaleFactor ),
-						};
-					},
+					var mouseOverElement = controller.hitTest(evt.clientX, evt.clientY);
+					if (mouseOverElement instanceof SVGElement) {
+						document.getElementById("node-creator").style.display = "none";
+						setTimeout(function () {
+							$scope.$emit("nodeIndex", undefined);
+						}, 0);
+					}
 
-					//
-					// Dragging has ended... select all that are within the drag selection rect.
-					//
-					dragEnded: function () {
-						$scope.dragSelecting = false;
-						var index = $scope.chart.applySelectionRect($scope.dragSelectionRect);
+					dragging.startDrag(evt, {
+						//
+						// Commence dragging... setup variables to display the drag selection rect.
+						//
+						dragStarted: function (x, y) {
+							$scope.primarySelectedIndex = undefined;
+
+							// msg from pan and zoom
+							$rootScope.$on("Update", function (event, message) {
+								$scope.scaleFactor = message;
+							});
+
+							$scope.dragSelecting = true;
+							var startPoint = controller.translateCoordinates(x, y, evt);
+							$scope.dragSelectionStartPoint = startPoint;
+							$scope.dragSelectionRect = {
+								x: startPoint.x * (1 / $scope.scaleFactor ),
+								y: startPoint.y * (1 / $scope.scaleFactor ),
+								width: 0,
+								height: 0
+							};
+						},
+
+						//
+						// Update the drag selection rect while dragging continues.
+						//
+						dragging: function (x, y) {
+							var startPoint = $scope.dragSelectionStartPoint;
+							var curPoint = controller.translateCoordinates(x, y, evt);
+
+							$scope.dragSelectionRect = {
+								x: curPoint.x > startPoint.x ? startPoint.x * (1 / $scope.scaleFactor ) : curPoint.x * (1 / $scope.scaleFactor ),
+								y: curPoint.y > startPoint.y ? startPoint.y * (1 / $scope.scaleFactor ) : curPoint.y * (1 / $scope.scaleFactor ),
+								width: curPoint.x > startPoint.x ? curPoint.x * (1 / $scope.scaleFactor ) - startPoint.x * (1 / $scope.scaleFactor ) : startPoint.x - curPoint.x,
+								height: curPoint.y > startPoint.y ? curPoint.y * (1 / $scope.scaleFactor ) - startPoint.y * (1 / $scope.scaleFactor ) : startPoint.y * (1 / $scope.scaleFactor ) - curPoint.y * (1 / $scope.scaleFactor ),
+							};
+						},
+
+						//
+						// Dragging has ended... select all that are within the drag selection rect.
+						//
+						dragEnded: function () {
+							$scope.dragSelecting = false;
+							var index = $scope.chart.applySelectionRect($scope.dragSelectionRect);
 							$scope.$emit("nodeIndex", index);
 
-						$scope.primarySelectedIndex = index;
-						delete $scope.dragSelectionStartPoint;
-						delete $scope.dragSelectionRect;
-					},
-				});
+							$scope.primarySelectedIndex = index;
+							delete $scope.dragSelectionStartPoint;
+							delete $scope.dragSelectionRect;
+						},
+					});
+				}
 			}
-
 		};
 
 		//
 		// @mobius scale factor	Called for each mouse move on the svg element.
 		//
 		$scope.mouseMove = function (evt) {
+			if($scope.readonly !== true) {
+				//
+				// Clear out all cached mouse over elements.
+				//
+				$scope.mouseOverConnection = null;
+				$scope.mouseOverConnector = null;
+				$scope.mouseOverNode = null;
 
-			//
-			// Clear out all cached mouse over elements.
-			//
-			$scope.mouseOverConnection = null;
-			$scope.mouseOverConnector = null;
-			$scope.mouseOverNode = null;
 
+				var mouseOverElement = controller.hitTest(evt.clientX, evt.clientY);
+				if (mouseOverElement == null) {
+					// Mouse isn't over anything, just clear all.
+					return;
+				}
 
-			var mouseOverElement = controller.hitTest(evt.clientX, evt.clientY);
-			if (mouseOverElement == null) {
-				// Mouse isn't over anything, just clear all.
-				return;
-			}
+				if (!$scope.draggingConnection) { // Only allow 'connection mouse over' when not dragging out a connection.
 
-			if (!$scope.draggingConnection) { // Only allow 'connection mouse over' when not dragging out a connection.
+					// Figure out if the mouse is over a connection.
+					var scope = controller.checkForHit(mouseOverElement, controller.connectionClass);
+					$scope.mouseOverConnection = (scope && scope.connection) ? scope.connection : null;
+					if ($scope.mouseOverConnection) {
+						// Don't attempt to mouse over anything else.
+						return;
+					}
+				}
 
-				// Figure out if the mouse is over a connection.
-				var scope = controller.checkForHit(mouseOverElement, controller.connectionClass);
-				$scope.mouseOverConnection = (scope && scope.connection) ? scope.connection : null;
-				if ($scope.mouseOverConnection) {
+				// Figure out if the mouse is over a connector.
+				var scope = controller.checkForHit(mouseOverElement, controller.connectorClass);
+				$scope.mouseOverConnector = (scope && scope.connector) ? scope.connector : null;
+				if ($scope.mouseOverConnector) {
 					// Don't attempt to mouse over anything else.
 					return;
 				}
-			}
 
-			// Figure out if the mouse is over a connector.
-			var scope = controller.checkForHit(mouseOverElement, controller.connectorClass);
-			$scope.mouseOverConnector = (scope && scope.connector) ? scope.connector : null;
-			if ($scope.mouseOverConnector) {
-				// Don't attempt to mouse over anything else.
-				return;
-			}
-
-
-			// Figure out if the mouse is over a node.
-			var scope = controller.checkForHit(mouseOverElement, controller.nodeClass);
-			$scope.mouseOverNode = (scope && scope.node) ? scope.node : null;
-			if ($scope.mouseOverName) {
-				// Don't attempt to mouse over anything else.
-				return;
+				// Figure out if the mouse is over a node.
+				var scope = controller.checkForHit(mouseOverElement, controller.nodeClass);
+				$scope.mouseOverNode = (scope && scope.node) ? scope.node : null;
+				if ($scope.mouseOverName) {
+					// Don't attempt to mouse over anything else.
+					return;
+				}
 			}
 		};
 
@@ -385,97 +385,101 @@ angular.module('flowChart', ['dragging'] )
 		// Handle mousedown on a node / port
 		//
 		$scope.nodeMouseDown = function (evt, node, isPort) {
-			//
-			// @ mobius toggle new node dropdown
-			//
-			document.getElementById("node-creator").style.display = "none";
-
-			var chart = $scope.chart;
-			var lastMouseCoords;
-
-			dragging.startDrag(evt, {
+			if($scope.readonly !== true) {
 				//
-				// Node dragging has commenced.
+				// @ mobius toggle new node dropdown
 				//
-				dragStarted: function (x, y) {
+				document.getElementById("node-creator").style.display = "none";
 
-					lastMouseCoords = controller.translateCoordinates(x, y);
-					if (!node.selected()) {
-						chart.deselectAll();
-						node.select();
+				var chart = $scope.chart;
+				var lastMouseCoords;
+
+				dragging.startDrag(evt, {
+					//
+					// Node dragging has commenced.
+					//
+					dragStarted: function (x, y) {
+						lastMouseCoords = controller.translateCoordinates(x, y);
+						if (!node.selected()) {
+							chart.deselectAll();
+							node.select();
+						}
+					},
+
+					//
+					// Dragging selected nodes... update their x,y coordinates.
+					//
+					dragging: function (x, y) {
+						var curCoords = controller.translateCoordinates(x, y);
+						$rootScope.$on("Update", function (event, message) {
+							$scope.scaleFactor = message;
+						});
+						var deltaX = curCoords.x * (1 / $scope.scaleFactor ) - lastMouseCoords.x * (1 / $scope.scaleFactor);
+						var deltaY = curCoords.y * (1 / $scope.scaleFactor) - lastMouseCoords.y * (1 / $scope.scaleFactor);
+						chart.updateSelectedNodesLocation(deltaX, deltaY, isPort);
+
+						lastMouseCoords = curCoords;
+
+						if (!isPort) {
+							// @mobius dragging is considered as clicked (selected)
+							var nodeIndex = chart.handleNodeDragged(node, evt.ctrlKey);
+							$scope.$emit("nodeIndex", nodeIndex);
+						}else{
+							$scope.$emit("nodeIndex", 'port');
+						}
+					},
+
+					//
+					// The node wasn't dragged... it was clicked.
+					//
+					clicked: function () {
+						// @mobius let controller know the current node
+						if (evt.which === 1) {
+							var nodeIndex = chart.handleNodeLeftClicked(node, evt.ctrlKey);
+						}
+
+						if (evt.which === 3) {
+							var nodeIndex = chart.handleNodeRightClicked(node, evt.ctrlKey);
+						}
+
+						if (!isPort) {
+							$scope.$emit("nodeIndex", nodeIndex);
+						}else{
+							$scope.$emit("nodeIndex", 'port');
+						}
 					}
-				},
 
-				//
-				// Dragging selected nodes... update their x,y coordinates.
-				//
-				dragging: function (x, y) {
-
-					var curCoords = controller.translateCoordinates(x, y);
-					$rootScope.$on("Update", function(event, message) {
-						$scope.scaleFactor = message;
-					});
-					var deltaX = curCoords.x*(1/$scope.scaleFactor )- lastMouseCoords.x*(1/$scope.scaleFactor);
-					var deltaY = curCoords.y*(1/$scope.scaleFactor)- lastMouseCoords.y*(1/$scope.scaleFactor);
-					chart.updateSelectedNodesLocation(deltaX, deltaY,isPort);
-
-					lastMouseCoords = curCoords;
-
-					if(!isPort){
-						// @mobius dragging is considered as clicked (selected)
-						var nodeIndex = chart.handleNodeDragged(node, evt.ctrlKey);
-						$scope.$emit("nodeIndex", nodeIndex);
-					}else{
-						$scope.$emit("clearProcedure");
-					}
-				},
-
-				//
-				// The node wasn't dragged... it was clicked.
-				//
-				clicked: function () {
-					// @mobius let controller know the current node
-					if(evt.which === 1){
-						var nodeIndex = chart.handleNodeLeftClicked(node, evt.ctrlKey);
-					}
-
-					if(evt.which === 3){
-						var nodeIndex = chart.handleNodeRightClicked(node, evt.ctrlKey);
-					}
-
-					if(!isPort){
-						$scope.$emit("nodeIndex", nodeIndex);
-					}else{
-						$scope.$emit("clearProcedure");
-					}
-				}
-
-			});
+				});
+			}
 		};
 
 		//
 		// Handle double click on a node
 		//
 		$scope.nodeDoubleClick = function(evt){
-			document.getElementById("node-creator").style.display = "none";
-			$scope.$emit("editProcedure"); // -> graph controller
+			if($scope.readonly !== true) {
+				document.getElementById("node-creator").style.display = "none";
+				$scope.$emit("node-dbClick");
+			}
 		};
 
 		//
 		// Handle mousedown on a connection.
 		//
 		$scope.connectionMouseDown = function (evt, connection) {
-			//
-			// @ mobius toggle new node dropdown
-			// fixme control
-			document.getElementById("node-creator").style.display = "none";
+			if($scope.readonly !== true) {
+				//
+				// @ mobius toggle new node dropdown
+				// fixme control
+				document.getElementById("node-creator").style.display = "none";
 
-			var chart = $scope.chart;
-			chart.handleConnectionMouseDown(connection, evt.ctrlKey);
+				var chart = $scope.chart;
+				chart.handleConnectionMouseDown(connection, evt.ctrlKey);
 
-			// Don't let the chart handle the mouse down.
-			evt.stopPropagation();
-			evt.preventDefault();
+				// Don't let the chart handle the mouse down.
+				evt.stopPropagation();
+				evt.preventDefault();
+			}
 		};
 
 
@@ -486,7 +490,8 @@ angular.module('flowChart', ['dragging'] )
 			//
 			// @ mobius toggle new node dropdown
 			// fixme control
-			document.getElementById("node-creator").style.display = "none";
+			if($scope.readonly !== true) {
+				document.getElementById("node-creator").style.display = "none";
 
 				//
 				// Initiate dragging out of a connection.
@@ -502,15 +507,15 @@ angular.module('flowChart', ['dragging'] )
 
 						var curCoords = controller.translateCoordinates(x, y);
 
-						$rootScope.$on("Update", function(event, message) {
+						$rootScope.$on("Update", function (event, message) {
 							$scope.scaleFactor = message;
 						});
 
 						$scope.draggingConnection = true;
-						$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector,isPort);
+						$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector, isPort);
 						$scope.dragPoint2 = {
-							x: curCoords.x*(1/$scope.scaleFactor ),
-							y: curCoords.y*(1/$scope.scaleFactor )
+							x: curCoords.x * (1 / $scope.scaleFactor ),
+							y: curCoords.y * (1 / $scope.scaleFactor )
 						};
 						$scope.dragTangent1 = flowchart.computeConnectionSourceTangent($scope.dragPoint1, $scope.dragPoint2);
 						$scope.dragTangent2 = flowchart.computeConnectionDestTangent($scope.dragPoint1, $scope.dragPoint2);
@@ -525,78 +530,81 @@ angular.module('flowChart', ['dragging'] )
 						//
 						// @ mobius communicate with pan&zoom controller to correct scale
 						//
-						$rootScope.$on("Update", function(event, message) {
+						$rootScope.$on("Update", function (event, message) {
 							$scope.scaleFactor = message;
 						});
 
-						$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector,isPort);
+						$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector, isPort);
 						$scope.dragPoint2 = {
-						x: startCoords.x*(1/$scope.scaleFactor ),
-						y: startCoords.y*(1/$scope.scaleFactor )
-					};
-					$scope.dragTangent1 = flowchart.computeConnectionSourceTangent($scope.dragPoint1, $scope.dragPoint2);
-					$scope.dragTangent2 = flowchart.computeConnectionDestTangent($scope.dragPoint1, $scope.dragPoint2);
-				},
+							x: startCoords.x * (1 / $scope.scaleFactor ),
+							y: startCoords.y * (1 / $scope.scaleFactor )
+						};
+						$scope.dragTangent1 = flowchart.computeConnectionSourceTangent($scope.dragPoint1, $scope.dragPoint2);
+						$scope.dragTangent2 = flowchart.computeConnectionDestTangent($scope.dragPoint1, $scope.dragPoint2);
+					},
 
-				//
-				// Clean up when dragging has finished.
-				//
-				dragEnded: function () {
+					//
+					// Clean up when dragging has finished.
+					//
+					dragEnded: function () {
 
-					if ($scope.mouseOverConnector &&
-						$scope.mouseOverConnector !== connector) {
+						if ($scope.mouseOverConnector &&
+							$scope.mouseOverConnector !== connector) {
 
-						//
-						// Dragging has ended...
-						// The mouse is over a valid connector...
-						// Create a new connection.
-						//
-						$scope.chart.createNewConnection(connector, $scope.mouseOverConnector);
+							//
+							// Dragging has ended...
+							// The mouse is over a valid connector...
+							// Create a new connection.
+							//
+							$scope.chart.createNewConnection(connector, $scope.mouseOverConnector);
 
-						// when new connection create, emit for the update in vidamo.js
-						// fixme where does it go?
-						$scope.$emit("newEdge",connector.parentNode());
+							// when new connection create, emit for the update in vidamo.js
+							// fixme where does it go?
+							$scope.$emit("newEdge", connector.parentNode());
+						}
+
+						$scope.draggingConnection = false;
+						delete $scope.dragPoint1;
+						delete $scope.dragTangent1;
+						delete $scope.dragPoint2;
+						delete $scope.dragTangent2;
+					},
+
+					//
+					// The connector wasn't dragged... it was clicked.
+					//
+					// @ vidamo add click event to connectors
+					clicked: function () {
+						var chart = $scope.chart;
+						chart.handleConnectorClicked(connector, evt.ctrlKey);
+
+						// don't let the chart handle the mouse down click
+						evt.stopPropagation();
+						evt.preventDefault();
 					}
-
-					$scope.draggingConnection = false;
-					delete $scope.dragPoint1;
-					delete $scope.dragTangent1;
-					delete $scope.dragPoint2;
-					delete $scope.dragTangent2;
-				},
-
-				//
-				// The connector wasn't dragged... it was clicked.
-				//
-				// @ vidamo add click event to connectors
-				clicked: function () {
-					var chart = $scope.chart;
-					chart.handleConnectorClicked(connector,evt.ctrlKey);
-
-					// don't let the chart handle the mouse down click
-					evt.stopPropagation();
-					evt.preventDefault();
-				}
-			});
+				});
+			}
 		};
 
 		// context menu positioning
-		$scope.onshow= function(event){
-			var width = window.innerWidth,
-				height = window.innerHeight;
+		$scope.onshow= function(event) {
+			if ($scope.readonly !== true) {
+				var width = window.innerWidth,
+					height = window.innerHeight;
 
-			document.getElementById('menu-node').className = ' position-fixed';
+				document.getElementById('menu-node').className = ' position-fixed';
 
-			if(event.clientY > height-300){
-				document.getElementById('menu-node').className += ' menu-up';
-			}
+				if (event.clientY > height - 300) {
+					document.getElementById('menu-node').className += ' menu-up';
+				}
 
-			if(event.clientX > width-120){
-				document.getElementById('menu-node').className += ' menu-left';
-			}
+				if (event.clientX > width - 120) {
+					document.getElementById('menu-node').className += ' menu-left';
+				}
 
-			if(event.clientX > width-200){
-				document.getElementById('menu-node').className += ' submenu-left';
+				if (event.clientX > width - 200) {
+					document.getElementById('menu-node').className += ' submenu-left';
+				}
 			}
 		}
 	}

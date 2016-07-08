@@ -1,7 +1,7 @@
 #typeManager {
     height:100%;
     width:100%;
-    background-color: rgba(255,255,255,1.0);
+    background-color: rgba(0,0,0,.36);
     position: fixed;
     top:0;left:0;
     display: none;
@@ -20,6 +20,7 @@
 }
 
 #tree-root-nodeType{
+    background-color: white;
     overflow: auto;
     position: absolute;
     width: 100%;
@@ -52,12 +53,14 @@
 }
 
 #typeManager #tree-root-procedure-type{
+    background-color: white;
     overflow: auto;
     height:100%;
     padding-bottom: 32px;
 }
 
 #typeManager #tree-root-parameter-type{
+    background-color: white;
     overflow: auto;
     height:100%;
     padding-bottom: 32px;
@@ -65,6 +68,21 @@
 
 #menu-typeManager{
     z-index: 10010;
+}
+
+.node-library-close{
+    position: fixed;
+    top: -5px;
+    right: 0px;
+    font-size: 2em;
+    min-height: 30px;
+    min-width: 30px;
+    text-align: center;
+}
+
+.node-library-close:hover {
+    color: #eeeeee;
+    cursor: pointer;
 }
 
 

@@ -140,18 +140,34 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
             $scope.data  = undefined;
             $scope.interface = undefined;
             $scope.currentNodeName = '';
+            $scope.currentIsSubgraph = false;
             $scope.currentNodeType = '';
+            if($scope.toggleTo === 'procedure'){
+                $scope.subgraphToggle(true)
+            }
+            $scope.chartViewModel.deselectAll();
         });
 
         // listen to the graph, when a node is clicked, update the procedure/ interface tabs
         $scope.$on("nodeIndex", function(event, message) {
-            if($scope.nodeIndex !== message && message !== undefined){
+            if($scope.nodeIndex !== message && message !== undefined && message !== "port"){
                 $scope.nodeIndex = message;
 
                 $scope.currentNodeName = $scope.chartViewModel.nodes[$scope.nodeIndex].data.name;
                 $scope.currentNodeType = $scope.chartViewModel.nodes[$scope.nodeIndex].data.type;
-                $scope.currentNodeVersion = $scope.chartViewModel.nodes[$scope.nodeIndex].data.version === 0?'':'*';
 
+                $scope.currentIsSubgraph = $scope.chartViewModel.nodes[$scope.nodeIndex].data.subGraph;
+
+                if($scope.currentIsSubgraph === true){
+                    $scope.currentSubgraphChartViewModel = new flowchart.ChartViewModel(
+                        $scope.chartViewModel.nodes[$scope.nodeIndex].data.subGraphModel.chartDataModel);
+                }
+
+                if($scope.toggleTo === 'procedure'){
+                    $scope.subgraphToggle(true);
+                }
+
+                $scope.currentNodeVersion = $scope.chartViewModel.nodes[$scope.nodeIndex].data.version === 0?'':'*';
 
                 // update the procedure tab
                 $scope.data  = $scope.dataList[$scope.nodeIndex];
@@ -167,6 +183,14 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                 $scope.interface = undefined;
 
                 //$scope.$emit("editProcedure",false);
+            }else if(message === 'port'){
+                //todo input/output port configuration
+
+                // update the procedure tab
+                $scope.data  = $scope.dataList[$scope.nodeIndex];
+
+                // update the interface tab
+                $scope.interface = $scope.interfaceList[$scope.nodeIndex];
             }
         });
 
@@ -770,5 +794,36 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
             }
 
             return $scope.currentHighestId;
+        };
+
+        $scope.toggleTo = 'subgraph';
+        $scope.subgraphToggle = function(reset){
+            if($scope.toggleTo === 'procedure' || reset === true){
+                $scope.toggleTo = 'subgraph';
+
+                document.getElementsByClassName('button-action')[0].style.display = 'inline-block';
+                document.getElementsByClassName('button-control')[0].style.display = 'inline-block';
+                document.getElementsByClassName('button-output')[0].style.display = 'inline-block';
+                document.getElementsByClassName('button-variable')[0].style.display = 'inline-block';
+
+                document.getElementById('tree-root-procedure').style.display= 'block';
+                document.getElementById('subgraph-flow-chart').style.display='none';
+
+                document.getElementById('subgraphToggle').style.right='120px';
+
+            }else{
+                $scope.toggleTo = 'procedure';
+
+                document.getElementsByClassName('button-action')[0].style.display = 'none';
+                document.getElementsByClassName('button-control')[0].style.display = 'none';
+                document.getElementsByClassName('button-output')[0].style.display = 'none';
+                document.getElementsByClassName('button-variable')[0].style.display = 'none';
+
+                document.getElementById('tree-root-procedure').style.display= 'none';
+                document.getElementById('subgraph-flow-chart').style.display='block';
+
+                $scope.$broadcast('subgraphExtend',$scope.currentSubgraphChartViewModel);
+                document.getElementById('subgraphToggle').style.right='2px';
+            }
         };
     }]);

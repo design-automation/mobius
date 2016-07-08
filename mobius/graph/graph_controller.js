@@ -158,7 +158,7 @@ mobius.controller(  'graphCtrl',
 
         // listen to the graph, when a node is clicked, update the visual procedure/ code/ interface
         $scope.$on("nodeIndex", function(event, message) {
-             if($scope.nodeIndex !== message && message !== undefined){
+             if($scope.nodeIndex !== message && message !== undefined && message !== "port"){
                  $scope.nodeIndex = message;
                  $scope.currentNodeName = $scope.chartViewModel.data.nodes[$scope.nodeIndex].name;
                  $scope.currentNodeType = $scope.chartViewModel.data.nodes[$scope.nodeIndex].type;
@@ -176,6 +176,8 @@ mobius.controller(  'graphCtrl',
                  scope.$apply(function(){scope.viewportControl.refreshView();} );
                  scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
                  scopeTopo.$apply(function(){scopeTopo.viewportControl.refreshData();} );
+             }else if(message === 'port'){
+                 // todo input/output port configuration
              }
 
              function displayGeometry(){
@@ -286,6 +288,15 @@ mobius.controller(  'graphCtrl',
             }
         });
 
+        $scope.$on("node-dbClick", function(){
+            if($scope.chartViewModel.getSelectedNodes()[0].data.subGraph){
+                $scope.$emit('openSubGraph')
+            }else{
+                $scope.$emit("showProcedure");
+                //$scope.$emit("editProcedure");
+            }
+        });
+
         // todo what is it?
         $scope.$on('clearProcedure', function(){
             $scope.currentNodeName = '';
@@ -293,7 +304,7 @@ mobius.controller(  'graphCtrl',
 
         $scope.$on("renameSelected",function(){
             $mdDialog.show({
-                    controller: DialogController,
+                    //controller: DialogController,
                     templateUrl: 'mobius/dialog/inputName_dialog.tmpl.html',
                     parent: angular.element(document.body),
                     clickOutsideToClose:false,
@@ -315,7 +326,7 @@ mobius.controller(  'graphCtrl',
 
         $scope.$on("saveAsNewType",function(){
             $mdDialog.show({
-                controller: DialogController,
+                //controller: 'DialogController',
                 templateUrl: 'mobius/dialog/inputName_dialog.tmpl.html',
                 parent: angular.element(document.body),
                 clickOutsideToClose:false,
@@ -324,7 +335,7 @@ mobius.controller(  'graphCtrl',
                 .then(function(newTypeName){
                 if (!isValidName(newTypeName)) {return;}
                 if ($scope.nodeTypes().indexOf(newTypeName) >= 0 ){
-                    consoleMsg.errorMsg('dupName');
+                    $rootScope.$broadcast("overWriteProcedure");
                     return;
                 }else{
                     consoleMsg.confirmMsg('typeAdded');
@@ -348,15 +359,18 @@ mobius.controller(  'graphCtrl',
 
         // todo when multi-selection should throw error to user that only one node can be saved
         $scope.$on('overWriteProcedure',function(){
+            console.log('overwritable? :', $scope.chartViewModel.getSelectedNodes()[0].data.overwrite)
+
             if($scope.chartViewModel.getSelectedNodes()[0].data.overwrite){
                 // get new type name, by default the original type name
                 var instanceName =  $scope.chartViewModel.getSelectedNodes()[0].data.name;
                 var oldTypeName = $scope.chartViewModel.getSelectedNodes()[0].data.type;
+
                 $mdDialog.show({
-                        controller: DialogController,
+                        //controller: DialogController,
                         templateUrl: 'mobius/dialog/overwrite_dialog.tmpl.html',
                         parent: angular.element(document.body),
-                        clickOutsideToClose:false,
+                        clickOutsideToClose:false
                     })
                     .then(function(answer) {
                         if(answer === 'Ok'){
@@ -479,7 +493,10 @@ mobius.controller(  'graphCtrl',
 
 
         $scope.$on('openSubGraph',function(){
-            generateCode.openNewChart($scope.chartViewModel.nodes[$scope.nodeIndex].data);
+            var inputPortProcedure = $scope.interfaceList[$scope.nodeIndex];
+            var outputPortProcedure = $scope.dataList[$scope.nodeIndex];
+            var nodeData = $scope.chartViewModel.nodes[$scope.nodeIndex].data;
+            generateCode.openNewChart(nodeData, inputPortProcedure, outputPortProcedure);
             $scope.$emit('clearProcedure');
             $scope.$broadcast('Extend');
         });

@@ -47,7 +47,8 @@ var dataConversion = (function(data){
             geomData.push(tempData0);
             topo.push(tempTopo0);
         }
-        else if(obj instanceof mObj_geom_Curve ||
+        else if(obj instanceof mObj_geom_Compound ||
+            obj instanceof mObj_geom_Curve ||
             obj instanceof mObj_geom_Surface ||
             obj instanceof mObj_geom_Solid ||
             obj instanceof mObj_geom_Compound ||

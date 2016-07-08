@@ -585,6 +585,22 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
         }
     }
 
+    function clearError(currentGraph){
+        for(var j =0; j < currentGraph.nodes.length; j++){
+            if(currentGraph.data){
+                currentGraph.nodes[j].data.error = false;
+                if(currentGraph.nodes[j].data.subGraphModel){
+                    clearError(currentGraph.nodes[j].data.subGraphModel.chartDataModel);
+                }
+            }else{
+                currentGraph.nodes[j].error = false;
+                if(currentGraph.nodes[j].subGraphModel){
+                    clearError(currentGraph.nodes[j].subGraphModel.chartDataModel);
+                }
+            }
+        }
+    }
+
     return {
         getGraphList:function(){
             return graphList;
@@ -596,7 +612,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
             findCurrentOutputGeom();
         },
 
-        openNewChart:function(chartModel){
+        openNewChart:function(chartModel,inputPortProcedure, outputPortProcedure){
             graphList.push(chartModel);
             current = {
                 javascriptCode:graphList[graphList.length-1].subGraphModel.javascriptCode,
@@ -606,7 +622,9 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                 chartViewModel: new flowchart.ChartViewModel(graphList[graphList.length-1].subGraphModel.chartDataModel),
                 dataList: graphList[graphList.length-1].subGraphModel.dataList,
                 interfaceList: graphList[graphList.length-1].subGraphModel.interfaceList,
-                nodeIndex:undefined
+                nodeIndex:undefined,
+                inputPortProcedure:inputPortProcedure,
+                outputPortProcedure:outputPortProcedure
             };
             findCurrentOutputGeom();
         },
@@ -708,8 +726,55 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
             return functionCode;
         },
 
-        generateCode: function (){
-            generateCode();
+        generateCode: function (subgraphModel){
+            return generateCode(subgraphModel);
+        },
+
+        getInputPortProcedure:function(){
+            return current.inputPortProcedure;
+        },
+
+        getOutputPortProcedure:function(){
+            return current.outputPortProcedure;
+        },
+
+        clearError: function(){
+            var currentGraph = data.chartViewModel;
+            clearError(currentGraph)
+        },
+
+        displayError: function (graphTrace){
+            var currentGraph = data.chartViewModel;
+            for(var i = 0; i < graphTrace.length; i++){
+                for(var j =0; j < currentGraph.nodes.length; j++){
+                    if(currentGraph.data){
+                        if(currentGraph.nodes[j].data.name === graphTrace[i].nodeName &&
+                            (currentGraph.nodes[j].data.type  === graphTrace[i].typeName) ||
+                            currentGraph.nodes[j].data.type + '_' + currentGraph.nodes[j].data.version === graphTrace[i].typeName){
+                            currentGraph.nodes[j].data.error = true;
+                            if(currentGraph.nodes[j].data.subGraphModel){
+                                currentGraph = currentGraph.nodes[j].data.subGraphModel.chartDataModel;
+                            }
+                            break;
+                        }else{
+                            currentGraph.nodes[j].data.error = false;
+                        }
+                    }else{
+                        if(currentGraph.nodes[j].name === graphTrace[i].nodeName &&
+                            (currentGraph.nodes[j].type === graphTrace[i].typeName ||
+                             currentGraph.nodes[j].type + '_' + currentGraph.nodes[j].version === graphTrace[i].typeName)){
+                            currentGraph.nodes[j].error = true;
+                            if(currentGraph.nodes[j].subGraphModel){
+                                currentGraph = currentGraph.nodes[j].subGraphModel.chartDataModel;
+                            }
+                            break;
+                        }else{
+                            currentGraph.nodes[j].error = false;
+                        }
+                    }
+
+                }
+            }
         }
     };
 }]);
