@@ -56,10 +56,12 @@ mobius.controller('executeCtrl',['$scope','$rootScope','$q','executeService','co
                         document.getElementById('waiting').style.display='none';
                         $scope.showSpinner = false;
                         $scope.outputs = data;
+                        generateCode.clearError();
                     }, function(msg){
                         document.getElementById('waiting').style.display='none';
                         $scope.showSpinner = false;
                         console.error(msg);
+                        generateCode.clearError();
                         generateCode.displayError(msg);
                     })
                     .then(function() {

@@ -585,6 +585,22 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
         }
     }
 
+    function clearError(currentGraph){
+        for(var j =0; j < currentGraph.nodes.length; j++){
+            if(currentGraph.data){
+                currentGraph.nodes[j].data.error = false;
+                if(currentGraph.nodes[j].data.subGraphModel){
+                    clearError(currentGraph.nodes[j].data.subGraphModel.chartDataModel);
+                }
+            }else{
+                currentGraph.nodes[j].error = false;
+                if(currentGraph.nodes[j].subGraphModel){
+                    clearError(currentGraph.nodes[j].subGraphModel.chartDataModel);
+                }
+            }
+        }
+    }
+
     return {
         getGraphList:function(){
             return graphList;
@@ -722,6 +738,11 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
             return current.outputPortProcedure;
         },
 
+        clearError: function(){
+            var currentGraph = data.chartViewModel;
+            clearError(currentGraph)
+        },
+
         displayError: function (graphTrace){
             var currentGraph = data.chartViewModel;
             for(var i = 0; i < graphTrace.length; i++){
@@ -743,9 +764,8 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                             (currentGraph.nodes[j].type === graphTrace[i].typeName ||
                              currentGraph.nodes[j].type + '_' + currentGraph.nodes[j].version === graphTrace[i].typeName)){
                             currentGraph.nodes[j].error = true;
-                            currentGraph = currentGraph.nodes[j].subGraphModel.chartDataModel;
-                            if(currentGraph.nodes[j].data.subGraphModel){
-                                currentGraph = currentGraph.nodes[j].data.subGraphModel.chartDataModel;
+                            if(currentGraph.nodes[j].subGraphModel){
+                                currentGraph = currentGraph.nodes[j].subGraphModel.chartDataModel;
                             }
                             break;
                         }else{
