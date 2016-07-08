@@ -724,22 +724,33 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
         displayError: function (graphTrace){
             var currentGraph = data.chartViewModel;
-
+            console.log(currentGraph )
             for(var i = 0; i < graphTrace.length; i++){
                 for(var j =0; j < currentGraph.nodes.length; j++){
                     if(currentGraph.data){
-                        if(currentGraph.data.nodes[j].name === graphTrace[i].nodeName &&
-                            currentGraph.data.nodes[j].type === graphTrace[i].typeName){
-                            currentGraph.data.nodes[j].error = true;
-                            currentGraph = currentGraph.nodes[j].data.subGraphModel.chartDataModel;
+                        if(currentGraph.nodes[j].data.name === graphTrace[i].nodeName &&
+                            (currentGraph.nodes[j].data.type  === graphTrace[i].typeName) ||
+                            currentGraph.nodes[j].data.type + '_' + currentGraph.nodes[j].data.version === graphTrace[i].typeName){
+                            currentGraph.nodes[j].data.error = true;
+                            if(currentGraph.nodes[j].data.subGraphModel){
+                                currentGraph = currentGraph.nodes[j].data.subGraphModel.chartDataModel;
+                            }
                             break;
+                        }else{
+                            currentGraph.nodes[j].data.error = false;
                         }
                     }else{
                         if(currentGraph.nodes[j].name === graphTrace[i].nodeName &&
-                            currentGraph.nodes[j].type === graphTrace[i].typeName){
+                            (currentGraph.nodes[j].type === graphTrace[i].typeName ||
+                             currentGraph.nodes[j].type + '_' + currentGraph.nodes[j].version === graphTrace[i].typeName)){
                             currentGraph.nodes[j].error = true;
                             currentGraph = currentGraph.nodes[j].subGraphModel.chartDataModel;
+                            if(currentGraph.nodes[j].data.subGraphModel){
+                                currentGraph = currentGraph.nodes[j].data.subGraphModel.chartDataModel;
+                            }
                             break;
+                        }else{
+                            currentGraph.nodes[j].error = false;
                         }
                     }
 

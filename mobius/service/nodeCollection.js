@@ -191,13 +191,13 @@ mobius.factory('nodeCollection', function () {
         updateNodeType: function(oldType,newType, input, output, newProcedureList,newInterfaceList,isSubGraph,newSubGraphModel){
             for(var i = 0; i < nodes.length; i++){
                 if(nodes[i].nodeType == oldType){
-                    nodes[i].subGraph = isSubGraph;
-                    nodes[i].nodeType = newType;
-                    nodes[i].inputConnectors = input;
-                    nodes[i].outputConnectors = output;
-                    nodes[i].procedureDataModel = newProcedureList;
-                    nodes[i].interfaceDataModel = newInterfaceList;
-                    nodes[i].subGraphModel = newSubGraphModel;
+                    angular.copy(isSubGraph,nodes[i].subGraph);
+                    angular.copy(newType,nodes[i].nodeType);
+                    angular.copy(input,nodes[i].inputConnectors);
+                    angular.copy(output,nodes[i].outputConnectors );
+                    angular.copy(newProcedureList,nodes[i].procedureDataModel);
+                    angular.copy(newInterfaceList,nodes[i].interfaceDataModel);
+                    angular.copy(newSubGraphModel,  nodes[i].subGraphModel);
                 }
             }
             localStorage.mobiusNodeTypes = JSON.stringify(nodes);

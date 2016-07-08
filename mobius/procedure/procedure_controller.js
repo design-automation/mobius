@@ -217,6 +217,9 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                 var typeProcedure = nodeCollection.getProcedureDataModel(currentType);
                 var typeInterface = nodeCollection.getInterfaceDataModel(currentType);
 
+                console.log(currentProcedure )
+                console.log(typeProcedure )
+
                 if(!angular.equals(currentProcedure,typeProcedure) ||
                     !angular.equals(currentInterface,typeInterface) ){
                     var d = new Date();

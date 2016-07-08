@@ -359,6 +359,8 @@ mobius.controller(  'graphCtrl',
 
         // todo when multi-selection should throw error to user that only one node can be saved
         $scope.$on('overWriteProcedure',function(){
+            console.log('overwritable? :', $scope.chartViewModel.getSelectedNodes()[0].data.overwrite)
+
             if($scope.chartViewModel.getSelectedNodes()[0].data.overwrite){
                 // get new type name, by default the original type name
                 var instanceName =  $scope.chartViewModel.getSelectedNodes()[0].data.name;
@@ -368,7 +370,7 @@ mobius.controller(  'graphCtrl',
                         //controller: DialogController,
                         templateUrl: 'mobius/dialog/overwrite_dialog.tmpl.html',
                         parent: angular.element(document.body),
-                        clickOutsideToClose:false,
+                        clickOutsideToClose:false
                     })
                     .then(function(answer) {
                         if(answer === 'Ok'){
