@@ -24,9 +24,10 @@
           ng-attr-class="{{ (!node.error()) && (!node.disabled()) && ((node.selected() && (node.data.id === primarySelectedIndex)) && 'primary-selected-node-rect')
                             ||(!node.error()) && (!node.disabled()) && (node.selected() && 'selected-node-rect')
                             || ((!node.error()) && (!node.disabled()) && (node == mouseOverNode && 'mouseover-node-rect'|| 'node-rect'))
-                            || (!node.error()) && (node.disabled()) && (node.selected() && 'selected-disabled-node-rect')
-                            || (!node.error()) && ((node.disabled()) && (node == mouseOverNode && 'mouseover-disabled-node-rect'|| 'disabled-node-rect'))
-                            || ((node.error())  && 'error-node-rect')
+                            || (node.disabled()) && (node.selected() && 'selected-disabled-node-rect')
+                            || ((node.disabled()) && (node == mouseOverNode && 'mouseover-disabled-node-rect'|| 'disabled-node-rect'))
+                            || (node.error()) && (!node.disabled()) && (node.selected() && 'selected-error-node-rect')
+                            || ((node.error()) && (!node.disabled()) && (node == mouseOverNode && 'mouseover-error-node-rect'|| 'error-node-rect'))
                          }}"
           ry="0" rx="0" x="0" y="0"
           ng-attr-width="{{node.width()}}"

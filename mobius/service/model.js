@@ -724,7 +724,6 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
         displayError: function (graphTrace){
             var currentGraph = data.chartViewModel;
-            console.log(currentGraph )
             for(var i = 0; i < graphTrace.length; i++){
                 for(var j =0; j < currentGraph.nodes.length; j++){
                     if(currentGraph.data){

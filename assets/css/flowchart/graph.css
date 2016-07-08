@@ -42,10 +42,25 @@ CSS For ui-flowchart [left pane graph area]
 }
 
 .error-node-rect {
-	fill:red;
+	fill:#ea1233;
 	stroke: #aaaaaa;
 	border-radius: 0 !important;
 	stroke-width: 1;
+	cursor: default !important;
+}
+
+.selected-error-node-rect{
+	fill:#EA4E45;
+	stroke: #3F98F3;
+	stroke-width: 0.7 !important;
+	cursor: default !important;
+}
+
+.mouseover-error-node-rect {
+	fill:#ea1233;
+	stroke: #777777;
+	stroke-width: 1;
+	border-radius: 0 !important;
 	cursor: default !important;
 }
 
