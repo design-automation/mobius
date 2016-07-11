@@ -757,8 +757,7 @@ var MOBIUS = ( function (mod){
 	 * @memberof obj
 	 */
 	mod.obj.copy = function( object ){
-
-		if( object.getGeometry == undefined ){
+		if( object == undefined || object.getGeometry == undefined ){
 			console.log("Non-Mobius passed to copy function");
 			return object;
 		}

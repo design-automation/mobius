@@ -588,7 +588,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
     function clearError(currentGraph){
         for(var j =0; j < currentGraph.nodes.length; j++){
             if(currentGraph.data){
-                currentGraph.nodes[j].data.error = false;
+                currentGraph.nodes[j].clearError();
                 if(currentGraph.nodes[j].data.subGraphModel){
                     clearError(currentGraph.nodes[j].data.subGraphModel.chartDataModel);
                 }
@@ -751,13 +751,11 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                         if(currentGraph.nodes[j].data.name === graphTrace[i].nodeName &&
                             (currentGraph.nodes[j].data.type  === graphTrace[i].typeName) ||
                             currentGraph.nodes[j].data.type + '_' + currentGraph.nodes[j].data.version === graphTrace[i].typeName){
-                            currentGraph.nodes[j].data.error = true;
+                            currentGraph.nodes[j].setError();
                             if(currentGraph.nodes[j].data.subGraphModel){
                                 currentGraph = currentGraph.nodes[j].data.subGraphModel.chartDataModel;
                             }
                             break;
-                        }else{
-                            currentGraph.nodes[j].data.error = false;
                         }
                     }else{
                         if(currentGraph.nodes[j].name === graphTrace[i].nodeName &&
@@ -768,13 +766,11 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                                 currentGraph = currentGraph.nodes[j].subGraphModel.chartDataModel;
                             }
                             break;
-                        }else{
-                            currentGraph.nodes[j].error = false;
                         }
                     }
-
                 }
             }
+            console.log(currentGraph)
         }
     };
 }]);

@@ -556,6 +556,7 @@ var mObj_geom_Compound = function mObj_geom_Compound( geometry ){
 
         }
 
+        threeGeometry.is_mObj = true;
         return threeGeometry;
     }
 

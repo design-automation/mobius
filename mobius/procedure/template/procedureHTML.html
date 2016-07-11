@@ -83,7 +83,9 @@
                             <a>{{cate.category}}</a>
                             <ul class="dropdown-menu narrow-menu" >
                                 <li ng-repeat="method in cate.methods">
-                                    <a ng-click="newItem('Action',{category:cate.category,name:method})">{{method}}</a>
+                                    <a ng-click="newItem('Action',{category:cate.category,
+                                                                   name:method.name,
+                                                                   return:method.return})">{{method.name}}</a>
                                 </li>
                             </ul>
                         </li>
