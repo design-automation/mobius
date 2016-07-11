@@ -61,14 +61,15 @@
                 </div>
 
                 <button class="button pull-right button-action"
-                        dropdown-toggle="dropdown"
-                        title="Add Function">
-                    <i class="icon-function fa-lg"></i>
+                        dropdown-toggle="dropdown">
+                    <i class="icon-function fa-lg" title="Add Function"></i>
                     <ui-select ng-model="method.selected"
                                class="dropdown-menu"
-                               on-select="newItem('Action',$select.selected)">
+                               on-select="newItem('Action',$select.selected)"
+                               style="min-width: 130px!important;">
                         <ui-select-match placeholder="Search" ></ui-select-match>
                         <ui-select-choices
+                                style="min-width: 130px!important;"
                                 id="choices"
                                 refresh="info($select.search)"
                                 refresh-delay="0"
@@ -78,10 +79,11 @@
                         </ui-select-choices>
                     </ui-select>
 
-                    <ul class="dropdown-menu action-dropdown narrow-menu" ng-if="toggleDropdown">
+                    <ul class="dropdown-menu action-dropdown narrow-menu" ng-if="toggleDropdown"
+                        style="min-width: 130px!important;">
                         <li class="dropdown-submenu" ng-repeat="cate in methodList">
                             <a>{{cate.category}}</a>
-                            <ul class="dropdown-menu narrow-menu" >
+                            <ul class="dropdown-menu narrow-menu" style="min-width: 130px!important;">
                                 <li ng-repeat="method in cate.methods">
                                     <a ng-click="newItem('Action',{category:cate.category,
                                                                    name:method.name,
@@ -92,31 +94,28 @@
                     </ul>
                 </button>
 
-                <button class="button pull-right button-control" dropdown-toggle="dropdown" title="Add Control">
-                    <i class="fa fa-retweet fa-lg"></i>
-                    <ui-select ng-model="controlType"
-                               class="dropdown-menu"
-                               on-select="newItem('Control',$select.selected)"
-                               focus-on='SetFocus'>
-                        <ui-select-match placeholder="Control">Control</ui-select-match>
-                        <ui-select-choices
-                                repeat="controlType in controlTypes| filter: $select.search">
-                            <span ng-bind-html="controlType| highlight: $select.search"></span>
-                        </ui-select-choices>
-                    </ui-select>
+                <button class="button pull-right button-control" dropdown-toggle="dropdown">
+                    <i class="fa fa-retweet fa-lg"  title="Add Control"></i>
+
+                    <ul class="dropdown-menu  narrow-menu" ng-if="toggleDropdown"
+                        style="min-width: 130px!important;margin-top:3px !important;">
+                        <li  ng-repeat="controlType in controlTypes">
+                            <a ng-click="newItem('Control',controlType)">{{controlType}}</a>
+                        </li>
+                    </ul>
+
                 </button>
 
-                <button class="button pull-right button-output" ng-click="newItem('Output')" title="Add Output">
-                    <i class="fa fa-sign-out fa-lg fa-rotate-90"></i>
+                <button class="button pull-right button-output" ng-click="newItem('Output')" >
+                    <i class="fa fa-sign-out fa-lg fa-rotate-90" title="Add Output"></i>
                 </button>
 
-                <button class="button pull-right button-variable" title="Add Variable"
-                        ng-click="newItem('Data')">
-                    <i class="icon-variable fa-lg"></i>
+                <button class="button pull-right button-variable" ng-click="newItem('Data')">
+                    <i class="icon-variable fa-lg" title="Add Variable"></i>
                 </button>
 
-                <button class="button pull-right button-input" ng-click="newInterface('Input')" title="Add Input">
-                    <i class="fa fa-sign-in fa-lg fa-rotate-90"></i>
+                <button class="button pull-right button-input" ng-click="newInterface('Input')" >
+                    <i class="fa fa-sign-in fa-lg fa-rotate-90" title="Add Input"></i>
                 </button>
 
                 <!--<div id="argument-area">-->

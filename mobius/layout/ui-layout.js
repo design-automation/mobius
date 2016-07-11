@@ -19,7 +19,7 @@ angular.module('ui.layout', [])
 
             Layout.addLayout(ctrl);
 
-            ctrl.animate = $attrs.animate;
+            ctrl.animate = 'false';//$attrs.animate;
 
             ctrl.containers = [];
             ctrl.movingSplitbar = null;
