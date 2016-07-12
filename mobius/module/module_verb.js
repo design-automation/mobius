@@ -51,6 +51,7 @@ var MOBIUS = ( function (mod){
 
 	};
 
+	// TODO: Shift this under obj category
 	mod.urb.getProperty = function( dataObject, propertyName ){
 
 		if(dataObject.is_mObj)
@@ -254,6 +255,8 @@ var MOBIUS = ( function (mod){
 
 	};
 
+
+	// TODO :
 	/**
 	 * Creates a single solid object from a list of surfaces 
 	 * @param { array } listOfSurfaces - List of surface objects which form the solid
@@ -262,6 +265,13 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.sld.bySurfaces = function (listOfSurfaces){
 
+		// check if surfaces are connected
+/*		listOfSurfaces.map( function(srf){
+			if !(srf instanceof mObj_geom_Surface)
+				return "Invalid input"
+		})*/
+
+		return new mObj_geom_Solid(listOfSurfaces);
 	};
 
 	//
@@ -288,9 +298,9 @@ var MOBIUS = ( function (mod){
 			})
 		}
 
-		points = points.map( function(coordinate){
+/*		points = points.map( function(coordinate){
 			return new THREE.Vector2(coordinate[0], coordinate[1]);
-		});
+		});*/
 
 /*		var holes = holes.map( function(hole){
 			return hole.map(function(coordinate){
@@ -298,8 +308,14 @@ var MOBIUS = ( function (mod){
 			});
 		});*/
 
-		var shape = new THREE.Shape( points );
-		
+		//var shape = new THREE.Shape( points );
+		var shape = new THREE.Shape();
+		shape.moveTo(points[0][0], points[0][1]);
+		for(var p=1; p<points.length; p++){
+			shape.lineTo(points[p][0], points[p][1]);
+		}
+		shape.lineTo(points[points.length-1][0], points[points.length-1][1]);
+
 /*		for(hole in holes){
 			
 			punchedHole = new THREE.Path(hole);
@@ -313,6 +329,8 @@ var MOBIUS = ( function (mod){
 		return new mObj_geom_Surface( shape ) ;
 	};
 
+
+	// TODO: Write documentation for this - analyze how scaling etc works in this
 	mod.srf.offset = function( surface, offset, scale ){
 
 		//
@@ -356,7 +374,9 @@ var MOBIUS = ( function (mod){
 		}
 
 		var solution = new ClipperLib.Paths();
-		//subj is an array
+		
+
+		// if surface is a compound -
 		if(surface instanceof mObj_geom_Compound){
 
 			surface = surface.getGeometry()[0];
@@ -387,6 +407,7 @@ var MOBIUS = ( function (mod){
 	};
 
 
+	// TODO: is this useful?
 	/**
 	 * Divides the surface into a grid, based number of divisions in the u and v directions and  
 	 * returns the uv-Parameters for the corresponding grid points
@@ -416,10 +437,7 @@ var MOBIUS = ( function (mod){
 	};
 
 
-/*	mod.srf.uvGridByDistance = function(surface, uDistance, vDistance){
-
-	};*/
-
+	// TODO: is this possible in three.js?
 	/**
 	 * Returns the actual points on the surface, given a corresponding list of uv-parameters or a single [u, v] point
 	 * @param { surface object } surface  - Surface Object for which the uv-Parameters are required
@@ -428,6 +446,10 @@ var MOBIUS = ( function (mod){
 	 * @memberof srf
 	 */
 	mod.srf.getPoints = function(surface, uvList){
+
+		// to check for compound and take in only the first elemetn of the array
+		if(surface instanceof mObj_geom_Compound)
+			surface = surface.getGeometry()[0];
 		
 		var srf = surface.getGeometry();		
 
@@ -445,6 +467,8 @@ var MOBIUS = ( function (mod){
 	};
 
 
+	// TODO: Subdivision won't work - try something else - include topology and edges helper and then get the divided set of surfaces
+	// would this be a compound - or a solid?
 	/**
 	 * Subdivides a surface into a grid of smaller surfaces - a mesh solid
 	 * @param {surface object} surface - Surface Object 
@@ -453,7 +477,11 @@ var MOBIUS = ( function (mod){
 	 * @memberof srf
 	 */
 	mod.srf.divide = function(surface, uvGrid){
-		
+
+		// to check for compound and take in only the first elemetn of the array
+		if(surface instanceof mObj_geom_Compound)
+			surface = surface.getGeometry()[0];		
+
 		var srf = surface.getGeometry(); 
 		
 		var div_surfaces = [];
@@ -499,13 +527,19 @@ var MOBIUS = ( function (mod){
 	 * @returns {curve object}  - NURBS Line Curve
 	 * @memberof crv
 	 */
+	 // TODO: 
 	mod.crv.line = function(frame, startPoint, endPoint){
+
+		// to check for compound and take in only the first elemetn of the array
+		if(surface instanceof mObj_geom_Compound)
+			surface = surface.getGeometry()[0];
 
 		if( startPoint.getGeometry != undefined )
 			startPoint = startPoint.getGeometry();
 		if( endPoint.getGeometry != undefined )
 			endPoint = endPoint.getGeometry();
 
+		// figure this out in three.js - THREE.Line????
 		var crv = new verb.geom.Line(startPoint, endPoint);
 		crv = crv.transform( frame.toLocal() );
 	
@@ -520,7 +554,12 @@ var MOBIUS = ( function (mod){
 	 * @returns {array}  - List of t-parameters at the division points
 	 * @memberof crv
 	 */
+	 //TODO: is this possible? in three.js?
 	mod.crv.divideByNumber = function(curve, numPoints){
+
+		// to check for compound and take in only the first elemetn of the array
+		if(surface instanceof mObj_geom_Compound)
+			surface = surface.getGeometry()[0];
 
 		var tList = [];
 		var incr = 1/(numPoints-1)
@@ -540,6 +579,10 @@ var MOBIUS = ( function (mod){
 	 * @memberof crv
 	 */
 	mod.crv.getPoints = function(curve, tList){
+
+		// to check for compound and take in only the first elemetn of the array
+		if(surface instanceof mObj_geom_Compound)
+			surface = surface.getGeometry()[0];		
 		
 		var curve = curve.getGeometry();		
 
@@ -670,7 +713,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {array} vector
 	 * @memberof vec
 	 */
-	mod.vec.add = function( vector1, vector2){
+	mod.vec.add = function( vector1, vector2 ){
 		return verb.core.Vec.add( vector1, vector2 );
 	};
 
@@ -732,22 +775,37 @@ var MOBIUS = ( function (mod){
 		return verb.core.Vec.normalized( vector );
 	}
 
+
+	// TODO: module? compound??
 	mod.mod = {};
 
+	/*  mObj_geom_Compound should never have a compound inside it - that's just complicated!
+		array_of_elements can consist of various cases - 
+		1. Combination of simple mObj_geoms 
+		2. Combinations with mObj_geom_Compound
+	*/
 	mod.mod.makeModel = function(array_of_elements){
 
 		// convert all nested arrays into one array
 		var new_array = [];
+		console.log("im in make model");
+		// flatten out the array first - this ensure that every
+/*		array_of_elements.flatten();
+
 		array_of_elements = array_of_elements.map( function(elem){
 
-				if(elem instanceof Array){
-					new_array.concat(elem);
-				}
-				else
+				if( elem instanceof mObj_geom_Vertex ||
+						elem instanceof mObj_geom_Curve || 
+							elem instanceof mObj_geom_Surface || 
+								elem instanceof mObj_geom_Solid ){
 					new_array.push(elem);
-		});
+				}
+				else if( elem instanceof mObj_geom_Compound )
+					new_array.concat( elem.getGeometry() );
+		});*/
 
-		return new mObj_geom_Compound( new_array );
+		// mObj_geom_Compound is always a container for other geometric datastructuresf
+		return new mObj_geom_Compound( array_of_elements );
 	};
 
 
@@ -870,7 +928,6 @@ var MOBIUS = ( function (mod){
 		console.log("Getting centre for object");
 
 		var threeGeom = object.extractThreeGeometry();
-		console.log(threeGeom);
 
 		var geometry = threeGeom.geometry;  
 
@@ -888,6 +945,8 @@ var MOBIUS = ( function (mod){
 			
 		geometry.centroid.divideScalar( geometry.vertices.length );
 		console.log("centre", geometry.centroid);
+
+		return geometry.centroid; 
 
 
 		 /*
@@ -1203,6 +1262,7 @@ var MOBIUS = ( function (mod){
 	 * @memberof mtx
 	 */
 	mod.mtx.dot = function( matrix1, matrix2 ){
+
 		return verb.core.Vec.dot(matrix1, matrix2);
 	};
 
@@ -1690,8 +1750,8 @@ var computeTopology = function( mObj ){
 				elemTopo = geom[element].getTopology();
 			}
 
-
-			MOBIUS.obj.addData( geom[element], "belongsTo", [element]);
+			// TODO: !!
+			//MOBIUS.obj.addData( geom[element], "belongsTo", [element]);
 
 			// these will be mObj objects -  final index corresponding to model level needs to be added from MOBIUS side
 			topology.objects.push(geom[element]); 
@@ -1922,8 +1982,10 @@ var computeTopology = function( mObj ){
 	}
 	else if(mObj instanceof mObj_geom_Surface){
 
-		console.log("Surface received. Wires will be computed.");
+		//console.log("Surface received. Wires will be computed.");
+
 		topology.faces = [ MOBIUS.obj.copy(mObj) ];
+
 		//allot this value only if it is previous undefined - actual object is further up in the heirarchy
 		if(mObj.getData() == undefined || mObj.getData()["belongsTo"] == undefined)
 			MOBIUS.obj.addData(topology.faces[0], 'belongsTo', [0]);
@@ -1986,7 +2048,7 @@ var computeTopology = function( mObj ){
 					var vector2 = [ verts[vpt][0] - centrePoint[0], verts[vpt][1] - centrePoint[1], verts[vpt][2] - centrePoint[2]  ];
 					var angle = MOBIUS.vec.angle(vector1, vector2);
 
-					console.log(vector2)
+					//console.log(vector2)
 
 					angles.push(angle);
 				}
@@ -2172,3 +2234,14 @@ var getDSMatrix = function(three_matrix){
 
 var GLOBAL = MOBIUS.frm.byXYAxes( [0,0,0], [1,0,0], [0,1,0] );
 
+Array.prototype.flatten = function() {
+    var ret = [];
+    for(var i = 0; i < this.length; i++) {
+        if(Array.isArray(this[i])) {
+            ret = ret.concat(this[i].flatten());
+        } else {
+            ret.push(this[i]);
+        }
+    }
+    return ret;
+};

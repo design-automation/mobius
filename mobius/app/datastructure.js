@@ -478,6 +478,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
 
 }
 
+// Point Geometry
 var mObj_geom_Vertex = function mObj_geom_Vertex( geometry ){
     var defaultVertexMaterial = new THREE.PointsMaterial( { size: 5, sizeAttenuation: false } );
 
@@ -488,6 +489,8 @@ var mObj_geom_Vertex = function mObj_geom_Vertex( geometry ){
     this.z = geometry[2];
 }
 
+
+// 1D Geometry
 var mObj_geom_Curve = function mObj_geom_Curve( geometry ){
 
     var defaultCurveMaterial = new THREE.LineBasicMaterial({
@@ -500,6 +503,7 @@ var mObj_geom_Curve = function mObj_geom_Curve( geometry ){
 
 }
 
+// 2D Geometry
 var mObj_geom_Surface = function mObj_geom_Surface( geometry ){
 
     var defaultSurfaceMaterial = new THREE.MeshLambertMaterial( {
@@ -513,7 +517,8 @@ var mObj_geom_Surface = function mObj_geom_Surface( geometry ){
     mObj_geom.call( this, geometry, defaultSurfaceMaterial  );
 
 }
- 
+
+// 3D Geometry - faces should be connected -
 var mObj_geom_Solid = function mObj_geom_Solid( geometry ){
 
     var defaultSolidMaterial = new THREE.MeshLambertMaterial( {
@@ -528,6 +533,7 @@ var mObj_geom_Solid = function mObj_geom_Solid( geometry ){
 
 }
 
+// Combination of Geometries - array - objects might or might not be connected; it's a container
 var mObj_geom_Compound = function mObj_geom_Compound( geometry ){
 
     var defaultSolidMaterial = new THREE.MeshLambertMaterial( {
