@@ -57,12 +57,13 @@ mobius.controller('executeCtrl',['$scope','$rootScope','$q','executeService','co
                         $scope.showSpinner = false;
                         $scope.outputs = data;
                         generateCode.clearError();
+                        consoleMsg.runtimeMsg();
                     }, function(msg){
                         document.getElementById('waiting').style.display='none';
                         $scope.showSpinner = false;
-                        console.error(msg);
+                        consoleMsg.runtimeMsg(msg[1]);
                         generateCode.clearError();
-                        generateCode.displayError(msg);
+                        generateCode.displayError(msg[0]);
                     })
                     .then(function() {
                         console.log('display');

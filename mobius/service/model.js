@@ -805,7 +805,6 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                     }
                 }
             }
-            console.log(currentGraph)
         }
     };
 }]);
