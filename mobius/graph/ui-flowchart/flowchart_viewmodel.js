@@ -236,6 +236,14 @@ var flowchart = {};
 			return nodeDataModel.error;
 		};
 
+		this.setError = function() {
+			nodeDataModel.error = true;
+		};
+
+		this.clearError = function() {
+			nodeDataModel.error = false;
+		};
+
 		//
 		// Internal function to add a connector.
 		this._addConnector = function (connectorDataModel, y, connectorsDataModel, connectorsViewModel) {
@@ -629,12 +637,12 @@ var flowchart = {};
 		this.data = chartDataModel;
 
 		// create a view-model for input ports
-		if(this.data.inputPort ){
+		if(this.data.inputPort && this.data.inputPort.outputConnectors.length !== 0){
 			this.inputPort = createInputPortViewModel(this.data.inputPort);
 		}
 
 		// create a view-model for output ports
-		if(this.data.outputPort ){
+		if(this.data.outputPort && this.data.outputPort.inputConnectors.length !== 0){
 			this.outputPort = createOutputPortViewModel(this.data.outputPort);
 		}
 
@@ -675,7 +683,7 @@ var flowchart = {};
 			if(node){
 				if(portConnectorID === undefined){
 					if (!node.inputConnectors || node.inputConnectors.length <= connectorIndex) {
-						throw new Error("Node " + nodeID + " has invalid input connectors.");
+						//throw new Error("Node " + nodeID + " has invalid input connectors.");
 					}else{
 						return node.inputConnectors[connectorIndex];
 					}

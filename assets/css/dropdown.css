@@ -1,5 +1,5 @@
 .dropdown {
-    z-index: 10003;
+    z-index: 9999999 !important;
 }
 
 .dropdown-menu {
@@ -11,7 +11,7 @@
     border-radius: 0 !important;
     box-shadow: none !important;
     margin:0 !important;
-    background-color: #eeeeee !important;
+    background-color: #eaeaea !important;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
 }
@@ -74,7 +74,7 @@
 }
 
 .dropdown-menu > li > a:hover {
-    background-color: white !important;
+    background-color: #fcfcfc !important;
     transition-duration: 0.4s !important;
 }
 

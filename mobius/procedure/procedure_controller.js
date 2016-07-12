@@ -88,13 +88,13 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
             // fixme sub category temp solution
             for(var i = 0; i < props.length; i++){
-                if(typeof MOBIUS[props[i]] != 'function'){
+                if(typeof MOBIUS[props[i]] != 'function' && props[i] !='TOPOLOGY_DEF'){
                     var subProps = Object.getOwnPropertyNames(MOBIUS[props[i]]);
                     for(var j = 0; j < subProps.length; j++){
                         if(typeof MOBIUS[props[i]][subProps[j]] == 'function'){
                             expression.push({category:props[i],
-                                             name:subProps[j]
-                                             //,return:MOBIUS[props[i]][subProps[j]].prototype.return
+                                             name:subProps[j],
+                                             return:MOBIUS[props[i]][subProps[j]].prototype.return
                             });
                         }
                     }
@@ -106,24 +106,24 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         $scope.getMethodList = function(){
             var props = Object.getOwnPropertyNames(MOBIUS);
 
-            var expression = [{category:'msc',methods:['expression']}];
+            var expression = [{category:'msc',methods:[{name:'expression'}]}];
 
             // fixme sub category temp solution
             for(var i = 0; i < props.length; i++){
-                if(typeof MOBIUS[props[i]] != 'function'){
+                if(typeof MOBIUS[props[i]] != 'function' && props[i] !='TOPOLOGY_DEF'){
                     var subProps = Object.getOwnPropertyNames(MOBIUS[props[i]]);
 
                     if(props[i] !== 'msc'){
                         expression.push({category:props[i],methods:[]});
                         for(var j = 0; j < subProps.length; j++){
                             if(typeof MOBIUS[props[i]][subProps[j]] == 'function'){
-                                expression[expression.length-1].methods.push(subProps[j]);
+                                expression[expression.length-1].methods.push({name:subProps[j], return:MOBIUS[props[i]][subProps[j]].prototype.return});
                             }
                         }
                     }else{
                         for(var j = 0; j < subProps.length; j++){
                             if(typeof MOBIUS[props[i]][subProps[j]] == 'function'){
-                                expression[0].methods.push(subProps[j]);
+                                expression[0].methods.push({name:subProps[j]});
                             }
                         }
                     }
@@ -198,11 +198,13 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         $scope.$watch('data',function(){
             updateVersion();
             flattenData();
+            generateCode.generateCode()
         } , true);
 
         $scope.$watch('interface',function(){
             updateVersion();
             flattenData();
+            generateCode.generateCode()
         },true);
 
         function updateVersion(){

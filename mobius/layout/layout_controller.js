@@ -75,7 +75,6 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
         $scope.procedureHeight =  32;
 
         $scope.$on('showProcedure', function(){
-            console.log('show');
             $scope.graphHeight = 32 ;
             $scope.procedureHeight = ($scope.height - 32)*0.7;
         });

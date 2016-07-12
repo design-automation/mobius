@@ -445,6 +445,8 @@ mobius.controller(  'graphCtrl',
                 node.disable();
             }
 
+            generateCode.generateCode();
+
             // when disabled, reset the attribute of 'connected' in dest connector
             for(var i = 0; i <$scope.chartViewModel.connections.length; i++){
                 var sourceNodeId = $scope.chartViewModel.connections[i].data.source.nodeID;

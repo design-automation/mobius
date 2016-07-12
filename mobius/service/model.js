@@ -282,6 +282,9 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
                     if(model.interfaceList[i][j].connected === false){
                         // creating new parameters
+                        if(model.interfaceList[i][j].name === ''){
+                            model.interfaceList[i][j].name = undefined;
+                        }
                         var codeBlock = "    " + "var "
                             + model.interfaceList[i][j].name
                             + " = ";
@@ -412,6 +415,14 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
 
             if(procedure.title == "Data"){
                 if(procedure.type === 'assign'){
+                    if( procedure.dataName === ''){
+                        procedure.dataName = undefined;
+                    }
+
+                    if(procedure.dataValue === ''){
+                        procedure.dataValue = undefined;
+                    }
+
                     // assign value to variable instead of creating new variable
                     codeBlock = intentation + "    "
                         + procedure.dataName
@@ -421,6 +432,13 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                     model.innerCodeList[nodeIndex] += codeBlock;
                 }else{
                     // creating new variable
+                    if( procedure.dataName === '' ){
+                        procedure.dataName = undefined;
+                    }
+
+                    if(procedure.dataValue === ''){
+                        procedure.dataValue = undefined;
+                    }
                     codeBlock = intentation + "    " + "var "
                         + procedure.dataName
                         + " = "
@@ -447,6 +465,13 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
             var codeBlock = '';
 
             if(procedure.title == "Output"){
+                if( procedure.name === ''){
+                    procedure.name = undefined;
+                }
+
+                if(procedure.dataValue === ''){
+                    procedure.dataValue = undefined
+                }
                 codeBlock = intentation + "    " + "var "
                     + procedure.name
                     + " = "
@@ -515,6 +540,13 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
             }
 
             if(procedure.controlType === 'for each'){
+                if(procedure.dataName === ''){
+                    procedure.dataName = undefined
+                }
+
+                if(procedure.forList === ''){
+                    procedure.forList = undefined;
+                }
                 model.innerCodeList[nodeIndex] +=  intentation + '    ' + 'for( var ' +
                     procedure.dataName + ' of '
                     + procedure.forList + '){';
@@ -531,6 +563,9 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
             }
 
             else if (procedure.controlType === 'if else'){
+                if(procedure.nodes[0].ifExpression === ''){
+                    procedure.nodes[0].ifExpression = undefined;
+                }
                 model.innerCodeList[nodeIndex] +=  intentation + '    ' + 'if( ' +
                     procedure.nodes[0].ifExpression + ' ){';
 
@@ -588,7 +623,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
     function clearError(currentGraph){
         for(var j =0; j < currentGraph.nodes.length; j++){
             if(currentGraph.data){
-                currentGraph.nodes[j].data.error = false;
+                currentGraph.nodes[j].clearError();
                 if(currentGraph.nodes[j].data.subGraphModel){
                     clearError(currentGraph.nodes[j].data.subGraphModel.chartDataModel);
                 }
@@ -751,13 +786,11 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                         if(currentGraph.nodes[j].data.name === graphTrace[i].nodeName &&
                             (currentGraph.nodes[j].data.type  === graphTrace[i].typeName) ||
                             currentGraph.nodes[j].data.type + '_' + currentGraph.nodes[j].data.version === graphTrace[i].typeName){
-                            currentGraph.nodes[j].data.error = true;
+                            currentGraph.nodes[j].setError();
                             if(currentGraph.nodes[j].data.subGraphModel){
                                 currentGraph = currentGraph.nodes[j].data.subGraphModel.chartDataModel;
                             }
                             break;
-                        }else{
-                            currentGraph.nodes[j].data.error = false;
                         }
                     }else{
                         if(currentGraph.nodes[j].name === graphTrace[i].nodeName &&
@@ -768,13 +801,11 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                                 currentGraph = currentGraph.nodes[j].subGraphModel.chartDataModel;
                             }
                             break;
-                        }else{
-                            currentGraph.nodes[j].error = false;
                         }
                     }
-
                 }
             }
+            console.log(currentGraph)
         }
     };
 }]);
