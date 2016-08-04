@@ -10,9 +10,6 @@ vidamo.factory('consoleMsg', function () {
         return d.getHours() + ':' + d.getMinutes() + ':'+ d.getSeconds();
     }
 
-    function runtimeMsg(){
-
-    }
 
     return{
         confirmMsg:

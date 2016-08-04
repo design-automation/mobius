@@ -31,8 +31,24 @@
 
         <input ng-if =" node.option.name === 'color picker'"
             data-nodrag
-               ng-model="node.color"
+            ng-model="node.color"
             type="color" />
+
+        <!--<input ng-if =" node.option.name === 'local file'"-->
+               <!--data-nodrag-->
+               <!--onchange="angular.element(this).scope().openFile(this,this.files)"-->
+               <!--type="file" name="files[]"-->
+               <!--style="line-height: normal!important;-->
+                      <!--display: inline-block!important;-->
+                      <!--font-size: 70%"/>-->
+
+        <input ng-if =" node.option.name === 'local file'"
+               type="file"
+               data-nodrag
+               fileread="node.dataValue"
+               style="line-height: normal!important;
+                      display: inline-block!important;
+                      font-size: 70%"/>
 
         <a ng-if =" node.option.name === 'dropdown'"
            data-nodrag

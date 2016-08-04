@@ -45,8 +45,6 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                     }else{
                         newScene();
                     }
-
-
                     },
                 function() {});
 

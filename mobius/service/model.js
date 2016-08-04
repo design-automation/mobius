@@ -291,6 +291,8 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                         if(model.interfaceList[i][j].option.name === 'color picker'){
                             var color = "'" + model.interfaceList[i][j].color + "' ;" ;
                             codeBlock += color.replace('#','0x').replace("'",'').replace("'",'')
+                        }else if(model.interfaceList[i][j].option.name === 'local file'){
+                            codeBlock += model.interfaceList[i][j].dataValue + ";";
                         }
                         else{
                             codeBlock += model.interfaceList[i][j].dataValue + ";";
