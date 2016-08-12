@@ -1,0 +1,2703 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "geoJSON_Loader0",
+            "x": 2049.2222222222226,
+            "y": 2085.8888888888887,
+            "inputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Input",
+                    "name": "filepath",
+                    "connected": false,
+                    "dataValue": "\"assets/data/model2_plots.geojson\"",
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "selected": true
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "id": 17,
+                    "title": "Output",
+                    "selected": false,
+                    "type": "new",
+                    "name": "geoData"
+                }
+            ],
+            "overwrite": true,
+            "type": "geoJSON_Loader",
+            "version": 1470644924776,
+            "disabled": false,
+            "error": false
+        },
+        {
+            "id": 1,
+            "name": "geoJSON_makePolygons0",
+            "x": 2048.9999999999995,
+            "y": 2127.6666666666665,
+            "inputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Input",
+                    "name": "geo_data",
+                    "connected": true,
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "selected": true
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Output",
+                    "type": "new",
+                    "selected": false,
+                    "name": "model"
+                }
+            ],
+            "overwrite": true,
+            "type": "geoJSON_makePolygons",
+            "version": 1470992274043,
+            "disabled": false,
+            "subGraph": false,
+            "error": true
+        },
+        {
+            "id": 2,
+            "name": "plot_to_model0",
+            "x": 2051.5113962619694,
+            "y": 2322.752279580558,
+            "inputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Input",
+                    "name": "plots_model",
+                    "connected": true,
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "selected": false
+                },
+                {
+                    "id": 2,
+                    "title": "Input",
+                    "name": "type_1",
+                    "connected": true,
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "selected": false
+                },
+                {
+                    "id": 3,
+                    "title": "Input",
+                    "name": "type_2",
+                    "connected": true,
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "selected": true
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Output",
+                    "type": "new",
+                    "selected": false,
+                    "name": "buildings"
+                }
+            ],
+            "overwrite": true,
+            "type": "plot_to_model",
+            "version": 1470992238860,
+            "disabled": false,
+            "subGraph": false,
+            "error": false
+        },
+        {
+            "id": 3,
+            "name": "type_10",
+            "x": 2107.165314575329,
+            "y": 2209.1079339256266,
+            "inputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Input",
+                    "name": "plot",
+                    "connected": true,
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "selected": true,
+                    "dataValue": "undefined"
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Output",
+                    "type": "new",
+                    "selected": true,
+                    "name": "building"
+                },
+                {
+                    "id": "999",
+                    "title": "Output",
+                    "name": "FUNC_OUTPUT"
+                }
+            ],
+            "overwrite": true,
+            "type": "type_1",
+            "version": 1470991720813,
+            "disabled": false,
+            "subGraph": true,
+            "subGraphModel": {
+                "javascriptCode": "// To generate code,\n// create nodes & procedures and run!\n",
+                "geomListCode": "var geomList = [];\n",
+                "innerCodeList": [
+                    "//\n// To generate code, create nodes & procedures and run!\n//\n",
+                    "//\n// To generate code, create nodes & procedures and run!\n//\n",
+                    "//\n// To generate code, create nodes & procedures and run!\n//\n",
+                    "//\n// To generate code, create nodes & procedures and run!\n//\n",
+                    "//\n// To generate code, create nodes & procedures and run!\n//\n",
+                    "//\n// To generate code, create nodes & procedures and run!\n//\n"
+                ],
+                "outerCodeList": [
+                    "//\n// To generate code, create nodes & procedures and run!\n//\n",
+                    "//\n// To generate code, create nodes & procedures and run!\n//\n",
+                    "//\n// To generate code, create nodes & procedures and run!\n//\n",
+                    "//\n// To generate code, create nodes & procedures and run!\n//\n",
+                    "//\n// To generate code, create nodes & procedures and run!\n//\n",
+                    "//\n// To generate code, create nodes & procedures and run!\n//\n"
+                ],
+                "dataList": [
+                    [
+                        {
+                            "id": 1,
+                            "title": "Output",
+                            "type": "new",
+                            "selected": false,
+                            "name": "building",
+                            "dataValue": "undefined",
+                            "$$hashKey": "object:8974"
+                        },
+                        {
+                            "id": 19,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "getProperty",
+                            "category": "obj",
+                            "parameters": [
+                                {
+                                    "value": "plot",
+                                    "type": "obj",
+                                    "$$hashKey": "object:9141"
+                                },
+                                {
+                                    "value": "\"floors\"",
+                                    "type": "propertyName",
+                                    "$$hashKey": "object:9142"
+                                }
+                            ],
+                            "result": "floors_from_plot",
+                            "selected": false,
+                            "$$hashKey": "object:8975"
+                        },
+                        {
+                            "id": 17,
+                            "title": "Control",
+                            "nodes": [
+                                {
+                                    "id": 17,
+                                    "title": "Control",
+                                    "controlType": "if",
+                                    "nodes": [
+                                        {
+                                            "id": 18,
+                                            "title": "Data",
+                                            "nodes": [],
+                                            "dataName": "floors",
+                                            "dataValue": "floors_from_plot",
+                                            "selected": false,
+                                            "$$hashKey": "object:9333"
+                                        }
+                                    ],
+                                    "ifExpression": "floors_from_plot != undefined",
+                                    "selected": false,
+                                    "$$hashKey": "object:9153"
+                                },
+                                {
+                                    "id": 17,
+                                    "title": "Control",
+                                    "controlType": "else",
+                                    "nodes": [],
+                                    "selected": false,
+                                    "$$hashKey": "object:9154"
+                                }
+                            ],
+                            "controlType": "if else",
+                            "type": "new",
+                            "selected": false,
+                            "$$hashKey": "object:8976"
+                        },
+                        {
+                            "id": 14,
+                            "title": "Data",
+                            "nodes": [],
+                            "dataName": "tower_height",
+                            "dataValue": "floor_height*floors + 50",
+                            "type": "new",
+                            "selected": false,
+                            "$$hashKey": "object:8977"
+                        },
+                        {
+                            "id": 9,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "offset",
+                            "category": "srf",
+                            "parameters": [
+                                {
+                                    "value": "plot",
+                                    "type": "in_surface",
+                                    "$$hashKey": "object:9178"
+                                },
+                                {
+                                    "value": "-10",
+                                    "type": "offset",
+                                    "$$hashKey": "object:9179"
+                                },
+                                {
+                                    "value": "1",
+                                    "type": "scale",
+                                    "$$hashKey": "object:9180"
+                                }
+                            ],
+                            "result": "tower_base",
+                            "selected": false,
+                            "disabled": false,
+                            "$$hashKey": "object:8978"
+                        },
+                        {
+                            "id": 5,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "byExtrusion",
+                            "category": "sld",
+                            "parameters": [
+                                {
+                                    "value": "GLOBAL",
+                                    "type": "frame",
+                                    "$$hashKey": "object:9197"
+                                },
+                                {
+                                    "value": "tower_base",
+                                    "type": "surface",
+                                    "$$hashKey": "object:9198"
+                                },
+                                {
+                                    "value": "floor_height",
+                                    "type": "zDistance",
+                                    "$$hashKey": "object:9199"
+                                }
+                            ],
+                            "result": "extruded_base",
+                            "selected": false,
+                            "disabled": false,
+                            "$$hashKey": "object:8979"
+                        },
+                        {
+                            "id": 10,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "offset",
+                            "category": "srf",
+                            "parameters": [
+                                {
+                                    "value": "tower_base",
+                                    "type": "in_surface",
+                                    "$$hashKey": "object:9216"
+                                },
+                                {
+                                    "value": "-25",
+                                    "type": "offset",
+                                    "$$hashKey": "object:9217"
+                                },
+                                {
+                                    "value": "1",
+                                    "type": "scale",
+                                    "$$hashKey": "object:9218"
+                                }
+                            ],
+                            "result": "tower_profile",
+                            "selected": false,
+                            "$$hashKey": "object:8980"
+                        },
+                        {
+                            "id": 12,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "byXYAxes",
+                            "category": "frm",
+                            "parameters": [
+                                {
+                                    "value": "[0,0,floor_height]",
+                                    "type": "origin",
+                                    "$$hashKey": "object:9235"
+                                },
+                                {
+                                    "value": "[1,0,0]",
+                                    "type": "xAxis",
+                                    "$$hashKey": "object:9236"
+                                },
+                                {
+                                    "value": "[0,1,0]",
+                                    "type": "yAxis",
+                                    "$$hashKey": "object:9237"
+                                }
+                            ],
+                            "result": "frame",
+                            "selected": false,
+                            "$$hashKey": "object:8981"
+                        },
+                        {
+                            "id": 6,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "byExtrusion",
+                            "category": "sld",
+                            "parameters": [
+                                {
+                                    "value": "frame",
+                                    "type": "frame",
+                                    "$$hashKey": "object:9254"
+                                },
+                                {
+                                    "value": "tower_profile",
+                                    "type": "surface",
+                                    "$$hashKey": "object:9255"
+                                },
+                                {
+                                    "value": "tower_height",
+                                    "type": "zDistance",
+                                    "$$hashKey": "object:9256"
+                                }
+                            ],
+                            "result": "tower",
+                            "selected": false,
+                            "$$hashKey": "object:8982"
+                        },
+                        {
+                            "id": 13,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "addMaterial",
+                            "category": "obj",
+                            "return": false,
+                            "parameters": [
+                                {
+                                    "value": "tower",
+                                    "type": "obj",
+                                    "$$hashKey": "object:9270"
+                                },
+                                {
+                                    "value": "\"MeshBasicMaterial\"",
+                                    "type": "material_type",
+                                    "$$hashKey": "object:9271"
+                                },
+                                {
+                                    "value": "false",
+                                    "type": "wireframe",
+                                    "$$hashKey": "object:9272"
+                                },
+                                {
+                                    "value": "tower_color",
+                                    "type": "color_hex",
+                                    "$$hashKey": "object:9273"
+                                },
+                                {
+                                    "value": "false",
+                                    "type": "transparent",
+                                    "$$hashKey": "object:9274"
+                                }
+                            ],
+                            "result": "",
+                            "selected": false,
+                            "$$hashKey": "object:8983"
+                        },
+                        {
+                            "id": 11,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "makeModel",
+                            "category": "mod",
+                            "parameters": [
+                                {
+                                    "value": "[ extruded_base, tower ]",
+                                    "type": "array_of_elements",
+                                    "$$hashKey": "object:9297"
+                                }
+                            ],
+                            "result": "building",
+                            "selected": false,
+                            "disabled": false,
+                            "$$hashKey": "object:8984"
+                        },
+                        {
+                            "id": 20,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "addData",
+                            "category": "obj",
+                            "parameters": [
+                                {
+                                    "value": "building",
+                                    "type": "obj",
+                                    "$$hashKey": "object:9308"
+                                },
+                                {
+                                    "value": "\"typology\"",
+                                    "type": "dataName",
+                                    "$$hashKey": "object:9309"
+                                },
+                                {
+                                    "value": "1",
+                                    "type": "dataValue",
+                                    "$$hashKey": "object:9310"
+                                }
+                            ],
+                            "result": "_",
+                            "selected": false,
+                            "$$hashKey": "object:8985"
+                        }
+                    ]
+                ],
+                "interfaceList": [
+                    [
+                        {
+                            "id": 1,
+                            "title": "Input",
+                            "name": "tower_color",
+                            "connected": false,
+                            "option": {
+                                "name": "color picker"
+                            },
+                            "color": "#000000",
+                            "selected": false,
+                            "$$hashKey": "object:8957"
+                        },
+                        {
+                            "id": 2,
+                            "title": "Input",
+                            "name": "floors",
+                            "connected": false,
+                            "dataValue": "10",
+                            "option": {
+                                "name": "none"
+                            },
+                            "color": "#000000",
+                            "selected": false,
+                            "$$hashKey": "object:8958"
+                        },
+                        {
+                            "id": 3,
+                            "title": "Input",
+                            "name": "floor_height",
+                            "connected": false,
+                            "dataValue": "3",
+                            "option": {
+                                "name": "none"
+                            },
+                            "color": "#000000",
+                            "selected": true,
+                            "$$hashKey": "object:8959"
+                        },
+                        {
+                            "id": 4,
+                            "title": "Input",
+                            "name": "plot",
+                            "connected": true,
+                            "option": {
+                                "name": "none"
+                            },
+                            "color": "#000000",
+                            "selected": false,
+                            "$$hashKey": "object:8960"
+                        }
+                    ]
+                ],
+                "chartDataModel": {
+                    "nodes": [
+                        {
+                            "id": 0,
+                            "name": "tower0",
+                            "x": 1920.9442102373312,
+                            "y": 2070.6639186844923,
+                            "inputConnectors": [
+                                {
+                                    "id": 1,
+                                    "title": "Input",
+                                    "name": "tower_color",
+                                    "connected": false,
+                                    "option": {
+                                        "name": "color picker"
+                                    },
+                                    "color": "#000000",
+                                    "selected": false
+                                },
+                                {
+                                    "id": 2,
+                                    "title": "Input",
+                                    "name": "floors",
+                                    "connected": false,
+                                    "dataValue": "10",
+                                    "option": {
+                                        "name": "none"
+                                    },
+                                    "color": "#000000",
+                                    "selected": false
+                                },
+                                {
+                                    "id": 3,
+                                    "title": "Input",
+                                    "name": "floor_height",
+                                    "connected": false,
+                                    "dataValue": "3",
+                                    "option": {
+                                        "name": "none"
+                                    },
+                                    "color": "#000000",
+                                    "selected": true
+                                },
+                                {
+                                    "id": 4,
+                                    "title": "Input",
+                                    "name": "plot",
+                                    "connected": true,
+                                    "option": {
+                                        "name": "none"
+                                    },
+                                    "color": "#000000",
+                                    "selected": false
+                                }
+                            ],
+                            "outputConnectors": [
+                                {
+                                    "id": 1,
+                                    "title": "Output",
+                                    "type": "new",
+                                    "selected": false,
+                                    "name": "building",
+                                    "dataValue": "plot"
+                                }
+                            ],
+                            "overwrite": true,
+                            "type": "tower",
+                            "version": 1470991734429,
+                            "disabled": false,
+                            "error": false
+                        }
+                    ],
+                    "connections": [
+                        {
+                            "source": {
+                                "nodeID": 0,
+                                "connectorIndex": 0
+                            },
+                            "dest": {
+                                "nodeID": "outputPort",
+                                "connectorIndex": 0,
+                                "portConnectorID": 1
+                            }
+                        },
+                        {
+                            "source": {
+                                "nodeID": "inputPort",
+                                "connectorIndex": 0,
+                                "portConnectorID": 1
+                            },
+                            "dest": {
+                                "nodeID": 0,
+                                "connectorIndex": 3
+                            }
+                        }
+                    ],
+                    "inputPort": {
+                        "x": 1981.4060267129146,
+                        "y": 2033.459997747096,
+                        "outputConnectors": [
+                            {
+                                "id": 1,
+                                "title": "Output",
+                                "name": "plot",
+                                "connected": true,
+                                "option": {
+                                    "name": "none"
+                                },
+                                "color": "#000000",
+                                "selected": true,
+                                "dataValue": "undefined"
+                            }
+                        ],
+                        "id": "inputPort"
+                    },
+                    "outputPort": {
+                        "x": 1920.2208028941216,
+                        "y": 2118.373147735233,
+                        "inputConnectors": [
+                            {
+                                "id": 1,
+                                "title": "Input",
+                                "type": "new",
+                                "selected": true,
+                                "name": "building"
+                            }
+                        ],
+                        "id": "outputPort"
+                    }
+                }
+            },
+            "error": true,
+            "$$hashKey": "object:8760"
+        },
+        {
+            "id": 4,
+            "name": "type_20",
+            "x": 2191.6447881127265,
+            "y": 2260.492773414628,
+            "inputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Input",
+                    "name": "plot",
+                    "connected": true,
+                    "dataValue": "undefined",
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "selected": false
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Output",
+                    "type": "new",
+                    "selected": true,
+                    "name": "building"
+                },
+                {
+                    "id": "999",
+                    "title": "Output",
+                    "name": "FUNC_OUTPUT"
+                }
+            ],
+            "overwrite": true,
+            "type": "type_2",
+            "version": 1470991739114,
+            "disabled": false,
+            "subGraph": true,
+            "subGraphModel": {
+                "javascriptCode": "// To generate code,\n// create nodes & procedures and run!\n",
+                "geomListCode": "var geomList = [];\n",
+                "innerCodeList": [
+                    "//\n// To generate code, create nodes & procedures and run!\n//\n"
+                ],
+                "outerCodeList": [
+                    "//\n// To generate code, create nodes & procedures and run!\n//\n"
+                ],
+                "dataList": [
+                    [
+                        {
+                            "id": 18,
+                            "title": "Output",
+                            "type": "new",
+                            "selected": false,
+                            "name": "building",
+                            "dataValue": "1",
+                            "$$hashKey": "object:36116"
+                        },
+                        {
+                            "id": 3,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "offset",
+                            "category": "srf",
+                            "parameters": [
+                                {
+                                    "value": "shape",
+                                    "type": "surface",
+                                    "$$hashKey": "object:36374"
+                                },
+                                {
+                                    "value": "-offset",
+                                    "type": "offset",
+                                    "$$hashKey": "object:36375"
+                                },
+                                {
+                                    "value": "1",
+                                    "type": "scale",
+                                    "$$hashKey": "object:36376"
+                                }
+                            ],
+                            "result": "offsetShape",
+                            "selected": false,
+                            "$$hashKey": "object:36117"
+                        },
+                        {
+                            "id": 32,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "getProperty",
+                            "category": "obj",
+                            "parameters": [
+                                {
+                                    "value": "shape",
+                                    "type": "obj",
+                                    "$$hashKey": "object:36393"
+                                },
+                                {
+                                    "value": "\"floors\"",
+                                    "type": "propertyName",
+                                    "$$hashKey": "object:36394"
+                                }
+                            ],
+                            "result": "floors_from_plot",
+                            "selected": false,
+                            "$$hashKey": "object:36118"
+                        },
+                        {
+                            "id": 33,
+                            "title": "Control",
+                            "nodes": [
+                                {
+                                    "id": 33,
+                                    "title": "Control",
+                                    "controlType": "if",
+                                    "nodes": [
+                                        {
+                                            "id": 34,
+                                            "title": "Data",
+                                            "nodes": [],
+                                            "dataName": "floors",
+                                            "dataValue": "floors_from_plot",
+                                            "selected": false,
+                                            "$$hashKey": "object:36641"
+                                        }
+                                    ],
+                                    "ifExpression": "floors_from_plot != undefined",
+                                    "selected": false,
+                                    "$$hashKey": "object:36405"
+                                },
+                                {
+                                    "id": 33,
+                                    "title": "Control",
+                                    "controlType": "else",
+                                    "nodes": [],
+                                    "selected": false,
+                                    "$$hashKey": "object:36406"
+                                }
+                            ],
+                            "controlType": "if else",
+                            "type": "new",
+                            "selected": false,
+                            "$$hashKey": "object:36119"
+                        },
+                        {
+                            "id": 11,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "sequence",
+                            "category": "lst",
+                            "parameters": [
+                                {
+                                    "value": "0",
+                                    "type": "start",
+                                    "$$hashKey": "object:36423"
+                                },
+                                {
+                                    "value": "floors",
+                                    "type": "end",
+                                    "$$hashKey": "object:36424"
+                                },
+                                {
+                                    "value": "1",
+                                    "type": "stepSize",
+                                    "$$hashKey": "object:36425"
+                                }
+                            ],
+                            "result": "seq",
+                            "selected": false,
+                            "$$hashKey": "object:36120"
+                        },
+                        {
+                            "id": 13,
+                            "title": "Data",
+                            "nodes": [],
+                            "dataName": "all_floors",
+                            "dataValue": "[]",
+                            "type": "new",
+                            "selected": false,
+                            "$$hashKey": "object:36121"
+                        },
+                        {
+                            "id": 25,
+                            "title": "Control",
+                            "nodes": [
+                                {
+                                    "id": 25,
+                                    "title": "Control",
+                                    "controlType": "if",
+                                    "nodes": [
+                                        {
+                                            "id": 26,
+                                            "title": "Action",
+                                            "nodes": [],
+                                            "expression": "",
+                                            "method": "shift",
+                                            "category": "trn",
+                                            "parameters": [
+                                                {
+                                                    "value": "offsetShape",
+                                                    "type": "object",
+                                                    "$$hashKey": "object:36719"
+                                                },
+                                                {
+                                                    "value": "GLOBAL",
+                                                    "type": "frame",
+                                                    "$$hashKey": "object:36720"
+                                                },
+                                                {
+                                                    "value": "-offset",
+                                                    "type": "shiftX",
+                                                    "$$hashKey": "object:36721"
+                                                },
+                                                {
+                                                    "value": "-offset",
+                                                    "type": "shiftY",
+                                                    "$$hashKey": "object:36722"
+                                                },
+                                                {
+                                                    "value": "0",
+                                                    "type": "shiftZ",
+                                                    "$$hashKey": "object:36723"
+                                                },
+                                                {
+                                                    "value": "false",
+                                                    "type": "copy",
+                                                    "$$hashKey": "object:36724"
+                                                }
+                                            ],
+                                            "result": "_",
+                                            "selected": false,
+                                            "$$hashKey": "object:36664"
+                                        },
+                                        {
+                                            "id": 24,
+                                            "title": "Action",
+                                            "nodes": [],
+                                            "type": "new",
+                                            "expression": "",
+                                            "method": "segment",
+                                            "category": "srf",
+                                            "parameters": [
+                                                {
+                                                    "value": "offsetShape",
+                                                    "type": "surface",
+                                                    "$$hashKey": "object:36750"
+                                                }
+                                            ],
+                                            "result": "segments",
+                                            "selected": false,
+                                            "$$hashKey": "object:36665"
+                                        },
+                                        {
+                                            "id": 27,
+                                            "title": "Control",
+                                            "nodes": [
+                                                {
+                                                    "id": 28,
+                                                    "title": "Action",
+                                                    "nodes": [],
+                                                    "expression": "",
+                                                    "method": "offset",
+                                                    "category": "srf",
+                                                    "parameters": [
+                                                        {
+                                                            "value": "seg",
+                                                            "type": "in_surface",
+                                                            "$$hashKey": "object:36787"
+                                                        },
+                                                        {
+                                                            "value": "-buildingGap",
+                                                            "type": "offset",
+                                                            "$$hashKey": "object:36788"
+                                                        },
+                                                        {
+                                                            "value": "1",
+                                                            "type": "scale",
+                                                            "$$hashKey": "object:36789"
+                                                        }
+                                                    ],
+                                                    "result": "segOffset",
+                                                    "selected": false,
+                                                    "$$hashKey": "object:36758"
+                                                },
+                                                {
+                                                    "id": 29,
+                                                    "title": "Control",
+                                                    "nodes": [
+                                                        {
+                                                            "id": 29,
+                                                            "title": "Control",
+                                                            "controlType": "if",
+                                                            "nodes": [
+                                                                {
+                                                                    "id": 30,
+                                                                    "title": "Action",
+                                                                    "nodes": [],
+                                                                    "expression": "",
+                                                                    "method": "shift",
+                                                                    "category": "trn",
+                                                                    "parameters": [
+                                                                        {
+                                                                            "value": "segOffset",
+                                                                            "type": "object",
+                                                                            "$$hashKey": "object:36864"
+                                                                        },
+                                                                        {
+                                                                            "value": "GLOBAL",
+                                                                            "type": "frame",
+                                                                            "$$hashKey": "object:36865"
+                                                                        },
+                                                                        {
+                                                                            "value": "-buildingGap",
+                                                                            "type": "shiftX",
+                                                                            "$$hashKey": "object:36866"
+                                                                        },
+                                                                        {
+                                                                            "value": "-buildingGap",
+                                                                            "type": "shiftY",
+                                                                            "$$hashKey": "object:36867"
+                                                                        },
+                                                                        {
+                                                                            "value": "0",
+                                                                            "type": "shiftZ",
+                                                                            "$$hashKey": "object:36868"
+                                                                        },
+                                                                        {
+                                                                            "value": "false",
+                                                                            "type": "copy",
+                                                                            "$$hashKey": "object:36869"
+                                                                        }
+                                                                    ],
+                                                                    "result": "_",
+                                                                    "selected": false,
+                                                                    "$$hashKey": "object:36827"
+                                                                },
+                                                                {
+                                                                    "id": 10,
+                                                                    "title": "Control",
+                                                                    "nodes": [
+                                                                        {
+                                                                            "id": 7,
+                                                                            "title": "Action",
+                                                                            "nodes": [],
+                                                                            "type": "new",
+                                                                            "expression": "",
+                                                                            "method": "byXYAxes",
+                                                                            "category": "frm",
+                                                                            "parameters": [
+                                                                                {
+                                                                                    "value": "[0,0,floor*floor_height]",
+                                                                                    "type": "origin",
+                                                                                    "$$hashKey": "object:36927"
+                                                                                },
+                                                                                {
+                                                                                    "value": "[1,0,0]",
+                                                                                    "type": "xAxis",
+                                                                                    "$$hashKey": "object:36928"
+                                                                                },
+                                                                                {
+                                                                                    "value": "[0,1,0]",
+                                                                                    "type": "yAxis",
+                                                                                    "$$hashKey": "object:36929"
+                                                                                }
+                                                                            ],
+                                                                            "result": "floor_frame",
+                                                                            "selected": false,
+                                                                            "disabled": false,
+                                                                            "$$hashKey": "object:36892"
+                                                                        },
+                                                                        {
+                                                                            "id": 22,
+                                                                            "title": "Action",
+                                                                            "nodes": [],
+                                                                            "expression": "",
+                                                                            "method": "byExtrusion",
+                                                                            "category": "sld",
+                                                                            "parameters": [
+                                                                                {
+                                                                                    "value": "floor_frame",
+                                                                                    "type": "frame",
+                                                                                    "$$hashKey": "object:36946"
+                                                                                },
+                                                                                {
+                                                                                    "value": "segOffset",
+                                                                                    "type": "surface",
+                                                                                    "$$hashKey": "object:36947"
+                                                                                },
+                                                                                {
+                                                                                    "value": "floor_height-0.4",
+                                                                                    "type": "zDistance",
+                                                                                    "$$hashKey": "object:36948"
+                                                                                }
+                                                                            ],
+                                                                            "result": "ex",
+                                                                            "selected": false,
+                                                                            "$$hashKey": "object:36893"
+                                                                        },
+                                                                        {
+                                                                            "id": 16,
+                                                                            "title": "Action",
+                                                                            "nodes": [],
+                                                                            "expression": "all_floors.push(ex)",
+                                                                            "method": "expression",
+                                                                            "category": "msc",
+                                                                            "parameters": [],
+                                                                            "selected": false,
+                                                                            "$$hashKey": "object:36894"
+                                                                        }
+                                                                    ],
+                                                                    "type": "assign",
+                                                                    "controlType": "for each",
+                                                                    "dataName": "floor",
+                                                                    "forList": "seq",
+                                                                    "selected": false,
+                                                                    "$$hashKey": "object:36828"
+                                                                }
+                                                            ],
+                                                            "ifExpression": "segOffset != null",
+                                                            "selected": false,
+                                                            "$$hashKey": "object:36803"
+                                                        },
+                                                        {
+                                                            "id": 29,
+                                                            "title": "Control",
+                                                            "controlType": "else",
+                                                            "nodes": [],
+                                                            "selected": false,
+                                                            "$$hashKey": "object:36804"
+                                                        }
+                                                    ],
+                                                    "controlType": "if else",
+                                                    "selected": false,
+                                                    "$$hashKey": "object:36759"
+                                                }
+                                            ],
+                                            "controlType": "for each",
+                                            "dataName": "seg",
+                                            "forList": "segments",
+                                            "selected": false,
+                                            "$$hashKey": "object:36666"
+                                        }
+                                    ],
+                                    "ifExpression": "offsetShape != null",
+                                    "selected": false,
+                                    "$$hashKey": "object:36446"
+                                },
+                                {
+                                    "id": 25,
+                                    "title": "Control",
+                                    "controlType": "else",
+                                    "nodes": [],
+                                    "selected": false,
+                                    "$$hashKey": "object:36447"
+                                }
+                            ],
+                            "controlType": "if else",
+                            "type": "new",
+                            "selected": false,
+                            "$$hashKey": "object:36122"
+                        },
+                        {
+                            "id": 19,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "getCentre",
+                            "category": "obj",
+                            "parameters": [
+                                {
+                                    "value": "offsetShape",
+                                    "type": "object",
+                                    "$$hashKey": "object:36464"
+                                }
+                            ],
+                            "result": "center",
+                            "selected": false,
+                            "$$hashKey": "object:36123"
+                        },
+                        {
+                            "id": 6,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "byXYAxes",
+                            "category": "frm",
+                            "parameters": [
+                                {
+                                    "value": "[center.x, center.y, floors*floor_height]",
+                                    "type": "origin",
+                                    "$$hashKey": "object:36475"
+                                },
+                                {
+                                    "value": "[1,0,0]",
+                                    "type": "xAxis",
+                                    "$$hashKey": "object:36476"
+                                },
+                                {
+                                    "value": "[0,1,0]",
+                                    "type": "yAxis",
+                                    "$$hashKey": "object:36477"
+                                }
+                            ],
+                            "result": "towerFrame",
+                            "selected": false,
+                            "disabled": false,
+                            "$$hashKey": "object:36124"
+                        },
+                        {
+                            "id": 5,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "polygonByPoints",
+                            "category": "srf",
+                            "parameters": [
+                                {
+                                    "value": "towerFrame",
+                                    "type": "frame",
+                                    "$$hashKey": "object:36494"
+                                },
+                                {
+                                    "value": "[[-25,-25],[25,-25],[25,25],[-25,25]]",
+                                    "type": "points",
+                                    "$$hashKey": "object:36495"
+                                },
+                                {
+                                    "value": "[]",
+                                    "type": "holes",
+                                    "$$hashKey": "object:36496"
+                                }
+                            ],
+                            "result": "tower",
+                            "selected": false,
+                            "$$hashKey": "object:36125"
+                        },
+                        {
+                            "id": 23,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "byExtrusion",
+                            "category": "sld",
+                            "parameters": [
+                                {
+                                    "value": "towerFrame",
+                                    "type": "frame",
+                                    "$$hashKey": "object:36513"
+                                },
+                                {
+                                    "value": "tower",
+                                    "type": "surface",
+                                    "$$hashKey": "object:36514"
+                                },
+                                {
+                                    "value": "10",
+                                    "type": "zDistance",
+                                    "$$hashKey": "object:36515"
+                                }
+                            ],
+                            "result": "exTower",
+                            "selected": false,
+                            "$$hashKey": "object:36126"
+                        },
+                        {
+                            "id": 9,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "addMaterial",
+                            "category": "obj",
+                            "parameters": [
+                                {
+                                    "value": "exTower",
+                                    "type": "obj",
+                                    "$$hashKey": "object:36532"
+                                },
+                                {
+                                    "value": "\"MeshBasicMaterial\"",
+                                    "type": "material_type",
+                                    "$$hashKey": "object:36533"
+                                },
+                                {
+                                    "value": "false",
+                                    "type": "wireframe",
+                                    "$$hashKey": "object:36534"
+                                },
+                                {
+                                    "value": "color",
+                                    "type": "color_hex",
+                                    "$$hashKey": "object:36535"
+                                },
+                                {
+                                    "value": "false",
+                                    "type": "transparent",
+                                    "$$hashKey": "object:36536"
+                                }
+                            ],
+                            "result": "_",
+                            "selected": false,
+                            "disabled": false,
+                            "$$hashKey": "object:36127"
+                        },
+                        {
+                            "id": 2,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "makeModel",
+                            "category": "mod",
+                            "parameters": [
+                                {
+                                    "value": "all_floors",
+                                    "type": "array_of_elements",
+                                    "$$hashKey": "object:36559"
+                                }
+                            ],
+                            "result": "base_floors",
+                            "selected": false,
+                            "$$hashKey": "object:36128"
+                        },
+                        {
+                            "id": 3,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "makeModel",
+                            "category": "mod",
+                            "parameters": [
+                                {
+                                    "value": "[exTower]",
+                                    "type": "array_of_elements",
+                                    "$$hashKey": "object:36570"
+                                }
+                            ],
+                            "result": "output_tower",
+                            "selected": false,
+                            "$$hashKey": "object:36129"
+                        },
+                        {
+                            "id": 21,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "extend",
+                            "category": "lst",
+                            "parameters": [
+                                {
+                                    "value": "all_floors",
+                                    "type": "list",
+                                    "$$hashKey": "object:36581"
+                                },
+                                {
+                                    "value": "[exTower]",
+                                    "type": "extension_list",
+                                    "$$hashKey": "object:36582"
+                                }
+                            ],
+                            "result": "_",
+                            "selected": false,
+                            "$$hashKey": "object:36130"
+                        },
+                        {
+                            "id": 17,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "makeModel",
+                            "category": "mod",
+                            "parameters": [
+                                {
+                                    "value": "[base_floors, output_tower]",
+                                    "type": "array_of_elements",
+                                    "$$hashKey": "object:36596"
+                                }
+                            ],
+                            "result": "building",
+                            "selected": false,
+                            "$$hashKey": "object:36131"
+                        },
+                        {
+                            "id": 35,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "addData",
+                            "category": "obj",
+                            "parameters": [
+                                {
+                                    "value": "building",
+                                    "type": "obj",
+                                    "$$hashKey": "object:36607"
+                                },
+                                {
+                                    "value": "\"typology\"",
+                                    "type": "dataName",
+                                    "$$hashKey": "object:36608"
+                                },
+                                {
+                                    "value": "2",
+                                    "type": "dataValue",
+                                    "$$hashKey": "object:36609"
+                                }
+                            ],
+                            "result": "_",
+                            "selected": true,
+                            "$$hashKey": "object:36132"
+                        }
+                    ]
+                ],
+                "interfaceList": [
+                    [
+                        {
+                            "id": 1,
+                            "title": "Input",
+                            "name": "shape",
+                            "connected": true,
+                            "option": {
+                                "name": "none"
+                            },
+                            "color": "#000000",
+                            "selected": false,
+                            "$$hashKey": "object:36091"
+                        },
+                        {
+                            "id": 2,
+                            "title": "Input",
+                            "name": "color",
+                            "connected": false,
+                            "option": {
+                                "name": "color picker"
+                            },
+                            "color": "#1c0ce7",
+                            "selected": false,
+                            "$$hashKey": "object:36092"
+                        },
+                        {
+                            "id": 3,
+                            "title": "Input",
+                            "name": "floor_height",
+                            "connected": false,
+                            "dataValue": "3",
+                            "option": {
+                                "name": "none"
+                            },
+                            "color": "#000000",
+                            "selected": false,
+                            "$$hashKey": "object:36093"
+                        },
+                        {
+                            "id": 4,
+                            "title": "Input",
+                            "name": "floors",
+                            "connected": false,
+                            "dataValue": "10",
+                            "option": {
+                                "name": "none"
+                            },
+                            "color": "#000000",
+                            "selected": false,
+                            "$$hashKey": "object:36094"
+                        },
+                        {
+                            "id": 5,
+                            "title": "Input",
+                            "name": "offset",
+                            "connected": false,
+                            "dataValue": "6",
+                            "option": {
+                                "name": "none"
+                            },
+                            "color": "#000000",
+                            "selected": false,
+                            "$$hashKey": "object:36095"
+                        },
+                        {
+                            "id": 6,
+                            "title": "Input",
+                            "name": "buildingGap",
+                            "connected": false,
+                            "dataValue": "6",
+                            "option": {
+                                "name": "none"
+                            },
+                            "color": "#000000",
+                            "selected": true,
+                            "$$hashKey": "object:36096"
+                        }
+                    ]
+                ],
+                "chartDataModel": {
+                    "nodes": [
+                        {
+                            "id": 0,
+                            "name": "segment_plot_type0",
+                            "x": 1880.439208984375,
+                            "y": 2034.1092529296875,
+                            "inputConnectors": [
+                                {
+                                    "id": 1,
+                                    "title": "Input",
+                                    "name": "shape",
+                                    "connected": false,
+                                    "option": {
+                                        "name": "none"
+                                    },
+                                    "color": "#000000",
+                                    "selected": false
+                                },
+                                {
+                                    "id": 2,
+                                    "title": "Input",
+                                    "name": "color",
+                                    "connected": false,
+                                    "option": {
+                                        "name": "color picker"
+                                    },
+                                    "color": "#1c0ce7",
+                                    "selected": false
+                                },
+                                {
+                                    "id": 3,
+                                    "title": "Input",
+                                    "name": "floor_height",
+                                    "connected": false,
+                                    "dataValue": "3",
+                                    "option": {
+                                        "name": "none"
+                                    },
+                                    "color": "#000000",
+                                    "selected": false
+                                },
+                                {
+                                    "id": 4,
+                                    "title": "Input",
+                                    "name": "floors",
+                                    "connected": false,
+                                    "dataValue": "10",
+                                    "option": {
+                                        "name": "none"
+                                    },
+                                    "color": "#000000",
+                                    "selected": true
+                                },
+                                {
+                                    "id": 5,
+                                    "title": "Input",
+                                    "name": "offset",
+                                    "connected": false,
+                                    "dataValue": "3",
+                                    "option": {
+                                        "name": "none"
+                                    },
+                                    "color": "#000000",
+                                    "selected": true
+                                },
+                                {
+                                    "id": 6,
+                                    "title": "Input",
+                                    "name": "buildingGap",
+                                    "connected": false,
+                                    "dataValue": "1",
+                                    "option": {
+                                        "name": "none"
+                                    },
+                                    "color": "#000000",
+                                    "selected": false
+                                }
+                            ],
+                            "outputConnectors": [
+                                {
+                                    "id": 18,
+                                    "title": "Output",
+                                    "type": "new",
+                                    "selected": true,
+                                    "name": "building"
+                                }
+                            ],
+                            "overwrite": true,
+                            "type": "segment_plot_type",
+                            "version": 1470991754879,
+                            "disabled": false,
+                            "error": false
+                        }
+                    ],
+                    "connections": [
+                        {
+                            "source": {
+                                "nodeID": "inputPort",
+                                "connectorIndex": 0,
+                                "portConnectorID": 1
+                            },
+                            "dest": {
+                                "nodeID": 0,
+                                "connectorIndex": 0
+                            }
+                        },
+                        {
+                            "source": {
+                                "nodeID": 0,
+                                "connectorIndex": 0
+                            },
+                            "dest": {
+                                "nodeID": "outputPort",
+                                "connectorIndex": 0,
+                                "portConnectorID": 1
+                            }
+                        }
+                    ],
+                    "inputPort": {
+                        "x": 1900,
+                        "y": 1900,
+                        "outputConnectors": [
+                            {
+                                "id": 1,
+                                "title": "Output",
+                                "name": "plot",
+                                "connected": true,
+                                "dataValue": "undefined",
+                                "option": {
+                                    "name": "none"
+                                },
+                                "color": "#000000",
+                                "selected": false
+                            }
+                        ],
+                        "id": "inputPort"
+                    },
+                    "outputPort": {
+                        "x": 1900,
+                        "y": 2300,
+                        "inputConnectors": [
+                            {
+                                "id": 1,
+                                "title": "Input",
+                                "type": "new",
+                                "selected": true,
+                                "name": "building"
+                            }
+                        ],
+                        "id": "outputPort"
+                    }
+                }
+            },
+            "error": true,
+            "$$hashKey": "object:35920"
+        },
+        {
+            "id": 5,
+            "name": "default_plot0",
+            "x": 2245.9350700871923,
+            "y": 2136.357216016052,
+            "inputConnectors": [],
+            "outputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Output",
+                    "type": "new",
+                    "name": "default_plot",
+                    "selected": false
+                }
+            ],
+            "overwrite": true,
+            "type": "default_plot",
+            "version": 1470813292608,
+            "disabled": false,
+            "subGraph": false,
+            "error": false
+        },
+        {
+            "id": 6,
+            "name": "flatten_plots0",
+            "x": 2049.8505859375,
+            "y": 2372.2109374999995,
+            "inputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Input",
+                    "name": "all_buildings",
+                    "connected": true,
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "selected": true
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Output",
+                    "type": "new",
+                    "selected": true,
+                    "name": "final_plots"
+                }
+            ],
+            "overwrite": true,
+            "type": "flatten_plots",
+            "version": 1470991459348,
+            "disabled": false,
+            "subGraph": false
+        }
+    ],
+    "connections": [
+        {
+            "source": {
+                "nodeID": 0,
+                "connectorIndex": 0
+            },
+            "dest": {
+                "nodeID": 1,
+                "connectorIndex": 0
+            }
+        },
+        {
+            "source": {
+                "nodeID": 1,
+                "connectorIndex": 0
+            },
+            "dest": {
+                "nodeID": 2,
+                "connectorIndex": 0
+            }
+        },
+        {
+            "source": {
+                "nodeID": 3,
+                "connectorIndex": 1
+            },
+            "dest": {
+                "nodeID": 2,
+                "connectorIndex": 1
+            }
+        },
+        {
+            "source": {
+                "nodeID": 4,
+                "connectorIndex": 1
+            },
+            "dest": {
+                "nodeID": 2,
+                "connectorIndex": 2
+            }
+        },
+        {
+            "source": {
+                "nodeID": 5,
+                "connectorIndex": 0
+            },
+            "dest": {
+                "nodeID": 3,
+                "connectorIndex": 0
+            }
+        },
+        {
+            "source": {
+                "nodeID": 5,
+                "connectorIndex": 0
+            },
+            "dest": {
+                "nodeID": 4,
+                "connectorIndex": 0
+            }
+        },
+        {
+            "source": {
+                "nodeID": 2,
+                "connectorIndex": 0
+            },
+            "dest": {
+                "nodeID": 6,
+                "connectorIndex": 0
+            }
+        }
+    ]
+}
+
+//procedure json
+[
+    [
+        {
+            "id": 17,
+            "title": "Output",
+            "selected": false,
+            "type": "new",
+            "name": "geoData"
+        },
+        {
+            "id": 18,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "loadGeoJSON",
+            "category": "urb",
+            "parameters": [
+                {
+                    "value": "filepath",
+                    "type": "filepath"
+                }
+            ],
+            "result": "geoData",
+            "selected": true
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Output",
+            "type": "new",
+            "selected": false,
+            "name": "model",
+            "$$hashKey": "object:4187"
+        },
+        {
+            "id": 3,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "allPolygons",
+            "dataValue": "[]",
+            "type": "new",
+            "selected": false,
+            "$$hashKey": "object:4188"
+        },
+        {
+            "id": 5,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "getProperty",
+            "category": "obj",
+            "parameters": [
+                {
+                    "value": "geo_data",
+                    "type": "obj",
+                    "$$hashKey": "object:4282"
+                },
+                {
+                    "value": "\"features\"",
+                    "type": "propertyName",
+                    "$$hashKey": "object:4283"
+                }
+            ],
+            "result": "features",
+            "selected": false,
+            "$$hashKey": "object:4189"
+        },
+        {
+            "id": 6,
+            "title": "Control",
+            "nodes": [
+                {
+                    "id": 8,
+                    "title": "Action",
+                    "nodes": [],
+                    "expression": "",
+                    "method": "getProperty",
+                    "category": "obj",
+                    "parameters": [
+                        {
+                            "value": "feature",
+                            "type": "obj",
+                            "$$hashKey": "object:4519"
+                        },
+                        {
+                            "value": "\"geometry\"",
+                            "type": "propertyName",
+                            "$$hashKey": "object:4520"
+                        }
+                    ],
+                    "result": "featureGeometry",
+                    "selected": false,
+                    "$$hashKey": "object:4294"
+                },
+                {
+                    "id": 9,
+                    "title": "Action",
+                    "nodes": [],
+                    "expression": "",
+                    "method": "getProperty",
+                    "category": "obj",
+                    "parameters": [
+                        {
+                            "value": "featureGeometry",
+                            "type": "obj",
+                            "$$hashKey": "object:4534"
+                        },
+                        {
+                            "value": "\"coordinates\"",
+                            "type": "propertyName",
+                            "$$hashKey": "object:4535"
+                        }
+                    ],
+                    "result": "featureCoordinates",
+                    "selected": false,
+                    "$$hashKey": "object:4295"
+                },
+                {
+                    "id": 12,
+                    "title": "Data",
+                    "nodes": [],
+                    "dataName": "coordinates",
+                    "dataValue": "featureCoordinates[0]",
+                    "selected": false,
+                    "$$hashKey": "object:4296"
+                },
+                {
+                    "id": 11,
+                    "title": "Data",
+                    "nodes": [],
+                    "dataName": "points",
+                    "dataValue": "[ ]",
+                    "selected": false,
+                    "$$hashKey": "object:4297"
+                },
+                {
+                    "id": 16,
+                    "title": "Control",
+                    "nodes": [
+                        {
+                            "id": 17,
+                            "title": "Data",
+                            "nodes": [],
+                            "dataName": "x",
+                            "dataValue": "coordinate[0] - 15000",
+                            "selected": false,
+                            "$$hashKey": "object:4560"
+                        },
+                        {
+                            "id": 18,
+                            "title": "Data",
+                            "nodes": [],
+                            "dataName": "y",
+                            "dataValue": "coordinate[1] - 34000",
+                            "selected": false,
+                            "$$hashKey": "object:4561"
+                        },
+                        {
+                            "id": 19,
+                            "title": "Action",
+                            "nodes": [],
+                            "expression": "",
+                            "method": "append",
+                            "category": "lst",
+                            "return": false,
+                            "parameters": [
+                                {
+                                    "value": "points",
+                                    "type": "list",
+                                    "$$hashKey": "object:4880"
+                                },
+                                {
+                                    "value": "[x,  y]",
+                                    "type": "itemOrList",
+                                    "$$hashKey": "object:4881"
+                                }
+                            ],
+                            "result": "",
+                            "selected": false,
+                            "$$hashKey": "object:4562"
+                        }
+                    ],
+                    "controlType": "for each",
+                    "dataName": "coordinate",
+                    "forList": "coordinates",
+                    "selected": false,
+                    "$$hashKey": "object:4298"
+                },
+                {
+                    "id": 7,
+                    "title": "Action",
+                    "nodes": [],
+                    "type": "new",
+                    "expression": "",
+                    "method": "polygonByPoints",
+                    "category": "srf",
+                    "parameters": [
+                        {
+                            "value": "GLOBAL",
+                            "type": "frame",
+                            "$$hashKey": "object:4582"
+                        },
+                        {
+                            "value": "points",
+                            "type": "points",
+                            "$$hashKey": "object:4583"
+                        },
+                        {
+                            "value": "[]",
+                            "type": "holes",
+                            "$$hashKey": "object:4584"
+                        }
+                    ],
+                    "result": "poly",
+                    "selected": false,
+                    "$$hashKey": "object:4299"
+                },
+                {
+                    "id": 13,
+                    "title": "Control",
+                    "nodes": [
+                        {
+                            "id": 13,
+                            "title": "Control",
+                            "controlType": "if",
+                            "nodes": [
+                                {
+                                    "id": 9,
+                                    "title": "Action",
+                                    "nodes": [],
+                                    "type": "new",
+                                    "expression": "",
+                                    "method": "getProperty",
+                                    "category": "obj",
+                                    "parameters": [
+                                        {
+                                            "value": "feature",
+                                            "type": "obj",
+                                            "$$hashKey": "object:4935"
+                                        },
+                                        {
+                                            "value": "\"properties\"",
+                                            "type": "propertyName",
+                                            "$$hashKey": "object:4936"
+                                        }
+                                    ],
+                                    "result": "propertySet",
+                                    "selected": false,
+                                    "$$hashKey": "object:4892"
+                                },
+                                {
+                                    "id": 14,
+                                    "title": "Action",
+                                    "nodes": [],
+                                    "expression": "",
+                                    "method": "addPropertySet",
+                                    "category": "obj",
+                                    "return": false,
+                                    "parameters": [
+                                        {
+                                            "value": "poly",
+                                            "type": "obj",
+                                            "$$hashKey": "object:4947"
+                                        },
+                                        {
+                                            "value": "propertySet",
+                                            "type": "dataValue",
+                                            "$$hashKey": "object:4948"
+                                        }
+                                    ],
+                                    "result": "",
+                                    "selected": false,
+                                    "$$hashKey": "object:4893"
+                                },
+                                {
+                                    "id": 15,
+                                    "title": "Action",
+                                    "nodes": [],
+                                    "expression": "",
+                                    "method": "append",
+                                    "category": "lst",
+                                    "return": false,
+                                    "parameters": [
+                                        {
+                                            "value": "allPolygons",
+                                            "type": "list",
+                                            "$$hashKey": "object:4959"
+                                        },
+                                        {
+                                            "value": "poly",
+                                            "type": "itemOrList",
+                                            "$$hashKey": "object:4960"
+                                        }
+                                    ],
+                                    "result": "",
+                                    "selected": false,
+                                    "$$hashKey": "object:4894"
+                                }
+                            ],
+                            "ifExpression": "poly != undefined",
+                            "selected": false,
+                            "$$hashKey": "object:4598"
+                        },
+                        {
+                            "id": 13,
+                            "title": "Control",
+                            "controlType": "else",
+                            "nodes": [],
+                            "selected": false,
+                            "$$hashKey": "object:4599"
+                        }
+                    ],
+                    "controlType": "if else",
+                    "selected": false,
+                    "$$hashKey": "object:4300"
+                }
+            ],
+            "type": "assign",
+            "controlType": "for each",
+            "dataName": "feature",
+            "forList": "features",
+            "selected": false,
+            "$$hashKey": "object:4190"
+        },
+        {
+            "id": 2,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "makeModel",
+            "category": "mod",
+            "parameters": [
+                {
+                    "value": "allPolygons",
+                    "type": "array_of_elements",
+                    "$$hashKey": "object:4324"
+                }
+            ],
+            "result": "model",
+            "selected": false,
+            "$$hashKey": "object:4191"
+        },
+        {
+            "id": 20,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "addData",
+            "category": "obj",
+            "parameters": [
+                {
+                    "value": "model",
+                    "type": "obj",
+                    "$$hashKey": "object:47641"
+                },
+                {
+                    "value": "\"Description\"",
+                    "type": "dataName",
+                    "$$hashKey": "object:47642"
+                },
+                {
+                    "value": "\"This model contains all the plots.\"",
+                    "type": "dataValue",
+                    "$$hashKey": "object:47643"
+                }
+            ],
+            "result": "_",
+            "$$hashKey": "object:47626",
+            "selected": true
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Output",
+            "type": "new",
+            "selected": false,
+            "name": "buildings",
+            "$$hashKey": "object:1375"
+        },
+        {
+            "id": 4,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "all_buildings",
+            "dataValue": "[]",
+            "type": "new",
+            "selected": false,
+            "$$hashKey": "object:1376"
+        },
+        {
+            "id": 3,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "unpackModel",
+            "category": "mod",
+            "parameters": [
+                {
+                    "value": "plots_model",
+                    "type": "model",
+                    "$$hashKey": "object:1453"
+                }
+            ],
+            "result": "all_plots",
+            "selected": false,
+            "$$hashKey": "object:1377"
+        },
+        {
+            "id": 9,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "count",
+            "dataValue": "0",
+            "type": "new",
+            "selected": false,
+            "$$hashKey": "object:1378"
+        },
+        {
+            "id": 5,
+            "title": "Control",
+            "nodes": [
+                {
+                    "id": 10,
+                    "title": "Data",
+                    "nodes": [],
+                    "dataName": "count",
+                    "dataValue": "count+1",
+                    "type": "assign",
+                    "selected": false,
+                    "$$hashKey": "object:1468"
+                },
+                {
+                    "id": 13,
+                    "title": "Action",
+                    "nodes": [],
+                    "expression": "",
+                    "method": "getProperty",
+                    "category": "obj",
+                    "parameters": [
+                        {
+                            "value": "plot",
+                            "type": "obj",
+                            "$$hashKey": "object:1527"
+                        },
+                        {
+                            "value": "\"floors\"",
+                            "type": "propertyName",
+                            "$$hashKey": "object:1528"
+                        }
+                    ],
+                    "result": "floors",
+                    "selected": false,
+                    "$$hashKey": "object:1469"
+                },
+                {
+                    "id": 14,
+                    "title": "Action",
+                    "nodes": [],
+                    "expression": "",
+                    "method": "getProperty",
+                    "category": "obj",
+                    "parameters": [
+                        {
+                            "value": "plot",
+                            "type": "obj",
+                            "$$hashKey": "object:23459"
+                        },
+                        {
+                            "value": "\"coverage\"",
+                            "type": "propertyName",
+                            "$$hashKey": "object:23460"
+                        }
+                    ],
+                    "result": "coverage",
+                    "selected": false,
+                    "$$hashKey": "object:23446"
+                },
+                {
+                    "id": 15,
+                    "title": "Action",
+                    "nodes": [],
+                    "expression": "",
+                    "method": "getProperty",
+                    "category": "obj",
+                    "parameters": [
+                        {
+                            "value": "plot",
+                            "type": "obj",
+                            "$$hashKey": "object:30755"
+                        },
+                        {
+                            "value": "\"plot_id\"",
+                            "type": "propertyName",
+                            "$$hashKey": "object:30756"
+                        }
+                    ],
+                    "result": "plot_id",
+                    "selected": false,
+                    "$$hashKey": "object:30742"
+                },
+                {
+                    "id": 15,
+                    "title": "Action",
+                    "nodes": [],
+                    "expression": "",
+                    "method": "getProperty",
+                    "category": "obj",
+                    "parameters": [
+                        {
+                            "value": "plot",
+                            "type": "obj",
+                            "$$hashKey": "object:30734"
+                        },
+                        {
+                            "value": "\"parcel_id\"",
+                            "type": "propertyName",
+                            "$$hashKey": "object:30735"
+                        }
+                    ],
+                    "result": "parcel_id",
+                    "selected": false,
+                    "$$hashKey": "object:30721"
+                },
+                {
+                    "id": 11,
+                    "title": "Control",
+                    "nodes": [
+                        {
+                            "id": 11,
+                            "title": "Control",
+                            "controlType": "if",
+                            "nodes": [
+                                {
+                                    "id": 7,
+                                    "title": "Data",
+                                    "nodes": [],
+                                    "dataName": "building",
+                                    "dataValue": "type_1(plot).building",
+                                    "selected": false,
+                                    "$$hashKey": "object:1575"
+                                }
+                            ],
+                            "ifExpression": "plot_id % 2 == 0",
+                            "selected": false,
+                            "$$hashKey": "object:1539"
+                        },
+                        {
+                            "id": 11,
+                            "title": "Control",
+                            "controlType": "else",
+                            "nodes": [
+                                {
+                                    "id": 12,
+                                    "title": "Data",
+                                    "nodes": [],
+                                    "dataName": "building",
+                                    "dataValue": "type_2(plot).building",
+                                    "selected": false,
+                                    "$$hashKey": "object:1588"
+                                }
+                            ],
+                            "selected": false,
+                            "$$hashKey": "object:1540"
+                        }
+                    ],
+                    "controlType": "if else",
+                    "selected": false,
+                    "$$hashKey": "object:1470"
+                },
+                {
+                    "id": 8,
+                    "title": "Action",
+                    "nodes": [],
+                    "expression": "",
+                    "method": "append",
+                    "category": "lst",
+                    "return": false,
+                    "parameters": [
+                        {
+                            "value": "all_buildings",
+                            "type": "list",
+                            "$$hashKey": "object:1554"
+                        },
+                        {
+                            "value": "building",
+                            "type": "itemOrList",
+                            "$$hashKey": "object:1555"
+                        }
+                    ],
+                    "result": "",
+                    "selected": false,
+                    "$$hashKey": "object:1471"
+                },
+                {
+                    "id": 15,
+                    "title": "Action",
+                    "nodes": [],
+                    "expression": "",
+                    "method": "addData",
+                    "category": "obj",
+                    "parameters": [
+                        {
+                            "value": "building",
+                            "type": "obj",
+                            "$$hashKey": "object:24356"
+                        },
+                        {
+                            "value": "\"plot_id\"",
+                            "type": "dataName",
+                            "$$hashKey": "object:24357"
+                        },
+                        {
+                            "value": "plot_id",
+                            "type": "dataValue",
+                            "$$hashKey": "object:24358"
+                        }
+                    ],
+                    "result": "_",
+                    "$$hashKey": "object:24343",
+                    "selected": false
+                },
+                {
+                    "id": 16,
+                    "title": "Action",
+                    "nodes": [],
+                    "expression": "",
+                    "method": "addData",
+                    "category": "obj",
+                    "parameters": [
+                        {
+                            "value": "building",
+                            "type": "obj",
+                            "$$hashKey": "object:30796"
+                        },
+                        {
+                            "value": "\"parcel_id\"",
+                            "type": "dataName",
+                            "$$hashKey": "object:30797"
+                        },
+                        {
+                            "value": "parcel_id",
+                            "type": "dataValue",
+                            "$$hashKey": "object:30798"
+                        }
+                    ],
+                    "result": "_",
+                    "selected": false,
+                    "$$hashKey": "object:30783"
+                }
+            ],
+            "type": "assign",
+            "controlType": "for each",
+            "dataName": "plot",
+            "forList": "all_plots",
+            "selected": false,
+            "$$hashKey": "object:1379"
+        },
+        {
+            "id": 2,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "makeModel",
+            "category": "mod",
+            "parameters": [
+                {
+                    "value": "all_buildings",
+                    "type": "array_of_elements",
+                    "$$hashKey": "object:1492"
+                }
+            ],
+            "result": "buildings",
+            "selected": false,
+            "$$hashKey": "object:1380"
+        },
+        {
+            "id": 17,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "addData",
+            "category": "obj",
+            "parameters": [
+                {
+                    "value": "buildings",
+                    "type": "obj",
+                    "$$hashKey": "object:49068"
+                },
+                {
+                    "value": "\"Description\"",
+                    "type": "dataName",
+                    "$$hashKey": "object:49069"
+                },
+                {
+                    "value": "\"This model contains all the buildings\"",
+                    "type": "dataValue",
+                    "$$hashKey": "object:49070"
+                }
+            ],
+            "result": "_",
+            "$$hashKey": "object:49055",
+            "selected": true
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Output",
+            "type": "new",
+            "selected": true,
+            "name": "building",
+            "$$hashKey": "object:7366"
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Output",
+            "type": "new",
+            "selected": true,
+            "name": "building",
+            "$$hashKey": "object:12107"
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Output",
+            "type": "new",
+            "name": "default_plot",
+            "selected": false
+        },
+        {
+            "id": 2,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "polygonByPoints",
+            "category": "srf",
+            "parameters": [
+                {
+                    "value": "GLOBAL",
+                    "type": "frame"
+                },
+                {
+                    "value": "[ [0,0] , [100, 0], [100, 100], [ 0, 100 ] ]",
+                    "type": "points"
+                },
+                {
+                    "value": "[]",
+                    "type": "holes"
+                }
+            ],
+            "result": "default_plot",
+            "selected": false
+        },
+        {
+            "id": 3,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "addData",
+            "category": "obj",
+            "parameters": [
+                {
+                    "value": "default_plot",
+                    "type": "obj"
+                },
+                {
+                    "value": "\"floors\"",
+                    "type": "dataName"
+                },
+                {
+                    "value": "10",
+                    "type": "dataValue"
+                }
+            ],
+            "result": "_",
+            "selected": true
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Output",
+            "type": "new",
+            "selected": true,
+            "name": "final_plots",
+            "$$hashKey": "object:14132"
+        }
+    ]
+]
+
+//interface json
+[
+    [
+        {
+            "id": 1,
+            "title": "Input",
+            "name": "filepath",
+            "connected": false,
+            "dataValue": "\"assets/data/model2_plots.geojson\"",
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "selected": true
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Input",
+            "name": "geo_data",
+            "connected": true,
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "selected": true,
+            "$$hashKey": "object:4184"
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Input",
+            "name": "plots_model",
+            "connected": true,
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "selected": true,
+            "$$hashKey": "object:1363"
+        },
+        {
+            "id": 2,
+            "title": "Input",
+            "name": "type_1",
+            "connected": true,
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "selected": false,
+            "$$hashKey": "object:1364"
+        },
+        {
+            "id": 3,
+            "title": "Input",
+            "name": "type_2",
+            "connected": true,
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "selected": false,
+            "$$hashKey": "object:1365"
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Input",
+            "name": "plot",
+            "connected": true,
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "selected": true,
+            "dataValue": "undefined",
+            "$$hashKey": "object:7363"
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Input",
+            "name": "plot",
+            "connected": true,
+            "dataValue": "undefined",
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "selected": false,
+            "$$hashKey": "object:12104"
+        }
+    ],
+    [],
+    [
+        {
+            "id": 1,
+            "title": "Input",
+            "name": "all_buildings",
+            "connected": true,
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "selected": true,
+            "$$hashKey": "object:14129"
+        }
+    ]
+]

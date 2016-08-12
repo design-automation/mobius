@@ -44,7 +44,6 @@ var MOBIUS = ( function (mod){
 		request.send(null);
 
 		if (request.status === 200) {
-		console.log(request.responseText);
 		   var data = JSON.parse(request.responseText);
 		   return new mObj_data( 'geojson', data);
 		}
@@ -235,7 +234,7 @@ var MOBIUS = ( function (mod){
 
 			shape = convertShapeGeometryToShape(shape)
 		}
-		console.log("Processed shape : ", shape);
+
 		var extrusionSettings = {
 			amount: zDistance, 
 			size: 1, height: 1, curveSegments: 3,
@@ -244,7 +243,7 @@ var MOBIUS = ( function (mod){
 		};
 
 		var exGeom = new THREE.ExtrudeGeometry( shape, extrusionSettings );
-		console.log("Processed extrudeGeom : ", exGeom);
+		//console.log("Processed extrudeGeom : ", exGeom);
 
 		exGeom.boundingBox = new THREE.Box3();			
 		exGeom.boundingSphere = new THREE.Sphere();
@@ -255,7 +254,7 @@ var MOBIUS = ( function (mod){
 
 
 		exGeom.applyMatrix( getThreeMatrix(frame.toLocal()) );
-		console.log("Processed extrudeGeom after frame conversion : ", exGeom);
+		//console.log("Processed extrudeGeom after frame conversion : ", exGeom);
 
 
 		return new mObj_geom_Solid( exGeom );
@@ -397,7 +396,7 @@ var MOBIUS = ( function (mod){
 		}
 
 		if(surface instanceof THREE.Geometry){
-			console.log("Geometry / ShapeGeometry in offset function; ");
+			//console.log("Geometry / ShapeGeometry in offset function; ");
 			surface = convertShapeGeometryToShape(surface);
 		}
 
@@ -406,7 +405,7 @@ var MOBIUS = ( function (mod){
 			return; 
 		}
 		else{
-			console.log("Shape being processed for offset");
+			//console.log("Shape being processed for offset");
 		}
 
 		var subj = convertShapeToPath( surface ); 
@@ -423,8 +422,8 @@ var MOBIUS = ( function (mod){
 		ClipperLib.JS.ScaleDownPaths(solution, scale); 
 
 		if(solution.length == 0){
-			console.log("No solution found; Item cannot be offseted");
-			return null;
+			console.log("No solution found; Item cannot be offseted. Returning original shape.");
+			return in_surface;
 		}
 		else{
 			
@@ -866,26 +865,16 @@ var MOBIUS = ( function (mod){
 	*/
 	mod.mod.makeModel = function(array_of_elements){
 
-		// convert all nested arrays into one array
-		var new_array = [];
-		console.log("im in make model");
-		// flatten out the array first - this ensure that every
-/*		array_of_elements.flatten();
-
-		array_of_elements = array_of_elements.map( function(elem){
-
-				if( elem instanceof mObj_geom_Vertex ||
-						elem instanceof mObj_geom_Curve || 
-							elem instanceof mObj_geom_Surface || 
-								elem instanceof mObj_geom_Solid ){
-					new_array.push(elem);
-				}
-				else if( elem instanceof mObj_geom_Compound )
-					new_array.concat( elem.getGeometry() );
-		});*/
-
 		// mObj_geom_Compound is always a container for other geometric datastructuresf
 		return new mObj_geom_Compound( array_of_elements );
+	};
+
+	mod.mod.unpackModel = function(model){
+
+		if( model instanceof mObj_geom_Compound )
+			return model.getGeometry();
+		else
+			console.err("Non-model passed to unpackModel function");
 	};
 
 
@@ -906,7 +895,7 @@ var MOBIUS = ( function (mod){
 	mod.obj.copy = function( object ){
 
 		if( object.getGeometry == undefined ){
-			console.log("Module: Non-Mobius passed to copy function");
+			//console.log("Module: getGeometry is not defined for the object passed to Mobius Copy Function", object);
 			return object;
 		}
 
@@ -1001,9 +990,62 @@ var MOBIUS = ( function (mod){
 			new_data[dataName] = dataValue;
 			obj.setData( new_data );
 		}
+
 	};
 
-	mod.obj.addData.prototype.return = false;
+	/*
+	 *	Add Data Object to the Mobius Object
+	 *  Data Value is a Javascript object
+	 */
+	mod.obj.addPropertySet = function(obj, dataValue){
+
+		// decide on topology heirarchy also - if edge gets a property, do the vertices also get the same property?
+		if(obj.constructor === Array){
+			for(var i=0; i<obj.length; i++){
+				
+				// recursion
+				MOBIUS.obj.addPropertySet(obj[i], dataValue);
+			}
+		} else{
+			
+			var new_data = obj.getData();
+
+			if(new_data == undefined)
+				new_data = {};
+
+			for (var propName in dataValue) {
+			  
+				if (dataValue.hasOwnProperty(propName)) {
+				    	new_data[propName] = dataValue[propName];
+						obj.setData( new_data );  //TODO: Check if new_data might be a reference; This is not required if it is.
+				}
+			
+			}
+
+
+		}
+
+	};
+
+	mod.obj.addPropertySet.prototype.return = false;
+
+
+	/*
+	 *	Add Data Object to the Mobius Object
+	 *  Data Value is a Javascript object
+	 */
+	mod.obj.getProperty = function(obj, propertyName){
+
+
+		if(obj.is_mObj){
+			return obj.getData()[propertyName];
+		}
+		else{
+			if(obj[propertyName] != undefined)
+				return obj[propertyName];
+		}
+	};
+
 
 	/**
 	 * Returns the centre of a NURBS Curve, NURBS Surface or Solid Geometry
@@ -1110,7 +1152,6 @@ var MOBIUS = ( function (mod){
 		object.setGeometry( geom );   // geom is a THREE.Geometry / THREE.ShapeGeometry
 		object.setTopology(undefined);
 
-		console.log("new object", object.getGeometry());
 		return object;
 	
 	};
@@ -1275,7 +1316,7 @@ var MOBIUS = ( function (mod){
 	    geom.applyMatrix( getThreeMatrix(trnMat ) );
 		geom.applyMatrix( getThreeMatrix(frame.toLocal()) );
 		
-		console.log(object);
+		//console.log(object);
 		return object;
 		
 	};
@@ -1803,12 +1844,12 @@ var computeTopology = function( mObj ){
 	topology.edges = [];
 	topology.vertices = [];
 	topology.points = [];
-
-	/* Compounds are collections of objects 
-	   geom - array
-	   Usually used for grouping all the parts of the final model
-	   Upper most level in the data-table - will have only one row
-	*/
+ 
+	/*  Compounds are collections of objects 
+	 *  geom - array
+	 *  Usually used for grouping all the parts of the final model
+	 *  Upper most level in the data-table - will have only one row
+	 */
 	if(mObj instanceof mObj_geom_Compound){
 		
 		for( var element=0; element < geom.length; element++ ){
@@ -1818,14 +1859,18 @@ var computeTopology = function( mObj ){
 			   If yes, proceed. 
 			   If no, compute Topology of that element
 			*/
-			if(geom[element].getTopology() == undefined){
-				elemTopo = computeTopology(geom[element]);
+/*			if(geom[element].getTopology() == undefined){
+				
+				// TRIAL: compute topology only if they are not complicated 
+				if (geom[element] instanceof mObj_geom_Surface)
+					elemTopo = computeTopology(geom[element]);
+				else 
+					elemTopo =  MOBIUS.TOPOLOGY_DEF;
 			}
 			else{
-				console.log("Topology already computed")
 				elemTopo = geom[element].getTopology();
 			}
-
+*/
 			/* Each node can have different outputs
 			 * Each output has only one compound object 
 			 * This compound object is a collection of other objects - 'geom[element]'
@@ -1845,7 +1890,7 @@ var computeTopology = function( mObj ){
 			 *	We iterate throught the topological elements of each of these objects
 			 *  All these elements together will form the final topology of the compound
 			 */
-			["faces", "wires", "edges", "vertices"].map( function(el){
+/*			["faces", "wires", "edges", "vertices"].map( function(el){
 
 				elemTopo[el].map( function(elm){ 
 					if(elm.getData() != undefined){
@@ -1863,10 +1908,10 @@ var computeTopology = function( mObj ){
 				// Concatenate all the resulting arrays of the topology of each element into one
 				topology[el] = topology[el].concat(elemTopo[el]);	
 
-			});
+			}); */
 
 			// Points donot have a belongsTo property
-			topology.points = topology.points.concat(elemTopo.points);
+			//topology.points = topology.points.concat(elemTopo.points);
 		}
 
 	}
@@ -2379,7 +2424,7 @@ var convertShapeGeometryToShape = function(shapeGeom){
 			console.log("Error! ShapeGeometry is 3D and cannot be converted into a 2D Shape", v);
 		}
 		else{
-			console.log("Shape processed successfully from ShapeGeometry.")
+			//console.log("Shape processed successfully from ShapeGeometry.")
 			points.push( new THREE.Vector2(v.x, v.y) );
 		}
 

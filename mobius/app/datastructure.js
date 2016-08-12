@@ -1,15 +1,73 @@
-//
-// Mobius Data Structure definition
-// Not open to editing by module developer
-//
+/*
+ * Definitions to be present by the module, 
+ * as required by this datastructure
+ *
+ * TOPOLOGY_DEF - { 'level_1': [], 'level_2': [], 'level_3': [], 'level_4': [], ....}
+ * convertGeomtoThreeMesh - Function to convert the native geometry being used by the Module into three.js
+ * computeTopology - Computes the geometry's topology in native geometry format encapsulated in Mobius Objects
+ * convertTopoToThree - Converts the computed topology into threeJS format
+ * Last Updated: August 8, 2016
+ *
+ */
 
-// Main mObj Class definition
-// mObj maybe geometry, ifcModel, data / charts etc
+/*
+ * Mobius Data Structure Definition
+ * Not open to editing by Module Developers
+ * Last Updated: August 8, 2016
+ *
+ */
+
+
+/*
+ *  
+ * Global identifier for objects
+ * 
+ */
 var globalID = 0;
 
+
+
+/*
+ *  Parent object for any Mobius Object
+ *  Any Mobius Object inherits from this object
+ *
+ *  Properties:
+ *      public:
+ *          is_mObj
+ *      private:
+ *          type
+ *          guid 
+ *          
+ *  Methods: 
+ *          getType
+ *          getGUID
+ *
+ */
 var mObj = function mObj( type ){
 
+    /*
+     *
+     *  Internal function used to generate GUID
+     *
+     */
+    function guid() {
+
+        function randomString(length, chars) {
+            var result = '';
+            for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+            return result;
+        }
+
+        return randomString(5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');;
+
+    }
+
+
+    /*
+     *  
+     */
     var type = type;
+    var guid =  guid();
 
     this.is_mObj = true;
 
@@ -17,32 +75,23 @@ var mObj = function mObj( type ){
         return type;
     }
 
-    function guid() {
-/*        function s4() {
-            return Math.floor((1 + Math.random()) * 0x10000)
-                .toString(16)
-                .substring(1);
-        }
-        return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-            s4() + '-' + s4() + s4() + s4();*/
-
-        function randomString(length, chars) {
-            var result = '';
-            for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
-            return result;
-        }
-        return randomString(5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');;
-        //return ++globalID;
-    }
-
-    // for datatables
-    var guid =  guid();
-
     this.getGUID = function(){
         return guid;
     }
 };
 
+
+/*
+ *  Mobius Data Objects
+ *  Inheritance: mObj
+ *
+ *  Properties:
+ *      private:
+ *          data
+ *          
+ *  Methods: 
+ *          getData
+ */
 var mObj_data = function mObj_data(type, data){
 
     mObj.call(this, type);
@@ -55,23 +104,52 @@ var mObj_data = function mObj_data(type, data){
 
 };
 
+
+/*
+ *  Mobius Frame Object
+ *  Inheritance: mObj
+ *
+ *  Any two axes can be passed and the third will be computed automatically
+ *
+ *  Properties:
+ *      private:
+ *          _xaxis, _yaxis, _zaxis, world_space_matrix, local_space_matrix 
+ *          
+ *  Methods: 
+ *          toLocal, to Global, getPlane(id), getOrigin, getXAxis, getYAxis, getZAxis
+ *          extractThreeGeometry, extractTopology, extractData
+ */
 var mObj_frame = function mObj_frame( origin, xaxis, yaxis, zaxis ){
 
     mObj.call(this, 'frame');
 
-    // compute missing axes - follow cylic order to maintain consistency
-    if( xaxis == undefined )
-        xaxis = verb.core.Vec.cross( yaxis, zaxis );
-    else if( yaxis == undefined )
-        yaxis = verb.core.Vec.cross( zaxis, xaxis );
-    else if( zaxis == undefined )
-        zaxis = verb.core.Vec.cross( xaxis, yaxis );
+    // TODO: Check that atleast two axes have been passed
+    var undefinedAxesCount = 0;
 
-    // creating unit vectors
+
+    // Computes the missing axes - follows cylic order to maintain consistency
+    // TODO: Remove functioFTOFOns that are using verbs
+    // TODO : Shift to helper functions file
+    if( xaxis == undefined ){
+        xaxis = verb.core.Vec.cross( yaxis, zaxis );
+    }
+    else if( yaxis == undefined ){
+        yaxis = verb.core.Vec.cross( zaxis, xaxis );
+    }
+    else if( zaxis == undefined ){
+        zaxis = verb.core.Vec.cross( xaxis, yaxis );
+    }
+
+
+    // Creating unit vectors
+    // TODO: Remove functions that are using verbs
+    // TODO : Shift to helper functions file
     var _xaxis = verb.core.Vec.normalized( xaxis );
     var _yaxis = verb.core.Vec.normalized( yaxis );
     var _zaxis = verb.core.Vec.normalized( zaxis );
 
+    // Internal function to invert a matrix
+    // TODO : Shift to helper functions file
     function invertMatrix(m) {
 
         var r = [16];
@@ -107,7 +185,7 @@ var mObj_frame = function mObj_frame( origin, xaxis, yaxis, zaxis ){
     };
 
 
-    // compute translation
+    // Compute the translation matrix
     var mat_trans = [ [ 1, 0, 0, -origin[0] ],
         [ 0, 1, 0, -origin[1] ],
         [ 0, 0, 1, -origin[2] ],
@@ -115,29 +193,36 @@ var mObj_frame = function mObj_frame( origin, xaxis, yaxis, zaxis ){
 
     ];
 
+    // Compute the inverse of the translation matrix (??)
     var mat_trans_inv = [ [ 1, 0, 0, origin[0] ],
         [ 0, 1, 0, origin[1] ],
         [ 0, 0, 1, origin[2] ],
         [ 0, 0, 0, 1 ]
     ];
 
+    // Compute the world space matrix without translation
     var world_space_matrix = [ [ _xaxis[0], _xaxis[1], _xaxis[2], 0],
         [ _yaxis[0], _yaxis[1], _yaxis[2], 0],
         [ _zaxis[0], _zaxis[1], _zaxis[2], 0],
         [ 0, 0, 0, 1 ] ]
 
+
+    // Compute the world space matrix
+    // TODO: Remove functions that are using verbs
+    // TODO : Shift to helper functions file
     world_space_matrix = verb.core.Mat.mult(world_space_matrix, mat_trans);
 
+    
+
+    // Computes the inverse of the world space matrix as the local space matrix
     var local_space_matrix = invertMatrix( world_space_matrix );
 
 
-
+    // Creates objects for the planes
     var planes = { 'xy' : {'a': _zaxis[0], 'b': _zaxis[1], 'c': _zaxis[2], 'd':_zaxis[0]*origin[0] + _zaxis[1]*origin[1] + _zaxis[2]*origin[2] },
         'yz' : {'a': _xaxis[0], 'b': _xaxis[1], 'c': _xaxis[2], 'd':_xaxis[0]*origin[0] + _xaxis[1]*origin[1] + _xaxis[2]*origin[2] },
         'zx' : {'a': _yaxis[0], 'b': _yaxis[1], 'c': _yaxis[2], 'd':_yaxis[0]*origin[0] + _yaxis[1]*origin[1] + _yaxis[2]*origin[2] }
     }
-
-
 
 
     this.toLocal = function( ){
@@ -227,8 +312,21 @@ var mObj_frame = function mObj_frame( origin, xaxis, yaxis, zaxis ){
 
 }
 
-// mObj Geometry Class
-// geometry is stored in geometry format native to module
+/*
+ *  Mobius Geometry Object
+ *  Inheritance: mObj
+ *
+ *  This is a container object which stores geometry in the native format for the Module.
+ *  For example, a module using verbs would create mObj_geom objects containing geometry that are verbs objects
+ *
+ *  Properties:
+ *      private:
+ *          _xaxis, _yaxis, _zaxis, world_space_matrix, local_space_matrix 
+ *          
+ *  Methods: 
+ *          getGeometry, setGeometry, getTopology, setTopology, getData, setData
+ *          extractThreeGeometry, extractTopology, extractData
+ */
 var mObj_geom = function mObj_geom( geometry, material ){
 
     mObj.call(this, 'geometry');
@@ -243,12 +341,16 @@ var mObj_geom = function mObj_geom( geometry, material ){
 
     var threeGeometry, threeTopology;
 
-    //
-    // update function when some property of the object changes
-    //
+    /*
+     *  To be called when geometry of an object is reset
+     *  Sets all the cached properties of the object to undefined
+     */
     var update = function(){
+        
         threeGeometry = undefined;
         threeTopology = undefined;
+
+        topology = undefined;
     }
 
     //
@@ -292,10 +394,14 @@ var mObj_geom = function mObj_geom( geometry, material ){
             threeGeometry.material = new_material;
         else
             update();
-        //console.log("Material updated");
     }
 
-    // Dynamic Topology !
+    /*
+     * Generated from the TOPOLOGY_DEF present in the Module
+     * This attaches the topology directly to the object
+     * For example, an object can have object.vertices, object.points etc - because of this segment 
+     *
+     */
     for(var property in MOBIUS.TOPOLOGY_DEF){
 
         var propFunc = new Function( 'return this.getTopology()["' + property + '"];' );
@@ -308,47 +414,39 @@ var mObj_geom = function mObj_geom( geometry, material ){
 
 
 
-    //
-    // Functions used by Mobius or Module for the different viewers
-    //
+    /*
+     * Functions used by Mobius or Module for the different viewers
+     */
 
-    //
-    // Converts the geometry of the MobiusDataObject - to three.js Mesh by calling a bridging function 'convertGeomtoThreeMesh' in the module
-    //
+    /*
+     * Converts the geometry of the MobiusDataObject - to three.js Mesh by calling a bridging function 'convertGeomtoThreeMesh' in the module
+     * This function can be overriden by the children of the mObj_geom
+     */
     this.extractThreeGeometry = function(){ 
 
         // if threeGeometry hasn't been computed before or native geometry has been transformed so that new conversion is required
         // the function defines it and caches it
         if( threeGeometry == undefined ){
-
-            // means it is a solid
-            if( geometry instanceof Array && (geometry[0] instanceof mObj_geom_Surface)){
-                var threeGeometry = new THREE.Object3D();
-                for(var srf=0; srf < geometry.length; srf++){
-                    var geom = geometry[srf];
-                    var exGeom = geom.extractThreeGeometry();
-                    if(material)
-                        exGeom.material = material;
-                    threeGeometry.add( exGeom );
-                }
-            }else{
-                threeGeometry = convertGeomToThree( geometry );  // calls a function in the module to convert native geom into accepted three format
-                if(material)
-                    threeGeometry.material = material;
-            }
+        
+            threeGeometry = convertGeomToThree( geometry );  
+            
+            // Attaches a material 
+            if(material)
+                threeGeometry.material = material;
 
         }
 
 
-        // if material has been assigned to this data object, assigns the same material to the converted geometry
+        // This adds a flag which notifies Mobius that this object is a generated geometry and needs to be removed when the page is refreshed
         threeGeometry.is_mObj = true;
 
         return threeGeometry;
     }
 
 
-    //
-    // Converts the topology defined in native elements to three.js format
+    /*
+     * Converts the topology defined in native elements to three.js format
+     */
     this.extractTopology = function(){
 
         // if threeGeometry hasn't been computed before or native geometry has been transformed so that new conversion is required
@@ -358,18 +456,19 @@ var mObj_geom = function mObj_geom( geometry, material ){
         else
             console.log("Topology already defined");
 
+        // calls a function in the module to convert native geom into accepted three format
         if( threeTopology == undefined )
-            threeTopology = convertTopoToThree( topology );  // calls a function in the module to convert native geom into accepted three format
+            threeTopology = convertTopoToThree( topology );  
 
         threeTopology.is_mObj = true;
 
         return threeTopology;
     }
 
-    //
-    // Extracts data at MobiusDataObject level and topology level, converts it into a JSON object and returns it to the calling function
-    // Doesnot require any bridging functions from the module
-    //
+    /*
+     * Extracts data at MobiusDataObject level and topology level, converts it into a JSON object and returns it to the calling function
+     * Doesnot require any bridging functions from the module
+     */
     this.extractData = function(connectorName){
 
         var dataTable = [];
@@ -378,15 +477,16 @@ var mObj_geom = function mObj_geom( geometry, material ){
             this.extractTopology();
 
         // LIMITATION - Data can only be added to the topology
-        if( topology == undefined && data == undefined )
+        if( topology == undefined && data == undefined ){
+            console.log("No Topology or Data.");
             return dataTable;
+        }
         else{
             if (data != undefined){
                 for(var property in data){
                     var jsonObject = {
                         'attachedTo' : 'object_' + this.getGUID(),
                         'index':this.getGUID(),
-                        //'belongsTo' : 'object_' + this.getGUID(),
                         'Property' : property,
                         'Value' : data[property],
                         'cate': 'Model',
@@ -408,7 +508,6 @@ var mObj_geom = function mObj_geom( geometry, material ){
                             var jsonObject = {
                                                     'attachedTo' : topoElement + index,
                                                     'index' : index,
-                                                    //'belongsTo': 'object_' + this.getGUID(),
                                                     'cate': topoElement,
                                                     'Property' : 'Location',
                                                     'Value' : topology[topoElement][index],
@@ -426,43 +525,14 @@ var mObj_geom = function mObj_geom( geometry, material ){
                                 var jsonObject = {
                                     'attachedTo' : topoElement + index,
                                     'index' : index,
-                                    //'belongsTo': 'object_' + this.getGUID(),
                                     'cate': topoElement,
                                     'Property' : property,
                                     'Value' : topoData[property],
                                     'connectorName':connectorName
                                 };
                                 dataTable.push(jsonObject);
-
-                                // pushing null values for other counterparts
-/*                                for( var i=0; i < topology[topoElement].length; i++){
-                                    if(i==index)
-                                        continue;
-                                    
-                                    var emptyObject = {
-                                        'attachedTo' : topoElement + i,
-                                        'index': i,
-                                        //'belongsTo' : 'object_' +  this.getGUID(),
-                                        'cate': topoElement,
-                                        'Property' : property,
-                                        'Value' : "",
-                                        'connectorName':connectorName
-                                    };
-                                    dataTable.push(emptyObject);
-                                }*/
-
                             }
                         }
-/*                        else{
-                            var emptyObject = {
-                                'attachedTo' : topoElement + index,
-                                //'belongsTo' : 'object_' +  this.getGUID(),
-                                'cate': topoElement,
-                                'index':index,
-                                'connectorName':connectorName
-                            };
-                            dataTable.push(emptyObject);
-                        }*/
                     }
                 }
             }
@@ -471,12 +541,11 @@ var mObj_geom = function mObj_geom( geometry, material ){
     }
 
 
-
-
-    // topology is always computed
     update();
 
 }
+
+
 
 // Point Geometry
 var mObj_geom_Vertex = function mObj_geom_Vertex( geometry ){
@@ -509,7 +578,6 @@ var mObj_geom_Surface = function mObj_geom_Surface( geometry ){
     var defaultSurfaceMaterial = new THREE.MeshLambertMaterial( {
         side: THREE.DoubleSide,
         wireframe: false,
-        //shading: THREE.SmoothShading,
         transparent: false,
         color: 0x003399
     } );
@@ -533,21 +601,25 @@ var mObj_geom_Solid = function mObj_geom_Solid( geometry ){
 
 }
 
-// Combination of Geometries - array - objects might or might not be connected; it's a container
+/*
+ * Combination of Geometries - array - objects might or might not be connected; it's a container
+ */
 var mObj_geom_Compound = function mObj_geom_Compound( geometry ){
 
     var defaultSolidMaterial = new THREE.MeshLambertMaterial( {
         side: THREE.DoubleSide,
         wireframe: false,
-        //shading: THREE.SmoothShading,
         transparent: false,
-        color: 0xCC6600
+        color: 0xCF6600
     } );
 
     mObj_geom.call( this, geometry, defaultSolidMaterial );
 
 
-    // has it's own extraction function
+    /*
+     *  Overrides the extractThreeGeometry function to accomodate arrays
+     *
+     */ 
     this.extractThreeGeometry = function(){ 
 
         if( geometry instanceof Array ){
@@ -557,8 +629,6 @@ var mObj_geom_Compound = function mObj_geom_Compound( geometry ){
             for(var element=0; element < geometry.length; element++){
                 var geom = geometry[element];
                 var exGeom = geom.extractThreeGeometry();
-                //if(material)
-                    //exGeom.material = material;
                 threeGeometry.add( exGeom );
             }
         
