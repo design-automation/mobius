@@ -71,8 +71,15 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
         //});
 
         $scope.height = document.getElementById('layout').offsetHeight;
-        $scope.graphHeight = ($scope.height - 32) * 0.7;
+        $scope.graphHeight = ($scope.height - 32);
         $scope.procedureHeight =  32;
+        //$scope.interfaceHeight = 0;
+
+        $scope.$watch(function(){
+            return document.getElementById('c').offsetHeight;
+        },function(){
+            document.getElementById("interface").style.bottom =  document.getElementById('c').offsetHeight + "px";
+        });
 
         $scope.$on('showProcedure', function(){
             $scope.graphHeight = 32 ;

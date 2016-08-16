@@ -576,6 +576,7 @@
 
                 <!-- graph area -->
                 <div class="graph-area" ui-layout-container  size={{graphWidth}} id="graph">
+
                     <div ui-layout="{ flow : 'row', dividerSize:'1',disableToggle:true}" >
                         <!-- pan & zoom field -->
                         <div size="{{graphHeight}}px"
@@ -589,9 +590,9 @@
                                         <a style="cursor: default" ng-click="goRoot()"> Graph </a>
 
                                         <span ng-repeat="graph in graphList"
-                                           style="padding: 0 5px;
+                                              style="padding: 0 5px;
                                                     cursor: default"
-                                           ng-click="changeGraphView($index)">
+                                              ng-click="changeGraphView($index)">
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
                                             &nbsp;
                                             <a>{{graph.name}} </a>
@@ -637,34 +638,23 @@
                             </div>
                         </div>
 
-                        <div ui-layout-container id ="b"  min-size="32px">
-                            <div>
-                                <div ng-if = "currentNodeName">
-                                    <div class="doormat">
-                                        <div>{{currentNodeType}} {{currentNodeVersion}} : &nbsp {{currentNodeName}} </div>
-                                    </div>
-                                </div>
-
-                                <div ng-if = "!currentNodeName">
-                                    <div class="doormat">
-                                        <div>No Node Selected</div>
-                                    </div>
-                                </div>
-
-                                <div id="interface">
-                                    <div ui-tree id="tree-root-interface"
-                                         data-nodrop-enabl2ed="true">
-                                        <div ui-tree-nodes="" ng-model="interface">
-                                            <div ng-repeat="node in interface"
-                                                 ui-tree-node
-                                                 ng-include="'mobius/procedure/template/interface_template.html'"
-                                                 ng-if="node.connected !== true">
-                                            </div>
-                                        </div>
+                        <span id="interface" style="width: 100%;
+                                                   position: absolute;
+                                                   overflow: auto;
+                                                   display: block;
+                                                   bottom: 0;
+                                                   border-top: 1px solid #eee">
+                            <div ui-tree id="tree-root-interface"
+                                 data-nodrop-enabled="true">
+                                <div ui-tree-nodes="" ng-model="interface">
+                                    <div ng-repeat="node in interface"
+                                         ui-tree-node
+                                         ng-include="'mobius/procedure/template/interface_template.html'"
+                                         ng-if="node.connected !== true">
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </span>
 
                         <div ui-layout-container
                              id="c"
@@ -674,6 +664,7 @@
                                         id="procedure">
                             </ng-include>
                         </div>
+
                     </div>
                 </div>
             </div>
