@@ -74,7 +74,7 @@
             ],
             "overwrite": true,
             "type": "geoJSON_makePolygons",
-            "version": 1471602490396,
+            "version": 1471603780092,
             "disabled": false,
             "subGraph": false,
             "error": true
@@ -152,7 +152,7 @@
             ],
             "overwrite": true,
             "type": "plot_to_model",
-            "version": 1471602489439,
+            "version": 1471603781331,
             "disabled": false,
             "subGraph": false,
             "error": false
@@ -192,7 +192,7 @@
             ],
             "overwrite": true,
             "type": "type_1",
-            "version": 1471601252320,
+            "version": 1471603730508,
             "disabled": false,
             "subGraph": true,
             "subGraphModel": {
@@ -226,7 +226,8 @@
                             "type": "new",
                             "selected": false,
                             "name": "building",
-                            "dataValue": "[]"
+                            "dataValue": "[]",
+                            "$$hashKey": "object:4030"
                         },
                         {
                             "id": 32,
@@ -239,15 +240,18 @@
                             "parameters": [
                                 {
                                     "value": "shape",
-                                    "type": "obj"
+                                    "type": "obj",
+                                    "$$hashKey": "object:4295"
                                 },
                                 {
                                     "value": "\"floors\"",
-                                    "type": "propertyName"
+                                    "type": "propertyName",
+                                    "$$hashKey": "object:4296"
                                 }
                             ],
                             "result": "floors_from_plot",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:4031"
                         },
                         {
                             "id": 33,
@@ -264,23 +268,27 @@
                                             "nodes": [],
                                             "dataName": "floors",
                                             "dataValue": "floors_from_plot",
-                                            "selected": false
+                                            "selected": false,
+                                            "$$hashKey": "object:4566"
                                         }
                                     ],
                                     "ifExpression": "floors_from_plot != undefined",
-                                    "selected": false
+                                    "selected": false,
+                                    "$$hashKey": "object:4307"
                                 },
                                 {
                                     "id": 33,
                                     "title": "Control",
                                     "controlType": "else",
                                     "nodes": [],
-                                    "selected": false
+                                    "selected": false,
+                                    "$$hashKey": "object:4308"
                                 }
                             ],
                             "controlType": "if else",
                             "type": "new",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:4032"
                         },
                         {
                             "id": 13,
@@ -289,7 +297,8 @@
                             "dataName": "all_floors",
                             "dataValue": "[]",
                             "type": "new",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:4033"
                         },
                         {
                             "id": 3,
@@ -302,20 +311,24 @@
                             "parameters": [
                                 {
                                     "value": "shape",
-                                    "type": "surface"
+                                    "type": "surface",
+                                    "$$hashKey": "object:4332"
                                 },
                                 {
                                     "value": "offset",
-                                    "type": "offset"
+                                    "type": "offset",
+                                    "$$hashKey": "object:4333"
                                 },
                                 {
                                     "value": "1",
-                                    "type": "scale"
+                                    "type": "scale",
+                                    "$$hashKey": "object:4334"
                                 }
                             ],
                             "result": "podium_footprint",
                             "selected": false,
-                            "disabled": false
+                            "disabled": false,
+                            "$$hashKey": "object:4034"
                         },
                         {
                             "id": 39,
@@ -328,12 +341,14 @@
                             "parameters": [
                                 {
                                     "value": "podium_footprint",
-                                    "type": "surface"
+                                    "type": "surface",
+                                    "$$hashKey": "object:4351"
                                 }
                             ],
                             "result": "pod_segments",
                             "selected": false,
-                            "disabled": false
+                            "disabled": false,
+                            "$$hashKey": "object:4035"
                         },
                         {
                             "id": 35,
@@ -349,19 +364,23 @@
                                     "parameters": [
                                         {
                                             "value": "seg",
-                                            "type": "in_surface"
+                                            "type": "in_surface",
+                                            "$$hashKey": "object:4592"
                                         },
                                         {
                                             "value": "-buildingGap",
-                                            "type": "offset"
+                                            "type": "offset",
+                                            "$$hashKey": "object:4593"
                                         },
                                         {
                                             "value": "1",
-                                            "type": "scale"
+                                            "type": "scale",
+                                            "$$hashKey": "object:4594"
                                         }
                                     ],
                                     "result": "segOffset",
-                                    "selected": false
+                                    "selected": false,
+                                    "$$hashKey": "object:4359"
                                 },
                                 {
                                     "id": 30,
@@ -373,20 +392,24 @@
                                     "parameters": [
                                         {
                                             "value": "GLOBAL",
-                                            "type": "frame"
+                                            "type": "frame",
+                                            "$$hashKey": "object:4611"
                                         },
                                         {
                                             "value": "segOffset",
-                                            "type": "surface"
+                                            "type": "surface",
+                                            "$$hashKey": "object:4612"
                                         },
                                         {
                                             "value": "floor_height",
-                                            "type": "zDistance"
+                                            "type": "zDistance",
+                                            "$$hashKey": "object:4613"
                                         }
                                     ],
                                     "result": "ex",
                                     "selected": false,
-                                    "disabled": false
+                                    "disabled": false,
+                                    "$$hashKey": "object:4360"
                                 },
                                 {
                                     "id": 10,
@@ -399,28 +422,34 @@
                                     "parameters": [
                                         {
                                             "value": "ex",
-                                            "type": "obj"
+                                            "type": "obj",
+                                            "$$hashKey": "object:4630"
                                         },
                                         {
                                             "value": "material_type",
-                                            "type": "material_type"
+                                            "type": "material_type",
+                                            "$$hashKey": "object:4631"
                                         },
                                         {
                                             "value": "false",
-                                            "type": "wireframe"
+                                            "type": "wireframe",
+                                            "$$hashKey": "object:4632"
                                         },
                                         {
                                             "value": "color_comm",
-                                            "type": "color_hex"
+                                            "type": "color_hex",
+                                            "$$hashKey": "object:4633"
                                         },
                                         {
                                             "value": "false",
-                                            "type": "transparent"
+                                            "type": "transparent",
+                                            "$$hashKey": "object:4634"
                                         }
                                     ],
                                     "result": "_",
                                     "selected": false,
-                                    "disabled": false
+                                    "disabled": false,
+                                    "$$hashKey": "object:4361"
                                 },
                                 {
                                     "id": 24,
@@ -431,7 +460,8 @@
                                     "category": "msc",
                                     "parameters": [],
                                     "selected": false,
-                                    "disabled": false
+                                    "disabled": false,
+                                    "$$hashKey": "object:4362"
                                 }
                             ],
                             "controlType": "for each",
@@ -439,7 +469,8 @@
                             "forList": "pod_segments",
                             "selected": false,
                             "type": "assign",
-                            "disabled": false
+                            "disabled": false,
+                            "$$hashKey": "object:4036"
                         },
                         {
                             "id": 12,
@@ -452,19 +483,23 @@
                             "parameters": [
                                 {
                                     "value": "0",
-                                    "type": "start"
+                                    "type": "start",
+                                    "$$hashKey": "object:4383"
                                 },
                                 {
                                     "value": "2",
-                                    "type": "end"
+                                    "type": "end",
+                                    "$$hashKey": "object:4384"
                                 },
                                 {
                                     "value": "1",
-                                    "type": "stepSize"
+                                    "type": "stepSize",
+                                    "$$hashKey": "object:4385"
                                 }
                             ],
                             "result": "ind_seq",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:4037"
                         },
                         {
                             "id": 40,
@@ -477,12 +512,14 @@
                             "parameters": [
                                 {
                                     "value": "shape",
-                                    "type": "surface"
+                                    "type": "surface",
+                                    "$$hashKey": "object:4402"
                                 }
                             ],
                             "result": "ind_segments",
                             "selected": false,
-                            "disabled": false
+                            "disabled": false,
+                            "$$hashKey": "object:4038"
                         },
                         {
                             "id": 41,
@@ -498,19 +535,23 @@
                                     "parameters": [
                                         {
                                             "value": "seg",
-                                            "type": "in_surface"
+                                            "type": "in_surface",
+                                            "$$hashKey": "object:4662"
                                         },
                                         {
                                             "value": "-buildingGap",
-                                            "type": "offset"
+                                            "type": "offset",
+                                            "$$hashKey": "object:4663"
                                         },
                                         {
                                             "value": "1",
-                                            "type": "scale"
+                                            "type": "scale",
+                                            "$$hashKey": "object:4664"
                                         }
                                     ],
                                     "result": "segOffset",
-                                    "selected": false
+                                    "selected": false,
+                                    "$$hashKey": "object:4410"
                                 },
                                 {
                                     "id": 10,
@@ -527,20 +568,24 @@
                                             "parameters": [
                                                 {
                                                     "value": "[0, 0, floor_height*(1+floor)]",
-                                                    "type": "origin"
+                                                    "type": "origin",
+                                                    "$$hashKey": "object:4820"
                                                 },
                                                 {
                                                     "value": "[1,0,0]",
-                                                    "type": "xAxis"
+                                                    "type": "xAxis",
+                                                    "$$hashKey": "object:4821"
                                                 },
                                                 {
                                                     "value": "[0,1,0]",
-                                                    "type": "yAxis"
+                                                    "type": "yAxis",
+                                                    "$$hashKey": "object:4822"
                                                 }
                                             ],
                                             "result": "floor_frame",
                                             "selected": false,
-                                            "disabled": false
+                                            "disabled": false,
+                                            "$$hashKey": "object:4678"
                                         },
                                         {
                                             "id": 22,
@@ -552,20 +597,24 @@
                                             "parameters": [
                                                 {
                                                     "value": "floor_frame",
-                                                    "type": "frame"
+                                                    "type": "frame",
+                                                    "$$hashKey": "object:4839"
                                                 },
                                                 {
                                                     "value": "segOffset",
-                                                    "type": "surface"
+                                                    "type": "surface",
+                                                    "$$hashKey": "object:4840"
                                                 },
                                                 {
                                                     "value": "floor_height",
-                                                    "type": "zDistance"
+                                                    "type": "zDistance",
+                                                    "$$hashKey": "object:4841"
                                                 }
                                             ],
                                             "result": "ex",
-                                            "selected": true,
-                                            "disabled": false
+                                            "selected": false,
+                                            "disabled": false,
+                                            "$$hashKey": "object:4679"
                                         },
                                         {
                                             "id": 11,
@@ -578,28 +627,34 @@
                                             "parameters": [
                                                 {
                                                     "value": "ex",
-                                                    "type": "obj"
+                                                    "type": "obj",
+                                                    "$$hashKey": "object:4858"
                                                 },
                                                 {
                                                     "value": "material_type",
-                                                    "type": "material_type"
+                                                    "type": "material_type",
+                                                    "$$hashKey": "object:4859"
                                                 },
                                                 {
                                                     "value": "false",
-                                                    "type": "wireframe"
+                                                    "type": "wireframe",
+                                                    "$$hashKey": "object:4860"
                                                 },
                                                 {
                                                     "value": "color_ind",
-                                                    "type": "color_hex"
+                                                    "type": "color_hex",
+                                                    "$$hashKey": "object:4861"
                                                 },
                                                 {
                                                     "value": "false",
-                                                    "type": "transparent"
+                                                    "type": "transparent",
+                                                    "$$hashKey": "object:4862"
                                                 }
                                             ],
                                             "result": "_",
                                             "selected": false,
-                                            "disabled": false
+                                            "disabled": false,
+                                            "$$hashKey": "object:4680"
                                         },
                                         {
                                             "id": 16,
@@ -610,7 +665,8 @@
                                             "category": "msc",
                                             "parameters": [],
                                             "selected": false,
-                                            "disabled": false
+                                            "disabled": false,
+                                            "$$hashKey": "object:4681"
                                         }
                                     ],
                                     "type": "assign",
@@ -618,7 +674,8 @@
                                     "dataName": "floor",
                                     "forList": "ind_seq",
                                     "selected": false,
-                                    "disabled": false
+                                    "disabled": false,
+                                    "$$hashKey": "object:4411"
                                 }
                             ],
                             "controlType": "for each",
@@ -626,7 +683,8 @@
                             "forList": "ind_segments",
                             "selected": false,
                             "type": "assign",
-                            "disabled": false
+                            "disabled": false,
+                            "$$hashKey": "object:4039"
                         },
                         {
                             "id": 19,
@@ -639,12 +697,14 @@
                             "parameters": [
                                 {
                                     "value": "shape",
-                                    "type": "object"
+                                    "type": "object",
+                                    "$$hashKey": "object:4430"
                                 }
                             ],
                             "result": "center",
                             "selected": false,
-                            "disabled": false
+                            "disabled": false,
+                            "$$hashKey": "object:4040"
                         },
                         {
                             "id": 11,
@@ -657,20 +717,24 @@
                             "parameters": [
                                 {
                                     "value": "0",
-                                    "type": "start"
+                                    "type": "start",
+                                    "$$hashKey": "object:4441"
                                 },
                                 {
                                     "value": "floors - 3",
-                                    "type": "end"
+                                    "type": "end",
+                                    "$$hashKey": "object:4442"
                                 },
                                 {
                                     "value": "1",
-                                    "type": "stepSize"
+                                    "type": "stepSize",
+                                    "$$hashKey": "object:4443"
                                 }
                             ],
                             "result": "res_seq",
                             "selected": false,
-                            "disabled": false
+                            "disabled": false,
+                            "$$hashKey": "object:4041"
                         },
                         {
                             "id": 14,
@@ -687,20 +751,24 @@
                                     "parameters": [
                                         {
                                             "value": "[center.x, center.y, (floor+3)*floor_height]",
-                                            "type": "origin"
+                                            "type": "origin",
+                                            "$$hashKey": "object:4702"
                                         },
                                         {
                                             "value": "[1,0,0]",
-                                            "type": "xAxis"
+                                            "type": "xAxis",
+                                            "$$hashKey": "object:4703"
                                         },
                                         {
                                             "value": "[0,1,0]",
-                                            "type": "yAxis"
+                                            "type": "yAxis",
+                                            "$$hashKey": "object:4704"
                                         }
                                     ],
                                     "result": "floor_frame",
                                     "selected": false,
-                                    "disabled": false
+                                    "disabled": false,
+                                    "$$hashKey": "object:4457"
                                 },
                                 {
                                     "id": 5,
@@ -713,20 +781,24 @@
                                     "parameters": [
                                         {
                                             "value": "floor_frame",
-                                            "type": "frame"
+                                            "type": "frame",
+                                            "$$hashKey": "object:4721"
                                         },
                                         {
-                                            "value": "[[-15,-25],[15,-25],[15,25],[-15,25]]",
-                                            "type": "points"
+                                            "value": "[[-25,-15],[25,-15],[25,15],[-25,15]]",
+                                            "type": "points",
+                                            "$$hashKey": "object:4722"
                                         },
                                         {
                                             "value": "[]",
-                                            "type": "holes"
+                                            "type": "holes",
+                                            "$$hashKey": "object:4723"
                                         }
                                     ],
                                     "result": "res_block",
                                     "selected": false,
-                                    "disabled": false
+                                    "disabled": false,
+                                    "$$hashKey": "object:4458"
                                 },
                                 {
                                     "id": 26,
@@ -738,20 +810,24 @@
                                     "parameters": [
                                         {
                                             "value": "floor_frame",
-                                            "type": "frame"
+                                            "type": "frame",
+                                            "$$hashKey": "object:4740"
                                         },
                                         {
                                             "value": "res_block",
-                                            "type": "surface"
+                                            "type": "surface",
+                                            "$$hashKey": "object:4741"
                                         },
                                         {
                                             "value": "floor_height-0.4",
-                                            "type": "zDistance"
+                                            "type": "zDistance",
+                                            "$$hashKey": "object:4742"
                                         }
                                     ],
                                     "result": "ex",
                                     "selected": false,
-                                    "disabled": false
+                                    "disabled": false,
+                                    "$$hashKey": "object:4459"
                                 },
                                 {
                                     "id": 9,
@@ -764,28 +840,34 @@
                                     "parameters": [
                                         {
                                             "value": "ex",
-                                            "type": "obj"
+                                            "type": "obj",
+                                            "$$hashKey": "object:4759"
                                         },
                                         {
                                             "value": "material_type",
-                                            "type": "material_type"
+                                            "type": "material_type",
+                                            "$$hashKey": "object:4760"
                                         },
                                         {
                                             "value": "false",
-                                            "type": "wireframe"
+                                            "type": "wireframe",
+                                            "$$hashKey": "object:4761"
                                         },
                                         {
                                             "value": "color_res",
-                                            "type": "color_hex"
+                                            "type": "color_hex",
+                                            "$$hashKey": "object:4762"
                                         },
                                         {
                                             "value": "false",
-                                            "type": "transparent"
+                                            "type": "transparent",
+                                            "$$hashKey": "object:4763"
                                         }
                                     ],
                                     "result": "_",
                                     "selected": false,
-                                    "disabled": false
+                                    "disabled": false,
+                                    "$$hashKey": "object:4460"
                                 },
                                 {
                                     "id": 20,
@@ -796,15 +878,17 @@
                                     "category": "msc",
                                     "parameters": [],
                                     "selected": false,
-                                    "disabled": false
+                                    "disabled": false,
+                                    "$$hashKey": "object:4461"
                                 }
                             ],
                             "type": "assign",
                             "controlType": "for each",
                             "dataName": "floor",
                             "forList": "res_seq",
-                            "selected": false,
-                            "disabled": false
+                            "selected": true,
+                            "disabled": false,
+                            "$$hashKey": "object:4042"
                         },
                         {
                             "id": 17,
@@ -817,11 +901,13 @@
                             "parameters": [
                                 {
                                     "value": "all_floors",
-                                    "type": "array_of_elements"
+                                    "type": "array_of_elements",
+                                    "$$hashKey": "object:4483"
                                 }
                             ],
                             "result": "building",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:4043"
                         },
                         {
                             "id": 35,
@@ -834,19 +920,23 @@
                             "parameters": [
                                 {
                                     "value": "building",
-                                    "type": "obj"
+                                    "type": "obj",
+                                    "$$hashKey": "object:4494"
                                 },
                                 {
                                     "value": "\"typology\"",
-                                    "type": "dataName"
+                                    "type": "dataName",
+                                    "$$hashKey": "object:4495"
                                 },
                                 {
                                     "value": "1",
-                                    "type": "dataValue"
+                                    "type": "dataValue",
+                                    "$$hashKey": "object:4496"
                                 }
                             ],
                             "result": "_",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:4044"
                         }
                     ]
                 ],
@@ -861,7 +951,8 @@
                                 "name": "none"
                             },
                             "color": "#000000",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:3993"
                         },
                         {
                             "id": 7,
@@ -872,7 +963,8 @@
                                 "name": "color picker"
                             },
                             "color": "#ff80ff",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:3994"
                         },
                         {
                             "id": 8,
@@ -883,7 +975,8 @@
                                 "name": "color picker"
                             },
                             "color": "#80ff00",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:3995"
                         },
                         {
                             "id": 2,
@@ -894,7 +987,8 @@
                                 "name": "color picker"
                             },
                             "color": "#ffff00",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:3996"
                         },
                         {
                             "id": 9,
@@ -906,7 +1000,8 @@
                                 "name": "none"
                             },
                             "color": "#000000",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:3997"
                         },
                         {
                             "id": 3,
@@ -918,7 +1013,8 @@
                                 "name": "none"
                             },
                             "color": "#000000",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:3998"
                         },
                         {
                             "id": 4,
@@ -930,7 +1026,8 @@
                                 "name": "none"
                             },
                             "color": "#000000",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:3999"
                         },
                         {
                             "id": 6,
@@ -942,7 +1039,8 @@
                                 "name": "none"
                             },
                             "color": "#000000",
-                            "selected": true
+                            "selected": true,
+                            "$$hashKey": "object:4000"
                         },
                         {
                             "id": 9,
@@ -954,7 +1052,8 @@
                                 "name": "none"
                             },
                             "color": "#000000",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:4001"
                         }
                     ]
                 ],
@@ -1094,7 +1193,7 @@
                             ],
                             "overwrite": true,
                             "type": "segment_comm_ind_res",
-                            "version": 1471601186639,
+                            "version": 1471603698914,
                             "disabled": false,
                             "error": false
                         }
@@ -1158,7 +1257,8 @@
                     }
                 }
             },
-            "error": true
+            "error": true,
+            "$$hashKey": "object:3877"
         },
         {
             "id": 4,
@@ -1195,7 +1295,7 @@
             ],
             "overwrite": true,
             "type": "type_2",
-            "version": 1471601255367,
+            "version": 1471603736100,
             "disabled": false,
             "subGraph": true,
             "subGraphModel": {
@@ -1219,7 +1319,8 @@
                             "type": "new",
                             "selected": false,
                             "name": "building",
-                            "dataValue": "1"
+                            "dataValue": "1",
+                            "$$hashKey": "object:5352"
                         },
                         {
                             "id": 32,
@@ -1232,15 +1333,18 @@
                             "parameters": [
                                 {
                                     "value": "shape",
-                                    "type": "obj"
+                                    "type": "obj",
+                                    "$$hashKey": "object:5574"
                                 },
                                 {
                                     "value": "\"floors\"",
-                                    "type": "propertyName"
+                                    "type": "propertyName",
+                                    "$$hashKey": "object:5575"
                                 }
                             ],
                             "result": "floors_from_plot",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:5353"
                         },
                         {
                             "id": 33,
@@ -1257,23 +1361,27 @@
                                             "nodes": [],
                                             "dataName": "floors",
                                             "dataValue": "floors_from_plot",
-                                            "selected": false
+                                            "selected": false,
+                                            "$$hashKey": "object:5770"
                                         }
                                     ],
                                     "ifExpression": "floors_from_plot != undefined",
-                                    "selected": false
+                                    "selected": false,
+                                    "$$hashKey": "object:5586"
                                 },
                                 {
                                     "id": 33,
                                     "title": "Control",
                                     "controlType": "else",
                                     "nodes": [],
-                                    "selected": false
+                                    "selected": false,
+                                    "$$hashKey": "object:5587"
                                 }
                             ],
                             "controlType": "if else",
                             "type": "new",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:5354"
                         },
                         {
                             "id": 13,
@@ -1282,7 +1390,8 @@
                             "dataName": "all_floors",
                             "dataValue": "[]",
                             "type": "new",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:5355"
                         },
                         {
                             "id": 3,
@@ -1295,19 +1404,23 @@
                             "parameters": [
                                 {
                                     "value": "shape",
-                                    "type": "surface"
+                                    "type": "surface",
+                                    "$$hashKey": "object:5611"
                                 },
                                 {
                                     "value": "offset",
-                                    "type": "offset"
+                                    "type": "offset",
+                                    "$$hashKey": "object:5612"
                                 },
                                 {
                                     "value": "1",
-                                    "type": "scale"
+                                    "type": "scale",
+                                    "$$hashKey": "object:5613"
                                 }
                             ],
                             "result": "podium_footprint",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:5356"
                         },
                         {
                             "id": 39,
@@ -1320,11 +1433,13 @@
                             "parameters": [
                                 {
                                     "value": "podium_footprint",
-                                    "type": "surface"
+                                    "type": "surface",
+                                    "$$hashKey": "object:5630"
                                 }
                             ],
                             "result": "pod_segments",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:5357"
                         },
                         {
                             "id": 35,
@@ -1340,19 +1455,23 @@
                                     "parameters": [
                                         {
                                             "value": "seg",
-                                            "type": "in_surface"
+                                            "type": "in_surface",
+                                            "$$hashKey": "object:5796"
                                         },
                                         {
                                             "value": "-buildingGap",
-                                            "type": "offset"
+                                            "type": "offset",
+                                            "$$hashKey": "object:5797"
                                         },
                                         {
                                             "value": "1",
-                                            "type": "scale"
+                                            "type": "scale",
+                                            "$$hashKey": "object:5798"
                                         }
                                     ],
                                     "result": "segOffset",
-                                    "selected": false
+                                    "selected": false,
+                                    "$$hashKey": "object:5638"
                                 },
                                 {
                                     "id": 37,
@@ -1373,19 +1492,23 @@
                                                     "parameters": [
                                                         {
                                                             "value": "GLOBAL",
-                                                            "type": "frame"
+                                                            "type": "frame",
+                                                            "$$hashKey": "object:6015"
                                                         },
                                                         {
                                                             "value": "segOffset",
-                                                            "type": "surface"
+                                                            "type": "surface",
+                                                            "$$hashKey": "object:6016"
                                                         },
                                                         {
                                                             "value": "floor_height-0.4",
-                                                            "type": "zDistance"
+                                                            "type": "zDistance",
+                                                            "$$hashKey": "object:6017"
                                                         }
                                                     ],
                                                     "result": "ex",
-                                                    "selected": false
+                                                    "selected": false,
+                                                    "$$hashKey": "object:5905"
                                                 },
                                                 {
                                                     "id": 43,
@@ -1398,27 +1521,33 @@
                                                     "parameters": [
                                                         {
                                                             "value": "ex",
-                                                            "type": "obj"
+                                                            "type": "obj",
+                                                            "$$hashKey": "object:6031"
                                                         },
                                                         {
                                                             "value": "material_type",
-                                                            "type": "material_type"
+                                                            "type": "material_type",
+                                                            "$$hashKey": "object:6032"
                                                         },
                                                         {
                                                             "value": "false",
-                                                            "type": "wireframe"
+                                                            "type": "wireframe",
+                                                            "$$hashKey": "object:6033"
                                                         },
                                                         {
                                                             "value": "color_comm",
-                                                            "type": "color_hex"
+                                                            "type": "color_hex",
+                                                            "$$hashKey": "object:6034"
                                                         },
                                                         {
                                                             "value": "false",
-                                                            "type": "transparent"
+                                                            "type": "transparent",
+                                                            "$$hashKey": "object:6035"
                                                         }
                                                     ],
                                                     "result": "",
-                                                    "selected": false
+                                                    "selected": false,
+                                                    "$$hashKey": "object:5906"
                                                 },
                                                 {
                                                     "id": 24,
@@ -1428,29 +1557,34 @@
                                                     "method": "expression",
                                                     "category": "msc",
                                                     "parameters": [],
-                                                    "selected": false
+                                                    "selected": false,
+                                                    "$$hashKey": "object:5907"
                                                 }
                                             ],
                                             "ifExpression": "segOffset != null",
-                                            "selected": false
+                                            "selected": false,
+                                            "$$hashKey": "object:5812"
                                         },
                                         {
                                             "id": 37,
                                             "title": "Control",
                                             "controlType": "else",
                                             "nodes": [],
-                                            "selected": false
+                                            "selected": false,
+                                            "$$hashKey": "object:5813"
                                         }
                                     ],
                                     "controlType": "if else",
-                                    "selected": false
+                                    "selected": false,
+                                    "$$hashKey": "object:5639"
                                 }
                             ],
                             "controlType": "for each",
                             "dataName": "seg",
                             "forList": "pod_segments",
                             "selected": false,
-                            "type": "assign"
+                            "type": "assign",
+                            "$$hashKey": "object:5358"
                         },
                         {
                             "id": 12,
@@ -1463,19 +1597,23 @@
                             "parameters": [
                                 {
                                     "value": "0",
-                                    "type": "start"
+                                    "type": "start",
+                                    "$$hashKey": "object:5658"
                                 },
                                 {
                                     "value": "2",
-                                    "type": "end"
+                                    "type": "end",
+                                    "$$hashKey": "object:5659"
                                 },
                                 {
                                     "value": "1",
-                                    "type": "stepSize"
+                                    "type": "stepSize",
+                                    "$$hashKey": "object:5660"
                                 }
                             ],
                             "result": "ind_seq",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:5359"
                         },
                         {
                             "id": 40,
@@ -1488,11 +1626,13 @@
                             "parameters": [
                                 {
                                     "value": "shape",
-                                    "type": "surface"
+                                    "type": "surface",
+                                    "$$hashKey": "object:5677"
                                 }
                             ],
                             "result": "ind_segments",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:5360"
                         },
                         {
                             "id": 44,
@@ -1505,11 +1645,13 @@
                             "parameters": [
                                 {
                                     "value": "shape",
-                                    "type": "object"
+                                    "type": "object",
+                                    "$$hashKey": "object:5688"
                                 }
                             ],
                             "result": "center",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:5361"
                         },
                         {
                             "id": 41,
@@ -1525,19 +1667,23 @@
                                     "parameters": [
                                         {
                                             "value": "seg",
-                                            "type": "in_surface"
+                                            "type": "in_surface",
+                                            "$$hashKey": "object:5830"
                                         },
                                         {
                                             "value": "-buildingGap",
-                                            "type": "offset"
+                                            "type": "offset",
+                                            "$$hashKey": "object:5831"
                                         },
                                         {
                                             "value": "1",
-                                            "type": "scale"
+                                            "type": "scale",
+                                            "$$hashKey": "object:5832"
                                         }
                                     ],
                                     "result": "segOffset",
-                                    "selected": false
+                                    "selected": false,
+                                    "$$hashKey": "object:5696"
                                 },
                                 {
                                     "id": 10,
@@ -1554,20 +1700,24 @@
                                             "parameters": [
                                                 {
                                                     "value": "[0, 0, floor_height*(1+floor)]",
-                                                    "type": "origin"
+                                                    "type": "origin",
+                                                    "$$hashKey": "object:5935"
                                                 },
                                                 {
                                                     "value": "[1,0,0]",
-                                                    "type": "xAxis"
+                                                    "type": "xAxis",
+                                                    "$$hashKey": "object:5936"
                                                 },
                                                 {
                                                     "value": "[0,1,0]",
-                                                    "type": "yAxis"
+                                                    "type": "yAxis",
+                                                    "$$hashKey": "object:5937"
                                                 }
                                             ],
                                             "result": "floor_frame",
                                             "selected": false,
-                                            "disabled": false
+                                            "disabled": false,
+                                            "$$hashKey": "object:5846"
                                         },
                                         {
                                             "id": 22,
@@ -1579,19 +1729,23 @@
                                             "parameters": [
                                                 {
                                                     "value": "floor_frame",
-                                                    "type": "frame"
+                                                    "type": "frame",
+                                                    "$$hashKey": "object:5954"
                                                 },
                                                 {
                                                     "value": "segOffset",
-                                                    "type": "surface"
+                                                    "type": "surface",
+                                                    "$$hashKey": "object:5955"
                                                 },
                                                 {
                                                     "value": "floor_height",
-                                                    "type": "zDistance"
+                                                    "type": "zDistance",
+                                                    "$$hashKey": "object:5956"
                                                 }
                                             ],
                                             "result": "ex",
-                                            "selected": false
+                                            "selected": false,
+                                            "$$hashKey": "object:5847"
                                         },
                                         {
                                             "id": 42,
@@ -1604,27 +1758,33 @@
                                             "parameters": [
                                                 {
                                                     "value": "ex",
-                                                    "type": "obj"
+                                                    "type": "obj",
+                                                    "$$hashKey": "object:5970"
                                                 },
                                                 {
                                                     "value": "material_type",
-                                                    "type": "material_type"
+                                                    "type": "material_type",
+                                                    "$$hashKey": "object:5971"
                                                 },
                                                 {
                                                     "value": "false",
-                                                    "type": "wireframe"
+                                                    "type": "wireframe",
+                                                    "$$hashKey": "object:5972"
                                                 },
                                                 {
                                                     "value": "color_ind",
-                                                    "type": "color_hex"
+                                                    "type": "color_hex",
+                                                    "$$hashKey": "object:5973"
                                                 },
                                                 {
                                                     "value": "false",
-                                                    "type": "transparent"
+                                                    "type": "transparent",
+                                                    "$$hashKey": "object:5974"
                                                 }
                                             ],
                                             "result": "",
-                                            "selected": false
+                                            "selected": false,
+                                            "$$hashKey": "object:5848"
                                         },
                                         {
                                             "id": 16,
@@ -1634,21 +1794,24 @@
                                             "method": "expression",
                                             "category": "msc",
                                             "parameters": [],
-                                            "selected": false
+                                            "selected": false,
+                                            "$$hashKey": "object:5849"
                                         }
                                     ],
                                     "type": "assign",
                                     "controlType": "for each",
                                     "dataName": "floor",
                                     "forList": "ind_seq",
-                                    "selected": false
+                                    "selected": false,
+                                    "$$hashKey": "object:5697"
                                 }
                             ],
                             "controlType": "for each",
                             "dataName": "seg",
                             "forList": "ind_segments",
                             "selected": true,
-                            "type": "assign"
+                            "type": "assign",
+                            "$$hashKey": "object:5362"
                         },
                         {
                             "id": 17,
@@ -1661,11 +1824,13 @@
                             "parameters": [
                                 {
                                     "value": "all_floors",
-                                    "type": "array_of_elements"
+                                    "type": "array_of_elements",
+                                    "$$hashKey": "object:5716"
                                 }
                             ],
                             "result": "building",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:5363"
                         },
                         {
                             "id": 35,
@@ -1678,19 +1843,23 @@
                             "parameters": [
                                 {
                                     "value": "building",
-                                    "type": "obj"
+                                    "type": "obj",
+                                    "$$hashKey": "object:5727"
                                 },
                                 {
                                     "value": "\"typology\"",
-                                    "type": "dataName"
+                                    "type": "dataName",
+                                    "$$hashKey": "object:5728"
                                 },
                                 {
                                     "value": "2",
-                                    "type": "dataValue"
+                                    "type": "dataValue",
+                                    "$$hashKey": "object:5729"
                                 }
                             ],
                             "result": "_",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:5364"
                         }
                     ]
                 ],
@@ -1705,7 +1874,8 @@
                                 "name": "none"
                             },
                             "color": "#000000",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:5319"
                         },
                         {
                             "id": 8,
@@ -1716,7 +1886,8 @@
                                 "name": "color picker"
                             },
                             "color": "#ff80ff",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:5320"
                         },
                         {
                             "id": 7,
@@ -1727,7 +1898,8 @@
                                 "name": "color picker"
                             },
                             "color": "#80ff00",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:5321"
                         },
                         {
                             "id": 8,
@@ -1739,7 +1911,8 @@
                                 "name": "none"
                             },
                             "color": "#000000",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:5322"
                         },
                         {
                             "id": 3,
@@ -1751,7 +1924,8 @@
                                 "name": "none"
                             },
                             "color": "#000000",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:5323"
                         },
                         {
                             "id": 4,
@@ -1763,7 +1937,8 @@
                                 "name": "none"
                             },
                             "color": "#000000",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:5324"
                         },
                         {
                             "id": 5,
@@ -1775,7 +1950,8 @@
                                 "name": "none"
                             },
                             "color": "#000000",
-                            "selected": true
+                            "selected": true,
+                            "$$hashKey": "object:5325"
                         },
                         {
                             "id": 6,
@@ -1787,7 +1963,8 @@
                                 "name": "none"
                             },
                             "color": "#000000",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:5326"
                         }
                     ]
                 ],
@@ -1915,7 +2092,7 @@
                             ],
                             "overwrite": true,
                             "type": "segment_comm_ind",
-                            "version": 1471601208671,
+                            "version": 1471603480095,
                             "disabled": false,
                             "error": false
                         }
@@ -1979,7 +2156,8 @@
                     }
                 }
             },
-            "error": true
+            "error": true,
+            "$$hashKey": "object:5211"
         },
         {
             "id": 5,
@@ -2006,8 +2184,8 @@
         {
             "id": 6,
             "name": "flatten_plots0",
-            "x": 2055.8505859375,
-            "y": 2439.2109374999995,
+            "x": 2087.2571354597712,
+            "y": 2432.5990323374162,
             "inputConnectors": [
                 {
                     "id": 1,
@@ -2032,7 +2210,7 @@
             ],
             "overwrite": true,
             "type": "flatten_plots",
-            "version": 1471507580738,
+            "version": 1471603300248,
             "disabled": false,
             "subGraph": false
         },
@@ -2070,7 +2248,7 @@
             ],
             "overwrite": true,
             "type": "type_3",
-            "version": 1471601256634,
+            "version": 1471603741622,
             "disabled": false,
             "subGraph": true,
             "subGraphModel": {
@@ -2092,7 +2270,8 @@
                             "type": "new",
                             "selected": false,
                             "name": "building",
-                            "dataValue": "1"
+                            "dataValue": "1",
+                            "$$hashKey": "object:6519"
                         },
                         {
                             "id": 32,
@@ -2105,15 +2284,18 @@
                             "parameters": [
                                 {
                                     "value": "shape",
-                                    "type": "obj"
+                                    "type": "obj",
+                                    "$$hashKey": "object:6768"
                                 },
                                 {
                                     "value": "\"floors\"",
-                                    "type": "propertyName"
+                                    "type": "propertyName",
+                                    "$$hashKey": "object:6769"
                                 }
                             ],
                             "result": "floors_from_plot",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:6520"
                         },
                         {
                             "id": 33,
@@ -2130,23 +2312,27 @@
                                             "nodes": [],
                                             "dataName": "floors",
                                             "dataValue": "floors_from_plot",
-                                            "selected": false
+                                            "selected": false,
+                                            "$$hashKey": "object:7042"
                                         }
                                     ],
                                     "ifExpression": "floors_from_plot != undefined",
-                                    "selected": false
+                                    "selected": false,
+                                    "$$hashKey": "object:6780"
                                 },
                                 {
                                     "id": 33,
                                     "title": "Control",
                                     "controlType": "else",
                                     "nodes": [],
-                                    "selected": false
+                                    "selected": false,
+                                    "$$hashKey": "object:6781"
                                 }
                             ],
                             "controlType": "if else",
                             "type": "new",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:6521"
                         },
                         {
                             "id": 13,
@@ -2155,7 +2341,8 @@
                             "dataName": "all_floors",
                             "dataValue": "[]",
                             "type": "new",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:6522"
                         },
                         {
                             "id": 3,
@@ -2168,19 +2355,23 @@
                             "parameters": [
                                 {
                                     "value": "shape",
-                                    "type": "surface"
+                                    "type": "surface",
+                                    "$$hashKey": "object:6805"
                                 },
                                 {
                                     "value": "offset",
-                                    "type": "offset"
+                                    "type": "offset",
+                                    "$$hashKey": "object:6806"
                                 },
                                 {
                                     "value": "1",
-                                    "type": "scale"
+                                    "type": "scale",
+                                    "$$hashKey": "object:6807"
                                 }
                             ],
                             "result": "podium_footprint",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:6523"
                         },
                         {
                             "id": 30,
@@ -2192,20 +2383,24 @@
                             "parameters": [
                                 {
                                     "value": "GLOBAL",
-                                    "type": "frame"
+                                    "type": "frame",
+                                    "$$hashKey": "object:6824"
                                 },
                                 {
                                     "value": "podium_footprint",
-                                    "type": "surface"
+                                    "type": "surface",
+                                    "$$hashKey": "object:6825"
                                 },
                                 {
                                     "value": "floor_height-0.4",
-                                    "type": "zDistance"
+                                    "type": "zDistance",
+                                    "$$hashKey": "object:6826"
                                 }
                             ],
                             "result": "ex",
                             "selected": false,
-                            "type": "new"
+                            "type": "new",
+                            "$$hashKey": "object:6524"
                         },
                         {
                             "id": 11,
@@ -2218,28 +2413,34 @@
                             "parameters": [
                                 {
                                     "value": "ex",
-                                    "type": "obj"
+                                    "type": "obj",
+                                    "$$hashKey": "object:6843"
                                 },
                                 {
                                     "value": "material_type",
-                                    "type": "material_type"
+                                    "type": "material_type",
+                                    "$$hashKey": "object:6844"
                                 },
                                 {
                                     "value": "false",
-                                    "type": "wireframe"
+                                    "type": "wireframe",
+                                    "$$hashKey": "object:6845"
                                 },
                                 {
                                     "value": "color_comm",
-                                    "type": "color_hex"
+                                    "type": "color_hex",
+                                    "$$hashKey": "object:6846"
                                 },
                                 {
                                     "value": "false",
-                                    "type": "transparent"
+                                    "type": "transparent",
+                                    "$$hashKey": "object:6847"
                                 }
                             ],
                             "result": "_",
                             "selected": false,
-                            "disabled": false
+                            "disabled": false,
+                            "$$hashKey": "object:6525"
                         },
                         {
                             "id": 24,
@@ -2250,7 +2451,8 @@
                             "category": "msc",
                             "parameters": [],
                             "selected": false,
-                            "type": "new"
+                            "type": "new",
+                            "$$hashKey": "object:6526"
                         },
                         {
                             "id": 12,
@@ -2263,19 +2465,23 @@
                             "parameters": [
                                 {
                                     "value": "0",
-                                    "type": "start"
+                                    "type": "start",
+                                    "$$hashKey": "object:6875"
                                 },
                                 {
                                     "value": "2",
-                                    "type": "end"
+                                    "type": "end",
+                                    "$$hashKey": "object:6876"
                                 },
                                 {
                                     "value": "1",
-                                    "type": "stepSize"
+                                    "type": "stepSize",
+                                    "$$hashKey": "object:6877"
                                 }
                             ],
                             "result": "ind_seq",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:6527"
                         },
                         {
                             "id": 10,
@@ -2292,20 +2498,24 @@
                                     "parameters": [
                                         {
                                             "value": "[0,0,floor_height*(1+floor)]",
-                                            "type": "origin"
+                                            "type": "origin",
+                                            "$$hashKey": "object:7068"
                                         },
                                         {
                                             "value": "[1,0,0]",
-                                            "type": "xAxis"
+                                            "type": "xAxis",
+                                            "$$hashKey": "object:7069"
                                         },
                                         {
                                             "value": "[0,1,0]",
-                                            "type": "yAxis"
+                                            "type": "yAxis",
+                                            "$$hashKey": "object:7070"
                                         }
                                     ],
                                     "result": "floor_frame",
                                     "selected": false,
-                                    "disabled": false
+                                    "disabled": false,
+                                    "$$hashKey": "object:6891"
                                 },
                                 {
                                     "id": 22,
@@ -2317,19 +2527,23 @@
                                     "parameters": [
                                         {
                                             "value": "floor_frame",
-                                            "type": "frame"
+                                            "type": "frame",
+                                            "$$hashKey": "object:7087"
                                         },
                                         {
                                             "value": "shape",
-                                            "type": "surface"
+                                            "type": "surface",
+                                            "$$hashKey": "object:7088"
                                         },
                                         {
                                             "value": "floor_height-0.4",
-                                            "type": "zDistance"
+                                            "type": "zDistance",
+                                            "$$hashKey": "object:7089"
                                         }
                                     ],
                                     "result": "ex",
-                                    "selected": false
+                                    "selected": false,
+                                    "$$hashKey": "object:6892"
                                 },
                                 {
                                     "id": 10,
@@ -2342,28 +2556,34 @@
                                     "parameters": [
                                         {
                                             "value": "ex",
-                                            "type": "obj"
+                                            "type": "obj",
+                                            "$$hashKey": "object:7106"
                                         },
                                         {
                                             "value": "material_type",
-                                            "type": "material_type"
+                                            "type": "material_type",
+                                            "$$hashKey": "object:7107"
                                         },
                                         {
                                             "value": "false",
-                                            "type": "wireframe"
+                                            "type": "wireframe",
+                                            "$$hashKey": "object:7108"
                                         },
                                         {
                                             "value": "color_ind",
-                                            "type": "color_hex"
+                                            "type": "color_hex",
+                                            "$$hashKey": "object:7109"
                                         },
                                         {
                                             "value": "false",
-                                            "type": "transparent"
+                                            "type": "transparent",
+                                            "$$hashKey": "object:7110"
                                         }
                                     ],
                                     "result": "_",
                                     "selected": false,
-                                    "disabled": false
+                                    "disabled": false,
+                                    "$$hashKey": "object:6893"
                                 },
                                 {
                                     "id": 16,
@@ -2373,14 +2593,16 @@
                                     "method": "expression",
                                     "category": "msc",
                                     "parameters": [],
-                                    "selected": false
+                                    "selected": false,
+                                    "$$hashKey": "object:6894"
                                 }
                             ],
                             "type": "assign",
                             "controlType": "for each",
                             "dataName": "floor",
                             "forList": "ind_seq",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:6528"
                         },
                         {
                             "id": 11,
@@ -2393,19 +2615,23 @@
                             "parameters": [
                                 {
                                     "value": "0",
-                                    "type": "start"
+                                    "type": "start",
+                                    "$$hashKey": "object:6915"
                                 },
                                 {
                                     "value": "floors - 3",
-                                    "type": "end"
+                                    "type": "end",
+                                    "$$hashKey": "object:6916"
                                 },
                                 {
                                     "value": "1",
-                                    "type": "stepSize"
+                                    "type": "stepSize",
+                                    "$$hashKey": "object:6917"
                                 }
                             ],
                             "result": "res_seq",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:6529"
                         },
                         {
                             "id": 19,
@@ -2418,11 +2644,13 @@
                             "parameters": [
                                 {
                                     "value": "shape",
-                                    "type": "object"
+                                    "type": "object",
+                                    "$$hashKey": "object:6934"
                                 }
                             ],
                             "result": "center",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:6530"
                         },
                         {
                             "id": 14,
@@ -2439,20 +2667,24 @@
                                     "parameters": [
                                         {
                                             "value": "[center.x, center.y, (floor+3)*floor_height]",
-                                            "type": "origin"
+                                            "type": "origin",
+                                            "$$hashKey": "object:7138"
                                         },
                                         {
                                             "value": "[1,0,0]",
-                                            "type": "xAxis"
+                                            "type": "xAxis",
+                                            "$$hashKey": "object:7139"
                                         },
                                         {
                                             "value": "[0,1,0]",
-                                            "type": "yAxis"
+                                            "type": "yAxis",
+                                            "$$hashKey": "object:7140"
                                         }
                                     ],
                                     "result": "floor_frame",
                                     "selected": false,
-                                    "disabled": false
+                                    "disabled": false,
+                                    "$$hashKey": "object:6942"
                                 },
                                 {
                                     "id": 5,
@@ -2465,19 +2697,23 @@
                                     "parameters": [
                                         {
                                             "value": "floor_frame",
-                                            "type": "frame"
+                                            "type": "frame",
+                                            "$$hashKey": "object:7157"
                                         },
                                         {
-                                            "value": "[[-25,-25],[25,-25],[25,25],[-25,25]]",
-                                            "type": "points"
+                                            "value": "[[-25,-15],[25,-15],[25,15],[-25,15]]",
+                                            "type": "points",
+                                            "$$hashKey": "object:7158"
                                         },
                                         {
                                             "value": "[]",
-                                            "type": "holes"
+                                            "type": "holes",
+                                            "$$hashKey": "object:7159"
                                         }
                                     ],
                                     "result": "res_block",
-                                    "selected": false
+                                    "selected": false,
+                                    "$$hashKey": "object:6943"
                                 },
                                 {
                                     "id": 26,
@@ -2489,19 +2725,23 @@
                                     "parameters": [
                                         {
                                             "value": "floor_frame",
-                                            "type": "frame"
+                                            "type": "frame",
+                                            "$$hashKey": "object:7176"
                                         },
                                         {
                                             "value": "res_block",
-                                            "type": "surface"
+                                            "type": "surface",
+                                            "$$hashKey": "object:7177"
                                         },
                                         {
                                             "value": "floor_height-0.4",
-                                            "type": "zDistance"
+                                            "type": "zDistance",
+                                            "$$hashKey": "object:7178"
                                         }
                                     ],
                                     "result": "ex",
-                                    "selected": false
+                                    "selected": false,
+                                    "$$hashKey": "object:6944"
                                 },
                                 {
                                     "id": 9,
@@ -2514,28 +2754,34 @@
                                     "parameters": [
                                         {
                                             "value": "ex",
-                                            "type": "obj"
+                                            "type": "obj",
+                                            "$$hashKey": "object:7195"
                                         },
                                         {
                                             "value": "material_type",
-                                            "type": "material_type"
+                                            "type": "material_type",
+                                            "$$hashKey": "object:7196"
                                         },
                                         {
                                             "value": "false",
-                                            "type": "wireframe"
+                                            "type": "wireframe",
+                                            "$$hashKey": "object:7197"
                                         },
                                         {
                                             "value": "color_res",
-                                            "type": "color_hex"
+                                            "type": "color_hex",
+                                            "$$hashKey": "object:7198"
                                         },
                                         {
                                             "value": "false",
-                                            "type": "transparent"
+                                            "type": "transparent",
+                                            "$$hashKey": "object:7199"
                                         }
                                     ],
                                     "result": "_",
                                     "selected": false,
-                                    "disabled": false
+                                    "disabled": false,
+                                    "$$hashKey": "object:6945"
                                 },
                                 {
                                     "id": 20,
@@ -2545,14 +2791,16 @@
                                     "method": "expression",
                                     "category": "msc",
                                     "parameters": [],
-                                    "selected": false
+                                    "selected": false,
+                                    "$$hashKey": "object:6946"
                                 }
                             ],
                             "type": "assign",
                             "controlType": "for each",
                             "dataName": "floor",
                             "forList": "res_seq",
-                            "selected": true
+                            "selected": true,
+                            "$$hashKey": "object:6531"
                         },
                         {
                             "id": 17,
@@ -2565,11 +2813,13 @@
                             "parameters": [
                                 {
                                     "value": "all_floors",
-                                    "type": "array_of_elements"
+                                    "type": "array_of_elements",
+                                    "$$hashKey": "object:6968"
                                 }
                             ],
                             "result": "building",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:6532"
                         },
                         {
                             "id": 35,
@@ -2582,19 +2832,23 @@
                             "parameters": [
                                 {
                                     "value": "building",
-                                    "type": "obj"
+                                    "type": "obj",
+                                    "$$hashKey": "object:6979"
                                 },
                                 {
                                     "value": "\"typology\"",
-                                    "type": "dataName"
+                                    "type": "dataName",
+                                    "$$hashKey": "object:6980"
                                 },
                                 {
                                     "value": "3",
-                                    "type": "dataValue"
+                                    "type": "dataValue",
+                                    "$$hashKey": "object:6981"
                                 }
                             ],
                             "result": "_",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:6533"
                         }
                     ]
                 ],
@@ -2609,7 +2863,8 @@
                                 "name": "none"
                             },
                             "color": "#000000",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:6486"
                         },
                         {
                             "id": 8,
@@ -2620,7 +2875,8 @@
                                 "name": "color picker"
                             },
                             "color": "#ff80ff",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:6487"
                         },
                         {
                             "id": 7,
@@ -2631,7 +2887,8 @@
                                 "name": "color picker"
                             },
                             "color": "#80ff00",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:6488"
                         },
                         {
                             "id": 2,
@@ -2642,7 +2899,8 @@
                                 "name": "color picker"
                             },
                             "color": "#ffff00",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:6489"
                         },
                         {
                             "id": 9,
@@ -2654,7 +2912,8 @@
                                 "name": "none"
                             },
                             "color": "#000000",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:6490"
                         },
                         {
                             "id": 3,
@@ -2666,7 +2925,8 @@
                                 "name": "none"
                             },
                             "color": "#000000",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:6491"
                         },
                         {
                             "id": 4,
@@ -2678,7 +2938,8 @@
                                 "name": "none"
                             },
                             "color": "#000000",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:6492"
                         },
                         {
                             "id": 5,
@@ -2690,7 +2951,8 @@
                                 "name": "none"
                             },
                             "color": "#000000",
-                            "selected": false
+                            "selected": false,
+                            "$$hashKey": "object:6493"
                         }
                     ]
                 ],
@@ -2818,7 +3080,7 @@
                             ],
                             "overwrite": true,
                             "type": "segment_comm_ind_res",
-                            "version": 1471596626815,
+                            "version": 1471603753982,
                             "disabled": false,
                             "error": false
                         }
@@ -2853,7 +3115,7 @@
                         "outputConnectors": [
                             {
                                 "id": 1,
-                                "title": "Input",
+                                "title": "Output",
                                 "name": "plot",
                                 "connected": true,
                                 "option": {
@@ -2871,7 +3133,7 @@
                         "inputConnectors": [
                             {
                                 "id": 1,
-                                "title": "Output",
+                                "title": "Input",
                                 "type": "new",
                                 "selected": true,
                                 "name": "building"
@@ -2880,7 +3142,8 @@
                         "id": "outputPort"
                     }
                 }
-            }
+            },
+            "$$hashKey": "object:6378"
         },
         {
             "id": 8,
@@ -2916,7 +3179,7 @@
             ],
             "overwrite": true,
             "type": "type_4",
-            "version": 1471596634280,
+            "version": 1471603707425,
             "disabled": false,
             "subGraph": true,
             "subGraphModel": {
@@ -3693,7 +3956,7 @@
             "type": "new",
             "selected": false,
             "name": "model",
-            "$$hashKey": "object:2331"
+            "$$hashKey": "object:2329"
         },
         {
             "id": 3,
@@ -3703,7 +3966,7 @@
             "dataValue": "[]",
             "type": "new",
             "selected": false,
-            "$$hashKey": "object:2332"
+            "$$hashKey": "object:2330"
         },
         {
             "id": 5,
@@ -3717,17 +3980,17 @@
                 {
                     "value": "geo_data",
                     "type": "obj",
-                    "$$hashKey": "object:2412"
+                    "$$hashKey": "object:2410"
                 },
                 {
                     "value": "\"features\"",
                     "type": "propertyName",
-                    "$$hashKey": "object:2413"
+                    "$$hashKey": "object:2411"
                 }
             ],
             "result": "features",
             "selected": false,
-            "$$hashKey": "object:2333"
+            "$$hashKey": "object:2331"
         },
         {
             "id": 6,
@@ -3744,17 +4007,17 @@
                         {
                             "value": "feature",
                             "type": "obj",
-                            "$$hashKey": "object:2513"
+                            "$$hashKey": "object:2511"
                         },
                         {
                             "value": "\"geometry\"",
                             "type": "propertyName",
-                            "$$hashKey": "object:2514"
+                            "$$hashKey": "object:2512"
                         }
                     ],
                     "result": "featureGeometry",
                     "selected": false,
-                    "$$hashKey": "object:2424"
+                    "$$hashKey": "object:2422"
                 },
                 {
                     "id": 9,
@@ -3767,17 +4030,17 @@
                         {
                             "value": "featureGeometry",
                             "type": "obj",
-                            "$$hashKey": "object:2528"
+                            "$$hashKey": "object:2526"
                         },
                         {
                             "value": "\"coordinates\"",
                             "type": "propertyName",
-                            "$$hashKey": "object:2529"
+                            "$$hashKey": "object:2527"
                         }
                     ],
                     "result": "featureCoordinates",
                     "selected": false,
-                    "$$hashKey": "object:2425"
+                    "$$hashKey": "object:2423"
                 },
                 {
                     "id": 12,
@@ -3786,7 +4049,7 @@
                     "dataName": "coordinates",
                     "dataValue": "featureCoordinates[0]",
                     "selected": false,
-                    "$$hashKey": "object:2426"
+                    "$$hashKey": "object:2424"
                 },
                 {
                     "id": 11,
@@ -3795,7 +4058,7 @@
                     "dataName": "points",
                     "dataValue": "[ ]",
                     "selected": false,
-                    "$$hashKey": "object:2427"
+                    "$$hashKey": "object:2425"
                 },
                 {
                     "id": 16,
@@ -3808,7 +4071,7 @@
                             "dataName": "x",
                             "dataValue": "coordinate[0] - 15000",
                             "selected": false,
-                            "$$hashKey": "object:2554"
+                            "$$hashKey": "object:2552"
                         },
                         {
                             "id": 18,
@@ -3817,7 +4080,7 @@
                             "dataName": "y",
                             "dataValue": "coordinate[1] - 34000",
                             "selected": false,
-                            "$$hashKey": "object:2555"
+                            "$$hashKey": "object:2553"
                         },
                         {
                             "id": 19,
@@ -3831,24 +4094,24 @@
                                 {
                                     "value": "points",
                                     "type": "list",
-                                    "$$hashKey": "object:2643"
+                                    "$$hashKey": "object:2641"
                                 },
                                 {
                                     "value": "[x,  y]",
                                     "type": "itemOrList",
-                                    "$$hashKey": "object:2644"
+                                    "$$hashKey": "object:2642"
                                 }
                             ],
                             "result": "",
                             "selected": false,
-                            "$$hashKey": "object:2556"
+                            "$$hashKey": "object:2554"
                         }
                     ],
                     "controlType": "for each",
                     "dataName": "coordinate",
                     "forList": "coordinates",
                     "selected": false,
-                    "$$hashKey": "object:2428"
+                    "$$hashKey": "object:2426"
                 },
                 {
                     "id": 7,
@@ -3862,22 +4125,22 @@
                         {
                             "value": "GLOBAL",
                             "type": "frame",
-                            "$$hashKey": "object:2576"
+                            "$$hashKey": "object:2574"
                         },
                         {
                             "value": "points",
                             "type": "points",
-                            "$$hashKey": "object:2577"
+                            "$$hashKey": "object:2575"
                         },
                         {
                             "value": "[]",
                             "type": "holes",
-                            "$$hashKey": "object:2578"
+                            "$$hashKey": "object:2576"
                         }
                     ],
                     "result": "poly",
                     "selected": false,
-                    "$$hashKey": "object:2429"
+                    "$$hashKey": "object:2427"
                 },
                 {
                     "id": 13,
@@ -3900,17 +4163,17 @@
                                         {
                                             "value": "feature",
                                             "type": "obj",
-                                            "$$hashKey": "object:2704"
+                                            "$$hashKey": "object:2702"
                                         },
                                         {
                                             "value": "\"properties\"",
                                             "type": "propertyName",
-                                            "$$hashKey": "object:2705"
+                                            "$$hashKey": "object:2703"
                                         }
                                     ],
                                     "result": "propertySet",
                                     "selected": false,
-                                    "$$hashKey": "object:2655"
+                                    "$$hashKey": "object:2653"
                                 },
                                 {
                                     "id": 14,
@@ -3924,17 +4187,17 @@
                                         {
                                             "value": "poly",
                                             "type": "obj",
-                                            "$$hashKey": "object:2716"
+                                            "$$hashKey": "object:2714"
                                         },
                                         {
                                             "value": "propertySet",
                                             "type": "dataValue",
-                                            "$$hashKey": "object:2717"
+                                            "$$hashKey": "object:2715"
                                         }
                                     ],
                                     "result": "",
                                     "selected": false,
-                                    "$$hashKey": "object:2656"
+                                    "$$hashKey": "object:2654"
                                 },
                                 {
                                     "id": 21,
@@ -3949,32 +4212,32 @@
                                         {
                                             "value": "poly",
                                             "type": "obj",
-                                            "$$hashKey": "object:2728"
+                                            "$$hashKey": "object:2726"
                                         },
                                         {
                                             "value": "\"MeshBasicMaterial\"",
                                             "type": "material_type",
-                                            "$$hashKey": "object:2729"
+                                            "$$hashKey": "object:2727"
                                         },
                                         {
                                             "value": "false",
                                             "type": "wireframe",
-                                            "$$hashKey": "object:2730"
+                                            "$$hashKey": "object:2728"
                                         },
                                         {
                                             "value": "plot_color",
                                             "type": "color_hex",
-                                            "$$hashKey": "object:2731"
+                                            "$$hashKey": "object:2729"
                                         },
                                         {
                                             "value": "false",
                                             "type": "transparent",
-                                            "$$hashKey": "object:2732"
+                                            "$$hashKey": "object:2730"
                                         }
                                     ],
                                     "result": "",
                                     "selected": false,
-                                    "$$hashKey": "object:2657"
+                                    "$$hashKey": "object:2655"
                                 },
                                 {
                                     "id": 15,
@@ -3988,22 +4251,22 @@
                                         {
                                             "value": "allPolygons",
                                             "type": "list",
-                                            "$$hashKey": "object:2752"
+                                            "$$hashKey": "object:2750"
                                         },
                                         {
                                             "value": "poly",
                                             "type": "itemOrList",
-                                            "$$hashKey": "object:2753"
+                                            "$$hashKey": "object:2751"
                                         }
                                     ],
                                     "result": "",
                                     "selected": false,
-                                    "$$hashKey": "object:2658"
+                                    "$$hashKey": "object:2656"
                                 }
                             ],
                             "ifExpression": "poly != undefined",
                             "selected": false,
-                            "$$hashKey": "object:2592"
+                            "$$hashKey": "object:2590"
                         },
                         {
                             "id": 13,
@@ -4011,12 +4274,12 @@
                             "controlType": "else",
                             "nodes": [],
                             "selected": false,
-                            "$$hashKey": "object:2593"
+                            "$$hashKey": "object:2591"
                         }
                     ],
                     "controlType": "if else",
                     "selected": false,
-                    "$$hashKey": "object:2430"
+                    "$$hashKey": "object:2428"
                 }
             ],
             "type": "assign",
@@ -4024,7 +4287,7 @@
             "dataName": "feature",
             "forList": "features",
             "selected": true,
-            "$$hashKey": "object:2334"
+            "$$hashKey": "object:2332"
         },
         {
             "id": 2,
@@ -4038,12 +4301,12 @@
                 {
                     "value": "allPolygons",
                     "type": "array_of_elements",
-                    "$$hashKey": "object:2454"
+                    "$$hashKey": "object:2452"
                 }
             ],
             "result": "model",
             "selected": false,
-            "$$hashKey": "object:2335"
+            "$$hashKey": "object:2333"
         },
         {
             "id": 20,
@@ -4057,22 +4320,22 @@
                 {
                     "value": "model",
                     "type": "obj",
-                    "$$hashKey": "object:2465"
+                    "$$hashKey": "object:2463"
                 },
                 {
                     "value": "\"Description\"",
                     "type": "dataName",
-                    "$$hashKey": "object:2466"
+                    "$$hashKey": "object:2464"
                 },
                 {
                     "value": "\"This model contains all the plots.\"",
                     "type": "dataValue",
-                    "$$hashKey": "object:2467"
+                    "$$hashKey": "object:2465"
                 }
             ],
             "result": "_",
             "selected": false,
-            "$$hashKey": "object:2336"
+            "$$hashKey": "object:2334"
         }
     ],
     [
@@ -4139,7 +4402,7 @@
                 }
             ],
             "result": "seq",
-            "selected": true,
+            "selected": false,
             "$$hashKey": "object:1605"
         },
         {
@@ -4385,12 +4648,12 @@
                             "$$hashKey": "object:2033"
                         },
                         {
-                            "value": "-shiftX",
+                            "value": "-shiftX + 1",
                             "type": "shiftX",
                             "$$hashKey": "object:2034"
                         },
                         {
-                            "value": "-shiftY",
+                            "value": "-shiftY + 1",
                             "type": "shiftY",
                             "$$hashKey": "object:2035"
                         },
@@ -4650,7 +4913,7 @@
             "controlType": "for each",
             "dataName": "i",
             "forList": "seq",
-            "selected": false,
+            "selected": true,
             "disabled": false,
             "$$hashKey": "object:1606"
         },
@@ -4709,7 +4972,8 @@
             "title": "Output",
             "type": "new",
             "selected": true,
-            "name": "building"
+            "name": "building",
+            "$$hashKey": "object:3851"
         }
     ],
     [
@@ -4718,7 +4982,8 @@
             "title": "Output",
             "type": "new",
             "selected": true,
-            "name": "building"
+            "name": "building",
+            "$$hashKey": "object:5189"
         }
     ],
     [
@@ -4786,7 +5051,8 @@
             "title": "Output",
             "type": "new",
             "selected": true,
-            "name": "final_plots"
+            "name": "final_plots",
+            "$$hashKey": "object:2771"
         }
     ],
     [
@@ -4795,7 +5061,8 @@
             "title": "Output",
             "type": "new",
             "selected": true,
-            "name": "building"
+            "name": "building",
+            "$$hashKey": "object:6356"
         }
     ],
     [
@@ -4804,7 +5071,8 @@
             "title": "Output",
             "type": "new",
             "selected": true,
-            "name": "building"
+            "name": "building",
+            "$$hashKey": "object:9820"
         }
     ]
 ]
@@ -4836,7 +5104,7 @@
             },
             "color": "#000000",
             "selected": false,
-            "$$hashKey": "object:2324"
+            "$$hashKey": "object:2322"
         },
         {
             "id": 2,
@@ -4848,7 +5116,7 @@
             },
             "color": "#a6c8d2",
             "selected": true,
-            "$$hashKey": "object:2325"
+            "$$hashKey": "object:2323"
         }
     ],
     [
@@ -4924,7 +5192,8 @@
             },
             "color": "#000000",
             "selected": true,
-            "dataValue": "undefined"
+            "dataValue": "undefined",
+            "$$hashKey": "object:3848"
         }
     ],
     [
@@ -4938,7 +5207,8 @@
                 "name": "none"
             },
             "color": "#000000",
-            "selected": false
+            "selected": false,
+            "$$hashKey": "object:5184"
         }
     ],
     [],
@@ -4952,7 +5222,8 @@
                 "name": "none"
             },
             "color": "#000000",
-            "selected": true
+            "selected": true,
+            "$$hashKey": "object:2768"
         }
     ],
     [
@@ -4965,7 +5236,8 @@
                 "name": "none"
             },
             "color": "#000000",
-            "selected": true
+            "selected": true,
+            "$$hashKey": "object:6351"
         }
     ],
     [
@@ -4978,7 +5250,8 @@
                 "name": "none"
             },
             "color": "#000000",
-            "selected": true
+            "selected": true,
+            "$$hashKey": "object:9815"
         }
     ]
 ]
