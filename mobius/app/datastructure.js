@@ -624,14 +624,20 @@ var mObj_geom_Compound = function mObj_geom_Compound( geometry ){
      */ 
     this.extractThreeGeometry = function(){ 
 
+        var threeGeometry; 
+
         if( geometry instanceof Array ){
 
-            var threeGeometry = new THREE.Object3D();
+            threeGeometry = new THREE.Object3D();
             
             for(var element=0; element < geometry.length; element++){
                 var geom = geometry[element];
                 var exGeom = geom.extractThreeGeometry();
                 threeGeometry.add( exGeom );
+
+                var edges = new THREE.EdgesHelper( exGeom, "black");
+                edges.material.linewidth = 2;
+                threeGeometry.add(edges);
             }
         
         }
