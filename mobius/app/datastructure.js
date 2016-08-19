@@ -449,6 +449,8 @@ var mObj_geom = function mObj_geom( geometry, material ){
      */
     this.extractTopology = function(){
 
+        return new THREE.Geometry();
+
         // if threeGeometry hasn't been computed before or native geometry has been transformed so that new conversion is required
         // the function defines it and caches it
         if(topology == undefined)

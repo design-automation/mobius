@@ -305,14 +305,6 @@ var MOBIUS = ( function (mod){
 				return p;
 		})
 
-		// if vertex is passed
-/*		if(points[0] instanceof mObj_geom_Vertex){
-			points = points.map( function( vert ){
-				return [vert.x, vert.y, vert.z];
-			})
-		}*/
-
-		//var shape = new THREE.Shape( points );
 		var shape = new THREE.Shape();
 		shape.moveTo(points[0][0], points[0][1]);
 		for(var p=1; p<points.length; p++){
@@ -414,6 +406,10 @@ var MOBIUS = ( function (mod){
 		// the required result.
 		if (scale == undefined)
 			scale = 1000;
+		
+/*		scale = 100;
+		offset = offset*100;*/
+		
 		ClipperLib.JS.ScaleUpPaths(subj, scale);
 		var co = new ClipperLib.ClipperOffset(2, 0.25);
 		co.AddPaths(subj, ClipperLib.JoinType.jtRound, ClipperLib.EndType.etClosedPolygon);
@@ -486,6 +482,42 @@ var MOBIUS = ( function (mod){
 	}
 
 
+	mod.srf.area = function( surface ){
+
+		if(surface instanceof mObj_geom_Surface){
+
+			var geom = surface.getGeometry();  // THREE.ShapeGeometry()
+			var shape = convertShapeGeometryToShape(geom); // THREE.Shape()
+
+			function calcPolygonArea(vertices) {
+			    var total = 0;
+
+			    for (var i = 0, l = vertices.length; i < l; i++) {
+			      var addX = vertices[i].x;
+			      var addY = vertices[i == vertices.length - 1 ? 0 : i + 1].y;
+			      var subX = vertices[i == vertices.length - 1 ? 0 : i + 1].x;
+			      var subY = vertices[i].y;
+
+			      total += (addX * addY * 0.5);
+			      total -= (subX * subY * 0.5);
+			    }
+
+			    return Math.abs(total);
+			}
+
+
+			return calcPolygonArea( shape.makeGeometry().vertices );
+
+		}else{
+			console.log("Passed argument not a surface. Area cannot be computed.");
+			return 0;
+		}
+
+
+	}
+
+
+
 	// TODO: is this useful?
 	/**
 	 * Divides the surface into a grid, based number of divisions in the u and v directions and  
@@ -496,7 +528,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {2D array}  - List of UV positions [ [ u1, v1 ], [ u2, v2 ], [ u3, v3 ] ...]; Length of list is equal to uSegments*vSegments
 	 * @memberof srf	 
 	 */
-	mod.srf.uvGridByNumber = function(surface, uSegments, vSegments){
+/*	mod.srf.uvGridByNumber = function(surface, uSegments, vSegments){
 		
 		var uvList = [];
 
@@ -513,7 +545,7 @@ var MOBIUS = ( function (mod){
 
 		return uvList;
 
-	};
+	};*/
 
 
 	// TODO: is this possible in three.js?
@@ -524,7 +556,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {array}  - List of vertex objects
 	 * @memberof srf
 	 */
-	mod.srf.getPoints = function(surface, uvList){
+/*	mod.srf.getPoints = function(surface, uvList){
 
 		// to check for compound and take in only the first elemetn of the array
 		if(surface instanceof mObj_geom_Compound)
@@ -544,7 +576,7 @@ var MOBIUS = ( function (mod){
 			return new mobj_geom_Vertex( srf.point( u, v ) );
 
 	};
-
+*/
 
 	// TODO: Subdivision won't work - try something else - include topology and edges helper and then get the divided set of surfaces
 	// would this be a compound - or a solid?
@@ -555,7 +587,7 @@ var MOBIUS = ( function (mod){
 	 * @returns {solid object} Solid object  
 	 * @memberof srf
 	 */
-	mod.srf.divide = function(surface, uvGrid){
+/*	mod.srf.divide = function(surface, uvGrid){
 
 		// to check for compound and take in only the first elemetn of the array
 		if(surface instanceof mObj_geom_Compound)
@@ -586,7 +618,7 @@ var MOBIUS = ( function (mod){
 
 		return new mObj_geom_Solid( div_surfaces );
 
-	};
+	};*/
 
 
 	//
@@ -866,15 +898,34 @@ var MOBIUS = ( function (mod){
 	mod.mod.makeModel = function(array_of_elements){
 
 		// mObj_geom_Compound is always a container for other geometric datastructuresf
+
+		// flatten model 
+		array_of_elements = array_of_elements.map(function(mObj){
+
+			// convert compound into array of mObj elements
+			if(mObj instanceof mObj_geom_Compound)
+				return mObj.getGeometry();
+			else
+				return mObj;
+		
+		})
+		array_of_elements = array_of_elements.flatten();
+
+
 		return new mObj_geom_Compound( array_of_elements );
 	};
 
 	mod.mod.unpackModel = function(model){
 
-		if( model instanceof mObj_geom_Compound )
+		if( model instanceof mObj_geom_Compound ){
+
+
 			return model.getGeometry();
-		else
-			console.err("Non-model passed to unpackModel function");
+		}
+		else{
+			console.log("Non-model passed to unpackModel function");
+			return;
+		}
 	};
 
 
@@ -1253,9 +1304,6 @@ var MOBIUS = ( function (mod){
 		if(object.getGeometry != undefined)
 			geom = object.getGeometry();
 
-		if(geom instanceof THREE.Shape)
-			geom = new THREE.ShapeGeometry(geom)   // This gives a THREE.ShapeGeometry;
-
 		var trnMat = [ [ scaleX, 0, 0, 0 ],
 						[ 0, scaleY, 0, 0],
 							[ 0, 0, scaleZ, 0 ],
@@ -1265,8 +1313,11 @@ var MOBIUS = ( function (mod){
 		geom.applyMatrix( getThreeMatrix(frame.toGlobal()) );
 		geom.applyMatrix( getThreeMatrix(trnMat) );
 		geom.applyMatrix( getThreeMatrix(frame.toLocal()) );
-	
-		object.setGeometry( geom ); 
+
+/*		geom.vertices.map(function(v){
+			if( isNaN(v.x) || isNaN(v.x) || isNaN(v.x) )
+				console.log("Problem in scaling : check : ", geom);
+		})*/
 
 		return object;			
 
@@ -1303,9 +1354,6 @@ var MOBIUS = ( function (mod){
 		if(object.getGeometry != undefined)
 			geom = object.getGeometry();
 
-		if(geom instanceof THREE.Shape)
-			geom = new THREE.ShapeGeometry(geom)   // This gives a THREE.ShapeGeometry;
-
 		var trnMat = [ [ 1, 0, 0, shiftX ], 
 							[ 0, 1, 0, shiftY ], 
 								[ 0, 0, 1, shiftZ ], 
@@ -1316,7 +1364,6 @@ var MOBIUS = ( function (mod){
 	    geom.applyMatrix( getThreeMatrix(trnMat ) );
 		geom.applyMatrix( getThreeMatrix(frame.toLocal()) );
 		
-		//console.log(object);
 		return object;
 		
 	};
@@ -1332,15 +1379,6 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.trn.move = function(object, point, copy){
 
-		var geom; 
-		if(object.getGeometry != undefined)
-			geom = object.getGeometry();
-
-		if(geom instanceof THREE.Shape){
-			console.log("Error Case")
-			geom = convertGeomToThree(geom)   // This gives a THREE.ShapeGeometry;
-		}
-
 		// orCenter is always an mObj_geom_Vertex
 		var orCenter = MOBIUS.obj.getCentre(object); 
 			
@@ -1349,8 +1387,16 @@ var MOBIUS = ( function (mod){
 		var tx = (point.x || point[0]) - orCenter.x;
 		var ty = (point.y || point[1]) - orCenter.y;
 		var tz = (point.z || point[2]) - orCenter.z; 
+
+		if( isNaN(tx) )
+			tx = 0;
+		if( isNaN(ty) )
+			ty = 0;
+		if( isNaN(tz) )
+			tz = 0;
+
+		return MOBIUS.trn.shift(object, GLOBAL, tx, ty, tz, copy);
 		
-		return MOBIUS.trn.shift( object, GLOBAL, tx, ty, tz, copy );		
 	};
 
 
@@ -1859,18 +1905,15 @@ var computeTopology = function( mObj ){
 			   If yes, proceed. 
 			   If no, compute Topology of that element
 			*/
-/*			if(geom[element].getTopology() == undefined){
+			if(geom[element].getTopology() == undefined){
 				
-				// TRIAL: compute topology only if they are not complicated 
-				if (geom[element] instanceof mObj_geom_Surface)
-					elemTopo = computeTopology(geom[element]);
-				else 
-					elemTopo =  MOBIUS.TOPOLOGY_DEF;
+				elemTopo = computeTopology(geom[element]);
+
 			}
 			else{
 				elemTopo = geom[element].getTopology();
 			}
-*/
+
 			/* Each node can have different outputs
 			 * Each output has only one compound object 
 			 * This compound object is a collection of other objects - 'geom[element]'
@@ -1878,7 +1921,7 @@ var computeTopology = function( mObj ){
 			 *
 			 * These objects can be anything - vertices, edges, wires, faces or solids
 			 */ 
-			MOBIUS.obj.addData( geom[element], "belongsTo", { model: 0 } );
+			MOBIUS.obj.addData( geom[element], "belongsTo", [0] ); 
 
 			/* 
 			 * Adding this object to the topology at object level
@@ -1890,13 +1933,13 @@ var computeTopology = function( mObj ){
 			 *	We iterate throught the topological elements of each of these objects
 			 *  All these elements together will form the final topology of the compound
 			 */
-/*			["faces", "wires", "edges", "vertices"].map( function(el){
+			["faces", "wires", "edges", "vertices"].map( function(el){ 
 
 				elemTopo[el].map( function(elm){ 
 					if(elm.getData() != undefined){
 						var bTo = elm.getData()["belongsTo"]; 
 						bTo.object = element; 
-						//bTo.push(element);
+						bTo.push(element);
 						MOBIUS.obj.addData( elm, "belongsTo", bTo );									
 					}
 					else{ 
@@ -1908,10 +1951,10 @@ var computeTopology = function( mObj ){
 				// Concatenate all the resulting arrays of the topology of each element into one
 				topology[el] = topology[el].concat(elemTopo[el]);	
 
-			}); */
+			}); 
 
 			// Points donot have a belongsTo property
-			//topology.points = topology.points.concat(elemTopo.points);
+			topology.points = topology.points.concat(elemTopo.points);
 		}
 
 	}
@@ -1919,14 +1962,14 @@ var computeTopology = function( mObj ){
 	 *	Can be a THREE.Geometry or [ THREE.Shapes ]
 	 *  Currently, this deals with only THREE.Geometry case
 	 */
-	else if(mObj instanceof mObj_geom_Solid){
+	else if(mObj instanceof mObj_geom_Solid){ 
 
 		// This is when an Obj file has been loaded 
 		if(mObj.getGeometry() instanceof THREE.Group)
 			return { points:[], vertices: [], edges: [], faces: [] };
 
 		if(mObj.getGeometry instanceof Array){
-			console.log("An array has been passed as a solid for topology-computatin. Module currently doesn't deal with such cases.")
+			console.log("An array has been passed as a solid for topology-computation. Module currently doesn't deal with such cases.")
 			return { points:[], vertices: [], edges: [], faces: [] };
 		}
 
@@ -2075,16 +2118,16 @@ var computeTopology = function( mObj ){
 			var fface = new mObj_geom_Surface(geom);
 
 			//face_topo.faces.push(fface);			
-			//fface.setTopology(face_topo);
+			fface.setTopology(face_topo);
 			MOBIUS.obj.addData( fface, "belongsTo", { 'face': topology.faces.length } ); 
 
 
 			//finalFaces.push(new mObj_geom_Surface(geom));
-			topology.faces.push(fface);
+			//topology.faces.push(fface);
 
 		}
 		
-		//topology.faces = finalFaces;
+		topology.faces = finalFaces;
 		//console.log("Computed ", topology.faces.length, "faces"); 
 		var f=0;
 		do{
@@ -2160,7 +2203,7 @@ var computeTopology = function( mObj ){
 			wire.vertices.push(wire.vertices[0]);
 			wire = new mObj_geom_Curve(new THREE.Line(wire));
 
-			topology.wires.push(wire);
+			//topology.wires.push(wire);
 		}
 		else{
 			/*
@@ -2291,7 +2334,7 @@ var computeTopology = function( mObj ){
 
 				MOBIUS.obj.addData(new_edge, "belongsTo", {'edge' : i} );
 
-				topology.edges.push(new_edge);				
+				//topology.edges.push(new_edge);				
 			}
 
 			//console.log("Computed", topology.edges.length, " edges");
@@ -2421,7 +2464,7 @@ var convertShapeGeometryToShape = function(shapeGeom){
 	vertices.map(	function(v){
 		
 		if(v.z != 0){
-			console.log("Error! ShapeGeometry is 3D and cannot be converted into a 2D Shape", v);
+			console.log("Error! ShapeGeometry is 3D and cannot be converted into a 2D Shape", vertices);
 		}
 		else{
 			//console.log("Shape processed successfully from ShapeGeometry.")
@@ -2434,3 +2477,8 @@ var convertShapeGeometryToShape = function(shapeGeom){
 	return new THREE.Shape(points);
 
 } 
+
+
+
+
+
