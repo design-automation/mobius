@@ -1364,6 +1364,8 @@ var MOBIUS = ( function (mod){
 	    geom.applyMatrix( getThreeMatrix(trnMat ) );
 		geom.applyMatrix( getThreeMatrix(frame.toLocal()) );
 		
+		object.setGeometry(geom);
+
 		return object;
 		
 	};
