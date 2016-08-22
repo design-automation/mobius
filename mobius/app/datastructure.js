@@ -43,6 +43,9 @@ var globalID = 0;
  *          getGUID
  *
  */
+
+
+
 var mObj = function mObj( type ){
 
     /*
@@ -78,7 +81,15 @@ var mObj = function mObj( type ){
     this.getGUID = function(){
         return guid;
     }
+
+    mObj.count++;
 };
+
+mObj.count=0;
+
+function getMobiusObjectCount(){
+    return mObj.count; 
+}
 
 
 /*
@@ -449,12 +460,12 @@ var mObj_geom = function mObj_geom( geometry, material ){
      */
     this.extractTopology = function(){
 
-        return new THREE.Geometry();
+        
 
         // if threeGeometry hasn't been computed before or native geometry has been transformed so that new conversion is required
         // the function defines it and caches it
         if(topology == undefined)
-            topology = computeTopology(self, this.getGUID());
+            topology = computeTopology(self);
         else
             console.log("Topology already defined");
 
@@ -479,22 +490,28 @@ var mObj_geom = function mObj_geom( geometry, material ){
             this.extractTopology();
 
         // LIMITATION - Data can only be added to the topology
-        if( topology == undefined && data == undefined ){
+        if( topology == undefined /*&& data == undefined */){
             console.log("No Topology or Data.");
             return dataTable;
         }
         else{
             if (data != undefined){
+
+                // belongsTo property only appears with the object is being displayed as part of a topology
                 for(var property in data){
-                    var jsonObject = {
-                        'attachedTo' : 'object_' + this.getGUID(),
-                        'index':this.getGUID(),
-                        'Property' : property,
-                        'Value' : data[property],
-                        'cate': 'Model',
-                        'connectorName':connectorName
-                    };
-                    dataTable.push(jsonObject);
+                    
+                    if(property != 'belongsTo'){
+                        var jsonObject = {
+                            'attachedTo' : 'object_' + this.getGUID(),
+                            'index':this.getGUID(),
+                            'Property' : property,
+                            'Value' : data[property],
+                            'cate': 'Model',
+                            'connectorName':connectorName
+                        };
+                        
+                        dataTable.push(jsonObject);                        
+                    }
                 }
             }
 
@@ -628,10 +645,22 @@ var mObj_geom_Compound = function mObj_geom_Compound( geometry ){
 
         if( geometry instanceof Array ){
 
+            // flatten the array
+            var array_of_elements = geometry.map(function(mObj){
+
+                // convert compound into array of mObj elements
+                if(mObj instanceof mObj_geom_Compound)
+                    return mObj.getGeometry();
+                else
+                    return mObj;
+        
+            })
+            array_of_elements = array_of_elements.flatten();
+
             threeGeometry = new THREE.Object3D();
             
-            for(var element=0; element < geometry.length; element++){
-                var geom = geometry[element];
+            for(var element=0; element < array_of_elements.length; element++){
+                var geom = array_of_elements[element];
                 var exGeom = geom.extractThreeGeometry();
                 threeGeometry.add( exGeom );
 
