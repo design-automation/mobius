@@ -523,7 +523,6 @@ var mObj_geom = function mObj_geom( geometry, material ){
                         
                         if(topoElement == "points"){
 
-
                             var jsonObject = {
                                                     'attachedTo' : topoElement + index,
                                                     'index' : index,
@@ -537,25 +536,45 @@ var mObj_geom = function mObj_geom( geometry, material ){
 
                         };
 
-                        var topoData = topology[topoElement][index].getData();
-                        if (topoData != undefined){
-                            for( var property in topoData ){
+                        if(topology[topoElement][index] instanceof Array){ 
 
+                            //console.log(topology[topoElement][index], topoElement);
+                           
                                 var jsonObject = {
                                     'attachedTo' : topoElement + index,
                                     'index' : index,
                                     'cate': topoElement,
-                                    'Property' : property,
-                                    'Value' : topoData[property],
+                                    'Property' : "belongsTo",
+                                    'Value' : topology[topoElement][index],
                                     'connectorName':connectorName
                                 };
                                 dataTable.push(jsonObject);
-                            }
+
                         }
+                        else{
+                            var topoData = topology[topoElement][index].getData();
+                            if (topoData != undefined){
+                                for( var property in topoData ){
+
+                                    var jsonObject = {
+                                        'attachedTo' : topoElement + index,
+                                        'index' : index,
+                                        'cate': topoElement,
+                                        'Property' : property,
+                                        'Value' : topoData[property],
+                                        'connectorName':connectorName
+                                    };
+                                    dataTable.push(jsonObject);
+                                }
+                            }                            
+                        }
+
                     }
                 }
             }
         }
+
+        //console.log(dataTable);
         return dataTable;
     }
 

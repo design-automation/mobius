@@ -1784,18 +1784,90 @@ var computeTopology = function( mObj ){
 
 		for(var objCount = 0; objCount < geom_array.length; objCount++){
 
-			MOBIUS.obj.addData( geom_array[objCount], "belongsTo", [0] )
+			MOBIUS.obj.addData( geom_array[objCount], "belongsTo", [objCount] )
 			topology.objects.push( geom_array[objCount] );
 
-		
+			var geom = geom_array[objCount]; 
+
+			// get an array out
+			if(geom instanceof mObj_geom_Compound){
+
+				var cGeom = geom.getGeometry() // array of objects
+
+				for(var c=0; c < cGeom.length; c++){
+
+					var sub_geom = cGeom[c]; 
+
+					["faces", "wires", "edges", "vertices"].map( function(el){
+
+						
+						var topoEl = sub_geom[el]; console.log(sub_geom[el]);
+
+						for(var i=0; i < topoEl.length; i++ ){
+
+							// geom_array[el] is an arra
+							topology[el].push( topoEl[i].concat(objCount) )
+						}
+						
+					})
+
+
+					topology.points = topology.points.concat(geom_array[objCount].points);
+
+				}
+
+			}
+			else{
+				["faces", "wires", "edges", "vertices"].map( function(el){
+
+					
+					var topoEl = geom[el];
+					for(var i=0; i < topoEl.length; i++ ){
+
+						// geom_array[el] is an array
+						if(topoEl[i] instanceof Array)
+							topology[el].push( topoEl[i].concat(objCount) );
+						else{
+
+							//console.log(topoEl[i])
+							var bTo = MOBIUS.obj.getProperty(topoEl[i], "belongsTo");
+							MOBIUS.obj.addData(topoEl[i], "belongsTo", [i, objCount] );
+							topology[el].push( topoEl[i] )
+						}
+					}
+					
+				})
+
+				topology.points = topology.points.concat(geom_array[objCount].points);				
+			}
+	
 		}
-
-
 	}
 
 	if(mObj instanceof mObj_geom_Solid){
 
 		var geom = mObj.getGeometry(); // THREE.Geometry
+
+		topology.faces = [ [0], [1], [2], [3], [4], [5] ];
+
+		for(var f=0; f < topology.faces.length; f++ ){
+
+			for(var w=0; w < 1; w++){
+
+				topology.wires.push( [0, f] );
+
+				for(var e=0; e < 4; e++ ){
+
+					topology.edges.push( [e, 0, f] );
+
+					for(var v=0; v < 2; v++){
+						topology.vertices.push( [v, e, 0, f] );
+					}
+					
+				}
+			}
+
+		}
 
 		topology.points = geom.vertices.map( function(v){
 
@@ -1807,10 +1879,28 @@ var computeTopology = function( mObj ){
 
 	if(mObj instanceof mObj_geom_Surface){
 
-	
+		MOBIUS.obj.addData( mObj, "belongsTo", [0, null] )	
+		topology.objects = [ ];	
+		topology.faces = [ mObj ] ;
 
-		MOBIUS.obj.addData( mObj, "belongsTo", [0] )		
-		topology.faces = [ mObj ];
+		for(var f=0; f < topology.faces.length; f++ ){
+
+			for(var w=0; w < 1; w++){
+				
+				topology.wires.push( [0, f, null] );
+
+				for(var e=0; e < 4; e++ ){
+
+					topology.edges.push( [e, 0, f, null] );
+
+					for(var v=0; v < 2; v++){
+						topology.vertices.push( [v, e, 0, f, null] );
+					}
+					
+				}
+			}
+
+		}
 
 		topology.points = mObj.getGeometry().vertices.map( function(v){
 
@@ -1820,7 +1910,7 @@ var computeTopology = function( mObj ){
 
 	}
 	
-	// console.log("Topology:", topology);
+	//console.log("Topology:", topology);
 	return topology;
 }
 
