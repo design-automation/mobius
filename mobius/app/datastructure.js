@@ -518,9 +518,11 @@ var mObj_geom = function mObj_geom( geometry, material ){
             // generalized - irrespective of topology object configuration
             for(topoElement in topology){ 
                 if(topology.hasOwnProperty(topoElement)){
-                    for( var index=0; index < topology[topoElement].length; index++){ 
+                    
+                    var maxInd = (topology[topoElement].length < 100 || topoElement == 'objects') ? topology[topoElement].length : 100 ;
+                    
+                    for( var index=0; index < maxInd; index++){ 
 
-                        
                         if(topoElement == "points"){
 
                             var jsonObject = {

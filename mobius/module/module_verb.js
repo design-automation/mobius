@@ -1546,6 +1546,7 @@ var MOBIUS = ( function (mod){
 	/** @namespace */
 	mod.msc = {};
 
+
 	/**
 	 * Converts degrees into radians
 	 * @param {float} degree - Degrees to be converted
@@ -1801,7 +1802,7 @@ var computeTopology = function( mObj ){
 					["faces", "wires", "edges", "vertices"].map( function(el){
 
 						
-						var topoEl = sub_geom[el]; console.log(sub_geom[el]);
+						var topoEl = sub_geom[el]; 
 
 						for(var i=0; i < topoEl.length; i++ ){
 
