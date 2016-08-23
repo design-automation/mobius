@@ -37,16 +37,22 @@ var MOBIUS = ( function (mod){
 		}
 	}
 
-	mod.urb.loadGeoJSON = function( filepath ){
+	mod.urb.loadGeoJSON = function( file_or_filepath ){
 
-		var request = new XMLHttpRequest();
-		request.open('GET', filepath, false);  // `false` makes the request synchronous
-		request.send(null);
+		if( file_or_filepath instanceof Object ){			
+		   console.log(file_or_filepath.features.length, " features loaded");
+		   return new mObj_data( 'geojson', file_or_filepath );
+		}
+		else{
+			var request = new XMLHttpRequest();
+			request.open('GET', file_or_filepath, false);  // `false` makes the request synchronous
+			request.send(null);
 
-		if (request.status === 200) {
-		   var data = JSON.parse(request.responseText);
-		   console.log(data.features.length, " features loaded");
-		   return new mObj_data( 'geojson', data);
+			if (request.status === 200) {
+			   var data = JSON.parse(request.responseText);
+			   console.log(data.features.length, " features loaded");
+			   return new mObj_data( 'geojson', data);
+			}			
 		}
 
 	};

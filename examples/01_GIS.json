@@ -17,6 +17,18 @@
                     },
                     "color": "#000000",
                     "selected": true
+                },
+                {
+                    "id": 2,
+                    "title": "Input",
+                    "name": "file",
+                    "connected": false,
+                    "dataValue": "MOBIUS.file_1471955807580",
+                    "option": {
+                        "name": "local file"
+                    },
+                    "color": "#000000",
+                    "selected": true
                 }
             ],
             "outputConnectors": [
@@ -30,7 +42,7 @@
             ],
             "overwrite": true,
             "type": "geoJSON_Loader",
-            "version": 1471953211183,
+            "version": 1471956256241,
             "disabled": false,
             "error": false
         },
@@ -74,7 +86,7 @@
             ],
             "overwrite": true,
             "type": "geoJSON_makePolygons",
-            "version": 1471853920977,
+            "version": 1471955793898,
             "disabled": false,
             "subGraph": false,
             "error": true
@@ -152,7 +164,7 @@
             ],
             "overwrite": true,
             "type": "plot_to_model",
-            "version": 1471954383449,
+            "version": 1471956237943,
             "disabled": false,
             "subGraph": false,
             "error": false
@@ -2336,7 +2348,7 @@
             ],
             "overwrite": true,
             "type": "flatten_plots",
-            "version": 1471953867083,
+            "version": 1471955789366,
             "disabled": false,
             "subGraph": false
         },
@@ -4140,7 +4152,7 @@
             "outputConnectors": [],
             "overwrite": true,
             "type": "saveGeoJSON",
-            "version": 1471954184020,
+            "version": 1471955790274,
             "disabled": false,
             "error": false
         }
@@ -4297,7 +4309,8 @@
             "title": "Output",
             "selected": false,
             "type": "new",
-            "name": "geoData"
+            "name": "geoData",
+            "$$hashKey": "object:1191"
         },
         {
             "id": 18,
@@ -4310,11 +4323,25 @@
             "parameters": [
                 {
                     "value": "filepath",
-                    "type": "filepath"
+                    "type": "filepath",
+                    "$$hashKey": "object:1271"
                 }
             ],
             "result": "geoData",
-            "selected": true
+            "selected": true,
+            "$$hashKey": "object:1192"
+        },
+        {
+            "id": 19,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "console.log(geoData, geoData.getData())",
+            "method": "expression",
+            "category": "msc",
+            "parameters": [],
+            "selected": false,
+            "$$hashKey": "object:1193"
         }
     ],
     [
@@ -4665,7 +4692,7 @@
             "type": "new",
             "selected": false,
             "name": "buildings",
-            "$$hashKey": "object:1144"
+            "$$hashKey": "object:1297"
         },
         {
             "id": 4,
@@ -4675,7 +4702,7 @@
             "dataValue": "[]",
             "type": "new",
             "selected": false,
-            "$$hashKey": "object:1145"
+            "$$hashKey": "object:1298"
         },
         {
             "id": 3,
@@ -4689,12 +4716,12 @@
                 {
                     "value": "plots_model",
                     "type": "model",
-                    "$$hashKey": "object:1222"
+                    "$$hashKey": "object:1396"
                 }
             ],
             "result": "all_plots",
             "selected": false,
-            "$$hashKey": "object:1146"
+            "$$hashKey": "object:1299"
         },
         {
             "id": 27,
@@ -4708,22 +4735,22 @@
                 {
                     "value": "0",
                     "type": "start",
-                    "$$hashKey": "object:1233"
+                    "$$hashKey": "object:1407"
                 },
                 {
-                    "value": "all_plots.length - 1",
+                    "value": "all_plots.length-1",
                     "type": "end",
-                    "$$hashKey": "object:1234"
+                    "$$hashKey": "object:1408"
                 },
                 {
                     "value": "1",
                     "type": "stepSize",
-                    "$$hashKey": "object:1235"
+                    "$$hashKey": "object:1409"
                 }
             ],
             "result": "seq",
             "selected": true,
-            "$$hashKey": "object:1147"
+            "$$hashKey": "object:1300"
         },
         {
             "id": 5,
@@ -4738,7 +4765,7 @@
                     "type": "assign",
                     "selected": false,
                     "disabled": false,
-                    "$$hashKey": "object:1249"
+                    "$$hashKey": "object:1423"
                 },
                 {
                     "id": 32,
@@ -4752,13 +4779,13 @@
                         {
                             "value": "plot",
                             "type": "object",
-                            "$$hashKey": "object:1394"
+                            "$$hashKey": "object:1568"
                         }
                     ],
                     "result": "centre",
                     "selected": false,
                     "disabled": false,
-                    "$$hashKey": "object:1250"
+                    "$$hashKey": "object:1424"
                 },
                 {
                     "id": 14,
@@ -4771,18 +4798,18 @@
                         {
                             "value": "plot",
                             "type": "obj",
-                            "$$hashKey": "object:1405"
+                            "$$hashKey": "object:1579"
                         },
                         {
                             "value": "\"coverage\"",
                             "type": "propertyName",
-                            "$$hashKey": "object:1406"
+                            "$$hashKey": "object:1580"
                         }
                     ],
                     "result": "coverage",
                     "selected": false,
                     "disabled": false,
-                    "$$hashKey": "object:1251"
+                    "$$hashKey": "object:1425"
                 },
                 {
                     "id": 15,
@@ -4795,18 +4822,18 @@
                         {
                             "value": "plot",
                             "type": "obj",
-                            "$$hashKey": "object:1420"
+                            "$$hashKey": "object:1594"
                         },
                         {
                             "value": "\"plot_id\"",
                             "type": "propertyName",
-                            "$$hashKey": "object:1421"
+                            "$$hashKey": "object:1595"
                         }
                     ],
                     "result": "plot_id",
                     "selected": false,
                     "disabled": false,
-                    "$$hashKey": "object:1252"
+                    "$$hashKey": "object:1426"
                 },
                 {
                     "id": 15,
@@ -4819,18 +4846,18 @@
                         {
                             "value": "plot",
                             "type": "obj",
-                            "$$hashKey": "object:1435"
+                            "$$hashKey": "object:1609"
                         },
                         {
                             "value": "\"parcel_id\"",
                             "type": "propertyName",
-                            "$$hashKey": "object:1436"
+                            "$$hashKey": "object:1610"
                         }
                     ],
                     "result": "parcel_id",
                     "selected": false,
                     "disabled": false,
-                    "$$hashKey": "object:1253"
+                    "$$hashKey": "object:1427"
                 },
                 {
                     "id": 16,
@@ -4843,18 +4870,18 @@
                         {
                             "value": "plot",
                             "type": "obj",
-                            "$$hashKey": "object:1450"
+                            "$$hashKey": "object:1624"
                         },
                         {
                             "value": "\"floors\"",
                             "type": "propertyName",
-                            "$$hashKey": "object:1451"
+                            "$$hashKey": "object:1625"
                         }
                     ],
                     "result": "floors",
                     "selected": false,
                     "disabled": false,
-                    "$$hashKey": "object:1254"
+                    "$$hashKey": "object:1428"
                 },
                 {
                     "id": 30,
@@ -4867,38 +4894,38 @@
                         {
                             "value": "plot",
                             "type": "object",
-                            "$$hashKey": "object:1465"
+                            "$$hashKey": "object:1639"
                         },
                         {
                             "value": "GLOBAL",
                             "type": "frame",
-                            "$$hashKey": "object:1466"
+                            "$$hashKey": "object:1640"
                         },
                         {
                             "value": "coverage/10",
                             "type": "scaleX",
-                            "$$hashKey": "object:1467"
+                            "$$hashKey": "object:1641"
                         },
                         {
                             "value": "coverage/10",
                             "type": "scaleY",
-                            "$$hashKey": "object:1468"
+                            "$$hashKey": "object:1642"
                         },
                         {
                             "value": "1",
                             "type": "scaleZ",
-                            "$$hashKey": "object:1469"
+                            "$$hashKey": "object:1643"
                         },
                         {
                             "value": "true",
                             "type": "copy",
-                            "$$hashKey": "object:1470"
+                            "$$hashKey": "object:1644"
                         }
                     ],
                     "result": "scaled_plot",
                     "selected": false,
                     "disabled": false,
-                    "$$hashKey": "object:1255"
+                    "$$hashKey": "object:1429"
                 },
                 {
                     "id": 31,
@@ -4911,23 +4938,23 @@
                         {
                             "value": "scaled_plot",
                             "type": "object",
-                            "$$hashKey": "object:1496"
+                            "$$hashKey": "object:1670"
                         },
                         {
                             "value": "centre",
                             "type": "point",
-                            "$$hashKey": "object:1497"
+                            "$$hashKey": "object:1671"
                         },
                         {
                             "value": "false",
                             "type": "copy",
-                            "$$hashKey": "object:1498"
+                            "$$hashKey": "object:1672"
                         }
                     ],
                     "result": "_",
                     "selected": false,
                     "disabled": false,
-                    "$$hashKey": "object:1256"
+                    "$$hashKey": "object:1430"
                 },
                 {
                     "id": 37,
@@ -4937,7 +4964,7 @@
                     "dataValue": "plot.points[0][0] - scaled_plot.points[0][0]",
                     "selected": false,
                     "disabled": false,
-                    "$$hashKey": "object:1257"
+                    "$$hashKey": "object:1431"
                 },
                 {
                     "id": 36,
@@ -4947,7 +4974,7 @@
                     "dataValue": "plot.points[0][1] - scaled_plot.points[0][1]",
                     "selected": false,
                     "disabled": false,
-                    "$$hashKey": "object:1258"
+                    "$$hashKey": "object:1432"
                 },
                 {
                     "id": 35,
@@ -4960,38 +4987,38 @@
                         {
                             "value": "scaled_plot",
                             "type": "object",
-                            "$$hashKey": "object:1529"
+                            "$$hashKey": "object:1703"
                         },
                         {
                             "value": "GLOBAL",
                             "type": "frame",
-                            "$$hashKey": "object:1530"
+                            "$$hashKey": "object:1704"
                         },
                         {
                             "value": "-shiftX + 1",
                             "type": "shiftX",
-                            "$$hashKey": "object:1531"
+                            "$$hashKey": "object:1705"
                         },
                         {
                             "value": "-shiftY + 1",
                             "type": "shiftY",
-                            "$$hashKey": "object:1532"
+                            "$$hashKey": "object:1706"
                         },
                         {
                             "value": "0",
                             "type": "shiftZ",
-                            "$$hashKey": "object:1533"
+                            "$$hashKey": "object:1707"
                         },
                         {
                             "value": "false",
                             "type": "copy",
-                            "$$hashKey": "object:1534"
+                            "$$hashKey": "object:1708"
                         }
                     ],
                     "result": "_",
                     "selected": false,
                     "disabled": false,
-                    "$$hashKey": "object:1259"
+                    "$$hashKey": "object:1433"
                 },
                 {
                     "id": 29,
@@ -5004,13 +5031,13 @@
                         {
                             "value": "scaled_plot",
                             "type": "surface",
-                            "$$hashKey": "object:1560"
+                            "$$hashKey": "object:1734"
                         }
                     ],
                     "result": "area",
                     "selected": false,
                     "disabled": false,
-                    "$$hashKey": "object:1260"
+                    "$$hashKey": "object:1434"
                 },
                 {
                     "id": 11,
@@ -5038,13 +5065,13 @@
                                                     "dataValue": "type_1(scaled_plot).building",
                                                     "selected": false,
                                                     "disabled": false,
-                                                    "$$hashKey": "object:1736"
+                                                    "$$hashKey": "object:1910"
                                                 }
                                             ],
                                             "ifExpression": "floors > 6",
                                             "selected": false,
                                             "disabled": false,
-                                            "$$hashKey": "object:1688"
+                                            "$$hashKey": "object:1862"
                                         },
                                         {
                                             "id": 19,
@@ -5059,24 +5086,24 @@
                                                     "dataValue": "type_2(scaled_plot).building",
                                                     "selected": false,
                                                     "disabled": false,
-                                                    "$$hashKey": "object:1749"
+                                                    "$$hashKey": "object:1923"
                                                 }
                                             ],
                                             "selected": false,
                                             "disabled": false,
-                                            "$$hashKey": "object:1689"
+                                            "$$hashKey": "object:1863"
                                         }
                                     ],
                                     "controlType": "if else",
                                     "selected": false,
                                     "disabled": false,
-                                    "$$hashKey": "object:1653"
+                                    "$$hashKey": "object:1827"
                                 }
                             ],
                             "ifExpression": "area > 5000",
                             "selected": false,
                             "disabled": false,
-                            "$$hashKey": "object:1568"
+                            "$$hashKey": "object:1742"
                         },
                         {
                             "id": 11,
@@ -5100,13 +5127,13 @@
                                                     "dataValue": "type_3(scaled_plot).building",
                                                     "selected": false,
                                                     "disabled": false,
-                                                    "$$hashKey": "object:1761"
+                                                    "$$hashKey": "object:1935"
                                                 }
                                             ],
                                             "ifExpression": "floors > 6",
                                             "selected": false,
                                             "disabled": false,
-                                            "$$hashKey": "object:1703"
+                                            "$$hashKey": "object:1877"
                                         },
                                         {
                                             "id": 22,
@@ -5121,29 +5148,29 @@
                                                     "dataValue": "type_4(scaled_plot).building",
                                                     "selected": false,
                                                     "disabled": false,
-                                                    "$$hashKey": "object:1774"
+                                                    "$$hashKey": "object:1948"
                                                 }
                                             ],
                                             "selected": false,
                                             "disabled": false,
-                                            "$$hashKey": "object:1704"
+                                            "$$hashKey": "object:1878"
                                         }
                                     ],
                                     "controlType": "if else",
                                     "selected": false,
                                     "disabled": false,
-                                    "$$hashKey": "object:1666"
+                                    "$$hashKey": "object:1840"
                                 }
                             ],
                             "selected": false,
                             "disabled": false,
-                            "$$hashKey": "object:1569"
+                            "$$hashKey": "object:1743"
                         }
                     ],
                     "controlType": "if else",
                     "selected": false,
                     "disabled": false,
-                    "$$hashKey": "object:1261"
+                    "$$hashKey": "object:1435"
                 },
                 {
                     "id": 8,
@@ -5157,18 +5184,18 @@
                         {
                             "value": "all_buildings",
                             "type": "list",
-                            "$$hashKey": "object:1583"
+                            "$$hashKey": "object:1757"
                         },
                         {
                             "value": "building",
                             "type": "itemOrList",
-                            "$$hashKey": "object:1584"
+                            "$$hashKey": "object:1758"
                         }
                     ],
                     "result": "",
                     "selected": false,
                     "disabled": false,
-                    "$$hashKey": "object:1262"
+                    "$$hashKey": "object:1436"
                 },
                 {
                     "id": 15,
@@ -5181,23 +5208,23 @@
                         {
                             "value": "building",
                             "type": "obj",
-                            "$$hashKey": "object:1598"
+                            "$$hashKey": "object:1772"
                         },
                         {
                             "value": "\"plot_id\"",
                             "type": "dataName",
-                            "$$hashKey": "object:1599"
+                            "$$hashKey": "object:1773"
                         },
                         {
                             "value": "plot_id",
                             "type": "dataValue",
-                            "$$hashKey": "object:1600"
+                            "$$hashKey": "object:1774"
                         }
                     ],
                     "result": "_",
                     "selected": false,
                     "disabled": false,
-                    "$$hashKey": "object:1263"
+                    "$$hashKey": "object:1437"
                 },
                 {
                     "id": 16,
@@ -5210,23 +5237,23 @@
                         {
                             "value": "building",
                             "type": "obj",
-                            "$$hashKey": "object:1617"
+                            "$$hashKey": "object:1791"
                         },
                         {
                             "value": "\"parcel_id\"",
                             "type": "dataName",
-                            "$$hashKey": "object:1618"
+                            "$$hashKey": "object:1792"
                         },
                         {
                             "value": "parcel_id",
                             "type": "dataValue",
-                            "$$hashKey": "object:1619"
+                            "$$hashKey": "object:1793"
                         }
                     ],
                     "result": "_",
                     "selected": false,
                     "disabled": false,
-                    "$$hashKey": "object:1264"
+                    "$$hashKey": "object:1438"
                 },
                 {
                     "id": 2,
@@ -5240,12 +5267,12 @@
                         {
                             "value": "all_buildings",
                             "type": "array_of_elements",
-                            "$$hashKey": "object:1636"
+                            "$$hashKey": "object:1810"
                         }
                     ],
                     "result": "buildings",
                     "selected": false,
-                    "$$hashKey": "object:1265"
+                    "$$hashKey": "object:1439"
                 }
             ],
             "type": "new",
@@ -5254,7 +5281,7 @@
             "forList": "seq",
             "selected": false,
             "disabled": false,
-            "$$hashKey": "object:1148"
+            "$$hashKey": "object:1301"
         },
         {
             "id": 17,
@@ -5268,22 +5295,22 @@
                 {
                     "value": "buildings",
                     "type": "obj",
-                    "$$hashKey": "object:1299"
+                    "$$hashKey": "object:1473"
                 },
                 {
                     "value": "\"Description\"",
                     "type": "dataName",
-                    "$$hashKey": "object:1300"
+                    "$$hashKey": "object:1474"
                 },
                 {
                     "value": "\"This model contains all the buildings\"",
                     "type": "dataValue",
-                    "$$hashKey": "object:1301"
+                    "$$hashKey": "object:1475"
                 }
             ],
             "result": "_",
             "selected": false,
-            "$$hashKey": "object:1149"
+            "$$hashKey": "object:1302"
         }
     ],
     [
@@ -5803,7 +5830,21 @@
                 "name": "none"
             },
             "color": "#000000",
-            "selected": true
+            "selected": false,
+            "$$hashKey": "object:1177"
+        },
+        {
+            "id": 2,
+            "title": "Input",
+            "name": "file",
+            "connected": false,
+            "dataValue": "MOBIUS.file_1471956071803",
+            "option": {
+                "name": "local file"
+            },
+            "color": "#000000",
+            "selected": true,
+            "$$hashKey": "object:1178"
         }
     ],
     [
@@ -5841,7 +5882,7 @@
             },
             "color": "#000000",
             "selected": false,
-            "$$hashKey": "object:1123"
+            "$$hashKey": "object:1282"
         },
         {
             "id": 2,
@@ -5853,7 +5894,7 @@
             },
             "color": "#000000",
             "selected": true,
-            "$$hashKey": "object:1124"
+            "$$hashKey": "object:1283"
         },
         {
             "id": 3,
@@ -5865,7 +5906,7 @@
             },
             "color": "#000000",
             "selected": false,
-            "$$hashKey": "object:1125"
+            "$$hashKey": "object:1284"
         },
         {
             "id": 4,
@@ -5877,7 +5918,7 @@
             },
             "color": "#000000",
             "selected": false,
-            "$$hashKey": "object:1126"
+            "$$hashKey": "object:1285"
         },
         {
             "id": 5,
@@ -5889,7 +5930,7 @@
             },
             "color": "#000000",
             "selected": false,
-            "$$hashKey": "object:1127"
+            "$$hashKey": "object:1286"
         }
     ],
     [
