@@ -922,6 +922,11 @@ var MOBIUS = ( function (mod){
 	 */
 	mod.obj.addData = function(obj, dataName, dataValue){
 
+		if(obj.getData == undefined){
+			obj[dataName] == dataValue;
+			return;			
+		}
+
 		// decide on topology heirarchy also - if edge gets a property, do the vertices also get the same property?
 		if(obj.constructor === Array){
 			for(var i=0; i<obj.length; i++){
@@ -1545,6 +1550,21 @@ var MOBIUS = ( function (mod){
 	//
 	/** @namespace */
 	mod.msc = {};
+
+	mod.msc.saveFile = function( json, type){
+		
+		if(type == 'geojson'){
+
+			if(json == undefined)
+				json = {name: 'Bob', occupation: 'Plumber'}
+
+			var data = JSON.stringify(json);
+			var url = 'data:text/json;charset=utf8,' + encodeURIComponent(data);
+			window.open(url, '_blank');
+			window.focus();			
+		}
+
+	}
 
 
 	/**
