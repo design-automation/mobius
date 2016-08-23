@@ -438,16 +438,18 @@
               // prevent accept if tag and else tag
               callbacks.accept = function (sourceNodeScope, destNodesScope, destIndex) {
 
-                  if((destNodesScope.$modelValue[0].title === 'Input' &&
-                      sourceNodeScope.$modelValue.title !== 'Input')||
-                      (destNodesScope.$modelValue[0].title !== 'Input' &&
-                      sourceNodeScope.$modelValue.title === 'Input')
-                  ){
-                    return false;
-                  }else if(sourceNodeScope.$modelValue.controlType === 'if' ||
+                  if(sourceNodeScope.$modelValue.controlType === 'if' ||
                       sourceNodeScope.$modelValue.controlType === 'else'){
-                    return false;
-                  }else{
+                      return false;
+                  }
+                  //else if((destNodesScope.$modelValue[0].title === 'Input' &&
+                  //    sourceNodeScope.$modelValue.title !== 'Input')||
+                  //    (destNodesScope.$modelValue[0].title !== 'Input' &&
+                  //    sourceNodeScope.$modelValue.title === 'Input')
+                  //){
+                  //  return false;
+                  //}
+                  else{
                       return !(destNodesScope.nodropEnabled || destNodesScope.outOfDepth(sourceNodeScope));
                   }
               };

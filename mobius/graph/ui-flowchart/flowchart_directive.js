@@ -587,7 +587,7 @@ angular.module('flowChart', ['dragging'] )
 		};
 
 		// context menu positioning
-		$scope.onshow= function(event) {
+		$scope.onshow = function(event) {
 			if ($scope.readonly !== true) {
 				var width = window.innerWidth,
 					height = window.innerHeight;

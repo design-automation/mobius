@@ -58,33 +58,35 @@
 }
 
 .button-control{
+
+
     display: inline-block;
-    position: absolute !important;
-    top: 0;
-    right:90px;
-    white-space: nowrap;
+    position: absolute;
+    top:0;
+    right: 60px;
 }
 
 
 .button-output{
-    /*display: inline-block;*/
-    position: absolute;
-    right:30px;
-    top:0;
-}
-
-.button-input{
     white-space: nowrap;
     position: absolute;
     right:0;
     top:0;
 }
 
+.button-input{
+    /*display: inline-block;*/
+    position: absolute;
+    right:30px;
+    top:0;
+}
+
 .button-variable{
     display: inline-block;
-    position: absolute;
-    top:0;
-    right: 60px;
+    position: absolute !important;
+    top: 0;
+    right:90px;
+    white-space: nowrap;
 }
 
 .code-area .codeEditor {

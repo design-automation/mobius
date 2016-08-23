@@ -38,14 +38,12 @@ mobius.factory('executeService', function ($q) {
                         }
                     )
                 }
-
-                console.log(graphTrace)
             }
 
             if (outputs){
                 deferred.resolve(outputs);
             }else{
-                deferred.reject(graphTrace);
+                deferred.reject([graphTrace,errorMsg]);
             }
 
             return deferred.promise;

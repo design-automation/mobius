@@ -770,7 +770,8 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         $scope.interfaceOptions = [{name:'none'},
                                    {name:'slider'},
                                    {name:'dropdown'},
-                                   {name:'color picker'}];
+                                   {name:'color picker'},
+                                   {name:'local file'}];
 
         $scope.menuOptions = function (menuOptionText) {
             if(menuOptionText){
@@ -828,4 +829,5 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                 document.getElementById('subgraphToggle').style.right='2px';
             }
         };
+
     }]);

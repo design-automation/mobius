@@ -20,16 +20,12 @@ mobius.controller('procedureMenuCtrl',['$scope','$rootScope','generateCode',
         }, function () {
             if (generateCode.getNodeIndex() !== $scope.nodeIndex) {
                 $scope.nodeIndex = generateCode.getNodeIndex();
-                console.log('index: ', $scope.nodeIndex )
                 $scope.data  = $scope.dataList[$scope.nodeIndex];
-                console.log($scope.dataList)
-                console.log('data: ',$scope.data  )
             }
         });
 
         // disable selected item
         $scope.disableProcedure = function(){
-            console.log($scope.data)
             $scope.findSelectedProcedure($scope.data);
             // if disable 'if' -> disable 'if/else'
             if($scope.selectedPos.title === 'Control' && $scope.selectedPos.controlType === 'if'){

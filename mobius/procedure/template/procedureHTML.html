@@ -1,5 +1,5 @@
 <div class="code-area" >
-    <div ui-layout="{ flow : 'row', dividerSize:'1',disableToggle:true}" >
+    <!--<div ui-layout="{ flow : 'row', dividerSize:'1',disableToggle:true}" >-->
             <!--<div ui-layout-container size = "25%">-->
                 <!--<div>-->
                     <!--<div ng-if = "currentNodeName">-->
@@ -37,7 +37,7 @@
                 <!--</div>-->
             <!--</div>-->
 
-            <div ui-layout-container >
+            <!--<div ui-layout-container >-->
                 <div ng-if = "currentNodeName">
                     <div class="doormat">
                         <div>
@@ -60,7 +60,7 @@
                     </div>
                 </div>
 
-                <button class="button pull-right button-action"
+                <button class="button pull-right button-action "
                         dropdown-toggle="dropdown">
                     <i class="icon-function fa-lg" title="Add Function"></i>
                     <ui-select ng-model="method.selected"
@@ -98,7 +98,7 @@
                     <i class="fa fa-retweet fa-lg"  title="Add Control"></i>
 
                     <ul class="dropdown-menu  narrow-menu" ng-if="toggleDropdown"
-                        style="min-width: 130px!important;margin-top:3px !important;">
+                        style="min-width: 130px!important;margin-top:px !important;">
                         <li  ng-repeat="controlType in controlTypes">
                             <a ng-click="newItem('Control',controlType)">{{controlType}}</a>
                         </li>
@@ -106,16 +106,18 @@
 
                 </button>
 
-                <button class="button pull-right button-output" ng-click="newItem('Output')" >
-                    <i class="fa fa-sign-out fa-lg fa-rotate-90" title="Add Output"></i>
-                </button>
-
                 <button class="button pull-right button-variable" ng-click="newItem('Data')">
                     <i class="icon-variable fa-lg" title="Add Variable"></i>
                 </button>
 
+                <button class="button pull-right button-output" ng-click="newItem('Output')" >
+                    <!--<i class="fa fa-sign-out fa-lg fa-rotate-90" title="Add Output"></i>-->
+                    <span style="font-weight: 900; font-size: large" title="Add Output"> O </span>
+                </button>
+
                 <button class="button pull-right button-input" ng-click="newInterface('Input')" >
-                    <i class="fa fa-sign-in fa-lg fa-rotate-90" title="Add Input"></i>
+                    <!--<i class="fa fa-sign-in fa-lg fa-rotate-90" title="Add Input"></i>-->
+                    <span style="font-weight: 900; font-size: large" title="Add Input" >I</span>
                 </button>
 
                 <!--<div id="argument-area">-->
@@ -170,7 +172,7 @@
                     <!--</div>-->
 
                 </div>
-            </div>
+            <!--</div>-->
 
             <!--<div ui-layout-container size = "32px" class="monitor" >-->
                 <!--<div class="doormat">-->
@@ -182,5 +184,5 @@
                      <!--readonly="{{true}}">-->
                 <!--</div>-->
             <!--</div>-->
-    </div>
+    <!--</div>-->
 </div>
