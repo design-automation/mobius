@@ -830,7 +830,7 @@ var MOBIUS = ( function (mod){
 	mod.obj.copy = function( object ){
 
 		if( object.getGeometry == undefined ){
-			//console.log("Module: getGeometry is not defined for the object passed to Mobius Copy Function", object);
+			console.log("Module: getGeometry is not defined for the object passed to Mobius Copy Function");
 			return object;
 		}
 
@@ -844,8 +844,12 @@ var MOBIUS = ( function (mod){
 				newobj.frame = object.getGeometry().frame;
 				return newobj; 
 			}
-			else if(obj instanceof THREE.Geometry)
-				return obj.clone();
+			else if(obj instanceof THREE.Geometry){
+
+				var obj = obj.clone();
+				obj.frame = object.getGeometry().frame;
+				return obj;
+			}
 /*			else if(obj instanceof Array){
 				var newarr = [];
 				for(var i=0; i < obj.length; i++){
@@ -881,10 +885,25 @@ var MOBIUS = ( function (mod){
 			newcopy = new mObj_geom_Solid( getCopy(object.getGeometry()) );
 		}
 		else if(object instanceof mObj_geom_Compound){
-			newcopy = new mObj_geom_Compound( getCopy(object.getGeometry()) );
+
+			var newarr = [];
+			var geom_array = object.getGeometry();  // this is an array
+			
+			for(var i=0; i<geom_array.length; i++){
+				var geom = geom_array[i];
+				if(geom instanceof mObj_geom_Surface)
+					newarr.push( MOBIUS.obj.copy(geom) );
+				else
+					newarr.push(geom);
+			}
+
+
+			newcopy = new mObj_geom_Compound( newarr );
+
+
 		}
 
-		newcopy.setData( object.getData() );
+		newcopy.setData( Object.assign({}, object.getData() ) ); 
 		newcopy.setMaterial( object.getMaterial() );	
 
 		return newcopy;
@@ -1811,13 +1830,12 @@ var computeTopology = function( mObj ){
 
 		for(var objCount = 0; objCount < geom_array.length; objCount++){
 
-			MOBIUS.obj.addData( geom_array[objCount], "belongsTo", [objCount] )
-			topology.objects.push( geom_array[objCount] );
-
-			var geom = geom_array[objCount]; 
+			var geom =  geom_array[objCount];
+			MOBIUS.obj.addData( geom, "belongsTo", [objCount] )
+			topology.objects.push( geom );
 
 			// get an array out
-			if(geom instanceof mObj_geom_Compound){
+/*			if(geom instanceof mObj_geom_Compound){
 
 				var cGeom = geom.getGeometry() // array of objects
 
@@ -1866,7 +1884,7 @@ var computeTopology = function( mObj ){
 				})
 
 				topology.points = topology.points.concat(geom_array[objCount].points);				
-			}
+			}*/
 	
 		}
 	}
@@ -1877,7 +1895,7 @@ var computeTopology = function( mObj ){
 
 		topology.faces = [ [0], [1], [2], [3], [4], [5] ];
 
-		for(var f=0; f < topology.faces.length; f++ ){
+/*		for(var f=0; f < topology.faces.length; f++ ){
 
 			for(var w=0; w < 1; w++){
 
@@ -1894,7 +1912,7 @@ var computeTopology = function( mObj ){
 				}
 			}
 
-		}
+		}*/
 
 		topology.points = geom.vertices.map( function(v){
 
@@ -1910,7 +1928,7 @@ var computeTopology = function( mObj ){
 		topology.objects = [ ];	
 		topology.faces = [ mObj ] ;
 
-		for(var f=0; f < topology.faces.length; f++ ){
+/*		for(var f=0; f < topology.faces.length; f++ ){
 
 			for(var w=0; w < 1; w++){
 				
@@ -1927,7 +1945,7 @@ var computeTopology = function( mObj ){
 				}
 			}
 
-		}
+		}*/
 
 		topology.points = mObj.getGeometry().vertices.map( function(v){
 
