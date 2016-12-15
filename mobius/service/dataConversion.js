@@ -51,6 +51,7 @@ var dataConversion = (function(data){
             obj instanceof mObj_geom_Curve ||
             obj instanceof mObj_geom_Surface ||
             obj instanceof mObj_geom_Solid ||
+            obj instanceof mObj_geom_Compound ||
             obj instanceof mObj_geom_Vertex ||
             obj instanceof mObj_frame){
 

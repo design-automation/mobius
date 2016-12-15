@@ -1,0 +1,723 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "towerNode0",
+            "x": 2069.9545454545455,
+            "y": 2058.772727272727,
+            "inputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Input",
+                    "name": "shape",
+                    "connected": false,
+                    "dataValue": "[ [0,0],[40,0],[30,20],[0,30] ]",
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "selected": true
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "id": 2,
+                    "title": "Output",
+                    "type": "new",
+                    "selected": false,
+                    "name": "building"
+                }
+            ],
+            "type": "towerNode",
+            "version": 0,
+            "overwrite": true,
+            "disabled": false,
+            "subGraph": true,
+            "subGraphModel": {
+                "javascriptCode": "// To generate code,\n// create nodes & procedures and run!\n",
+                "geomListCode": "var geomList = [];\n",
+                "innerCodeList": [
+                    "//\n// To generate code, create nodes & procedures and run!\n//\n",
+                    "//\n// To generate code, create nodes & procedures and run!\n//\n",
+                    "//\n// To generate code, create nodes & procedures and run!\n//\n",
+                    "//\n// To generate code, create nodes & procedures and run!\n//\n"
+                ],
+                "outerCodeList": [
+                    "//\n// To generate code, create nodes & procedures and run!\n//\n",
+                    "//\n// To generate code, create nodes & procedures and run!\n//\n",
+                    "//\n// To generate code, create nodes & procedures and run!\n//\n",
+                    "//\n// To generate code, create nodes & procedures and run!\n//\n"
+                ],
+                "dataList": [
+                    [
+                        {
+                            "id": 1,
+                            "title": "Output",
+                            "type": "new",
+                            "selected": false,
+                            "name": "model"
+                        },
+                        {
+                            "id": 3,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "polygonByPoints",
+                            "category": "srf",
+                            "parameters": [
+                                {
+                                    "value": "GLOBAL",
+                                    "type": "frame"
+                                },
+                                {
+                                    "value": "two_dim_points",
+                                    "type": "points"
+                                },
+                                {
+                                    "value": "[]",
+                                    "type": "holes"
+                                }
+                            ],
+                            "result": "shape",
+                            "selected": true
+                        },
+                        {
+                            "id": 2,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "makeModel",
+                            "category": "mod",
+                            "parameters": [
+                                {
+                                    "value": "[shape]",
+                                    "type": "array_of_elements"
+                                }
+                            ],
+                            "result": "model",
+                            "selected": false
+                        }
+                    ],
+                    [
+                        {
+                            "id": 18,
+                            "title": "Output",
+                            "type": "new",
+                            "selected": false,
+                            "name": "building"
+                        },
+                        {
+                            "id": 3,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "offset",
+                            "category": "srf",
+                            "parameters": [
+                                {
+                                    "value": "shape",
+                                    "type": "surface"
+                                },
+                                {
+                                    "value": "-3",
+                                    "type": "offset"
+                                },
+                                {
+                                    "value": "1",
+                                    "type": "scale"
+                                }
+                            ],
+                            "result": "offsetShape",
+                            "selected": false
+                        },
+                        {
+                            "id": 8,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "console.log(\"Adjust the frame for the tower to accomodate the tower CENTER to align with the extrusion centre\")",
+                            "method": "expression",
+                            "category": "msc",
+                            "parameters": [],
+                            "selected": false
+                        },
+                        {
+                            "id": 6,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "byXYAxes",
+                            "category": "frm",
+                            "parameters": [
+                                {
+                                    "value": "[10,7.5, floors*floor_height]",
+                                    "type": "origin"
+                                },
+                                {
+                                    "value": "[1,0,0]",
+                                    "type": "xAxis"
+                                },
+                                {
+                                    "value": "[0,1,0]",
+                                    "type": "yAxis"
+                                }
+                            ],
+                            "result": "towerFrame",
+                            "selected": false,
+                            "disabled": false
+                        },
+                        {
+                            "id": 5,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "polygonByPoints",
+                            "category": "srf",
+                            "parameters": [
+                                {
+                                    "value": "towerFrame",
+                                    "type": "frame"
+                                },
+                                {
+                                    "value": "[[0,0],[10,0],[10,10],[0,10]]",
+                                    "type": "points"
+                                },
+                                {
+                                    "value": "[]",
+                                    "type": "holes"
+                                }
+                            ],
+                            "result": "tower",
+                            "selected": false
+                        },
+                        {
+                            "id": 11,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "sequence",
+                            "category": "lst",
+                            "parameters": [
+                                {
+                                    "value": "0",
+                                    "type": "start"
+                                },
+                                {
+                                    "value": "floors",
+                                    "type": "end"
+                                },
+                                {
+                                    "value": "1",
+                                    "type": "stepSize"
+                                }
+                            ],
+                            "result": "seq",
+                            "selected": false
+                        },
+                        {
+                            "id": 13,
+                            "title": "Data",
+                            "nodes": [],
+                            "dataName": "all_floors",
+                            "dataValue": "[]",
+                            "type": "new",
+                            "selected": false
+                        },
+                        {
+                            "id": 10,
+                            "title": "Control",
+                            "nodes": [
+                                {
+                                    "id": 15,
+                                    "title": "Action",
+                                    "nodes": [],
+                                    "expression": "",
+                                    "method": "print",
+                                    "category": "msc",
+                                    "parameters": [
+                                        {
+                                            "value": "floor",
+                                            "type": "content"
+                                        }
+                                    ],
+                                    "selected": false
+                                },
+                                {
+                                    "id": 7,
+                                    "title": "Action",
+                                    "nodes": [],
+                                    "type": "new",
+                                    "expression": "",
+                                    "method": "byXYAxes",
+                                    "category": "frm",
+                                    "parameters": [
+                                        {
+                                            "value": "[0,0,floor*floor_height]",
+                                            "type": "origin"
+                                        },
+                                        {
+                                            "value": "[1,0,0]",
+                                            "type": "xAxis"
+                                        },
+                                        {
+                                            "value": "[0,1,0]",
+                                            "type": "yAxis"
+                                        }
+                                    ],
+                                    "result": "floor_frame",
+                                    "selected": false,
+                                    "disabled": false
+                                },
+                                {
+                                    "id": 4,
+                                    "title": "Action",
+                                    "nodes": [],
+                                    "type": "new",
+                                    "expression": "",
+                                    "method": "byExtrusion",
+                                    "category": "sld",
+                                    "parameters": [
+                                        {
+                                            "value": "floor_frame",
+                                            "type": "frame"
+                                        },
+                                        {
+                                            "value": "offsetShape",
+                                            "type": "surface"
+                                        },
+                                        {
+                                            "value": "0",
+                                            "type": "xDistance"
+                                        },
+                                        {
+                                            "value": "floor_height",
+                                            "type": "yDistance"
+                                        },
+                                        {
+                                            "value": "0",
+                                            "type": "zDistance"
+                                        }
+                                    ],
+                                    "result": "ex",
+                                    "selected": false
+                                },
+                                {
+                                    "id": 16,
+                                    "title": "Action",
+                                    "nodes": [],
+                                    "expression": "all_floors.push(ex)",
+                                    "method": "expression",
+                                    "category": "msc",
+                                    "parameters": [],
+                                    "selected": false
+                                }
+                            ],
+                            "type": "assign",
+                            "controlType": "for each",
+                            "dataName": "floor",
+                            "forList": "seq",
+                            "selected": false
+                        },
+                        {
+                            "id": 5,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "byExtrusion",
+                            "category": "sld",
+                            "parameters": [
+                                {
+                                    "value": "towerFrame",
+                                    "type": "frame"
+                                },
+                                {
+                                    "value": "tower",
+                                    "type": "surface"
+                                },
+                                {
+                                    "value": "0",
+                                    "type": "xDistance"
+                                },
+                                {
+                                    "value": "40",
+                                    "type": "yDistance"
+                                },
+                                {
+                                    "value": "0",
+                                    "type": "zDistance"
+                                }
+                            ],
+                            "result": "exTower",
+                            "selected": false
+                        },
+                        {
+                            "id": 9,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "addMaterial",
+                            "category": "obj",
+                            "parameters": [
+                                {
+                                    "value": "exTower",
+                                    "type": "obj"
+                                },
+                                {
+                                    "value": "\"MeshBasicMaterial\"",
+                                    "type": "material_type"
+                                },
+                                {
+                                    "value": "false",
+                                    "type": "wireframe"
+                                },
+                                {
+                                    "value": "color",
+                                    "type": "color_hex"
+                                },
+                                {
+                                    "value": "false",
+                                    "type": "transparent"
+                                }
+                            ],
+                            "result": "_",
+                            "selected": true,
+                            "disabled": false
+                        },
+                        {
+                            "id": 2,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "makeModel",
+                            "category": "mod",
+                            "parameters": [
+                                {
+                                    "value": "all_floors",
+                                    "type": "array_of_elements"
+                                }
+                            ],
+                            "result": "base_floors",
+                            "selected": false
+                        },
+                        {
+                            "id": 3,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "makeModel",
+                            "category": "mod",
+                            "parameters": [
+                                {
+                                    "value": "[exTower]",
+                                    "type": "array_of_elements"
+                                }
+                            ],
+                            "result": "output_tower",
+                            "selected": false
+                        },
+                        {
+                            "id": 17,
+                            "title": "Action",
+                            "nodes": [],
+                            "type": "new",
+                            "expression": "",
+                            "method": "makeModel",
+                            "category": "mod",
+                            "parameters": [
+                                {
+                                    "value": "[base_floors, output_tower]",
+                                    "type": "array_of_elements"
+                                }
+                            ],
+                            "result": "building",
+                            "selected": false
+                        }
+                    ]
+                ],
+                "interfaceList": [
+                    [
+                        {
+                            "id": 1,
+                            "title": "Input",
+                            "name": "two_dim_points",
+                            "connected": true,
+                            "dataValue": "[ [0,0],[40,0],[30,20],[0,30] ]",
+                            "option": {
+                                "name": "none"
+                            },
+                            "color": "#000000",
+                            "selected": true
+                        }
+                    ],
+                    [
+                        {
+                            "id": 1,
+                            "title": "Input",
+                            "name": "shape",
+                            "connected": true,
+                            "option": {
+                                "name": "none"
+                            },
+                            "color": "#000000",
+                            "selected": false
+                        },
+                        {
+                            "id": 2,
+                            "title": "Input",
+                            "name": "color",
+                            "connected": false,
+                            "option": {
+                                "name": "color picker"
+                            },
+                            "color": "#1c0ce7",
+                            "selected": false
+                        },
+                        {
+                            "id": 3,
+                            "title": "Input",
+                            "name": "floor_height",
+                            "connected": false,
+                            "dataValue": "3",
+                            "option": {
+                                "name": "none"
+                            },
+                            "color": "#000000",
+                            "selected": false
+                        },
+                        {
+                            "id": 4,
+                            "title": "Input",
+                            "name": "floors",
+                            "connected": false,
+                            "dataValue": "10",
+                            "option": {
+                                "name": "none"
+                            },
+                            "color": "#000000",
+                            "selected": true
+                        }
+                    ]
+                ],
+                "chartDataModel": {
+                    "nodes": [
+                        {
+                            "id": 0,
+                            "name": "shape0",
+                            "x": 1905.886236639761,
+                            "y": 1976.9162910063685,
+                            "inputConnectors": [
+                                {
+                                    "id": 1,
+                                    "title": "Input",
+                                    "name": "two_dim_points",
+                                    "connected": true,
+                                    "dataValue": "[ [0,0],[40,0],[30,20],[0,30] ]",
+                                    "option": {
+                                        "name": "none"
+                                    },
+                                    "color": "#000000",
+                                    "selected": true
+                                }
+                            ],
+                            "outputConnectors": [
+                                {
+                                    "id": 1,
+                                    "title": "Output",
+                                    "type": "new",
+                                    "selected": false,
+                                    "name": "model"
+                                }
+                            ],
+                            "type": "shape",
+                            "version": 1467952389293,
+                            "overwrite": true,
+                            "disabled": false,
+                            "subGraphModel": {}
+                        },
+                        {
+                            "id": 1,
+                            "name": "offset0",
+                            "x": 1914.3759680773599,
+                            "y": 2108.5308249716136,
+                            "inputConnectors": [
+                                {
+                                    "id": 1,
+                                    "title": "Input",
+                                    "name": "shape",
+                                    "connected": true,
+                                    "option": {
+                                        "name": "none"
+                                    },
+                                    "color": "#000000",
+                                    "selected": false
+                                },
+                                {
+                                    "id": 2,
+                                    "title": "Input",
+                                    "name": "color",
+                                    "connected": false,
+                                    "option": {
+                                        "name": "color picker"
+                                    },
+                                    "color": "#1c0ce7",
+                                    "selected": false
+                                },
+                                {
+                                    "id": 3,
+                                    "title": "Input",
+                                    "name": "floor_height",
+                                    "connected": false,
+                                    "dataValue": "3",
+                                    "option": {
+                                        "name": "none"
+                                    },
+                                    "color": "#000000",
+                                    "selected": false
+                                },
+                                {
+                                    "id": 4,
+                                    "title": "Input",
+                                    "name": "floors",
+                                    "connected": false,
+                                    "dataValue": "10",
+                                    "option": {
+                                        "name": "none"
+                                    },
+                                    "color": "#000000",
+                                    "selected": true
+                                }
+                            ],
+                            "outputConnectors": [
+                                {
+                                    "id": 18,
+                                    "title": "Output",
+                                    "type": "new",
+                                    "selected": true,
+                                    "name": "building"
+                                }
+                            ],
+                            "type": "offset",
+                            "version": 0,
+                            "overwrite": true,
+                            "disabled": false,
+                            "subGraphModel": {}
+                        }
+                    ],
+                    "connections": [
+                        {
+                            "source": {
+                                "nodeID": "inputPort",
+                                "connectorIndex": 0,
+                                "portConnectorID": 1
+                            },
+                            "dest": {
+                                "nodeID": 0,
+                                "connectorIndex": 0
+                            }
+                        },
+                        {
+                            "source": {
+                                "nodeID": 0,
+                                "connectorIndex": 0
+                            },
+                            "dest": {
+                                "nodeID": 1,
+                                "connectorIndex": 0
+                            }
+                        },
+                        {
+                            "source": {
+                                "nodeID": 1,
+                                "connectorIndex": 0
+                            },
+                            "dest": {
+                                "nodeID": "outputPort",
+                                "connectorIndex": 0,
+                                "portConnectorID": 2
+                            }
+                        }
+                    ],
+                    "inputPort": {
+                        "x": 1900,
+                        "y": 1900,
+                        "outputConnectors": [
+                            {
+                                "id": 1,
+                                "title": "Output",
+                                "name": "shape",
+                                "connected": false,
+                                "dataValue": "[ [0,0],[40,0],[30,20],[0,30] ]",
+                                "option": {
+                                    "name": "none"
+                                },
+                                "color": "#000000",
+                                "selected": true
+                            }
+                        ],
+                        "id": "inputPort"
+                    },
+                    "outputPort": {
+                        "x": 1900,
+                        "y": 2300,
+                        "inputConnectors": [
+                            {
+                                "id": 2,
+                                "title": "Input",
+                                "type": "new",
+                                "selected": false,
+                                "name": "building",
+                                "connected": true
+                            }
+                        ],
+                        "id": "outputPort"
+                    }
+                }
+            },
+            "$$hashKey": "object:1135"
+        }
+    ],
+    "connections": []
+}
+
+//procedure json
+[
+    [
+        {
+            "id": 2,
+            "title": "Output",
+            "type": "new",
+            "selected": false,
+            "name": "building",
+            "$$hashKey": "object:925"
+        }
+    ]
+]
+
+//interface json
+[
+    [
+        {
+            "id": 1,
+            "title": "Input",
+            "name": "shape",
+            "connected": false,
+            "dataValue": "[ [0,0],[40,0],[30,20],[0,30] ]",
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "selected": true,
+            "$$hashKey": "object:663"
+        }
+    ]
+]
