@@ -67,9 +67,19 @@ mobius.controller(  'graphCtrl',
         $scope.$watch('chartViewModel.data', function (newValue, oldValue) {
             if(!angular.equals(newValue.connections,oldValue.connections)){
                 // connection change detected
+<<<<<<< HEAD
                 generateCode.generateCode();
             }else if(newValue.nodes.length !== oldValue.nodes.length){
                 // nodes change detected
+=======
+                // todo check if it is just select of different node
+                console.log("from graph a")
+                // generateCode.generateCode();
+            }else if(newValue.nodes.length !== oldValue.nodes.length){
+                // nodes change detected
+                // todo check if it is just select of different node
+                console.log("from graph b")
+>>>>>>> 2f1d13ae6843513a5f09d26c730a10bc3308a12d
                 generateCode.generateCode();
             }else{
                 // todo check if it is just select of different node
@@ -102,6 +112,10 @@ mobius.controller(  'graphCtrl',
                                 $scope.chartViewModel.nodes[i].data.subGraphModel.chartDataModel.inputPort.outputConnectors
                             )
                         }
+<<<<<<< HEAD
+=======
+                        console.log("from graph c")
+>>>>>>> 2f1d13ae6843513a5f09d26c730a10bc3308a12d
                         generateCode.generateCode();
                         break;
                     }

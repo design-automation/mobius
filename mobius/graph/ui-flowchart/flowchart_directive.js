@@ -405,6 +405,7 @@ angular.module('flowChart', ['dragging'] )
 					//
 					dragStarted: function (x, y) {
 						lastMouseCoords = controller.translateCoordinates(x, y);
+<<<<<<< HEAD
 
                         if (!isPort) {
                             // @mobius dragging is considered as clicked (selected)
@@ -413,6 +414,8 @@ angular.module('flowChart', ['dragging'] )
                         }else{
                             $scope.$emit("nodeIndex", 'port');
                         }
+=======
+>>>>>>> 2f1d13ae6843513a5f09d26c730a10bc3308a12d
 					},
 
 					//
