@@ -26,8 +26,7 @@ angular.module('mouseCapture', [])
 		if (mouseCaptureConfig && mouseCaptureConfig.mouseMove) {
 			
 			mouseCaptureConfig.mouseMove(evt);
-
-			$rootScope.$digest();
+			//$rootScope.$digest();
 		}
 	};
 
@@ -39,8 +38,7 @@ angular.module('mouseCapture', [])
 		if (mouseCaptureConfig && mouseCaptureConfig.mouseUp) {
 			
 			mouseCaptureConfig.mouseUp(evt);
-
-			$rootScope.$digest();
+			//$rootScope.$digest();
 		}
 	};
 

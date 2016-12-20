@@ -7,7 +7,6 @@ function ($scope, $rootScope, $mdDialog,generateCode) {
     $scope.inputName = $scope.chartViewModel.getSelectedNodes()[0] ? $scope.chartViewModel.getSelectedNodes()[0].data.type : '';
 
 
-
     $scope.hide = function() {
         $mdDialog.hide();
     };

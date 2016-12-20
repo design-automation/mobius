@@ -66,10 +66,13 @@ mobius.controller(  'graphCtrl',
 
         $scope.$watch('chartViewModel.data', function (newValue, oldValue) {
             if(!angular.equals(newValue.connections,oldValue.connections)){
+                // connection change detected
                 generateCode.generateCode();
             }else if(newValue.nodes.length !== oldValue.nodes.length){
+                // nodes change detected
                 generateCode.generateCode();
             }else{
+                // todo check if it is just select of different node
                 for(var i = 0; i < newValue.nodes.length; i++){
                     if( newValue.nodes[i].disabled !== oldValue.nodes[i].disabled ||
                         newValue.nodes[i].id !== oldValue.nodes[i].id ||
@@ -99,7 +102,6 @@ mobius.controller(  'graphCtrl',
                                 $scope.chartViewModel.nodes[i].data.subGraphModel.chartDataModel.inputPort.outputConnectors
                             )
                         }
-
                         generateCode.generateCode();
                         break;
                     }
@@ -164,11 +166,10 @@ mobius.controller(  'graphCtrl',
                  $scope.currentNodeType = $scope.chartViewModel.data.nodes[$scope.nodeIndex].type;
                  $scope.currentNodeVersion = $scope.chartViewModel.data.nodes[$scope.nodeIndex].version === 0?'':'*';
                  displayGeometry();
+                 $rootScope.$broadcast('Update Datatable');
              }else if(message === undefined){
                  $scope.nodeIndex = message;
                  $scope.currentNodeName = '';
-
-                 $scope.$emit("editProcedure",false);
 
                  var scope = angular.element(document.getElementById('threeViewport')).scope();
                  var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
@@ -217,7 +218,7 @@ mobius.controller(  'graphCtrl',
                      }
                  }
              }
-            $rootScope.$broadcast('Update Datatable');
+
         });
 
         // Add an input connector to selected nodes.

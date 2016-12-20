@@ -204,7 +204,6 @@ mobius.directive('topoViewport', function factoryTopo() {
             // Update controls1 and stats
             function updateTopo() {
                 controls1.update();
-
                 controls1LT.update();
                 controls1RT.update();
                 controls1LB.update();
