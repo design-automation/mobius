@@ -6,9 +6,12 @@ mobius.controller('executeCtrl',['$scope','$rootScope','$q','executeService','co
         $scope.showSpinner = false;
 
         // one-way binding of generated javascript code
-        $scope.$watch(function () { return generateCode.getJavascriptCode(); }, function () {
-            $scope.javascriptCode = generateCode.getJavascriptCode();
-        });
+        // $scope.$watch(function () { return generateCode.getJavascriptCode(); }, function (newValue, oldValue) {
+        //     if(!angular.equals(newValue,oldValue)){
+        //         console.log("from exe ctrl")
+        //         $scope.javascriptCode = generateCode.getJavascriptCode();
+        //     }
+        // });
 
         $scope.$watch(function () { return generateCode.getGeomListCode(); }, function () {
             $scope.geomListCode = generateCode.getGeomListCode();
@@ -44,6 +47,7 @@ mobius.controller('executeCtrl',['$scope','$rootScope','$q','executeService','co
         });
 
         $scope.run = function(){
+            $scope.javascriptCode = generateCode.getJavascriptCode();
             $scope.outputs = [];
 
             document.getElementById('waiting').style.display='inline';

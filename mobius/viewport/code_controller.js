@@ -8,7 +8,9 @@ mobius.controller('codeCtrl',[
         // generated javascript code
         $scope.javascriptCode = generateCode.getJavascriptCode();
 
-        $scope.$watch(function () { return generateCode.getJavascriptCode(); }, function () {
-            $scope.javascriptCode = generateCode.getJavascriptCode();
+        $scope.$watch(function () { return generateCode.getRawJSCode(); }, function (newValue, oldValue) {
+            if(newValue !== oldValue){
+                $scope.javascriptCode = generateCode.getJavascriptCode();
+            }
         },true);
     }]);

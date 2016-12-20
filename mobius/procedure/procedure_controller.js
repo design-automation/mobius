@@ -155,7 +155,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
                 $scope.currentNodeName = $scope.chartViewModel.nodes[$scope.nodeIndex].data.name;
                 $scope.currentNodeType = $scope.chartViewModel.nodes[$scope.nodeIndex].data.type;
-
                 $scope.currentIsSubgraph = $scope.chartViewModel.nodes[$scope.nodeIndex].data.subGraph;
 
                 if($scope.currentIsSubgraph === true){
@@ -169,6 +168,7 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
                 $scope.currentNodeVersion = $scope.chartViewModel.nodes[$scope.nodeIndex].data.version === 0?'':'*';
 
+                //fixme update procedure data model cause lag
                 // update the procedure tab
                 $scope.data  = $scope.dataList[$scope.nodeIndex];
 
@@ -195,16 +195,22 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         });
 
         // watch change of procedure data tree, if change update the flattenData, update version
-        $scope.$watch('data',function(){
-            updateVersion();
-            flattenData();
-            generateCode.generateCode()
+        $scope.$watchGroup(['data','nodeIndex'],function(newValues, oldValues){
+            // todo test: checking if it is just select of different node
+            if(newValues[1] === oldValues[1]){
+                updateVersion();
+                flattenData();
+                generateCode.generateCode()
+            }
         } , true);
 
-        $scope.$watch('interface',function(){
-            updateVersion();
-            flattenData();
-            generateCode.generateCode()
+        $scope.$watchGroup(['data','nodeIndex'],function(newValues, oldValues){
+            // todo test: checking if it is just select of different node
+            if(newValues[1] === oldValues[1]){
+                updateVersion();
+                flattenData();
+                generateCode.generateCode()
+            }
         },true);
 
         function updateVersion(){

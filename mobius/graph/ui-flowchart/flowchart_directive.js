@@ -268,7 +268,7 @@ angular.module('flowChart', ['dragging'] )
 
 					//
 					// @ mobius toggle new node dropdown
-					// fixme
+					//
 
 					var mouseOverElement = controller.hitTest(evt.clientX, evt.clientY);
 					if (mouseOverElement instanceof SVGElement) {
@@ -394,16 +394,17 @@ angular.module('flowChart', ['dragging'] )
 				var chart = $scope.chart;
 				var lastMouseCoords;
 
+                if (!node.selected()) {
+                    chart.deselectAll();
+                    node.select();
+                }
+
 				dragging.startDrag(evt, {
 					//
 					// Node dragging has commenced.
 					//
 					dragStarted: function (x, y) {
 						lastMouseCoords = controller.translateCoordinates(x, y);
-						if (!node.selected()) {
-							chart.deselectAll();
-							node.select();
-						}
 					},
 
 					//
@@ -433,6 +434,7 @@ angular.module('flowChart', ['dragging'] )
 					// The node wasn't dragged... it was clicked.
 					//
 					clicked: function () {
+
 						// @mobius let controller know the current node
 						if (evt.which === 1) {
 							var nodeIndex = chart.handleNodeLeftClicked(node, evt.ctrlKey);
