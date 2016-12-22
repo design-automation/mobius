@@ -283,7 +283,6 @@ var mObj_frame = function mObj_frame( origin, xaxis, yaxis, zaxis ){
             var axis = new THREE.Line( geom, mat, THREE.LineSegments );
 
             return axis;
-
         }
 
         function buildAxes( length ) {
@@ -399,12 +398,25 @@ var mObj_geom = function mObj_geom( geometry, material ){
     }
 
     this.setMaterial = function( new_material ){
-
         material = new_material;
         if( threeGeometry )
             threeGeometry.material = new_material;
         else
             update();
+    }
+
+    this.setHex = function (colorHex) {
+        var hex = '0x' + colorHex.toString(16);
+
+        if(!threeGeometry){
+            this.extractThreeGeometry();
+        }
+
+        var geom = this.getGeometry();
+        for (var i = 0; i < geom.faces.length; i++) {
+            var face = geom.faces[i];
+            face.color.setHex(hex);
+        }
     }
 
     /*
@@ -685,9 +697,9 @@ var mObj_geom_Compound = function mObj_geom_Compound( geometry ){
                 var exGeom = geom.extractThreeGeometry();
                 threeGeometry.add( exGeom );
 
-                var edges = new THREE.EdgesHelper( exGeom, "black");
-                edges.material.linewidth = 2;
-                threeGeometry.add(edges);
+                // var edges = new THREE.EdgesHelper( exGeom, "black");
+                // edges.material.linewidth = 2;
+                // threeGeometry.add(edges);
             }
         
         }

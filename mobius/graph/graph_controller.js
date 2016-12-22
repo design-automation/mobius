@@ -207,9 +207,9 @@ mobius.controller(  'graphCtrl',
                                          .addGeometryToScene($scope.outputGeom[i].value[k],
                                              $scope.outputGeom[i].geom[p],
                                              $scope.outputGeom[i].geomData[p],k);
-
-                                     scopeTopo.topoViewportControl.addGeometryToScene($scope.outputGeom[i].value[k],
-                                         $scope.outputGeom[i].topo[p]);
+                                     // todo temp disable
+                                     // scopeTopo.topoViewportControl.addGeometryToScene($scope.outputGeom[i].value[k],
+                                     //     $scope.outputGeom[i].topo[p]);
                                  }
                                  p ++;
                              }

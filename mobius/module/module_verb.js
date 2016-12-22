@@ -928,9 +928,9 @@ var MOBIUS = ( function (mod){
 			side: THREE.DoubleSide
 		};
 		var material = new THREE[material_type](option);
-		
-		obj.setMaterial(material);
 
+        obj.setHex(color_hex)
+		 //obj.setMaterial(material);
 
 		//return obj;
 	};
@@ -1693,25 +1693,25 @@ var convertGeomToThree = function( geom ){
 		if( singleDataObject instanceof THREE.Mesh || singleDataObject instanceof THREE.Line || singleDataObject instanceof THREE.Group ){
 			
 			// to get lines in the mesh of the obj import
-			if(singleDataObject instanceof THREE.Group){
-				//console.log("before edges" , singleDataObject);
-				var alledges = [];
-				for(var i=0; i<singleDataObject.children.length; i++){
-					var edges = new THREE.EdgesHelper( singleDataObject.children[i], "black");
-					edges.material.linewidth = 2;
-					alledges.push(edges);				
-				}
-				for(var e=0; e<alledges.length; e++)
-					singleDataObject.add(new THREE.LineSegments(alledges[e].geometry, 
-															 new THREE.LineBasicMaterial({
-															        side: THREE.DoubleSide,
-															        linewidth: 2,
-															        color: 0x000000
-															    })
-															 ));
-
-				//console.log("after edges", singleDataObject);
-			}
+			// if(singleDataObject instanceof THREE.Group){
+			// 	console.log("before edges" , singleDataObject);
+			// 	var alledges = [];
+			// 	for(var i=0; i<singleDataObject.children.length; i++){
+			// 		var edges = new THREE.EdgesHelper( singleDataObject.children[i], "black");
+			// 		edges.material.linewidth = 2;
+			// 		alledges.push(edges);
+			// 	}
+			// 	for(var e=0; e<alledges.length; e++)
+			// 		singleDataObject.add(new THREE.LineSegments(alledges[e].geometry,
+			// 												 new THREE.LineBasicMaterial({
+			// 												        side: THREE.DoubleSide,
+			// 												        linewidth: 2,
+			// 												        color: 0x000000
+			// 												    })
+			// 												 ));
+            //
+			// 	console.log("after edges", singleDataObject);
+			// }
 			return singleDataObject;
 
 		}
