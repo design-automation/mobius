@@ -926,7 +926,6 @@ mobius.directive('viewport', function factory() {
                         i--;
                     }
                 }
-                mergedGeometry = new THREE.Geometry();
                 onchange();
             };
 
@@ -937,64 +936,13 @@ mobius.directive('viewport', function factory() {
             //
             // supporting function for geometry from verb to three.js
             //
-            scope.internalControl.addGeometryToScene = function(geom,value,geomData,connectorName){
-                if(value !== undefined){
-                    if(value.constructor === Array){
-                        for(var i = 0; i< value.length ;i++){
-                            scope.internalControl.displayObject(value[i],geomData[i],connectorName);
-                        }
-                    } else {
-                        scope.internalControl.displayObject(value,geomData,connectorName);
-                    }
+            scope.internalControl.addGeometryToScene = function(geom){
+                for(var i =0; i<geom.length; i++){
+                    scene.add( geom[i] );
                 }
-
-                if(wireframe){
-                    for(var i =0; i < scene.children.length; i++){
-                        if((scene.children[i] instanceof THREE.Mesh)&& scene.children[i].name !== 'helper'){
-                            scene.children[i].material.wireframe = true;
-                        }
-                    }
-                }
-
-                var meshMaterial = new THREE.MeshBasicMaterial({
-                    color: 0xffffff,
-                    shading: THREE.SmoothShading,
-                    vertexColors: THREE.VertexColors
-                });
-
-                scene.add(new THREE.Mesh(mergedGeometry,meshMaterial));
-
-                var edge = new THREE.EdgesGeometry( mergedGeometry );
-                // var mat = new THREE.LineBasicMaterial( { color: 0xffffff, linewidth: 2 } );
-                var wireframe = new THREE.LineSegments( edge );
-                scene.add( wireframe );
                 onchange();
             };
 
-            //
-            // takes in single data object and categorizes and displays accordingly
-            //
-            scope.internalControl.displayObject = function(singleGeomObject, singleGeomDataObject,connectorName){
-                // update the 3d viewport
-                if(singleGeomObject instanceof THREE.Mesh
-                    || singleGeomObject instanceof THREE.Line
-                    || singleGeomObject instanceof THREE.PointCloud
-                    || singleGeomObject instanceof THREE.Object3D){
-
-                    console.log(singleGeomObject)
-                    for(var i =0; i < singleGeomObject.children.length;i++){
-                        if(singleGeomObject.children[i] instanceof THREE.Mesh){
-                            singleGeomObject.children[i].updateMatrix()
-                            mergedGeometry.mergeMesh(singleGeomObject.children[i],singleGeomObject.children[i].matrix)
-                        }
-                    }
-                }
-                // update the data table viewport
-                // todo temp disable
-                if(singleGeomDataObject.length !== 0){
-                    scope.internalControl.geometryData[connectorName] = scope.internalControl.geometryData[connectorName].concat(singleGeomDataObject);
-                }
-            };
         }
     }
 });

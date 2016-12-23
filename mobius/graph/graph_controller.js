@@ -190,28 +190,15 @@ mobius.controller(  'graphCtrl',
                  scopeTopo.topoViewportControl.refreshView();
 
                  for(var i = 0; i < $scope.outputGeom.length; i++){
-
                      for(var j =0; j < selectedNodes.length; j++){
-
                          if($scope.outputGeom[i].name === selectedNodes[j].data.name){
-                             var p =0;
-                             scope.viewportControl.geometryData = {};
-
-                             for(var k in $scope.outputGeom[i].value){
-                                 if(k !== 'geomList'){
-                                     scope.viewportControl.geometryData[k] = [];
+                             for(var i = 0; i < $scope.outputGeom.length; i++){
+                                 for(var j =0; j < selectedNodes.length; j++){
+                                     if($scope.outputGeom[i].name === selectedNodes[j].data.name){
+                                         //scope.viewportControl.geometryData = {};
+                                         scope.viewportControl.addGeometryToScene($scope.outputGeom[i].geometry);
+                                     }
                                  }
-
-                                 if($scope.outputGeom[i].value[k] !== undefined) {
-                                     scope.viewportControl
-                                         .addGeometryToScene($scope.outputGeom[i].value[k],
-                                             $scope.outputGeom[i].geom[p],
-                                             $scope.outputGeom[i].geomData[p],k);
-                                     // todo temp disable
-                                     // scopeTopo.topoViewportControl.addGeometryToScene($scope.outputGeom[i].value[k],
-                                     //     $scope.outputGeom[i].topo[p]);
-                                 }
-                                 p ++;
                              }
                          }
                      }
