@@ -42,7 +42,7 @@ mobius.directive('viewport', function factory() {
             var VIEWPORT_WIDTH = container.offsetWidth;
             var VIEWPORT_HEIGHT = container.offsetHeight;
 
-            var scene;
+            //var scene;
             var camera,cameraLT, cameraLB, cameraRT, cameraRB;
             var  orthoCamera, orthoCameraLT, orthoCameraLB, orthoCameraRT, orthoCameraRB;
 
@@ -61,9 +61,13 @@ mobius.directive('viewport', function factory() {
             var orthographicRB = true;  // start with right
 
             var wireframe = false;
+            var gridHelper;
 
-            init();
-            animate();
+            // var stats = new Stats();
+            // container.appendChild( stats.dom );
+            // stats.dom.style.top = "50px";
+
+            var mergedGeometry = new THREE.Geometry();
 
             // Initialization
             function init(){
@@ -74,7 +78,7 @@ mobius.directive('viewport', function factory() {
                 var VIEW_ANGLE = 45,
                     ASPECT = VIEWPORT_WIDTH / VIEWPORT_HEIGHT,
                     NEAR = 1,
-                    FAR = 10000;
+                    FAR = 50000;
 
                 camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
                 camera.position.set(-120, -200, 60);
@@ -220,29 +224,27 @@ mobius.directive('viewport', function factory() {
                 var ambientLight = new THREE.AmbientLight( 0xbbbbbb );
                 scene.add( ambientLight );
 
-                var lights = [];
-                lights[0] = new THREE.PointLight( 0xececec, 0.25, 0 );
-                lights[1] = new THREE.PointLight( 0xececec, 0.25, 0 );
-                lights[2] = new THREE.PointLight( 0xececec, 0.25, 0 );
-
-                lights[0].position.set( 0, 100, 0 );
-                lights[1].position.set( 100, 200, 100 );
-                lights[2].position.set( -100, -200, -100 );
-
-                scene.add( lights[0] );
-                scene.add( lights[1] );
-                scene.add( lights[2] );
-
                 // add helpers:
 
                 // GridHelper
-                var gridHelper = new THREE.GridHelper(100, 10); // 100 is grid size, 10 is grid step
+                gridHelper = new THREE.GridHelper(100, 10); // 100 is grid size, 10 is grid step
                 gridHelper.name = 'helper';
                 gridHelper.setColors(0x999999,0xaaaaaa);
                 gridHelper.rotation.x = Math.PI/2;//new THREE.Euler(0, 0 ,   0);
                 gridHelper.position = new THREE.Vector3(0, 0, 0);
                 scene.add(gridHelper);
+
+                renderer.domElement.addEventListener( 'mousemove', onchange );
+                renderer.domElement.addEventListener( 'wheel', onchange);
             }
+
+            init();
+            render();
+
+            function onchange( e ) {
+                requestAnimationFrame(render);
+                update();
+             }
 
             // perspective view
             scope.internalControl.perspectiveView = function(view){
@@ -636,7 +638,6 @@ mobius.directive('viewport', function factory() {
             var wireframeRB = false;
 
             scope.internalControl.wireframeOption = function (view){
-                console.log(view);
                 switch (view){
                     case 'main':
                         wireframeMain = true;
@@ -696,6 +697,10 @@ mobius.directive('viewport', function factory() {
                 }
             };
 
+            scope.internalControl.toggleGrid = function(){
+                gridHelper.visible = !gridHelper.visible;
+            };
+
             scope.internalControl.topView('LT');
             scope.internalControl.frontView('LB');
             scope.internalControl.rightView('RB');
@@ -709,17 +714,20 @@ mobius.directive('viewport', function factory() {
                         height: elem[0].offsetHeight
                     }
                 },
-                function () {
-                    VIEWPORT_WIDTH = container.offsetWidth;
-                    VIEWPORT_HEIGHT = container.offsetHeight;
-                    resizeUpdate();
-                    //animate();
+                function (newValue, oldValue) {
+                    if(newValue !== oldValue){
+                        VIEWPORT_WIDTH = container.offsetWidth;
+                        VIEWPORT_HEIGHT = container.offsetHeight;
+                        resizeUpdate();
+                        console.log("resize update!")
+                    }
                 },
                 true
             );
 
             // update on resize of viewport
             function resizeUpdate() {
+                onchange();
                 camera.aspect = VIEWPORT_WIDTH / VIEWPORT_HEIGHT;
                 camera.updateProjectionMatrix ();
 
@@ -801,6 +809,7 @@ mobius.directive('viewport', function factory() {
             // Animate the scene
             function animate() {
                 requestAnimationFrame(animate);
+                stats.update();
                 render();
                 update();
             }
@@ -808,6 +817,7 @@ mobius.directive('viewport', function factory() {
             // Update controls and stats
             function update() {
                 controls.update();
+                // fixme only update the current control
                 controlsLT.update();
                 controlsLB.update();
                 controlsRT.update();
@@ -825,7 +835,6 @@ mobius.directive('viewport', function factory() {
                     }
                     container.appendChild(renderer.domElement);
                     document.getElementById("viewSingle").style.display = "inline";
-
                     renderer.setSize(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
 
                     //if(wireframeMain){
@@ -909,58 +918,31 @@ mobius.directive('viewport', function factory() {
             // clear geometries in scene when run
             scope.internalControl.refreshView = function(){
                 for(var i = 0; i < scene.children.length; i++){
-                    if( /*akm - (scene.children[i] instanceof THREE.Mesh
+                    if((  scene.children[i] instanceof THREE.Mesh
                          || scene.children[i]  instanceof THREE.Line
                          || scene.children[i]  instanceof THREE.Object3D
-                         || scene.children[i]  instanceof THREE.PointCloud) && scene.children[i].name !== 'helper'*/ scene.children[i].is_mObj == true){
-                        scene.remove( scene.children[i]);
+                         || scene.children[i]  instanceof THREE.PointCloud) && scene.children[i].name !== 'helper'){
+                        scene.remove(scene.children[i]);
                         i--;
                     }
                 }
+                onchange();
+            };
+
+            scope.internalControl.refreshData = function(){
+                scope.internalControl.geometryData = [];
             };
 
             //
             // supporting function for geometry from verb to three.js
             //
-            // fixme geom here is not used
-            scope.internalControl.addGeometryToScene = function(geom,value,geomData){
-                scope.internalControl.geometryData = [{Property:'', Value:'',attachedTo:''}];
-
-                if(value !== undefined){
-                    if(value.constructor === Array){
-                        for(var i = 0; i< value.length ;i++){
-                            scope.internalControl.displayObject(value[i],geomData[i]);
-                        }
-                    } else {
-                        scope.internalControl.displayObject(value,geomData);
-                    }
+            scope.internalControl.addGeometryToScene = function(geom){
+                for(var i =0; i<geom.length; i++){
+                    scene.add( geom[i] );
                 }
-
-                if(wireframe){
-                    for(var i =0; i < scene.children.length; i++){
-                        if((scene.children[i] instanceof THREE.Mesh)&& scene.children[i].name !== 'helper'){
-                            scene.children[i].material.wireframe = true;
-                        }
-                    }
-                }
+                onchange();
             };
 
-            //
-            // takes in single data object and categorizes and displays accordingly
-            //
-            scope.internalControl.displayObject = function(singleGeomObject, singleGeomDataObject){
-                // update the 3d viewport
-                if(singleGeomObject instanceof THREE.Mesh
-                    || singleGeomObject instanceof THREE.Line
-                    || singleGeomObject instanceof THREE.PointCloud
-                    || singleGeomObject instanceof THREE.Object3D){
-                    scene.add(singleGeomObject);
-                }
-                // update the data table viewport
-                if(singleGeomDataObject.length !== 0){
-                    scope.internalControl.geometryData = scope.internalControl.geometryData.concat(singleGeomDataObject);
-                }
-            };
         }
     }
 });

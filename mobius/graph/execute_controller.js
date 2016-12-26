@@ -6,9 +6,12 @@ mobius.controller('executeCtrl',['$scope','$rootScope','$q','executeService','co
         $scope.showSpinner = false;
 
         // one-way binding of generated javascript code
-        $scope.$watch(function () { return generateCode.getJavascriptCode(); }, function () {
-            $scope.javascriptCode = generateCode.getJavascriptCode();
-        });
+        // $scope.$watch(function () { return generateCode.getJavascriptCode(); }, function (newValue, oldValue) {
+        //     if(!angular.equals(newValue,oldValue)){
+        //         console.log("from exe ctrl")
+        //         $scope.javascriptCode = generateCode.getJavascriptCode();
+        //     }
+        // });
 
         $scope.$watch(function () { return generateCode.getGeomListCode(); }, function () {
             $scope.geomListCode = generateCode.getGeomListCode();
@@ -27,7 +30,6 @@ mobius.controller('executeCtrl',['$scope','$rootScope','$q','executeService','co
 
         $scope.outputs = [];
 
-
         // shortcut keys
         hotkeys.add({
             combo: 'ctrl+enter',
@@ -45,23 +47,105 @@ mobius.controller('executeCtrl',['$scope','$rootScope','$q','executeService','co
         });
 
         $scope.run = function(){
+            $scope.javascriptCode = generateCode.getJavascriptCode();
             $scope.outputs = [];
 
             document.getElementById('waiting').style.display='inline';
             $scope.showSpinner = true;
 
             setTimeout(function(){
-                executeService.execute($scope.javascriptCode + $scope.geomListCode + '\n return dataConversion(geomList);')
+                executeService.execute($scope.javascriptCode+ '\n return dataConversion(geomList);')
                     .then(function (data) {
                         console.log('running done');
                         document.getElementById('waiting').style.display='none';
                         $scope.showSpinner = false;
                         $scope.outputs = data;
+                        generateCode.clearError();
+                        consoleMsg.runtimeMsg();
+                    }, function(msg){
+                        document.getElementById('waiting').style.display='none';
+                        $scope.showSpinner = false;
+                        consoleMsg.runtimeMsg(msg[1]);
+                        generateCode.clearError();
+                        generateCode.displayError(msg[0]);
                     })
                     .then(function() {
-                        console.log('display');
+                        // merge and store outputs for visualization
+                        // todo topology, data etc
+                        // fixme coupling with viewer and module
+
+                        $scope.mergedOutputs = [];
+
+                        for(var i = 0; i < $scope.outputs.length; i++){
+                            var p = 0;
+                            for(var k in $scope.outputs[i].value){
+                                if($scope.outputs[i].value[k] !== undefined){
+                                    var temp = getMergedGeometry($scope.outputs[i].value[k],
+                                        $scope.outputs[i].geom[p],
+                                        $scope.outputs[i].geomData[p],k);
+
+                                    $scope.mergedOutputs.push(
+                                        {
+                                            name:  $scope.outputs[i].name,
+                                            geometry: temp
+                                        }
+                                    )
+                                }
+                                p++;
+                            }
+                        }
+
+                        $scope.outputs = $scope.mergedOutputs;
+
+
+                        function getMergedGeometry(geom,value,geomData,connectorName){
+                            var mergedGeometry = new THREE.Geometry();
+                            if(value !== undefined){
+                                if(value.constructor === Array){
+                                    for(var i = 0; i< value.length ;i++){
+                                        mergeGeometry(value[i],geomData[i],connectorName,mergedGeometry);
+                                    }
+                                } else {
+                                    mergeGeometry(value,geomData,connectorName,mergedGeometry);
+                                }
+                            }
+
+                            var meshMaterial = new THREE.MeshBasicMaterial({
+                                color: 0xffffff,
+                                shading: THREE.SmoothShading,
+                                vertexColors: THREE.VertexColors
+                            });
+
+                            var edge = new THREE.EdgesGeometry( mergedGeometry );
+                            var mat = new THREE.LineBasicMaterial( { color: 0x000000, linewidth: 1} );
+                            var wireframe = new THREE.LineSegments( edge , mat);
+
+                            var mergedMesh = new THREE.Mesh(mergedGeometry,meshMaterial);
+                            // todo line wireframe should it be merged
+                            return [mergedMesh,wireframe];
+                        };
+
+                        function mergeGeometry (singleGeomObject, singleGeomDataObject,connectorName,mergedGeometry){
+                            if(singleGeomObject instanceof THREE.Mesh
+                                || singleGeomObject instanceof THREE.Line
+                                || singleGeomObject instanceof THREE.PointCloud
+                                || singleGeomObject instanceof THREE.Object3D) {
+                                for (var i = 0; i < singleGeomObject.children.length; i++) {
+                                    if (singleGeomObject.children[i] instanceof THREE.Mesh) {
+                                        mergedGeometry.mergeMesh(singleGeomObject.children[i], singleGeomObject.children[i].matrix)
+                                    }
+                                }
+                            }
+                            // update the data table viewport
+                            // todo temp disable
+                            // if(singleGeomDataObject.length !== 0){
+                            //     scope.internalControl.geometryData[connectorName] = scope.internalControl.geometryData[connectorName].concat(singleGeomDataObject);
+                            // }
+                        };
 
                         //display in the viewport according to node selection
+                        console.log('display');
+
                         var scope = angular.element(document.getElementById('threeViewport')).scope();
                         var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
 
@@ -71,27 +155,18 @@ mobius.controller('executeCtrl',['$scope','$rootScope','$q','executeService','co
                         var selectedNodes = $scope.chartViewModel.getSelectedNodes();
 
                         var scope = angular.element(document.getElementById('threeViewport')).scope();
-                        var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
+                        //var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
 
                         for(var i = 0; i < $scope.outputs.length; i++){
-
                             for(var j =0; j < selectedNodes.length; j++){
                                 if($scope.outputs[i].name === selectedNodes[j].data.name){
-
-                                    var p = 0;
-
-                                    for(var k in $scope.outputs[i].value){
-                                        scope.viewportControl.addGeometryToScene($scope.outputs[i].value[k],
-                                            $scope.outputs[i].geom[p],
-                                            $scope.outputs[i].geomData[p]);
-
-                                        scopeTopo.topoViewportControl.addGeometryToScene($scope.outputs[i].value[k],
-                                            $scope.outputs[i].topo[p]);
-                                        p++;
-                                    }
+                                    //scope.viewportControl.geometryData = {};
+                                    scope.viewportControl.addGeometryToScene($scope.outputs[i].geometry);
                                 }
                             }
                         }
+
+                        $rootScope.$broadcast('Update Datatable');
                     });
             },100);
         }

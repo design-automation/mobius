@@ -71,3 +71,4 @@ mobius.factory('consoleMsg', function () {
     }
 
 });
+

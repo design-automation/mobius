@@ -3,6 +3,11 @@
     font-size: 14px !important;
 }
 
+a:focus{
+    outline: none !important;
+}
+
+
 .button{
     text-align: center;
     text-decoration: none;

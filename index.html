@@ -1,18 +1,46 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Möbius</title>
-  </head>
-  <body align="center" style="font-family:verdana;">
-      <h1>Möbius</h1>
-      <p> Möbius is a visual programming environment for creating parametric scripts for generating geometric models.</p>
-      <a href="http://mobius.design-automation.net/">http://mobius.design-automation.net</a>
-      <h2>Try Möbius</h2>
-      <p> <a href="http://files.design-automation.net/mobius-dev">Unstable Development Version</a> </p>
-      <p> <a href="mobius.html">Latest Stable Version</a> </p>
-      <p> <a href="http://files.design-automation.net/mobius-0-1-1">Version 0.1.1</a> </p>
-      <p> <a href="http://files.design-automation.net/mobius-0-1-0">Version 0.1.0</a> </p>
-    </div>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <title>Mobius Welcome</title>
+
+  <link rel="stylesheet" href="assets/css/welcome page/styles.css">
+  <link rel="stylesheet" href="assets/css/welcome page/pygment_trac.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <!--[if lt IE 9]>
+  <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+<body>
+<div class="wrapper">
+  <header>
+    <h1>Mobius</h1>
+    <p>Visual Dataflow Modelling Tool for Designers</p>
+    <p class="view"></p>
+
+    <ul>
+      <li><a href="mobius.html">Try <strong>Mobius</strong></a></li>
+      <li><a href="https://github.com/phtj/mobius">View on<strong>Github</strong></a></li>
+    </ul>
+  </header>
+  <section>
+
+    <p>
+      Möbius is a visual programming environment for creating parametric scripts for generating geometric models. The programming approach integrates imperative and associative programming styles. The associative style of programming is supported through graph-based programming, where the user constructs networks consisting of nodes and wires. (For example, see Sidefx Houdini.) The behaviour of each node is defined either by a set of sub-nodes or by an imperative procedure. The imperative style of programming is supported through blocks-based programming, where the user constructs procedures by creating sequences of code blocks. (For example, see Scratch.)
+    </p>
+    <p>
+      The imperative procedure performs operations by calling functions in one or more underlying function modules. These function modules consist of files that contain a set of standard Javascript functions. Currently, Möbius includes two function modules: a poly module and nurbs module. The poly module includes a set of polygon modelling functions, and makes use of the jsclipper library. The nurbs module includes a set of nurbs modelling functions, and makes use of verb library.
+    </p>
+    <p>
+      http://mobius.design-automation.net/
+    <p>
+
+  </section>
+
+  <footer>
+    <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+  </footer>
+</div>
+</body>
 </html>

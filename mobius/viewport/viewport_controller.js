@@ -10,15 +10,244 @@ mobius.controller('viewportCtrl',[
         $scope.topoViewportControl = {};
 
         $scope.viewportControl = {
-            "geometryData":[]
+            "geometryData":{},
         };
 
-        $scope.gridOptions = {data: 'viewportControl.geometryData',
-                            columnDefs:
-                                [{ field: 'Property', displayName: 'Property'},
-                                { field: 'Value', displayName: 'Value'},
-                                { field: 'attachedTo', displayName: 'AttachedTo'}]};
+        $scope.geometryData = {
+            main:[],
+            LT:[],
+            RT:[],
+            LB:[],
+            RB:[]
+        };
 
+        $scope.tableHeader = [];
+        $scope.connectorNames = [];
+
+        $scope.tableHeader.push('Model');
+        for(var topo in MOBIUS.TOPOLOGY_DEF) {
+            $scope.tableHeader.push(topo);
+        }
+
+        $scope.currentHeader = $scope.tableHeader[0];
+
+        $rootScope.$on('Update Datatable', function(){
+            generateTableStructure();
+            $scope.currentConnector = $scope.connectorNames[0];
+            $scope.generateDataTable( $scope.currentHeader)
+        });
+
+        function generateTableStructure(){
+            $scope.connectorNames = [];
+            if($scope.viewportControl.geometryData.length !== 0){
+                for(var connectorName in $scope.viewportControl.geometryData){
+                    $scope.connectorNames.push(connectorName);
+                }
+            }
+        }
+
+        $scope.selectDataTable = function(connectorName, viewport){
+            if(viewport === undefined){
+                $scope.currentConnector = connectorName;
+            }else{
+                switch (viewport){
+                    case 'LT': $scope.currentConnectorLT = connectorName;break;
+                    case 'RT': $scope.currentConnectorRT = connectorName;break;
+                    case 'LB': $scope.currentConnectorLB = connectorName;break;
+                    case 'RB': $scope.currentConnectorRB = connectorName;break;
+                }
+            }
+        };
+
+        $scope.generateDataTable = function(header,viewport){
+            // fixme: is it necessary to check status of current selected connector
+            //if($scope.currentConnector === undefined){
+                //$scope.currentConnector = $scope.connectorNames[0];
+            //}
+
+            $scope.currentHeader = header;
+            var propertyList = [];
+            var columnDefs = [];
+            $scope.gridOptions = [];
+            var table = [];
+
+            var dataHolder = [];
+            //if(viewport === undefined){
+            //    angular.copy($scope.viewportControl.geometryData[$scope.currentConnector],$scope.geometryData.main);
+            //} else{
+            //    switch (viewport){
+            //        case 'LT':
+            //            angular.copy($scope.viewportControl.geometryData[$scope.currentConnectorLT],$scope.geometryData.LT);;
+            //            break;
+            //        case 'RT':
+            //            angular.copy($scope.viewportControl.geometryData[$scope.currentConnectorRT],$scope.geometryData.RT);
+            //            break;
+            //        case 'LB':
+            //            angular.copy($scope.viewportControl.geometryData[$scope.currentConnectorLB],$scope.geometryData.LB);
+            //            break;
+            //        case 'RB':
+            //            angular.copy($scope.viewportControl.geometryData[$scope.currentConnectorRB],$scope.geometryData.RB);
+            //            break;
+            //    }
+            //}
+
+            if(viewport === undefined){
+                angular.copy($scope.viewportControl.geometryData[$scope.currentConnector],dataHolder);
+            } else{
+                switch (viewport){
+                    case 'LT':
+                        angular.copy($scope.viewportControl.geometryData[$scope.currentConnectorLT],dataHolder);
+                        break;
+                    case 'RT':
+                        angular.copy($scope.viewportControl.geometryData[$scope.currentConnectorRT],dataHolder);
+                        break;
+                    case 'LB':
+                        angular.copy($scope.viewportControl.geometryData[$scope.currentConnectorLB],dataHolder);
+                        break;
+                    case 'RB':
+                        angular.copy($scope.viewportControl.geometryData[$scope.currentConnectorRB],dataHolder);
+                        break;
+                }
+            }
+
+            // fixme replace all $scope.geometryData with dataHolder
+            if(header !== undefined){
+                for(var i = 0; i < dataHolder.length; i++){
+                    if(dataHolder[i].cate !== header){
+                        dataHolder.splice(i,1);
+                        i--;
+                    }
+                }
+            }
+
+            for(var i = 0; i < dataHolder.length; i++){
+                if(dataHolder[i].Property !== undefined){
+                    if(propertyList.indexOf(dataHolder[i].Property) === -1){
+                        propertyList.push(dataHolder[i].Property);
+                    }
+                }
+            }
+
+            if(header !== 'object'){
+                columnDefs = [
+                        //{ field: 'cate', displayName: 'Category'},
+                        { field: 'id', displayName:'Id'}
+                        //{ field: 'index', displayName:'Index'},
+                        //{ field: 'belongsTo',
+                            //displayName: 'belongsTo'
+                            //grouping:{ groupPriority: 0 },
+                            //cellTemplate: '<div><div ng-if="!col.grouping || col.grouping.groupPriority === undefined || col.grouping.groupPriority === null || ( row.groupHeader && col.grouping.groupPriority === row.treeLevel )" class="ui-grid-cell-contents" title="TOOLTIP">{{COL_FIELD CUSTOM_FILTERS}}</div></div>'
+                        //}
+                ];
+            }else{
+                columnDefs = [
+                    //{ field: 'cate', displayName: 'Category'},
+                    { field: 'id', displayName:'Id'}
+                    //{ field: 'index', displayName:'Index'}
+                ];
+            }
+
+
+            for(var i = 0; i < propertyList.length;i++){
+                columnDefs.push({
+                    field:propertyList[i],
+                    displayName:propertyList[i]
+                })
+            }
+
+            for(var i = 0; i < dataHolder.length; i++){
+                if(table.length === 0){
+                    table.push({attachedTo: dataHolder[i].attachedTo});
+
+                    table[0][dataHolder[i].Property]
+                        = dataHolder[i].Value;
+
+                    //table[0].belongsTo
+                    //    = dataHolder[i].belongsTo;
+
+                    table[0].index
+                        = dataHolder[i].index;
+
+                    table[0].cate
+                        = dataHolder[i].cate;
+                }
+
+                for(var j = 0; j < table.length; j++){
+                    if(
+                        //table[j].belongsTo === dataHolder[i].belongsTo &&
+                        table[j].attachedTo === dataHolder[i].attachedTo){
+                        table[j][dataHolder[i].Property] = dataHolder[i].Value;
+                        break;
+                    }else{
+                        if(j === table.length-1){
+                            table.push({attachedTo: dataHolder[i].attachedTo});
+
+                            table[table.length-1][dataHolder[i].Property]
+                                = dataHolder[i].Value;
+
+                            //table[table.length-1].belongsTo
+                            //    = dataHolder[i].belongsTo;
+
+                            table[table.length-1].index
+                                = dataHolder[i].index;
+
+                            table[table.length-1].cate
+                                = dataHolder[i].cate;
+                        }
+                    }
+                }
+            }
+
+            for(var i = 0; i <table.length; i++){
+                table[i].id = i;
+            }
+
+
+            if(viewport === undefined){
+                $scope.geometryData.main = table;
+
+                $scope.gridOptions = {
+                    data: "geometryData.main",
+                    columnDefs: columnDefs,
+                    enableHorizontalScrollbar: 0
+                };
+            } else{
+                switch (viewport){
+                    case 'LT':
+                        $scope.geometryData.LT = table;
+                        $scope.gridOptionsLT = {
+                            data: "geometryData.LT",
+                            columnDefs: columnDefs,
+                            enableHorizontalScrollbar: 0
+                        };
+                        break;
+                    case 'RT':
+                        $scope.geometryData.RT = table;
+                        $scope.gridOptionsRT = {
+                            data: "geometryData.RT",
+                            columnDefs: columnDefs,
+                            enableHorizontalScrollbar: 0
+                        };
+                        break;
+                    case 'LB':
+                        $scope.geometryData.LB = table;
+                        $scope.gridOptionsLB = {
+                            data: "geometryData.LB",
+                            columnDefs: columnDefs,
+                            enableHorizontalScrollbar: 0
+                        };
+                        break;
+                    case 'RB':
+                        $scope.geometryData.RB = table;
+                        $scope.gridOptionsRB = {
+                            data: "geometryData.RB",
+                            columnDefs: columnDefs,
+                            enableHorizontalScrollbar: 0
+                        };
+                        break;
+                }
+            }
+        };
 
 
         $scope.viewportControl.layout = 'singleView';

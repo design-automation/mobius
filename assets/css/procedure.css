@@ -32,11 +32,20 @@
     padding-bottom: 32px;
 }
 
+#subgraphToggle{
+    display: inline-block;
+    position: absolute !important;
+    top: 0;
+    right:120px;
+    white-space: nowrap;
+    width: 60px !important;
+}
+
 .button-action{
     display: inline-block;
     position: absolute !important;
     top: 0;
-    right: 90px;
+    right: 120px;
     white-space: nowrap;
 }
 
@@ -49,33 +58,35 @@
 }
 
 .button-control{
+
+
     display: inline-block;
-    position: absolute !important;
-    top: 0;
-    right:60px;
-    white-space: nowrap;
+    position: absolute;
+    top:0;
+    right: 60px;
 }
 
 
 .button-output{
-    /*display: inline-block;*/
+    white-space: nowrap;
     position: absolute;
     right:0;
     top:0;
 }
 
 .button-input{
-    white-space: nowrap;
+    /*display: inline-block;*/
     position: absolute;
-    right:0;
+    right:30px;
     top:0;
 }
 
 .button-variable{
     display: inline-block;
-    position: absolute;
-    top:0;
-    right: 30px;
+    position: absolute !important;
+    top: 0;
+    right:90px;
+    white-space: nowrap;
 }
 
 .code-area .codeEditor {
@@ -151,7 +162,7 @@
  .action-dropdown{
      position: fixed !important;
      margin-top:34px !important;
-     margin-left:-132px !important;
+     margin-left:-102px !important;
      top: auto  !important;
      right: auto  !important;
  }

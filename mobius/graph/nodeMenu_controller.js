@@ -149,4 +149,21 @@ mobius.controller('nodeMenuCtrl',['$scope','$rootScope','$document','generateCod
         $scope.saveAsNew = function(){$rootScope.$broadcast("saveAsNewType")};
         $scope.overwrite= function(){$rootScope.$broadcast("overWriteProcedure")};
         $scope.editProcedure= function(){$rootScope.$broadcast("editProcedure");};
+
+        $scope.isSubGraph = function(){
+            if($scope.chartViewModel.nodes[$scope.nodeIndex] !== undefined){
+                if($scope.chartViewModel.nodes[$scope.nodeIndex].data.subGraph === false ||
+                    $scope.chartViewModel.nodes[$scope.nodeIndex].data.subGraph === undefined){
+                    return false;
+                }else{
+                    return true;
+                }
+            }else{
+                return false;
+            }
+        };
+
+        $scope.openSubGraph = function(){
+            $rootScope.$broadcast("openSubGraph");
+        };
     }]);

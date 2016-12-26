@@ -9,6 +9,7 @@ var mobius = angular.module('mobius',
                                 'ngSanitize',
                                 'ui.tree',
                                 'ui.grid',
+                                'ui.grid.grouping',
                                 'flowChart',
                                 'panzoom',
                                 'xeditable',
@@ -179,7 +180,28 @@ var mobius = angular.module('mobius',
             e.preventDefault();
     });
 
-
+    // customized file input tag with data binding
+    mobius.directive("fileread", [function () {
+        return {
+            scope: {
+                fileread: "="
+            },
+            link: function (scope, element, attributes) {
+                element.bind("change", function (changeEvent) {
+                    var reader = new FileReader();
+                    reader.onload = function (loadEvent) {
+                        scope.$apply(function () {
+                            var d = new Date();
+                            var fileName =  "file_" +  d.getTime();
+                            MOBIUS[fileName]=  JSON.parse(loadEvent.target.result);
+                            scope.fileread = 'MOBIUS.' + fileName;
+                        });
+                    }
+                    reader.readAsText(changeEvent.target.files[0]);
+                });
+            }
+        }
+    }]);
 
     checkBrowser();
 

@@ -41,6 +41,14 @@ mobius.factory('nodeCollection', function () {
             nodes = JSON.parse(localStorage.mobiusNodeTypes);
         },
 
+        ifSubGraph: function(typeName){
+            for(var i = 0; i < nodes.length; i++){
+                if(nodes[i].nodeType == typeName){
+                    return nodes[i].subGraph;
+                }
+            }
+        },
+
         // return node types for graph
         getNodeTypes: function(){
             var nodeTypes = [];
@@ -57,6 +65,7 @@ mobius.factory('nodeCollection', function () {
                     return nodes[i].overwrite;
                 }
             }
+            return true;
         },
 
         getInputConnectors: function(type){
@@ -67,6 +76,7 @@ mobius.factory('nodeCollection', function () {
                     return input;
                 }
             }
+            return [];
         },
 
         getOutputConnectors: function(type){
@@ -77,6 +87,7 @@ mobius.factory('nodeCollection', function () {
                     return output;
                 }
             }
+            return [];
         },
 
         // return procedure data model for procedure
@@ -88,6 +99,7 @@ mobius.factory('nodeCollection', function () {
                     return obj;
                 }
             }
+            return [];
         },
 
         // return interface data model for interface
@@ -99,21 +111,73 @@ mobius.factory('nodeCollection', function () {
                     return obj;
                 }
             }
+            return [];
+        },
+
+        getSubGraphModel: function(typeName){
+            for(var i = 0; i < nodes.length; i++){
+                if(nodes[i].nodeType == typeName){
+                    var obj = {};
+                    angular.copy(nodes[i].subGraphModel,obj);
+                    return obj;
+                }
+            }
         },
 
         // install node for create new node type / import node
-        installNewNodeType: function(type, input, output, procedureList, interfaceList){
-            var newNode = {
-                nodeType: type,
-                version:0,
-                overwrite:true,
+        installNewNodeType: function(type, subGraph, input, output, procedureList, interfaceList,subGraphModel){
+            var newNode = {};
+            if(!subGraph){
+                 newNode = {
+                    nodeType: type,
+                    version:0,
+                    overwrite:true,
 
-                inputConnectors: input,
-                outputConnectors: output,
+                    inputConnectors:  input === undefined ? [] : input,
+                    outputConnectors: output === undefined ? [] : output,
 
-                procedureDataModel: procedureList === undefined ? [] : procedureList,
-                interfaceDataModel: interfaceList === undefined ? [] : interfaceList
-        };
+                    procedureDataModel: procedureList === undefined ? [] : procedureList,
+                    interfaceDataModel: interfaceList === undefined ? [] : interfaceList
+                };
+            }else{
+                 newNode = {
+                    nodeType: type,
+                    version:0,
+                    overwrite:true,
+                    subGraph:true,
+
+                    inputConnectors:  input === undefined ? [] : input,
+                    outputConnectors: output === undefined ? [] : output,
+
+                    procedureDataModel: procedureList === undefined ? [] : procedureList,
+                    interfaceDataModel: interfaceList === undefined ? [] : interfaceList,
+                    subGraphModel:subGraphModel === undefined ?
+                    {
+                        javascriptCode: '// To generate code,\n' + '// create nodes & procedures and run!\n',
+                        geomListCode: "var geomList = [];\n",
+                        innerCodeList:[],
+                        outerCodeList:[],
+                        dataList:[],
+                        interfaceList:[],
+                        chartDataModel: {
+                            "nodes": [],
+                            "connections": [],
+                            "inputPort": {
+                                x:1900,
+                                y:1900,
+                                outputConnectors:[]
+                            },
+                            "outputPort": {
+                                x:1900,
+                                y:2300,
+                                inputConnectors:[]
+                            }
+                        },
+                        nodeIndex:undefined
+                    } : subGraphModel
+                };
+            }
+
             nodes.push(newNode);
             localStorage.mobiusNodeTypes = JSON.stringify(nodes);
         },
@@ -124,17 +188,24 @@ mobius.factory('nodeCollection', function () {
         },
 
         // update node procedure content
-        updateNodeType: function(oldType,newType, input, output, newProcedureList,newInterfaceList){
+        updateNodeType: function(oldType,newType, input, output, newProcedureList,newInterfaceList,isSubGraph,newSubGraphModel){
             for(var i = 0; i < nodes.length; i++){
                 if(nodes[i].nodeType == oldType){
-                    nodes[i].nodeType = newType;
-                    nodes[i].inputConnectors = input;
-                    nodes[i].outputConnectors = output;
-                    nodes[i].procedureDataModel = newProcedureList;
-                    nodes[i].interfaceDataModel = newInterfaceList;
+                    if(isSubGraph !== nodes[i].subGraph){
+                        angular.copy(isSubGraph,nodes[i].subGraph);
+                    }
+
+                    if(newType !== nodes[i].nodeType){
+                        angular.copy(newType,nodes[i].nodeType);
+                    }
+                    angular.copy(input,nodes[i].inputConnectors);
+                    angular.copy(output,nodes[i].outputConnectors );
+                    angular.copy(newProcedureList,nodes[i].procedureDataModel);
+                    angular.copy(newInterfaceList,nodes[i].interfaceDataModel);
+                    angular.copy(newSubGraphModel,  nodes[i].subGraphModel);
                 }
-                localStorage.mobiusNodeTypes = JSON.stringify(nodes);
             }
+            localStorage.mobiusNodeTypes = JSON.stringify(nodes);
         },
 
         // delete node type

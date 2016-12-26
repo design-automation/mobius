@@ -10,6 +10,12 @@ mobius.controller('procedureMenuCtrl',['$scope','$rootScope','generateCode',
         $scope.dataList = generateCode.getDataList();
 
         $scope.$watch(function () {
+            return generateCode.getDataList();
+        }, function () {
+            $scope.dataList = generateCode.getDataList();
+        });
+
+        $scope.$watch(function () {
             return generateCode.getNodeIndex();
         }, function () {
             if (generateCode.getNodeIndex() !== $scope.nodeIndex) {

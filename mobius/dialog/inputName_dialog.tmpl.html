@@ -1,6 +1,6 @@
-<md-dialog>
+<md-dialog ng-controller="DialogController">
     <form>
-        <md-dialog-content style="max-width:800px;max-height:810px; ">
+        <md-dialog-content style="max-width:800px;max-height:810px; " >
             <div class="md-dialog-content">
                 <md-input-container flex="">
                     <label>New Name: </label>
@@ -9,7 +9,7 @@
                            name="inputName"
                            autocomplete="off"
                            type="text"
-                           autofocus>
+                           md-autofocus>
                 </md-input-container>
             </div>
         </md-dialog-content>

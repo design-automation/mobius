@@ -16,7 +16,8 @@ angular.module('panzoom', ['monospaced.mousewheel'])
                 transclude: true,
                 scope: {
                     config: '=',
-                    model: '='
+                    model: '=',
+                    readonly:'='
                 },
                 controller: ['$scope', '$element','$rootScope',
                     function ($scope, $element,$rootScope) {
@@ -44,7 +45,10 @@ angular.module('panzoom', ['monospaced.mousewheel'])
                         var getCssScale = function (zoomLevel) {
                             var scaleFactor = Math.pow($scope.config.scalePerZoomLevel, zoomLevel - $scope.config.neutralZoomLevel);
                             // @mobius update scale factor to graph
-                            $rootScope.$broadcast("Update", scaleFactor);
+                            if($scope.readonly !== true){
+                                $rootScope.$broadcast("Update", scaleFactor);
+                            }
+
                             return scaleFactor;
                         };
 
@@ -72,10 +76,11 @@ angular.module('panzoom', ['monospaced.mousewheel'])
                         $scope.config.initialPanX = $scope.config.initialPanX !== undefined ? $scope.config.initialPanX  : 0;
                         $scope.config.initialPanY = $scope.config.initialPanY || 0;
                         $scope.config.keepInBounds = $scope.config.keepInBounds ? $scope.config.keepInBounds : false;
-                        if ($scope.config.keepInBounds && $scope.config.neutralZoomLevel !== 0) {
-                            console.warn('You have set keepInBounds to true and neutralZoomLevel to ' + $scope.config.neutralZoomLevel +
-                                '. Be aware that the zoom level cannot below ' + $scope.config.neutralZoomLevel);
-                        }
+                        // fixme temporay disabled
+                        //if ($scope.config.keepInBounds && $scope.config.neutralZoomLevel !== 0) {
+                        //    console.warn('You have set keepInBounds to true and neutralZoomLevel to ' + $scope.config.neutralZoomLevel +
+                        //        '. Be aware that the zoom level cannot below ' + $scope.config.neutralZoomLevel);
+                        //}
                         $scope.config.keepInBoundsRestoreForce =
                             $scope.config.keepInBoundsRestoreForce !== undefined ? $scope.config.keepInBoundsRestoreForce : 0.5;
                         $scope.config.keepInBoundsDragPullback =
@@ -95,9 +100,8 @@ angular.module('panzoom', ['monospaced.mousewheel'])
                             // let (w, h) denote the size of the rectangle to zoom to
                             // then we must CSS scale by the min of W/w and H/h in order to just fit the rectangle
 
-
-                            var W = 479//$element.width();
-                            var H = 692//$element.height();
+                            var W =  document.getElementById('PanZoom').offsetWidth;//$element.width();
+                            var H =  document.getElementById('PanZoom').offsetHeight;//$element.height();
 
                             var w = rect.width;
                             var h = rect.height;
@@ -136,7 +140,6 @@ angular.module('panzoom', ['monospaced.mousewheel'])
                             y: $scope.base.pan.y
                         };
 
-
                         // FIXME why declare these on $scope? They could be private vars
                         $scope.previousPosition = undefined;
                         $scope.dragging = false;
@@ -152,9 +155,14 @@ angular.module('panzoom', ['monospaced.mousewheel'])
                                 $scope.model.pan.x = $scope.base.pan.x + deltaT.x;
                                 $scope.model.pan.y = $scope.base.pan.y + deltaT.y;
 
+                                // spot a
                                 if ($scope.config.keepInBounds) {
                                     var topLeftCornerView = getViewPosition({ x: 0, y: 0 });
-                                    var bottomRightCornerView = getViewPosition({ x: viewportWidth, y: viewportHeight });
+                                    var canvasWidth = 4000;
+                                    var canvasHeight = 4000;
+                                    viewportWidth = document.getElementById('PanZoom').offsetWidth;
+                                    viewportHeight = document.getElementById('PanZoom').offsetHeight;
+                                    var bottomRightCornerView = getViewPosition({ x: canvasWidth, y: canvasHeight});
 
                                     if (topLeftCornerView.x > 0) {
                                         $scope.model.pan.x = 0;
@@ -181,6 +189,11 @@ angular.module('panzoom', ['monospaced.mousewheel'])
 
                             var scale = getCssScale($scope.model.zoomLevel);
 
+                            if($scope.readonly !== true){
+                                $rootScope.$broadcast("Update", scale);
+                            }
+
+
                             var scaleString = 'scale(' + scale + ')';
 
                             if (navigator.userAgent.indexOf('Chrome') !== -1) {
@@ -206,7 +219,7 @@ angular.module('panzoom', ['monospaced.mousewheel'])
 
                                 // IE > 9.0
                                 zoomElementDOM.style.transformOrigin = '0 0';
-                                zoomElementDOM.style.transform = scaleString;2
+                                zoomElementDOM.style.transform = scaleString;
 
                                 // Safari etc..
                                 zoomElementDOM.style.webkitTransformOrigin = '0 0';
@@ -240,7 +253,6 @@ angular.module('panzoom', ['monospaced.mousewheel'])
                                 $scope.base.zoomLevel = $scope.model.zoomLevel;
                                 $scope.base.pan.x = $scope.model.pan.x;
                                 $scope.base.pan.y = $scope.model.pan.y;
-
                                 $scope.zoomAnimation = undefined;
                             }
 
@@ -356,11 +368,19 @@ angular.module('panzoom', ['monospaced.mousewheel'])
                             syncModelToDOM();
                         };
 
+                        var updateModel = function (model) {
+                            $scope.base.pan.x = model.pan.x;
+                            $scope.base.pan.y = model.pan.y;
+                            $scope.base.zoomLevel = model.zoomLevel;
+                            syncModelToDOM();
+                        };
+
                         var length = function (vector2d) {
                             return Math.sqrt(vector2d.x * vector2d.x + vector2d.y * vector2d.y);
                         };
 
                         var scopeIsDestroyed = false;
+
                         var AnimationTick = function () {
                             var lastTick = null;
 
@@ -415,26 +435,32 @@ angular.module('panzoom', ['monospaced.mousewheel'])
                                     }
                                 }
 
-                                //if ($scope.config.keepInBounds && !$scope.dragging) {
-                                //    var topLeftCornerView = getViewPosition({ x: 0, y: 0 });
-                                //    var bottomRightCornerView = getViewPosition({ x: viewportWidth, y: viewportHeight });
-                                //
-                                //    if (topLeftCornerView.x > 0) {
-                                //        $scope.base.pan.x -= $scope.config.keepInBoundsRestoreForce * topLeftCornerView.x;
-                                //    }
-                                //
-                                //    if (topLeftCornerView.y > 0) {
-                                //        $scope.base.pan.y -= $scope.config.keepInBoundsRestoreForce * topLeftCornerView.y;
-                                //    }
-                                //
-                                //    if (bottomRightCornerView.x < viewportWidth) {
-                                //        $scope.base.pan.x -= $scope.config.keepInBoundsRestoreForce * (bottomRightCornerView.x - viewportWidth);
-                                //    }
-                                //
-                                //    if (bottomRightCornerView.y < viewportHeight) {
-                                //        $scope.base.pan.y -= $scope.config.keepInBoundsRestoreForce * (bottomRightCornerView.y - viewportHeight);
-                                //    }
-                                //}
+                                if ($scope.config.keepInBounds && !$scope.dragging) {
+                                    var topLeftCornerView = getViewPosition({ x: 0, y: 0 });
+                                    var canvasWidth = 4000;
+                                    var canvasHeight = 4000;
+                                    viewportWidth = document.getElementById('PanZoom').offsetWidth;
+                                    viewportHeight = document.getElementById('PanZoom').offsetHeight;
+                                    var bottomRightCornerView = getViewPosition({ x: canvasWidth, y: canvasHeight});
+
+                                    //spot b
+
+                                    if (topLeftCornerView.x > 0) {
+                                        $scope.base.pan.x -= $scope.config.keepInBoundsRestoreForce * topLeftCornerView.x;
+                                    }
+
+                                    if (topLeftCornerView.y > 0) {
+                                        $scope.base.pan.y -= $scope.config.keepInBoundsRestoreForce * topLeftCornerView.y;
+                                    }
+
+                                    if (bottomRightCornerView.x < viewportWidth) {
+                                        $scope.base.pan.x -= $scope.config.keepInBoundsRestoreForce * (bottomRightCornerView.x - viewportWidth);
+                                    }
+
+                                    if (bottomRightCornerView.y < viewportHeight) {
+                                        $scope.base.pan.y -= $scope.config.keepInBoundsRestoreForce * (bottomRightCornerView.y - viewportHeight);
+                                    }
+                                }
 
                                 syncModelToDOM();
 
@@ -500,7 +526,6 @@ angular.module('panzoom', ['monospaced.mousewheel'])
                                 };
                             }
                         };
-
 
                         $scope.onTouchMove = function($event) {
                             $event.preventDefault();
@@ -571,6 +596,7 @@ angular.module('panzoom', ['monospaced.mousewheel'])
 
                             return false;
                         };
+
                         var pan = function (delta) {
                             delta.x = delta.x || 0;
                             delta.y = delta.y || 0;
@@ -595,8 +621,13 @@ angular.module('panzoom', ['monospaced.mousewheel'])
 
                             if ($scope.config.keepInBounds) {
                                 var topLeftCornerView = getViewPosition({ x: 0, y: 0 });
-                                var bottomRightCornerView = getViewPosition({ x: viewportWidth, y: viewportHeight });
+                                var canvasWidth = 4000;
+                                var canvasHeight = 4000;
+                                viewportWidth = document.getElementById('PanZoom').offsetWidth;
+                                viewportHeight = document.getElementById('PanZoom').offsetHeight;
+                                var bottomRightCornerView = getViewPosition({ x: canvasWidth, y: canvasHeight});
 
+                                // spot c
                                 if (topLeftCornerView.x > 0 && dragDelta.x > 0) {
                                     dragDelta.x *= Math.min(Math.pow(topLeftCornerView.x, -$scope.config.keepInBoundsDragPullback), 1);
                                 }
@@ -705,15 +736,16 @@ angular.module('panzoom', ['monospaced.mousewheel'])
                             zoomOut: zoomOut,
                             zoomToFit: zoomToFit,
                             getViewPosition: getViewPosition,
-                            getModelPosition: getModelPosition
+                            getModelPosition: getModelPosition,
+                            updateModel:updateModel
                         };
 
                     }],
                 link: function (scope, element, attrs) {
                     scope.elementId = attrs.id;
 
-                    viewportHeight = element.find('.zoom-element').children().height();
-                    viewportWidth = element.find('.zoom-element').children().width();
+                    viewportHeight = document.getElementsByClassName('flow-chart').offsetHeight;
+                    viewportWidth = document.getElementsByClassName('flow-chart').offsetWidth;
 
                     if (scope.elementId) {
                         PanZoomService.registerAPI(scope.elementId, api);
@@ -735,120 +767,8 @@ angular.module('panzoom', ['monospaced.mousewheel'])
                 replace: true
             };
         }]);
-angular.module('panzoomwidget', [])
-    .directive('panzoomwidget', ['$document', 'PanZoomService',
-        function ($document, PanZoomService) {
-            var panzoomId;
 
-            return {
-                restrict: 'E',
-                transclude: true,
-                compile: function compile(/*tElement, tAttrs, transclude*/) {
-                    return {
-                        pre: function preLink(/*scope, iElement, iAttrs, controller*/) { },
-                        post: function postLink(scope, iElement, iAttrs /*, controller*/) {
-                            // we pick the value ourselves at this point, before the controller is instantiated,
-                            // instead of passing it as a scope variable. This is to not force people to type quotes
-                            // around the string.
-                            // Note: we need to use iAttrs and not directly get the attribute on the element to
-                            // be sure to get the interpolated value ({{foo}})
-                            panzoomId = iAttrs.panzoomId;
 
-                            if (!panzoomId) {
-                                throw 'Error in setup. You must define attribute panzoom-id on the <panzoomwidget> element in order to link it to the ' +
-                                'id of the <panzoom> element. Ref: ';
-                            }
-                            PanZoomService.getAPI(panzoomId).then(function (api) {
-                                scope.model = api.model;
-                                scope.config = api.config;
-
-                                var zoomSliderWidget = iElement.find('.zoom-slider-widget');
-                                var isDragging = false;
-
-                                var sliderWidgetTopFromZoomLevel = function (zoomLevel) {
-                                    return ((scope.config.zoomLevels - zoomLevel - 1) * scope.widgetConfig.zoomLevelHeight);
-                                };
-
-                                var zoomLevelFromSliderWidgetTop = function (sliderWidgetTop) {
-                                    return scope.config.zoomLevels - 1 - sliderWidgetTop / scope.widgetConfig.zoomLevelHeight;
-                                };
-
-                                var getZoomLevelForMousePoint = function ($event) {
-                                    var sliderWidgetTop = $event.pageY - iElement.find('.zoom-slider').offset().top - scope.widgetConfig.zoomLevelHeight / 2;
-                                    return zoomLevelFromSliderWidgetTop(sliderWidgetTop);
-                                };
-
-                                scope.getZoomLevels = function () {
-                                    var zoomLevels = [];
-                                    for (var i = scope.config.zoomLevels - 1; i >= 0; i--) {
-                                        zoomLevels.push(i);
-                                    }
-                                    return zoomLevels;
-                                };
-
-                                scope.widgetConfig = {
-                                    zoomLevelHeight: 10
-                                };
-
-                                scope.zoomIn = function () {
-                                    api.zoomIn();
-                                };
-
-                                scope.zoomOut = function () {
-                                    api.zoomOut();
-                                };
-
-                                scope.onClick = function ($event) {
-                                    var zoomLevel = getZoomLevelForMousePoint($event);
-                                    api.changeZoomLevel(zoomLevel);
-                                };
-
-                                scope.onMousedown = function () {
-                                    isDragging = true;
-
-                                    $document.on('mousemove', scope.onMousemove);
-                                    $document.on('mouseup', scope.onMouseup);
-                                };
-
-                                scope.onMousemove = function ($event) {
-                                    $event.preventDefault();
-                                    var zoomLevel = getZoomLevelForMousePoint($event);
-                                    api.changeZoomLevel(zoomLevel);
-                                };
-
-                                scope.onMouseup = function () {
-                                    isDragging = false;
-
-                                    $document.off('mousemove', scope.onMousemove);
-                                    $document.off('mouseup', scope.onMouseup);
-                                };
-
-                                scope.onMouseleave = function () {
-                                    isDragging = false;
-                                };
-
-                                // $watch is not fast enough so we set up our own polling
-                                setInterval(function () {
-                                    zoomSliderWidget.css('top', sliderWidgetTopFromZoomLevel(scope.model.zoomLevel) + 'px');
-                                }, 25);
-                            });
-                        }
-                    };
-                },
-                template: '<div class="panzoomwidget">' +
-                '<div ng-click="zoomIn()" ng-mouseenter="zoomToLevelIfDragging(config.zoomLevels - 1)" class="zoom-button zoom-button-in">+</div>' +
-                '<div class="zoom-slider" ng-mousedown="onMousedown()" ' +
-                'ng-click="onClick($event)">' +
-                '<div class="zoom-slider-widget" ng-style="{\'height\': widgetConfig.zoomLevelHeight - 2 +\'px\'}"></div>' +
-                '<div ng-repeat="zoomLevel in getZoomLevels()" ' +
-                ' class="zoom-level zoom-level-{{zoomLevel}}" ng-style="{\'height\': widgetConfig.zoomLevelHeight +\'px\'}"></div>' +
-                '</div>' +
-                '<div ng-click="zoomOut()" ng-mouseenter="zoomToLevelIfDragging(0)" class="zoom-button zoom-button-out">-</div>' +
-                '<div ng-transclude></div>' +
-                '</div>',
-                replace: true
-            };
-        }]);
 angular.module('panzoom').factory('PanZoomService', ['$q',
     function ($q) {
         // key -> deferred with promise of API

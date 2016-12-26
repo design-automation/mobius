@@ -20,11 +20,9 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
         });
 
         // create new scene
-
         $scope.newScene = function () {
-
             $mdDialog.show({
-                controller: DialogController,
+                //controller: DialogController,
                 templateUrl: 'mobius/dialog/newScene_dialog.tmpl.html',
                 parent: angular.element(document.body),
                 //targetEvent: ev,
@@ -47,13 +45,12 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                     }else{
                         newScene();
                     }
-
-
                     },
                 function() {});
 
             function newScene(){
                 $rootScope.$broadcast('clearProcedure');
+                $rootScope.$broadcast('Extend');
 
                 // reset procedure / interface / graph and refresh viewport
                 generateCode.setChartViewModel(new flowchart.ChartViewModel({
@@ -63,6 +60,7 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                 ));
                 generateCode.setDataList([]);
                 generateCode.setInterfaceList([]);
+                generateCode.goRoot();
 
                 var scope = angular.element(document.getElementById('threeViewport')).scope();
                 var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
@@ -92,6 +90,7 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                 function(response) {
 
                     $rootScope.$broadcast('clearProcedure');
+                    generateCode.goRoot();
 
                     var graphJsonString;
                     var procedureJsonString;
@@ -152,6 +151,8 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                         scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
                        // $rootScope.$broadcast('runNewScene');
                     },0);
+
+                    $rootScope.$broadcast('Extend');
                 }
             );
         };
@@ -170,6 +171,7 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
             var reader = new FileReader();
 
             $rootScope.$broadcast('clearProcedure');
+            generateCode.goRoot();
 
             reader.onload = (function () {
                 return function (e) {
@@ -229,6 +231,7 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                         consoleMsg.errorMsg('invalidFileType');
                     }
                     generateCode.generateCode();
+                    $rootScope.$broadcast('Extend');
                 };
             })(f);
 
@@ -264,12 +267,11 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
 
         // save json file for scene
         $scope.saveSceneJson = function(){
+            var graphJson = JSON.stringify(generateCode.getRootChartViewModel().data, null, 4);
 
-            var graphJson = JSON.stringify(generateCode.getChartViewModel().data, null, 4);
+            var procedureJson = JSON.stringify(generateCode.getRootDataList(), null, 4);
 
-            var procedureJson = JSON.stringify(generateCode.getDataList(), null, 4);
-
-            var interfaceJson = JSON.stringify(generateCode.getInterfaceList(), null, 4);
+            var interfaceJson = JSON.stringify(generateCode.getRootInterfaceList(), null, 4);
 
 
             var sceneBlob = new Blob([graphJson + '\n\n' + '//procedure json\n'
@@ -307,7 +309,6 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
 
             $scope.nodeLibUrl = URL.createObjectURL(typesBlob);
         };
-
 
         // import node library to current local storage
         $scope.importNodeLib = function(files){
@@ -354,7 +355,7 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
 
         // save mobius library file
         $scope.downloadLib = function(){
-            $http.get("mobius/module.js")
+            $http.get("mobius/module/module.js")
                 .success(
                 function(response) {
                     var libBlob = new Blob([response], {type: "application/javascript"});
@@ -366,7 +367,6 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
         $scope.toggleCheatSheet = function(){
             hotkeys.toggleCheatSheet();
         };
-
 
         // emit to viewport controller for view splitting
         $scope.singleView = function(){

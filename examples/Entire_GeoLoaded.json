@@ -1,0 +1,604 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "geoData0",
+            "x": 2119.759705301184,
+            "y": 1886.7691520920707,
+            "inputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Input",
+                    "name": "file",
+                    "connected": false,
+                    "dataValue": "1",
+                    "option": {
+                        "name": "dropdown"
+                    },
+                    "color": "#000000",
+                    "menuOptionText": "1, 2",
+                    "selected": true,
+                    "$$hashKey": "object:674"
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "id": 17,
+                    "title": "Output",
+                    "selected": false,
+                    "type": "new",
+                    "name": "geoData",
+                    "$$hashKey": "object:683"
+                }
+            ],
+            "type": "geoData",
+            "version": 1463464473616,
+            "overwrite": true,
+            "disabled": false,
+            "subGraphModel": {}
+        },
+        {
+            "id": 1,
+            "name": "polygons0",
+            "x": 2119.372694052015,
+            "y": 1928.1793557532017,
+            "inputConnectors": [
+                {
+                    "id": 1,
+                    "title": "Input",
+                    "name": "geoData",
+                    "connected": true,
+                    "option": {
+                        "name": "none"
+                    },
+                    "color": "#000000",
+                    "selected": true,
+                    "$$hashKey": "object:1149"
+                }
+            ],
+            "outputConnectors": [
+                {
+                    "id": 23,
+                    "title": "Output",
+                    "type": "new",
+                    "selected": false,
+                    "name": "poly",
+                    "dataValue": "[]",
+                    "$$hashKey": "object:1152"
+                }
+            ],
+            "type": "polygons",
+            "version": 1463471646095,
+            "overwrite": true,
+            "disabled": false,
+            "subGraphModel": {}
+        }
+    ],
+    "connections": [
+        {
+            "source": {
+                "nodeID": 0,
+                "connectorIndex": 0
+            },
+            "dest": {
+                "nodeID": 1,
+                "connectorIndex": 0
+            }
+        }
+    ]
+}
+
+//procedure json
+[
+    [
+        {
+            "id": 17,
+            "title": "Output",
+            "selected": false,
+            "type": "new",
+            "name": "geoData",
+            "$$hashKey": "object:683"
+        },
+        {
+            "id": 2,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "loadGeoJSON",
+            "category": "urb",
+            "parameters": [
+                {
+                    "value": "3",
+                    "type": "filename",
+                    "$$hashKey": "object:961"
+                }
+            ],
+            "result": "geoData",
+            "selected": true,
+            "$$hashKey": "object:684"
+        }
+    ],
+    [
+        {
+            "id": 23,
+            "title": "Output",
+            "type": "new",
+            "selected": false,
+            "name": "poly",
+            "dataValue": "[]",
+            "$$hashKey": "object:1152"
+        },
+        {
+            "id": 3,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "getProperty",
+            "category": "urb",
+            "parameters": [
+                {
+                    "value": "geoData",
+                    "type": "dataObject",
+                    "$$hashKey": "object:1220"
+                },
+                {
+                    "value": "\"features\"",
+                    "type": "propertyName",
+                    "$$hashKey": "object:1221"
+                }
+            ],
+            "result": "features",
+            "selected": false,
+            "disabled": false,
+            "$$hashKey": "object:1153"
+        },
+        {
+            "id": 6,
+            "title": "Data",
+            "nodes": [],
+            "dataName": "count",
+            "dataValue": "0",
+            "type": "new",
+            "selected": false,
+            "disabled": false,
+            "$$hashKey": "object:1154"
+        },
+        {
+            "id": 36,
+            "title": "Action",
+            "nodes": [],
+            "type": "new",
+            "expression": "",
+            "method": "sequence",
+            "category": "lst",
+            "parameters": [
+                {
+                    "value": "0",
+                    "type": "start",
+                    "$$hashKey": "object:1242"
+                },
+                {
+                    "value": "1500",
+                    "type": "end",
+                    "$$hashKey": "object:1243"
+                },
+                {
+                    "value": "1",
+                    "type": "stepSize",
+                    "$$hashKey": "object:1244"
+                }
+            ],
+            "result": "seq",
+            "selected": true,
+            "$$hashKey": "object:1155"
+        },
+        {
+            "id": 5,
+            "title": "Control",
+            "nodes": [
+                {
+                    "id": 37,
+                    "title": "Data",
+                    "nodes": [],
+                    "dataName": "feature",
+                    "dataValue": "features[featurekey]",
+                    "selected": false,
+                    "$$hashKey": "object:1258",
+                    "disabled": false
+                },
+                {
+                    "id": 8,
+                    "title": "Action",
+                    "nodes": [],
+                    "expression": "",
+                    "method": "getProperty",
+                    "category": "urb",
+                    "parameters": [
+                        {
+                            "value": "feature",
+                            "type": "dataObject",
+                            "$$hashKey": "object:1346"
+                        },
+                        {
+                            "value": "\"geometry\"",
+                            "type": "propertyName",
+                            "$$hashKey": "object:1347"
+                        }
+                    ],
+                    "result": "geometry",
+                    "selected": false,
+                    "disabled": false,
+                    "$$hashKey": "object:1260"
+                },
+                {
+                    "id": 9,
+                    "title": "Action",
+                    "nodes": [],
+                    "expression": "",
+                    "method": "getProperty",
+                    "category": "urb",
+                    "parameters": [
+                        {
+                            "value": "geometry",
+                            "type": "dataObject",
+                            "$$hashKey": "object:1361"
+                        },
+                        {
+                            "value": "\"coordinates\"",
+                            "type": "propertyName",
+                            "$$hashKey": "object:1362"
+                        }
+                    ],
+                    "result": "coord",
+                    "selected": false,
+                    "disabled": false,
+                    "$$hashKey": "object:1261"
+                },
+                {
+                    "id": 28,
+                    "title": "Control",
+                    "nodes": [
+                        {
+                            "id": 28,
+                            "title": "Control",
+                            "controlType": "if",
+                            "nodes": [
+                                {
+                                    "id": 27,
+                                    "title": "Action",
+                                    "nodes": [],
+                                    "expression": "continue",
+                                    "method": "expression",
+                                    "category": "msc",
+                                    "parameters": [],
+                                    "selected": false,
+                                    "disabled": false,
+                                    "$$hashKey": "object:1462"
+                                }
+                            ],
+                            "ifExpression": "coord.length < 0",
+                            "selected": false,
+                            "disabled": false,
+                            "$$hashKey": "object:1373"
+                        },
+                        {
+                            "id": 28,
+                            "title": "Control",
+                            "controlType": "else",
+                            "nodes": [
+                                {
+                                    "id": 30,
+                                    "title": "Control",
+                                    "nodes": [
+                                        {
+                                            "id": 30,
+                                            "title": "Control",
+                                            "controlType": "if",
+                                            "nodes": [
+                                                {
+                                                    "id": 27,
+                                                    "title": "Action",
+                                                    "nodes": [],
+                                                    "expression": "continue",
+                                                    "method": "expression",
+                                                    "category": "msc",
+                                                    "parameters": [],
+                                                    "selected": false,
+                                                    "disabled": false,
+                                                    "$$hashKey": "object:1573"
+                                                }
+                                            ],
+                                            "ifExpression": "coord[0].length < 0",
+                                            "selected": false,
+                                            "disabled": false,
+                                            "$$hashKey": "object:1536"
+                                        },
+                                        {
+                                            "id": 30,
+                                            "title": "Control",
+                                            "controlType": "else",
+                                            "nodes": [
+                                                {
+                                                    "id": 11,
+                                                    "title": "Data",
+                                                    "nodes": [],
+                                                    "dataName": "scaled",
+                                                    "dataValue": "[]",
+                                                    "selected": false,
+                                                    "disabled": false,
+                                                    "$$hashKey": "object:1586"
+                                                },
+                                                {
+                                                    "id": 10,
+                                                    "title": "Control",
+                                                    "nodes": [
+                                                        {
+                                                            "id": 32,
+                                                            "title": "Control",
+                                                            "nodes": [
+                                                                {
+                                                                    "id": 32,
+                                                                    "title": "Control",
+                                                                    "controlType": "if",
+                                                                    "nodes": [
+                                                                        {
+                                                                            "id": 33,
+                                                                            "title": "Action",
+                                                                            "nodes": [],
+                                                                            "expression": "console.log(\"Bad Data\")",
+                                                                            "method": "expression",
+                                                                            "category": "msc",
+                                                                            "parameters": [],
+                                                                            "selected": false,
+                                                                            "$$hashKey": "object:1670",
+                                                                            "disabled": false
+                                                                        },
+                                                                        {
+                                                                            "id": 28,
+                                                                            "title": "Action",
+                                                                            "nodes": [],
+                                                                            "expression": "continue",
+                                                                            "method": "expression",
+                                                                            "category": "msc",
+                                                                            "parameters": [],
+                                                                            "selected": false,
+                                                                            "disabled": false,
+                                                                            "$$hashKey": "object:1671"
+                                                                        }
+                                                                    ],
+                                                                    "ifExpression": "coordinate[0] == undefined || coordinate[1] == undefined",
+                                                                    "selected": false,
+                                                                    "$$hashKey": "object:1646",
+                                                                    "disabled": false
+                                                                },
+                                                                {
+                                                                    "id": 32,
+                                                                    "title": "Control",
+                                                                    "controlType": "else",
+                                                                    "nodes": [
+                                                                        {
+                                                                            "id": 12,
+                                                                            "title": "Data",
+                                                                            "nodes": [],
+                                                                            "dataName": "x",
+                                                                            "dataValue": "100*(coordinate[0]-13.36)",
+                                                                            "selected": false,
+                                                                            "disabled": false,
+                                                                            "$$hashKey": "object:1685"
+                                                                        },
+                                                                        {
+                                                                            "id": 13,
+                                                                            "title": "Data",
+                                                                            "nodes": [],
+                                                                            "dataName": "y",
+                                                                            "dataValue": "100*(coordinate[1]-52.53)",
+                                                                            "selected": false,
+                                                                            "disabled": false,
+                                                                            "$$hashKey": "object:1686"
+                                                                        },
+                                                                        {
+                                                                            "id": 14,
+                                                                            "title": "Action",
+                                                                            "nodes": [],
+                                                                            "expression": "",
+                                                                            "method": "append",
+                                                                            "category": "lst",
+                                                                            "parameters": [
+                                                                                {
+                                                                                    "value": "scaled",
+                                                                                    "type": "list",
+                                                                                    "$$hashKey": "object:1750"
+                                                                                },
+                                                                                {
+                                                                                    "value": "[x,y]",
+                                                                                    "type": "itemOrList",
+                                                                                    "$$hashKey": "object:1751"
+                                                                                }
+                                                                            ],
+                                                                            "result": "_",
+                                                                            "selected": false,
+                                                                            "disabled": false,
+                                                                            "$$hashKey": "object:1687"
+                                                                        }
+                                                                    ],
+                                                                    "selected": false,
+                                                                    "$$hashKey": "object:1647",
+                                                                    "disabled": false
+                                                                }
+                                                            ],
+                                                            "controlType": "if else",
+                                                            "selected": false,
+                                                            "$$hashKey": "object:1626",
+                                                            "disabled": false
+                                                        }
+                                                    ],
+                                                    "controlType": "for each",
+                                                    "dataName": "coordinate",
+                                                    "forList": "coord[0]",
+                                                    "selected": false,
+                                                    "disabled": false,
+                                                    "$$hashKey": "object:1587"
+                                                }
+                                            ],
+                                            "selected": false,
+                                            "disabled": false,
+                                            "$$hashKey": "object:1537"
+                                        }
+                                    ],
+                                    "controlType": "if else",
+                                    "selected": false,
+                                    "disabled": false,
+                                    "$$hashKey": "object:1475"
+                                }
+                            ],
+                            "selected": false,
+                            "disabled": false,
+                            "$$hashKey": "object:1374"
+                        }
+                    ],
+                    "controlType": "if else",
+                    "selected": false,
+                    "disabled": false,
+                    "$$hashKey": "object:1262"
+                },
+                {
+                    "id": 15,
+                    "title": "Action",
+                    "nodes": [],
+                    "expression": "",
+                    "method": "polygonByPoints",
+                    "category": "srf",
+                    "parameters": [
+                        {
+                            "value": "GLOBAL",
+                            "type": "frame",
+                            "$$hashKey": "object:1391"
+                        },
+                        {
+                            "value": "scaled",
+                            "type": "points",
+                            "$$hashKey": "object:1392"
+                        },
+                        {
+                            "value": "[]",
+                            "type": "holes",
+                            "$$hashKey": "object:1393"
+                        }
+                    ],
+                    "result": "polygon",
+                    "selected": false,
+                    "disabled": false,
+                    "$$hashKey": "object:1263"
+                },
+                {
+                    "id": 41,
+                    "title": "Control",
+                    "nodes": [
+                        {
+                            "id": 41,
+                            "title": "Control",
+                            "controlType": "if",
+                            "nodes": [
+                                {
+                                    "id": 40,
+                                    "title": "Action",
+                                    "nodes": [],
+                                    "expression": "",
+                                    "method": "append",
+                                    "category": "lst",
+                                    "parameters": [
+                                        {
+                                            "value": "poly",
+                                            "type": "list",
+                                            "$$hashKey": "object:5139"
+                                        },
+                                        {
+                                            "value": "polygon",
+                                            "type": "itemOrList",
+                                            "$$hashKey": "object:5140"
+                                        }
+                                    ],
+                                    "result": "_",
+                                    "$$hashKey": "object:5126",
+                                    "selected": false,
+                                    "disabled": false
+                                }
+                            ],
+                            "ifExpression": "polygon.getGeometry().curves.length != 0",
+                            "$$hashKey": "object:5319",
+                            "selected": false,
+                            "disabled": false
+                        },
+                        {
+                            "id": 41,
+                            "title": "Control",
+                            "controlType": "else",
+                            "nodes": [],
+                            "$$hashKey": "object:5320",
+                            "selected": false,
+                            "disabled": false
+                        }
+                    ],
+                    "controlType": "if else",
+                    "$$hashKey": "object:5309",
+                    "selected": false,
+                    "disabled": false
+                },
+                {
+                    "id": 7,
+                    "title": "Data",
+                    "nodes": [],
+                    "dataName": "count",
+                    "dataValue": "count+1",
+                    "type": "assign",
+                    "selected": false,
+                    "disabled": false,
+                    "$$hashKey": "object:1265"
+                }
+            ],
+            "type": "assign",
+            "controlType": "for each",
+            "dataName": "featurekey",
+            "forList": "seq",
+            "selected": false,
+            "disabled": false,
+            "$$hashKey": "object:1156"
+        }
+    ]
+]
+
+//interface json
+[
+    [
+        {
+            "id": 1,
+            "title": "Input",
+            "name": "file",
+            "connected": false,
+            "dataValue": "1",
+            "option": {
+                "name": "dropdown"
+            },
+            "color": "#000000",
+            "menuOptionText": "1, 2",
+            "selected": true,
+            "$$hashKey": "object:674"
+        }
+    ],
+    [
+        {
+            "id": 1,
+            "title": "Input",
+            "name": "geoData",
+            "connected": true,
+            "option": {
+                "name": "none"
+            },
+            "color": "#000000",
+            "selected": true,
+            "$$hashKey": "object:1149"
+        }
+    ]
+]
