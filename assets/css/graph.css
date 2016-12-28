@@ -25,11 +25,9 @@
 #interface {
     position: absolute;
     overflow: auto;
-    /*height: 100%;*/
-    /*width: 100%;*/
     display: block;
     bottom: 0;
-    /*padding-bottom: 32px;*/
+    background-color: #ffffff !important; ;
 }
 
 .graph-area #run-button{
@@ -45,7 +43,7 @@
 }
 
 .graph-area .interface{
-    background-color: white;
+    background-color: #f5f5f5!important;
 }
 
 .graph-area .interface .range{

@@ -16,9 +16,13 @@
 
 
 .code-area #tree-root-parameter{
-    padding-bottom:6px;
+    border-bottom:6px solid #eaeaea;
 }
 
+.params {
+    left: 100px !important;
+    position: absolute; !important;
+}
 
 #argument-area{
     overflow: auto;

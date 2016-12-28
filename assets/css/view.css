@@ -70,7 +70,7 @@
 
 .tabArea{
     position: relative;
-    left: 9px;
+    /*left: 9px;*/
     height: 100%;
     width: 100%;
 }

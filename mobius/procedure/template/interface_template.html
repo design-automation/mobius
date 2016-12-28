@@ -6,7 +6,8 @@
     <div class="tree-node-content tree-item" >
         {{ node.name || 'undefined' }}
         &nbsp;:&nbsp;
-        <a ng-if =" node.option.name === 'none'"
+        <a class="params"
+           ng-if =" node.option.name === 'none'"
            data-nodrag `ref="#"
            editable-text="node.dataValue"
            buttons="no"
@@ -20,7 +21,7 @@
             </a>
 
             <input type="range"
-                   class="range"
+                   class="range params"
                 data-nodrag
                 ng-model="node.dataValue"
                 max = "{{node.max}}"
@@ -29,7 +30,9 @@
             </input>
         </span>
 
-        <input ng-if =" node.option.name === 'color picker'"
+        <input
+            class="params"
+            ng-if =" node.option.name === 'color picker'"
             data-nodrag
             ng-model="node.color"
             type="color" />
@@ -42,21 +45,25 @@
                       <!--display: inline-block!important;-->
                       <!--font-size: 70%"/>-->
 
-        <input ng-if =" node.option.name === 'local file'"
-               type="file"
-               data-nodrag
-               fileread="node.dataValue"
-               style="line-height: normal!important;
+        <input
+                class="params"
+                ng-if =" node.option.name === 'local file'"
+                type="file"
+                data-nodrag
+                fileread="node.dataValue"
+                style="line-height: normal!important;
                       display: inline-block!important;
                       font-size: 70%"/>
 
-        <a ng-if =" node.option.name === 'dropdown'"
-           data-nodrag
-           href="#"
-           blur="submit"
-           buttons="no"
-           editable-select="node.dataValue"
-           e-ng-options="option for option in menuOptions(node.menuOptionText)">
+        <a
+            class="params"
+            ng-if =" node.option.name === 'dropdown'"
+            data-nodrag
+            href="#"
+            blur="submit"
+            buttons="no"
+            editable-select="node.dataValue"
+            e-ng-options="option for option in menuOptions(node.menuOptionText)">
             {{ node.dataValue || 'value' }}
         </a>
     </div>

@@ -74,7 +74,7 @@ margin:2px;
 
 .procedure-tree {
     background-color: white;
-    border: 1px solid #eee;
+    border:1.5px solid #e0e0e0;
     border-radius:1px;
     overflow: auto;
     height: 100%;
