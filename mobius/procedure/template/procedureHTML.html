@@ -39,7 +39,7 @@
 
             <!--<div ui-layout-container >-->
                 <div ng-if = "currentNodeName">
-                    <div class="doormat">
+                    <div class="doormat" ng-dblclick="showProcedure()">
                         <div>
                             {{currentNodeType}} {{currentNodeVersion}}
                         </div>
@@ -55,7 +55,7 @@
                 </div>
 
                 <div ng-if = "!currentNodeName">
-                    <div class="doormat">
+                    <div class="doormat" ng-dblclick="showProcedure()">
                         <div>No Node Selected</div>
                     </div>
                 </div>

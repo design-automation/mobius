@@ -71,7 +71,6 @@
             </ul>
         </span>
 
-
         <span  class="menu">
             <div class = "menuTitle"  dropdown-toggle>  View </div>
             <ul class="dropdown-menu">
@@ -149,7 +148,7 @@
                 <div class="view-area" ui-layout-container size={{viewportWidth}} id="viewport">
                     <div ui-layout="{ flow : 'row', dividerSize:'1', disableToggle:true}" >
                         <!-- threejs editor view port -->
-                        <div ui-layout-container size = "85%" id="viewportLayout">
+                        <div ui-layout-container size = "{{viewerHeight}}px" id="viewportLayout">
                             <div ng-controller="viewportCtrl" id="eyeButton">
                                 <!--viewport menu-->
                                 <span ng-if="viewportControl.layout === 'singleView'"
@@ -550,9 +549,9 @@
                         </div>
 
                         <!--console-->
-                        <div ui-layout-container size = "15%" class="monitor">
+                        <div ui-layout-container size = "{{consoleHeight}}px" class="monitor">
                             <div ng-controller="consoleCtrl">
-                                 <div class="doormat">
+                                 <div class="doormat" ng-dblclick="showConsole()">
                                     <div>Console</div>
                                     <button class="button"
                                             id = "clear"
@@ -586,7 +585,7 @@
                              ui-layout-container
                              min-size="32px">
                             <div ng-controller="graphCtrl">
-                                <div class="doormat">
+                                <div class="doormat" ng-dblclick="showGraph()">
                                     <div >
                                         <a style="cursor: default" ng-click="goRoot()"> Graph </a>
 

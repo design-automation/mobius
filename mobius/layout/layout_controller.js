@@ -12,6 +12,29 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
         // templates not in use
         $scope.procedureHTML = { name: 'procedureHTML.html', url: 'mobius/procedure/template/procedureHTML.html'} ;
 
+        $scope.showGraph = function(){
+            if($scope.graphHeight !== $scope.height - 32){
+                $scope.graphHeight = ($scope.height - 32);
+                $scope.procedureHeight = 32;
+            }else{
+                $scope.graphHeight = ($scope.height - 33);
+                $scope.procedureHeight = 33;
+            }
+        };
+
+        $scope.consoleHeight = 150;
+        $scope.viewerHeight = $scope.height - 150;
+
+        $scope.showConsole = function(){
+            if($scope.consoleHeight !== $scope.height - 32){
+                $scope.consoleHeight = $scope.height - 32;
+                $scope.viewerHeight = 32;
+            }else{
+                $scope.consoleHeight = $scope.height - 33;
+                $scope.viewerHeight = 33;
+            }
+        };
+
         $scope.bodySize = document.getElementById('layout').offsetWidth;
 
         $scope.$watch(function(){
@@ -82,8 +105,13 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
         });
 
         $scope.$on('showProcedure', function(){
-            $scope.graphHeight = 32 ;
-            $scope.procedureHeight = ($scope.height - 32)*0.7;
+            if($scope.graphHeight !== 32){
+                $scope.graphHeight = 32 ;
+                $scope.procedureHeight = $scope.height - 32;
+            }else{
+                $scope.graphHeight = 33 ;
+                $scope.procedureHeight = $scope.height - 33;
+            }
         });
 
         $scope.$watch(function(){

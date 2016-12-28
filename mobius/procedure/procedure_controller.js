@@ -7,6 +7,10 @@
 mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg','generateCode','nodeCollection',
     function($scope,$rootScope,$filter,consoleMsg,generateCode,nodeCollection) {
 
+        $scope.showProcedure = function(){
+            $scope.$emit("showProcedure");
+        };
+
         $scope.info=function(input){
             if(input){
                 document.getElementById('choices').style.display = 'inline';
