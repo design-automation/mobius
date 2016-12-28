@@ -20,7 +20,7 @@ a:focus{
     line-height: 1;
     border-radius:0;
     border: 1px solid #ccc;
-    color:#888;
+    color:#333;
     background-color: #eee;
     transition-duration: 0.4s;
     cursor: pointer;
@@ -88,5 +88,5 @@ a:focus{
 
 .doormat  div:nth-child(1){
     margin: 4px 10px;
-    color: #888;
+    color: #333;
 }

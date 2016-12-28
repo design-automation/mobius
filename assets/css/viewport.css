@@ -6,29 +6,28 @@
 }
 
 #viewLT, #viewLT1{
-    border-right: 1px solid #444444;
+    border-right: 1px solid #666666;
     position: absolute;
     top:0;
     left:0;
 }
 
 #viewLB,#viewLB1{
-    border-top:1px solid #444444;
-    border-right:1px solid #444444;
+    border-top:1px solid #777777;
+    border-right:1px solid #666666;
     position: absolute;
     top:0;
     left:0;
 }
 
 #viewRT,#viewRT1{
-    border-bottom: 1px solid #444444;
     position: absolute;
     top:0;
     left:0;
 }
 
 #viewRB,#viewRB1{
-    border-top:1px solid #444444;
+    border-top:1px solid #777777;
     position: absolute;
     top:0;
     left:0;

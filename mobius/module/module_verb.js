@@ -970,6 +970,7 @@ var MOBIUS = ( function (mod){
 
 	};
 
+	mod.obj.addData.prototype.return = false;
 	/*
 	 *	Add Data Object to the Mobius Object
 	 *  Data Value is a Javascript object

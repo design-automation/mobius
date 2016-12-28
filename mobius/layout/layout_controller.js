@@ -22,6 +22,19 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
             }
         };
 
+        $scope.interfaceHeight = document.getElementById("interface").offsetHeight;
+        $scope.$watch(
+            function () {
+                return document.getElementById("interface").offsetHeight;
+            },
+            function (newValue, oldValue) {
+                if (newValue !== oldValue) {
+                    $scope.interfaceHeight = document.getElementById("interface").offsetHeight;
+                }
+            }
+        );
+
+
         $scope.consoleHeight = 150;
         $scope.viewerHeight = $scope.height - 150;
 
@@ -105,12 +118,12 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
         });
 
         $scope.$on('showProcedure', function(){
-            if($scope.graphHeight !== 32){
-                $scope.graphHeight = 32 ;
-                $scope.procedureHeight = $scope.height - 32;
+            if($scope.graphHeight !== 32 + $scope.interfaceHeight){
+                $scope.graphHeight = 32 + $scope.interfaceHeight ;
+                $scope.procedureHeight = $scope.height - 32-$scope.interfaceHeight;
             }else{
-                $scope.graphHeight = 33 ;
-                $scope.procedureHeight = $scope.height - 33;
+                $scope.graphHeight = 33 + $scope.interfaceHeight;
+                $scope.procedureHeight = $scope.height - 33 -$scope.interfaceHeight;
             }
         });
 

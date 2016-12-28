@@ -84,6 +84,7 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         $scope.controlTypes = ['for each',
                                 'if else'];
 
+        console.log(MOBIUS)
         // methods types
         $scope.getMethods = function(){
             var props = Object.getOwnPropertyNames(MOBIUS);
@@ -659,6 +660,7 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                         }
                     }
 
+                    console.log(subCate)
                     var actionObj = {
                         id: $scope.maxId($scope.data)  + 1,
                         title:  'Action',
