@@ -138,9 +138,9 @@ mobius.controller('executeCtrl',['$scope','$rootScope','$q','executeService','co
                             }
                             // update the data table viewport
                             // todo temp disable
-                            // if(singleGeomDataObject.length !== 0){
-                            //     scope.internalControl.geometryData[connectorName] = scope.internalControl.geometryData[connectorName].concat(singleGeomDataObject);
-                            // }
+                             if(singleGeomDataObject.length !== 0){
+                                 scope.internalControl.geometryData[connectorName] = scope.internalControl.geometryData[connectorName].concat(singleGeomDataObject);
+                             }
                         };
 
                         //display in the viewport according to node selection
