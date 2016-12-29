@@ -236,6 +236,16 @@ mobius.directive('viewport', function factory() {
 
                 renderer.domElement.addEventListener( 'mousemove', onchange );
                 renderer.domElement.addEventListener( 'wheel', onchange);
+
+                rendererLT.domElement.addEventListener( 'mousemove', onchange );
+                rendererLB.domElement.addEventListener( 'mousemove', onchange );
+                rendererRT.domElement.addEventListener( 'mousemove', onchange );
+                rendererRB.domElement.addEventListener( 'mousemove', onchange );
+
+                rendererLT.domElement.addEventListener( 'wheel', onchange );
+                rendererLB.domElement.addEventListener( 'wheel', onchange );
+                rendererRT.domElement.addEventListener( 'wheel', onchange );
+                rendererRB.domElement.addEventListener( 'wheel', onchange );
             }
 
             init();
@@ -245,6 +255,12 @@ mobius.directive('viewport', function factory() {
                 requestAnimationFrame(render);
                 update();
              }
+
+            scope.internalControl.onchange = function (){
+                requestAnimationFrame(render);
+                console.log("xx")
+                update();
+            };
 
             // perspective view
             scope.internalControl.perspectiveView = function(view){
@@ -724,6 +740,12 @@ mobius.directive('viewport', function factory() {
                 },
                 true
             );
+
+            scope.$watch(function(){return scope.internalControl.layout}, function(newValue, oldValue){
+                if(newValue !== oldValue){
+                    onchange()
+                }
+            });
 
             // update on resize of viewport
             function resizeUpdate() {

@@ -72,24 +72,6 @@ mobius.controller('viewportCtrl',[
             var table = [];
 
             var dataHolder = [];
-            //if(viewport === undefined){
-            //    angular.copy($scope.viewportControl.geometryData[$scope.currentConnector],$scope.geometryData.main);
-            //} else{
-            //    switch (viewport){
-            //        case 'LT':
-            //            angular.copy($scope.viewportControl.geometryData[$scope.currentConnectorLT],$scope.geometryData.LT);;
-            //            break;
-            //        case 'RT':
-            //            angular.copy($scope.viewportControl.geometryData[$scope.currentConnectorRT],$scope.geometryData.RT);
-            //            break;
-            //        case 'LB':
-            //            angular.copy($scope.viewportControl.geometryData[$scope.currentConnectorLB],$scope.geometryData.LB);
-            //            break;
-            //        case 'RB':
-            //            angular.copy($scope.viewportControl.geometryData[$scope.currentConnectorRB],$scope.geometryData.RB);
-            //            break;
-            //    }
-            //}
 
             if(viewport === undefined){
                 angular.copy($scope.viewportControl.geometryData[$scope.currentConnector],dataHolder);
@@ -248,7 +230,6 @@ mobius.controller('viewportCtrl',[
                 }
             }
         };
-
 
         $scope.viewportControl.layout = 'singleView';
         $scope.topoViewportControl.layout = 'singleView';
