@@ -165,7 +165,6 @@ mobius.controller(  'graphCtrl',
                  $scope.currentNodeType = $scope.chartViewModel.data.nodes[$scope.nodeIndex].type;
                  $scope.currentNodeVersion = $scope.chartViewModel.data.nodes[$scope.nodeIndex].version === 0?'':'*';
                  displayGeometry();
-                 $rootScope.$broadcast('Update Datatable');
              }else if(message === undefined){
                  $scope.nodeIndex = message;
                  $scope.currentNodeName = '';
@@ -174,6 +173,7 @@ mobius.controller(  'graphCtrl',
                  var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
 
                  scope.$apply(function(){scope.viewportControl.refreshView();} );
+                 scope.$apply(function(){scope.viewportControl.refreshData();} );
                  scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
                  scopeTopo.$apply(function(){scopeTopo.viewportControl.refreshData();} );
              }else if(message === 'port'){
@@ -195,14 +195,34 @@ mobius.controller(  'graphCtrl',
                              for(var i = 0; i < $scope.outputGeom.length; i++){
                                  for(var j =0; j < selectedNodes.length; j++){
                                      if($scope.outputGeom[i].name === selectedNodes[j].data.name){
-                                         //scope.viewportControl.geometryData = {};
                                          scope.viewportControl.addGeometryToScene($scope.outputGeom[i].geometry);
+
+                                         var p = 0;
+                                         scope.viewportControl.geometryData = {};
+
+                                         for(var k in $scope.outputGeom[i].value){
+                                             // store selected node's output connector name for data table display
+                                             if(k !== 'geomList'){
+                                                 scope.viewportControl.geometryData[k] = [];
+                                             }
+
+                                             if($scope.outputGeom[i].value[k] !== undefined){
+                                                 scope.viewportControl.addDataToScene($scope.outputGeom[i].value[k],
+                                                     $scope.outputGeom[i].geom,
+                                                     $scope.outputGeom[i].geomData[p],k)
+                                             }
+                                             p++;
+                                         }
+
+                                         //scopeTopo.topoViewportControl.addGeometryToScene($scope.outputGeom[i].topology);
                                      }
                                  }
                              }
                          }
                      }
                  }
+                 $rootScope.$broadcast('Update Datatable');
+
              }
 
         });

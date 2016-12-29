@@ -300,19 +300,6 @@ mobius.directive('topoViewport', function factoryTopo() {
                     }
                 }
             };
-
-            //
-            // takes in single data object and categorizes and displays accordingly
-            //
-            scope.internalControlTopo.displayObject = function(singleGeomObject){
-
-                // update the 3d topo viewport
-                if(singleGeomObject instanceof THREE.Mesh
-                    || singleGeomObject instanceof THREE.Line
-                    || singleGeomObject instanceof THREE.Object3D){
-                    scene1.add(singleGeomObject);
-                }
-            };
         }
     }
 });

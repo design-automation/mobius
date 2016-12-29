@@ -258,7 +258,6 @@ mobius.directive('viewport', function factory() {
 
             scope.internalControl.onchange = function (){
                 requestAnimationFrame(render);
-                console.log("xx")
                 update();
             };
 
@@ -965,6 +964,27 @@ mobius.directive('viewport', function factory() {
                 onchange();
             };
 
+
+            scope.internalControl.addDataToScene = function(geom,value,geomData,connectorName){
+                if(value !== undefined){
+                    if(value.constructor === Array){
+                        for(var i = 0; i< value.length ;i++){
+                            scope.internalControl.displayObject(value[i],geomData[i],connectorName);
+                        }
+                    } else {
+                        scope.internalControl.displayObject(value,geomData,connectorName);
+                    }
+                }
+            };
+
+            //
+            // takes in single data object and categorizes and displays accordingly
+            //
+            scope.internalControl.displayObject = function(singleGeomObject, singleGeomDataObject,connectorName){
+                if(singleGeomDataObject.length !== 0){
+                    scope.internalControl.geometryData[connectorName] = scope.internalControl.geometryData[connectorName].concat(singleGeomDataObject);
+                }
+            };
         }
     }
 });
