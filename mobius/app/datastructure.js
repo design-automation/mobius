@@ -644,7 +644,7 @@ var mObj_geom_Solid = function mObj_geom_Solid( geometry ){
     var defaultSolidMaterial = new THREE.MeshLambertMaterial( {
         side: THREE.DoubleSide,
         wireframe: false,
-        //shading: THREE.SmoothShading,
+        // shading: THREE.SmoothShading,
         transparent: false,
         color: 0xCC6600
     } );
@@ -697,6 +697,7 @@ var mObj_geom_Compound = function mObj_geom_Compound( geometry ){
                 var exGeom = geom.extractThreeGeometry();
                 threeGeometry.add( exGeom );
 
+                //
                 // var edges = new THREE.EdgesHelper( exGeom, "black");
                 // edges.material.linewidth = 2;
                 // threeGeometry.add(edges);
@@ -705,6 +706,7 @@ var mObj_geom_Compound = function mObj_geom_Compound( geometry ){
         }
         
         threeGeometry.is_mObj = true;
+        // console.log(threeGeometry)
         return threeGeometry; 
     }
 

@@ -931,7 +931,6 @@ var MOBIUS = ( function (mod){
 
         obj.setHex(color_hex)
 		 //obj.setMaterial(material);
-
 		//return obj;
 	};
 
@@ -1691,7 +1690,7 @@ var convertGeomToThree = function( geom ){
 	var convertToThree = function(singleDataObject){
 
 		// normal three.js objects - for lines and curves
-		if( singleDataObject instanceof THREE.Mesh || singleDataObject instanceof THREE.Line || singleDataObject instanceof THREE.Group ){
+		if( singleDataObject instanceof THREE.Mesh || singleDataObject instanceof THREE.Line || singleDataObject instanceof THREE.Group || singleDataObject instanceof THREE.Object3D ){
 			
 			// to get lines in the mesh of the obj import
 			// if(singleDataObject instanceof THREE.Group){

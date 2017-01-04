@@ -9,6 +9,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
     var outputGeom = [];
 
     // geometry data list for current graph
+    // fixme merge geometry for subgraph
     var currentOutputGeom = [];
 
     // track of subgraphs

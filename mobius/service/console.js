@@ -59,6 +59,8 @@ mobius.factory('consoleMsg', function () {
                 autoScroll();
             },
         execMsg:
+
+        // fixme CODE NOT FUNCTION
             function(){
                 return new Promise(function (resolve){
                     printMsg = timeMsg() + ":" + 'Executing ... Please wait ...' +".";

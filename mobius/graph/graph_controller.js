@@ -195,7 +195,7 @@ mobius.controller(  'graphCtrl',
                              for(var i = 0; i < $scope.outputGeom.length; i++){
                                  for(var j =0; j < selectedNodes.length; j++){
                                      if($scope.outputGeom[i].name === selectedNodes[j].data.name){
-                                         scope.viewportControl.addGeometryToScene($scope.outputGeom[i].geometry);
+                                         scope.viewportControl.addGeometryToScene($scope.outputGeom[i].geom);
 
                                          var p = 0;
                                          scope.viewportControl.geometryData = {};
