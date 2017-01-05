@@ -39,8 +39,10 @@ mobius.directive('viewport', function factory() {
 
             // retrieve the viewport dom element
             var container = elem[0];
-            var VIEWPORT_WIDTH = container.offsetWidth;
-            var VIEWPORT_HEIGHT = container.offsetHeight;
+            var VIEWPORT_WIDTH = container.offsetWidth ;
+            var VIEWPORT_HEIGHT = container.offsetHeight ;
+
+
 
             //var scene;
             var camera,cameraLT, cameraLB, cameraRT, cameraRB;
@@ -82,7 +84,7 @@ mobius.directive('viewport', function factory() {
                     FAR = 100000;
 
                 camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
-                camera.position.set(-120, -200, 60);
+                camera.position.set(-200, -200, 60);
                 camera.up.set( 0, 0, 1 );
                 camera.lookAt( scene.position );
 
@@ -268,7 +270,7 @@ mobius.directive('viewport', function factory() {
             function onchange( e ) {
                 requestAnimationFrame(render);
                 update();
-             }
+            }
 
             scope.internalControl.onchange = function (){
                 requestAnimationFrame(render);
@@ -727,6 +729,7 @@ mobius.directive('viewport', function factory() {
 
             scope.internalControl.toggleGrid = function(){
                 gridHelper.visible = !gridHelper.visible;
+                onchange()
             };
 
             scope.internalControl.topView('LT');
@@ -738,17 +741,14 @@ mobius.directive('viewport', function factory() {
             scope.$watch(
                 function () {
                     return {
-                        width: elem[0].offsetWidth,
-                        height: elem[0].offsetHeight
+                        width: elem[0].clientWidth,
+                        height: elem[0].clientHeight
                     }
                 },
                 function (newValue, oldValue) {
-                    if(newValue !== oldValue){
-                        VIEWPORT_WIDTH = container.offsetWidth;
-                        VIEWPORT_HEIGHT = container.offsetHeight;
+                        VIEWPORT_WIDTH = container.clientWidth;
+                        VIEWPORT_HEIGHT = container.clientHeight;
                         resizeUpdate();
-                        //console.log("resize update!")
-                    }
                 },
                 true
             );
@@ -762,6 +762,9 @@ mobius.directive('viewport', function factory() {
             // update on resize of viewport
             function resizeUpdate() {
                 onchange();
+                var VIEWPORT_WIDTH = container.clientWidth;
+                var VIEWPORT_HEIGHT = container.clientHeight;
+
                 camera.aspect = VIEWPORT_WIDTH / VIEWPORT_HEIGHT;
                 camera.updateProjectionMatrix ();
 
@@ -850,6 +853,9 @@ mobius.directive('viewport', function factory() {
 
             // Update controls and stats
             function update() {
+                camera.updateMatrix();
+                camera.updateMatrixWorld();
+
                 controls.update();
                 // fixme only update the current control
                 controlsLT.update();
@@ -1007,29 +1013,29 @@ mobius.directive('viewport', function factory() {
             //
             scope.internalControl.zoomToExtend = function(){
                 console.log("extend");
-                var boxHelper = new THREE.BoundingBoxHelper(displayObj, 0xff0000);
-                boxHelper.update();
+                if(displayObj.children.length > 0){
+                    var boxHelper = new THREE.BoundingBoxHelper(displayObj, 0xff0000);
+                    boxHelper.update();
 
-                var boundingSphere = boxHelper.box.getBoundingSphere();
-                var center = boundingSphere.center;
-                var radius = boundingSphere.radius;
-                scene.add(boxHelper);
-                console.log(center)
+                    var boundingSphere = boxHelper.box.getBoundingSphere();
+                    var center = boundingSphere.center;
+                    var radius = boundingSphere.radius;
 
+                    var fov = camera.fov * ( Math.PI / 180 );
 
-                var fov = camera.fov * ( Math.PI / 180 );
-                camera.lookAt(center);
+                    camera.position.set(
+                        center.x + Math.abs( radius / Math.sin( fov / 2 )),
+                        center.y + Math.abs( radius / Math.sin( fov / 2 ) ),
+                        center.z + Math.abs( radius / Math.sin( fov / 2 ))
+                    );
 
-                // camera.position.set(new THREE.Vector3(
-                //     center.x + Math.abs( radius / Math.sin( fov / 2 )),
-                //         center.y + Math.abs( radius / Math.sin( fov / 2 ) ),
-                //         center.z + Math.abs( radius / Math.sin( fov / 2 ))
-                //         )
-                //     );
-
-                onchange();
+                    controls.update();
+                    camera.lookAt(center);
+                    controls.update();
+                    onchange();
+                }
             };
-
         }
     }
 });
+

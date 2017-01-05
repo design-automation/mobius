@@ -9,7 +9,11 @@
 
 .view-area .viewport-menu-button{
     background: #eee;
-    color: #888;
+    color: #333;
+    position: absolute;
+    top: -32px;
+    right: 30px;
+    z-index: 99999999999 !important;
 }
 
 .view-area #threeViewport {
@@ -30,7 +34,7 @@
 
 .view-area .codeViewport{
     width: 100%;
-    top:0;
+    top:32px;
     left:0;
     bottom: 0;
     position: absolute;
@@ -42,7 +46,7 @@
     left:0;
     position: absolute;
     bottom: 0;
-    top:0;
+    top:32px;
 }
 
 .view-area .dataGrid{
