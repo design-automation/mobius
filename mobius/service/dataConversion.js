@@ -69,7 +69,7 @@ var dataConversion = (function(data){
     var otherGeometry = [];
     var mergedGeometry = new THREE.Geometry();
 
-    mergeGeom(data);
+    // mergeGeom(data);
 
     function mergeGeom(unmerged){
         for(var i = 0; i < unmerged.length; i++){

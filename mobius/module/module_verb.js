@@ -2084,6 +2084,14 @@ var convertGeomToThree = function( geom ){
                 for(var j=0; j < singleDataObject.length; j++)
                     threeObject.add( singleDataObject[ j ].extractThreeGeometry() )
 
+                var meshMaterial = new THREE.MeshBasicMaterial({
+                    side: THREE.DoubleSide,
+                    color: 0x003399,
+                    shading: THREE.SmoothShading,
+                });
+                threeObject.material = meshMaterial;
+
+
                 return threeObject;
             }
 
