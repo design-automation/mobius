@@ -67,12 +67,15 @@ var dataConversion = (function(data){
 
     // merge geometry in geom entity for rendering in 3js renderer
     var otherGeometry = [];
-    //mergeGeom(data);
+    var mergedGeometry = new THREE.Geometry();
+
+    mergeGeom(data);
 
     function mergeGeom(unmerged){
         for(var i = 0; i < unmerged.length; i++){
             unmerged[i].geom = getMergedGeometry(unmerged[i].geom);
             otherGeometry = [];
+            mergedGeometry = new THREE.Geometry();
 
             for(k in unmerged[i].value){
                 if(k === 'geomList' && unmerged[i].value[k] !== undefined){
@@ -84,17 +87,14 @@ var dataConversion = (function(data){
 
 
     function getMergedGeometry(unmergedGeomList){
-        var mergedGeometry = new THREE.Geometry();
-
         if(unmergedGeomList !== undefined ){
             if(unmergedGeomList instanceof Array){
                 for(var i = 0; i< unmergedGeomList.length ;i++){
-                    mergeGeometry(unmergedGeomList[i],mergedGeometry);
                     getMergedGeometry(unmergedGeomList[i])
                 }
             } else {
-                var temp = mergeGeometry(unmergedGeomList,mergedGeometry);
-                otherGeometry.push(temp);
+                var temp1 = mergeGeometry(unmergedGeomList,mergedGeometry);
+                otherGeometry.push(temp1);
             }
 
             var meshMaterial = new THREE.MeshBasicMaterial({
@@ -119,13 +119,13 @@ var dataConversion = (function(data){
     function mergeGeometry (singleGeomObject,mergedGeometry){
         var geometry =[];
         if(singleGeomObject instanceof THREE.Mesh) {
-             mergedGeometry.mergeMesh(singleGeomObject, singleGeomObject.matrix)
+             mergedGeometry.merge(singleGeomObject.geometry, singleGeomObject.matrix)
         }else if(singleGeomObject instanceof THREE.Line || singleGeomObject instanceof THREE.PointCloud){
             otherGeometry.push(singleGeomObject)
         }else if(singleGeomObject instanceof THREE.Object3D) {
             for (var i = 0; i < singleGeomObject.children.length; i++) {
                 if(singleGeomObject.children[i] instanceof THREE.Mesh) {
-                    mergedGeometry.mergeMesh(singleGeomObject.children[i], singleGeomObject.children[i].matrix)
+                    mergedGeometry.merge(singleGeomObject.children[i].geometry, singleGeomObject.children[i].matrix)
                 }else if(singleGeomObject.children[i] instanceof THREE.Line || singleGeomObject.children[i] instanceof THREE.PointCloud){
                     otherGeometry.push(singleGeomObject.children[i])
                 }
