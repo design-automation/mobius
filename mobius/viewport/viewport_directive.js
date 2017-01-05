@@ -969,15 +969,15 @@ mobius.directive('viewport', function factory() {
 
 
             scope.internalControl.addDataToScene = function(geom,value,geomData,connectorName){
-                // if(value !== undefined){
-                //     if(value.constructor === Array){
-                //         for(var i = 0; i< value.length ;i++){
-                //             scope.internalControl.displayObject(value[i],geomData[i],connectorName);
-                //         }
-                //     } else {
-                //         scope.internalControl.displayObject(value,geomData,connectorName);
-                //     }
-                // }
+                if(value !== undefined){
+                    if(value.constructor === Array){
+                        for(var i = 0; i< value.length ;i++){
+                            scope.internalControl.displayObject(value[i],geomData[i],connectorName);
+                        }
+                    } else {
+                        scope.internalControl.displayObject(value,geomData,connectorName);
+                    }
+                }
             };
 
             //

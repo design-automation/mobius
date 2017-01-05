@@ -214,7 +214,7 @@ mobius.controller(  'graphCtrl',
                                              p++;
                                          }
 
-                                         //scopeTopo.topoViewportControl.addGeometryToScene($scope.outputGeom[i].topology);
+                                         scopeTopo.topoViewportControl.addGeometryToScene($scope.outputGeom[i].topology);
                                      }
                                  }
                              }
