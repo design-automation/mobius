@@ -734,7 +734,7 @@ mobius.directive('viewport', function factory() {
                         VIEWPORT_WIDTH = container.offsetWidth;
                         VIEWPORT_HEIGHT = container.offsetHeight;
                         resizeUpdate();
-                        console.log("resize update!")
+                        //console.log("resize update!")
                     }
                 },
                 true

@@ -60,13 +60,13 @@
                     </a>
 
                     <ul class="dropdown-menu" style="top:-2px">
-                        <li><a ng-click="loadExample('SimpleGISExample_v0.1.json')"> GIS Example (simple) </a></li>
-                        <li><a ng-click="loadExample('01_GIS.json')"> GIS Example </a></li>
-                       <!--<li><a ng-click="loadExample('00_KillianRoof.json')"> Killian Roof v1</a></li>-->
-                        <!--<li><a ng-click="loadExample('04_HigherOrderKillian.json')"> Killian Roof v2</a></li>-->
-                        <!--<li><a ng-click="loadExample('03_SimpleTower.json')"> Simple Tower </a></li>-->
+<!--                         <li><a ng-click="loadExample('SimpleGISExample_v0.1.json')"> GIS Example (simple) </a></li>
+                        <li><a ng-click="loadExample('01_GIS.json')"> GIS Example </a></li> -->
+                        <li><a ng-click="loadExample('00_KillianRoof.json')"> Killian Roof v1</a></li>
+                        <li><a ng-click="loadExample('04_HigherOrderKillian.json')"> Killian Roof v2</a></li>
+                        <li><a ng-click="loadExample('03_SimpleTower.json')"> Simple Tower </a></li>
                         <li><a ng-click="loadExample('01_SpiralTowers.json')"> Spiral Towers </a></li>
-                        <!--<li><a ng-click="loadExample('02_Extrusions.json')"> Extrusion Example </a></li>-->
+                        <li><a ng-click="loadExample('02_Extrusions.json')"> Extrusion Example </a></li>
                     </ul>
                 </li>
             </ul>
@@ -134,7 +134,8 @@
                     <a ng-click=" toggleCheatSheet();"> Hotkeys </a>
                 </li>
                 <li>
-                    <a href="doc/out/index.html" target="_blank"> Docs </a>
+<!--                     <a href="doc/out/index.html" target="_blank"> Docs </a> -->
+                    <a ng-click=" toggleHelp();"> Docs </a>
                 </li>
             </ul>
         </span>
@@ -765,6 +766,7 @@
 
 <!-- controllers -->
 <script src="mobius/graph/graph_controller.js"></script>
+<script src="mobius/help/helpCtrl.js"></script>
 <script src="mobius/menu/menu_controller.js"></script>
 <script src="mobius/procedure/procedure_controller.js"></script>
 <script src="mobius/graph/panzoom_controller.js"></script>
@@ -798,6 +800,7 @@
 <!-- other -->
 <script src="mobius/app/datastructure.js"></script>
 <script src="mobius/module/module_verb.js"></script>
+<!-- <script src="mobius/module/module_gis.js"></script>  -->
 
 <!--angular material-->
 <script src="assets/js/angular-material/angular-material.min.js"></script>

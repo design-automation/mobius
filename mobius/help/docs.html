@@ -1,0 +1,84 @@
+<style>
+#help-docs{
+
+  min-width: 80vw !important;
+  min-height: 80vw !important;
+
+  max-height: auto;
+  max-width: auto;
+
+}
+
+.function-name{
+  font-size: 16px; 
+  font-weight: bold;
+  line-height: 50px;
+  background-color: #D0CDCD;
+}
+
+md-dialog{
+  overflow-x: hidden;
+}
+
+</style>
+
+<div id='help-docs' ng-controller='helpCtrl'>
+
+    <md-toolbar>
+      <div class="md-toolbar-tools">Mobius Help</div>
+    </md-toolbar>
+
+    <md-content>
+        <md-tabs md-stretch-tabs md-dynamic-height md-border-bottom>
+<!--             <md-tab label="About">
+                <md-content class="md-padding">
+
+                  <h4>Möbius is a visual programming environment for creating parametric scripts for generating geometric models.</h4>
+
+                  <hr>
+                  To load an example in Mobius :
+                  <ul>
+                    <li>Click on File -> Load Example -> [Example Name] </li>
+                    <li>Once the file is loaded, click on the Run button.</li>
+                  </ul>
+
+                </md-content>
+            </md-tab> -->
+
+            <md-tab label="Docs">
+                <md-content class="md-padding">
+                  <md-tabs md-dynamic-height md-border-bottom>
+<!-- 
+                    <md-tab label="Module"'>
+                      <md-content class="md-padding">
+                        
+                        Module Library: verbs.js
+                        Lorem ipsum Ullamco in et commodo et quis ea consequat consequat Ut eu reprehenderit occaecat ullamco nulla irure officia nulla do laboris id nulla dolore consectetur anim sint enim fugiat incididunt fugiat fugiat dolore sit ut cupidatat commodo in dolore incididunt amet laboris in tempor deserunt laboris amet in aute nulla id nulla ut nostrud sed ut quis velit elit do ut anim ad proident aliquip veniam in dolore pariatur aute laboris proident minim Ut consequat minim voluptate fugiat sunt do nostrud irure eiusmod sint in eu officia esse nisi proident adipisicing commodo elit esse sunt quis sed nulla ea minim proident consectetur consequat Excepteur elit officia ut eu anim cupidatat exercitation exercitation ex eu minim culpa fugiat commodo veniam exercitation voluptate dolore nulla exercitation in ut magna sit aliqua magna labore consectetur exercitation officia tempor fugiat commodo ut amet commodo nulla magna dolore cillum ea velit ex officia fugiat ex eu laboris dolor commodo nisi esse nisi occaecat pariatur.
+
+                      </md-content>
+                    </md-tab> -->
+
+                    <md-tab label="{{category.meta.longName}}" ng-repeat='category in categories'>
+                      <md-content class="md-padding">
+                        
+                        <div class="md-display-2">{{category.meta.longName}} ({{category.name}})</div>
+                        <h4>{{category.meta.description}}</h4>
+
+                        <br>
+
+                        <div ng-repeat='fn in category.fns'>
+                            <hr/>
+                            <div class='function-name'>&nbsp;&nbsp;&nbsp;&nbsp;{{fn.name}}</div>
+                            <div ng-bind-html="fn.description"></div>
+                        </div>
+
+                      </md-content>
+                    </md-tab>
+                  </md-tabs>
+                </md-content>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+
+</div>
+

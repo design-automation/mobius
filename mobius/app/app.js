@@ -206,6 +206,16 @@ var mobius = angular.module('mobius',
     checkBrowser();
 
 
+    //
+    //  For the Help Dialog
+    //
+    mobius.config(function($mdThemingProvider) {
+      $mdThemingProvider.theme('default')
+            .primaryPalette('grey')
+            .accentPalette('blue-grey');
+    });
+
+
 
 
 
