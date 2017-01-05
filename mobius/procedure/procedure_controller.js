@@ -200,22 +200,16 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         });
 
         // watch change of procedure data tree, if change update the flattenData, update version
-        $scope.$watchGroup(['data','nodeIndex'],function(newValues, oldValues){
-            // todo test: checking if it is just select of different node
-            if(newValues[1] === oldValues[1]){
-                updateVersion();
-                flattenData();
-                generateCode.generateCode()
-            }
+        $scope.$watch('data',function(){
+            updateVersion();
+            flattenData();
+            generateCode.generateCode()
         } , true);
 
-        $scope.$watchGroup(['data','nodeIndex'],function(newValues, oldValues){
-            // todo test: checking if it is just select of different node
-            if(newValues[1] === oldValues[1]){
-                updateVersion();
-                flattenData();
-                generateCode.generateCode()
-            }
+        $scope.$watch('interface',function(){
+            updateVersion();
+            flattenData();
+            generateCode.generateCode()
         },true);
 
         function updateVersion(){
@@ -660,7 +654,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                         }
                     }
 
-                    console.log(subCate)
                     var actionObj = {
                         id: $scope.maxId($scope.data)  + 1,
                         title:  'Action',

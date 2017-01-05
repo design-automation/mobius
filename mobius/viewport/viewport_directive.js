@@ -939,14 +939,12 @@ mobius.directive('viewport', function factory() {
             // clear geometries in scene when run
             scope.internalControl.refreshView = function(){
                 for(var i = 0; i < scene.children.length; i++){
-                    if((  scene.children[i] instanceof THREE.Mesh
-                         || scene.children[i]  instanceof THREE.Line
-                         || scene.children[i]  instanceof THREE.Object3D
-                         || scene.children[i]  instanceof THREE.PointCloud) && scene.children[i].name !== 'helper'){
+                    if( scene.children[i].name !== 'helper'){
                         scene.remove(scene.children[i]);
                         i--;
                     }
                 }
+                displayObj = new THREE.Object3D();
                 onchange();
             };
 
@@ -996,17 +994,22 @@ mobius.directive('viewport', function factory() {
             //
             scope.internalControl.zoomToExtend = function(){
                 console.log("extend");
-                var helper = new THREE.BoundingBoxHelper(displayObj, 0xff0000);
-                helper.update();
-                var boundingSphere = helper.box.getBoundingSphere();
+                var boxHelper = new THREE.BoundingBoxHelper(displayObj, 0xff0000);
+                boxHelper.update();
+
+                var boundingSphere = boxHelper.box.getBoundingSphere();
                 var center = boundingSphere.center;
                 var radius = boundingSphere.radius;
+                scene.add(boxHelper)
 
-                var distance = center.distanceTo(camera.position) - radius;
-                var realHeight = Math.abs(helper.box.max.y - helper.box.min.y);
-                var fov = 2 * Math.atan(realHeight * control.correctForDepth / ( 2 * distance )) * ( 180 / Math.PI );
-                camera.fov = fov;
-                camera.updateProjectionMatrix();
+                var fov = camera.fov * ( Math.PI / 180 );
+
+                camera.position.set(new THREE.Vector3(
+                    center.x + Math.abs( radius / Math.sin( fov / 2 )),
+                        center.y + Math.abs( radius / Math.sin( fov / 2 ) ),
+                        center.z + Math.abs( radius / Math.sin( fov / 2 ))
+                        )
+                    );
             };
 
         }
