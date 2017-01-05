@@ -48,7 +48,6 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
     });
 
     function generateCode (subgraph){
-        console.log("generatedCode!")
         var model = {};
         var sortedOrder = [];
 
@@ -702,7 +701,6 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
         },
 
         getJavascriptCode: function () {
-            console.log("getJSCODE!")
             return js_beautify(data.javascriptCode + '\n' +  data.geomListCode);
         },
 
