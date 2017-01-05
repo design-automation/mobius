@@ -17,8 +17,11 @@ var MOBIUS = ( function (mod){
 	//
 	//
 	/** @namespace */
-	mod.frm = {}; 
-	mod.frm.description = "Functions dealing with creation of local frames for drawing geometry."
+	mod.frm = {  'meta' : {
+					 'longName' : "Frame",
+					 'description' : "Functions dealing with creation of local frames for drawing geometry."
+			   		}
+			   };
 	
 	/**
 	 * Creates a local coordinate system with a given origin and the X-Axis and Y-Axis pointing towards the specfied points 
@@ -43,8 +46,8 @@ var MOBIUS = ( function (mod){
 		return new mObj_frame(origin, xaxis, yaxis, undefined);
 
 	};
-	mod.frm.byXYPoints.prototype.description = "Usage: byXYPoints(origin, xPoint, yPoint)\
-	 <br>Creates a local coordinate system with a given origin and the X-Axis and Y-Axis pointing towards the specfied points .\
+	mod.frm.byXYPoints.prototype.description = "Creates a local coordinate system with a given origin and the X-Axis and Y-Axis pointing towards the specfied points .\
+	 <pre>Usage: byXYPoints(origin, xPoint, yPoint)</pre>\
 	 <br><i> {array / vertex object} <b>origin</b> - Origin of the local coordinate system\
 	 <br><i> {array / vertex object} <b>xPoint</b> - Point on the X-Axis \
 	 <br><i> {array / vertex object} <b>yPoint</b> - Point on the Y-Axis\
@@ -180,7 +183,11 @@ var MOBIUS = ( function (mod){
 	//
 	//
 	/** @namespace */
-	mod.sld = {};
+	mod.sld = {  'meta' : {
+					 'longName' : "Solids",
+					 'description' : "Functions dealing with creation of 3D solid geometry."
+			   		}
+			   };
 
 	/**
 	 * Creates a solid object by extruding a surface along x, y, z vectors of the given local coordinate system
@@ -231,7 +238,12 @@ var MOBIUS = ( function (mod){
 	//
 	//
 	/** @namespace */
-	mod.srf = {};
+	mod.srf = {  'meta' : {
+					 'longName' : "Surfaces",
+					 'description' : "Functions dealing with creation of 2D surface geometry."
+			   		}
+			   };
+
 
 	/**
 	 * Creates a Nurbs surface from user-specified data
@@ -685,7 +697,12 @@ var MOBIUS = ( function (mod){
 	//
 	//
 	/** @namespace */
-	mod.crv = {};
+	mod.crv = {  'meta' : {
+					 'longName' : "Curves",
+					 'description' : "Functions dealing with creation of  1D lines and curves"
+			   		}
+			   };
+
 
 	/**
 	 * Creates a Nurbs curve from user-specified data
@@ -1053,7 +1070,12 @@ var MOBIUS = ( function (mod){
 	//
 	//
 	/** @namespace */
-	mod.pnt = {};
+	mod.pnt = {  'meta' : {
+					 'longName' : "Points",
+					 'description' : "Functions dealing with creation of point geometry."
+			   		}
+			   };
+
 
 	/**
 	 * Creates a vertex object with the given point geometry
@@ -1116,7 +1138,12 @@ var MOBIUS = ( function (mod){
 	//
 	//
 	/** @namespace */
-	mod.vec= {};
+	mod.vec= {  'meta' : {
+					 'longName' : "Vectors",
+					 'description' : "Functions dealing with creation and manipulation of vectors."
+			   		}
+			   };
+
 
 	/**
 	 * Returns a vector with magnitude x, y, z along the x, y, z axes
@@ -1219,7 +1246,12 @@ var MOBIUS = ( function (mod){
 	//
 	//
 	/** @namespace */
-	mod.obj = {};
+	mod.obj = {  'meta' : {
+					 'longName' : "Objects",
+					 'description' : "Functions dealing with Mobius object operations."
+			   		}
+			   };
+
 
 	/**
 	 * Creates a copy of the object with the same geometry, transformations, material and data at the same location
@@ -1358,7 +1390,11 @@ var MOBIUS = ( function (mod){
 	//
 	//
 	/** @namespace */
-	mod.trn = {};
+	mod.trn = {  'meta' : {
+					 'longName' : "Transformations",
+					 'description' : "Functions dealing with geometric transformations."
+			   		}
+			   };
 
 	/**
 	 * Reflects the object about the XY plane of the frame
@@ -1600,7 +1636,11 @@ var MOBIUS = ( function (mod){
 	//
 	//
 	/** @namespace */
-	mod.mtx = {};
+	mod.mtx = {  'meta' : {
+					 'longName' : "Matrix",
+					 'description' : "Functions dealing with matrix operations."
+			   		}
+			   };
 
 	/**
 	 * Computes dot product of two matrices
@@ -1630,7 +1670,11 @@ var MOBIUS = ( function (mod){
 	//
 	//
 	/** @namespace */
-	mod.lst = {};
+	mod.lst = {  'meta' : {
+					 'longName' : "Lists",
+					 'description' : "Functions dealing with lists."
+			   		}
+			   };
 
 
 	/**
@@ -1837,7 +1881,11 @@ var MOBIUS = ( function (mod){
 	//
 	//
 	/** @namespace */
-	mod.msc = {};
+	mod.msc = {  'meta' : {
+					 'longName' : "Miscellaneous",
+					 'description' : "Miscellaneous functions"
+			   		}
+			   };
 
 	/**
 	 * Converts degrees into radians
@@ -1929,75 +1977,6 @@ var MOBIUS = ( function (mod){
 			console.log('warnning: MOBIUS web app not connected.');
 		}
 	};
-
-
-	// data conversion module
-
-	//mod.dataConversion = function(data){
-    //
-	//	for(var i = 0; i < data.length; i++) {
-	//		for (var m in data[i].value) {
-    //
-	//			if (data[i].value[m] !== undefined) {
-    //
-	//				if (data[i].value[m].constructor !== Array) {
-	//					extract(data[i].value[m],
-	//						data[i].geom,
-	//						data[i].geomData,
-	//						data[i].topo);
-	//				}
-	//				else {
-	//					var tempGeom = [];
-	//					var tempData = [];
-	//					var tempTopo = []
-    //
-	//					for (var n = 0; n < data[i].value[m].length; n++) {
-    //
-	//						extract(data[i].value[m][n],
-	//							tempGeom,
-	//							tempData,
-	//							tempTopo);
-	//					}
-	//					data[i].geom.push(tempGeom);
-	//					data[i].geomData.push(tempData);
-	//					data[i].topo.push(tempTopo);
-	//				}
-	//			}
-	//		}
-	//	}
-    //
-	//	function extract (obj,geom,geomData,topo){
-	//		if(obj.constructor === Array){
-	//			var tempGeom0 = [];
-	//			var tempData0 = [];
-	//			var tempTopo0 = [];
-    //
-	//			for(var k = 0; k < obj.length ; k++){
-	//				extract(obj[k],tempGeom0,tempData0,tempTopo0);
-	//			}
-    //
-	//			geom.push(tempGeom0);
-	//			geomData.push(tempData0);
-	//			topo.push(tempTopo0);
-	//		}
-	//		else if(obj instanceof mObj_geom_Curve ||
-	//				obj instanceof mObj_geom_Surface ||
-	//				obj instanceof mObj_geom_Solid ||
-	//				obj instanceof mObj_geom_Vertex ||
-	//				obj instanceof mObj_frame){
-	//			geom.push( obj.extractThreeGeometry() );
-	//			geomData.push( obj.extractData() );
-	//			topo.push(obj.extractTopology());
-	//		}else{
-	//			for(var key in obj){
-	//				extract(obj[key],geom,geomData,topo);
-	//			}
-	//		}
-	//	}
-    //
-	//	return data;
-	//};
-
 	return mod;
 
 })(MOBIUS || {});
@@ -2034,6 +2013,16 @@ var convertGeomToThree = function( geom ){
 		else if( singleDataObject instanceof verb.geom.NurbsCurve )
 			return ( new THREE.Line( singleDataObject.toThreeGeometry() ) );
 		else if(singleDataObject instanceof Array){
+
+			if(singleDataObject[0].is_mObj){
+
+				var threeObject = new THREE.Object3D();
+				for(var j=0; j < singleDataObject.length; j++)
+					threeObject.add( singleDataObject[ j ].extractThreeGeometry() )
+				
+				return threeObject;
+			}
+
 			// means it is a point
 			var dotGeometry = new THREE.Geometry();
 			dotGeometry.vertices.push( new THREE.Vector3(singleDataObject[0], singleDataObject[1], singleDataObject[2]) ); console.log("here");

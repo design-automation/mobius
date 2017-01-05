@@ -10,7 +10,7 @@ mobius.controller('helpCtrl',['$scope',  function($scope){
 	        
 	        var fns = [];
 			for (var fn in $scope.module[property]) {
-				if ( $scope.module[property].hasOwnProperty(fn) && fn !== "description") {
+				if ( $scope.module[property].hasOwnProperty(fn) && fn !== "meta") {
 
 				    fns.push( {
 				    	'name': fn, 
@@ -20,7 +20,7 @@ mobius.controller('helpCtrl',['$scope',  function($scope){
 			}
 
 	        $scope.categories.push({ 'name': property,
-	        						 'description': $scope.module[property].description || "Missing Category Definition. Please contact Module Author." ,
+	        						 'meta': $scope.module[property].meta || "Missing Category Definition. Please contact Module Author." ,
 	        						 'fns': fns
 	        						});
 	    }
