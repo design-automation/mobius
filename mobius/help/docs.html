@@ -1,0 +1,41 @@
+<style>
+#help-docs{
+  padding: 20px;
+  min-width: 80vw !important;
+  min-height: 80vw !important;
+}
+
+</style>
+
+<div id='help-docs' ng-controller='helpCtrl'>
+
+      <h3><center>Documentation</center></h3>
+
+      <hr>
+
+      <md-content>
+        <md-tabs md-dynamic-height md-border-bottom>
+          <md-tab label="{{category.name}}" ng-repeat='category in categories'>
+
+            
+            <md-content class="md-padding">
+              
+              <h1 class="md-display-2">{{category.name}}</h1>
+              <h4>{{category.description}}</h4>
+
+              <br><br>
+
+              <div ng-repeat='fn in category.fns'>
+                  <b>{{fn.name}}</b>
+                  <div ng-bind-html="fn.description"></div>
+                  <hr/>
+              </div>
+
+            </md-content>
+          </md-tab>
+        </md-tabs>
+      </md-content>
+
+
+</div>
+

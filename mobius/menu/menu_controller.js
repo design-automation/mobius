@@ -368,6 +368,7 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
             hotkeys.toggleCheatSheet();
         };
 
+
         // emit to viewport controller for view splitting
         $scope.singleView = function(){
             $rootScope.$broadcast('singleView');
@@ -379,6 +380,15 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
 
         $scope.openTypeManager = function(){
             document.getElementById('typeManager').style.display = " inline";
+        };
+
+        $scope.toggleHelp = function(){
+            $mdDialog.show({
+                templateUrl: 'mobius/help/docs.html',
+                parent: angular.element(document.body),
+                //targetEvent: ev,
+                clickOutsideToClose:true
+            })
         };
 
     }]);

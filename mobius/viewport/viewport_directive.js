@@ -734,7 +734,7 @@ mobius.directive('viewport', function factory() {
                         VIEWPORT_WIDTH = container.offsetWidth;
                         VIEWPORT_HEIGHT = container.offsetHeight;
                         resizeUpdate();
-                        console.log("resize update!")
+                        //console.log("resize update!")
                     }
                 },
                 true
@@ -958,8 +958,13 @@ mobius.directive('viewport', function factory() {
             // supporting function for geometry from verb to three.js
             //
             scope.internalControl.addGeometryToScene = function(geom){
+
                 for(var i =0; i<geom.length; i++){
-                    scene.add( geom[i] );
+                    if(geom[i] instanceof Array){
+                        scope.internalControl.addGeometryToScene(geom[i])
+                    }else{
+                        scene.add( geom[i] );
+                    }
                 }
                 onchange();
             };

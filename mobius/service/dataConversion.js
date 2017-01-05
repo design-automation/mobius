@@ -65,7 +65,7 @@ var dataConversion = (function(data){
     }
 
     // merge geometry in geom entity for rendering in 3js renderer
-    mergeGeom(data);
+    // mergeGeom(data);
 
     function mergeGeom(unmerged){
         for(var i = 0; i < unmerged.length; i++){

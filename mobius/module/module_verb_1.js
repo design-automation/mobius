@@ -523,32 +523,24 @@ var MOBIUS = ( function (mod){
 	 * @memberof crv
 	 */
 	 // TODO: 
-	mod.crv.line = function(frame, startPoint, endPoint){
+    mod.crv.line = function(frame, startPoint, endPoint){
 
-		// to check for compound and take in only the first elemetn of the array
-/*		if(surface instanceof mObj_geom_Compound)
-			surface = surface.getGeometry()[0];*/
+        if( startPoint.getGeometry != undefined )
+            startPoint = startPoint.getGeometry();
+        if( endPoint.getGeometry != undefined )
+            endPoint = endPoint.getGeometry();
 
-		if( startPoint.getGeometry != undefined )
-			startPoint = startPoint.getGeometry();
-		if( endPoint.getGeometry != undefined )
-			endPoint = endPoint.getGeometry();
+        var geometry = new THREE.Geometry();
+        geometry.vertices.push(
+            new THREE.Vector3( startPoint[0], startPoint[1], startPoint[2] ),
+            new THREE.Vector3( endPoint[0], endPoint[1], endPoint[2] )
+        );
 
-		// figure this out in three.js - THREE.Line????
-		// var crv = new verb.geom.Line(startPoint, endPoint);
+        var crv = new THREE.Line( geometry );
 
-		var geometry = new THREE.Geometry();
-		geometry.vertices.push(
-			new THREE.Vector3( startPoint[0], startPoint[1], startPoint[2] ),
-			new THREE.Vector3( endPoint[0], endPoint[1], endPoint[2] )
-		);
+        return new mObj_geom_Curve( crv );
 
-		var crv = new THREE.Line( geometry );
-		//crv = crv.transform( frame.toLocal() );
-	
-		return new mObj_geom_Curve( crv );
-
-	};
+    };
 
 	/**
 	 * Divides a curve into multiple segments and gives the corresponding t-parameter on the curve
@@ -2045,7 +2037,6 @@ var convertShapeGeometryToShape = function(shapeGeom){
 	return new THREE.Shape(points);
 
 } 
-
 
 
 
