@@ -39,6 +39,11 @@ mobius.controller('executeCtrl',['$scope','$rootScope','$q','executeService','co
             }
         });
 
+        $scope.extendCanvas = function () {
+            $rootScope.$broadcast("Extend");
+            var scope = angular.element(document.getElementById('threeViewport')).scope();
+            scope.viewportControl.zoomToExtend();
+        };
 
         $rootScope.$on('runNewScene',function(){
             consoleMsg.execMsg().then(function(){
@@ -74,10 +79,10 @@ mobius.controller('executeCtrl',['$scope','$rootScope','$q','executeService','co
                         console.log('display');
 
                         var scope = angular.element(document.getElementById('threeViewport')).scope();
-                        var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
+                        // var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
 
                         scope.viewportControl.refreshView();
-                        scopeTopo.topoViewportControl.refreshView();
+                        // scopeTopo.topoViewportControl.refreshView();
 
                         var selectedNodes = $scope.chartViewModel.getSelectedNodes();
 

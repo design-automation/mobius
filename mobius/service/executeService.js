@@ -13,6 +13,7 @@ mobius.factory('executeService', function ($q) {
                 var outputs = eval(" (function(){" + code + "}())");
             }catch(error){
                 errorMsg = error.message;
+                console.log(error)
                 var stack = ErrorStackParser.parse(error);
 
                 var functionList = [];

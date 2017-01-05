@@ -1,5 +1,6 @@
 // convert mObj to threeJS obj / data obj / topo obj
 var dataConversion = (function(data){
+
     for(var i = 0; i < data.length; i++) {
         for (var m in data[i].value) {
             if (data[i].value[m] !== undefined && m !== 'FUNC_OUTPUT') {
@@ -65,29 +66,35 @@ var dataConversion = (function(data){
     }
 
     // merge geometry in geom entity for rendering in 3js renderer
-    // mergeGeom(data);
+    var otherGeometry = [];
+    mergeGeom(data);
 
     function mergeGeom(unmerged){
         for(var i = 0; i < unmerged.length; i++){
-            unmerged[i].geom = getMergedGeometry(unmerged[i].geom)
+            unmerged[i].geom = getMergedGeometry(unmerged[i].geom);
+            otherGeometry = [];
 
             for(k in unmerged[i].value){
                 if(k === 'geomList' && unmerged[i].value[k] !== undefined){
-                    getMergedGeometry(unmerged[i].value[k])
+                    mergeGeom(unmerged[i].value[k])
                 }
             }
         }
     }
 
+
     function getMergedGeometry(unmergedGeomList){
         var mergedGeometry = new THREE.Geometry();
+
         if(unmergedGeomList !== undefined ){
-            if(unmergedGeomList.constructor === Array){
+            if(unmergedGeomList instanceof Array){
                 for(var i = 0; i< unmergedGeomList.length ;i++){
                     mergeGeometry(unmergedGeomList[i],mergedGeometry);
+                    getMergedGeometry(unmergedGeomList[i])
                 }
             } else {
-                mergeGeometry(unmergedGeomList,mergedGeometry);
+                var temp = mergeGeometry(unmergedGeomList,mergedGeometry);
+                otherGeometry.push(temp);
             }
 
             var meshMaterial = new THREE.MeshBasicMaterial({
@@ -102,21 +109,26 @@ var dataConversion = (function(data){
 
             var mergedMesh = new THREE.Mesh(mergedGeometry,meshMaterial);
             // todo line wireframe should it be merged
-            return [mergedMesh,wireframe];
+            return [mergedMesh,wireframe,otherGeometry];
         }
     };
 
     function mergeGeometry (singleGeomObject,mergedGeometry){
-        if(singleGeomObject instanceof THREE.Mesh
-            || singleGeomObject instanceof THREE.Line
-            || singleGeomObject instanceof THREE.PointCloud
-            || singleGeomObject instanceof THREE.Object3D) {
+        var geometry =[];
+        if(singleGeomObject instanceof THREE.Mesh) {
+             mergedGeometry.mergeMesh(singleGeomObject, singleGeomObject.matrix)
+        }else if(singleGeomObject instanceof THREE.Line || singleGeomObject instanceof THREE.PointCloud){
+            otherGeometry.push(singleGeomObject)
+        }else if(singleGeomObject instanceof THREE.Object3D) {
             for (var i = 0; i < singleGeomObject.children.length; i++) {
-                if (singleGeomObject.children[i] instanceof THREE.Mesh) {
+                if(singleGeomObject.children[i] instanceof THREE.Mesh) {
                     mergedGeometry.mergeMesh(singleGeomObject.children[i], singleGeomObject.children[i].matrix)
+                }else if(singleGeomObject.children[i] instanceof THREE.Line || singleGeomObject.children[i] instanceof THREE.PointCloud){
+                    otherGeometry.push(singleGeomObject.children[i])
                 }
             }
         }
+        return geometry;
     };
 
     return data;

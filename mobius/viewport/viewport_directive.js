@@ -68,6 +68,7 @@ mobius.directive('viewport', function factory() {
             // stats.dom.style.top = "50px";
 
             var mergedGeometry = new THREE.Geometry();
+            var displayObj = new THREE.Object3D();
 
             // Initialization
             function init(){
@@ -645,7 +646,6 @@ mobius.directive('viewport', function factory() {
                 }
             };
 
-
             var wireframeMain = false;
             var wireframeLT = false;
             var wireframeRT = false;
@@ -958,14 +958,14 @@ mobius.directive('viewport', function factory() {
             // supporting function for geometry from verb to three.js
             //
             scope.internalControl.addGeometryToScene = function(geom){
-
-                for(var i =0; i<geom.length; i++){
+                for(var i = 0; i< geom.length; i++){
                     if(geom[i] instanceof Array){
-                        scope.internalControl.addGeometryToScene(geom[i])
+                        scope.internalControl.addGeometryToScene( geom[i] )
                     }else{
-                        scene.add( geom[i] );
+                        displayObj.add( geom[i] );
                     }
                 }
+                scene.add(displayObj);
                 onchange();
             };
 
@@ -990,6 +990,25 @@ mobius.directive('viewport', function factory() {
                     scope.internalControl.geometryData[connectorName] = scope.internalControl.geometryData[connectorName].concat(singleGeomDataObject);
                 }
             };
+
+            //
+            // zoom to extend
+            //
+            scope.internalControl.zoomToExtend = function(){
+                console.log("extend");
+                var helper = new THREE.BoundingBoxHelper(displayObj, 0xff0000);
+                helper.update();
+                var boundingSphere = helper.box.getBoundingSphere();
+                var center = boundingSphere.center;
+                var radius = boundingSphere.radius;
+
+                var distance = center.distanceTo(camera.position) - radius;
+                var realHeight = Math.abs(helper.box.max.y - helper.box.min.y);
+                var fov = 2 * Math.atan(realHeight * control.correctForDepth / ( 2 * distance )) * ( 180 / Math.PI );
+                camera.fov = fov;
+                camera.updateProjectionMatrix();
+            };
+
         }
     }
 });
