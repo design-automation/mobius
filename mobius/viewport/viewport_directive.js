@@ -79,7 +79,7 @@ mobius.directive('viewport', function factory() {
                 var VIEW_ANGLE = 45,
                     ASPECT = VIEWPORT_WIDTH / VIEWPORT_HEIGHT,
                     NEAR = 1,
-                    FAR = 50000;
+                    FAR = 100000;
 
                 camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
                 camera.position.set(-120, -200, 60);
@@ -112,7 +112,7 @@ mobius.directive('viewport', function factory() {
                     VIEWPORT_HEIGHT / 2,		// Top
                     VIEWPORT_HEIGHT / -2,	    // Bottom
                     -2000,            			// Near
-                    5000 );           			// Far
+                    10000 );           			// Far
                 orthoCamera.up.set( 0, 0, 1 );
 
                 orthoCameraLT = new THREE.OrthographicCamera(
@@ -121,7 +121,7 @@ mobius.directive('viewport', function factory() {
                     VIEWPORT_HEIGHT / 2,		// Top
                     VIEWPORT_HEIGHT / -2,	    // Bottom
                     -2000,            			// Near
-                    5000 );           			// Far
+                    10000 );           			// Far
                 orthoCameraLT.up.set( 0, 0, 1 );
 
                 orthoCameraLB = new THREE.OrthographicCamera(
@@ -130,7 +130,7 @@ mobius.directive('viewport', function factory() {
                     VIEWPORT_HEIGHT / 2,		// Top
                     VIEWPORT_HEIGHT / -2,	    // Bottom
                     -2000,            			// Near
-                    5000 );           			// Far
+                    10000 );           			// Far
                 orthoCameraLB.up.set( 0, 0, 1 );
 
                 orthoCameraRT = new THREE.OrthographicCamera(
@@ -139,7 +139,7 @@ mobius.directive('viewport', function factory() {
                     VIEWPORT_HEIGHT / 2,		// Top
                     VIEWPORT_HEIGHT / -2,	    // Bottom
                     -2000,            			// Near
-                    5000 );           			// Far
+                    10000 );           			// Far
                 orthoCameraRT.up.set( 0, 0, 1 );
 
                 orthoCameraRB = new THREE.OrthographicCamera(
@@ -148,7 +148,7 @@ mobius.directive('viewport', function factory() {
                     VIEWPORT_HEIGHT / 2,		// Top
                     VIEWPORT_HEIGHT / -2,	    // Bottom
                     -2000,            			// Near
-                    5000 );           			// Far
+                    10000 );           			// Far
                 orthoCameraRB.up.set( 0, 0, 1 );
 
 
@@ -1000,16 +1000,21 @@ mobius.directive('viewport', function factory() {
                 var boundingSphere = boxHelper.box.getBoundingSphere();
                 var center = boundingSphere.center;
                 var radius = boundingSphere.radius;
-                scene.add(boxHelper)
+                scene.add(boxHelper);
+                console.log(center)
+
 
                 var fov = camera.fov * ( Math.PI / 180 );
+                camera.lookAt(center);
 
-                camera.position.set(new THREE.Vector3(
-                    center.x + Math.abs( radius / Math.sin( fov / 2 )),
-                        center.y + Math.abs( radius / Math.sin( fov / 2 ) ),
-                        center.z + Math.abs( radius / Math.sin( fov / 2 ))
-                        )
-                    );
+                // camera.position.set(new THREE.Vector3(
+                //     center.x + Math.abs( radius / Math.sin( fov / 2 )),
+                //         center.y + Math.abs( radius / Math.sin( fov / 2 ) ),
+                //         center.z + Math.abs( radius / Math.sin( fov / 2 ))
+                //         )
+                //     );
+
+                onchange();
             };
 
         }
