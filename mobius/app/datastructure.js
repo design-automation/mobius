@@ -426,7 +426,6 @@ var mObj_geom = function mObj_geom( geometry, material ){
      *
      */
     for(var property in MOBIUS.TOPOLOGY_DEF){
-
         var propFunc = new Function( 'return this.getTopology()["' + property + '"];' );
 
         Object.defineProperty(this, property,  {

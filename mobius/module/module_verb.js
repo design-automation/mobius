@@ -1999,6 +1999,7 @@ var MOBIUS = ( function (mod){
 //
 
 var TOPOLOGY_DEF = {"vertices":[], "edges":[], "faces":[]}
+MOBIUS.TOPOLOGY_DEF = TOPOLOGY_DEF;
 //
 //	Function to convert module geometry into three.js Mesh geometry
 //  Add another if-else condition for each new geometry
