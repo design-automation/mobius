@@ -46,12 +46,17 @@ var MOBIUS = ( function (mod){
 		return new mObj_frame(origin, xaxis, yaxis, undefined);
 
 	};
-	mod.frm.byXYPoints.prototype.description = "Creates a local coordinate system with a given origin and the X-Axis and Y-Axis pointing towards the specfied points .\
-	 <pre>Usage: byXYPoints(origin, xPoint, yPoint)</pre>\
-	 <br><i> {array / vertex object} <b>origin</b> - Origin of the local coordinate system\
-	 <br><i> {array / vertex object} <b>xPoint</b> - Point on the X-Axis \
-	 <br><i> {array / vertex object} <b>yPoint</b> - Point on the Y-Axis\
-	 <br> @returns {frame object }  - Mobius Object (a frame)"
+	mod.frm.byXYPoints.prototype.description = "\
+	 <br>Creates a local coordinate system with a given origin and the X-Axis and Y-Axis pointing towards the specfied points\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>origin</b> <i>{array / vertex object}</i> - Origin of the local coordinate system </li>\
+	 <li><b>xPoint</b> <i>{array / vertex object}</i>  - Point on the X-Axis </li>\
+	 <li><b>yPoint</b> <i>{array / vertex object}</i>  - Point on the Y-Axis </li>\
+	 </ul>\
+	 <b>Returns </b> <i>{frame object }</i>  - Mobius Object (a frame)\
+	 <br><br><pre><small>Usage:</small> <br>byXYPoints(origin, xPoint, yPoint)\
+	 <br><br><small>Example:</small> <br>byXYPoints([0, 0, 0], [ 20, 0, 0], [ 0, 20, 0 ] )</pre>"
 	        
 	/**
 	 * Creates a local coordinate system with a given origin and the X-Axis and Z-Axis pointing towards the specfied points 
@@ -75,12 +80,17 @@ var MOBIUS = ( function (mod){
 		return new mObj_frame(origin, xaxis, undefined, zaxis);
 
 	};
-	mod.frm.byXZPoints.prototype.description = "Usage: byXZPoints(origin, xPoint, zPoint)\
-	 <br>Creates a local coordinate system with a given origin and the X-Axis and Y-Axis pointing towards the specfied points .\
-	 <br><i> {array / vertex object} <b>origin</b> - Origin of the local coordinate system\
-	 <br><i> {array / vertex object} <b>xPoint</b> - Point on the X-Axis \
-	 <br><i> {array / vertex object} <b>zPoint</b> - Point on the Z-Axis\
-	 <br> @returns {frame object }  - Mobius Object (a frame)"
+	mod.frm.byXZPoints.prototype.description = "\
+	 <br>Creates a local coordinate system with a given origin and the X-Axis and Z-Axis pointing towards the specfied points\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>origin</b> <i>{array / vertex object}</i> - Origin of the local coordinate system </li>\
+	 <li><b>xPoint</b> <i>{array / vertex object}</i>  - Point on the X-Axis </li>\
+	 <li><b>zPoint</b> <i>{array / vertex object}</i>  - Point on the Z-Axis </li>\
+	 </ul>\
+	 <b>Returns </b> <i>{frame object }</i>  - Mobius Object (a frame)\
+	 <br><br><pre><small>Usage:</small> <br>byXZPoints(origin, xPoint, zPoint)\
+	 <br><br><small>Example:</small> <br>byXZPoints([0, 0, 0], [ 20, 0, 0], [ 0, 20, 0 ] )</pre>"
 
 	/**
 	 * Creates a local coordinate system with a given origin and the Y-Axis and Z-Axis pointing towards the specfied points 
@@ -104,12 +114,17 @@ var MOBIUS = ( function (mod){
 		return new mObj_frame(origin, undefined, yaxis, zaxis)
 	
 	};
-	mod.frm.byYZPoints.prototype.description = "Usage: byYZPoints(origin, yPoint, zPoint)\
-	 <br>Creates a local coordinate system with a given origin and the X-Axis and Y-Axis pointing towards the specfied points .\
-	 <br><i> {array / vertex object} <b>origin</b> - Origin of the local coordinate system\
-	 <br><i> {array / vertex object} <b>yPoint</b> - Point on the Y-Axis \
-	 <br><i> {array / vertex object} <b>zPoint</b> - Point on the Z-Axis\
-	 <br> @returns {frame object }  - Mobius Object (a frame)"
+	mod.frm.byYZPoints.prototype.description = "\
+	 <br>Creates a local coordinate system with a given origin and the Y-Axis and Z-Axis pointing towards the specfied points\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>origin</b> <i>{array / vertex object}</i> - Origin of the local coordinate system </li>\
+	 <li><b>yPoint</b> <i>{array / vertex object}</i>  - Point on the Y-Axis </li>\
+	 <li><b>zPoint</b> <i>{array / vertex object}</i>  - Point on the Z-Axis </li>\
+	 </ul>\
+	 <b>Returns </b> <i>{frame object }</i>  - Mobius Object (a frame)\
+	 <br><br><pre><small>Usage:</small> <br>byYZPoints(origin, yPoint, zPoint)\
+	 <br><br><small>Example:</small> <br>byYZPoints([0, 0, 0], [ 20, 0, 0], [ 0, 20, 0 ] )</pre>"
 
 	/**
 	 * Creates a local coordinate system with a given origin and the X and Y axis Vectors. Units vectors are not neccessary. 
@@ -130,12 +145,17 @@ var MOBIUS = ( function (mod){
 		return new mObj_frame(origin, xAxis, yAxis, undefined);
 
 	};
-	mod.frm.byXYAxes.prototype.description = "Usage: byXYAxes(origin, yPoint, zPoint)\
-	 <br>Creates a local coordinate system with a given origin and the X and Y axis Vectors. Units vectors are not neccessary.\
-	 <br><i> {array / vertex object} origin - Origin of the local coordinate system\
-	 <br><i> {array} xAxis - X-Axis Vector in [x, y, z] format\
-	 <br><i> {array} yAxis - Y-Axis Vector in [x, y, z] format\
-	 <br> @returns {frame object }  - Mobius Object (a frame)"
+	mod.frm.byXYAxes.prototype.description = "\
+	 <br>Creates a local coordinate system with a given origin and the X and Y axis vectors. Units vectors are not neccessary.\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>origin</b> <i>{array / vertex object}</i> - Origin of the local coordinate system </li>\
+	 <li><b>xAxis</b> <i>{array}</i>  - X-Axis Vector in [x, y, z] format </li>\
+	 <li><b>yAxis</b> <i>{array}</i>  - Y-Axis Vector in [x, y, z] format </li>\
+	 </ul>\
+	 <b>Returns </b> <i>{frame object }</i>  - Mobius Object (a frame)\
+	 <br><br><pre><small>Usage:</small> <br>byXYAxes(origin, xPoint, yPoint)\
+	 <br><br><small>Example:</small> <br>byXYAxes([0, 0, 0], [ 20, 0, 0], [ 0, 20, 0 ] )</pre>"
 
 	/**
 	 * Creates a local coordinate system with a given origin and the X and Y axis Vectors. Units vectors are not neccessary. 
@@ -156,6 +176,18 @@ var MOBIUS = ( function (mod){
 		return new mObj_frame(origin, xAxis, undefined, zAxis);
 
 	};
+	mod.frm.byXZAxes.prototype.description = "\
+	 <br>Creates a local coordinate system with a given origin and the X and Z axis vectors. Units vectors are not neccessary.\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>origin</b> <i>{array / vertex object}</i> - Origin of the local coordinate system </li>\
+	 <li><b>xAxis</b> <i>{array}</i>  - X-Axis Vector in [x, y, z] format </li>\
+	 <li><b>zAxis</b> <i>{array}</i>  - Z-Axis Vector in [x, y, z] format </li>\
+	 </ul>\
+	 <b>Returns </b> <i>{frame object }</i>  - Mobius Object (a frame)\
+	 <br><br><pre><small>Usage:</small> <br>byXZAxes(origin, xAxis, zAxis)\
+	 <br><br><small>Example:</small> <br>byXZAxes([0, 0, 0], [ 20, 0, 0], [ 0, 20, 0 ] )</pre>"
+
 
 	/**
 	 * Creates a local coordinate system with a given origin and the Y and Z axis Vectors. Units vectors are not neccessary. 
@@ -176,6 +208,17 @@ var MOBIUS = ( function (mod){
 		return new mObj_frame(origin, undefined, yAxis, zAxis);
 
 	};
+	mod.frm.byYZAxes.prototype.description = "\
+	 <br>Creates a local coordinate system with a given origin and the Y and Z axis vectors. Units vectors are not neccessary.\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>origin</b> <i>{array / vertex object}</i> - Origin of the local coordinate system </li>\
+	 <li><b>yAxis</b> <i>{array}</i>  - Y-Axis Vector in [x, y, z] format </li>\
+	 <li><b>zAxis</b> <i>{array}</i>  - Z-Axis Vector in [x, y, z] format </li>\
+	 </ul>\
+	 <b>Returns </b> <i>{frame object }</i>  - Mobius Object (a frame)\
+	 <br><br><pre><small>Usage:</small> <br>byYZAxes(origin, xAxis, zAxis)\
+	 <br><br><small>Example:</small> <br>byYZAxes([0, 0, 0], [ 20, 0, 0], [ 0, 20, 0 ] )</pre>"
 
 	//
 	//
@@ -219,6 +262,19 @@ var MOBIUS = ( function (mod){
 		return MOBIUS.sld.bySurfaces( solid );
 
 	};
+	mod.sld.byExtrusion.prototype.description = "\
+	 <br>Creates a solid object by extruding a surface along x, y, z vectors of the given local coordinate system.\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>frame</b> <i>{frame object}</i> - Local coordinate system (Input GLOBAL for WCS) </li>\
+	 <li><b>surface</b> <i>{surface object}</i>  - Surface to be extruded </li>\
+	 <li><b>xDistance</b> <i>{array}</i>  - Amount of extrusion in the direction of the x-Axis of the frame </li>\
+	 <li><b>yDistance</b> <i>{array}</i>  - Amount of extrusion in the direction of the Y-Axis of the frame </li>\
+	 <li><b>zDistance</b> <i>{array}</i>  - Amount of extrusion in the direction of the Z-Axis of the frame</li>\
+	 </ul>\
+	 <b>Returns </b> <i>{frame object }</i>  - Mobius Object (a frame)\
+	 <br><br><pre><small>Usage:</small> <br>byExtrusion(frame, surface, xDistance, yDistance, zDistance)\
+	 <br><br><small>Example:</small> <br>byExtrusion(GLOBAL, some_surface, 0, 10, 0)</pre>"
 
 	/**
 	 * Creates a single solid object from a list of surfaces 

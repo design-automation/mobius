@@ -1,7 +1,10 @@
 <style>
 #help-docs{
 
-  min-width: 80vw !important;
+  width: 60vw;
+  height: 90vh;
+
+  min-width: 60vw !important;
   min-height: 80vw !important;
 
   max-height: auto;
@@ -61,10 +64,8 @@ md-dialog{
                     <md-tab label="{{category.meta.longName}}" ng-repeat='category in categories'>
                       <md-content class="md-padding">
                         
-                        <div class="md-display-2">{{category.meta.longName}} ({{category.name}})</div>
+                        <h3>{{category.meta.longName}} ({{category.name}})</h3>
                         <h4>{{category.meta.description}}</h4>
-
-                        <br>
 
                         <div ng-repeat='fn in category.fns'>
                             <hr/>
