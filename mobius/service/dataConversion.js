@@ -111,7 +111,6 @@ var dataConversion = (function(data){
 
             var mergedMesh = new THREE.Mesh(mergedGeometry,meshMaterial);
             // todo line wireframe should it be merged
-            console.log([mergedMesh,wireframe,otherGeometry])
             return [mergedMesh,wireframe,otherGeometry];
         }
     };
