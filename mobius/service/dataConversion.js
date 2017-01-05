@@ -101,7 +101,8 @@ var dataConversion = (function(data){
             var meshMaterial = new THREE.MeshBasicMaterial({
                 color: 0xffffff,
                 shading: THREE.SmoothShading,
-                vertexColors: true
+                vertexColors: true,
+                side: THREE.DoubleSide
             });
 
             var edge = new THREE.EdgesGeometry( mergedGeometry );
@@ -110,6 +111,7 @@ var dataConversion = (function(data){
 
             var mergedMesh = new THREE.Mesh(mergedGeometry,meshMaterial);
             // todo line wireframe should it be merged
+            console.log([mergedMesh,wireframe,otherGeometry])
             return [mergedMesh,wireframe,otherGeometry];
         }
     };
