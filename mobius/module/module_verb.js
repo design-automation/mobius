@@ -18,6 +18,7 @@ var MOBIUS = ( function (mod){
 	//
 	/** @namespace */
 	mod.frm = {}; 
+	mod.frm.description = "Functions dealing with creation of local frames for drawing geometry."
 	
 	/**
 	 * Creates a local coordinate system with a given origin and the X-Axis and Y-Axis pointing towards the specfied points 
@@ -42,6 +43,12 @@ var MOBIUS = ( function (mod){
 		return new mObj_frame(origin, xaxis, yaxis, undefined);
 
 	};
+	mod.frm.byXYPoints.prototype.description = "Usage: byXYPoints(origin, xPoint, yPoint)\
+	 <br>Creates a local coordinate system with a given origin and the X-Axis and Y-Axis pointing towards the specfied points .\
+	 <br><i> {array / vertex object} <b>origin</b> - Origin of the local coordinate system\
+	 <br><i> {array / vertex object} <b>xPoint</b> - Point on the X-Axis \
+	 <br><i> {array / vertex object} <b>yPoint</b> - Point on the Y-Axis\
+	 <br> @returns {frame object }  - Mobius Object (a frame)"
 	        
 	/**
 	 * Creates a local coordinate system with a given origin and the X-Axis and Z-Axis pointing towards the specfied points 
@@ -65,6 +72,12 @@ var MOBIUS = ( function (mod){
 		return new mObj_frame(origin, xaxis, undefined, zaxis);
 
 	};
+	mod.frm.byXZPoints.prototype.description = "Usage: byXZPoints(origin, xPoint, zPoint)\
+	 <br>Creates a local coordinate system with a given origin and the X-Axis and Y-Axis pointing towards the specfied points .\
+	 <br><i> {array / vertex object} <b>origin</b> - Origin of the local coordinate system\
+	 <br><i> {array / vertex object} <b>xPoint</b> - Point on the X-Axis \
+	 <br><i> {array / vertex object} <b>zPoint</b> - Point on the Z-Axis\
+	 <br> @returns {frame object }  - Mobius Object (a frame)"
 
 	/**
 	 * Creates a local coordinate system with a given origin and the Y-Axis and Z-Axis pointing towards the specfied points 
@@ -88,6 +101,12 @@ var MOBIUS = ( function (mod){
 		return new mObj_frame(origin, undefined, yaxis, zaxis)
 	
 	};
+	mod.frm.byYZPoints.prototype.description = "Usage: byYZPoints(origin, yPoint, zPoint)\
+	 <br>Creates a local coordinate system with a given origin and the X-Axis and Y-Axis pointing towards the specfied points .\
+	 <br><i> {array / vertex object} <b>origin</b> - Origin of the local coordinate system\
+	 <br><i> {array / vertex object} <b>yPoint</b> - Point on the Y-Axis \
+	 <br><i> {array / vertex object} <b>zPoint</b> - Point on the Z-Axis\
+	 <br> @returns {frame object }  - Mobius Object (a frame)"
 
 	/**
 	 * Creates a local coordinate system with a given origin and the X and Y axis Vectors. Units vectors are not neccessary. 
@@ -108,6 +127,12 @@ var MOBIUS = ( function (mod){
 		return new mObj_frame(origin, xAxis, yAxis, undefined);
 
 	};
+	mod.frm.byXYAxes.prototype.description = "Usage: byXYAxes(origin, yPoint, zPoint)\
+	 <br>Creates a local coordinate system with a given origin and the X and Y axis Vectors. Units vectors are not neccessary.\
+	 <br><i> {array / vertex object} origin - Origin of the local coordinate system\
+	 <br><i> {array} xAxis - X-Axis Vector in [x, y, z] format\
+	 <br><i> {array} yAxis - Y-Axis Vector in [x, y, z] format\
+	 <br> @returns {frame object }  - Mobius Object (a frame)"
 
 	/**
 	 * Creates a local coordinate system with a given origin and the X and Y axis Vectors. Units vectors are not neccessary. 

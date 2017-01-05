@@ -487,7 +487,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
 
         threeTopology.is_mObj = true;
 
-        console.log(topology, threeTopology);
+        //console.log(topology, threeTopology);
 
         return threeTopology;
     }

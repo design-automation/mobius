@@ -19,6 +19,7 @@ var MOBIUS = ( function (mod){
 	 */
 
 	mod.urb = {};
+	mod.urb.description = "Functions dealing with Urban Design and Computation."
 
 	mod.urb.loadObj = function( filepath ){
 
@@ -36,6 +37,8 @@ var MOBIUS = ( function (mod){
 		  return new mObj_geom_Solid(container);
 		}
 	}
+	mod.urb.loadObj.prototype.description = "Loads an OBJ file from the filepath specified.  \
+	<br><i>filepath: String </i>"
 
 	mod.urb.loadGeoJSON = function( file_or_filepath ){
 
@@ -56,6 +59,8 @@ var MOBIUS = ( function (mod){
 		}
 
 	};
+	mod.urb.loadGeoJSON.prototype.description = "Loads a GEOJSON file from the filepath specified.\
+	<br><i>file_or_filepath: String</i>"
 
 	// TODO: Shift this under obj category
 	mod.urb.getProperty = function( dataObject, propertyName ){
@@ -66,6 +71,9 @@ var MOBIUS = ( function (mod){
 			return dataObject[propertyName];
 
 	};
+	mod.urb.getProperty.prototype.description = "Extracts a particular property from a data object.\
+	<br><i>dataObject: Mobius Object </i>\
+	<br><i>propertyName: String</i>"
 
 	//
 	//
@@ -74,6 +82,7 @@ var MOBIUS = ( function (mod){
 	//
 	/** @namespace */
 	mod.frm = {}; 
+	mod.frm.description = "Functions dealing with creation of local frames for drawing geometry."
 	
 	/**
 	 * Creates a local coordinate system with a given origin and the X-Axis and Y-Axis pointing towards the specfied points 
@@ -98,6 +107,11 @@ var MOBIUS = ( function (mod){
 		return new mObj_frame(origin, xaxis, yaxis, undefined);
 
 	};
+	mod.frm.byXYPoints.prototype.description = "Creates a local coordinate system with a given origin and the X-Axis and Y-Axis pointing towards the specfied points .\
+	 <br><i> {array / vertex object} <b>origin</b> - Origin of the local coordinate system\
+	 <br><i> {array / vertex object} <b>xPoint</b> - Point on the X-Axis \
+	 <br><i> {array / vertex object} <b>yPoint</b> - Point on the Y-Axis\
+	 <br> @returns {frame object }  - Mobius Object (a frame)"
 	        
 	/**
 	 * Creates a local coordinate system with a given origin and the X-Axis and Z-Axis pointing towards the specfied points 
