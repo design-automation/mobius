@@ -2003,40 +2003,48 @@ var TOPOLOGY_DEF = {"vertices":[], "edges":[], "faces":[]}
 //	Function to convert module geometry into three.js Mesh geometry
 //  Add another if-else condition for each new geometry
 //
+//
+//	Function to convert module geometry into three.js Mesh geometry
+//  Add another if-else condition for each new geometry
+//
+//
+//	Function to convert module geometry into three.js Mesh geometry
+//  Add another if-else condition for each new geometry
+//
 var convertGeomToThree = function( geom ){
 
-	// internal function
-	convertToThree = function(singleDataObject){
+    // internal function
+    convertToThree = function(singleDataObject){
+        if( singleDataObject instanceof verb.geom.NurbsSurface )
+            return ( new THREE.Mesh( singleDataObject.toThreeGeometry() ) );
+        else if( singleDataObject instanceof verb.geom.NurbsCurve )
+            return ( new THREE.Line( singleDataObject.toThreeGeometry() ) );
+        else if(singleDataObject instanceof Array){
 
-		if( singleDataObject instanceof verb.geom.NurbsSurface )
-			return ( new THREE.Mesh( singleDataObject.toThreeGeometry() ) );
-		else if( singleDataObject instanceof verb.geom.NurbsCurve )
-			return ( new THREE.Line( singleDataObject.toThreeGeometry() ) );
-		else if(singleDataObject instanceof Array){
+            if(singleDataObject[0].is_mObj){
 
-			if(singleDataObject[0].is_mObj){
+                var threeObject = new THREE.Object3D();
+                for(var j=0; j < singleDataObject.length; j++)
+                    threeObject.add( singleDataObject[ j ].extractThreeGeometry() )
 
-				var threeObject = new THREE.Object3D();
-				for(var j=0; j < singleDataObject.length; j++)
-					threeObject.add( singleDataObject[ j ].extractThreeGeometry() )
-				
-				return threeObject;
-			}
+                return threeObject;
+            }
 
-			// means it is a point
-			var dotGeometry = new THREE.Geometry();
-			dotGeometry.vertices.push( new THREE.Vector3(singleDataObject[0], singleDataObject[1], singleDataObject[2]) ); console.log("here");
-			return new THREE.PointCloud( dotGeometry );
-		}
-		else {
-			console.log("Module doesnt recognise either!", singleDataObject);
-		}
-	}
+            // means it is a point
+            var dotGeometry = new THREE.Geometry();
+            dotGeometry.vertices.push( new THREE.Vector3(singleDataObject[0], singleDataObject[1], singleDataObject[2]) ); console.log("here");
+            return new THREE.PointCloud( dotGeometry );
+        }
+        else {
+            console.log("Module doesnt recognise either!", singleDataObject);
+        }
+    }
 
-	var rawResult = convertToThree( geom );
-	
-	return rawResult;
+    var rawResult = convertToThree( geom );
+
+    return rawResult;
 }
+
 
 //
 // Takes native topology and converts it into three.js format

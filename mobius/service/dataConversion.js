@@ -101,7 +101,8 @@ var dataConversion = (function(data){
                 side: THREE.DoubleSide,
                 color: 0xffffff,
                 shading: THREE.SmoothShading,
-                vertexColors: true
+                vertexColors: true,
+                side: THREE.DoubleSide
             });
 
             var edge = new THREE.EdgesGeometry( mergedGeometry );
