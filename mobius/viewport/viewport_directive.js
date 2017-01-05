@@ -645,7 +645,6 @@ mobius.directive('viewport', function factory() {
                 }
             };
 
-
             var wireframeMain = false;
             var wireframeLT = false;
             var wireframeRT = false;
@@ -958,8 +957,12 @@ mobius.directive('viewport', function factory() {
             // supporting function for geometry from verb to three.js
             //
             scope.internalControl.addGeometryToScene = function(geom){
-                for(var i =0; i<geom.length; i++){
-                    scene.add( geom[i] );
+                for(var i = 0; i< geom.length; i++){
+                    if(geom[i] instanceof Array){
+                        scope.internalControl.addGeometryToScene( geom[i] )
+                    }else{
+                        scene.add( geom[i] );
+                    }
                 }
                 onchange();
             };
@@ -985,6 +988,15 @@ mobius.directive('viewport', function factory() {
                     scope.internalControl.geometryData[connectorName] = scope.internalControl.geometryData[connectorName].concat(singleGeomDataObject);
                 }
             };
+
+            //
+            // zoom to extend
+            //
+            scope.internalControl.zoomToExtend = function(){
+                console.log("extend");
+                console.log(scene.children)
+            };
+
         }
     }
 });

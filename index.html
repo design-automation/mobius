@@ -62,11 +62,11 @@
                     <ul class="dropdown-menu" style="top:-2px">
                         <li><a ng-click="loadExample('SimpleGISExample_v0.1.json')"> GIS Example (simple) </a></li>
                         <li><a ng-click="loadExample('01_GIS.json')"> GIS Example </a></li>
-<!--                         <li><a ng-click="loadExample('00_KillianRoof.json')"> Killian Roof v1</a></li>
-                        <li><a ng-click="loadExample('04_HigherOrderKillian.json')"> Killian Roof v2</a></li>
-                        <li><a ng-click="loadExample('03_SimpleTower.json')"> Simple Tower </a></li>
+                       <!--<li><a ng-click="loadExample('00_KillianRoof.json')"> Killian Roof v1</a></li>-->
+                        <!--<li><a ng-click="loadExample('04_HigherOrderKillian.json')"> Killian Roof v2</a></li>-->
+                        <!--<li><a ng-click="loadExample('03_SimpleTower.json')"> Simple Tower </a></li>-->
                         <li><a ng-click="loadExample('01_SpiralTowers.json')"> Spiral Towers </a></li>
-                        <li><a ng-click="loadExample('02_Extrusions.json')"> Extrusion Example </a></li> -->
+                        <!--<li><a ng-click="loadExample('02_Extrusions.json')"> Extrusion Example </a></li>-->
                     </ul>
                 </li>
             </ul>
@@ -606,6 +606,7 @@
                                           spinner-on="showSpinner"
                                           style="position: fixed;right:50%;top:50%;z-index:10005">
                                     </span>
+
                                     <div style="position:fixed;
                                                 top:0;
                                                 left:0;
@@ -618,11 +619,20 @@
                                     </div>
 
                                     <button class="button"
+                                            ng-click="extendCanvas()"
+                                            style="outline: none!important;position: absolute;right: 30px;top: 0;"
+                                            title="Extend Canvas">
+                                                 <i class="fa fa-arrows-alt" aria-hidden="true"></i>
+                                    </button>
+
+                                    <button class="button"
                                             ng-click="run()"
                                             style="outline: none!important;"
                                             title="Run program">
                                         <i class="fa fa-play"></i>
                                     </button>
+
+
                                 </span>
 
                                 <div ng-controller="znpController" class="znpController">
