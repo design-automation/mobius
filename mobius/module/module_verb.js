@@ -287,6 +287,15 @@ var MOBIUS = ( function (mod){
 
 		return new mObj_geom_Solid( listOfSurfaces );
 	};
+	mod.sld.bySurfaces.prototype.description = "\
+	 <br>Creates a single solid object from a list of surfaces .\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>listOfSurfaces</b> <i>{array}</i> - Array of Mobius Surface Objects </li>\
+	 </ul>\
+	 <b>Returns </b> <i>{solid}</i>  - Mobius Solid Object\
+	 <br><br><pre><small>Usage:</small> <br>bySurfaces(listOfSurfaces)\
+	 <br><br><small>Example:</small> <br>byExtrusion( [ srf1, srf2, srf3 ] )</pre>"
 
 	//
 	//
@@ -328,6 +337,23 @@ var MOBIUS = ( function (mod){
 
 		return new mObj_geom_Surface( srf ) ;
 	};
+	mod.srf.nurbsByData.prototype.description = "\
+	 <br>Creates a Nurbs surface from user-specified data.\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>frame</b> <i>{frame object}</i> - Local coordinate system (Input GLOBAL for WCS) </li>\
+	 <li><b>degreeU</b> <i>{surface object}</i>  - Degree of the surface in the u-Direction  </li>\
+	 <li><b>degreeV</b> <i>{surface object}</i>  - Degree of the surface in the v-Direction  </li>\
+	 <li><b>knotsU</b> <i>{array}</i>  - Knots in the u-Direction  </li>\
+	 <li><b>knotsV</b> <i>{array}</i>  - Knots in the v-Direction  </li>\
+	 <li><b>controlPOints</b> <i>{array}</i>  - Array of points / vertex objects through which the curve passes ( [[x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4], ...] )</li>\
+	 <li><b>weights</b> <i>{array}</i>  - Weights ( optional parameter; maybe 'undefined' )</li>\
+	 </ul>\
+	 <b>Returns </b> <i>{ surface }</i>  - Mobius Surface Object\
+	 <br><br><pre><small>Usage:</small> <br>nurbsByData( frame, degreeU, degreeV, knotsU, knotsV, controlPoints, weights )\
+	 <br><br><small>Example:</small> <br>nurbsByData(GLOBAL, 2, 2, 1, 1, [[1, 1, 1], [2, 1, 2], [3, 4, 5], [2, 4, 5], [3, 6, 4], [2, 4, 8] ], undefined )>"
+
+
 
 
 	/**
@@ -358,6 +384,17 @@ var MOBIUS = ( function (mod){
 
 		return new mObj_geom_Surface( srf ) ;
 	};
+	mod.srf.nurbsByCorners.prototype.description = "\
+	 <br>Creates a Nurbs surface using the corner-points.\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>frame</b> <i>{frame object}</i> - Local coordinate system (Input GLOBAL for WCS) </li>\
+	 <li><b>cornerpoints</b> <i>{array}</i>  - Array of points / vertex objects ( [ [x1, y1, z1], [x2, y2, z2], [x3, y3, z3], [x4, y4, z4] ] )  </li>\
+	 </ul>\
+	 <b>Returns </b> <i>{ surface }</i>  - Mobius Surface Object\
+	 <br><br><pre><small>Usage:</small> <br>nurbsByCorners( cornerpoints )\
+	 <br><br><small>Example:</small> <br>nurbsByCorners( [ [0, 0, 0], [100, 0, 0], [100, 100, 0], [0, 100, 0] ] )>"
+
 
 	/**
 	 * Creates a surface by extruding a curve along x, y, z vectors of the given local coordinate system
@@ -380,6 +417,19 @@ var MOBIUS = ( function (mod){
 		return new mObj_geom_Surface( srf ) ;
 
 	};
+	mod.srf.nurbsByExtrusion.prototype.description = "\
+	 <br>Creates a surface by extruding a curve along x, y, z vectors of the given local coordinate system.\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>frame</b> <i>{frame object}</i> - Local coordinate system (Input GLOBAL for WCS) </li>\
+	 <li><b>curve</b> <i>{curve object}</i> - Curve to be extended </li>\
+	 <li><b>xDistance</b> <i>{float}</i>  - Amount of extrusion in the direction of the x-Axis of the frame  </li>\
+	 <li><b>yDistance</b> <i>{float}</i>  - Amount of extrusion in the direction of the y-Axis of the frame  </li>\
+	 <li><b>zDistance</b> <i>{float}</i>  - Amount of extrusion in the direction of the z-Axis of the frame  </li>\
+	 </ul>\
+	 <b>Returns </b> <i>{surface}</i>  - Mobius Surface Object Object\
+	 <br><br><pre><small>Usage:</small> <br>nurbsByExtrusion(frame, curve, xDistance, yDistance, zDistance)\
+	 <br><br><small>Example:</small> <br>nurbsByExtrusion( GLOBAL, srf_crv , 12, 0, 2)>"
 
 	/**
 	 * Creates a surface by lofting an array of curves 
@@ -402,6 +452,17 @@ var MOBIUS = ( function (mod){
 		return new mObj_geom_Surface( srf ) ;
 		
 	};
+	mod.srf.nurbsByLoft.prototype.description = "\
+	 <br>Creates a surface by lofting an array of curves.\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>listOfCurves</b> <i>{array}</i> -  Array of curve objects</li>\
+	 <li><b>degree</b> <i>{integer}</i> - Degree of the Surface ( optional parameter; defaults to 3)</li>\
+	 </ul>\
+	 <b>Returns </b> <i>{surface}</i>  - Mobius Surface Object\
+	 <br><br><pre><small>Usage:</small> <br>nurbsByLoft( listOfCurves, degree )\
+	 <br><br><small>Example:</small> <br>nurbsByLoft( listOfCurves, degree )>"
+
 
 	/**
 	 * Creates a surface by revolving a curve around the z-Axis of the specified local coordinate system 
@@ -424,6 +485,18 @@ var MOBIUS = ( function (mod){
 		return srf;
 			
 	};
+	mod.srf.nurbsByRevolution.prototype.description = "\
+	 <br>Creates a surface by revolving a curve around the z-Axis of the specified local coordinate system.\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>frame</b> <i>{frame object}</i> -  Local coordinate system; Z-Axis of the frame determines the axis of revolution</li>\
+	 <li><b>sectionCurve</b> <i>{curve object}</i> - Curve Object which has to be revolved about the z-Axis</li>\
+	 <li><b>angle</b> <i>{ float }</i> - Angle of revolution in Degrees</li>\
+	 </ul>\
+	 <b>Returns </b> <i>{surface}</i>  - Mobius Surface Object\
+	 <br><br><pre><small>Usage:</small> <br>nurbsByRevolution(frame, sectionCurve, angle)\
+	 <br><br><small>Example:</small> <br>nurbsByRevolution(GLOBAL, crv1, MATH.PI / 3)>"
+
 
 	/**
 	 * Creates a surface by sweeping the section-curve along the rail-curve
@@ -444,6 +517,17 @@ var MOBIUS = ( function (mod){
 		return new mObj_geom_Surface( new verb.geom.SweptSurface ( profile, rail ) ) ;
 		
 	};
+	mod.srf.nurbsBySweep.prototype.description = "\
+	 <br>Creates a surface by sweeping the section-curve along the rail-curve.\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>sectionCurve</b> <i>{curve object}</i> -   Curve Object which determines the profile of the sweep\
+	 <li><b>railCurve</b> <i>{curve object}</i> -  Curve Object which determines the profile of the sweep\
+	 </ul>\
+	 <b>Returns </b> <i>{surface}</i>  - Mobius Surface Object\
+	 <br><br><pre><small>Usage:</small> <br>nurbsBySweep(sectionCurve, railCurve)\
+	 <br><br><small>Example:</small> <br>nurbsBySweep(crv1, crv2)>"
+
 
 	/**
 	 * Creates a spherical surface at the origin of the frame given 
@@ -460,6 +544,17 @@ var MOBIUS = ( function (mod){
 		return new mObj_geom_Surface( sphere );
 
 	};
+	mod.srf.nurbsSphere.prototype.description = "\
+	 <br>Creates a spherical surface at the origin of the frame given.\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>frame</b> <i>{frame object}</i> -   Local Coordinate System; Orientation of the sphere is determined by the local axes of the frame\
+	 <li><b>radius</b> <i>{float}</i> -  Radius of the sphere\
+	 </ul>\
+	 <b>Returns </b> <i>{surface}</i>  - Mobius Surface Object\
+	 <br><br><pre><small>Usage:</small> <br>nurbsSphere(frame, radius)\
+	 <br><br><small>Example:</small> <br>nurbsSphere(GLOBAL, 12)>"
+
 
 	/**
 	 * Creates a cylinderical or conical surface at the origin of the frame given 
@@ -492,6 +587,20 @@ var MOBIUS = ( function (mod){
 		return surface;
 
 	};
+	mod.srf.nurbsCone.prototype.description = "\
+	 <br>Creates a cylinderical or conical surface at the origin of the frame given.\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>frame</b> <i>{frame object}</i> -  Local Coordinate System; Orientation of the cone is determined by the local axes of the frame\
+	 <li><b>height</b> <i>{float}</i> -  Height of the cone\
+	 <li><b>radius1</b> <i>{float}</i> -  Radius of the base of the cone \
+	 <li><b>radius2</b> <i>{float}</i> -  Radius of the top of the cone; Setting this value to 0 would result in a cone; Setting this to be equal to radius1 would result in a cylinder\
+	 </ul>\
+	 <b>Returns </b> <i>{surface}</i>  - Mobius Surface Object\
+	 <br><br><pre><small>Usage:</small> <br>nurbsCone(frame, height, radius1, radius2)\
+	 <br><br><small>Example:</small> <br>nurbsCone(frame, 10, 12, 33)>"
+
+
 
 /**
 	 * Creates a circular pipe along a given path 
@@ -542,6 +651,17 @@ var MOBIUS = ( function (mod){
 		return MOBIUS.srf.nurbsBySweep( sectionCurve, centreCurve );
 
 	};
+	mod.srf.nurbsPipe.prototype.description = "\
+	 <br>Creates a circular pipe along a given path.\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>centreCurve</b> <i>{curve object}</i> -  Curve Object which determines the path of the pipe\
+	 <li><b>radius1</b> <i>{float}</i> -  Radius of the pipe \
+	 </ul>\
+	 <b>Returns </b> <i>{surface}</i>  - Mobius Surface Object\
+	 <br><br><pre><small>Usage:</small> <br>nurbsPipe(centreCurve, radius)\
+	 <br><br><small>Example:</small> <br>nurbsPipe( crv1 , 12 )>"
+
 
 	/**
 	 * Divides the surface into a grid, based number of divisions in the u and v directions and  
@@ -570,7 +690,17 @@ var MOBIUS = ( function (mod){
 		return uvList;
 
 	};
-
+	mod.srf.uvGridByNumber.prototype.description = "\
+	 <br>Divides the surface into a grid, based number of divisions in the u and v directions and returns the uv-Parameters for the corresponding grid points.\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>surface</b> <i>{surface object}</i> -  Surface Object for which the uv-Parameters are required\
+	 <li><b>uSegments</b> <i>{Integer}</i> -   Number of divisions required in the u-Direction\
+	 <li><b>vSegments</b> <i>{Integer}</i> -   Number of divisions required in the v-Direction \
+	 </ul>\
+	 <b>Returns </b> <i>{array}</i>  - List of UV positions [ [ u1, v1 ], [ u2, v2 ], [ u3, v3 ] ...]; Length of list is equal to uSegments*vSegments\
+	 <br><br><pre><small>Usage:</small> <br>uvGridByNumber(surface, uSegments, vSegments)\
+	 <br><br><small>Example:</small> <br>uvGridByNumber(srf1, 20, 20)>"
 
 /*	mod.srf.uvGridByDistance = function(surface, uDistance, vDistance){
 
@@ -599,6 +729,17 @@ var MOBIUS = ( function (mod){
 			return new mobj_geom_Vertex( srf.point( u, v ) );
 
 	};
+	mod.srf.getPoints.prototype.description = "\
+	 <br>Returns the actual points on the surface, given a corresponding list of uv-parameters or a single [u, v] point.\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>surface</b> <i>{surface object}</i> -   Surface Object for which the uv-Parameters are required\
+	 <li><b>uvList</b> <i>{2D Array}</i> -    List of UV positions [ [ u1, v1 ], [ u2, v2 ], [ u3, v3 ] ...] or single [u, v]\
+	 </ul>\
+	 <b>Returns </b> <i>{array}</i>  - List of vertex objects\
+	 <br><br><pre><small>Usage:</small> <br>getPoints(surface, uvList)\
+	 <br><br><small>Example:</small> <br>getPoints(srf1, [[4, 2], [3, 5])>"
+
 
 	/**
 	 * Creates a collection of frames, centred at the the points specified by the uv-List, with the x and y Axes of the frame aligned along
@@ -629,6 +770,16 @@ var MOBIUS = ( function (mod){
 		return frames;
 
 	};
+	mod.srf.getFrames.prototype.description = "\
+	 <br>Creates a collection of frames, centred at the the points specified by the uv-List, with the x and y Axes of the frame aligned along the surface.\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>surface</b> <i>{surface object}</i> -  Surface Object along which frames are required \
+	 <li><b>uvList</b> <i>{2D Array}</i> -    List of UV positions [ [ u1, v1 ], [ u2, v2 ], [ u3, v3 ] ...] or single [u, v]\
+	 </ul>\
+	 <b>Returns </b> <i>{array}</i>  - List of frame objects\
+	 <br><br><pre><small>Usage:</small> <br>getFrames(surface, uvList)\
+	 <br><br><small>Example:</small> <br>getFrames(srf1, [[4, 2], [3, 5])>"
 
 	/**
 	 * Returns a list of unit vectors normal to the surface the points on specified by the uv-List
@@ -652,6 +803,16 @@ var MOBIUS = ( function (mod){
 		return normals;
 
 	};
+	mod.srf.getNormals.prototype.description = "\
+	 <br>Returns a list of unit vectors normal to the surface the points on specified by the uv-List.\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>surface</b> <i>{surface object}</i> -  Surface Object \
+	 <li><b>uvList</b> <i>{2D Array}</i> -    List of UV positions [ [ u1, v1 ], [ u2, v2 ], [ u3, v3 ] ...] or single [u, v]\
+	 </ul>\
+	 <b>Returns </b> <i>{array}</i>  - List of Normal Unit Vectors\
+	 <br><br><pre><small>Usage:</small> <br>getNormals(surface, uvList)\
+	 <br><br><small>Example:</small> <br>getNormals(srf1, [[4, 2], [3, 5])>"
 
 	/**
 	 * Returns a list of unit vectors tangent to the surface at the points specified by the uv-List
@@ -677,6 +838,17 @@ var MOBIUS = ( function (mod){
 
 		return tangents;
 	}; 
+	mod.srf.getTangents.prototype.description = "\
+	 <br>Returns a list of unit vectors tangent to the surface at the points specified by the uv-List.\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>surface</b> <i>{surface object}</i> -  Surface Object \
+	 <li><b>uvList</b> <i>{2D Array}</i> -    List of UV positions [ [ u1, v1 ], [ u2, v2 ], [ u3, v3 ] ...] or single [u, v]\
+	 </ul>\
+	 <b>Returns </b> <i>{array}</i>  - List of Tangent Unit Vectors\
+	 <br><br><pre><small>Usage:</small> <br>getTangents(surface, uvList)\
+	 <br><br><small>Example:</small> <br>getTangents(srf1, [[4, 2], [3, 5])>"
+
  
  	/**
 	 * Returns a list or a single iso-curve object along u or v-Direction 
@@ -705,6 +877,18 @@ var MOBIUS = ( function (mod){
 
 		return isoCurves;
 	};
+
+	mod.srf.getIsoCurves.prototype.description = "\
+	 <br>Returns a list or a single iso-curve object along u or v-Direction\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>surface</b> <i>{surface object}</i> -  Surface Object \
+	 <li><b>uOrvList</b> <i>{Array}</i> -  List of positions at which iso-curves are required or single u/v value\
+	 <li><b>userV</b> <i>{true / false}</i> - Specifies if the given list of positions is in u-Direction or v-Direction; True value means v-Direction;\
+	 </ul>\
+	 <b>Returns </b> <i>{array}</i>  - List of Iso curves  \
+	 <br><br><pre><small>Usage:</small> <br>getIsoCurves( surface, uOrvList, useV )\
+	 <br><br><small>Example:</small> <br>getIsoCurves( srf1, [] , false )>"
 
 	/**
 	 * Subdivides a surface into a grid of smaller surfaces - a mesh solid
@@ -741,6 +925,16 @@ var MOBIUS = ( function (mod){
 		return new mObj_geom_Solid( div_surfaces );
 
 	};
+	mod.srf.divide.prototype.description = "\
+	 <br>Subdivides a surface into a grid of smaller surfaces - a mesh solid\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>surface</b> <i>{surface object}</i> -  Surface Object \
+	 <li><b>uvGrid</b> <i>{Array}</i> -  UV positions with u & v dimensions [ [ u1, v1 ], ... [ un, vn ], uDimension, vDimension ]\
+	 </ul>\
+	 <b>Returns </b> <i>{solid}</i>  - Mobius Solid Object  \
+	 <br><br><pre><small>Usage:</small> <br>divide( surface, uvGrid)\
+	 <br><br><small>Example:</small> <br>divide( srf1, [ [], [], [] ] )>"
 
 /*	mod.srf.carve = function(surface, uv1, uv2, hole){
 
@@ -1145,6 +1339,17 @@ var MOBIUS = ( function (mod){
 	mod.pnt.byCoords = function(x, y, z){
 		return new mObj_geom_Vertex([x, y, z]);
 	}
+	mod.pnt.byCoords.prototype.description = "\
+	 <br>Creates a vertex object with the given point geometry\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>x</b> <i>{float}</i> - x-Position\
+	 <li><b>y</b> <i>{float}</i> - y-Position\
+	 <li><b>z</b> <i>{float}</i> - z-Position\
+	 </ul>\
+	 <b>Returns </b> <i>{vertex}</i>  - Mobius Vertex Object  \
+	 <br><br><pre><small>Usage:</small> <br>byCoords( x, y, z)\
+	 <br><br><small>Example:</small> <br>byCoords( 12, 23, 12 )>"
 
 	/**
 	 * Returns the mid-point between two points
@@ -1162,7 +1367,16 @@ var MOBIUS = ( function (mod){
 
 		return [ (point1[0] + point2[0])/2, (point1[1] + point2[1])/2, (point1[2] + point2[2])/2 ];
 	};	
-
+	mod.pnt.midPoint.prototype.description = "\
+	 <br>Returns the mid-point between two points\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>point1</b> <i>{ point / vertex object }</i> -  [x, y , z] or Vertex\
+	 <li><b>point2</b> <i>{ point / vertex object }</i> -  [x, y , z] or Vertex\
+	 </ul>\
+	 <b>Returns </b> <i>{vertex}</i>  - Mobius Vertex Object  \
+	 <br><br><pre><small>Usage:</small> <br>midPoint( point1, point2 )\
+	 <br><br><small>Example:</small> <br>midPoint( [10, 10, 10], [23, 34, 22] )>"
 
 	/**
 	 * Returns the distance between two points or vertices
@@ -1187,6 +1401,16 @@ var MOBIUS = ( function (mod){
 		var distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
 		return distance;
 	};
+	mod.pnt.distance.prototype.description = "\
+	 <br>Returns the distance between two points or vertices\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>point1</b> <i>{ point / vertex object }</i> -  [x, y , z] or Vertex\
+	 <li><b>point2</b> <i>{ point / vertex object }</i> -  [x, y , z] or Vertex\
+	 </ul>\
+	 <b>Returns </b> <i>{float}</i>  - Distance \
+	 <br><br><pre><small>Usage:</small> <br>distance( point1, point2 )\
+	 <br><br><small>Example:</small> <br>distance( [10, 10, 10], [23, 34, 22] )>"
 
 	//
 	//
@@ -1212,6 +1436,17 @@ var MOBIUS = ( function (mod){
 	mod.vec.byCoords = function(x, y, z){
 		return [x, y, z];
 	};
+	mod.vec.byCoords.prototype.description = "\
+	 <br>Returns a vector with magnitude x, y, z along the x, y, z axes\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>x</b> <i>{float}</i> - Magnitude along x-direction\
+	 <li><b>y</b> <i>{float}</i> - Magnitude along y-direction\
+	 <li><b>z</b> <i>{float}</i> - Magnitude along z-direction\
+	 </ul>\
+	 <b>Returns </b> <i>{array}</i>  - Vector  \
+	 <br><br><pre><small>Usage:</small> <br>vec.byCoords( x, y, z)\
+	 <br><br><small>Example:</small> <br>vec.byCoords( 12, 23, 12 )>"
 
 	/**
 	 * Computes angle between two vectors
@@ -1225,6 +1460,16 @@ var MOBIUS = ( function (mod){
 		var cos_t = dotP / (MOBIUS.vec.length( vector1 ) * MOBIUS.vec.length( vector2 ) );
 		return Math.cosh(cos_t);
 	};	
+	mod.vec.angle.prototype.description = "\
+	 <br>Computes angle between two vectors\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>vector1</b> <i>{ array }</i> - Vector 1 in [x, y, z] format\
+	 <li><b>vector2</b> <i>{ array }</i> - Vector 1 in [x, y, z] format\
+	 </ul>\
+	 <b>Returns </b> <i>{float}</i>  - Radians  \
+	 <br><br><pre><small>Usage:</small> <br>angle( vector1, vector2 )\
+	 <br><br><small>Example:</small> <br>angle( [10, 10, 10], [23, 34, 22] )>"
 
 	/**
 	 * Computes the summation of two vectors
@@ -1236,6 +1481,16 @@ var MOBIUS = ( function (mod){
 	mod.vec.add = function( vector1, vector2){
 		return verb.core.Vec.add( vector1, vector2 );
 	};
+	mod.vec.add.prototype.description = "\
+	 <br>Computes the summation of two vectors\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>vector1</b> <i>{ array }</i> - Vector 1 in [x, y, z] format\
+	 <li><b>vector2</b> <i>{ array }</i> - Vector 1 in [x, y, z] format\
+	 </ul>\
+	 <b>Returns </b> <i>{array}</i>  - Vector  \
+	 <br><br><pre><small>Usage:</small> <br>add( vector1, vector2 )\
+	 <br><br><small>Example:</small> <br>add( [10, 10, 10], [23, 34, 22] )>"
 
 	/**
 	 * Computes the subtraction of two vectors
@@ -1247,6 +1502,16 @@ var MOBIUS = ( function (mod){
 	mod.vec.subtract = function( vector1, vector2 ){
 		return verb.core.Vec.sub( vector1, vector2 )
 	};
+	mod.vec.subtract.prototype.description = "\
+	 <br>Computes the subtraction of two vectors\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>vector1</b> <i>{ array }</i> - Vector 1 in [x, y, z] format\
+	 <li><b>vector2</b> <i>{ array }</i> - Vector 1 in [x, y, z] format\
+	 </ul>\
+	 <b>Returns </b> <i>{array}</i>  - Vector  \
+	 <br><br><pre><small>Usage:</small> <br>subtract( vector1, vector2 )\
+	 <br><br><small>Example:</small> <br>subtract( [10, 10, 10], [23, 34, 22] )>"
 
 	/**
 	 * Computes length of the vector
@@ -1257,6 +1522,15 @@ var MOBIUS = ( function (mod){
 	mod.vec.length = function(vector){
 		return Math.sqrt( vector[0]*vector[0] + vector[1]*vector[1] + vector[2]*vector[2] );
 	};
+	mod.vec.length.prototype.description = "\
+	 <br>Computes the length of the vector\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>vector</b> <i>{ array }</i> - Vector 1 in [x, y, z] format\
+	 </ul>\
+	 <b>Returns </b> <i>{float}</i>  - Length of the vector  \
+	 <br><br><pre><small>Usage:</small> <br>length( vector )\
+	 <br><br><small>Example:</small> <br>length( [10, 10, 10] )>"
 
 	/**
 	 * Resets the length of the given vector
@@ -1270,7 +1544,16 @@ var MOBIUS = ( function (mod){
 		var unitV = verb.core.Vec.normalized( vector );
 		return [ length*unitV[0], length*unitV[1], length*unitV[2] ] ;
 	};
-
+	mod.vec.resize.prototype.description = "\
+	 <br>Resets the length of the vector\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>vector</b> <i>{ array }</i> - Vector in [x, y, z] format\
+	 <li><b>length</b> <i>{ float }</i> - New length of the vector\
+	 </ul>\
+	 <b>Returns </b> <i>{array}</i>  - Resized Vector  \
+	 <br><br><pre><small>Usage:</small> <br>resize( vector )\
+	 <br><br><small>Example:</small> <br>resize( [10, 10, 10] )>"
 
 	/**
 	 * Scales the given vector
@@ -1283,7 +1566,16 @@ var MOBIUS = ( function (mod){
 
 		return [ factor*vector[0], factor*vector[1], factor*vector[2] ] ;
 	}
-
+	mod.vec.scale.prototype.description = "\
+	 <br>Scales the given vector\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>vector</b> <i>{ array }</i> - Vector in [x, y, z] format\
+	 <li><b>length</b> <i>{ float }</i> - Scaling factor of the vector\
+	 </ul>\
+	 <b>Returns </b> <i>{array}</i>  - Scaled Vector  \
+	 <br><br><pre><small>Usage:</small> <br>scale( vector )\
+	 <br><br><small>Example:</small> <br>scale( [10, 10, 10] )>"
 
 	/**
 	 * Computes unit vector
@@ -1294,7 +1586,15 @@ var MOBIUS = ( function (mod){
 	mod.vec.normalize = function(vector){
 		return verb.core.Vec.normalized( vector );
 	}
-
+	mod.vec.normalize.prototype.description = "\
+	 <br>Returns the unit vector\
+	 <br><br><b>Inputs</b> \
+	 <ul> \
+	 <li><b>vector</b> <i>{ array }</i> - Vector in [x, y, z] format\
+	 </ul>\
+	 <b>Returns </b> <i>{array}</i>  - Unit Vector  \
+	 <br><br><pre><small>Usage:</small> <br>normalize( vector )\
+	 <br><br><small>Example:</small> <br>normalize( [10, 10, 10] )>"
 
 	//
 	//
