@@ -41,8 +41,6 @@ mobius.controller('executeCtrl',['$scope','$rootScope','$q','executeService','co
 
         $scope.extendCanvas = function () {
             $rootScope.$broadcast("Extend");
-            var scope = angular.element(document.getElementById('threeViewport')).scope();
-            scope.viewportControl.zoomToExtend();
         };
 
         $rootScope.$on('runNewScene',function(){

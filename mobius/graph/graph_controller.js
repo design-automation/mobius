@@ -210,12 +210,12 @@ mobius.controller(  'graphCtrl',
                                                  scope.viewportControl.addDataToScene($scope.outputGeom[i].value[k],
                                                      $scope.outputGeom[i].geom,
                                                      $scope.outputGeom[i].geomData[p],k)
+
+                                                 scopeTopo.topoViewportControl.addGeometryToScene($scope.outputGeom[i].value[k],
+                                                     $scope.outputGeom[i].topo[p]);
                                              }
                                              p++;
                                          }
-
-                                         scopeTopo.topoViewportControl.addGeometryToScene($scope.outputGeom[i].value[k],
-                                             $scope.outputGeom[i].topo[p]);
                                      }
                                  }
                              }

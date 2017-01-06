@@ -302,6 +302,11 @@ mobius.controller('viewportCtrl',[
             $scope.showFullCode = false;
         });
 
+        $scope.extend3D = function () {
+            var scope = angular.element(document.getElementById('threeViewport')).scope();
+            scope.viewportControl.zoomToExtend();
+        };
+
         $scope.toggleFullCode = function(view){
             switch (view){
                 case 'main':

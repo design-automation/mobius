@@ -628,7 +628,7 @@ var mObj_geom_Curve = function mObj_geom_Curve( geometry ){
 // 2D Geometry
 var mObj_geom_Surface = function mObj_geom_Surface( geometry ){
 
-    var defaultSurfaceMaterial = new THREE.MeshLambertMaterial( {
+    var defaultSurfaceMaterial = new THREE.MeshBasicMaterial( {
         side: THREE.DoubleSide,
         wireframe: false,
         transparent: false,
@@ -636,7 +636,6 @@ var mObj_geom_Surface = function mObj_geom_Surface( geometry ){
     } );
 
     mObj_geom.call( this, geometry, defaultSurfaceMaterial  );
-
 }
 
 // 3D Geometry - faces should be connected -
@@ -645,7 +644,7 @@ var mObj_geom_Solid = function mObj_geom_Solid( geometry ){
     var defaultSolidMaterial = new THREE.MeshLambertMaterial( {
         side: THREE.DoubleSide,
         wireframe: false,
-        // shading: THREE.SmoothShading,
+        shading: THREE.SmoothShading,
         transparent: false,
         color: 0xCC6600
     } );
@@ -696,6 +695,15 @@ var mObj_geom_Compound = function mObj_geom_Compound( geometry ){
             for(var element=0; element < array_of_elements.length; element++){
                 var geom = array_of_elements[element];
                 var exGeom = geom.extractThreeGeometry();
+
+
+                exGeom.material = new THREE.MeshLambertMaterial( {
+                    side: THREE.DoubleSide,
+                    wireframe: false,
+                    transparent: false,
+                    color: 0x003399
+                } );
+
                 threeGeometry.add( exGeom );
 
                 //
