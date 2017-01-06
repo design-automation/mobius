@@ -967,7 +967,9 @@ mobius.directive('viewport', function factory() {
             // clear geometries in scene when run
             scope.internalControl.refreshView = function(){
                 for(var i = 0; i < scene.children.length; i++){
-                    if( scene.children[i].name !== 'helper'){
+                    if( scene.children[i].name !== 'helper' &&
+                        !(scene.children[i] instanceof THREE.AmbientLight) &&
+                        !(scene.children[i] instanceof THREE.PointLight) ) {
                         scene.remove(scene.children[i]);
                         i--;
                     }

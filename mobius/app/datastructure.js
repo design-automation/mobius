@@ -628,11 +628,11 @@ var mObj_geom_Curve = function mObj_geom_Curve( geometry ){
 // 2D Geometry
 var mObj_geom_Surface = function mObj_geom_Surface( geometry ){
 
-    var defaultSurfaceMaterial = new THREE.MeshBasicMaterial( {
+    var defaultSurfaceMaterial = new THREE.MeshLambertMaterial( {
         side: THREE.DoubleSide,
         wireframe: false,
         transparent: false,
-        color: 0x003399
+        color: 0xffffff
     } );
 
     mObj_geom.call( this, geometry, defaultSurfaceMaterial  );
