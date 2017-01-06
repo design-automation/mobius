@@ -157,36 +157,37 @@
                                 <span ng-if="viewportControl.layout === 'singleView'">
                                     <div class="doormat" style="z-index: 999999 !important;">
                                         <div>{{viewportControl.currentCate + " View"}} </div>
-                                        <button class="button"
-                                                ng-click="extend3D('main')"
-                                                style="outline: none!important;position: absolute;right:0px;top: 0;"
-                                                title="Extend 3D View">
+
+                                        <div dropdown on-toggle="toggled(open)"  class="menu-left">
+                                            <button class="button viewport-menu-button" dropdown-toggle
+                                                     style="width: 28px !important;" title="set viewport">
+                                                     <i class="fa fa-eye fa-lg"></i>
+                                                 <!--<span class="caret"></span>-->
+                                            </button>
+
+                                            <ul class="dropdown-menu " style="right: 2px!important;top:2px" >
+                                                <li><a   href="#" ng-click = "toggleGeometry('main')">Geometry</a></li>
+                                                <li><a   href="#" ng-click = "toggleTopology('main')">Topology</a></li>
+                                                <li><a   href="#" ng-click = "toggleData('main')">Data</a></li>
+                                                <li><a   href="#" ng-click = "toggleFullCode('main')">Generated Code</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <button ng-if="showGeometry"
+                                            class="button viewport-menu-button"
+                                            ng-click="extend3D('main')"
+                                            style="width: 28px !important;right:37px!important; top:0"
+                                            title="Extend 3D View">
                                             <i class="fa fa-arrows-alt" aria-hidden="true"></i>
-                                        </button>
-                                    </div>
-
-                                    <div dropdown on-toggle="toggled(open)"  class="menu-left">
-                                         <button class="button viewport-menu-button" dropdown-toggle
-                                                 style="width: 28px !important;" title="set viewport">
-                                                 <i class="fa fa-eye fa-lg"></i>
-                                             <!--<span class="caret"></span>-->
                                     </button>
-
-                                        <ul class="dropdown-menu " style="right: 32px!important;top:2px" >
-                                            <li><a   href="#" ng-click = "toggleGeometry('main')">Geometry</a></li>
-                                            <li><a   href="#" ng-click = "toggleTopology('main')">Topology</a></li>
-                                            <li><a   href="#" ng-click = "toggleData('main')">Data</a></li>
-                                            <li><a   href="#" ng-click = "toggleFullCode('main')">Generated Code</a></li>
-                                        </ul>
-                                    </div>
-
 
                                     <div dropdown on-toggle="toggled(open)"  class="menu-left"  ng-if="showGeometry">
                                         <button class="button viewport-menu-button" dropdown-toggle
-                                                style="width: 28px !important; right:60px !important;"  title="set camera">
+                                                style="width: 28px !important; right:67px !important;"  title="set camera">
                                                 <i class="fa fa-camera" aria-hidden="true"></i>
                                         </button>
-                                        <ul class="dropdown-menu " style="right: 62px!important;top:2px" >
+                                        <ul class="dropdown-menu " style="right: 69px!important;top:2px" >
                                                 <li><a   ng-click="viewportControl.perspectiveView('main')">Perspective</a></li>
                                                 <li><a   ng-click="viewportControl.topView('main')">Top</a></li>
                                                 <li><a   ng-click="viewportControl.bottomView('main')">Bottom</a></li>
@@ -199,10 +200,10 @@
 
                                     <div dropdown on-toggle="toggled(open)"  class="menu-left"  ng-if="showGeometry">
                                         <button class="button viewport-menu-button" dropdown-toggle
-                                                style="width: 28px !important; right:90px !important;" title="Display Mode">
+                                                style="width: 28px !important; right:97px !important;" title="Display Mode">
                                                 <i class="fa fa-cube" aria-hidden="true" ></i>
                                         </button>
-                                        <ul class="dropdown-menu " style="right: 92px!important;top:2px" >
+                                        <ul class="dropdown-menu " style="right: 99px!important;top:2px" >
                                                <li><a    ng-click="viewportControl.toggleWireframe()">Wireframe</a></li>
                                                 <li><a   ng-click="viewportControl.toggleRender()">Render</a></li>
                                         </ul>
@@ -210,7 +211,7 @@
 
                                     <div   dropdown class="menu-left"  ng-if="showGeometry">
                                         <button class="button viewport-menu-button" dropdown-toggle
-                                                style="width: 28px !important; right:120px !important;" title="Toggle Grid"
+                                                style="width: 28px !important; right:127px !important;" title="Toggle Grid"
                                                 ng-click="viewportControl.toggleGrid('main')">
                                                 <i class="fa fa-table" aria-hidden="true"></i>
                                         </button>
@@ -226,36 +227,38 @@
                                             <span >
                                                 <div class="doormat" style="z-index: 999999 !important;">
                                                     <div>{{viewportControl.LTcurrentCate + " View"}} </div>
-                                                    <button class="button"
-                                                            ng-click="extend3D('LT')"
-                                                            style="outline: none!important;position: absolute;right:0px;top: 0;"
-                                                            title="Extend 3D View">
+
+                                                    <div dropdown on-toggle="toggled(open)"  class="menu-left">
+                                                        <button class="button viewport-menu-button" dropdown-toggle
+                                                                style="width: 28px !important;" title="set viewport">
+                                                                 <i class="fa fa-eye fa-lg"></i>
+                                                            <!--<span class="caret"></span>-->
+                                                        </button>
+
+                                                        <ul class="dropdown-menu " style="right: 2px!important;top:2px" >
+                                                            <li><a   href="#" ng-click = "toggleGeometry('LT')">Geometry</a></li>
+                                                            <li><a   href="#" ng-click = "toggleTopology('LT')">Topology</a></li>
+                                                            <li><a   href="#" ng-click = "toggleData('LT')">Data</a></li>
+                                                            <li><a   href="#" ng-click = "toggleFullCode('LT')">Generated Code</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
+                                                <button class="button  viewport-menu-button"
+                                                        ng-if="showGeometryLT"
+                                                        ng-click="extend3D('LT')"
+                                                        style="width: 28px !important;right:37px!important; top:0"
+                                                        title="Extend 3D View">
                                                         <i class="fa fa-arrows-alt" aria-hidden="true"></i>
-                                                    </button>
-                                                </div>
-
-                                                <div dropdown on-toggle="toggled(open)"  class="menu-left">
-                                                     <button class="button viewport-menu-button" dropdown-toggle
-                                                             style="width: 28px !important;" title="set viewport">
-                                                             <i class="fa fa-eye fa-lg"></i>
-                                                         <!--<span class="caret"></span>-->
                                                 </button>
-
-                                                    <ul class="dropdown-menu " style="right: 32px!important;top:2px" >
-                                                        <li><a   href="#" ng-click = "toggleGeometry('LT')">Geometry</a></li>
-                                                        <li><a   href="#" ng-click = "toggleTopology('LT')">Topology</a></li>
-                                                        <li><a   href="#" ng-click = "toggleData('LT')">Data</a></li>
-                                                        <li><a   href="#" ng-click = "toggleFullCode('LT')">Generated Code</a></li>
-                                                    </ul>
-                                                </div>
 
 
                                                 <div dropdown on-toggle="toggled(open)"  class="menu-left"  ng-if="showGeometryLT">
                                                     <button class="button viewport-menu-button" dropdown-toggle
-                                                            style="width: 28px !important; right:60px !important;"  title="set camera">
+                                                            style="width: 28px !important; right:67px !important;"  title="set camera">
                                                             <i class="fa fa-camera" aria-hidden="true"></i>
                                                     </button>
-                                                    <ul class="dropdown-menu " style="right: 62px!important;top:2px" >
+                                                    <ul class="dropdown-menu " style="right: 69px!important;top:2px" >
                                                             <li><a   ng-click="viewportControl.perspectiveView('LT')">Perspective</a></li>
                                                             <li><a   ng-click="viewportControl.topView('LT')">Top</a></li>
                                                             <li><a   ng-click="viewportControl.bottomView('LT')">Bottom</a></li>
@@ -268,10 +271,10 @@
 
                                                 <div dropdown on-toggle="toggled(open)"  class="menu-left"  ng-if="showGeometryLT">
                                                     <button class="button viewport-menu-button" dropdown-toggle
-                                                            style="width: 28px !important; right:90px !important;" title="Display Mode">
+                                                            style="width: 28px !important; right:97px !important;" title="Display Mode">
                                                             <i class="fa fa-cube" aria-hidden="true" ></i>
                                                     </button>
-                                                    <ul class="dropdown-menu " style="right: 92px!important;top:2px" >
+                                                    <ul class="dropdown-menu " style="right: 99px!important;top:2px" >
                                                            <li><a    ng-click="viewportControl.toggleWireframe()">Wireframe</a></li>
                                                             <li><a   ng-click="viewportControl.toggleRender()">Render</a></li>
                                                     </ul>
@@ -279,7 +282,7 @@
 
                                                 <div   dropdown class="menu-left"  ng-if="showGeometryLT">
                                                     <button class="button viewport-menu-button" dropdown-toggle
-                                                            style="width: 28px !important; right:120px !important;" title="Toggle Grid"
+                                                            style="width: 28px !important; right:127px !important;" title="Toggle Grid"
                                                             ng-click="viewportControl.toggleGrid('LT')">
                                                             <i class="fa fa-table" aria-hidden="true"></i>
                                                     </button>
@@ -318,38 +321,40 @@
                                         <!--RT-->
                                         <div id ="RT">
                                             <span >
-                                                <div class="doormat" style="z-index: 999999 !important;">
+                                               <div class="doormat" style="z-index: 999999 !important;">
                                                     <div>{{viewportControl.RTcurrentCate + " View"}} </div>
-                                                    <button class="button"
-                                                            ng-click="extend3D('RT')"
-                                                            style="outline: none!important;position: absolute;right:0px;top: 0;"
-                                                            title="Extend 3D View">
+
+                                                    <div dropdown on-toggle="toggled(open)"  class="menu-left">
+                                                        <button class="button viewport-menu-button" dropdown-toggle
+                                                                style="width: 28px !important;" title="set viewport">
+                                                                 <i class="fa fa-eye fa-lg"></i>
+                                                            <!--<span class="caret"></span>-->
+                                                        </button>
+
+                                                        <ul class="dropdown-menu " style="right: 2px!important;top:2px" >
+                                                            <li><a   href="#" ng-click = "toggleGeometry('RT')">Geometry</a></li>
+                                                            <li><a   href="#" ng-click = "toggleTopology('RT')">Topology</a></li>
+                                                            <li><a   href="#" ng-click = "toggleData('RT')">Data</a></li>
+                                                            <li><a   href="#" ng-click = "toggleFullCode('RT')">Generated Code</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
+                                                <button class="button  viewport-menu-button"
+                                                        ng-if="showGeometryRT"
+                                                        ng-click="extend3D('LT')"
+                                                        style="width: 28px !important;right:37px!important; top:0"
+                                                        title="Extend 3D View">
                                                         <i class="fa fa-arrows-alt" aria-hidden="true"></i>
-                                                    </button>
-                                                </div>
-
-                                                <div dropdown on-toggle="toggled(open)"  class="menu-left">
-                                                     <button class="button viewport-menu-button" dropdown-toggle
-                                                             style="width: 28px !important;" title="set viewport">
-                                                             <i class="fa fa-eye fa-lg"></i>
-                                                         <!--<span class="caret"></span>-->
                                                 </button>
-
-                                                    <ul class="dropdown-menu " style="right: 32px!important;top:2px" >
-                                                        <li><a   href="#" ng-click = "toggleGeometry('RT')">Geometry</a></li>
-                                                        <li><a   href="#" ng-click = "toggleTopology('RT')">Topology</a></li>
-                                                        <li><a   href="#" ng-click = "toggleData('RT')">Data</a></li>
-                                                        <li><a   href="#" ng-click = "toggleFullCode('RT')">Generated Code</a></li>
-                                                    </ul>
-                                                </div>
 
 
                                                 <div dropdown on-toggle="toggled(open)"  class="menu-left"  ng-if="showGeometryRT">
                                                     <button class="button viewport-menu-button" dropdown-toggle
-                                                            style="width: 28px !important; right:60px !important;"  title="set camera">
+                                                            style="width: 28px !important; right:67px !important;"  title="set camera">
                                                             <i class="fa fa-camera" aria-hidden="true"></i>
                                                     </button>
-                                                    <ul class="dropdown-menu " style="right: 62px!important;top:2px" >
+                                                    <ul class="dropdown-menu " style="right: 69px!important;top:2px" >
                                                             <li><a   ng-click="viewportControl.perspectiveView('RT')">Perspective</a></li>
                                                             <li><a   ng-click="viewportControl.topView('RT')">Top</a></li>
                                                             <li><a   ng-click="viewportControl.bottomView('RT')">Bottom</a></li>
@@ -362,10 +367,10 @@
 
                                                 <div dropdown on-toggle="toggled(open)"  class="menu-left"  ng-if="showGeometryRT">
                                                     <button class="button viewport-menu-button" dropdown-toggle
-                                                            style="width: 28px !important; right:90px !important;" title="Display Mode">
+                                                            style="width: 28px !important; right:97px !important;" title="Display Mode">
                                                             <i class="fa fa-cube" aria-hidden="true" ></i>
                                                     </button>
-                                                    <ul class="dropdown-menu " style="right: 92px!important;top:2px" >
+                                                    <ul class="dropdown-menu " style="right: 99px!important;top:2px" >
                                                            <li><a    ng-click="viewportControl.toggleWireframe()">Wireframe</a></li>
                                                             <li><a   ng-click="viewportControl.toggleRender()">Render</a></li>
                                                     </ul>
@@ -373,7 +378,7 @@
 
                                                 <div   dropdown class="menu-left"  ng-if="showGeometryRT">
                                                     <button class="button viewport-menu-button" dropdown-toggle
-                                                            style="width: 28px !important; right:120px !important;" title="Toggle Grid"
+                                                            style="width: 28px !important; right:127px !important;" title="Toggle Grid"
                                                             ng-click="viewportControl.toggleGrid('RT')">
                                                             <i class="fa fa-table" aria-hidden="true"></i>
                                                     </button>
@@ -413,36 +418,37 @@
                                             <span >
                                                 <div class="doormat" style="z-index: 999999 !important;">
                                                     <div>{{viewportControl.LBcurrentCate + " View"}} </div>
-                                                    <button class="button"
-                                                            ng-click="extend3D('LB')"
-                                                            style="outline: none!important;position: absolute;right:0px;top: 0;"
-                                                            title="Extend 3D View">
+
+                                                    <div dropdown on-toggle="toggled(open)"  class="menu-left">
+                                                        <button class="button viewport-menu-button" dropdown-toggle
+                                                                style="width: 28px !important;" title="set viewport">
+                                                                 <i class="fa fa-eye fa-lg"></i>
+                                                            <!--<span class="caret"></span>-->
+                                                        </button>
+
+                                                        <ul class="dropdown-menu " style="right: 2px!important;top:2px" >
+                                                            <li><a   href="#" ng-click = "toggleGeometry('LB')">Geometry</a></li>
+                                                            <li><a   href="#" ng-click = "toggleTopology('LB')">Topology</a></li>
+                                                            <li><a   href="#" ng-click = "toggleData('LB')">Data</a></li>
+                                                            <li><a   href="#" ng-click = "toggleFullCode('LB')">Generated Code</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
+                                                <button class="button  viewport-menu-button"
+                                                        ng-if="showGeometryLB"
+                                                        ng-click="extend3D('LB')"
+                                                        style="width: 28px !important;right:37px!important; top:0"
+                                                        title="Extend 3D View">
                                                         <i class="fa fa-arrows-alt" aria-hidden="true"></i>
-                                                    </button>
-                                                </div>
-
-                                                <div dropdown on-toggle="toggled(open)"  class="menu-left">
-                                                     <button class="button viewport-menu-button" dropdown-toggle
-                                                             style="width: 28px !important;" title="set viewport">
-                                                             <i class="fa fa-eye fa-lg"></i>
-                                                         <!--<span class="caret"></span>-->
-                                                     </button>
-
-                                                    <ul class="dropdown-menu " style="right: 32px!important;top:2px" >
-                                                        <li><a   href="#" ng-click = "toggleGeometry('LB')">Geometry</a></li>
-                                                        <li><a   href="#" ng-click = "toggleTopology('LB')">Topology</a></li>
-                                                        <li><a   href="#" ng-click = "toggleData('LB')">Data</a></li>
-                                                        <li><a   href="#" ng-click = "toggleFullCode('LB')">Generated Code</a></li>
-                                                    </ul>
-                                                </div>
-
+                                                </button>
 
                                                 <div dropdown on-toggle="toggled(open)"  class="menu-left"  ng-if="showGeometryLB">
                                                     <button class="button viewport-menu-button" dropdown-toggle
-                                                            style="width: 28px !important; right:60px !important;"  title="set camera">
+                                                            style="width: 28px !important; right:67px !important;"  title="set camera">
                                                             <i class="fa fa-camera" aria-hidden="true"></i>
                                                     </button>
-                                                    <ul class="dropdown-menu " style="right: 62px!important;top:2px" >
+                                                    <ul class="dropdown-menu " style="right: 69px!important;top:2px" >
                                                             <li><a   ng-click="viewportControl.perspectiveView('LB')">Perspective</a></li>
                                                             <li><a   ng-click="viewportControl.topView('LB')">Top</a></li>
                                                             <li><a   ng-click="viewportControl.bottomView('LB')">Bottom</a></li>
@@ -455,10 +461,10 @@
 
                                                 <div dropdown on-toggle="toggled(open)"  class="menu-left"  ng-if="showGeometryLB">
                                                     <button class="button viewport-menu-button" dropdown-toggle
-                                                            style="width: 28px !important; right:90px !important;" title="Display Mode">
+                                                            style="width: 28px !important; right:97px !important;" title="Display Mode">
                                                             <i class="fa fa-cube" aria-hidden="true" ></i>
                                                     </button>
-                                                    <ul class="dropdown-menu " style="right: 92px!important;top:2px" >
+                                                    <ul class="dropdown-menu " style="right: 99px!important;top:2px" >
                                                            <li><a    ng-click="viewportControl.toggleWireframe()">Wireframe</a></li>
                                                             <li><a   ng-click="viewportControl.toggleRender()">Render</a></li>
                                                     </ul>
@@ -466,7 +472,7 @@
 
                                                 <div   dropdown class="menu-left"  ng-if="showGeometryLB">
                                                     <button class="button viewport-menu-button" dropdown-toggle
-                                                            style="width: 28px !important; right:120px !important;" title="Toggle Grid"
+                                                            style="width: 28px !important; right:127px !important;" title="Toggle Grid"
                                                             ng-click="viewportControl.toggleGrid('LB')">
                                                             <i class="fa fa-table" aria-hidden="true"></i>
                                                     </button>
@@ -506,36 +512,38 @@
                                             <span >
                                                 <div class="doormat" style="z-index: 999999 !important;">
                                                     <div>{{viewportControl.RBcurrentCate + " View"}} </div>
-                                                    <button class="button"
-                                                            ng-click="extend3D('RB')"
-                                                            style="outline: none!important;position: absolute;right:0px;top: 0;"
-                                                            title="Extend 3D View">
+
+                                                    <div dropdown on-toggle="toggled(open)"  class="menu-left">
+                                                        <button class="button viewport-menu-button" dropdown-toggle
+                                                                style="width: 28px !important;" title="set viewport">
+                                                                 <i class="fa fa-eye fa-lg"></i>
+                                                            <!--<span class="caret"></span>-->
+                                                        </button>
+
+                                                        <ul class="dropdown-menu " style="right: 2px!important;top:2px" >
+                                                            <li><a   href="#" ng-click = "toggleGeometry('RB')">Geometry</a></li>
+                                                            <li><a   href="#" ng-click = "toggleTopology('RB')">Topology</a></li>
+                                                            <li><a   href="#" ng-click = "toggleData('RB')">Data</a></li>
+                                                            <li><a   href="#" ng-click = "toggleFullCode('RB')">Generated Code</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
+                                                <button class="button  viewport-menu-button"
+                                                        ng-if="showGeometryRB"
+                                                        ng-click="extend3D('RB')"
+                                                        style="width: 28px !important;right:37px!important; top:0"
+                                                        title="Extend 3D View">
                                                         <i class="fa fa-arrows-alt" aria-hidden="true"></i>
-                                                    </button>
-                                                </div>
-
-                                                <div dropdown on-toggle="toggled(open)"  class="menu-left">
-                                                     <button class="button viewport-menu-button" dropdown-toggle
-                                                             style="width: 28px !important;" title="set viewport">
-                                                             <i class="fa fa-eye fa-lg"></i>
-                                                         <!--<span class="caret"></span>-->
-                                                    </button>
-
-                                                    <ul class="dropdown-menu " style="right: 32px!important;top:2px" >
-                                                        <li><a   href="#" ng-click = "toggleGeometry('RB')">Geometry</a></li>
-                                                        <li><a   href="#" ng-click = "toggleTopology('RB')">Topology</a></li>
-                                                        <li><a   href="#" ng-click = "toggleData('RB')">Data</a></li>
-                                                        <li><a   href="#" ng-click = "toggleFullCode('RB')">Generated Code</a></li>
-                                                    </ul>
-                                                </div>
+                                                </button>
 
 
                                                 <div dropdown on-toggle="toggled(open)"  class="menu-left"  ng-if="showGeometryRB">
                                                     <button class="button viewport-menu-button" dropdown-toggle
-                                                            style="width: 28px !important; right:60px !important;"  title="set camera">
+                                                            style="width: 28px !important; right:67px !important;"  title="set camera">
                                                             <i class="fa fa-camera" aria-hidden="true"></i>
                                                     </button>
-                                                    <ul class="dropdown-menu " style="right: 62px!important;top:2px" >
+                                                    <ul class="dropdown-menu " style="right: 69px!important;top:2px" >
                                                             <li><a   ng-click="viewportControl.perspectiveView('RB')">Perspective</a></li>
                                                             <li><a   ng-click="viewportControl.topView('RB')">Top</a></li>
                                                             <li><a   ng-click="viewportControl.bottomView('RB')">Bottom</a></li>
@@ -548,10 +556,10 @@
 
                                                 <div dropdown on-toggle="toggled(open)"  class="menu-left"  ng-if="showGeometryRB">
                                                     <button class="button viewport-menu-button" dropdown-toggle
-                                                            style="width: 28px !important; right:90px !important;" title="Display Mode">
+                                                            style="width: 28px !important; right:97px !important;" title="Display Mode">
                                                             <i class="fa fa-cube" aria-hidden="true" ></i>
                                                     </button>
-                                                    <ul class="dropdown-menu " style="right: 92px!important;top:2px" >
+                                                    <ul class="dropdown-menu " style="right: 99px!important;top:2px" >
                                                            <li><a    ng-click="viewportControl.toggleWireframe()">Wireframe</a></li>
                                                             <li><a   ng-click="viewportControl.toggleRender()">Render</a></li>
                                                     </ul>
@@ -559,7 +567,7 @@
 
                                                 <div   dropdown class="menu-left"  ng-if="showGeometryRB">
                                                     <button class="button viewport-menu-button" dropdown-toggle
-                                                            style="width: 28px !important; right:120px !important;" title="Toggle Grid"
+                                                            style="width: 28px !important; right:127px !important;" title="Toggle Grid"
                                                             ng-click="viewportControl.toggleGrid('RB')">
                                                             <i class="fa fa-table" aria-hidden="true"></i>
                                                     </button>

@@ -710,9 +710,17 @@ mobius.directive('viewport', function factory() {
             scope.internalControl.toggleWireframe = function(){
                 wireframe = true;
                 for(var i =0; i < scene.children.length; i++){
-                    if((scene.children[i] instanceof THREE.Mesh
-                        || scene.children[i]  instanceof THREE.Line )&& scene.children[i].name !== 'helper'){
-                        scene.children[i].material.wireframe = true;
+                    if( scene.children[i].name !== 'helper'){
+                        traverse(scene.children[i]);
+                        function traverse(obj){
+                            for(var j = 0;j < obj.children.length;j++){
+                                if(obj.children[j] instanceof  THREE.Mesh){
+                                    obj.children[j].material.wireframe = true;
+                                }else if(obj.children[j].children.length>0){
+                                    traverse(obj.children[j])
+                                }
+                            }
+                        }
                     }
                 }
             };
@@ -761,6 +769,7 @@ mobius.directive('viewport', function factory() {
 
             // update on resize of viewport
             function resizeUpdate() {
+                console.log("resize")
                 onchange();
                 var VIEWPORT_WIDTH = container.clientWidth;
                 var VIEWPORT_HEIGHT = container.clientHeight;
