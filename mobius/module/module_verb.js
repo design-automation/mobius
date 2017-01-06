@@ -1651,6 +1651,7 @@ var MOBIUS = ( function (mod){
 	 * @memberof obj
 	 */
 	mod.obj.addMaterial = function(obj, material_type, wireframe, color_hex, transparent){
+		
 		var option = {	
 			wireframe: wireframe,
 			color: color_hex,
@@ -2381,16 +2382,10 @@ var convertGeomToThree = function( geom ){
             if(singleDataObject[0].is_mObj){
 
                 var threeObject = new THREE.Object3D();
-                for(var j=0; j < singleDataObject.length; j++)
-                    threeObject.add( singleDataObject[ j ].extractThreeGeometry() )
-
-                var meshMaterial = new THREE.MeshBasicMaterial({
-                    side: THREE.DoubleSide,
-                    color: 0x003399,
-                    shading: THREE.SmoothShading,
-                });
-                threeObject.material = meshMaterial;
-
+                for(var j=0; j < singleDataObject.length; j++){
+                	var extractedThreeGeometry  =  singleDataObject[ j ].extractThreeGeometry() ;
+                    threeObject.add( extractedThreeGeometry)
+                }
 
                 return threeObject;
             }

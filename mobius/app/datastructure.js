@@ -398,6 +398,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
     }
 
     this.setMaterial = function( new_material ){
+
         material = new_material;
         if( threeGeometry )
             threeGeometry.material = new_material;
@@ -451,10 +452,22 @@ var mObj_geom = function mObj_geom( geometry, material ){
         if( threeGeometry == undefined ){
         
             threeGeometry = convertGeomToThree( geometry );  
-            
+
             // Attaches a material 
-            if(material)
+            if(material){
                 threeGeometry.material = material;
+
+
+                // if geometry was an array, threeGeometry will be an Object3D, so the children will need to have a color reassigned
+                if(threeGeometry instanceof THREE.Object3D){
+                    threeGeometry.children.map(function(child){
+                        child.material = material;
+                    })
+                }
+
+            }
+            else
+                console.log("Default material");
 
         }
 
@@ -477,8 +490,9 @@ var mObj_geom = function mObj_geom( geometry, material ){
         // the function defines it and caches it
         if(topology == undefined)
             topology = computeTopology(self);
-        else
-            console.log("Topology already defined");
+        else{
+            //console.log("Topology already defined");
+        }
 
         // calls a function in the module to convert native geom into accepted three format
         if( threeTopology == undefined )
@@ -618,7 +632,7 @@ var mObj_geom_Curve = function mObj_geom_Curve( geometry ){
     var defaultCurveMaterial = new THREE.LineBasicMaterial({
         side: THREE.DoubleSide,
         linewidth: 100,
-        color: 0x003399
+        color: 0x003399  // blue
     });
 
     mObj_geom.call( this, geometry, defaultCurveMaterial  );
@@ -632,7 +646,7 @@ var mObj_geom_Surface = function mObj_geom_Surface( geometry ){
         side: THREE.DoubleSide,
         wireframe: false,
         transparent: false,
-        color: 0xffffff
+        color: 0xEEA424  // orange
     } );
 
     mObj_geom.call( this, geometry, defaultSurfaceMaterial  );
@@ -641,12 +655,12 @@ var mObj_geom_Surface = function mObj_geom_Surface( geometry ){
 // 3D Geometry - faces should be connected -
 var mObj_geom_Solid = function mObj_geom_Solid( geometry ){
 
-    var defaultSolidMaterial = new THREE.MeshLambertMaterial( {
+    var defaultSolidMaterial = new THREE.MeshBasicMaterial( {
         side: THREE.DoubleSide,
         wireframe: false,
         shading: THREE.SmoothShading,
         transparent: false,
-        color: 0xCC6600
+        color: 0x6C07EA // purple
     } );
 
     mObj_geom.call( this, geometry, defaultSolidMaterial );
@@ -662,7 +676,7 @@ var mObj_geom_Compound = function mObj_geom_Compound( geometry ){
         side: THREE.DoubleSide,
         wireframe: false,
         transparent: false,
-        color: 0xCF6600
+        color: 0x9C9696 // grey
     } );
 
     mObj_geom.call( this, geometry, defaultSolidMaterial );
@@ -688,6 +702,7 @@ var mObj_geom_Compound = function mObj_geom_Compound( geometry ){
                     return mObj;
         
             })
+
             array_of_elements = array_of_elements.flatten();
 
             threeGeometry = new THREE.Object3D();
@@ -696,13 +711,13 @@ var mObj_geom_Compound = function mObj_geom_Compound( geometry ){
                 var geom = array_of_elements[element];
                 var exGeom = geom.extractThreeGeometry();
 
-
+/*
                 exGeom.material = new THREE.MeshLambertMaterial( {
                     side: THREE.DoubleSide,
                     wireframe: false,
                     transparent: false,
-                    color: 0x003399
-                } );
+                    color: 0xD4EF1B
+                } );*/
 
                 threeGeometry.add( exGeom );
 
