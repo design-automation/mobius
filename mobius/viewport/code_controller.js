@@ -8,6 +8,11 @@ mobius.controller('codeCtrl',[
         // generated javascript code
         $scope.javascriptCode = generateCode.getJavascriptCode();
 
+        $scope.aceLoaded = function(_editor) {
+            // Options
+            _editor.setReadOnly(true);
+        };
+
         $scope.$watch(function () { return generateCode.getRawJSCode(); }, function (newValue, oldValue) {
             if(newValue !== oldValue){
                 $scope.javascriptCode = generateCode.getJavascriptCode();

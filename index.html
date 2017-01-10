@@ -466,7 +466,7 @@
                                                     </button>
                                                     <ul class="dropdown-menu " style="right: 99px!important;top:2px" >
                                                            <li><a    ng-click="viewportControl.toggleWireframe('LB')">Wireframe</a></li>
-                                                            <li><a   ng-click="viewportControl.toggleRender('LB')">Render</a></li>
+                                                            <li><a   ng-click="viewportControl.toggleRender('LB ')">Render</a></li>
                                                     </ul>
                                                 </div>
 
@@ -616,7 +616,7 @@
 
                                 <div ng-if="showFullCode">
                                     <div class="codeViewport"
-                                         ui-ace="{ mode: 'javascript',theme: 'tomorrow'}"
+                                         ui-ace="{ mode: 'javascript',theme: 'tomorrow',onLoad: aceLoaded}"
                                          ng-model="javascriptCode"
                                          readonly="{{true}}"
                                          ng-controller="codeCtrl">
@@ -748,7 +748,7 @@
                                                    overflow: auto;
                                                    display: block;
                                                    bottom: 0;
-                                                   border-top: 1px solid #eee">
+                                                   border-top: 1px solid #eee" oncontextmenu="return false;">
                             <div ui-tree id="tree-root-interface"
                                  data-nodrop-enabled="true">
                                 <div ui-tree-nodes="" ng-model="interface">

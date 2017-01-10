@@ -834,4 +834,25 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
             }
         };
 
+        $scope.onshow = function(event) {
+            if ($scope.readonly !== true) {
+                var width = window.innerWidth,
+                    height = window.innerHeight;
+
+                document.getElementById('menu-procedure').className = ' position-fixed';
+
+                if (event.clientY > height - 100) {
+                    document.getElementById('menu-procedure').className += ' menu-up';
+                }
+
+                if (event.clientX > width - 120) {
+                    document.getElementById('menu-procedure').className += ' menu-left';
+                }
+
+                if (event.clientX > width - 200) {
+                    document.getElementById('menu-procedure').className += ' submenu-left';
+                }
+            }
+        }
+
     }]);

@@ -85,7 +85,6 @@ mobius.controller('nodeMenuCtrl',['$scope','$rootScope','$document','generateCod
             return true;
         };
 
-
         $scope.disableAddInput = function(){
             if($scope.inputs){
                 for(var i = 0; i < $scope.inputs.length; i++){
