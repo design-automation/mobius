@@ -204,8 +204,8 @@
                                                 <i class="fa fa-cube" aria-hidden="true" ></i>
                                         </button>
                                         <ul class="dropdown-menu " style="right: 99px!important;top:2px" >
-                                               <li><a    ng-click="viewportControl.toggleWireframe()">Wireframe</a></li>
-                                                <li><a   ng-click="viewportControl.toggleRender()">Render</a></li>
+                                               <li><a    ng-click="viewportControl.toggleWireframe('main')">Wireframe</a></li>
+                                                <li><a   ng-click="viewportControl.toggleRender('main')">Render</a></li>
                                         </ul>
                                     </div>
 
@@ -275,8 +275,8 @@
                                                             <i class="fa fa-cube" aria-hidden="true" ></i>
                                                     </button>
                                                     <ul class="dropdown-menu " style="right: 99px!important;top:2px" >
-                                                           <li><a    ng-click="viewportControl.toggleWireframe()">Wireframe</a></li>
-                                                            <li><a   ng-click="viewportControl.toggleRender()">Render</a></li>
+                                                           <li><a    ng-click="viewportControl.toggleWireframe('LT')">Wireframe</a></li>
+                                                            <li><a   ng-click="viewportControl.toggleRender('LT')">Render</a></li>
                                                     </ul>
                                                 </div>
 
@@ -342,7 +342,7 @@
 
                                                 <button class="button  viewport-menu-button"
                                                         ng-if="showGeometryRT"
-                                                        ng-click="extend3D('LT')"
+                                                        ng-click="extend3D('RT')"
                                                         style="width: 28px !important;right:37px!important; top:0"
                                                         title="Extend 3D View">
                                                         <i class="fa fa-arrows-alt" aria-hidden="true"></i>
@@ -371,8 +371,8 @@
                                                             <i class="fa fa-cube" aria-hidden="true" ></i>
                                                     </button>
                                                     <ul class="dropdown-menu " style="right: 99px!important;top:2px" >
-                                                           <li><a    ng-click="viewportControl.toggleWireframe()">Wireframe</a></li>
-                                                            <li><a   ng-click="viewportControl.toggleRender()">Render</a></li>
+                                                           <li><a    ng-click="viewportControl.toggleWireframe('RT')">Wireframe</a></li>
+                                                            <li><a   ng-click="viewportControl.toggleRender('RT')">Render</a></li>
                                                     </ul>
                                                 </div>
 
@@ -465,8 +465,8 @@
                                                             <i class="fa fa-cube" aria-hidden="true" ></i>
                                                     </button>
                                                     <ul class="dropdown-menu " style="right: 99px!important;top:2px" >
-                                                           <li><a    ng-click="viewportControl.toggleWireframe()">Wireframe</a></li>
-                                                            <li><a   ng-click="viewportControl.toggleRender()">Render</a></li>
+                                                           <li><a    ng-click="viewportControl.toggleWireframe('LB')">Wireframe</a></li>
+                                                            <li><a   ng-click="viewportControl.toggleRender('LB')">Render</a></li>
                                                     </ul>
                                                 </div>
 
@@ -560,8 +560,8 @@
                                                             <i class="fa fa-cube" aria-hidden="true" ></i>
                                                     </button>
                                                     <ul class="dropdown-menu " style="right: 99px!important;top:2px" >
-                                                           <li><a    ng-click="viewportControl.toggleWireframe()">Wireframe</a></li>
-                                                            <li><a   ng-click="viewportControl.toggleRender()">Render</a></li>
+                                                           <li><a    ng-click="viewportControl.toggleWireframe('RB')">Wireframe</a></li>
+                                                            <li><a   ng-click="viewportControl.toggleRender('RB')">Render</a></li>
                                                     </ul>
                                                 </div>
 

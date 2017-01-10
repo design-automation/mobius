@@ -84,7 +84,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         $scope.controlTypes = ['for each',
                                 'if else'];
 
-        console.log(MOBIUS)
         // methods types
         $scope.getMethods = function(){
             var props = Object.getOwnPropertyNames(MOBIUS);

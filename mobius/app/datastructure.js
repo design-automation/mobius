@@ -655,7 +655,7 @@ var mObj_geom_Surface = function mObj_geom_Surface( geometry ){
 // 3D Geometry - faces should be connected -
 var mObj_geom_Solid = function mObj_geom_Solid( geometry ){
 
-    var defaultSolidMaterial = new THREE.MeshBasicMaterial( {
+    var defaultSolidMaterial = new THREE.MeshLambertMaterial( {
         side: THREE.DoubleSide,
         wireframe: false,
         shading: THREE.SmoothShading,

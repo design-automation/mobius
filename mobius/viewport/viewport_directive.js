@@ -113,8 +113,8 @@ mobius.directive('viewport', function factory() {
                     VIEWPORT_WIDTH / 2,		    // Right
                     VIEWPORT_HEIGHT / 2,		// Top
                     VIEWPORT_HEIGHT / -2,	    // Bottom
-                    -2000,            			// Near
-                    10000 );           			// Far
+                    NEAR,            			// Near
+                    FAR );           			// Far
                 orthoCamera.up.set( 0, 0, 1 );
 
                 orthoCameraLT = new THREE.OrthographicCamera(
@@ -122,8 +122,8 @@ mobius.directive('viewport', function factory() {
                     VIEWPORT_WIDTH / 2,		    // Right
                     VIEWPORT_HEIGHT / 2,		// Top
                     VIEWPORT_HEIGHT / -2,	    // Bottom
-                    -2000,            			// Near
-                    10000 );           			// Far
+                    NEAR,            			// Near
+                    FAR );           			// Far
                 orthoCameraLT.up.set( 0, 0, 1 );
 
                 orthoCameraLB = new THREE.OrthographicCamera(
@@ -131,8 +131,8 @@ mobius.directive('viewport', function factory() {
                     VIEWPORT_WIDTH / 2,		    // Right
                     VIEWPORT_HEIGHT / 2,		// Top
                     VIEWPORT_HEIGHT / -2,	    // Bottom
-                    -2000,            			// Near
-                    10000 );           			// Far
+                    NEAR,            			// Near
+                    FAR );           			// Far
                 orthoCameraLB.up.set( 0, 0, 1 );
 
                 orthoCameraRT = new THREE.OrthographicCamera(
@@ -140,8 +140,8 @@ mobius.directive('viewport', function factory() {
                     VIEWPORT_WIDTH / 2,		    // Right
                     VIEWPORT_HEIGHT / 2,		// Top
                     VIEWPORT_HEIGHT / -2,	    // Bottom
-                    -2000,            			// Near
-                    10000 );           			// Far
+                    NEAR,            			// Near
+                    FAR );           			// Far
                 orthoCameraRT.up.set( 0, 0, 1 );
 
                 orthoCameraRB = new THREE.OrthographicCamera(
@@ -149,8 +149,8 @@ mobius.directive('viewport', function factory() {
                     VIEWPORT_WIDTH / 2,		    // Right
                     VIEWPORT_HEIGHT / 2,		// Top
                     VIEWPORT_HEIGHT / -2,	    // Bottom
-                    -2000,            			// Near
-                    10000 );           			// Far
+                    NEAR,            			// Near
+                    FAR );           			// Far
                 orthoCameraRB.up.set( 0, 0, 1 );
 
 
@@ -267,7 +267,7 @@ mobius.directive('viewport', function factory() {
             init();
             render();
 
-            function onchange( e ) {
+            function onchange() {
                 requestAnimationFrame(render);
                 update();
             }
@@ -283,37 +283,42 @@ mobius.directive('viewport', function factory() {
                     case 'main':
                         scope.internalControl.currentView = 'Perspective';
                         scope.internalControl.currentCate = 'Perspective';
+                        controls = controlsPerspective;
                         controlsPerspective.reset();
                         orthographic = false;
-                        controlsOrtho.enableRotate = true;
+                        //controlsOrtho.enableRotate = true;
                         break;
                     case 'LT':
                         scope.internalControl.LTcurrentView = 'Perspective';
                         scope.internalControl.LTcurrentCate = 'Perspective';
+                        controlsLT = controlsPerspectiveLT;
                         controlsPerspectiveLT.reset();
                         orthographicLT = false;
-                        controlsOrthoLT.enableRotate = true;
+                        //controlsOrthoLT.enableRotate = true;
                         break;
                     case 'RT':
                         scope.internalControl.RTcurrentView = 'Perspective';
                         scope.internalControl.RTcurrentCate = 'Perspective';
                         controlsPerspectiveRT.reset();
+                        controlsRT = controlsPerspectiveRT;
                         orthographicRT = false;
-                        controlsOrthoRT.enableRotate = true;
+                        //controlsOrthoRT.enableRotate = true;
                         break;
                     case 'LB':
                         scope.internalControl.LBcurrentView = 'Perspective';
                         scope.internalControl.LBcurrentCate = 'Perspective';
+                        controlsLB = controlsPerspectiveLB;
                         controlsPerspectiveLB.reset();
                         orthographicLB = false;
-                        controlsOrthoLB.enableRotate = true;
+                        //controlsOrthoLB.enableRotate = true;
                         break;
                     case 'RB':
                         scope.internalControl.RBcurrentView = 'Perspective';
                         scope.internalControl.RBcurrentCate = 'Perspective';
+                        controlsRB = controlsPerspectiveRB;
                         controlsPerspectiveRB.reset();
                         orthographicRB = false;
-                        controlsOrthoRB.enableRotate = true;
+                        //controlsOrthoRB.enableRotate = true;
                         break;
                 }
 
@@ -337,7 +342,6 @@ mobius.directive('viewport', function factory() {
                         scope.internalControl.LTcurrentView = 'Top';
                         scope.internalControl.LTcurrentCate = 'Top';
                         controlsOrthoLT.reset();
-                        controls = controlsOrthoLT;
                         scene.add(orthoCameraLT);
                         controlsOrthoLT.enableRotate = false;
                         orthoCameraLT.position.set(0,0,1000);
@@ -348,7 +352,6 @@ mobius.directive('viewport', function factory() {
                         scope.internalControl.RTcurrentView = 'Top';
                         scope.internalControl.RTcurrentCate = 'Top';
                         controlsOrthoRT.reset();
-                        controls = controlsOrthoRT;
                         scene.add(orthoCameraRT);
                         controlsOrthoRT.enableRotate = false;
                         orthoCameraRT.position.set(0,0,1000);
@@ -359,7 +362,6 @@ mobius.directive('viewport', function factory() {
                         scope.internalControl.LBcurrentView = 'Top';
                         scope.internalControl.LBcurrentCate = 'Top';
                         controlsOrthoLB.reset();
-                        controls = controlsOrthoLB;
                         scene.add(orthoCameraLB);
                         controlsOrthoLB.enableRotate = false;
                         orthoCameraLB.position.set(0,0,1000);
@@ -370,7 +372,6 @@ mobius.directive('viewport', function factory() {
                         scope.internalControl.RBcurrentView = 'Top';
                         scope.internalControl.RBcurrentCate = 'Top';
                         controlsOrthoRB.reset();
-                        controls = controlsOrthoRB;
                         scene.add(orthoCameraRB);
                         controlsOrthoRB.enableRotate = false;
                         orthoCameraRB.position.set(0,0,1000);
@@ -387,51 +388,56 @@ mobius.directive('viewport', function factory() {
                         scope.internalControl.currentView = 'Bottom';
                         scope.internalControl.currentCate = 'Bottom';
                         controlsOrtho.reset();
-                        orthoCamera.position.set(0,0,-1000);
-                        orthoCamera.lookAt( scene.position );
+                        controls = controlsOrtho;
                         scene.add(orthoCamera);
                         controlsOrtho.enableRotate = false;
+                        orthoCamera.position.set(0,0,-1000);
+                        orthoCamera.lookAt( scene.position );
                         orthographic = true;
                         break;
                     case 'LT':
                         scope.internalControl.LTcurrentView = 'Bottom';
                         scope.internalControl.LTcurrentCate = 'Bottom';
                         controlsOrthoLT.reset();
-                        orthoCameraLT.position.set(0,0,-1000);
-                        orthoCameraLT.lookAt( scene.position );
                         scene.add(orthoCameraLT);
                         controlsOrthoLT.enableRotate = false;
+                        orthoCameraLT.position.set(0,0,-1000);
+                        orthoCameraLT.lookAt( scene.position );
                         orthographicLT = true;
+                        controlsOrthoLT.update()
                         break;
                     case 'RT':
                         scope.internalControl.RTcurrentView = 'Bottom';
                         scope.internalControl.RTcurrentCate = 'Bottom';
                         controlsOrthoRT.reset();
-                        orthoCameraRT.position.set(0,0,-1000);
-                        orthoCameraRT.lookAt( scene.position );
                         scene.add(orthoCameraRT);
                         controlsOrthoRT.enableRotate = false;
+                        orthoCameraRT.position.set(0,0,-1000);
+                        orthoCameraRT.lookAt( scene.position );
                         orthographicRT = true;
+                        controlsOrthoRT.update()
                         break;
                     case 'LB':
                         scope.internalControl.LBcurrentView = 'Bottom';
                         scope.internalControl.LBcurrentCate = 'Bottom';
                         controlsOrthoLB.reset();
-                        orthoCameraLB.position.set(0,0,-1000);
-                        orthoCameraLB.lookAt( scene.position );
                         scene.add(orthoCameraLB);
                         controlsOrthoLB.enableRotate = false;
+                        orthoCameraLB.position.set(0,0,-1000);
+                        orthoCameraLB.lookAt( scene.position );
                         orthographicLB = true;
+                        controlsOrthoLB.update()
                         break;
                     case 'RB':
                         scope.internalControl.RBcurrentView = 'Bottom';
                         scope.internalControl.RBcurrentCate = 'Bottom';
                         controlsOrthoRB.reset();
-                        orthoCameraRB.position.set(0,0,-1000);
-                        orthoCameraRB.lookAt( scene.position );
                         scene.add(orthoCameraRB);
                         controlsOrthoRB.enableRotate = false;
+                        orthoCameraRB.position.set(0,0,-1000);
+                        orthoCameraRB.lookAt( scene.position );
                         orthographicRB = true;
+                        controlsOrthoRB.update()
                         break;
                 }
             };
@@ -707,15 +713,58 @@ mobius.directive('viewport', function factory() {
                 }
             };
 
-            scope.internalControl.toggleWireframe = function(){
-                wireframe = true;
+            scope.internalControl.toggleWireframe = function(view){
+                switch (view){
+                    case 'main' : wireframe = true;
+                        break;
+                    case 'LT':wireframeLT = true;
+                        break;
+                    case 'RT':wireframeRT = true;
+                        break;
+                    case 'LB':wireframeLB = true;
+                        break;
+                    case 'RB':wireframeRB = true;
+                        break;
+                }
+
+                for(var i =0; i < scene.children.length; i++){
+                    if( scene.children[i].name !== 'helper'){
+                        traverse(scene.children[i]);
+                    }
+                }
+                function traverse(obj){
+                    if(obj.children){
+                        for(var j = 0;j < obj.children.length;j++){
+                            if(obj.children[j] instanceof  THREE.Mesh){
+                                obj.children[j].material.wireframe = true;
+                            }else if(obj.children[j].children.length>0){
+                                traverse(obj.children[j])
+                            }
+                        }
+                    }
+                }
+            };
+
+            scope.internalControl.toggleRender = function(view){
+                switch (view){
+                    case 'main' : wireframe = false;
+                        break;
+                    case 'LT':wireframeLT = false;
+                        break;
+                    case 'RT':wireframeRT = false;
+                        break;
+                    case 'LB':wireframeLB = false;
+                        break;
+                    case 'RB':wireframeRB = false;
+                        break;
+                }
                 for(var i =0; i < scene.children.length; i++){
                     if( scene.children[i].name !== 'helper'){
                         traverse(scene.children[i]);
                         function traverse(obj){
                             for(var j = 0;j < obj.children.length;j++){
                                 if(obj.children[j] instanceof  THREE.Mesh){
-                                    obj.children[j].material.wireframe = true;
+                                    obj.children[j].material.wireframe = false;
                                 }else if(obj.children[j].children.length>0){
                                     traverse(obj.children[j])
                                 }
@@ -725,24 +774,10 @@ mobius.directive('viewport', function factory() {
                 }
             };
 
-            scope.internalControl.toggleRender = function(){
-                wireframe = false;
-                for(var i =0; i < scene.children.length; i++){
-                    if((scene.children[i] instanceof THREE.Mesh
-                        || scene.children[i]  instanceof THREE.Line )&& scene.children[i].name !== 'helper'){
-                        scene.children[i].material.wireframe = false;
-                    }
-                }
-            };
-
             scope.internalControl.toggleGrid = function(){
                 gridHelper.visible = !gridHelper.visible;
                 onchange()
             };
-
-            scope.internalControl.topView('LT');
-            scope.internalControl.frontView('LB');
-            scope.internalControl.rightView('RB');
 
 
             // monitoring viewport size change
@@ -769,7 +804,6 @@ mobius.directive('viewport', function factory() {
 
             // update on resize of viewport
             function resizeUpdate() {
-                console.log("resize")
                 onchange();
                 var VIEWPORT_WIDTH = container.clientWidth;
                 var VIEWPORT_HEIGHT = container.clientHeight;
@@ -829,7 +863,7 @@ mobius.directive('viewport', function factory() {
 
 
                 if(scope.internalControl.layout === 'singleView' && scope.internalControl.showGeometry){
-                    if(document.getElementById("viewLT")){
+                    if( document.getElementById("viewLT")){
                         document.getElementById("viewLT").remove();
                         document.getElementById("viewLB").remove();
                         document.getElementById("viewRT").remove();
@@ -843,7 +877,10 @@ mobius.directive('viewport', function factory() {
                 }else if(scope.internalControl.layout === 'fourViews'){
                     if(document.getElementById("singleView")) {
                         document.getElementById("singleView").style.display = "none";
-                    }
+                }
+                    scope.internalControl.topView('LT');
+                    scope.internalControl.frontView('LB');
+                    scope.internalControl.rightView('RB');
 
                     document.getElementById("LT").appendChild(rendererLT.domElement);
                     document.getElementById("RT").appendChild(rendererRT.domElement);
@@ -855,16 +892,13 @@ mobius.directive('viewport', function factory() {
             // Animate the scene
             function animate() {
                 requestAnimationFrame(animate);
-                stats.update();
+                // stats.update();
                 render();
                 update();
             }
 
             // Update controls and stats
             function update() {
-                camera.updateMatrix();
-                camera.updateMatrixWorld();
-
                 controls.update();
                 // fixme only update the current control
                 controlsLT.update();
@@ -1022,27 +1056,148 @@ mobius.directive('viewport', function factory() {
             //
             // zoom to extend
             //
-            scope.internalControl.zoomToExtend = function(){
-                console.log("extend");
+            scope.internalControl.zoomToExtend = function(view){
                 if(displayObj.children.length > 0){
+                    var cam,control, newPos,newLookAt;
                     var boxHelper = new THREE.BoundingBoxHelper(displayObj, 0xff0000);
                     boxHelper.update();
-
                     var boundingSphere = boxHelper.box.getBoundingSphere();
                     var center = boundingSphere.center;
                     var radius = boundingSphere.radius;
 
                     var fov = camera.fov * ( Math.PI / 180 );
 
-                    camera.position.set(
-                        center.x + Math.abs( radius / Math.sin( fov / 2 )),
-                        center.y + Math.abs( radius / Math.sin( fov / 2 ) ),
-                        center.z + Math.abs( radius / Math.sin( fov / 2 ))
-                    );
+                    switch (view){
+                        case 'main':
+                            if( scope.internalControl.currentView === 'Perspective'){
+                                cam = camera;
+                                control = controls;
+                                newPos = perspectiveNewPos();
+                                newLookAt = new THREE.Vector3(center.x,center.y,center.z)
+                            }else{
+                                cam = orthoCamera;
+                                control = controlsOrtho;
+                                newPos = orthoNewPos(scope.internalControl.currentView);
+                                newLookAt = orthoNewLookAt(scope.internalControl.currentView);
+                            }
+                            break;
+                        case 'LT':
+                            if( scope.internalControl.LTcurrentView === 'Perspective'){
+                                cam = cameraLT;
+                                newPos = perspectiveNewPos();
+                                control = controlsLT;
+                                newLookAt = new THREE.Vector3(center.x,center.y,center.z)
+                            }else{
+                                cam = orthoCameraLT;
+                                control = controlsOrthoLT;
+                                newPos = orthoNewPos(scope.internalControl.LTcurrentView);
+                                newLookAt = orthoNewLookAt(scope.internalControl.LTcurrentView);
+                            }
+                            break;
+                        case 'RT':
+                            if( scope.internalControl.RTcurrentView === 'Perspective'){
+                                cam = cameraRT;
+                                control = controlsRT;
+                                newPos = perspectiveNewPos();
+                                newLookAt = new THREE.Vector3(center.x,center.y,center.z)
+                            }else{
+                                cam = orthoCameraRT;
+                                control = controlsOrthoRT;
+                                newPos = orthoNewPos(scope.internalControl.RTcurrentView);
+                                newLookAt = orthoNewLookAt(scope.internalControl.RTcurrentView);
+                            }
+                            break;
+                        case 'LB':
+                            if( scope.internalControl.LBcurrentView === 'Perspective'){
+                                cam = cameraLB;
+                                control = controlsLB;
+                                newPos = perspectiveNewPos();
+                                newLookAt = new THREE.Vector3(center.x,center.y,center.z)
+                            }else{
+                                cam = orthoCameraLB;
+                                control = controlsOrthoLB;
+                                newPos = orthoNewPos( scope.internalControl.LBcurrentView);
+                                newLookAt = orthoNewLookAt(scope.internalControl.LBcurrentView);
+                            }
+                            break;
+                        case 'RB':
+                            control = controlsRB;
+                            if( scope.internalControl.RBcurrentView === 'Perspective'){
+                                cam = cameraRB;
+                                newPos = perspectiveNewPos();
+                                newLookAt = new THREE.Vector3(center.x,center.y,center.z)
+                            }else{
+                                cam = orthoCameraRB;
+                                control = controlsOrthoRB;
+                                newPos = orthoNewPos(scope.internalControl.RBcurrentView);
+                                newLookAt = orthoNewLookAt(scope.internalControl.RBcurrentView);
+                            }
+                            break;
+                    }
 
-                    controls.update();
-                    camera.lookAt(center);
-                    controls.update();
+                    function perspectiveNewPos() {
+                        return new THREE.Vector3(center.x + Math.abs( radius / Math.sin( fov / 2 )),
+                            center.y + Math.abs( radius / Math.sin( fov / 2 ) ),
+                            center.z + Math.abs( radius / Math.sin( fov / 2 )));
+                    }
+
+                    function orthoNewLookAt(view){
+                        control.enableRotate = false;
+                        switch (view){
+                            case 'Top':
+                                return new THREE.Vector3(center.x, center.y, 0);
+                                break;
+                            case 'Bottom':
+                                return new THREE.Vector3(center.x, center.y, 0);
+                                break;
+                            case 'Left':
+                                return new THREE.Vector3(0,center.y,center.z);
+                                break;
+                            case 'Right':
+                                return new THREE.Vector3(0,center.y,center.z);
+                                break;
+                            case 'Front':
+                                return new THREE.Vector3(center.x,0,center.z);
+                                break;
+                            case 'Back':
+                                return new THREE.Vector3(center.x,0,center.z);
+                                break;
+                        }
+                    }
+
+                    function  orthoNewPos (view){
+                        switch (view){
+                            case 'Top':
+                                return new THREE.Vector3(center.x, center.y, center.z + Math.abs( radius / Math.sin( fov / 2 )));
+                                break;
+                            case 'Bottom':
+                                return new THREE.Vector3(center.x, center.y, -(center.z + Math.abs( radius / Math.sin( fov / 2 ))));
+                                break;
+                            case 'Left':
+                                return new THREE.Vector3(-(center.x + Math.abs( radius / Math.sin( fov / 2 ))),center.y,center.z);
+                                break;
+                            case 'Right':
+                                return new THREE.Vector3(center.x + Math.abs( radius / Math.sin( fov / 2 )),center.y,center.z);
+                                break;
+                            case 'Front':
+                                return new THREE.Vector3(center.x, -(center.y + Math.abs( radius / Math.sin( fov / 2 ) )), center.z);
+                                break;
+                            case 'Back':
+                                return new THREE.Vector3(center.x, center.y + Math.abs( radius / Math.sin( fov / 2 ) ), center.z);
+                                break;
+                        }
+                    }
+
+                    cam.position.copy(newPos);
+                    cam.updateProjectionMatrix();
+
+                    cam.lookAt(newLookAt);
+                    cam.updateProjectionMatrix();
+                    cam.zoom = 1;
+                    cam.updateProjectionMatrix();
+
+                    control.target.set(newLookAt.x, newLookAt.y,newLookAt.z);
+
                     onchange();
                 }
             };

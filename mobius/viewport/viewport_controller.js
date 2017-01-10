@@ -249,7 +249,6 @@ mobius.controller('viewportCtrl',[
         $scope.showData = false;
         $scope.showTopology = false;
 
-
         $scope.showGeometryLT = true;
         $scope.showGeometryRT = true;
         $scope.showGeometryLB = true;
@@ -276,6 +275,9 @@ mobius.controller('viewportCtrl',[
         $rootScope.$on('fourViews', function(){
             $scope.viewportControl.layout = 'fourViews';
             $scope.topoViewportControl.layout = 'fourViews';
+            $scope.viewportControl.topView('LT');
+            $scope.viewportControl.frontView('LB');
+            $scope.viewportControl.rightView('RB');
 
             if($scope.showTopologyLT){
                 document.getElementById("LT1").style.display = "inline";
@@ -302,9 +304,9 @@ mobius.controller('viewportCtrl',[
             $scope.showFullCode = false;
         });
 
-        $scope.extend3D = function () {
+        $scope.extend3D = function (view) {
             var scope = angular.element(document.getElementById('threeViewport')).scope();
-            scope.viewportControl.zoomToExtend();
+            scope.viewportControl.zoomToExtend(view);
         };
 
         $scope.toggleFullCode = function(view){
