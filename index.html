@@ -733,6 +733,7 @@
                                         <div ui-tree-nodes="" ng-model="interface">
                                             <div ng-repeat="node in interface"
                                                  ui-tree-node
+                                                 ng-show="node.title === 'Input'"
                                                  ng-include="'mobius/procedure/template/interface_template.html'"
                                                  ng-if="node.connected !== true">
                                             </div>

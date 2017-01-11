@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <div ui-tree-handle class="tree-node tree-node-content procedure-tree">
 
-    <div class="tree-node-content tree-item">
+    <div  ng-if="node.title === 'Input'"  class="tree-node-content tree-item">
         Input:
         <a style="padding-left: 8px">
             <a href="#" data-nodrag editable-text="node.name" buttons="no">{{ node.name || 'name' }}</a>
@@ -56,6 +56,30 @@
             </div>
         </div>
 
+    </div>
+    <div ng-if="node.title === 'Output'" class="tree-node-content tree-item">
+        Output
+        <a>
+            <!--Output name and value-->
+            <a href="#" data-nodrag editable-text="node.name" blur="submit"  buttons="no" >
+                {{ node.name || 'name' }}
+            </a>
+            =
+            <a data-nodrag href="#" editable-text="node.dataValue" buttons="no" blur="submit">
+                {{ node.dataValue || 'value' }}
+            </a>
+        </a>
+
+        <!--delete key-->
+        <div class="procedure-delete-key" data-nodrag ng-click="removeOutput(this)">
+            <span> &times; </span>
+        </div>
+
+        <div ui-tree-nodes=""  ng-model="node.nodes" ng-class="{hidden: collapsed}">
+            <div ng-repeat="node in node.nodes"
+                 ui-tree-node >
+            </div>
+        </div>
     </div>
 
 </div>

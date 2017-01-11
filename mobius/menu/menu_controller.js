@@ -205,7 +205,7 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                             for(var j = 0 ; j < generateCode.getChartViewModel().nodes[i].outputConnectors.length; j++ ){
                                 $scope.outputHolder = undefined;
                                 if( generateCode.getChartViewModel().nodes[i].outputConnectors[j].data.name !== 'FUNC_OUTPUT'){
-                                    $scope.searchOutput(generateCode.getDataList()[i],generateCode.getChartViewModel().nodes[i].outputConnectors[j].data);
+                                    $scope.searchOutput(generateCode.getInterfaceList()[i],generateCode.getChartViewModel().nodes[i].outputConnectors[j].data);
                                     generateCode.getChartViewModel().nodes[i].outputConnectors[j].data = $scope.outputHolder;
                                 }
                             }
@@ -256,11 +256,13 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                 for(var i = 0; i <tree.length; i++){
                     if(tree[i].title === 'Output' && nodeData.id === tree[i].id){
                         $scope.outputHolder = tree[i];
-                    }else{
-                        if(tree[i].nodes){
-                            $scope.searchOutput(tree[i].nodes,nodeData);
-                        }
                     }
+                    // disabled since interface doesn't have node within node
+                    // else{
+                    //     if(tree[i].nodes){
+                    //         $scope.searchOutput(tree[i].nodes,nodeData);
+                    //     }
+                    // }
                 }
             }
         };

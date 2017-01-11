@@ -1,9 +1,9 @@
 <!--mobius-->
 <!-- interface template -->
 <!DOCTYPE html>
-<div ui-tree-handle class="tree-node tree-node-content interface">
+<div ui-tree-handle class="tree-node tree-node-content interface" >
     <!-- parameter presentation-->
-    <div class="tree-node-content tree-item" >
+    <div ng-if="node.title === 'Input'"  class="tree-node-content tree-item" >
         {{ node.name || 'undefined' }}
         &nbsp;:&nbsp;
         <a class="params"

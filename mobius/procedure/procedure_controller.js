@@ -735,8 +735,7 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                 procedureDiv.scrollTop = procedureDiv.scrollHeight;},0);
         };
 
-        // todo seperate interface as another controller
-        // add new item in interface
+        // add new item in interface (input /output)
         $scope.newInterface = function(cate) {
             try{
                 if(cate === 'Input'){
@@ -760,9 +759,17 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                     );
 
                     $scope.chartViewModel.nodes[$scope.nodeIndex].addInputConnector(inputObj);
+                }else if(cate === 'Output'){
+                    var outputObj = {
+                        id:$scope.maxId($scope.data) + 1,
+                        title: 'Output'
+                    };
+
+                    $scope.interface.push(outputObj);
+
+                    $scope.chartViewModel.nodes[$scope.nodeIndex].addOutputConnector(outputObj);
                 }
-            }
-            catch(err){
+            } catch(err) {
                 consoleMsg.errorMsg('noNode');
             }
 
@@ -853,6 +860,6 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                     document.getElementById('menu-procedure').className += ' submenu-left';
                 }
             }
-        }
+        };
 
     }]);
