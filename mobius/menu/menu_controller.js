@@ -355,7 +355,7 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
 
         // save mobius library file
         $scope.downloadLib = function(){
-            $http.get("mobius/module/module.js")
+            $http.get("mobius/module/module_verb.js")
                 .success(
                 function(response) {
                     var libBlob = new Blob([response], {type: "application/javascript"});

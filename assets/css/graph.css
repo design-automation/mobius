@@ -26,8 +26,11 @@
     position: absolute;
     overflow: auto;
     display: block;
-    bottom: 0;
-    background-color: #ffffff !important; ;
+    background-color: #ffffff !important;
+    width: 100%;
+    top: 32px;
+    border-bottom: 1px solid #eee;
+    z-index:1
 }
 
 .graph-area #run-button{

@@ -23,6 +23,7 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
         };
 
         $scope.interfaceHeight = document.getElementById("interface").offsetHeight;
+
         $scope.$watch(
             function () {
                 return document.getElementById("interface").offsetHeight;
@@ -111,11 +112,11 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
         $scope.procedureHeight =  32;
         //$scope.interfaceHeight = 0;
 
-        $scope.$watch(function(){
-            return document.getElementById('c').offsetHeight;
-        },function(){
-            document.getElementById("interface").style.bottom =  document.getElementById('c').offsetHeight + "px";
-        });
+        // $scope.$watch(function(){
+        //     return document.getElementById('c').offsetHeight;
+        // },function(){
+        //     document.getElementById("interface").style.bottom =  document.getElementById('c').offsetHeight + "px";
+        // });
 
         $scope.$on('showProcedure', function(){
             if($scope.graphHeight !== 32 + $scope.interfaceHeight){

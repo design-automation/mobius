@@ -725,8 +725,19 @@
                                             title="Run program">
                                         <i class="fa fa-play"></i>
                                     </button>
+                                </span>
 
-
+                                <span id="interface" oncontextmenu="return false;">
+                                    <div ui-tree id="tree-root-interface"
+                                         data-nodrop-enabled="true">
+                                        <div ui-tree-nodes="" ng-model="interface">
+                                            <div ng-repeat="node in interface"
+                                                 ui-tree-node
+                                                 ng-include="'mobius/procedure/template/interface_template.html'"
+                                                 ng-if="node.connected !== true">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </span>
 
                                 <div ng-controller="znpController" class="znpController">
@@ -743,23 +754,7 @@
                             </div>
                         </div>
 
-                        <span id="interface" style="width: 100%;
-                                                   position: absolute;
-                                                   overflow: auto;
-                                                   display: block;
-                                                   bottom: 0;
-                                                   border-top: 1px solid #eee" oncontextmenu="return false;">
-                            <div ui-tree id="tree-root-interface"
-                                 data-nodrop-enabled="true">
-                                <div ui-tree-nodes="" ng-model="interface">
-                                    <div ng-repeat="node in interface"
-                                         ui-tree-node
-                                         ng-include="'mobius/procedure/template/interface_template.html'"
-                                         ng-if="node.connected !== true">
-                                    </div>
-                                </div>
-                            </div>
-                        </span>
+
 
                         <div ui-layout-container
                              id="c"
@@ -866,7 +861,7 @@
 <script src="mobius/procedure/subgraphPanzoomController.js"></script>
 <script src="mobius/typeManager/typeManagerSubgraphZnpController.js"></script>
 <script src="mobius/graph/execute_controller.js"></script>
-<script src="mobius/viewport/console_controller.js"></script>
+<script src="mobius/console/console_controller.js"></script>
 <script src="mobius/viewport/viewport_controller.js"></script>
 <script src="mobius/layout/layout_controller.js"></script>
 <script src="mobius/dialog/dialog_controller.js"></script>
@@ -884,7 +879,7 @@
 <script src="mobius/service/model.js"></script>
 <script src="mobius/service/console.js"></script>
 <script src="mobius/service/nodeCollection.js"></script>
-<script src="mobius/service/dataConversion.js"></script>
+<script src="mobius/app/dataConversion.js"></script>
 <script src="mobius/service/executeService.js"></script>
 
 <!-- filters -->
