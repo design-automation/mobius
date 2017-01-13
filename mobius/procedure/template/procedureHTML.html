@@ -34,11 +34,12 @@
                         <ui-select-choices
                                 style="min-width: 130px!important;"
                                 id="choices"
+                                title = "xx"
                                 refresh="info($select.search)"
                                 refresh-delay="0"
                                 group-by="'category'"
                                 repeat="method in methods | propsFilter: {name: $select.search, category: $select.search}">
-                            <span ng-bind-html="method.name| highlight: $select.search"></span>
+                            <span ng-bind-html="method.name| highlight: $select.search" ></span>
                         </ui-select-choices>
                     </ui-select>
 
@@ -48,9 +49,15 @@
                             <a>{{cate.category}}</a>
                             <ul class="dropdown-menu narrow-menu" style="min-width: 130px!important;">
                                 <li ng-repeat="method in cate.methods">
+
                                     <a ng-click="newItem('Action',{category:cate.category,
                                                                    name:method.name,
-                                                                   return:method.return})">{{method.name}}</a>
+                                                                   return:method.return})">
+                                        <!--<md-tooltip md-direction="left" style="z-index:9999;">-->
+                                            <!--{{method.name}}-->
+                                        <!--</md-tooltip>-->
+                                        {{method.name}}
+                                    </a>
                                 </li>
                             </ul>
                         </li>

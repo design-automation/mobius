@@ -56,6 +56,7 @@ angular.module('flowChart', ['dragging'] )
 			// Watch for changes in the data model and update the textarea whenever necessary.
 			//
 			scope.$watch("viewModel.data", updateJson, true);
+			scope.$watch("viewModel.data", updateJson, true);
 
 			//
 			// Handle the change event from the textarea and update the data model
@@ -264,7 +265,7 @@ angular.module('flowChart', ['dragging'] )
 		$scope.mouseDown = function (evt) {
 			if($scope.readonly !== true) {
 				if (evt.which == 1) {
-					$scope.chart.deselectAll();
+					// $scope.chart.deselectAll();
 
 					//
 					// @ mobius toggle new node dropdown

@@ -607,7 +607,6 @@ var mObj_geom = function mObj_geom( geometry, material ){
         return dataTable;
     }
 
-
     update();
 
 }

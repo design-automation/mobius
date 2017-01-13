@@ -167,15 +167,15 @@ mobius.controller(  'graphCtrl',
                  displayGeometry();
              }else if(message === undefined){
                  $scope.nodeIndex = message;
-                 $scope.currentNodeName = '';
-
-                 var scope = angular.element(document.getElementById('threeViewport')).scope();
-                 var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
-
-                 scope.$apply(function(){scope.viewportControl.refreshView();} );
-                 scope.$apply(function(){scope.viewportControl.refreshData();} );
-                 scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
-                 scopeTopo.$apply(function(){scopeTopo.viewportControl.refreshData();} );
+                 // $scope.currentNodeName = '';
+                 //
+                 // var scope = angular.element(document.getElementById('threeViewport')).scope();
+                 // var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
+                 //
+                 // scope.$apply(function(){scope.viewportControl.refreshView();} );
+                 // scope.$apply(function(){scope.viewportControl.refreshData();} );
+                 // scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
+                 // scopeTopo.$apply(function(){scopeTopo.viewportControl.refreshData();} );
              }else if(message === 'port'){
                  // todo input/output port configuration
              }

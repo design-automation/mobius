@@ -121,13 +121,16 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                         expression.push({category:props[i],methods:[]});
                         for(var j = 0; j < subProps.length; j++){
                             if(typeof MOBIUS[props[i]][subProps[j]] == 'function'){
-                                expression[expression.length-1].methods.push({name:subProps[j], return:MOBIUS[props[i]][subProps[j]].prototype.return});
+                                expression[expression.length-1].methods.push({
+                                    name:subProps[j],
+                                    return:MOBIUS[props[i]][subProps[j]].prototype.return,
+                                    description:MOBIUS[props[i]][subProps[j]].prototype.description});
                             }
                         }
                     }else{
                         for(var j = 0; j < subProps.length; j++){
                             if(typeof MOBIUS[props[i]][subProps[j]] == 'function'){
-                                expression[0].methods.push({name:subProps[j]});
+                                expression[0].methods.push({name:subProps[j], description:MOBIUS[props[i]][subProps[j]].prototype.description});
                             }
                         }
                     }
@@ -153,7 +156,7 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         });
 
         // listen to the graph, when a node is clicked, update the procedure/ interface tabs
-        $scope.$on("nodeIndex", function(event, message) {
+        $rootScope.$on("nodeIndex", function(event, message) {
             if($scope.nodeIndex !== message && message !== undefined && message !== "port"){
                 $scope.nodeIndex = message;
 
@@ -180,11 +183,11 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                 $scope.interface = $scope.interfaceList[$scope.nodeIndex];
             }
             else if(message === undefined){
-                $scope.nodeIndex = message;
-                $scope.currentNodeName = '';
-
-                $scope.data  = undefined;
-                $scope.interface = undefined;
+                // $scope.nodeIndex = message;
+                // $scope.currentNodeName = '';
+                //
+                // $scope.data  = undefined;
+                // $scope.interface = undefined;
 
                 //$scope.$emit("editProcedure",false);
             }else if(message === 'port'){

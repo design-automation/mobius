@@ -11,7 +11,7 @@ mobius.controller('znpController', ['$scope', 'PanZoomService','generateCode',
             $scope.scaleFactor = message;
         });
 
-        var zoomToFitZoomLevelFactor = 1;
+        var zoomToFitZoomLevelFactor = 0.9;
 
         $scope.panzoomModel = {};
 

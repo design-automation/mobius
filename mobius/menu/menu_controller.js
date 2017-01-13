@@ -88,6 +88,7 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                 }
             }).success(
                 function(response) {
+                    $rootScope.$broadcast('spinning');
 
                     $rootScope.$broadcast('clearProcedure');
                     generateCode.goRoot();
@@ -139,17 +140,25 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                         }
                     }
 
+                    // select the last node in graph when the example is opened
+                    generateCode.getChartViewModel().deselectAll();
+                    var last = generateCode.getChartViewModel().nodes.length-1;
+                    generateCode.getChartViewModel().nodes[last].select();
+
                     consoleMsg.confirmMsg('exampleImport');
                     generateCode.generateCode();
+                    $rootScope.$emit("nodeIndex", last);
+
 
                     var scope = angular.element(document.getElementById('threeViewport')).scope();
                     var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
+
 
                     setTimeout(function(
                     ){
                         scope.$apply(function(){scope.viewportControl.refreshView();} );
                         scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
-                       // $rootScope.$broadcast('runNewScene');
+                       $rootScope.$broadcast('runNewScene');
                     },0);
 
                     $rootScope.$broadcast('Extend');

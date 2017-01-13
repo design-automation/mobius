@@ -43,6 +43,11 @@ mobius.controller('executeCtrl',['$scope','$rootScope','$q','executeService','co
             $rootScope.$broadcast("Extend");
         };
 
+        $rootScope.$on('spinning',function(){
+            $scope.showSpinner = true;
+            document.getElementById('waiting').style.display='inline';
+        });
+
         $rootScope.$on('runNewScene',function(){
             consoleMsg.execMsg().then(function(){
                 $scope.run();
