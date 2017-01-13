@@ -111,6 +111,29 @@
                         </div>
                     </div>
 
+                    <div style="height: 6px;position: relative;background-color:#eaeaea" >
+                        <a class="fa fa-angle-up"
+                           id = "collapseParameter"
+                           ng-click="collapseParameter()"
+                           style="
+                                                text-decoration:none;
+                                                position: absolute;
+                                                top: -4px;
+                                                left: 50%;"
+                        ></a>
+
+                        <a class="fa fa-angle-down"
+                           ng-click="extendParameter()"
+                           id = "extendParameter"
+                           style="
+                                                display:none;
+                                                text-decoration:none;
+                                                position: absolute;
+                                                top: -4px;
+                                                left: 50%;"
+                        ></a>
+                    </div>
+
 
                     <div ui-tree id="tree-root-procedure" >
                         <div ui-tree-nodes="" ng-model="data">

@@ -24,12 +24,10 @@
 
 #interface {
     position: absolute;
-    overflow: auto;
     display: block;
     background-color: #ffffff !important;
     width: 100%;
     top: 32px;
-    border-bottom: 1px solid #eee;
     z-index:1
 }
 

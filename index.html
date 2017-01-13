@@ -130,12 +130,19 @@
                 <li>
                     <a href="https://github.com/phtj/mobius" target="_blank"> Github Repo </a>
                 </li>
+
                 <li>
                     <a ng-click=" toggleCheatSheet();"> Hotkeys </a>
                 </li>
+
                 <li>
 <!--                     <a href="doc/out/index.html" target="_blank"> Docs </a> -->
                     <a ng-click=" toggleHelp();"> Docs </a>
+                </li>
+
+                <li>
+<!--                     <a href="doc/out/index.html" target="_blank"> Docs </a> -->
+                    <a href="http://mobius.design-automation.net/" target="_blank"> About </a>
                 </li>
             </ul>
         </span>
@@ -738,6 +745,29 @@
                                                  ng-if="node.connected !== true">
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <div style="height: 6px;position: relative;background-color:#eaeaea" >
+                                        <a class="fa fa-angle-up"
+                                           id = "collapseInterface"
+                                           ng-click="collapseInterface()"
+                                           style="
+                                                text-decoration:none;
+                                                position: absolute;
+                                                top: -4px;
+                                                left: 50%;"
+                                        ></a>
+
+                                        <a class="fa fa-angle-down"
+                                           ng-click="extendInterface()"
+                                           id = "extendInterface"
+                                           style="
+                                                display:none;
+                                                text-decoration:none;
+                                                position: absolute;
+                                                top: -4px;
+                                                left: 50%;"
+                                        ></a>
                                     </div>
                                 </span>
 

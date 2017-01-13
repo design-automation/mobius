@@ -56,12 +56,12 @@
 }
 
 .view-area .dataGrid-main{
-    height: calc(100% - 74px)!important;
+    height: calc(100% - 52px)!important;
     width: 100%;
     bottom: 0 !important;
     position: absolute;
     font-size: 12px;
-    top:74px;
+    top:52px;
 }
 
 .view-area #topoContainer{
@@ -120,7 +120,7 @@
 
 
 .nav > li > a {
-    padding: 6px 15px !important;
+    padding: 2px 15px !important;
     width:100px !important;
     border-radius: 0 !important;
     text-align: center;
@@ -134,7 +134,7 @@
 
 
 .tab-content{
-    padding-top: 4px !important;
+    padding-top: 1px !important;
 }
 
 
