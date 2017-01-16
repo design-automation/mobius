@@ -772,6 +772,7 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
                     $scope.interface.push(outputObj);
 
+                    console.log(outputObj)
                     $scope.chartViewModel.nodes[$scope.nodeIndex].addOutputConnector(outputObj);
                 }
             } catch(err) {

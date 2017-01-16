@@ -91,13 +91,26 @@ mobius.controller(  'graphCtrl',
                                 }
                             }
 
+                            for (var j = 0; j < $scope.interfaceList[$scope.nodeIndex].length;j++){
+                                if($scope.interfaceList[$scope.nodeIndex][j].title === 'Output'){
+                                    outputList.push($scope.interfaceList[$scope.nodeIndex][j]);
+                                }
+                            }
+
                             angular.copy(outputList,
                                 $scope.chartViewModel.nodes[i].data.subGraphModel.chartDataModel.outputPort.inputConnectors);
                         }
 
                         if($scope.chartViewModel.nodes[i].data.subGraph === true){
+                            var inputList = [];
+                            for (var j = 0; j < $scope.interfaceList[$scope.nodeIndex].length;j++){
+                                if($scope.interfaceList[$scope.nodeIndex][j].title === 'Input'){
+                                    inputList.push($scope.interfaceList[$scope.nodeIndex][j]);
+                                }
+                            }
+
                             angular.copy(
-                                $scope.interfaceList[$scope.nodeIndex],
+                                inputList,
                                 $scope.chartViewModel.nodes[i].data.subGraphModel.chartDataModel.inputPort.outputConnectors
                             )
                         }
