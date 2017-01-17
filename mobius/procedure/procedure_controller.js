@@ -11,6 +11,13 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
             $scope.$emit("showProcedure");
         };
 
+        // geometry list for visualising after node selection
+        $scope.outputGeom =[];
+
+        $scope.$watch(function () { return generateCode.getOutputGeom(); }, function () {
+            $scope.outputGeom = generateCode.getOutputGeom();
+        });
+
         $scope.info=function(input){
             if(input){
                 document.getElementById('choices').style.display = 'inline';

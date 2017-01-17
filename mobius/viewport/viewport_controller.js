@@ -248,6 +248,8 @@ mobius.controller('viewportCtrl',[
         $scope.showFullCode = false;
         $scope.showData = false;
         $scope.showTopology = false;
+        // text editor example
+        $scope.showText = false;
 
         $scope.showGeometryLT = true;
         $scope.showGeometryRT = true;
@@ -318,6 +320,7 @@ mobius.controller('viewportCtrl',[
                     $scope.showFullCode = true;
                     $scope.showData = false;
                     $scope.showTopology = false;
+                    $scope.showText = false;
                     document.getElementById("viewSingle").style.display = "none";
                     break;
                 case 'LT':
@@ -372,6 +375,7 @@ mobius.controller('viewportCtrl',[
                     $scope.showFullCode = false;
                     $scope.showData = false;
                     $scope.showTopology = false;
+                    $scope.showText = false;
                     document.getElementById("viewSingle").style.display = "inline";
                     document.getElementById("topoContainer").style.display = "none";
                     break;
@@ -427,6 +431,7 @@ mobius.controller('viewportCtrl',[
                     $scope.showFullCode = false;
                     $scope.showData = true;
                     $scope.showTopology = false;
+                    $scope.showText = false;
                     document.getElementById("viewSingle").style.display = "none";
                     document.getElementById("topoContainer").style.display = "none";
                     break;
@@ -482,6 +487,7 @@ mobius.controller('viewportCtrl',[
                     $scope.showGeometry = false;
                     $scope.showFullCode = false;
                     $scope.showData = false;
+                    $scope.showText = false;
                     document.getElementById("viewSingle").style.display = "none";
                     document.getElementById("topoContainer").style.display = "inline";
                     break;
@@ -528,5 +534,17 @@ mobius.controller('viewportCtrl',[
             }
 
         };
+
+        $scope.toggleTextEditor = function(){
+            $scope.viewportControl.currentCate = 'Text';
+            $scope.viewportControl.showGeometry = false;
+            $scope.showGeometry = false;
+            $scope.showFullCode = false;
+            $scope.showData = false;
+            $scope.showTopology = false;
+            $scope.showText = true;
+            document.getElementById("viewSingle").style.display = "none";
+            document.getElementById("topoContainer").style.display = "none";
+        }
     }
 ]);

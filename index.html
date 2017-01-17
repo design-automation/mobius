@@ -177,6 +177,9 @@
                                                 <li><a   href="#" ng-click = "toggleTopology('main')">Topology</a></li>
                                                 <li><a   href="#" ng-click = "toggleData('main')">Data</a></li>
                                                 <li><a   href="#" ng-click = "toggleFullCode('main')">Generated Code</a></li>
+
+                                                <!-- text editor example-->
+                                                <li><a   href="#" ng-click = "toggleTextEditor()">Text Editor</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -647,6 +650,17 @@
                                         </tab>
                                     </tabset>
                                 </div>
+
+                                <!--text editor example-->
+                                <div ng-controller="textCtrl">
+                                    <div ng-if="showText" style="width: 100%;top:32px;left:0;bottom: 0;position: absolute;">
+                                        <textarea
+                                                style="width: 100%; height: 100%;"
+                                                text-viewport-editor
+                                                view-model="currentTextVersionGeom">
+                                        </textarea>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -678,7 +692,6 @@
 
                 <!-- graph area -->
                 <div class="graph-area" ui-layout-container  size={{graphWidth}} id="graph">
-
                     <div ui-layout="{ flow : 'row', dividerSize:'1',disableToggle:true}" >
                         <!-- pan & zoom field -->
                         <div size="{{graphHeight}}px"
@@ -905,6 +918,11 @@
 <!-- directives -->
 <script src="mobius/viewport/viewport_directive.js"></script>
 <script src="mobius/viewport/topoViewport_directive.js"></script>
+
+<!-- text editor example-->
+<script src="mobius/viewport/text_directive.js"></script>
+<script src="mobius/viewport/text_viewport_controller.js"></script>
+
 
 <!-- services -->
 <script src="mobius/service/model.js"></script>

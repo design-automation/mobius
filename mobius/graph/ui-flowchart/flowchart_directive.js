@@ -26,52 +26,6 @@ angular.module('flowChart', ['dragging'] )
   };
 })
 
-//
-// Directive that allows the chart to be edited as json in a textarea.
-//
-.directive('chartJsonEdit', function () {
-	return {
-		restrict: 'A',
-		scope: {
-			viewModel: "="
-		},
-		link: function (scope, elem, attr) {
-
-			//
-			// Serialize the data model as json and update the textarea.
-			//
-			var updateJson = function () {
-				if (scope.viewModel) {
-					var json = JSON.stringify(scope.viewModel.data, null, 4);
-					$(elem).val(json);
-				}
-			};
-
-			//x
-			// First up, set the initial value of the textarea.
-			//
-			updateJson();
-
-			//
-			// Watch for changes in the data model and update the textarea whenever necessary.
-			//
-			scope.$watch("viewModel.data", updateJson, true);
-			scope.$watch("viewModel.data", updateJson, true);
-
-			//
-			// Handle the change event from the textarea and update the data model
-			// from the modified json.
-			//
-			$(elem).bind("input propertychange", function () {
-				var json = $(elem).val();
-				var dataModel = JSON.parse(json);
-				scope.viewModel = new flowchart.ChartViewModel(dataModel);
-
-				scope.$digest();
-			});
-		}
-	}
-})
 
 //
 // Controller for the flowchart directive.
