@@ -363,6 +363,7 @@ mobius.controller(  'graphCtrl',
                 }
 
                 // todo when multi-selection should throw error to user that only one node can be saved
+                var node = $scope.chartViewModel.getSelectedNodes()[0];
                 var input =  $scope.chartViewModel.getSelectedNodes()[0].data.inputConnectors;
                 var output = $scope.chartViewModel.getSelectedNodes()[0].data.outputConnectors;
                 var index = $scope.chartViewModel.getSelectedNodes()[0].data.id;
@@ -374,7 +375,7 @@ mobius.controller(  'graphCtrl',
                 nodeCollection.
                     installNewNodeType(
                         newTypeName,isSubGraph,input,output,
-                        newProcedureDataModel,newInterfaceDataModel,subGraphModel);
+                        newProcedureDataModel,newInterfaceDataModel,subGraphModel,node);
             });
         });
 

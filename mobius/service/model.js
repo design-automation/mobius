@@ -145,9 +145,13 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                                 + 'geom:[],'
                                 + 'geomData:[],'
                                 + 'topo:[]';
-                            //if(model.chartViewModel.nodes[sortedOrder[n]].data.subGraph){
-                            //    model.geomListCode += ',subgraphGeomList:'+ return_obj_name + '.geomList';
-                            //}
+
+                            // fixme | when a new type of data entry added in module other than geom, geomData (the data) or topology
+                            // fixme | extra attributes needs to be added in the generated code
+                            // fixme | for example if a text attribute need to added
+                            // fixme | "+ 'text:[]'" should be added here
+                            // fixme | this is a undesirable situation, should fix with a more dynamics
+
                             model.geomListCode += '})\n'
                         //}
 
@@ -312,7 +316,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                 for(var j = 0; j < model.interfaceList[i].length; j++){
                     if(model.interfaceList[i][j].title === 'Input'){
                         model.outerCodeList[i] += model.interfaceList[i][j].name;
-                        if (j != model.interfaceList[i].length - 1 && j != model.interfaceList[i].length - 2) {
+                        if (j != model.interfaceList[i].length - 1 && j != model.interfaceList[i].length - 2 && model.interfaceList[i][j+1].title === 'Input') {
                             model.outerCodeList[i] += ', '
                         }else if(j === model.interfaceList[i].length - 2){
                             if(model.interfaceList[i][model.interfaceList[i].length - 1].title === 'Input'){
@@ -345,7 +349,7 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                 for (var j = 0; j < model.interfaceList[i].length; j++) {
                     if(model.interfaceList[i][j].title === 'Input'){
                         model.innerCodeList[i] += model.interfaceList[i][j].name;
-                        if (j != model.interfaceList[i].length - 1 && j != model.interfaceList[i].length - 2) {
+                        if (j != model.interfaceList[i].length - 1 && j != model.interfaceList[i].length - 2 && model.interfaceList[i][j+1].title === 'Input') {
                             model.innerCodeList[i] += ', '
                         }else if(j === model.interfaceList[i].length - 2){
                             if(model.interfaceList[i][model.interfaceList[i].length - 1].title === 'Input'){

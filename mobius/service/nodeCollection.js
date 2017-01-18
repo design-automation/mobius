@@ -125,14 +125,14 @@ mobius.factory('nodeCollection', function () {
         },
 
         // install node for create new node type / import node
-        installNewNodeType: function(type, subGraph, input, output, procedureList, interfaceList,subGraphModel){
+        installNewNodeType: function(type, subGraph, input, output, procedureList, interfaceList,subGraphModel,node){
             var newNode = {};
             if(!subGraph){
                  newNode = {
                     nodeType: type,
                     version:0,
                     overwrite:true,
-
+                    node :node,
                     inputConnectors:  input === undefined ? [] : input,
                     outputConnectors: output === undefined ? [] : output,
 
@@ -145,7 +145,7 @@ mobius.factory('nodeCollection', function () {
                     version:0,
                     overwrite:true,
                     subGraph:true,
-
+                    node:node,
                     inputConnectors:  input === undefined ? [] : input,
                     outputConnectors: output === undefined ? [] : output,
 
@@ -188,7 +188,7 @@ mobius.factory('nodeCollection', function () {
         },
 
         // update node procedure content
-        updateNodeType: function(oldType,newType, input, output, newProcedureList,newInterfaceList,isSubGraph,newSubGraphModel){
+        updateNodeType: function(oldType,newType, input, output, newProcedureList,newInterfaceList,isSubGraph,newSubGraphModel,node){
             for(var i = 0; i < nodes.length; i++){
                 if(nodes[i].nodeType == oldType){
                     if(isSubGraph !== nodes[i].subGraph){
@@ -203,6 +203,8 @@ mobius.factory('nodeCollection', function () {
                     angular.copy(newProcedureList,nodes[i].procedureDataModel);
                     angular.copy(newInterfaceList,nodes[i].interfaceDataModel);
                     angular.copy(newSubGraphModel,  nodes[i].subGraphModel);
+                    console.log(nodes[i].node)
+
                 }
             }
             localStorage.mobiusNodeTypes = JSON.stringify(nodes);
