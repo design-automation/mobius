@@ -88,7 +88,7 @@ var mobius = angular.module('mobius',
     ]);
 
     // modules
-    mobius.service('moduleList', function($rootScope) {
+    mobius.service('moduleList', function($rootScope, generateCode) {
 
         var o = {
             moduleList : [],
@@ -96,6 +96,10 @@ var mobius = angular.module('mobius',
         }
 
         o.changeModule = function(index_or_name){
+
+            // check if nodes are in graph
+            if(generateCode.getChartViewModel().nodes.length > 0)
+                alert("Changing / merging modules might lead to unexpected results.");
             
             var flag = false;
 
