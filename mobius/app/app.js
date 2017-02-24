@@ -1,5 +1,10 @@
 // @mobius app module
 
+
+// for the module
+var MOBIUS = {}; 
+var MOBIUS_MODULES = {};
+
 var mobius = angular.module('mobius',
                             [
                                 'ui.layout',
@@ -57,7 +62,7 @@ var mobius = angular.module('mobius',
 
     // Simple service to create a prompt.
     // fixme not using
-     mobius.service('prompt', function () {
+    mobius.service('prompt', function () {
         return prompt;
     });
 
@@ -81,6 +86,42 @@ var mobius = angular.module('mobius',
             $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|blob|data):/);
         }
     ]);
+
+    // modules
+    mobius.service('moduleList', function($rootScope) {
+
+        var o = {
+            moduleList : [],
+            selected : {}
+        }
+
+        o.changeModule = function(index){
+            for(var i=0; i < o.moduleList.length; i++){
+                if(i==index){
+                    o.moduleList[i].selected = true;
+                    o.selected = o.moduleList[i];
+                }
+                else{
+                    o.moduleList[i].selected = false;
+                }
+            }
+
+            MOBIUS = MOBIUS_MODULES[o.selected.name]; 
+            $rootScope.$broadcast('moduleChanged');
+        }
+
+
+        for(p in MOBIUS_MODULES){ 
+            if(MOBIUS_MODULES.hasOwnProperty(p)){
+                o.moduleList.push({name: p, selected: false});
+            }
+        }
+
+        // default option
+        o.changeModule(0); 
+
+        return o;
+    })
 
 
     // fixme not in use anymore

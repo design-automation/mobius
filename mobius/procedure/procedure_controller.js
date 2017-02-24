@@ -4,8 +4,8 @@
 
 // todo value of in/out connector is not used
 
-mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg','generateCode','nodeCollection',
-    function($scope,$rootScope,$filter,consoleMsg,generateCode,nodeCollection) {
+mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg','generateCode','nodeCollection', 'moduleList',
+    function($scope,$rootScope,$filter,consoleMsg,generateCode,nodeCollection, moduleList) {
 
         $scope.showProcedure = function(){
             $scope.$emit("showProcedure");
@@ -86,6 +86,7 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
         // methods types
         $scope.getMethods = function(){
+
             var props = Object.getOwnPropertyNames(MOBIUS);
 
             var expression = [{category:'msc',name:'expression'}];
@@ -105,6 +106,7 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                 }
             }
             return expression;
+        
         };
 
         $scope.getMethodList = function(){
@@ -139,9 +141,19 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
             return expression;
         };
 
-        $scope.methods = $scope.getMethods();
-        $scope.methodList = $scope.getMethodList();
 
+        // ---- Module Related 
+        var updateModuleFn = function(){
+            $scope.methods = $scope.getMethods();
+            $scope.methodList = $scope.getMethodList();
+        }
+
+        $scope.$on('moduleChanged', function(evt, args){
+            updateModuleFn();
+        });
+
+
+        // --- Procedure
         $scope.$on("clearProcedure", function(){
             $scope.nodeIndex = undefined;
             $scope.data  = undefined;

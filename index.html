@@ -60,8 +60,8 @@
                     </a>
 
                     <ul class="dropdown-menu" style="top:-2px">
-<!--                         <li><a ng-click="loadExample('SimpleGISExample_v0.1.json')"> GIS Example (simple) </a></li>
-                        <li><a ng-click="loadExample('01_GIS.json')"> GIS Example </a></li> -->
+                         <li><a ng-click="loadExample('SimpleGISExample_v0.1.json')"> GIS Example (simple) </a></li>
+                        <li><a ng-click="loadExample('01_GIS.json')"> GIS Example </a></li>
                         <li><a ng-click="loadExample('03_SimpleTower.json')"> Simple Tower </a></li>
                         <li><a ng-click="loadExample('01_SpiralTowers.json')"> Spiral Towers </a></li>
                         <li><a ng-click="loadExample('00_KillianRoof.json')"> Killian Roof v1</a></li>
@@ -111,13 +111,25 @@
             <ul class="dropdown-menu">
                 <li id = "downloadJs">
                     <a ng-href="{{jsUrl}}" download="project.js" ng-click = "downloadJs()">
-                        Export Graph&Nodes
+                        Export Graph & Nodes
                     </a>
+                </li>
+
+                <li class="dropdown-submenu">
+                    <a>
+                       Select Module
+                    </a>
+
+                    <ul class="dropdown-menu" style="top:-2px">
+                        <li ng-repeat='mod in moduleList' ng-click='changeModule($index)'>
+                            <a><i ng-class='mod.selected ? "fa fa-circle" : "fa fa-circle-o" '></i> {{mod.name}}</a>
+                        </li>
+                    </ul>
                 </li>
 
                 <li id = "downloadLib">
                     <a ng-href="{{libUrl}}" download="mobius.js" ng-click = "downloadLib()">
-                        Export Function Library
+                        Export Module
                     </a>
                 </li>
             </ul>
@@ -888,8 +900,8 @@
 
 <!-- other -->
 <script src="mobius/app/datastructure.js"></script>
+<script src="mobius/module/module_gis.js"></script> 
 <script src="mobius/module/module_verb.js"></script>
-<!-- <script src="mobius/module/module_gis.js"></script>  -->
 
 <!--angular material-->
 <script src="assets/js/angular-material/angular-material.min.js"></script>

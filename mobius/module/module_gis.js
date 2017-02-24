@@ -2,7 +2,8 @@
  *	Module, for Urban Design 
  */
 
-var MOBIUS = ( function (mod){
+var MODULE_NAME = "GIS"
+MOBIUS_MODULES[MODULE_NAME] = ( function (mod){
 
 	//
 	//	Requirements
@@ -1678,7 +1679,7 @@ var MOBIUS = ( function (mod){
 
 	return mod;
 
-})(MOBIUS || {});
+})(MOBIUS_MODULES[MODULE_NAME] || {});
 
 
 /*
@@ -1847,58 +1848,6 @@ var computeTopology = function( mObj ){
 			var geom =  geom_array[objCount];
 			MOBIUS.obj.addData( geom, "belongsTo", [objCount] )
 			topology.objects.push( geom );
-
-			// get an array out
-/*			if(geom instanceof mObj_geom_Compound){
-
-				var cGeom = geom.getGeometry() // array of objects
-
-				for(var c=0; c < cGeom.length; c++){
-
-					var sub_geom = cGeom[c]; 
-
-					["faces", "wires", "edges", "vertices"].map( function(el){
-
-						
-						var topoEl = sub_geom[el]; 
-
-						for(var i=0; i < topoEl.length; i++ ){
-
-							// geom_array[el] is an arra
-							topology[el].push( topoEl[i].concat(objCount) )
-						}
-						
-					})
-
-
-					topology.points = topology.points.concat(geom_array[objCount].points);
-
-				}
-
-			}
-			else{
-				["faces", "wires", "edges", "vertices"].map( function(el){
-
-					
-					var topoEl = geom[el];
-					for(var i=0; i < topoEl.length; i++ ){
-
-						// geom_array[el] is an array
-						if(topoEl[i] instanceof Array)
-							topology[el].push( topoEl[i].concat(objCount) );
-						else{
-
-							//console.log(topoEl[i])
-							var bTo = MOBIUS.obj.getProperty(topoEl[i], "belongsTo");
-							MOBIUS.obj.addData(topoEl[i], "belongsTo", [i, objCount] );
-							topology[el].push( topoEl[i] )
-						}
-					}
-					
-				})
-
-				topology.points = topology.points.concat(geom_array[objCount].points);				
-			}*/
 	
 		}
 	}
@@ -1908,25 +1857,6 @@ var computeTopology = function( mObj ){
 		var geom = mObj.getGeometry(); // THREE.Geometry
 
 		topology.faces = [ [0], [1], [2], [3], [4], [5] ];
-
-/*		for(var f=0; f < topology.faces.length; f++ ){
-
-			for(var w=0; w < 1; w++){
-
-				topology.wires.push( [0, f] );
-
-				for(var e=0; e < 4; e++ ){
-
-					topology.edges.push( [e, 0, f] );
-
-					for(var v=0; v < 2; v++){
-						topology.vertices.push( [v, e, 0, f] );
-					}
-					
-				}
-			}
-
-		}*/
 
 		topology.points = geom.vertices.map( function(v){
 
@@ -1941,25 +1871,6 @@ var computeTopology = function( mObj ){
 		MOBIUS.obj.addData( mObj, "belongsTo", [0, null] )	
 		topology.objects = [ ];	
 		topology.faces = [ mObj ] ;
-
-/*		for(var f=0; f < topology.faces.length; f++ ){
-
-			for(var w=0; w < 1; w++){
-				
-				topology.wires.push( [0, f, null] );
-
-				for(var e=0; e < 4; e++ ){
-
-					topology.edges.push( [e, 0, f, null] );
-
-					for(var v=0; v < 2; v++){
-						topology.vertices.push( [v, e, 0, f, null] );
-					}
-					
-				}
-			}
-
-		}*/
 
 		topology.points = mObj.getGeometry().vertices.map( function(v){
 
@@ -2007,9 +1918,6 @@ var getDSMatrix = function(three_matrix){
 	return m;
 }
 
-
-var GLOBAL = MOBIUS.frm.byXYAxes( [0,0,0], [1,0,0], [0,1,0] );
-
 Array.prototype.flatten = function() {
     var ret = [];
     for(var i = 0; i < this.length; i++) {
@@ -2052,7 +1960,9 @@ var convertShapeGeometryToShape = function(shapeGeom){
 
 } 
 
-
-
-
+var GLOBAL = MOBIUS_MODULES[MODULE_NAME].frm.byXYAxes( [0,0,0], [1,0,0], [0,1,0] );
+MOBIUS_MODULES[MODULE_NAME]._FN = {};
+MOBIUS_MODULES[MODULE_NAME]._FN.convertGeomToThree = convertGeomToThree;
+MOBIUS_MODULES[MODULE_NAME]._FN.convertTopoToThree = convertTopoToThree;
+MOBIUS_MODULES[MODULE_NAME]._FN.computeTopology = computeTopology;
 

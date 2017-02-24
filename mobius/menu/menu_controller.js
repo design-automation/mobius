@@ -2,8 +2,8 @@
 // Controller for menu bar
 //
 
-mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','generateCode','nodeCollection','$http','hotkeys','$mdDialog',
-    function($scope,$rootScope,$timeout,consoleMsg,generateCode,nodeCollection,$http,hotkeys,$mdDialog){
+mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','generateCode','nodeCollection','$http','hotkeys','$mdDialog', 'moduleList',
+    function($scope,$rootScope,$timeout,consoleMsg,generateCode,nodeCollection,$http,hotkeys,$mdDialog, moduleList){
 
         // store json url
         $scope.sceneUrl= '';
@@ -13,6 +13,10 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
         $scope.nodeLibUrl = '';
         $scope.outputHolder = undefined;
 
+        // get list of modules 
+        $scope.moduleList = moduleList.moduleList;
+        $scope.changeModule = moduleList.changeModule;
+        
         // listen to graph to get current selected node
         // for export selected node
         $rootScope.$on("nodeIndex", function(event, message) {

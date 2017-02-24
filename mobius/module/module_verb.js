@@ -1,8 +1,8 @@
 /*
  *	Module, with verb.js
  */
-
-var MOBIUS = ( function (mod){	
+var MODULE_NAME = "VERBS";
+MOBIUS_MODULES[MODULE_NAME] = ( function (mod){
 
 	/*
 	 *
@@ -10,6 +10,8 @@ var MOBIUS = ( function (mod){
 	 * Input - according to requirements; Output - non-geometric primitives
 	 *
 	 */
+
+	mod.TOPOLOGY_DEF = {"vertices":[], "edges":[], "faces":[]}
 
 	//
 	//
@@ -2336,7 +2338,7 @@ var MOBIUS = ( function (mod){
 	};
 	return mod;
 
-})(MOBIUS || {});
+})(MOBIUS_MODULES[MODULE_NAME] || {});
 
 
 /*
@@ -2355,8 +2357,6 @@ var MOBIUS = ( function (mod){
 //	Function names should remain the same
 //
 
-var TOPOLOGY_DEF = {"vertices":[], "edges":[], "faces":[]}
-MOBIUS.TOPOLOGY_DEF = TOPOLOGY_DEF;
 //
 //	Function to convert module geometry into three.js Mesh geometry
 //  Add another if-else condition for each new geometry
@@ -2560,4 +2560,8 @@ var removeClonesInList = function( list ){
 }
 
 
-var GLOBAL = MOBIUS.frm.byXYAxes( [0,0,0], [1,0,0], [0,1,0] );
+var GLOBAL = MOBIUS_MODULES[MODULE_NAME].frm.byXYAxes( [0,0,0], [1,0,0], [0,1,0] );
+MOBIUS_MODULES[MODULE_NAME]._FN = {};
+MOBIUS_MODULES[MODULE_NAME]._FN.convertGeomToThree = convertGeomToThree;
+MOBIUS_MODULES[MODULE_NAME]._FN.convertTopoToThree = convertTopoToThree;
+MOBIUS_MODULES[MODULE_NAME]._FN.computeTopology = computeTopology;

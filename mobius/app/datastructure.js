@@ -377,7 +377,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
 
     this.getTopology = function(){
         if(topology == undefined)
-            topology = computeTopology( self, this.getGUID() );
+            topology = MOBIUS._FN.computeTopology( self, this.getGUID() );
         return topology;
     }
 
@@ -451,7 +451,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
         // the function defines it and caches it
         if( threeGeometry == undefined ){
         
-            threeGeometry = convertGeomToThree( geometry );  
+            threeGeometry = MOBIUS._FN.convertGeomToThree( geometry );  
 
             // Attaches a material 
             if(material){
@@ -484,19 +484,17 @@ var mObj_geom = function mObj_geom( geometry, material ){
      */
     this.extractTopology = function(){
 
-        
-
         // if threeGeometry hasn't been computed before or native geometry has been transformed so that new conversion is required
         // the function defines it and caches it
         if(topology == undefined)
-            topology = computeTopology(self);
+            topology = MOBIUS._FN.computeTopology(self);
         else{
             //console.log("Topology already defined");
         }
 
         // calls a function in the module to convert native geom into accepted three format
         if( threeTopology == undefined )
-            threeTopology = convertTopoToThree( topology );  
+            threeTopology = MOBIUS._FN.convertTopoToThree( topology );  
 
         threeTopology.is_mObj = true;
 
