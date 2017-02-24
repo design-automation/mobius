@@ -1,6 +1,3 @@
-{"name":"NURBS_v0.1"}
-
-//graph json
 {
     "nodes": [
         {
@@ -18,6 +15,7 @@
                         "name": "none"
                     },
                     "color": "#000000",
+                    "$$hashKey": "object:18158",
                     "selected": false
                 }
             ],
@@ -26,6 +24,7 @@
                     "id": 3,
                     "title": "Output",
                     "type": "new",
+                    "$$hashKey": "object:19540",
                     "selected": false,
                     "name": "out",
                     "dataValue": "copies"
@@ -48,9 +47,11 @@
                     "name": "geom",
                     "connected": true,
                     "option": {
-                        "name": "none"
+                        "name": "none",
+                        "$$hashKey": "object:25020"
                     },
                     "color": "#000000",
+                    "$$hashKey": "object:24966",
                     "selected": true
                 }
             ],
@@ -59,6 +60,7 @@
                     "id": 1,
                     "title": "Output",
                     "type": "new",
+                    "$$hashKey": "object:24997",
                     "selected": false,
                     "name": "out1",
                     "dataValue": "[geom, copy]",
@@ -84,11 +86,12 @@
                     "selected": false,
                     "name": "out",
                     "dataValue": "crv",
-                    "connected": true
+                    "connected": true,
+                    "$$hashKey": "object:3550"
                 }
             ],
             "type": "spiral",
-            "version": 1487925659795,
+            "version": 1450251144920,
             "overwrite": true,
             "disabled": false
         }
@@ -127,6 +130,7 @@
             "dataName": "copies",
             "dataValue": "[]",
             "type": "new",
+            "$$hashKey": "object:20773",
             "selected": false
         },
         {
@@ -140,18 +144,22 @@
             "parameters": [
                 {
                     "value": "0",
-                    "type": "start"
+                    "type": "start",
+                    "$$hashKey": "object:20745"
                 },
                 {
                     "value": "num_copies",
-                    "type": "end"
+                    "type": "end",
+                    "$$hashKey": "object:20746"
                 },
                 {
                     "value": "1",
-                    "type": "stepSize"
+                    "type": "stepSize",
+                    "$$hashKey": "object:20747"
                 }
             ],
             "result": "seq",
+            "$$hashKey": "object:20730",
             "selected": false
         },
         {
@@ -169,30 +177,37 @@
                     "parameters": [
                         {
                             "value": "geom",
-                            "type": "object"
+                            "type": "object",
+                            "$$hashKey": "object:18799"
                         },
                         {
                             "value": "GLOBAL",
-                            "type": "frame"
+                            "type": "frame",
+                            "$$hashKey": "object:18800"
                         },
                         {
                             "value": "0",
-                            "type": "angleX"
+                            "type": "angleX",
+                            "$$hashKey": "object:18801"
                         },
                         {
                             "value": "0",
-                            "type": "angleY"
+                            "type": "angleY",
+                            "$$hashKey": "object:18802"
                         },
                         {
                             "value": "i * angle",
-                            "type": "angleZ"
+                            "type": "angleZ",
+                            "$$hashKey": "object:18803"
                         },
                         {
                             "value": "true",
-                            "type": "copy"
+                            "type": "copy",
+                            "$$hashKey": "object:18804"
                         }
                     ],
                     "result": "copy",
+                    "$$hashKey": "object:18779",
                     "selected": false
                 },
                 {
@@ -206,14 +221,17 @@
                     "parameters": [
                         {
                             "value": "copies",
-                            "type": "list"
+                            "type": "list",
+                            "$$hashKey": "object:41840"
                         },
                         {
                             "value": "copy",
-                            "type": "extension_list"
+                            "type": "extension_list",
+                            "$$hashKey": "object:41841"
                         }
                     ],
                     "result": "",
+                    "$$hashKey": "object:41830",
                     "selected": false
                 }
             ],
@@ -221,12 +239,14 @@
             "controlType": "for each",
             "dataName": "i",
             "forList": "seq",
+            "$$hashKey": "object:20122",
             "selected": true
         },
         {
             "id": 3,
             "title": "Output",
             "type": "new",
+            "$$hashKey": "object:19540",
             "selected": false,
             "name": "out",
             "dataValue": "copies"
@@ -244,18 +264,22 @@
             "parameters": [
                 {
                     "value": "[0,0,0]",
-                    "type": "origin"
+                    "type": "origin",
+                    "$$hashKey": "object:2676"
                 },
                 {
                     "value": "[1,0,0]",
-                    "type": "xAxis"
+                    "type": "xAxis",
+                    "$$hashKey": "object:2677"
                 },
                 {
                     "value": "[0,1,0]",
-                    "type": "zAxis"
+                    "type": "zAxis",
+                    "$$hashKey": "object:2678"
                 }
             ],
             "result": "xz",
+            "$$hashKey": "object:2661",
             "selected": true
         },
         {
@@ -269,24 +293,29 @@
             "parameters": [
                 {
                     "value": "geom",
-                    "type": "object"
+                    "type": "object",
+                    "$$hashKey": "object:26721"
                 },
                 {
                     "value": "xz",
-                    "type": "frame"
+                    "type": "frame",
+                    "$$hashKey": "object:26722"
                 },
                 {
                     "value": "true",
-                    "type": "copy"
+                    "type": "copy",
+                    "$$hashKey": "object:26723"
                 }
             ],
             "result": "copy",
+            "$$hashKey": "object:26707",
             "selected": false
         },
         {
             "id": 1,
             "title": "Output",
             "type": "new",
+            "$$hashKey": "object:24997",
             "selected": false,
             "name": "out1",
             "dataValue": "[geom, copy]",
@@ -302,7 +331,7 @@
             "dataValue": "[]",
             "type": "new",
             "selected": false,
-            "$$hashKey": "object:1319"
+            "$$hashKey": "object:3546"
         },
         {
             "id": 4,
@@ -316,22 +345,22 @@
                 {
                     "value": "0",
                     "type": "start",
-                    "$$hashKey": "object:1457"
+                    "$$hashKey": "object:3963"
                 },
                 {
                     "value": "num_points + 1",
                     "type": "end",
-                    "$$hashKey": "object:1458"
+                    "$$hashKey": "object:3964"
                 },
                 {
                     "value": "1",
                     "type": "stepSize",
-                    "$$hashKey": "object:1459"
+                    "$$hashKey": "object:3965"
                 }
             ],
             "result": "seq",
             "selected": false,
-            "$$hashKey": "object:1320"
+            "$$hashKey": "object:3547"
         },
         {
             "id": 5,
@@ -344,7 +373,7 @@
                     "dataName": "z",
                     "dataValue": "(height / num_points) * i",
                     "selected": false,
-                    "$$hashKey": "object:1473"
+                    "$$hashKey": "object:3979"
                 },
                 {
                     "id": 7,
@@ -353,7 +382,7 @@
                     "dataName": "a",
                     "dataValue": "(( 360 ) / num_points) * i",
                     "selected": false,
-                    "$$hashKey": "object:1474"
+                    "$$hashKey": "object:3980"
                 },
                 {
                     "id": 14,
@@ -366,12 +395,12 @@
                         {
                             "value": "a",
                             "type": "angle",
-                            "$$hashKey": "object:1578"
+                            "$$hashKey": "object:4084"
                         }
                     ],
                     "result": "cos",
                     "selected": false,
-                    "$$hashKey": "object:1475"
+                    "$$hashKey": "object:3981"
                 },
                 {
                     "id": 13,
@@ -384,12 +413,12 @@
                         {
                             "value": "a",
                             "type": "angle",
-                            "$$hashKey": "object:1589"
+                            "$$hashKey": "object:4095"
                         }
                     ],
                     "result": "sine",
                     "selected": false,
-                    "$$hashKey": "object:1476"
+                    "$$hashKey": "object:3982"
                 },
                 {
                     "id": 8,
@@ -398,7 +427,7 @@
                     "dataName": "x",
                     "dataValue": "cos * rad",
                     "selected": false,
-                    "$$hashKey": "object:1477"
+                    "$$hashKey": "object:3983"
                 },
                 {
                     "id": 9,
@@ -407,7 +436,7 @@
                     "dataName": "y",
                     "dataValue": "sine * rad",
                     "selected": false,
-                    "$$hashKey": "object:1478"
+                    "$$hashKey": "object:3984"
                 },
                 {
                     "id": 11,
@@ -421,22 +450,22 @@
                         {
                             "value": "x",
                             "type": "x",
-                            "$$hashKey": "object:1614"
+                            "$$hashKey": "object:4120"
                         },
                         {
                             "value": "y",
                             "type": "y",
-                            "$$hashKey": "object:1615"
+                            "$$hashKey": "object:4121"
                         },
                         {
                             "value": "z",
                             "type": "z",
-                            "$$hashKey": "object:1616"
+                            "$$hashKey": "object:4122"
                         }
                     ],
                     "result": "point",
                     "selected": false,
-                    "$$hashKey": "object:1479"
+                    "$$hashKey": "object:3985"
                 },
                 {
                     "id": 12,
@@ -450,17 +479,17 @@
                         {
                             "value": "points",
                             "type": "list",
-                            "$$hashKey": "object:1630"
+                            "$$hashKey": "object:4136"
                         },
                         {
                             "value": "point",
                             "type": "itemOrList",
-                            "$$hashKey": "object:1631"
+                            "$$hashKey": "object:4137"
                         }
                     ],
                     "result": "",
                     "selected": false,
-                    "$$hashKey": "object:1480"
+                    "$$hashKey": "object:3986"
                 }
             ],
             "type": "new",
@@ -468,7 +497,7 @@
             "dataName": "i",
             "forList": "seq",
             "selected": true,
-            "$$hashKey": "object:1321"
+            "$$hashKey": "object:3548"
         },
         {
             "id": 15,
@@ -482,22 +511,22 @@
                 {
                     "value": "GLOBAL",
                     "type": "frame",
-                    "$$hashKey": "object:1505"
+                    "$$hashKey": "object:4011"
                 },
                 {
                     "value": "points",
                     "type": "points",
-                    "$$hashKey": "object:1506"
+                    "$$hashKey": "object:4012"
                 },
                 {
                     "value": "3",
                     "type": "degree",
-                    "$$hashKey": "object:1507"
+                    "$$hashKey": "object:4013"
                 }
             ],
             "result": "crv",
             "selected": false,
-            "$$hashKey": "object:1322"
+            "$$hashKey": "object:3549"
         },
         {
             "id": 3,
@@ -507,7 +536,7 @@
             "name": "out",
             "dataValue": "crv",
             "connected": true,
-            "$$hashKey": "object:1323"
+            "$$hashKey": "object:3550"
         }
     ]
 ]
@@ -524,6 +553,7 @@
                 "name": "none"
             },
             "color": "#000000",
+            "$$hashKey": "object:18158",
             "selected": false
         },
         {
@@ -533,9 +563,11 @@
             "connected": false,
             "dataValue": "48",
             "option": {
-                "name": "slider"
+                "name": "slider",
+                "$$hashKey": "object:2346"
             },
             "color": "#000000",
+            "$$hashKey": "object:21903",
             "selected": false,
             "min": "2",
             "max": "50",
@@ -548,9 +580,11 @@
             "connected": false,
             "dataValue": "360 / num_copies",
             "option": {
-                "name": "slider"
+                "name": "slider",
+                "$$hashKey": "object:2346"
             },
             "color": "#000000",
+            "$$hashKey": "object:21956",
             "selected": true,
             "min": "0",
             "max": "360",
@@ -564,9 +598,11 @@
             "name": "geom",
             "connected": true,
             "option": {
-                "name": "none"
+                "name": "none",
+                "$$hashKey": "object:25020"
             },
             "color": "#000000",
+            "$$hashKey": "object:24966",
             "selected": true
         }
     ],
@@ -585,7 +621,7 @@
             "min": "0",
             "max": "360",
             "step": "1",
-            "$$hashKey": "object:1230"
+            "$$hashKey": "object:3498"
         },
         {
             "id": 2,
@@ -601,7 +637,7 @@
             "min": "4",
             "max": "30",
             "step": "1",
-            "$$hashKey": "object:1231"
+            "$$hashKey": "object:3499"
         },
         {
             "id": 3,
@@ -617,7 +653,7 @@
             "min": "5",
             "max": "50",
             "step": "1",
-            "$$hashKey": "object:1232"
+            "$$hashKey": "object:3500"
         },
         {
             "id": 5,
@@ -633,7 +669,7 @@
             "min": "0",
             "max": "10",
             "step": "0.1",
-            "$$hashKey": "object:1233"
+            "$$hashKey": "object:3502"
         }
     ]
 ]

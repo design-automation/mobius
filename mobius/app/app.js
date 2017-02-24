@@ -95,19 +95,29 @@ var mobius = angular.module('mobius',
             selected : {}
         }
 
-        o.changeModule = function(index){
+        o.changeModule = function(index_or_name){
+            
+            var flag = false;
+
             for(var i=0; i < o.moduleList.length; i++){
-                if(i==index){
+                if(i==index_or_name || o.moduleList[i].name == index_or_name){
                     o.moduleList[i].selected = true;
                     o.selected = o.moduleList[i];
+                    flag = true;
                 }
                 else{
                     o.moduleList[i].selected = false;
                 }
             }
 
-            MOBIUS = MOBIUS_MODULES[o.selected.name]; 
-            $rootScope.$broadcast('moduleChanged');
+            if(flag){
+                MOBIUS = MOBIUS_MODULES[o.selected.name]; 
+                $rootScope.$broadcast('moduleChanged');
+            }
+            else{
+                alert("Error! Module requested not found.");
+            }
+
         }
 
 

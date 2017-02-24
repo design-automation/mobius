@@ -1,7 +1,14 @@
 /*
  *	Module, with verb.js
  */
-var MODULE_NAME = "VERBS";
+
+//----- To be specified by module developer
+var module_name = "NURBS";
+var version = "0.1";
+
+
+// -------
+var MODULE_NAME = module_name + "_v" + version;
 MOBIUS_MODULES[MODULE_NAME] = ( function (mod){
 
 	/*

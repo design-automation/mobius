@@ -1,6 +1,3 @@
-{"name":"NURBS_v0.1"}
-
-//graph json
 {
     "nodes": [
         {
@@ -129,7 +126,7 @@
                 }
             ],
             "type": "extrude",
-            "version": 1487925872289,
+            "version": 1483686625064,
             "overwrite": true,
             "disabled": false
         }
@@ -156,7 +153,8 @@
             "title": "Output",
             "type": "new",
             "selected": false,
-            "name": "rectangle"
+            "name": "rectangle",
+            "$$hashKey": "object:5248"
         },
         {
             "id": 1,
@@ -169,11 +167,13 @@
             "parameters": [
                 {
                     "value": "[[length/2,breadth/2,0],[-length/2,breadth/2,0],[-length/2,-breadth/2,0],[length/2,-breadth/2,0]]",
-                    "type": "cornerpoints"
+                    "type": "cornerpoints",
+                    "$$hashKey": "object:5320"
                 }
             ],
             "result": "rectangle",
-            "selected": false
+            "selected": false,
+            "$$hashKey": "object:5249"
         }
     ],
     [
@@ -184,7 +184,7 @@
             "selected": false,
             "name": "extrusions",
             "dataValue": "[]",
-            "$$hashKey": "object:4211"
+            "$$hashKey": "object:5343"
         },
         {
             "id": 2,
@@ -198,22 +198,22 @@
                 {
                     "value": "surface",
                     "type": "surface",
-                    "$$hashKey": "object:4346"
+                    "$$hashKey": "object:5463"
                 },
                 {
                     "value": "u",
                     "type": "uSegments",
-                    "$$hashKey": "object:4347"
+                    "$$hashKey": "object:5464"
                 },
                 {
                     "value": "v",
                     "type": "vSegments",
-                    "$$hashKey": "object:4348"
+                    "$$hashKey": "object:5465"
                 }
             ],
             "result": "uvGrid",
             "selected": false,
-            "$$hashKey": "object:4212"
+            "$$hashKey": "object:5344"
         },
         {
             "id": 1,
@@ -227,17 +227,17 @@
                 {
                     "value": "surface",
                     "type": "surface",
-                    "$$hashKey": "object:4365"
+                    "$$hashKey": "object:5482"
                 },
                 {
                     "value": "uvGrid",
                     "type": "uvGrid",
-                    "$$hashKey": "object:4366"
+                    "$$hashKey": "object:5483"
                 }
             ],
             "result": "mesh",
             "selected": false,
-            "$$hashKey": "object:4213"
+            "$$hashKey": "object:5345"
         },
         {
             "id": 4,
@@ -250,7 +250,7 @@
                     "dataName": "height",
                     "dataValue": "Math.floor((Math.random() * 70) + 1)",
                     "selected": false,
-                    "$$hashKey": "object:4377"
+                    "$$hashKey": "object:5494"
                 },
                 {
                     "id": 5,
@@ -263,32 +263,32 @@
                         {
                             "value": "face",
                             "type": "surface",
-                            "$$hashKey": "object:4425"
+                            "$$hashKey": "object:5542"
                         },
                         {
                             "value": "GLOBAL",
                             "type": "frame",
-                            "$$hashKey": "object:4426"
+                            "$$hashKey": "object:5543"
                         },
                         {
                             "value": "0",
                             "type": "xDistance",
-                            "$$hashKey": "object:4427"
+                            "$$hashKey": "object:5544"
                         },
                         {
                             "value": "0",
                             "type": "yDistance",
-                            "$$hashKey": "object:4428"
+                            "$$hashKey": "object:5545"
                         },
                         {
                             "value": "height",
                             "type": "zDistance",
-                            "$$hashKey": "object:4429"
+                            "$$hashKey": "object:5546"
                         }
                     ],
                     "result": "ex",
                     "selected": false,
-                    "$$hashKey": "object:4378"
+                    "$$hashKey": "object:5495"
                 },
                 {
                     "id": 9,
@@ -311,37 +311,37 @@
                                         {
                                             "value": "ex",
                                             "type": "obj",
-                                            "$$hashKey": "object:4520"
+                                            "$$hashKey": "object:5637"
                                         },
                                         {
                                             "value": "\"MeshLambertMaterial\"",
                                             "type": "material_type",
-                                            "$$hashKey": "object:4521"
+                                            "$$hashKey": "object:5638"
                                         },
                                         {
                                             "value": "false",
                                             "type": "wireframe",
-                                            "$$hashKey": "object:4522"
+                                            "$$hashKey": "object:5639"
                                         },
                                         {
                                             "value": "grass",
                                             "type": "color_hex",
-                                            "$$hashKey": "object:4523"
+                                            "$$hashKey": "object:5640"
                                         },
                                         {
                                             "value": "false",
                                             "type": "transparent",
-                                            "$$hashKey": "object:4524"
+                                            "$$hashKey": "object:5641"
                                         }
                                     ],
                                     "result": "",
                                     "selected": false,
-                                    "$$hashKey": "object:4485"
+                                    "$$hashKey": "object:5602"
                                 }
                             ],
                             "ifExpression": "height < 10",
                             "selected": false,
-                            "$$hashKey": "object:4449"
+                            "$$hashKey": "object:5566"
                         },
                         {
                             "id": 8,
@@ -369,37 +369,37 @@
                                                         {
                                                             "value": "ex",
                                                             "type": "obj",
-                                                            "$$hashKey": "object:4596"
+                                                            "$$hashKey": "object:5713"
                                                         },
                                                         {
                                                             "value": "\"MeshLambertMaterial\"",
                                                             "type": "material_type",
-                                                            "$$hashKey": "object:4597"
+                                                            "$$hashKey": "object:5714"
                                                         },
                                                         {
                                                             "value": "false",
                                                             "type": "wireframe",
-                                                            "$$hashKey": "object:4598"
+                                                            "$$hashKey": "object:5715"
                                                         },
                                                         {
                                                             "value": "tallBuildings",
                                                             "type": "color_hex",
-                                                            "$$hashKey": "object:4599"
+                                                            "$$hashKey": "object:5716"
                                                         },
                                                         {
                                                             "value": "false",
                                                             "type": "transparent",
-                                                            "$$hashKey": "object:4600"
+                                                            "$$hashKey": "object:5717"
                                                         }
                                                     ],
                                                     "result": "",
                                                     "selected": false,
-                                                    "$$hashKey": "object:4568"
+                                                    "$$hashKey": "object:5685"
                                                 }
                                             ],
                                             "ifExpression": "height > 30",
                                             "selected": false,
-                                            "$$hashKey": "object:4544"
+                                            "$$hashKey": "object:5661"
                                         },
                                         {
                                             "id": 9,
@@ -407,21 +407,21 @@
                                             "controlType": "else",
                                             "nodes": [],
                                             "selected": false,
-                                            "$$hashKey": "object:4545"
+                                            "$$hashKey": "object:5662"
                                         }
                                     ],
                                     "controlType": "if else",
                                     "selected": false,
-                                    "$$hashKey": "object:4498"
+                                    "$$hashKey": "object:5615"
                                 }
                             ],
                             "selected": false,
-                            "$$hashKey": "object:4450"
+                            "$$hashKey": "object:5567"
                         }
                     ],
                     "controlType": "if else",
                     "selected": false,
-                    "$$hashKey": "object:4379"
+                    "$$hashKey": "object:5496"
                 },
                 {
                     "id": 7,
@@ -435,17 +435,17 @@
                         {
                             "value": "extrusions",
                             "type": "list",
-                            "$$hashKey": "object:4464"
+                            "$$hashKey": "object:5581"
                         },
                         {
                             "value": "ex",
                             "type": "itemOrList",
-                            "$$hashKey": "object:4465"
+                            "$$hashKey": "object:5582"
                         }
                     ],
                     "result": "",
                     "selected": false,
-                    "$$hashKey": "object:4380"
+                    "$$hashKey": "object:5497"
                 }
             ],
             "type": "new",
@@ -453,7 +453,7 @@
             "dataName": "face",
             "forList": "mesh.faces",
             "selected": true,
-            "$$hashKey": "object:4214"
+            "$$hashKey": "object:5346"
         }
     ]
 ]
@@ -474,7 +474,8 @@
             "selected": false,
             "min": "50",
             "max": "150",
-            "step": "10"
+            "step": "10",
+            "$$hashKey": "object:5238"
         },
         {
             "id": 2,
@@ -489,7 +490,8 @@
             "selected": true,
             "min": "50",
             "max": "150",
-            "step": "10"
+            "step": "10",
+            "$$hashKey": "object:5239"
         }
     ],
     [
@@ -503,7 +505,7 @@
             },
             "color": "#000000",
             "selected": false,
-            "$$hashKey": "object:4112"
+            "$$hashKey": "object:5324"
         },
         {
             "id": 2,
@@ -519,7 +521,7 @@
             "min": "1",
             "max": "8",
             "step": "1",
-            "$$hashKey": "object:4113"
+            "$$hashKey": "object:5325"
         },
         {
             "id": 3,
@@ -535,7 +537,7 @@
             "min": "1",
             "max": "8",
             "step": "1",
-            "$$hashKey": "object:4114"
+            "$$hashKey": "object:5326"
         },
         {
             "id": 4,
@@ -547,7 +549,7 @@
             },
             "color": "#c0c0c0",
             "selected": false,
-            "$$hashKey": "object:4115"
+            "$$hashKey": "object:5327"
         },
         {
             "id": 5,
@@ -559,7 +561,7 @@
             },
             "color": "#678e40",
             "selected": true,
-            "$$hashKey": "object:4116"
+            "$$hashKey": "object:5328"
         }
     ]
 ]

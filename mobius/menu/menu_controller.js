@@ -104,6 +104,23 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                     var procedureJsonObj;
                     var interfaceJsonObj;
 
+                    // --- detect module 
+                    var firstHalf = response.split("//graph json");
+                    var moduleJson;
+                    if(firstHalf.length > 1){
+                        moduleJson = JSON.parse(firstHalf[0]); 
+                        response = firstHalf[1];
+                        alert(moduleJson.name + " module detected and loaded successfully.");
+                        moduleList.changeModule(moduleJson.name)
+                    }
+                    else{
+                        response = firstHalf[0];
+                        alert("No module information in the file. ");
+                    }
+
+
+                    // business as usual 
+                    
                     graphJsonString = response.split("//procedure json")[0];
                     var secondhalf = response.split("//procedure json")[1];
                     procedureJsonString = secondhalf.split("//interface json")[0];
@@ -112,6 +129,9 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
                     graphJsonObj = JSON.parse(graphJsonString);
                     procedureJsonObj = JSON.parse(procedureJsonString);
                     interfaceJsonObj = JSON.parse(interfaceJsonString);
+
+                    //console.log(graphJsonObj, procedureJsonObj, interfaceJsonObj);
+
 
                     generateCode.setChartViewModel(new flowchart.ChartViewModel(graphJsonObj));
                     generateCode.setDataList(procedureJsonObj);
@@ -193,15 +213,32 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
 
                         jsonString = e.target.result;
 
+                        // --- detect module 
+                        var firstHalf = jsonString.split("//graph json");
+                        var moduleJson;
+                        if(firstHalf.length > 1){
+                            moduleJson = JSON.parse(firstHalf[0]); 
+                            jsonString = firstHalf[1];
+                            alert(moduleJson.name + " module detected and loaded successfully.");
+                            moduleList.changeModule(moduleJson.name)
+                        }
+                        else{
+                            jsonString = firstHalf[0];
+                            alert("No module information in the file. ");
+                        }
+
+                        // -- bau
                         graphJsonString = jsonString.split("//procedure json")[0];
                         var secondhalf = jsonString.split("//procedure json")[1];
                         procedureJsonString = secondhalf.split("//interface json")[0];
                         interfaceJsonString = secondhalf.split("//interface json")[1];
 
+
                         graphJsonObj = JSON.parse(graphJsonString);
                         procedureJsonObj = JSON.parse(procedureJsonString);
                         interfaceJsonObj = JSON.parse(interfaceJsonString);
 
+                        console.log(graphJsonObj, procedureJsonObj, interfaceJsonObj);
 
                         // update the graph
                         generateCode.setChartViewModel(new flowchart.ChartViewModel(graphJsonObj));
@@ -288,8 +325,10 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
 
             var interfaceJson = JSON.stringify(generateCode.getRootInterfaceList(), null, 4);
 
+            var moduleInfoJson = JSON.stringify({ name: moduleList.selected.name });
 
-            var sceneBlob = new Blob([graphJson + '\n\n' + '//procedure json\n'
+            var sceneBlob = new Blob([moduleInfoJson + '\n\n' + '//graph json\n' 
+                                    + graphJson + '\n\n' + '//procedure json\n'
                                     + procedureJson + '\n\n' + '//interface json\n'
                                     + interfaceJson], {type: "application/json"});
 
@@ -370,7 +409,9 @@ mobius.controller('menuCtrl',['$scope','$rootScope','$timeout','consoleMsg','gen
 
         // save mobius library file
         $scope.downloadLib = function(){
-            $http.get("mobius/module/module_verb.js")
+
+            var file_path = "mobius/module/" + moduleList.selected.name + ".js"
+            $http.get(file_path)
                 .success(
                 function(response) {
                     var libBlob = new Blob([response], {type: "application/javascript"});

@@ -1,6 +1,3 @@
-{"name":"NURBS_v0.1"}
-
-//graph json
 {
     "nodes": [
         {
@@ -15,7 +12,8 @@
                     "title": "Output",
                     "type": "new",
                     "selected": false,
-                    "name": "profile"
+                    "name": "profile",
+                    "$$hashKey": "object:184"
                 }
             ],
             "type": "base_curve",
@@ -37,7 +35,8 @@
                         "name": "none"
                     },
                     "color": "#000000",
-                    "selected": false
+                    "selected": false,
+                    "$$hashKey": "object:278"
                 },
                 {
                     "id": 2,
@@ -52,7 +51,8 @@
                     "min": "1",
                     "max": "10",
                     "step": "1",
-                    "selected": false
+                    "selected": false,
+                    "$$hashKey": "object:279"
                 },
                 {
                     "id": 3,
@@ -67,7 +67,8 @@
                     "min": "0",
                     "max": "50",
                     "step": "5",
-                    "selected": true
+                    "selected": true,
+                    "$$hashKey": "object:280"
                 }
             ],
             "outputConnectors": [
@@ -75,6 +76,7 @@
                     "id": 4,
                     "title": "Output",
                     "type": "new",
+                    "$$hashKey": "object:1169",
                     "selected": false,
                     "name": "crvs",
                     "dataValue": "[]"
@@ -83,6 +85,7 @@
                     "id": 6,
                     "title": "Output",
                     "type": "new",
+                    "$$hashKey": "object:1288",
                     "selected": false,
                     "name": "frames",
                     "dataValue": "[]"
@@ -179,7 +182,7 @@
                 }
             ],
             "type": "killian_roof",
-            "version": 1487925760983,
+            "version": 1450241988930,
             "overwrite": true,
             "disabled": false
         }
@@ -226,7 +229,8 @@
             "title": "Output",
             "type": "new",
             "selected": false,
-            "name": "profile"
+            "name": "profile",
+            "$$hashKey": "object:184"
         },
         {
             "id": 3,
@@ -239,18 +243,22 @@
             "parameters": [
                 {
                     "value": "GLOBAL",
-                    "type": "frame"
+                    "type": "frame",
+                    "$$hashKey": "object:1091"
                 },
                 {
                     "value": "[[-80, 0, 0],[-40,20,-5],[0, 0, -14],[40, -20, -17],[80, 0, -5]]",
-                    "type": "points"
+                    "type": "points",
+                    "$$hashKey": "object:1092"
                 },
                 {
                     "value": "3",
-                    "type": "degree"
+                    "type": "degree",
+                    "$$hashKey": "object:1093"
                 }
             ],
             "result": "profile",
+            "$$hashKey": "object:1076",
             "selected": true
         }
     ],
@@ -259,6 +267,7 @@
             "id": 4,
             "title": "Output",
             "type": "new",
+            "$$hashKey": "object:1169",
             "selected": false,
             "name": "crvs",
             "dataValue": "[]"
@@ -267,6 +276,7 @@
             "id": 6,
             "title": "Output",
             "type": "new",
+            "$$hashKey": "object:1288",
             "selected": false,
             "name": "frames",
             "dataValue": "[]"
@@ -282,14 +292,17 @@
             "parameters": [
                 {
                     "value": "centralProfile",
-                    "type": "curve"
+                    "type": "curve",
+                    "$$hashKey": "object:1919"
                 },
                 {
                     "value": "num_curves",
-                    "type": "numPoints"
+                    "type": "numPoints",
+                    "$$hashKey": "object:1920"
                 }
             ],
             "result": "tList",
+            "$$hashKey": "object:1904",
             "selected": false
         },
         {
@@ -307,14 +320,17 @@
                     "parameters": [
                         {
                             "value": "centralProfile",
-                            "type": "curve"
+                            "type": "curve",
+                            "$$hashKey": "object:2476"
                         },
                         {
                             "value": "t",
-                            "type": "tList"
+                            "type": "tList",
+                            "$$hashKey": "object:2477"
                         }
                     ],
                     "result": "point",
+                    "$$hashKey": "object:2462",
                     "selected": false
                 },
                 {
@@ -327,14 +343,17 @@
                     "parameters": [
                         {
                             "value": "centralProfile",
-                            "type": "curve"
+                            "type": "curve",
+                            "$$hashKey": "object:4057"
                         },
                         {
                             "value": "t",
-                            "type": "tList"
+                            "type": "tList",
+                            "$$hashKey": "object:4058"
                         }
                     ],
                     "result": "tangent",
+                    "$$hashKey": "object:4044",
                     "selected": false
                 },
                 {
@@ -347,14 +366,17 @@
                     "parameters": [
                         {
                             "value": "tangent",
-                            "type": "matrix1"
+                            "type": "matrix1",
+                            "$$hashKey": "object:5539"
                         },
                         {
                             "value": "[0,0,1]",
-                            "type": "matrix2"
+                            "type": "matrix2",
+                            "$$hashKey": "object:5540"
                         }
                     ],
                     "result": "xaxis",
+                    "$$hashKey": "object:5526",
                     "selected": false
                 },
                 {
@@ -368,18 +390,22 @@
                     "parameters": [
                         {
                             "value": "point",
-                            "type": "origin"
+                            "type": "origin",
+                            "$$hashKey": "object:2903"
                         },
                         {
                             "value": "xaxis",
-                            "type": "xAxis"
+                            "type": "xAxis",
+                            "$$hashKey": "object:2904"
                         },
                         {
                             "value": "[0,0,1]",
-                            "type": "yAxis"
+                            "type": "yAxis",
+                            "$$hashKey": "object:2905"
                         }
                     ],
                     "result": "frame",
+                    "$$hashKey": "object:2889",
                     "selected": false
                 },
                 {
@@ -393,22 +419,27 @@
                     "parameters": [
                         {
                             "value": "frame",
-                            "type": "frame"
+                            "type": "frame",
+                            "$$hashKey": "object:1149"
                         },
                         {
                             "value": "height - point.z",
-                            "type": "radius"
+                            "type": "radius",
+                            "$$hashKey": "object:1150"
                         },
                         {
                             "value": "0",
-                            "type": "minAngle"
+                            "type": "minAngle",
+                            "$$hashKey": "object:1151"
                         },
                         {
                             "value": "180",
-                            "type": "maxAngle"
+                            "type": "maxAngle",
+                            "$$hashKey": "object:1152"
                         }
                     ],
                     "result": "arc",
+                    "$$hashKey": "object:1136",
                     "selected": false
                 },
                 {
@@ -422,14 +453,17 @@
                     "parameters": [
                         {
                             "value": "crvs",
-                            "type": "list"
+                            "type": "list",
+                            "$$hashKey": "object:1701"
                         },
                         {
                             "value": "arc",
-                            "type": "itemOrList"
+                            "type": "itemOrList",
+                            "$$hashKey": "object:1702"
                         }
                     ],
                     "result": "",
+                    "$$hashKey": "object:1691",
                     "selected": false
                 },
                 {
@@ -443,14 +477,17 @@
                     "parameters": [
                         {
                             "value": "frames",
-                            "type": "list"
+                            "type": "list",
+                            "$$hashKey": "object:2761"
                         },
                         {
                             "value": "frame",
-                            "type": "itemOrList"
+                            "type": "itemOrList",
+                            "$$hashKey": "object:2762"
                         }
                     ],
                     "result": "",
+                    "$$hashKey": "object:2751",
                     "selected": false
                 }
             ],
@@ -458,7 +495,8 @@
             "controlType": "for each",
             "dataName": "t",
             "forList": "tList",
-            "selected": true
+            "selected": true,
+            "$$hashKey": "object:289"
         }
     ],
     [
@@ -467,7 +505,8 @@
             "title": "Output",
             "name": "mesh",
             "type": "new",
-            "selected": true
+            "selected": true,
+            "$$hashKey": "object:2036"
         },
         {
             "id": 4,
@@ -480,15 +519,18 @@
             "parameters": [
                 {
                     "value": "crvs",
-                    "type": "listOfCurves"
+                    "type": "listOfCurves",
+                    "$$hashKey": "object:2346"
                 },
                 {
                     "value": "3",
-                    "type": "degree"
+                    "type": "degree",
+                    "$$hashKey": "object:2347"
                 }
             ],
             "result": "srf",
-            "selected": false
+            "selected": false,
+            "$$hashKey": "object:2037"
         },
         {
             "id": 5,
@@ -501,23 +543,28 @@
             "parameters": [
                 {
                     "value": "srf",
-                    "type": "surface"
+                    "type": "surface",
+                    "$$hashKey": "object:2361"
                 },
                 {
                     "value": "u",
-                    "type": "uSegments"
+                    "type": "uSegments",
+                    "$$hashKey": "object:2362"
                 },
                 {
                     "value": "v",
-                    "type": "vSegments"
+                    "type": "vSegments",
+                    "$$hashKey": "object:2363"
                 },
                 {
                     "value": "undefined",
-                    "type": "method"
+                    "type": "method",
+                    "$$hashKey": "object:2364"
                 }
             ],
             "result": "uvGrid",
-            "selected": false
+            "selected": false,
+            "$$hashKey": "object:2038"
         },
         {
             "id": 4,
@@ -530,19 +577,23 @@
             "parameters": [
                 {
                     "value": "srf",
-                    "type": "surface"
+                    "type": "surface",
+                    "$$hashKey": "object:2384"
                 },
                 {
                     "value": "uvGrid",
-                    "type": "uvGrid"
+                    "type": "uvGrid",
+                    "$$hashKey": "object:2385"
                 },
                 {
                     "value": "undefined",
-                    "type": "method"
+                    "type": "method",
+                    "$$hashKey": "object:2386"
                 }
             ],
             "result": "mesh",
-            "selected": false
+            "selected": false,
+            "$$hashKey": "object:2039"
         }
     ],
     [
@@ -553,7 +604,7 @@
             "dataValue": "[]",
             "type": "new",
             "selected": false,
-            "$$hashKey": "object:2757"
+            "$$hashKey": "object:329"
         },
         {
             "id": 4,
@@ -562,7 +613,7 @@
             "dataValue": "mesh",
             "type": "new",
             "selected": false,
-            "$$hashKey": "object:2758"
+            "$$hashKey": "object:332"
         },
         {
             "id": 3,
@@ -576,7 +627,7 @@
                     "dataValue": "[]",
                     "type": "new",
                     "selected": false,
-                    "$$hashKey": "object:2810"
+                    "$$hashKey": "object:1141"
                 },
                 {
                     "id": 4,
@@ -593,22 +644,22 @@
                                 {
                                     "value": "GLOBAL",
                                     "type": "frame",
-                                    "$$hashKey": "object:2918"
+                                    "$$hashKey": "object:4530"
                                 },
                                 {
                                     "value": "face.vertices[index]",
                                     "type": "startPoint",
-                                    "$$hashKey": "object:2919"
+                                    "$$hashKey": "object:4531"
                                 },
                                 {
                                     "value": "face.vertices[index+2]",
                                     "type": "endPoint",
-                                    "$$hashKey": "object:2920"
+                                    "$$hashKey": "object:4532"
                                 }
                             ],
                             "result": "diag",
-                            "selected": false,
-                            "$$hashKey": "object:2849"
+                            "$$hashKey": "object:4517",
+                            "selected": false
                         },
                         {
                             "id": 5,
@@ -621,12 +672,12 @@
                                 {
                                     "value": "diag",
                                     "type": "curve",
-                                    "$$hashKey": "object:2937"
+                                    "$$hashKey": "object:1416"
                                 }
                             ],
                             "result": "tubeLength",
-                            "selected": false,
-                            "$$hashKey": "object:2850"
+                            "$$hashKey": "object:1403",
+                            "selected": false
                         },
                         {
                             "id": 5,
@@ -639,17 +690,17 @@
                                 {
                                     "value": "0.02*tubeLength",
                                     "type": "number",
-                                    "$$hashKey": "object:2948"
+                                    "$$hashKey": "object:1310"
                                 },
                                 {
                                     "value": "2",
                                     "type": "number",
-                                    "$$hashKey": "object:2949"
+                                    "$$hashKey": "object:1311"
                                 }
                             ],
                             "result": "radius",
                             "selected": false,
-                            "$$hashKey": "object:2851"
+                            "$$hashKey": "object:1202"
                         },
                         {
                             "id": 5,
@@ -662,17 +713,17 @@
                                 {
                                     "value": "diag",
                                     "type": "centreCurve",
-                                    "$$hashKey": "object:2963"
+                                    "$$hashKey": "object:1340"
                                 },
                                 {
                                     "value": "radius",
                                     "type": "radius",
-                                    "$$hashKey": "object:2964"
+                                    "$$hashKey": "object:1341"
                                 }
                             ],
                             "result": "tube",
                             "selected": false,
-                            "$$hashKey": "object:2852"
+                            "$$hashKey": "object:1204"
                         },
                         {
                             "id": 5,
@@ -686,17 +737,17 @@
                                 {
                                     "value": "allPanels",
                                     "type": "list",
-                                    "$$hashKey": "object:2975"
+                                    "$$hashKey": "object:4140"
                                 },
                                 {
                                     "value": "tube",
                                     "type": "itemOrList",
-                                    "$$hashKey": "object:2976"
+                                    "$$hashKey": "object:4141"
                                 }
                             ],
                             "result": "",
-                            "selected": false,
-                            "$$hashKey": "object:2853"
+                            "$$hashKey": "object:4130",
+                            "selected": false
                         },
                         {
                             "id": 5,
@@ -710,17 +761,17 @@
                                 {
                                     "value": "rads",
                                     "type": "list",
-                                    "$$hashKey": "object:2987"
+                                    "$$hashKey": "object:3661"
                                 },
                                 {
                                     "value": "radius",
                                     "type": "itemOrList",
-                                    "$$hashKey": "object:2988"
+                                    "$$hashKey": "object:3662"
                                 }
                             ],
                             "result": "",
-                            "selected": false,
-                            "$$hashKey": "object:2854"
+                            "$$hashKey": "object:3651",
+                            "selected": false
                         }
                     ],
                     "type": "new",
@@ -728,7 +779,7 @@
                     "dataName": "index",
                     "forList": "[0,1]",
                     "selected": false,
-                    "$$hashKey": "object:2811"
+                    "$$hashKey": "object:1142"
                 },
                 {
                     "id": 5,
@@ -743,22 +794,22 @@
                         {
                             "value": "face",
                             "type": "obj",
-                            "$$hashKey": "object:2874"
+                            "$$hashKey": "object:4613"
                         },
                         {
                             "value": "\"tube_radius\"",
                             "type": "dataName",
-                            "$$hashKey": "object:2875"
+                            "$$hashKey": "object:4614"
                         },
                         {
                             "value": "rads",
                             "type": "dataValue",
-                            "$$hashKey": "object:2876"
+                            "$$hashKey": "object:4615"
                         }
                     ],
                     "result": "",
-                    "selected": false,
-                    "$$hashKey": "object:2812"
+                    "$$hashKey": "object:4603",
+                    "selected": false
                 }
             ],
             "type": "assign",
@@ -766,7 +817,7 @@
             "dataName": "face",
             "forList": "mesh.faces",
             "selected": true,
-            "$$hashKey": "object:2759"
+            "$$hashKey": "object:331"
         }
     ]
 ]
@@ -784,7 +835,8 @@
                 "name": "none"
             },
             "color": "#000000",
-            "selected": false
+            "selected": false,
+            "$$hashKey": "object:278"
         },
         {
             "id": 2,
@@ -799,7 +851,8 @@
             "min": "1",
             "max": "10",
             "step": "1",
-            "selected": false
+            "selected": false,
+            "$$hashKey": "object:279"
         },
         {
             "id": 3,
@@ -814,7 +867,8 @@
             "min": "0",
             "max": "50",
             "step": "5",
-            "selected": true
+            "selected": true,
+            "$$hashKey": "object:280"
         }
     ],
     [
@@ -826,7 +880,8 @@
             "option": {
                 "name": "none"
             },
-            "color": "#000000"
+            "color": "#000000",
+            "$$hashKey": "object:2028"
         },
         {
             "id": 2,
@@ -840,7 +895,8 @@
             "color": "#000000",
             "min": "3",
             "max": "15",
-            "step": "1"
+            "step": "1",
+            "$$hashKey": "object:2029"
         },
         {
             "id": 3,
@@ -854,7 +910,8 @@
             "color": "#000000",
             "min": "3",
             "max": "15",
-            "step": "1"
+            "step": "1",
+            "$$hashKey": "object:2030"
         }
     ],
     [
@@ -867,7 +924,7 @@
                 "name": "none"
             },
             "color": "#000000",
-            "$$hashKey": "object:2622"
+            "$$hashKey": "object:325"
         }
     ]
 ]

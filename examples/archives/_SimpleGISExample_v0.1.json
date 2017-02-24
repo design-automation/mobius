@@ -1,6 +1,3 @@
-{"name":"GIS_v0.1"}
-
-//graph json
 {
     "nodes": [
         {
@@ -3359,7 +3356,7 @@
             ],
             "overwrite": true,
             "type": "type_4",
-            "version": 1487924764068,
+            "version": 1471852229973,
             "disabled": false,
             "subGraph": true,
             "subGraphModel": {
@@ -4625,7 +4622,8 @@
             "title": "Output",
             "type": "new",
             "selected": false,
-            "name": "buildings"
+            "name": "buildings",
+            "$$hashKey": "object:1232"
         },
         {
             "id": 38,
@@ -4633,7 +4631,8 @@
             "type": "new",
             "selected": false,
             "name": "plots",
-            "dataValue": "plots_model"
+            "dataValue": "plots_model",
+            "$$hashKey": "object:1233"
         },
         {
             "id": 4,
@@ -4642,7 +4641,8 @@
             "dataName": "all_buildings",
             "dataValue": "[]",
             "type": "new",
-            "selected": false
+            "selected": false,
+            "$$hashKey": "object:1234"
         },
         {
             "id": 3,
@@ -4655,11 +4655,13 @@
             "parameters": [
                 {
                     "value": "plots_model",
-                    "type": "model"
+                    "type": "model",
+                    "$$hashKey": "object:1357"
                 }
             ],
             "result": "all_plots",
-            "selected": false
+            "selected": false,
+            "$$hashKey": "object:1235"
         },
         {
             "id": 27,
@@ -4672,19 +4674,23 @@
             "parameters": [
                 {
                     "value": "0",
-                    "type": "start"
+                    "type": "start",
+                    "$$hashKey": "object:1368"
                 },
                 {
                     "value": "all_plots.length-1",
-                    "type": "end"
+                    "type": "end",
+                    "$$hashKey": "object:1369"
                 },
                 {
                     "value": "1",
-                    "type": "stepSize"
+                    "type": "stepSize",
+                    "$$hashKey": "object:1370"
                 }
             ],
             "result": "seq",
-            "selected": true
+            "selected": true,
+            "$$hashKey": "object:1236"
         },
         {
             "id": 5,
@@ -4698,7 +4704,8 @@
                     "dataValue": "all_plots[i]",
                     "type": "assign",
                     "selected": false,
-                    "disabled": false
+                    "disabled": false,
+                    "$$hashKey": "object:1384"
                 },
                 {
                     "id": 32,
@@ -4711,12 +4718,14 @@
                     "parameters": [
                         {
                             "value": "plot",
-                            "type": "object"
+                            "type": "object",
+                            "$$hashKey": "object:1529"
                         }
                     ],
                     "result": "centre",
                     "selected": false,
-                    "disabled": false
+                    "disabled": false,
+                    "$$hashKey": "object:1385"
                 },
                 {
                     "id": 14,
@@ -4728,16 +4737,19 @@
                     "parameters": [
                         {
                             "value": "plot",
-                            "type": "obj"
+                            "type": "obj",
+                            "$$hashKey": "object:1540"
                         },
                         {
                             "value": "\"coverage\"",
-                            "type": "propertyName"
+                            "type": "propertyName",
+                            "$$hashKey": "object:1541"
                         }
                     ],
                     "result": "coverage",
                     "selected": false,
-                    "disabled": false
+                    "disabled": false,
+                    "$$hashKey": "object:1386"
                 },
                 {
                     "id": 15,
@@ -4749,16 +4761,19 @@
                     "parameters": [
                         {
                             "value": "plot",
-                            "type": "obj"
+                            "type": "obj",
+                            "$$hashKey": "object:1555"
                         },
                         {
                             "value": "\"plot_id\"",
-                            "type": "propertyName"
+                            "type": "propertyName",
+                            "$$hashKey": "object:1556"
                         }
                     ],
                     "result": "plot_id",
                     "selected": false,
-                    "disabled": false
+                    "disabled": false,
+                    "$$hashKey": "object:1387"
                 },
                 {
                     "id": 15,
@@ -4770,16 +4785,19 @@
                     "parameters": [
                         {
                             "value": "plot",
-                            "type": "obj"
+                            "type": "obj",
+                            "$$hashKey": "object:1570"
                         },
                         {
                             "value": "\"parcel_id\"",
-                            "type": "propertyName"
+                            "type": "propertyName",
+                            "$$hashKey": "object:1571"
                         }
                     ],
                     "result": "parcel_id",
                     "selected": false,
-                    "disabled": false
+                    "disabled": false,
+                    "$$hashKey": "object:1388"
                 },
                 {
                     "id": 16,
@@ -4791,16 +4809,19 @@
                     "parameters": [
                         {
                             "value": "plot",
-                            "type": "obj"
+                            "type": "obj",
+                            "$$hashKey": "object:1585"
                         },
                         {
                             "value": "\"floors\"",
-                            "type": "propertyName"
+                            "type": "propertyName",
+                            "$$hashKey": "object:1586"
                         }
                     ],
                     "result": "floors",
                     "selected": false,
-                    "disabled": false
+                    "disabled": false,
+                    "$$hashKey": "object:1389"
                 },
                 {
                     "id": 30,
@@ -4812,32 +4833,39 @@
                     "parameters": [
                         {
                             "value": "plot",
-                            "type": "object"
+                            "type": "object",
+                            "$$hashKey": "object:1600"
                         },
                         {
                             "value": "GLOBAL",
-                            "type": "frame"
+                            "type": "frame",
+                            "$$hashKey": "object:1601"
                         },
                         {
                             "value": "coverage/10",
-                            "type": "scaleX"
+                            "type": "scaleX",
+                            "$$hashKey": "object:1602"
                         },
                         {
                             "value": "coverage/10",
-                            "type": "scaleY"
+                            "type": "scaleY",
+                            "$$hashKey": "object:1603"
                         },
                         {
                             "value": "1",
-                            "type": "scaleZ"
+                            "type": "scaleZ",
+                            "$$hashKey": "object:1604"
                         },
                         {
                             "value": "true",
-                            "type": "copy"
+                            "type": "copy",
+                            "$$hashKey": "object:1605"
                         }
                     ],
                     "result": "scaled_plot",
                     "selected": false,
-                    "disabled": false
+                    "disabled": false,
+                    "$$hashKey": "object:1390"
                 },
                 {
                     "id": 31,
@@ -4849,20 +4877,24 @@
                     "parameters": [
                         {
                             "value": "scaled_plot",
-                            "type": "object"
+                            "type": "object",
+                            "$$hashKey": "object:1631"
                         },
                         {
                             "value": "centre",
-                            "type": "point"
+                            "type": "point",
+                            "$$hashKey": "object:1632"
                         },
                         {
                             "value": "false",
-                            "type": "copy"
+                            "type": "copy",
+                            "$$hashKey": "object:1633"
                         }
                     ],
                     "result": "_",
                     "selected": false,
-                    "disabled": false
+                    "disabled": false,
+                    "$$hashKey": "object:1391"
                 },
                 {
                     "id": 37,
@@ -4871,7 +4903,8 @@
                     "dataName": "shiftX",
                     "dataValue": "plot.points[0][0] - scaled_plot.points[0][0]",
                     "selected": false,
-                    "disabled": false
+                    "disabled": false,
+                    "$$hashKey": "object:1392"
                 },
                 {
                     "id": 36,
@@ -4880,7 +4913,8 @@
                     "dataName": "shiftY",
                     "dataValue": "plot.points[0][1] - scaled_plot.points[0][1]",
                     "selected": false,
-                    "disabled": false
+                    "disabled": false,
+                    "$$hashKey": "object:1393"
                 },
                 {
                     "id": 35,
@@ -4892,32 +4926,39 @@
                     "parameters": [
                         {
                             "value": "scaled_plot",
-                            "type": "object"
+                            "type": "object",
+                            "$$hashKey": "object:1664"
                         },
                         {
                             "value": "GLOBAL",
-                            "type": "frame"
+                            "type": "frame",
+                            "$$hashKey": "object:1665"
                         },
                         {
                             "value": "-shiftX + 1",
-                            "type": "shiftX"
+                            "type": "shiftX",
+                            "$$hashKey": "object:1666"
                         },
                         {
                             "value": "-shiftY + 1",
-                            "type": "shiftY"
+                            "type": "shiftY",
+                            "$$hashKey": "object:1667"
                         },
                         {
                             "value": "0",
-                            "type": "shiftZ"
+                            "type": "shiftZ",
+                            "$$hashKey": "object:1668"
                         },
                         {
                             "value": "false",
-                            "type": "copy"
+                            "type": "copy",
+                            "$$hashKey": "object:1669"
                         }
                     ],
                     "result": "_",
                     "selected": false,
-                    "disabled": false
+                    "disabled": false,
+                    "$$hashKey": "object:1394"
                 },
                 {
                     "id": 29,
@@ -4929,12 +4970,14 @@
                     "parameters": [
                         {
                             "value": "scaled_plot",
-                            "type": "surface"
+                            "type": "surface",
+                            "$$hashKey": "object:1695"
                         }
                     ],
                     "result": "area",
                     "selected": false,
-                    "disabled": false
+                    "disabled": false,
+                    "$$hashKey": "object:1395"
                 },
                 {
                     "id": 11,
@@ -4961,12 +5004,14 @@
                                                     "dataName": "building",
                                                     "dataValue": "type_1(scaled_plot).building",
                                                     "selected": false,
-                                                    "disabled": false
+                                                    "disabled": false,
+                                                    "$$hashKey": "object:1871"
                                                 }
                                             ],
                                             "ifExpression": "floors > 6",
                                             "selected": false,
-                                            "disabled": false
+                                            "disabled": false,
+                                            "$$hashKey": "object:1823"
                                         },
                                         {
                                             "id": 19,
@@ -4980,21 +5025,25 @@
                                                     "dataName": "building",
                                                     "dataValue": "type_2(scaled_plot).building",
                                                     "selected": false,
-                                                    "disabled": false
+                                                    "disabled": false,
+                                                    "$$hashKey": "object:1884"
                                                 }
                                             ],
                                             "selected": false,
-                                            "disabled": false
+                                            "disabled": false,
+                                            "$$hashKey": "object:1824"
                                         }
                                     ],
                                     "controlType": "if else",
                                     "selected": false,
-                                    "disabled": false
+                                    "disabled": false,
+                                    "$$hashKey": "object:1788"
                                 }
                             ],
                             "ifExpression": "area > 5000",
                             "selected": false,
-                            "disabled": false
+                            "disabled": false,
+                            "$$hashKey": "object:1703"
                         },
                         {
                             "id": 11,
@@ -5017,12 +5066,14 @@
                                                     "dataName": "building",
                                                     "dataValue": "type_3(scaled_plot).building",
                                                     "selected": false,
-                                                    "disabled": false
+                                                    "disabled": false,
+                                                    "$$hashKey": "object:1896"
                                                 }
                                             ],
                                             "ifExpression": "floors > 6",
                                             "selected": false,
-                                            "disabled": false
+                                            "disabled": false,
+                                            "$$hashKey": "object:1838"
                                         },
                                         {
                                             "id": 22,
@@ -5036,25 +5087,30 @@
                                                     "dataName": "building",
                                                     "dataValue": "type_4(scaled_plot).building",
                                                     "selected": false,
-                                                    "disabled": false
+                                                    "disabled": false,
+                                                    "$$hashKey": "object:1909"
                                                 }
                                             ],
                                             "selected": false,
-                                            "disabled": false
+                                            "disabled": false,
+                                            "$$hashKey": "object:1839"
                                         }
                                     ],
                                     "controlType": "if else",
                                     "selected": false,
-                                    "disabled": false
+                                    "disabled": false,
+                                    "$$hashKey": "object:1801"
                                 }
                             ],
                             "selected": false,
-                            "disabled": false
+                            "disabled": false,
+                            "$$hashKey": "object:1704"
                         }
                     ],
                     "controlType": "if else",
                     "selected": false,
-                    "disabled": false
+                    "disabled": false,
+                    "$$hashKey": "object:1396"
                 },
                 {
                     "id": 8,
@@ -5067,16 +5123,19 @@
                     "parameters": [
                         {
                             "value": "all_buildings",
-                            "type": "list"
+                            "type": "list",
+                            "$$hashKey": "object:1718"
                         },
                         {
                             "value": "building",
-                            "type": "itemOrList"
+                            "type": "itemOrList",
+                            "$$hashKey": "object:1719"
                         }
                     ],
                     "result": "",
                     "selected": false,
-                    "disabled": false
+                    "disabled": false,
+                    "$$hashKey": "object:1397"
                 },
                 {
                     "id": 15,
@@ -5088,20 +5147,24 @@
                     "parameters": [
                         {
                             "value": "building",
-                            "type": "obj"
+                            "type": "obj",
+                            "$$hashKey": "object:1733"
                         },
                         {
                             "value": "\"plot_id\"",
-                            "type": "dataName"
+                            "type": "dataName",
+                            "$$hashKey": "object:1734"
                         },
                         {
                             "value": "plot_id",
-                            "type": "dataValue"
+                            "type": "dataValue",
+                            "$$hashKey": "object:1735"
                         }
                     ],
                     "result": "_",
                     "selected": false,
-                    "disabled": false
+                    "disabled": false,
+                    "$$hashKey": "object:1398"
                 },
                 {
                     "id": 16,
@@ -5113,20 +5176,24 @@
                     "parameters": [
                         {
                             "value": "building",
-                            "type": "obj"
+                            "type": "obj",
+                            "$$hashKey": "object:1752"
                         },
                         {
                             "value": "\"parcel_id\"",
-                            "type": "dataName"
+                            "type": "dataName",
+                            "$$hashKey": "object:1753"
                         },
                         {
                             "value": "parcel_id",
-                            "type": "dataValue"
+                            "type": "dataValue",
+                            "$$hashKey": "object:1754"
                         }
                     ],
                     "result": "_",
                     "selected": false,
-                    "disabled": false
+                    "disabled": false,
+                    "$$hashKey": "object:1399"
                 },
                 {
                     "id": 2,
@@ -5139,11 +5206,13 @@
                     "parameters": [
                         {
                             "value": "all_buildings",
-                            "type": "array_of_elements"
+                            "type": "array_of_elements",
+                            "$$hashKey": "object:1771"
                         }
                     ],
                     "result": "buildings",
-                    "selected": false
+                    "selected": false,
+                    "$$hashKey": "object:1400"
                 }
             ],
             "type": "new",
@@ -5151,7 +5220,8 @@
             "dataName": "i",
             "forList": "seq",
             "selected": false,
-            "disabled": false
+            "disabled": false,
+            "$$hashKey": "object:1237"
         },
         {
             "id": 17,
@@ -5164,19 +5234,23 @@
             "parameters": [
                 {
                     "value": "buildings",
-                    "type": "obj"
+                    "type": "obj",
+                    "$$hashKey": "object:1434"
                 },
                 {
                     "value": "\"Description\"",
-                    "type": "dataName"
+                    "type": "dataName",
+                    "$$hashKey": "object:1435"
                 },
                 {
                     "value": "\"This model contains all the buildings\"",
-                    "type": "dataValue"
+                    "type": "dataValue",
+                    "$$hashKey": "object:1436"
                 }
             ],
             "result": "_",
-            "selected": false
+            "selected": false,
+            "$$hashKey": "object:1238"
         }
     ],
     [
@@ -5271,8 +5345,7 @@
             "title": "Output",
             "type": "new",
             "selected": true,
-            "name": "building",
-            "$$hashKey": "object:823"
+            "name": "building"
         }
     ]
 ]
@@ -5339,7 +5412,8 @@
                 "name": "none"
             },
             "color": "#000000",
-            "selected": false
+            "selected": false,
+            "$$hashKey": "object:1214"
         },
         {
             "id": 2,
@@ -5350,7 +5424,8 @@
                 "name": "none"
             },
             "color": "#000000",
-            "selected": true
+            "selected": true,
+            "$$hashKey": "object:1215"
         },
         {
             "id": 3,
@@ -5361,7 +5436,8 @@
                 "name": "none"
             },
             "color": "#000000",
-            "selected": false
+            "selected": false,
+            "$$hashKey": "object:1216"
         },
         {
             "id": 4,
@@ -5372,7 +5448,8 @@
                 "name": "none"
             },
             "color": "#000000",
-            "selected": false
+            "selected": false,
+            "$$hashKey": "object:1217"
         },
         {
             "id": 5,
@@ -5383,7 +5460,8 @@
                 "name": "none"
             },
             "color": "#000000",
-            "selected": false
+            "selected": false,
+            "$$hashKey": "object:1218"
         }
     ],
     [
@@ -5438,8 +5516,7 @@
                 "name": "none"
             },
             "color": "#000000",
-            "selected": true,
-            "$$hashKey": "object:484"
+            "selected": true
         }
     ]
 ]
