@@ -63,8 +63,8 @@ angular.module('flowChart', ['dragging'] )
 			// fixme
 
 			// todo shall hide dropdown when zoom?
-			document.getElementById("node-creator").style.transform
-				= 'scale(' + 1/$scope.scaleFactor+','+ 1/$scope.scaleFactor +')';
+			// document.getElementById("node-creator").style.transform
+			// 	= 'scale(' + 1/$scope.scaleFactor+','+ 1/$scope.scaleFactor +')';
 		});
 
 		/* Can use this to test the drag selection rect.
@@ -91,7 +91,7 @@ angular.module('flowChart', ['dragging'] )
 		//
 		$scope.$on('cleanGraph',function(){
 			document.getElementById("test").style.display = "none";
-			document.getElementById("node-creator").style.display = "none";
+			// document.getElementById("node-creator").style.display = "none";
 			console.log(" Iniside clean graph function");
 		});
 
@@ -243,7 +243,7 @@ angular.module('flowChart', ['dragging'] )
 					var mouseOverElement = controller.hitTest(evt.clientX, evt.clientY);
 
 					if (mouseOverElement instanceof SVGElement) {
-						document.getElementById("node-creator").style.display = "none";
+						// document.getElementById("node-creator").style.display = "none";
 						document.getElementById("test").style.display = "none";
 						setTimeout(function () {
 							$scope.$emit("nodeIndex", undefined);
@@ -361,7 +361,7 @@ angular.module('flowChart', ['dragging'] )
 				//
 				// @ mobius toggle new node dropdown
 				//
-				document.getElementById("node-creator").style.display = "none";
+				// document.getElementById("node-creator").style.display = "none";
 				document.getElementById("test").style.display = "none";
 
 				var chart = $scope.chart;
@@ -433,7 +433,7 @@ angular.module('flowChart', ['dragging'] )
 		//
 		$scope.nodeDoubleClick = function(evt){
 			if($scope.readonly !== true) {
-				document.getElementById("node-creator").style.display = "none";
+				// document.getElementById("node-creator").style.display = "none";
 				document.getElementById("test").style.display = "none";
 				$scope.$emit("node-dbClick");
 			}
@@ -447,7 +447,7 @@ angular.module('flowChart', ['dragging'] )
 				//
 				// @ mobius toggle new node dropdown
 				// fixme control
-				document.getElementById("node-creator").style.display = "none";
+				// document.getElementById("node-creator").style.display = "none";
 				document.getElementById("test").style.display = "none";
 
 				var chart = $scope.chart;
@@ -468,7 +468,7 @@ angular.module('flowChart', ['dragging'] )
 			// @ mobius toggle new node dropdown
 			// fixme control
 			if($scope.readonly !== true) {
-				document.getElementById("node-creator").style.display = "none";
+				// document.getElementById("node-creator").style.display = "none";
 				document.getElementById("test").style.display = "none";
 
 				//
