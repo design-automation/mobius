@@ -181,6 +181,8 @@ mobius.controller(  'graphCtrl',
                  displayGeometry();
              }else if(message === undefined){
                  $scope.nodeIndex = message;
+
+
                  // $scope.currentNodeName = '';
                  //
                  // var scope = angular.element(document.getElementById('threeViewport')).scope();
