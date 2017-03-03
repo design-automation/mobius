@@ -4,7 +4,7 @@ mobius.controller('textCtrl',
         function($scope,$rootScope,generateCode) {
             // geometry list for visualising after node selection
             $scope.outputGeom =[];
-            $scope.currentTextVersionGeom = {geom:"123"};
+            $scope.currentTextVersionGeom = {geom:"Hi, No node is selected."};
             $scope.nodeIndex = '';
 
             $scope.$watch(function () { return generateCode.getOutputGeom(); }, function () {
