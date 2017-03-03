@@ -1,5 +1,6 @@
 .view-area #viewportLayout{
     z-index: 0;
+
 }
 
 .view-area .viewportMenu{
@@ -14,6 +15,7 @@
     top: -32px;
     right: 0px;
     z-index: 99999999999 !important;
+
 }
 
 .view-area #threeViewport {
@@ -70,6 +72,7 @@
     bottom:0;
     left:0;
     right:0;
+
 }
 
 .tabArea{
@@ -83,10 +86,12 @@
 /*todo temp fix */
 .view-area  .monitor .stretch{
     top: 0;
+
 }
 
 .view-area .monitor .ui-layout-column .ui-splitbar{
     border:0;
+
 }
 
 .view-area .monitor .console{
@@ -99,7 +104,9 @@
     width:100%;
     overflow: auto;
     position: absolute;
-    margin-top:1px
+    margin-top:1px;
+
+
 }
 
 .view-area #clear{
@@ -109,6 +116,7 @@
     right: 0;
     top:0;
     display: inline-block;
+
 }
 
 /*data table*/

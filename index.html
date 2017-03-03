@@ -29,6 +29,10 @@
     <link rel="stylesheet" href="assets/css/ui-grid/ui-grid.min.css">
     <link rel="stylesheet" href="assets/css/select/selectize.default.css">
     <link rel="stylesheet" href="assets/css/angular-material/angular-material.min.css">
+
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css">
 </head>
 
 <body style="overflow: hidden !important;">
@@ -736,7 +740,7 @@
                                             ng-click="extendCanvas()"
                                             style="outline: none!important;position: absolute;right: 30px;top: 0;"
                                             title="Extend Canvas">
-                                                 <i class="fa fa-arrows-alt" aria-hidden="true"></i>
+                                        <i class="fa fa-arrows-alt" aria-hidden="true"></i>
                                     </button>
 
                                     <button class="button"
@@ -820,6 +824,30 @@
 <div id="typeManager" ng-controller="nodeTypesCtrl" ng-include="'mobius/typeManager/typeManager_template.html'"></div>
 <!--<div ng-include="'mobius/dialog/inputName_dialog.tmpl.html'"></div>-->
 
+
+<div id="test"  style=" position: absolute" ng-style="{'left': nodeMenu.x, 'top': nodeMenu.y, 'display':nodeMenu.display}" ng-controller="newNodeCtrl as ctrl"  >
+
+
+    <ui-select ng-model="test.selected"
+               id="test-dropdown"
+               theme="selectize"
+               skip-focusser = true
+               title="Choose a node"
+               on-select="addNewNode(this.test.selected)">
+        <ui-select-match placeholder="Select or Search ">{{$select.selected}}</ui-select-match>
+        <ui-select-choices id="test-choices"   repeat="nodeType in nodeTypes() | filter: $select.search " position={{nodeMenu.direction}}>
+            <span ng-bind-html="nodeType| highlight: $select.search"></span>
+
+        </ui-select-choices>
+
+    </ui-select>
+
+
+</div>
+
+
+
+
 <script src="assets/js/error-stack/stackframe.min.js"></script>
 <script src="assets/js/error-stack/error-stack-parser.js"></script>
 <script src="assets/js/error-stack/error-stack-parser.min.js.map"></script>
@@ -833,7 +861,8 @@
 
 <!-- angularJs -->
 <script type="application/javascript" src="assets/js/angular/angular.js"></script>
-<script type="text/javascript" src="assets/js/angular/angular-sanitize.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.4.4/angular-sanitize.min.js"></script>
+<!--<script type="text/javascript" src="assets/js/angular/angular-sanitize.min.js"></script>-->
 <script type="application/javascript" src="assets/js/angular/angular-route.min.js"></script>
 
 <!-- angular-ui -->
@@ -914,6 +943,8 @@
 <script src="mobius/graph/nodeMenu_controller.js"></script>
 <script src="mobius/procedure/procedureMenu_controller.js"></script>
 <script src="mobius/typeManager/nodeTypes_controller.js"></script>
+
+
 
 <!-- directives -->
 <script src="mobius/viewport/viewport_directive.js"></script>

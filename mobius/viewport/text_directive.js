@@ -10,7 +10,9 @@ mobius.directive('textViewportEditor', function() {
                 // Serialize the data model as json and update the textarea.
                 var updateJson = function () {
                     if (scope.viewModel.geom) {
-                        var json = JSON.stringify(scope.viewModel.geom);
+	                    var json = scope.viewModel.geom;
+                        //var json = JSON.stringify(scope.viewModel.geom);
+
                         $(elem).val(json);
                     }
                 };
