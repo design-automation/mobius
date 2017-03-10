@@ -1,5 +1,5 @@
 ﻿body {
-    font-family: Roboto,'Helvetica Neue',sans-serif;
+    font-family: "Open Sans" !important; // Roboto,'Helvetica Neue',sans-serif;
     font-size: 14px !important;
 }
 
@@ -44,6 +44,20 @@ a:focus{
 .tree-item{
     padding-left:20px;
 }
+
+.tree-item:hover{
+    background-color: #ddd;
+}
+
+.procedure-delete-key{
+    display: none;
+}
+
+.tree-item:hover .procedure-delete-key, .tree-item.hover .procedure-delete-key { 
+    display: block; 
+}
+
+
 
  /*css fix for dropdown selects*/
 .form-control{

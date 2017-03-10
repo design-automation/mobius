@@ -1,6 +1,8 @@
-<div class="code-area" >
+<div class="code-area">
 
-            <!--<div ui-layout-container >-->
+                <!--header -->
+
+                <!--<div ui-layout-container >-->
                 <div ng-if = "currentNodeName">
                     <div class="doormat" ng-dblclick="showProcedure()">
                         <div>
@@ -19,7 +21,7 @@
 
                 <div ng-if = "!currentNodeName">
                     <div class="doormat" ng-dblclick="showProcedure()">
-                        <div>No Node Selected</div>
+                        <div>Procedure Panel</div>
                     </div>
                 </div>
 
@@ -100,8 +102,16 @@
                     <!--</div>-->
                 <!--</div>-->
 
+                <!-- Main Procedure -->
                 <div class="tabArea" id="procedure-area">
-                    <div ui-tree id="tree-root-parameter" data-nodrop-enabled="true" oncontextmenu="return false;">
+                    
+                    <div ng-show='interface == undefined || interface.length == 0' style='line-height: 32px; font-size: 12px; border-bottom: 2px solid #b6b6b6;'><center>&lt; node-input-designer &gt;</center></div>
+                    
+                    <div ng-hide='interface == undefined || interface.length == 0'  
+                            ui-tree id="tree-root-parameter" 
+                            data-nodrop-enabled="true" 
+                            oncontextmenu="return false;" 
+                            style='border-bottom: 2px solid #b6b6b6;padding-bottom:10px;margin-bottom: 10px;'>
                         <div ui-tree-nodes="" ng-model="interface">
                             <div ng-repeat="node in interface"
                                  ui-tree-node
@@ -110,7 +120,8 @@
                         </div>
                     </div>
 
-                    <div style="height: 6px;position: relative;background-color:#eaeaea" >
+
+                    <!-- <div style="height: 6px;position: relative;background-color:#eaeaea" >
                         <a class="fa fa-angle-up"
                            id = "collapseParameter"
                            ng-click="collapseParameter()"
@@ -131,7 +142,7 @@
                                                 top: -4px;
                                                 left: 50%;"
                         ></a>
-                    </div>
+                    </div> -->
 
 
                     <div ui-tree id="tree-root-procedure" >

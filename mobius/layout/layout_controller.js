@@ -49,11 +49,11 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
         // console and graph are tied together
         $scope.showConsole = function(){
             if($scope.consoleHeight !== $scope.height - 32){
-                $scope.consoleHeight = $scope.height - 32;
-                $scope.graphHeight = 32;
+                $scope.consoleHeight = $scope.height;
+                $scope.graphHeight = 0;
             }else{
-                $scope.consoleHeight = $scope.height - 33;
-                $scope.graphHeight = 33;
+                $scope.consoleHeight = $scope.height;
+                $scope.graphHeight = 0;
             }
         };
 
