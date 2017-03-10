@@ -168,10 +168,10 @@
     <!-- resizable layout -->
     <div ui-layout id="layout">
         <div ng-controller="layoutCtrl">
-            <div class="layout-area" ui-layout="{flow : 'column',dividerSize:'1', disableToggle:true}" ng-controller="procedureCtrl">
+            <div class="layout-area" ui-layout="{flow : 'column', dividerSize:'1', disableToggle:true}" ng-controller="procedureCtrl">
                 
                 <!-- 3D view area  -->
-                <div class="view-area" ui-layout-container size={{viewportWidth}} id="viewport">
+                <div class="view-area" ui-layout-container size={{viewportWidth}} id="viewport" min-size="28px">
                     <div ui-layout="{ flow : 'row', dividerSize:'1', disableToggle:true}" >
                         <!-- threejs editor view port -->
                         <div ui-layout-container size = "{{viewerHeight}}px" id="viewportLayout">
@@ -681,42 +681,24 @@
                             </div>
                         </div>
 
-                        <!--console-->
-                        <div ui-layout-container size = "{{consoleHeight}}px" class="monitor">
-                            <div ng-controller="consoleCtrl">
-                                 <div class="doormat" ng-dblclick="showConsole()">
-                                    <div>Console</div>
-                                    <button class="button"
-                                            id = "clear"
-                                            title="clear console"
-                                            ng-click="clearConsole()">
-                                        <i class="fa fa-eraser"></i>
-                                    </button>
-                                 </div>
-                                <div class="console" id = 'log' ></div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
-                <!--&lt;!&ndash;&lt;!&ndash; procedure area &ndash;&gt;&ndash;&gt;-->
-                <!--<ng-include  ng-if="true"-->
-                <!--ui-layout-container-->
-                <!--size={{procedureWidth}}-->
-                <!--src = "procedureHTML.url"-->
-                <!--id="procedure">-->
-                <!--</ng-include>-->
-
                 <!-- graph area -->
-                <div class="graph-area" ui-layout-container  size={{graphWidth}} id="graph">
+                <div class="graph-area" ui-layout-container  size={{graphWidth}} id="graph" min-size="28px">
+                    
                     <div ui-layout="{ flow : 'row', dividerSize:'1',disableToggle:true}" >
+                        
                         <!-- pan & zoom field -->
                         <div size="{{graphHeight}}px"
+                             ui-layout-container
                              id="a"
                              mouse-capture
-                             ui-layout-container
                              min-size="32px">
+
                             <div ng-controller="graphCtrl">
+
+                                <!-- graph header & breadcrumbs-->
                                 <div class="doormat" ng-dblclick="showGraph()">
                                     <div >
                                         <a style="cursor: default" ng-click="goRoot()"> Graph </a>
@@ -727,11 +709,12 @@
                                               ng-click="changeGraphView($index)">
                                             <i class="fa fa-angle-right" aria-hidden="true"></i>
                                             &nbsp;
-                                            <a>{{graph.name}} </a>
+                                            <a>{{graph.name}}</a>
                                         </span>
                                     </div>
                                 </div>
 
+                                <!-- buttons on the graph panel -->
                                 <span ng-controller="executeCtrl" id="run-button">
                                     <span us-spinner
                                           spinner-on="showSpinner"
@@ -749,6 +732,7 @@
                                          id='waiting'>
                                     </div>
 
+                                    <!-- zoom extents for graph -->
                                     <button class="button"
                                             ng-click="extendCanvas()"
                                             style="outline: none!important;position: absolute;right: 30px;top: 0;"
@@ -756,6 +740,7 @@
                                         <i class="fa fa-arrows-alt" aria-hidden="true"></i>
                                     </button>
 
+                                    <!-- run for graph -->
                                     <button class="button"
                                             ng-click="run()"
                                             style="outline: none!important;"
@@ -764,20 +749,24 @@
                                     </button>
                                 </span>
 
-                                <span id="interface" oncontextmenu="return false;">
+                                <!-- interface parameters -->
+                                <span id="interface" oncontextmenu="return false;" style='line-height: 32px; font-size: 12px; font-weight: bold; border-bottom: 2px solid #b6b6b6;'>
+                                    
+                                    <div ng-if='interface==undefined || interface.length == 0'><center>Node inputs appear here</center></div>
+
+
                                     <div ui-tree id="tree-root-interface"
                                          data-nodrop-enabled="true">
                                         <div ui-tree-nodes="" ng-model="interface">
-                                            <div ng-repeat="node in interface"
+                                            <div ng-repeat="node in interface | filter: {connected: false} as inputs"
                                                  ui-tree-node
-                                                 ng-show="node.title === 'Input'"
-                                                 ng-include="'mobius/procedure/template/interface_template.html'"
-                                                 ng-if="node.connected !== true">
+                                                 ng-include="'mobius/procedure/template/interface_template.html'">
                                             </div>
+                                            <div ng-if='inputs.length==0'><center>This node has no inputs</center></div>
                                         </div>
                                     </div>
 
-                                    <div style="height: 6px;position: relative;background-color:#eaeaea" >
+                                    <!-- <div style="height: 6px;position: relative;background-color:#eaeaea" >
                                         <a class="fa fa-angle-up"
                                            id = "collapseInterface"
                                            ng-click="collapseInterface()"
@@ -798,7 +787,8 @@
                                                 top: -4px;
                                                 left: 50%;"
                                         ></a>
-                                    </div>
+                                    </div> -->
+                                
                                 </span>
 
                                 <div ng-controller="znpController" class="znpController">
@@ -812,32 +802,53 @@
                                         </div>
                                     </panzoom>
                                 </div>
+
                             </div>
                         </div>
 
 
-
-                        <div ui-layout-container
-                             id="c"
-                             size="{{procedureHeight}}px"
-                             min-size="32px">
-                            <ng-include src = "procedureHTML.url"
-                                        id="procedure">
-                            </ng-include>
+                        <!--console-->
+                        <div ui-layout-container size = "{{consoleHeight}}px" class="monitor">
+                            <div ng-controller="consoleCtrl">
+                                 <div class="doormat" ng-dblclick="showConsole()">
+                                    <div>Console</div>
+                                    <button class="button"
+                                            id = "clear"
+                                            title="clear console"
+                                            ng-click="clearConsole()">
+                                        <i class="fa fa-eraser"></i>
+                                    </button>
+                                 </div>
+                                <div class="console" id = 'log' ></div>
+                            </div>
                         </div>
 
                     </div>
+
                 </div>
+
+                <!-- procedure area -->
+                <div ui-layout-container 
+                     id="c"
+                     size={{procedureWidth}}
+                     min-size="28px">
+                    <ng-include src = "procedureHTML.url"
+                                id="procedure">
+                    </ng-include>
+                </div>
+
             </div>
         </div>
     </div>
+
 </div>
 
-
+<!-- type manager dialog -->
 <div id="typeManager" ng-controller="nodeTypesCtrl" ng-include="'mobius/typeManager/typeManager_template.html'"></div>
 <!--<div ng-include="'mobius/dialog/inputName_dialog.tmpl.html'"></div>-->
 
 
+<!-- Overlay menu replacing foreign object for new node creation -->
 <div id="test"  style=" position: absolute" ng-style="{'left': nodeMenu.x, 'top': nodeMenu.y, 'display':nodeMenu.display}" ng-controller="newNodeCtrl as ctrl"  >
 
 
@@ -854,8 +865,6 @@
         </ui-select-choices>
 
     </ui-select>
-
-
 </div>
 
 
