@@ -34,7 +34,6 @@
                         <ui-select-choices
                                 style="min-width: 130px!important;"
                                 id="choices"
-                                title = "xx"
                                 refresh="info($select.search)"
                                 refresh-delay="0"
                                 group-by="'category'"
@@ -109,6 +108,29 @@
                                  ng-include="'mobius/procedure/template/parameter_template.html'">
                             </div>
                         </div>
+                    </div>
+
+                    <div style="height: 6px;position: relative;background-color:#eaeaea" >
+                        <a class="fa fa-angle-up"
+                           id = "collapseParameter"
+                           ng-click="collapseParameter()"
+                           style="
+                                                text-decoration:none;
+                                                position: absolute;
+                                                top: -4px;
+                                                left: 50%;"
+                        ></a>
+
+                        <a class="fa fa-angle-down"
+                           ng-click="extendParameter()"
+                           id = "extendParameter"
+                           style="
+                                                display:none;
+                                                text-decoration:none;
+                                                position: absolute;
+                                                top: -4px;
+                                                left: 50%;"
+                        ></a>
                     </div>
 
 

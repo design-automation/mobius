@@ -182,23 +182,23 @@ var mobius = angular.module('mobius',
         var ua= navigator.userAgent, tem,
             M= ua.match(/(opera|chrome|safari|firefox|msie|trident|Edge(?=\/))\/?\s*(\d+)/i) || [];
 
-        if(M[1]=== 'Chrome'){
-            tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
-            if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
-            console.log('Chrome detected, your browser is supported.')
-        }else{
-            if(/trident/i.test(M[1])){
-                tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
-                 var browserId = 'IE '+(tem[1] || '');
-            }
-            else{
-                M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
-                if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
-                var browserId = M.join(' ');
-            }
-            alert('Your browser is ' + browserId +', Mobius currently only supports chrome.');
-            window.location.href = "../../index.html"
-        }
+        // if(M[1]=== 'Chrome'){
+        //     tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
+        //     if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+        //     console.log('Chrome detected, your browser is supported.')
+        // }else{
+        //     if(/trident/i.test(M[1])){
+        //         tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+        //          var browserId = 'IE '+(tem[1] || '');
+        //     }
+        //     else{
+        //         M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+        //         if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
+        //         var browserId = M.join(' ');
+        //     }
+        //     alert('Your browser is ' + browserId +', Mobius currently only supports chrome.');
+        //     window.location.href = "../../index.html"
+        // }
     }
 
 

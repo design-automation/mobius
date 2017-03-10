@@ -57,6 +57,7 @@ mobius.controller(  'graphCtrl',
         // watch chartViewModel.data instead of chartViewModel to prevent stack limit exceeded
         $scope.chartViewModel = generateCode.getChartViewModel();
 
+
         // fixme confirm socket usage
         $scope.$watch(function(){return generateCode.getChartViewModel()},function(){
             $scope.dataList = generateCode.getDataList();
@@ -91,13 +92,26 @@ mobius.controller(  'graphCtrl',
                                 }
                             }
 
+                            for (var j = 0; j < $scope.interfaceList[$scope.nodeIndex].length;j++){
+                                if($scope.interfaceList[$scope.nodeIndex][j].title === 'Output'){
+                                    outputList.push($scope.interfaceList[$scope.nodeIndex][j]);
+                                }
+                            }
+
                             angular.copy(outputList,
                                 $scope.chartViewModel.nodes[i].data.subGraphModel.chartDataModel.outputPort.inputConnectors);
                         }
 
                         if($scope.chartViewModel.nodes[i].data.subGraph === true){
+                            var inputList = [];
+                            for (var j = 0; j < $scope.interfaceList[$scope.nodeIndex].length;j++){
+                                if($scope.interfaceList[$scope.nodeIndex][j].title === 'Input'){
+                                    inputList.push($scope.interfaceList[$scope.nodeIndex][j]);
+                                }
+                            }
+
                             angular.copy(
-                                $scope.interfaceList[$scope.nodeIndex],
+                                inputList,
                                 $scope.chartViewModel.nodes[i].data.subGraphModel.chartDataModel.inputPort.outputConnectors
                             )
                         }
@@ -167,6 +181,8 @@ mobius.controller(  'graphCtrl',
                  displayGeometry();
              }else if(message === undefined){
                  $scope.nodeIndex = message;
+
+
                  // $scope.currentNodeName = '';
                  //
                  // var scope = angular.element(document.getElementById('threeViewport')).scope();
@@ -349,6 +365,7 @@ mobius.controller(  'graphCtrl',
                 }
 
                 // todo when multi-selection should throw error to user that only one node can be saved
+                var node = $scope.chartViewModel.getSelectedNodes()[0];
                 var input =  $scope.chartViewModel.getSelectedNodes()[0].data.inputConnectors;
                 var output = $scope.chartViewModel.getSelectedNodes()[0].data.outputConnectors;
                 var index = $scope.chartViewModel.getSelectedNodes()[0].data.id;
@@ -360,7 +377,7 @@ mobius.controller(  'graphCtrl',
                 nodeCollection.
                     installNewNodeType(
                         newTypeName,isSubGraph,input,output,
-                        newProcedureDataModel,newInterfaceDataModel,subGraphModel);
+                        newProcedureDataModel,newInterfaceDataModel,subGraphModel,node);
             });
         });
 

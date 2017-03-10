@@ -16,9 +16,9 @@
                 <i class="fa fa-lg fa-download"></i>
             </button>
 
-            <button class="button" ng-click = "addNewType()" title="Add New Node Type">
-                <i class="fa fa-lg fa-plus"></i>
-            </button>
+            <!--<button class="button" ng-click = "addNewType()" title="Add New Node Type">-->
+                <!--<i class="fa fa-lg fa-plus"></i>-->
+            <!--</button>-->
 
             <button class="button" ng-click = "deleteChecked()" title="Delete Selected Node">
                 <i class="fa fa-lg fa-remove"></i>
@@ -55,6 +55,11 @@
                     <button class="button pull-right button-input" ng-click="newInterface('Input')" title="Add Input">
                         <i class="fa fa-sign-in fa-lg fa-rotate-90"></i>
                     </button>
+
+                    <button class="button pull-right button-output" ng-click="newInterface('Output')"
+                            title="Add Output">
+                        <i class="fa fa-sign-out fa-lg fa-rotate-90"></i>
+                    </button>
                 </div>
 
                 <div ui-tree id="tree-root-parameter-type">
@@ -73,13 +78,15 @@
                 </div>
 
                 <div id="typeProcedure_buttons">
-                    <button class="button pull-right button-action" dropdown-toggle="dropdown">
+                    <button class="button pull-right button-action" dropdown-toggle="dropdown" style="right: 60px !important;">
                         <i class="icon-function fa-lg" title="Add Function"></i>
                         <ui-select ng-model="method.selected"
                                    class="dropdown-menu"
+                                   style="    min-width: 130px!important;"
                                    on-select="newItem('Action',$select.selected)">
                             <ui-select-match placeholder="Search" ></ui-select-match>
                             <ui-select-choices
+                                    style="    min-width: 130px!important;"
                                     id="type-choices"
                                     refresh="info($select.search)"
                                     refresh-delay="0"
@@ -89,7 +96,7 @@
                             </ui-select-choices>
                         </ui-select>
 
-                        <ul class="dropdown-menu action-dropdown narrow-menu" ng-if="toggleDropdown">
+                        <ul class="dropdown-menu action-dropdown narrow-menu" ng-if="toggleDropdown"  style="    min-width: 130px!important;">
                             <li class="dropdown-submenu" ng-repeat="cate in methodList">
                                 <a>{{cate.category}}</a>
                                 <ul class="dropdown-menu narrow-menu" >
@@ -102,7 +109,7 @@
 
                     </button>
 
-                    <button class="button pull-right button-control" dropdown-toggle="dropdown" title="Add Control">
+                    <button class="button pull-right button-control" dropdown-toggle="dropdown" title="Add Control" style="right: 30px !important;">
                         <i class="fa fa-lg fa-retweet"></i>
                         <ui-select ng-model="controlType" class="dropdown-menu"
                                    on-select="newItem('Control',$select.selected)">
@@ -114,14 +121,9 @@
                         </ui-select>
                     </button>
 
-                    <button class="button pull-right button-variable" title="Add Variable"
+                    <button class="button pull-right button-variable" title="Add Variable" style="right: 0px !important;"
                             ng-click="newItem('Data')">
                         <i class="icon-variable fa-lg"></i>
-                    </button>
-
-                    <button class="button pull-right button-output" ng-click="newItem('Output')"
-                            title="Add Output">
-                        <i class="fa fa-sign-out fa-lg fa-rotate-90"></i>
                     </button>
                 </div>
 

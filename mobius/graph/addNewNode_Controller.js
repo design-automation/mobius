@@ -103,9 +103,12 @@ mobius.controller('newNodeCtrl',[
 
         // Add a new node to the chart.
         $scope.addNewNode = function (type) {
+	        $scope.nodeMenu.display="none";
+
+
             if(type === 'create new type'){
                 $scope.$emit('cleanGraph');
-                // install new node type and update type
+	            // install new node type and update type
                 $mdDialog.show({
                     //controller: DialogController,
                     templateUrl: 'mobius/dialog/inputName_dialog.tmpl.html',
@@ -284,4 +287,46 @@ mobius.controller('newNodeCtrl',[
             }
 
         };
-    }]);
+
+
+	    $scope.nodeMenu = {
+		    x:0,
+		    y:0,
+		    width:0,
+		    height:0,
+            display:"none",
+		    direction:"auto"
+
+	    };
+
+	    $scope.$on("doubleClickCordinatesOnSVG", function (evt, data) {
+
+            //Getting the Pane where the menu need to be displayed
+	        var panZoomPosition=$($(".panzoom.pan-zoom-frame")[0]);
+
+	        //Checking if the click is near to the edge of the right end of window and shifting it towards left if near
+	        if(data[0]>$(window).width()-$("#test").width()){
+		    data[0]=$(window).width()-$("#test").width();
+		    }
+
+		    //Checking if the click is near to the edge of the bottom end of window and shifting it towards top if near
+	        if(data[1]>=Math.floor(panZoomPosition.offset().top+panZoomPosition.height()- $("#test").height()* $scope.nodeTypes().length )){
+		        $scope.nodeMenu.direction="up";
+		        //angular.element('#test-choices').scope().$select.dropdownPosition= "up"
+	            data[1]=Math.floor(panZoomPosition.offset().top+panZoomPosition.height()-$("#test").height());
+
+	        }
+	        else{
+		        //angular.element('#test-choices').scope().$select.dropdownPosition= "auto"
+		        $scope.nodeMenu.direction="auto";
+
+            }
+
+		    $scope.nodeMenu.x=data[0];
+		    $scope.nodeMenu.y=data[1];
+		    $scope.nodeMenu.display="inline-block";
+
+	    });
+
+
+    }])

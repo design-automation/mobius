@@ -37,15 +37,17 @@
 }
 
 #typeManage_buttons  button:nth-child(1){
-    right: 90px;
+    right: 60px
+
 }
 
 #typeManage_buttons  button:nth-child(2){
-    right: 60px
+    right:30px
+
 }
 
 #typeManage_buttons  button:nth-child(3){
-    right:30px
+    right: 0
 }
 
 #typeManage_buttons  button:nth-child(4){

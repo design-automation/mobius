@@ -69,7 +69,8 @@ var dataConversion = (function(data){
     var otherGeometry = [];
     var mergedGeometry = new THREE.Geometry();
 
-    // merging geometry is temporary disabled
+    // merging geometry is temporary disabled: when using nurbs library mergeGeom would
+    // take unexpected long time to produce merged geometry, due to high complexity of the nurbs geometry
     // mergeGeom(data);
 
     function mergeGeom(unmerged){

@@ -263,3 +263,10 @@ Drag selection rectangle.
 	cursor: default !important;
 	display: none;
 }
+#test{
+	width:180px;
+	cursor: default !important;
+	display: none;
+	background:white;
+	z:100;
+}

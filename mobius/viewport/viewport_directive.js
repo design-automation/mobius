@@ -15,6 +15,7 @@ mobius.directive('viewport', function factory() {
         replace: true,
         scope: {
             control: '=',
+            viewModel: "="
         },
 
         link: function (scope, elem, attrs) {

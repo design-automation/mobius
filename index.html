@@ -29,6 +29,10 @@
     <link rel="stylesheet" href="assets/css/ui-grid/ui-grid.min.css">
     <link rel="stylesheet" href="assets/css/select/selectize.default.css">
     <link rel="stylesheet" href="assets/css/angular-material/angular-material.min.css">
+
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css">
 </head>
 
 <body style="overflow: hidden !important;">
@@ -142,12 +146,19 @@
                 <li>
                     <a href="https://github.com/phtj/mobius" target="_blank"> Github Repo </a>
                 </li>
+
                 <li>
                     <a ng-click=" toggleCheatSheet();"> Hotkeys </a>
                 </li>
+
                 <li>
 <!--                     <a href="doc/out/index.html" target="_blank"> Docs </a> -->
                     <a ng-click=" toggleHelp();"> Docs </a>
+                </li>
+
+                <li>
+<!--                     <a href="doc/out/index.html" target="_blank"> Docs </a> -->
+                    <a href="http://mobius.design-automation.net/" target="_blank"> About </a>
                 </li>
             </ul>
         </span>
@@ -183,6 +194,9 @@
                                                 <li><a   href="#" ng-click = "toggleTopology('main')">Topology</a></li>
                                                 <li><a   href="#" ng-click = "toggleData('main')">Data</a></li>
                                                 <li><a   href="#" ng-click = "toggleFullCode('main')">Generated Code</a></li>
+
+                                                <!-- text editor example-->
+                                                <li><a   href="#" ng-click = "toggleTextEditor()">Text Editor</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -653,6 +667,17 @@
                                         </tab>
                                     </tabset>
                                 </div>
+
+                                <!--text editor example-->
+                                <div ng-controller="textCtrl">
+                                    <div ng-if="showText" style="width: 100%;top:32px;left:0;bottom: 0;position: absolute;">
+                                        <textarea
+                                                style="width: 100%; height: 100%;"
+                                                text-viewport-editor
+                                                view-model="currentTextVersionGeom">
+                                        </textarea>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -684,7 +709,6 @@
 
                 <!-- graph area -->
                 <div class="graph-area" ui-layout-container  size={{graphWidth}} id="graph">
-
                     <div ui-layout="{ flow : 'row', dividerSize:'1',disableToggle:true}" >
                         <!-- pan & zoom field -->
                         <div size="{{graphHeight}}px"
@@ -729,7 +753,7 @@
                                             ng-click="extendCanvas()"
                                             style="outline: none!important;position: absolute;right: 30px;top: 0;"
                                             title="Extend Canvas">
-                                                 <i class="fa fa-arrows-alt" aria-hidden="true"></i>
+                                        <i class="fa fa-arrows-alt" aria-hidden="true"></i>
                                     </button>
 
                                     <button class="button"
@@ -751,6 +775,29 @@
                                                  ng-if="node.connected !== true">
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <div style="height: 6px;position: relative;background-color:#eaeaea" >
+                                        <a class="fa fa-angle-up"
+                                           id = "collapseInterface"
+                                           ng-click="collapseInterface()"
+                                           style="
+                                                text-decoration:none;
+                                                position: absolute;
+                                                top: -4px;
+                                                left: 50%;"
+                                        ></a>
+
+                                        <a class="fa fa-angle-down"
+                                           ng-click="extendInterface()"
+                                           id = "extendInterface"
+                                           style="
+                                                display:none;
+                                                text-decoration:none;
+                                                position: absolute;
+                                                top: -4px;
+                                                left: 50%;"
+                                        ></a>
                                     </div>
                                 </span>
 
@@ -790,6 +837,30 @@
 <div id="typeManager" ng-controller="nodeTypesCtrl" ng-include="'mobius/typeManager/typeManager_template.html'"></div>
 <!--<div ng-include="'mobius/dialog/inputName_dialog.tmpl.html'"></div>-->
 
+
+<div id="test"  style=" position: absolute" ng-style="{'left': nodeMenu.x, 'top': nodeMenu.y, 'display':nodeMenu.display}" ng-controller="newNodeCtrl as ctrl"  >
+
+
+    <ui-select ng-model="test.selected"
+               id="test-dropdown"
+               theme="selectize"
+               skip-focusser = true
+               title="Choose a node"
+               on-select="addNewNode(this.test.selected)">
+        <ui-select-match placeholder="Select or Search ">{{$select.selected}}</ui-select-match>
+        <ui-select-choices id="test-choices"   repeat="nodeType in nodeTypes() | filter: $select.search " position={{nodeMenu.direction}}>
+            <span ng-bind-html="nodeType| highlight: $select.search"></span>
+
+        </ui-select-choices>
+
+    </ui-select>
+
+
+</div>
+
+
+
+
 <script src="assets/js/error-stack/stackframe.min.js"></script>
 <script src="assets/js/error-stack/error-stack-parser.js"></script>
 <script src="assets/js/error-stack/error-stack-parser.min.js.map"></script>
@@ -803,7 +874,8 @@
 
 <!-- angularJs -->
 <script type="application/javascript" src="assets/js/angular/angular.js"></script>
-<script type="text/javascript" src="assets/js/angular/angular-sanitize.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.4.4/angular-sanitize.min.js"></script>
+<!--<script type="text/javascript" src="assets/js/angular/angular-sanitize.min.js"></script>-->
 <script type="application/javascript" src="assets/js/angular/angular-route.min.js"></script>
 
 <!-- angular-ui -->
@@ -885,9 +957,16 @@
 <script src="mobius/procedure/procedureMenu_controller.js"></script>
 <script src="mobius/typeManager/nodeTypes_controller.js"></script>
 
+
+
 <!-- directives -->
 <script src="mobius/viewport/viewport_directive.js"></script>
 <script src="mobius/viewport/topoViewport_directive.js"></script>
+
+<!-- text editor example-->
+<script src="mobius/viewport/text_directive.js"></script>
+<script src="mobius/viewport/text_viewport_controller.js"></script>
+
 
 <!-- services -->
 <script src="mobius/service/model.js"></script>

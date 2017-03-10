@@ -26,52 +26,6 @@ angular.module('flowChart', ['dragging'] )
   };
 })
 
-//
-// Directive that allows the chart to be edited as json in a textarea.
-//
-.directive('chartJsonEdit', function () {
-	return {
-		restrict: 'A',
-		scope: {
-			viewModel: "="
-		},
-		link: function (scope, elem, attr) {
-
-			//
-			// Serialize the data model as json and update the textarea.
-			//
-			var updateJson = function () {
-				if (scope.viewModel) {
-					var json = JSON.stringify(scope.viewModel.data, null, 4);
-					$(elem).val(json);
-				}
-			};
-
-			//x
-			// First up, set the initial value of the textarea.
-			//
-			updateJson();
-
-			//
-			// Watch for changes in the data model and update the textarea whenever necessary.
-			//
-			scope.$watch("viewModel.data", updateJson, true);
-			scope.$watch("viewModel.data", updateJson, true);
-
-			//
-			// Handle the change event from the textarea and update the data model
-			// from the modified json.
-			//
-			$(elem).bind("input propertychange", function () {
-				var json = $(elem).val();
-				var dataModel = JSON.parse(json);
-				scope.viewModel = new flowchart.ChartViewModel(dataModel);
-
-				scope.$digest();
-			});
-		}
-	}
-})
 
 //
 // Controller for the flowchart directive.
@@ -109,8 +63,8 @@ angular.module('flowChart', ['dragging'] )
 			// fixme
 
 			// todo shall hide dropdown when zoom?
-			document.getElementById("node-creator").style.transform
-				= 'scale(' + 1/$scope.scaleFactor+','+ 1/$scope.scaleFactor +')';
+			// document.getElementById("node-creator").style.transform
+			// 	= 'scale(' + 1/$scope.scaleFactor+','+ 1/$scope.scaleFactor +')';
 		});
 
 		/* Can use this to test the drag selection rect.
@@ -136,7 +90,9 @@ angular.module('flowChart', ['dragging'] )
 		// @mobius clean dropdown menu after node added or cancelled
 		//
 		$scope.$on('cleanGraph',function(){
-			document.getElementById("node-creator").style.display = "none";
+			document.getElementById("test").style.display = "none";
+			// document.getElementById("node-creator").style.display = "none";
+			console.log(" Iniside clean graph function");
 		});
 
 		//
@@ -225,6 +181,7 @@ angular.module('flowChart', ['dragging'] )
 		//
 		$scope.doubleClick = function(evt){
 
+
 			// todo: make sure double click not on node/connection
 
 			// update zoom factor
@@ -233,12 +190,21 @@ angular.module('flowChart', ['dragging'] )
 					$scope.scaleFactor = message;
 				});
 
+
 				// update dropdown location
 				var dBclickPoint = controller.translateCoordinates(evt.clientX, evt.clientY);
+
+
 				$scope.dbClickMenu.x = dBclickPoint.x * (1/$scope.scaleFactor) 	- (90-90/$scope.scaleFactor);
 				$scope.dbClickMenu.y = dBclickPoint.y *(1/$scope.scaleFactor );
 
-				document.getElementById("node-creator").style.display = "inline-block";
+				// Broadcasting the co-ordinates of the node type drop down menu
+
+				$rootScope.$broadcast('doubleClickCordinatesOnSVG',[evt.clientX,evt.clientY]);
+
+				//document.getElementById("node-creator").style.display = "inline-block";
+
+
 
 				// node location
 				$scope.chart.newPos.x = dBclickPoint.x * (1/$scope.scaleFactor);
@@ -249,11 +215,14 @@ angular.module('flowChart', ['dragging'] )
 
 				setTimeout(function(){
 					angular.element(ele).find('input').click();
-					$(ele).find('input').click()
-					$('#node-dropdown').find('input').click();
+					$(ele).find('input').click();
+					// $('#node-dropdown').find('input').click();
+					$('#test-dropdown').find('input').click();
+
 				},0);
 
 				$scope.$broadcast('SetFocus');
+
 			}
 		};
 
@@ -272,8 +241,10 @@ angular.module('flowChart', ['dragging'] )
 					//
 
 					var mouseOverElement = controller.hitTest(evt.clientX, evt.clientY);
+
 					if (mouseOverElement instanceof SVGElement) {
-						document.getElementById("node-creator").style.display = "none";
+						// document.getElementById("node-creator").style.display = "none";
+						document.getElementById("test").style.display = "none";
 						setTimeout(function () {
 							$scope.$emit("nodeIndex", undefined);
 						}, 0);
@@ -390,7 +361,8 @@ angular.module('flowChart', ['dragging'] )
 				//
 				// @ mobius toggle new node dropdown
 				//
-				document.getElementById("node-creator").style.display = "none";
+				// document.getElementById("node-creator").style.display = "none";
+				document.getElementById("test").style.display = "none";
 
 				var chart = $scope.chart;
 				var lastMouseCoords;
@@ -461,7 +433,8 @@ angular.module('flowChart', ['dragging'] )
 		//
 		$scope.nodeDoubleClick = function(evt){
 			if($scope.readonly !== true) {
-				document.getElementById("node-creator").style.display = "none";
+				// document.getElementById("node-creator").style.display = "none";
+				document.getElementById("test").style.display = "none";
 				$scope.$emit("node-dbClick");
 			}
 		};
@@ -474,7 +447,8 @@ angular.module('flowChart', ['dragging'] )
 				//
 				// @ mobius toggle new node dropdown
 				// fixme control
-				document.getElementById("node-creator").style.display = "none";
+				// document.getElementById("node-creator").style.display = "none";
+				document.getElementById("test").style.display = "none";
 
 				var chart = $scope.chart;
 				chart.handleConnectionMouseDown(connection, evt.ctrlKey);
@@ -494,7 +468,8 @@ angular.module('flowChart', ['dragging'] )
 			// @ mobius toggle new node dropdown
 			// fixme control
 			if($scope.readonly !== true) {
-				document.getElementById("node-creator").style.display = "none";
+				// document.getElementById("node-creator").style.display = "none";
+				document.getElementById("test").style.display = "none";
 
 				//
 				// Initiate dragging out of a connection.
@@ -610,5 +585,8 @@ angular.module('flowChart', ['dragging'] )
 				}
 			}
 		}
+
+
+
 	}
 ]);

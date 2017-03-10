@@ -11,6 +11,13 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
             $scope.$emit("showProcedure");
         };
 
+        // geometry list for visualising after node selection
+        $scope.outputGeom =[];
+
+        $scope.$watch(function () { return generateCode.getOutputGeom(); }, function () {
+            $scope.outputGeom = generateCode.getOutputGeom();
+        });
+
         $scope.info=function(input){
             if(input){
                 document.getElementById('choices').style.display = 'inline';
@@ -223,8 +230,10 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         $scope.$watch('interface',function(){
             updateVersion();
             flattenData();
-            generateCode.generateCode()
+            generateCode.generateCode();
         },true);
+
+
 
         function updateVersion(){
             // compare current node procedure to original node type procedure
@@ -782,6 +791,7 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
                     $scope.interface.push(outputObj);
 
+                    console.log(outputObj)
                     $scope.chartViewModel.nodes[$scope.nodeIndex].addOutputConnector(outputObj);
                 }
             } catch(err) {
@@ -789,7 +799,7 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
             }
 
             var argumentDiv = document.getElementById("argument-area");
-            setTimeout(function(){argumentDiv.scrollTop = argumentDiv.scrollHeight;},0);
+            setTimeout(function(){argumentDiv.scrollTop = argumentDiv.scrollHeight +6 ;},0);
         };
 
         // interface design options
@@ -877,4 +887,27 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
             }
         };
 
+        $scope.collapseInterface = function (){
+            document.getElementById('collapseInterface').style.display = 'none';
+            document.getElementById('tree-root-interface').style.display = 'none';
+            document.getElementById('extendInterface').style.display = 'inline';
+        };
+
+        $scope.extendInterface = function(){
+            document.getElementById('collapseInterface').style.display = 'inline';
+            document.getElementById('tree-root-interface').style.display = 'inline';
+            document.getElementById('extendInterface').style.display = 'none';
+        };
+
+        $scope.collapseParameter = function (){
+            document.getElementById('collapseParameter').style.display = 'none';
+            document.getElementById('tree-root-parameter').style.display = 'none';
+            document.getElementById('extendParameter').style.display = 'inline';
+        };
+
+        $scope.extendParameter = function(){
+            document.getElementById('collapseParameter').style.display = 'inline';
+            document.getElementById('tree-root-parameter').style.display = 'inline';
+            document.getElementById('extendParameter').style.display = 'none';
+        };
     }]);

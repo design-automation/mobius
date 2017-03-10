@@ -626,7 +626,6 @@ var flowchart = {};
 	// View model for the chart.
 	//
 	flowchart.ChartViewModel = function (chartDataModel) {
-
 		// @ mobius variable for topological sort
 		var edgeList = [];
 
@@ -637,7 +636,7 @@ var flowchart = {};
 		this.data = chartDataModel;
 
 		// create a view-model for input ports
-		if(this.data.inputPort && this.data.inputPort.outputConnectors.length !== 0){
+        if(this.data.inputPort && this.data.inputPort.outputConnectors.length !== 0){
 			this.inputPort = createInputPortViewModel(this.data.inputPort);
 		}
 
@@ -657,7 +656,7 @@ var flowchart = {};
 				}
 			}
 
-			// fixme how come this.inputPort got undefined > . <
+			// fixme how come this.inputPort got undefined
 			if(this.inputPort){
 				if (this.inputPort.data.id === nodeID) {
 					return this.inputPort;
