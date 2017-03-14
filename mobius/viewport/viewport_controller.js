@@ -312,6 +312,7 @@ mobius.controller('viewportCtrl',[
         };
 
         $scope.toggleFullCode = function(view){
+            cleanvizicitiesdata();
             switch (view){
                 case 'main':
                     $scope.viewportControl.currentCate = 'Code';
@@ -367,6 +368,7 @@ mobius.controller('viewportCtrl',[
         };
 
         $scope.toggleGeometry = function(view){
+            cleanvizicitiesdata();
             switch (view){
                 case 'main':
                     $scope.viewportControl.currentCate = $scope.viewportControl.currentView;
@@ -423,6 +425,7 @@ mobius.controller('viewportCtrl',[
         };
 
         $scope.toggleData = function(view){
+            cleanvizicitiesdata();
             switch (view){
                 case 'main':
                     $scope.viewportControl.currentCate = 'Data';
@@ -479,6 +482,7 @@ mobius.controller('viewportCtrl',[
         };
 
         $scope.toggleTopology = function(view){
+            cleanvizicitiesdata();
             switch (view){
                 case 'main':
                     $scope.viewportControl.currentCate = 'Topology';
@@ -545,6 +549,150 @@ mobius.controller('viewportCtrl',[
             $scope.showText = true;
             document.getElementById("viewSingle").style.display = "none";
             document.getElementById("topoContainer").style.display = "none";
+        }
+
+
+        function getvizicitiesdata(){
+            // London
+            var coords = [51.505, -0.09];
+
+            var world = VIZI.world('vizicities1', {
+                skybox: true,
+                postProcessing: true
+            }).setView(coords);
+
+            // Set position of sun in sky
+            world._environment._skybox.setInclination(0.3);
+
+            // Add controls
+            VIZI.Controls.orbit().addTo(world);
+
+            // CartoDB basemap
+            VIZI.imageTileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+            }).addTo(world);
+
+            // Buildings and roads from Mapzen (polygons and linestrings)
+            var topoJSONTileLayer = VIZI.topoJSONTileLayer('https://tile.mapzen.com/mapzen/vector/v1/all/{z}/{x}/{y}.topojson?api_key=mapzen-vwNCmwT', {
+                interactive: false,
+                style: function(feature) {
+                    var height;
+
+                    if (feature.properties.height) {
+                        height = feature.properties.height;
+                    } else {
+                        height = 10 + Math.random() * 10;
+                    }
+
+                    return {
+                        height: height,
+                        lineColor: '#f7c616',
+                        lineWidth: 1,
+                        lineTransparent: true,
+                        lineOpacity: 0.2,
+                        lineBlending: THREE.AdditiveBlending,
+                        lineRenderOrder: 2
+                    };
+                },
+                filter: function(feature) {
+                    // Don't show points
+                    return feature.geometry.type !== 'Point';
+                },
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://whosonfirst.mapzen.com#License">Who\'s On First</a>.'
+            }).addTo(world);
+
+            // London Underground lines
+            VIZI.geoJSONLayer('https://rawgit.com/robhawkes/4acb9d6a6a5f00a377e2/raw/30ae704a44e10f2e13fb7e956e80c3b22e8e7e81/tfl_lines.json', {
+                output: true,
+                interactive: true,
+                style: function(feature) {
+                    var colour = feature.properties.lines[0].colour || '#ffffff';
+
+                    return {
+                        lineColor: colour,
+                        lineHeight: 20,
+                        lineWidth: 3,
+                        lineTransparent: true,
+                        lineOpacity: 0.5,
+                        lineBlending: THREE.AdditiveBlending,
+                        lineRenderOrder: 2
+                    };
+                },
+                onEachFeature: function(feature, layer) {
+                    layer.on('click', function(layer, point2d, point3d, intersects) {
+                        console.log(layer, point2d, point3d, intersects);
+                    });
+                },
+                attribution: '&copy; Transport for London.'
+            }).addTo(world);
+
+        }
+
+        function cleanvizicitiesdata(){
+
+            document.getElementById("vizicities1").innerHTML = "";
+            document.getElementById("vizicities1").style.display = "none";
+        }
+
+        //add for 3d optimisation
+        $scope.togglevizicities = function(view) {
+            switch (view) {
+                case 'main':
+                    $scope.viewportControl.currentCate = $scope.viewportControl.currentView;
+                    $scope.viewportControl.showGeometry = false;
+                    $scope.showGeometry = false;
+                    $scope.showFullCode = false;
+                    $scope.showData = false;
+                    $scope.showTopology = false; //vizicities1
+                    document.getElementById("vizicities1").style.display = "inline";
+                    document.getElementById("vizicities1").style.width = document.getElementById("threeViewport").offsetWidth + "px";
+                    document.getElementById("vizicities1").style.height = document.getElementById("threeViewport").offsetHeight + "px";
+
+                    //document.getElementById("viewSingle").style.display = "inline";
+                    //document.getElementById("topoContainer").style.display = "none";
+                    getvizicitiesdata();
+                    break;
+                case 'LT':
+                    $scope.viewportControl.LTcurrentCate = $scope.viewportControl.LTcurrentView;
+                    $scope.showGeometryLT = true;
+                    $scope.showFullCodeLT = false;
+                    $scope.showDataLT = false;
+                    $scope.showTopologyLT = false;
+                    document.getElementById("viewLT").style.display = "inline";
+                    $scope.topoViewportControl.LT = false;
+                    document.getElementById("LT1").style.display = "none";
+                    break;
+                case 'LB':
+                    $scope.viewportControl.LBcurrentCate = $scope.viewportControl.LBcurrentView;
+                    $scope.showGeometryLB = true;
+                    $scope.showFullCodeLB = false;
+                    $scope.showDataLB = false;
+                    $scope.showTopologyLB = false;
+                    document.getElementById("viewLB").style.display = "inline";
+                    $scope.topoViewportControl.LB = false;
+                    document.getElementById("LB1").style.display = "none";
+                    break;
+                case 'RT':
+                    $scope.viewportControl.RTcurrentCate = $scope.viewportControl.RTcurrentView;
+                    $scope.showGeometryRT = true;
+                    $scope.showFullCodeRT = false;
+                    $scope.showDataRT = false;
+                    $scope.showTopologyRT = false;
+                    $scope.topoViewportControl.RT = false;
+                    document.getElementById("viewRT").style.display = "inline";
+                    document.getElementById("RT1").style.display = "none";
+                    break;
+                case 'RB':
+                    $scope.viewportControl.RBcurrentCate = $scope.viewportControl.RBcurrentView;
+                    $scope.showGeometryRB = true;
+                    $scope.showFullCodeRB = false;
+                    $scope.showDataRB = false;
+                    $scope.showTopologyRB = false;
+                    $scope.topoViewportControl.RB = false;
+                    document.getElementById("viewRB").style.display = "inline";
+                    document.getElementById("RB1").style.display = "none";
+                    break;
+            }
         }
     }
 ]);

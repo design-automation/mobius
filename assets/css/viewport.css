@@ -5,6 +5,12 @@
     left:0;
 }
 
+#vizicities, #vizicities1{
+    position: absolute;
+    top:0;
+    left:0;
+}
+
 #viewLT, #viewLT1{
     border-right: 1px solid #666666;
     position: absolute;

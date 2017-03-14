@@ -169,7 +169,6 @@
     <div ui-layout id="layout">
         <div ng-controller="layoutCtrl">
             <div class="layout-area" ui-layout="{flow : 'column',dividerSize:'1', disableToggle:true}" ng-controller="procedureCtrl">
-                
                 <!-- 3D view area  -->
                 <div class="view-area" ui-layout-container size={{viewportWidth}} id="viewport">
                     <div ui-layout="{ flow : 'row', dividerSize:'1', disableToggle:true}" >
@@ -184,9 +183,9 @@
 
                                         <div dropdown on-toggle="toggled(open)"  class="menu-left">
                                             <button class="button viewport-menu-button" dropdown-toggle
-                                                     style="width: 28px !important;" title="set viewport">
+                                                    style="width: 28px !important;" title="set viewport">
                                                      <i class="fa fa-eye fa-lg"></i>
-                                                 <!--<span class="caret"></span>-->
+                                                <!--<span class="caret"></span>-->
                                             </button>
 
                                             <ul class="dropdown-menu " style="right: 2px!important;top:2px" >
@@ -194,9 +193,7 @@
                                                 <li><a   href="#" ng-click = "toggleTopology('main')">Topology</a></li>
                                                 <li><a   href="#" ng-click = "toggleData('main')">Data</a></li>
                                                 <li><a   href="#" ng-click = "toggleFullCode('main')">Generated Code</a></li>
-
-                                                <!-- text editor example-->
-                                                <li><a   href="#" ng-click = "toggleTextEditor()">Text Editor</a></li>
+                                                <li><a   href="#" ng-click = "togglevizicities('main')">Get ViziCities</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -267,6 +264,7 @@
                                                             <li><a   href="#" ng-click = "toggleTopology('LT')">Topology</a></li>
                                                             <li><a   href="#" ng-click = "toggleData('LT')">Data</a></li>
                                                             <li><a   href="#" ng-click = "toggleFullCode('LT')">Generated Code</a></li>
+                                                            <li><a   href="#" ng-click = "togglevizicities('LT')">Get ViziCities</a></li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -363,6 +361,7 @@
                                                             <li><a   href="#" ng-click = "toggleTopology('RT')">Topology</a></li>
                                                             <li><a   href="#" ng-click = "toggleData('RT')">Data</a></li>
                                                             <li><a   href="#" ng-click = "toggleFullCode('RT')">Generated Code</a></li>
+                                                            <li><a   href="#" ng-click = "togglevizicities('RT')">Get ViziCities</a></li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -458,6 +457,7 @@
                                                             <li><a   href="#" ng-click = "toggleTopology('LB')">Topology</a></li>
                                                             <li><a   href="#" ng-click = "toggleData('LB')">Data</a></li>
                                                             <li><a   href="#" ng-click = "toggleFullCode('LB')">Generated Code</a></li>
+                                                            <li><a   href="#" ng-click = "togglevizicities('LB')">Get ViziCities</a></li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -552,6 +552,7 @@
                                                             <li><a   href="#" ng-click = "toggleTopology('RB')">Topology</a></li>
                                                             <li><a   href="#" ng-click = "toggleData('RB')">Data</a></li>
                                                             <li><a   href="#" ng-click = "toggleFullCode('RB')">Generated Code</a></li>
+                                                            <li><a   href="#" ng-click = "togglevizicities('RB')">Get ViziCities</a></li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -628,9 +629,10 @@
                                                 </tabset>
                                             </div>
                                         </div>
+
                                     </div>
                                 </viewport>
-
+                                <div id="vizicities1"></div>
                                 <topo-viewport control="topoViewportControl" id="topoViewport">
                                 </topo-viewport>
 
@@ -638,6 +640,7 @@
                                 <div id="RT1" ></div>
                                 <div id="LB1" ></div>
                                 <div id="RB1" ></div>
+
 
                                 <div id = 'topoContainer'></div>
 
@@ -656,27 +659,16 @@
                                             <tabset>
                                                 <tab ng-repeat="header in tableHeader" heading="{{header}}" select="generateDataTable(header)">
                                                     <div
-                                                    ui-grid="gridOptions"
-                                                    ui-grid-resize-columns
-                                                    ui-grid-auto-resize
-                                                    ui-grid-grouping
-                                                    class="dataGrid-main">
+                                                            ui-grid="gridOptions"
+                                                            ui-grid-resize-columns
+                                                            ui-grid-auto-resize
+                                                            ui-grid-grouping
+                                                            class="dataGrid-main">
                                                     </div>
                                                 </tab>
                                             </tabset>
                                         </tab>
                                     </tabset>
-                                </div>
-
-                                <!--text editor example-->
-                                <div ng-controller="textCtrl">
-                                    <div ng-if="showText" style="width: 100%;top:32px;left:0;bottom: 0;position: absolute;">
-                                        <textarea
-                                                style="width: 100%; height: 100%;"
-                                                text-viewport-editor
-                                                view-model="currentTextVersionGeom">
-                                        </textarea>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -684,7 +676,7 @@
                         <!--console-->
                         <div ui-layout-container size = "{{consoleHeight}}px" class="monitor">
                             <div ng-controller="consoleCtrl">
-                                 <div class="doormat" ng-dblclick="showConsole()">
+                                <div class="doormat" ng-dblclick="showConsole()">
                                     <div>Console</div>
                                     <button class="button"
                                             id = "clear"
@@ -692,11 +684,12 @@
                                             ng-click="clearConsole()">
                                         <i class="fa fa-eraser"></i>
                                     </button>
-                                 </div>
+                                </div>
                                 <div class="console" id = 'log' ></div>
                             </div>
                         </div>
                     </div>
+
                 </div>
 
                 <!--&lt;!&ndash;&lt;!&ndash; procedure area &ndash;&gt;&ndash;&gt;-->
@@ -996,6 +989,12 @@
 
 <script src="assets/data/com_dist.js"></script>
 <script src="assets/data/data3.js"></script>
+
+<!-- vizicities.js -->
+<script src="assets/js/vizicities/vendor/TweenMax.min.js"></script>
+<script src="assets/js/vizicities/vendor/chroma.min.js"></script>
+<script src="assets/js/vizicities/vizicities.min.js"></script>
+
 
 </body>
 
