@@ -33,8 +33,6 @@
 #procedure-area{
     overflow: auto;
     height: 100%;
-    position:absolute !important;
-    padding-bottom: 32px;
 }
 
 #subgraphToggle{

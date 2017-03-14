@@ -9,18 +9,54 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
         //    }
         //});
 
+
+        // toggle procedure
+        $scope.displayProcedure = true;
+
+        $scope.bodySize = document.getElementById('layout').offsetWidth;
+
+        // initial layout
+        $scope.viewportSize = $scope.bodySize * 0.40;
+        $scope.graphSize = $scope.bodySize * 0.30;
+        $scope.procedureSize = $scope.bodySize * 0.30;
+
+        $scope.viewportWidth = $scope.viewportSize +'px';
+        $scope.procedureWidth = $scope.procedureSize +'px';
+        $scope.graphWidth = $scope.graphSize +'px';
+
+        $scope.consoleHeight = 150;
+        $scope.height = document.getElementById('layout').offsetHeight;
+        $scope.graphHeight = ($scope.height - $scope.consoleHeight);
+        $scope.procedureHeight =  $scope.height;
+        //$scope.interfaceHeight = 0;
+
+
         // templates not in use
         $scope.procedureHTML = { name: 'procedureHTML.html', url: 'mobius/procedure/template/procedureHTML.html'} ;
 
         $scope.showGraph = function(){
-            if($scope.graphHeight !== $scope.height - 32){
-                $scope.graphHeight = ($scope.height - 32);
-                $scope.procedureHeight = 32;
+            if($scope.graphHeight !== $scope.height - 150){
+                $scope.graphHeight = ($scope.height -  150);
+                $scope.consoleHeight = 150;
             }else{
-                $scope.graphHeight = ($scope.height - 33);
-                $scope.procedureHeight = 33;
+                $scope.graphHeight = ($scope.height - 150);
+                $scope.consoleHeight = 150;
             }
         };
+
+        //$scope.viewerHeight = $scope.height - 150;
+
+        // console and graph are tied together
+        $scope.showConsole = function(){
+            if($scope.consoleHeight !== $scope.height - 32){
+                $scope.consoleHeight = $scope.height;
+                $scope.graphHeight = 0;
+            }else{
+                $scope.consoleHeight = $scope.height;
+                $scope.graphHeight = 0;
+            }
+        };
+
 
         $scope.interfaceHeight = document.getElementById("interface").offsetHeight;
 
@@ -36,20 +72,6 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
         );
 
 
-        $scope.consoleHeight = 150;
-        $scope.viewerHeight = $scope.height - 150;
-
-        $scope.showConsole = function(){
-            if($scope.consoleHeight !== $scope.height - 32){
-                $scope.consoleHeight = $scope.height - 32;
-                $scope.viewerHeight = 32;
-            }else{
-                $scope.consoleHeight = $scope.height - 33;
-                $scope.viewerHeight = 33;
-            }
-        };
-
-        $scope.bodySize = document.getElementById('layout').offsetWidth;
 
         $scope.$watch(function(){
             return document.getElementById('layout').offsetWidth;
@@ -70,18 +92,6 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
             $scope.procedureWidth = $scope.procedureSize +'px';
             $scope.graphWidth = $scope.graphSize +'px';
         });
-
-        // toggle procedure
-        $scope.displayProcedure = false;
-
-        // initial layout
-        $scope.viewportSize = $scope.bodySize * 0.70;
-        $scope.procedureSize = 0;
-        $scope.graphSize = $scope.bodySize * 0.30;
-
-        $scope.viewportWidth = $scope.viewportSize +'px';
-        $scope.procedureWidth = $scope.procedureSize +'px';
-        $scope.graphWidth = $scope.graphSize +'px';
 
         //$scope.$on('editProcedure', function(evt,message){
             //if(message === false || $scope.displayProcedure === true){
@@ -107,10 +117,7 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
             //$scope.graphWidth = $scope.graphSize +'px';
         //});
 
-        $scope.height = document.getElementById('layout').offsetHeight;
-        $scope.graphHeight = ($scope.height - 32);
-        $scope.procedureHeight =  32;
-        //$scope.interfaceHeight = 0;
+
 
         // $scope.$watch(function(){
         //     return document.getElementById('c').offsetHeight;

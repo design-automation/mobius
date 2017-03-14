@@ -56,25 +56,26 @@
 }
 
 .ui-layout-row > .ui-splitbar{
-    height: 8px !important; width: 100%;
+    //height: 8px !important; 
+    width: 100%;
     cursor: row-resize;
     text-align: center;
     justify-content: center;
     align-items: center;
     /*background: linear-gradient(to bottom, #fff 0%, #eee 100%);*/
     overflow-y: hidden;
-    background: rgba(0,1,1,0) ;
-    border-top: 1px solid #ccc;
+    //background: rgba(0,1,1,0) ;
+    //border-top: 1px solid #ccc;
 }
 .ui-layout-column > .ui-splitbar{
-    width: 8px !important; height: 100%;
+    height: 100%;
     cursor: col-resize;
     -webkit-flex-direction: column;
     flex-direction: column;
     /*background: linear-gradient(to right, #fff 0%, #eee 100%);*/
     overflow-x: hidden;
-    background: rgba(0,1,1,0) ;
-    border-left: 1px solid #ccc;
+    //background: rgba(0,1,1,0) ;
+    //border-left: 1px solid #ccc;
 }
 
 .ui-layout-column > .ui-splitbar > a,
@@ -161,4 +162,24 @@
 /* Make sure hidden elements are in fact not rendered. */
 .ui-layout-hidden {
     display: none;
+}
+
+
+
+
+
+
+/****************** Manual Overrides *****************/
+.ui-layout-column > .ui-splitbar{
+    width: 16px !important; 
+    background-color: #EEE;
+    border-left: 1px solid #DDD;
+    border-right: 1px solid #DDD;
+}
+
+.ui-layout-row > .ui-splitbar{
+    height: 16px !important; 
+    background-color: #EEE;
+    border-top: 1px solid #DDD;
+    border-bottom: 1px solid #DDD;
 }

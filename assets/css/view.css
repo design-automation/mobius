@@ -14,7 +14,7 @@
     position: absolute;
     top: -32px;
     right: 0px;
-    z-index: 99999999999 !important;
+    z-index: 10 !important;
 
 }
 
@@ -79,7 +79,7 @@
     position: relative;
     /*left: 9px;*/
     height: 100%;
-    width: 100%;
+    //width: 100%;
 }
 
 
