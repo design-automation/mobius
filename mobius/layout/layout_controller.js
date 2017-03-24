@@ -9,10 +9,6 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
         //    }
         //});
 
-
-        // toggle procedure
-        $scope.displayProcedure = true;
-
         $scope.bodySize = document.getElementById('layout').offsetWidth;
 
         // initial layout
@@ -32,7 +28,6 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
 
 
         // templates not in use
-        $scope.procedureHTML = { name: 'procedureHTML.html', url: 'mobius/procedure/template/procedureHTML.html'} ;
 
         $scope.showGraph = function(){
             if($scope.graphHeight !== $scope.height - 150){

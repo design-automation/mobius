@@ -81,15 +81,6 @@
                     <i class="icon-variable fa-lg" title="Add Variable"></i>
                 </button>
 
-                <button class="button pull-right button-output" ng-click="newInterface('Output')" >
-                    <!--<i class="fa fa-sign-out fa-lg fa-rotate-90" title="Add Output"></i>-->
-                    <span style="font-weight: 900; font-size: large" title="Add Output"> O </span>
-                </button>
-
-                <button class="button pull-right button-input" ng-click="newInterface('Input')" >
-                    <!--<i class="fa fa-sign-in fa-lg fa-rotate-90" title="Add Input"></i>-->
-                    <span style="font-weight: 900; font-size: large" title="Add Input" >I</span>
-                </button>
 
                 <!--<div id="argument-area">-->
                     <!--<div ui-tree id="tree-root-parameter">-->
@@ -105,20 +96,7 @@
                 <!-- Main Procedure -->
                 <div class="tabArea" id="procedure-area">
                     
-                    <div ng-show='interface == undefined || interface.length == 0' style='line-height: 32px; font-size: 12px; border-bottom: 2px solid #b6b6b6;'><center>&lt; node-input-designer &gt;</center></div>
-                    
-                    <div ng-hide='interface == undefined || interface.length == 0'  
-                            ui-tree id="tree-root-parameter" 
-                            data-nodrop-enabled="true" 
-                            oncontextmenu="return false;" 
-                            style='border-bottom: 2px solid #b6b6b6;padding-bottom:10px;margin-bottom: 10px;'>
-                        <div ui-tree-nodes="" ng-model="interface">
-                            <div ng-repeat="node in interface"
-                                 ui-tree-node
-                                 ng-include="'mobius/procedure/template/parameter_template.html'">
-                            </div>
-                        </div>
-                    </div>
+
 
 
                     <!-- <div style="height: 6px;position: relative;background-color:#eaeaea" >

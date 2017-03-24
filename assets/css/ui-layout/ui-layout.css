@@ -179,7 +179,13 @@
 
 .ui-layout-row > .ui-splitbar{
     height: 16px !important; 
-    background-color: #EEE;
-    border-top: 1px solid #DDD;
-    border-bottom: 1px solid #DDD;
+    background-color: rgba(0,0,0,0);
+    padding: 0px;
+    padding-top: 15px;
+    //border-top: 1px solid #DDD;
+    //border-bottom: 1px solid #DDD;
+}
+
+.view-holder{
+    style="padding-left: 16px;"
 }
