@@ -1607,7 +1607,8 @@ MOBIUS_MODULES[MODULE_NAME] = ( function (mod){
 			var data = JSON.stringify(json);
 			var url = 'data:text/json;charset=utf8,' + encodeURIComponent(data);
 			window.open(url, '_blank');
-			window.focus();			
+			//window.focus();
+			return data;
 		}
 
 	}

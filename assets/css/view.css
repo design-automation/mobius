@@ -34,6 +34,11 @@
     width:0;
 }
 
+.view-area #viziViewport {
+    height:0;
+    width:0;
+}
+
 .view-area .codeViewport{
     width: 100%;
     top:32px;
@@ -67,6 +72,15 @@
 }
 
 .view-area #topoContainer{
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+
+}
+
+.view-area #viziContainer{
     position: absolute;
     top:0;
     bottom:0;
