@@ -235,11 +235,12 @@ mobius.controller('viewportCtrl',[
 
         $scope.viewportControl.layout = 'singleView';
         $scope.topoViewportControl.layout = 'singleView';
+        $scope.viziViewportControl.layout = 'singleView';
         $scope.topoViewportControl.LT = false;
         $scope.topoViewportControl.RT = false;
         $scope.topoViewportControl.LB = false;
         $scope.topoViewportControl.RB = false;
-        $scope.viziViewportControl.layout = 'singleView';
+
 
         document.getElementById("LT1").style.display = "none";
         document.getElementById("RT1").style.display = "none";
@@ -270,7 +271,7 @@ mobius.controller('viewportCtrl',[
         $rootScope.$on('singleView', function(){
             $scope.viewportControl.layout = 'singleView';
             $scope.topoViewportControl.layout = 'singleView';
-            $scope.viewportControl.layout = 'singleView'
+            $scope.viziViewportControl.layout = 'singleView';
             $scope.viewportControl.showGeometry =true;
             document.getElementById("viewSingle").style.display = "inline";
             document.getElementById("LT1").style.display = "none";
@@ -308,7 +309,6 @@ mobius.controller('viewportCtrl',[
 
             $scope.viewportControl.showGeometry= false;
             document.getElementById("viewSingle").style.display = "none";
-            document.getElementById("topoContainer").style.display = "none";
 
             $scope.showData = false;
             $scope.showFullCode = false;
@@ -379,6 +379,7 @@ mobius.controller('viewportCtrl',[
                 case 'main':
                     $scope.viewportControl.currentCate = $scope.viewportControl.currentView;
                     $scope.viewportControl.showGeometry = true;
+                    $scope.showVizicities = false;
                     $scope.showGeometry = true;
                     $scope.showFullCode = false;
                     $scope.showData = false;
@@ -387,6 +388,7 @@ mobius.controller('viewportCtrl',[
                     document.getElementById("viewSingle").style.display = "inline";
                     document.getElementById("topoContainer").style.display = "none";
                     document.getElementById("viziContainer").style.display = "none";
+
                     break;
                 case 'LT':
                     $scope.viewportControl.LTcurrentCate = $scope.viewportControl.LTcurrentView;
@@ -440,9 +442,11 @@ mobius.controller('viewportCtrl',[
                     $scope.showFullCode = false;
                     $scope.showData = true;
                     $scope.showTopology = false;
+                    $scope.showVizicities = false;
                     $scope.showText = false;
                     document.getElementById("viewSingle").style.display = "none";
                     document.getElementById("topoContainer").style.display = "none";
+                    document.getElementById("viziContainer").style.display = "none";
                     break;
                 case 'LT':
                     $scope.viewportControl.LTcurrentCate = 'Data';
@@ -497,8 +501,10 @@ mobius.controller('viewportCtrl',[
                     $scope.showFullCode = false;
                     $scope.showData = false;
                     $scope.showText = false;
+                    $scope.showVizicities = false;
                     document.getElementById("viewSingle").style.display = "none";
                     document.getElementById("topoContainer").style.display = "inline";
+                    document.getElementById("viziContainer").style.display = "none";
                     break;
                 case 'LT':
                     $scope.viewportControl.LTcurrentCate = 'Topology';
@@ -551,127 +557,18 @@ mobius.controller('viewportCtrl',[
             $scope.showFullCode = false;
             $scope.showData = false;
             $scope.showTopology = false;
+            $scope.showVizicities = false;
             $scope.showText = true;
             document.getElementById("viewSingle").style.display = "none";
             document.getElementById("topoContainer").style.display = "none";
+            document.getElementById("viziContainer").style.display = "none";
         }
 
-
-        function getvizicitiesdata(){
-
-            var coords = [1.3, 103.8];
-
-
-
-            var world = VIZI.world('viziContainer', {
-                skybox: true,
-                postProcessing: true,
-            }).setView(coords);
-
-
-            // Set position of sun in sky
-            world._environment._skybox.setInclination(0.3);
-
-            // Add controls
-            VIZI.Controls.orbit().addTo(world);
-
-            // CartoDB basemap
-            // VIZI.imageTileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
-            //     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
-            // }).addTo(world);
-
-            // Buildings and roads from Mapzen (polygons and linestrings) http://localhost:63342/mobius/examples/data.json//'https://tile.mapzen.com/mapzen/vector/v1/all/{z}/{x}/{y}.topojson?api_key=mapzen-vwNCmwT'
-            // var topoJSONTileLayer = VIZI.topoJSONTileLayer('http://localhost:63342/mobius/examples/data.json', {
-            //     interactive: false,
-            //     style: function(feature) {
-            //         var height;
-            //
-            //         if (feature.properties.height) {
-            //             height = 10 + Math.random() * 10;
-            //             //height = feature.properties.height;
-            //         } else {
-            //             height = 10 + Math.random() * 10;
-            //         }
-            //
-            //         return {
-            //             height: height,
-            //             lineColor: '#f7c616',
-            //             lineWidth: 1,//1
-            //             lineTransparent: true,
-            //             lineOpacity: 0.2,
-            //             lineBlending: THREE.AdditiveBlending,
-            //             lineRenderOrder: 2
-            //         };
-            //     },
-            //     filter: function(feature) {
-            //         // Don't show points
-            //         return feature.geometry.type !== 'Point';
-            //     },
-            //     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://whosonfirst.mapzen.com#License">Who\'s On First</a>.'
-            // }).addTo(world);
-
-            var lat,long;
-
-            VIZI.geoJSONLayer('http://localhost:63342/mobius/examples/1.json', {
-                output: true,
-                interactive: true,
-                style: function(feature) {
-                    var colour = feature.properties.lines[0].colour || '#ffffff';
-                    if (feature.properties.height) {
-                        height = 10 + Math.random() * 10;
-                        //height = feature.properties.height;
-                    } else {
-                        height = 10 + Math.random() * 10;
-                    }
-                    return {
-                        height: height,
-                        lineColor: colour,
-                        lineHeight: 20,
-                        lineWidth: 3,
-                        lineTransparent: true,
-                        lineOpacity: 0.5,
-                        lineBlending: THREE.AdditiveBlending,
-                        lineRenderOrder: 2
-                    };
-                },
-                onEachFeature: function(feature, layer) {
-                    layer.on('click', function(layer, point2d, point3d, intersects) {
-                        console.log(layer, point2d, point3d, intersects);
-                    });
-                },
-                attribution: '&copy; Transport for London.'
-            }).addTo(world);
-            // London Underground lines
-            // VIZI.geoJSONLayer('https://rawgit.com/robhawkes/4acb9d6a6a5f00a377e2/raw/30ae704a44e10f2e13fb7e956e80c3b22e8e7e81/tfl_lines.json', {
-            //     output: true,
-            //     interactive: true,
-            //     style: function(feature) {
-            //         var colour = feature.properties.lines[0].colour || '#ffffff';
-            //
-            //         return {
-            //             lineColor: colour,
-            //             lineHeight: 20,
-            //             lineWidth: 3,
-            //             lineTransparent: true,
-            //             lineOpacity: 0.5,
-            //             lineBlending: THREE.AdditiveBlending,
-            //             lineRenderOrder: 2
-            //         };
-            //     },
-            //     onEachFeature: function(feature, layer) {
-            //         layer.on('click', function(layer, point2d, point3d, intersects) {
-            //             console.log(layer, point2d, point3d, intersects);
-            //         });
-            //     },
-            //     attribution: '&copy; Transport for London.'
-            // }).addTo(world);
-
-        }
 
         function cleanvizicitiesdata(){
 
-            document.getElementById("viziContainer").innerHTML = "";
-            document.getElementById("viziContainer").style.display = "none";
+            //document.getElementById("viziContainer").innerHTML = "";
+            document.getElementById("viziViewport").style.display = "none";
         }
 
         //add for 3d optimisation
@@ -686,7 +583,9 @@ mobius.controller('viewportCtrl',[
                     $scope.showTopology = false;
                     $scope.viziViewportControl.showVizicities = true;
                     document.getElementById("viewSingle").style.display = "none";
+                    document.getElementById("topoContainer").style.display = "none";
                     document.getElementById("viziContainer").style.display = "inline";
+                    document.getElementById("viziViewport").style.display = "inline";
                     break;
             }
         }
