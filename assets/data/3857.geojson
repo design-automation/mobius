@@ -1,6 +1,5 @@
 {
 "type": "FeatureCollection",
-"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3857" } },
 "features": [
 { "type": "Feature", "properties": { "LOT_KEY": "MK06-01025M", "INC_CRC": "50AFEAB7", "FMEL_UPD_D": "2014\/07\/31", "X_ADDR": 11880.6108, "Y_ADDR": 34355.8979, "SHAPE_Leng": 273.700012614, "SHAPE_Area": 4152.52090004 }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 11542594.224442197, 147753.99637499245 ], [ 11542594.20708878, 147708.26846232187 ], [ 11542502.753027126, 147708.28321260394 ], [ 11542502.76036224, 147754.02119303486 ], [ 11542594.224442197, 147753.99637499245 ] ] ] } },
 { "type": "Feature", "properties": { "LOT_KEY": "MK06-01577M", "INC_CRC": "6E3F551C", "FMEL_UPD_D": "2014\/07\/31", "X_ADDR": 12125.0739, "Y_ADDR": 34162.3021, "SHAPE_Leng": 5767.7720921500004, "SHAPE_Area": 66413.796800099997 }, "geometry": { "type": "Polygon", "coordinates": [ ] } }
