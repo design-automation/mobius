@@ -100,14 +100,15 @@ mobius.directive('viziViewport', function factoryVizi() {
 
                 // Add controls
                 VIZI.Controls.orbit().addTo(world);
-                //'http://localhost:63342/mobius/examples/1.json';geomObject
+                //'http://localhost:63342/mobius/examples/new.json';geomObject
 
                 VIZI.imageTileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
                     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
                 }).addTo(world);
 
+                var jsondata = JSON.parse(geomObject);
 
-                VIZI.geoJSONLayer('http://localhost:63342/mobius/examples/new.json', {
+                VIZI.geoJSONLayer(jsondata, {
                     output: true,
                     interactive: false,
                     style: function(feature) {
