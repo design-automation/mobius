@@ -176,7 +176,23 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
         // listen to the graph, when a node is clicked, update the procedure/ interface tabs
         $rootScope.$on("nodeIndex", function(event, message) {
-            if($scope.nodeIndex !== message && message !== undefined && message !== "port"){
+
+            if(message === undefined){
+                // do nothing
+                
+                // alert("node clicked 2");
+
+
+                // $scope.nodeIndex = message;
+                // $scope.currentNodeName = '';
+                //
+                // $scope.data  = undefined;
+                // $scope.interface = undefined;
+
+                // $scope.$emit("editProcedure",false);
+            }
+            else if(/*$scope.nodeIndex !== message && */message !== "port"){
+
                 $scope.nodeIndex = message;
 
                 $scope.currentNodeName = $scope.chartViewModel.nodes[$scope.nodeIndex].data.name;
@@ -200,16 +216,18 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
                 // update the interface tab
                 $scope.interface = $scope.interfaceList[$scope.nodeIndex];
-            }
-            else if(message === undefined){
-                // $scope.nodeIndex = message;
-                // $scope.currentNodeName = '';
-                //
-                // $scope.data  = undefined;
-                // $scope.interface = undefined;
 
-                //$scope.$emit("editProcedure",false);
-            }else if(message === 'port'){
+                console.log("procedure updated", message);
+
+                // todo: why is this needed?
+                setTimeout(function () {
+                    $scope.$apply();
+                }, 0);
+
+
+            }
+            else if(message === 'port'){
+
                 //todo input/output port configuration
 
                 // update the procedure tab

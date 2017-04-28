@@ -28,7 +28,7 @@ mobius.directive('viziViewport', function factoryVizi() {
             // Initialization
             function initVizi(){
 
-                document.getElementById("viziContainer").style.display = "inline";
+                document.getElementById("viziContainer").style.display = "none";
                 document.getElementById("viziViewport").style.display = "inline";
 
             }

@@ -173,31 +173,41 @@ mobius.controller(  'graphCtrl',
 
         // listen to the graph, when a node is clicked, update the visual procedure/ code/ interface
         $scope.$on("nodeIndex", function(event, message) {
-             if($scope.nodeIndex !== message && message !== undefined && message !== "port"){
-                 $scope.nodeIndex = message;
-                 $scope.currentNodeName = $scope.chartViewModel.data.nodes[$scope.nodeIndex].name;
-                 $scope.currentNodeType = $scope.chartViewModel.data.nodes[$scope.nodeIndex].type;
-                 $scope.currentNodeVersion = $scope.chartViewModel.data.nodes[$scope.nodeIndex].version === 0?'':'*';
-                 displayGeometry();
+
+             if(message === undefined){
+                // do nothing
+ 
+                //$scope.nodeIndex = message;
+
+
+                // $scope.currentNodeName = '';
+                //
+                // var scope = angular.element(document.getElementById('threeViewport')).scope();
+                // var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
+                //
+                // scope.$apply(function(){scope.viewportControl.refreshView();} );
+                // scope.$apply(function(){scope.viewportControl.refreshData();} );
+                // scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
+                // scopeTopo.$apply(function(){scopeTopo.viewportControl.refreshData();} );
+             }
+             else if($scope.nodeIndex !== message && message !== "port"){
+                
+                // message contains clicked node id; if not same as currently selected, update variables
+
+                $scope.nodeIndex = message;
+                $scope.currentNodeName = $scope.chartViewModel.data.nodes[$scope.nodeIndex].name;
+                $scope.currentNodeType = $scope.chartViewModel.data.nodes[$scope.nodeIndex].type;
+                $scope.currentNodeVersion = $scope.chartViewModel.data.nodes[$scope.nodeIndex].version === 0?'':'*';
+                displayGeometry();
+
              }else if(message === undefined){
-                 $scope.nodeIndex = message;
 
-
-                 // $scope.currentNodeName = '';
-                 //
-                 // var scope = angular.element(document.getElementById('threeViewport')).scope();
-                 // var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
-                 //
-                 // scope.$apply(function(){scope.viewportControl.refreshView();} );
-                 // scope.$apply(function(){scope.viewportControl.refreshData();} );
-                 // scopeTopo.$apply(function(){scopeTopo.topoViewportControl.refreshView();} );
-                 // scopeTopo.$apply(function(){scopeTopo.viewportControl.refreshData();} );
              }else if(message === 'port'){
                  // todo input/output port configuration
              }
 
              function displayGeometry(){
-                 var selectedNodes = $scope.chartViewModel.getSelectedNodes();
+                 var selectedNodes = $scope.chartViewModel.getSelectedNodes(); 
 
                  var scope = angular.element(document.getElementById('threeViewport')).scope();
                  var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();

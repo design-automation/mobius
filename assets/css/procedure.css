@@ -46,10 +46,10 @@
 
 .button-action{
     display: inline-block;
-    position: absolute !important;
+    /*position: absolute !important;
     top: 0;
     right: 120px;
-    white-space: nowrap;
+    white-space: nowrap;*/
 }
 
 .button-action:hover>.dropdown-menu{
@@ -61,12 +61,10 @@
 }
 
 .button-control{
-
-
     display: inline-block;
-    position: absolute;
+    /*position: absolute;
     top:0;
-    right: 60px;
+    right: 60px;*/
 }
 
 
@@ -84,12 +82,17 @@
     top:0;
 }
 
-.button-variable{
+/*.button-variable{
     display: inline-block;
     position: absolute !important;
     top: 0;
     right:90px;
     white-space: nowrap;
+}*/
+
+
+.procedure-button{
+    display: inline-block;
 }
 
 .code-area .codeEditor {

@@ -245,9 +245,9 @@ angular.module('flowChart', ['dragging'] )
 					if (mouseOverElement instanceof SVGElement) {
 						// document.getElementById("node-creator").style.display = "none";
 						document.getElementById("test").style.display = "none";
-						setTimeout(function () {
+						/*setTimeout(function () {
 							$scope.$emit("nodeIndex", undefined);
-						}, 0);
+						}, 0);*/
 					}
 
 					dragging.startDrag(evt, {

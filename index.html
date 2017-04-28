@@ -170,7 +170,7 @@
         <div ng-controller="layoutCtrl">
             <div class="layout-area" ui-layout="{flow : 'column', dividerSize:'1', disableToggle:true}" ng-controller="procedureCtrl">
 
-                <!-- 3D view area  -->
+                <!-- left pane  -->
                 <div class="view-area" ui-layout-container size={{viewportWidth}} id="viewport">
                     <!-- threejs editor view port -->
                     <div id="viewportLayout">
@@ -183,9 +183,9 @@
 
                                     <div dropdown on-toggle="toggled(open)"  class="menu-left">
                                         <button class="button viewport-menu-button" dropdown-toggle
-                                                style="width: 28px !important;" title="set viewport">
+                                                 style="width: 28px !important;" title="set viewport">
                                                  <i class="fa fa-eye fa-lg"></i>
-                                            <!--<span class="caret"></span>-->
+                                             <!--<span class="caret"></span>-->
                                         </button>
 
                                         <ul class="dropdown-menu " style="right: 2px!important;top:2px" >
@@ -196,6 +196,7 @@
 
                                             <!-- text editor example-->
                                             <li><a   href="#" ng-click = "toggleTextEditor()">Text Editor</a></li>
+
                                             <!-- vizicities instance-->
                                             <li><a   href="#" ng-click = "toggleViziCities('main')">Get ViziCities</a></li>
                                         </ul>
@@ -249,6 +250,8 @@
 
                             <!--viewports-->
                             <viewport control="viewportControl" id="threeViewport" >
+
+                                <!-- if four panels are active -->
                                 <div ng-if="viewportControl.layout === 'fourViews'" >
                                     <!--LT-->
                                     <div id ="LT">
@@ -642,8 +645,11 @@
                             <div id="RT1" ></div>
                             <div id="LB1" ></div>
                             <div id="RB1" ></div>
-                            <div id = 'topoContainer'></div>
+
                             <div id = 'viziContainer'></div>
+                            <div id = 'topoContainer'></div>
+
+                            <!-- code view -->
                             <div ng-if="showFullCode">
                                 <div class="codeViewport"
                                      ui-ace="{ mode: 'javascript',theme: 'tomorrow',onLoad: aceLoaded}"
@@ -653,17 +659,18 @@
                                 </div>
                             </div>
 
+                            <!-- tables -->
                             <div ng-if="showData" class="dataViewport" >
                                 <tabset style="padding-top: 2px">
                                     <tab  ng-repeat="connectorName in connectorNames" heading="{{connectorName}}" select="selectDataTable(connectorName)">
                                         <tabset>
                                             <tab ng-repeat="header in tableHeader" heading="{{header}}" select="generateDataTable(header)">
                                                 <div
-                                                        ui-grid="gridOptions"
-                                                        ui-grid-resize-columns
-                                                        ui-grid-auto-resize
-                                                        ui-grid-grouping
-                                                        class="dataGrid-main">
+                                                ui-grid="gridOptions"
+                                                ui-grid-resize-columns
+                                                ui-grid-auto-resize
+                                                ui-grid-grouping
+                                                class="dataGrid-main">
                                                 </div>
                                             </tab>
                                         </tabset>
@@ -681,145 +688,61 @@
                                     </textarea>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
 
-                <!-- graph area -->
-                <div class="graph-area" ui-layout-container  size={{graphWidth}} id="graph" min-size="16px" >
+                <!-- central pane -->
+                <div class="graph-area" ui-layout-container  size={{graphWidth}} id="graph" min-size="16px">
+                     
+                    <div ui-layout="{ flow : 'row', dividerSize:'1', disableToggle:true}" style="padding-left: 16px;"> 
 
-                    <div ui-layout="{ flow : 'row', dividerSize:'1',disableToggle:true}" style="padding-left: 16px;">
-
-                        <!-- pan & zoom field -->
-                        <div size="{{graphHeight}}px"
-                             ui-layout-container
-                             id="a"
-                             mouse-capture
-                             style="padding-left: 16px;">
-
-                            <div ng-controller="graphCtrl" ng-click='click=true'>
-
-                                <!-- graph header & breadcrumbs-->
-                                <div class="doormat" ng-dblclick="showGraph()">
-                                    <div >
-                                        <a style="cursor: default" ng-click="goRoot()"> Graph </a>
-
-                                        <span ng-repeat="graph in graphList"
-                                              style="padding: 0 5px;
-                                                    cursor: default"
-                                              ng-click="changeGraphView($index)">
-                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            &nbsp;
-                                            <a>{{graph.name}}</a>
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <!-- buttons on the graph panel -->
-                                <span ng-controller="executeCtrl" id="run-button">
-                                    <span us-spinner
-                                          spinner-on="showSpinner"
-                                          style="position: fixed;right:50%;top:50%;z-index:10005">
-                                    </span>
-
-                                    <div style="position:fixed;
-                                                top:0;
-                                                left:0;
-                                                height: 100%;
-                                                width:100%;background-color:white;
-                                                opacity: 0.8;
-                                                z-index:10004;
-                                                display: none;"
-                                         id='waiting'>
+                        <!-- graph -->
+                        <div ui-layout-container size = "{{graphHeight}}px" class="view-holder" min-size="64px">
+                            <div ui-layout="{ flow : 'row', dividerSize:'1',disableToggle:true}" style="padding-left: 16px;" > 
+                            
+                                    <div ui-layout-container size = "{{graphHeight/4}}px" class="monitor" min-size="32px">
+                                        <param-display></param-display>
                                     </div>
 
-                                    <!-- zoom extents for graph -->
-                                    <button class="button"
-                                            ng-click="extendCanvas()"
-                                            style="outline: none!important;position: absolute;right: 30px;top: 0;"
-                                            title="Extend Canvas">
-                                        <i class="fa fa-arrows-alt" aria-hidden="true"></i>
-                                    </button>
-
-                                    <!-- run for graph -->
-                                    <button class="button"
-                                            ng-click="run()"
-                                            style="outline: none!important;"
-                                            title="Run program">
-                                        <i class="fa fa-play"></i>
-                                    </button>
-                                </span>
-
-                                <!-- interface parameters -->
-                                <span id="interface" oncontextmenu="return false;" style='line-height: 32px; font-size: 12px; border-bottom: 2px solid #b6b6b6;'>
-
-                                    <div ng-if='interface==undefined'><center> &lt; node-inputs &gt;  <hr>
-                                    <div ng-show="chartViewModel.data.nodes.length==0" style="z-index: 10; margin: 10px 30px; z-index: 10;">
-                                        Oops... Looks like there is no file loaded. <br> Double click to create a node or load an example from the file menu.
-                                    </div></center></div>
-
-
-                                    <div ui-tree id="tree-root-interface"
-                                         data-nodrop-enabled="true">
-                                        <div ui-tree-nodes="" ng-model="interface">
-                                            <div ng-repeat="node in interface | filter: {connected: false} as inputs"
-                                                 ui-tree-node
-                                                 ng-include="'mobius/procedure/template/interface_template.html'">
-                                            </div>
-                                            <div ng-if='inputs.length==0'><center>This node needs no inputs</center></div>
-                                        </div>
+                            
+                                    <!-- pan & zoom field -->
+                                    <div class='view-holder' ui-layout-container size="{{3*graphHeight/4}}px" id="a" mouse-capture min-size="32px">
+                                         <graph-display></graph-display>
                                     </div>
-
-                                </span>
-
-
-
-                                <div ng-controller="znpController" class="znpController">
-                                    <panzoom config="panzoomConfig"
-                                             model="panzoomModel"
-                                             class="panzoom"
-                                             id="PanZoom">
-                                        <div id="canvas">
-                                            <flow-chart chart="chartViewModel" class="flow-chart">
-                                            </flow-chart>
-                                        </div>
-                                    </panzoom>
-                                </div>
 
                             </div>
                         </div>
 
 
                         <!--console-->
-                        <div ui-layout-container size = "{{consoleHeight}}px" class="monitor" style="padding-left: 16px; padding-top: 16px;" min-size="32px">
-                            <div ng-controller="consoleCtrl">
-                                <div class="doormat" ng-dblclick="showConsole()">
-                                    <div style="display: inline-block;">Console</div>
-                                    <button class="button"
-                                            id = "clear"
-                                            title="clear console"
-                                            ng-click="clearConsole()"
-                                            style="position: absolute; right: 2px;">
-                                        <i class="fa fa-eraser"></i>
-                                    </button>
-                                </div>
-                                <div class="console" id ='log'></div>
-                            </div>
+                        <div ui-layout-container size="{{consoleHeight}}px" class="view-holder" min-size="32px">
+                            <console></console>
                         </div>
 
                     </div>
 
                 </div>
-                <!-- procedure area -->
-                <div ui-layout-container
+
+                <!-- right pane -->
+                <div ui-layout-container 
                      id="c"
                      size={{procedureWidth}}
                      min-size="16px"
+                     style="padding-left: 16px;">
 
-                     style="padding-left: 16px; overflow-y: scroll;">
-                        <ng-include src = "procedureHTML.url"
-                                    id="procedure">
-                        </ng-include>
+                        <div ui-layout="{ flow : 'row', dividerSize:'1',disableToggle:true}" style="padding-left: 16px;">
+
+                            <div ui-layout-container overflow-y: auto;"> 
+                                 <input-designer id='interface'></input-designer>
+                            </div>
+
+                            <div ui-layout-container style="padding-left: 16px; overflow-y: auto;">
+                                <procedure-display></procedure-display>
+                            </div>
+
+                        </div>
                 </div>
 
             </div>
@@ -956,6 +879,11 @@
 <!-- directives -->
 <script src="mobius/viewport/viewport_directive.js"></script>
 <script src="mobius/viewport/topoViewport_directive.js"></script>
+<script src="mobius/graph/param_display_directive.js"></script>
+<script src="mobius/graph/graph_display_directive.js"></script>
+<script src="mobius/graph/console_directive.js"></script>
+<script src="mobius/graph/input_designer_directive.js"></script>
+<script src="mobius/graph/procedure_display_directive.js"></script>
 <script src="mobius/viewport/viziViewport_directive.js"></script>
 
 <!-- text editor example-->
