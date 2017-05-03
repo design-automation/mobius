@@ -1,12 +1,12 @@
 <div class="doormat" ng-dblclick="showConsole()">
     <div style="display: inline-block;">Input Designer</div>
 
-    <button class="button pull-right button-output" ng-click="newInterface('Output')" >
+    <button class="button pull-right button-output" ng-click="newInterface('Output')" ng-hide='interface == undefined || interface.length == 0'>
         <!--<i class="fa fa-sign-out fa-lg fa-rotate-90" title="Add Output"></i>-->
         <span style="font-weight: 900; font-size: large" title="Add Output"> O </span>
     </button>
 
-    <button class="button pull-right button-input" ng-click="newInterface('Input')" >
+    <button class="button pull-right button-input" ng-click="newInterface('Input')" ng-hide='interface == undefined || interface.length == 0'>
         <!--<i class="fa fa-sign-in fa-lg fa-rotate-90" title="Add Input"></i>-->
         <span style="font-weight: 900; font-size: large" title="Add Input" >I</span>
     </button>

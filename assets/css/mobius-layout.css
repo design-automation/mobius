@@ -57,6 +57,10 @@ a:focus{
     display: block; 
 }
 
+.monitor{
+    padding-left: 16px;
+    overflow-y: auto;
+}
 
 
  /*css fix for dropdown selects*/

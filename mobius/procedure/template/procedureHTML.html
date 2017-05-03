@@ -1,93 +1,92 @@
+<!-- in use -->
+
 <div class="code-area">
 
                 <!--header -->
 
                 <!--<div ui-layout-container >-->
-
-                <!-- header -->
-                <div ng-if = "currentNodeName">
-                    <div class="doormat" ng-dblclick="showProcedure()">
-                        <div>
-                            {{currentNodeType}} {{currentNodeVersion}}
-                        </div>
-
-                        <!--<div ng-if="currentIsSubgraph">-->
-                            <!--<button class="button"-->
-                                    <!--id="subgraphToggle"-->
-                                    <!--ng-click="subgraphToggle()">-->
-                                <!--{{toggleTo}}-->
-                            <!--</button>-->
-                        <!--</div>-->
-                    </div>
-                </div>
-
                 <!-- generic header incase nothing is selected / nothing is lodaed -->
                 <div ng-if = "!currentNodeName">
-                    <div class="doormat" ng-dblclick="showProcedure()">
+                    <div class="doormat">
                         <div>Procedure Panel</div>
                     </div>
                 </div>
 
-                <div class='procedure-buttons' style='display: inline-block;'>
+                <!-- header -->
+                <div ng-if = "currentNodeName" class="doormat"> <!--  ng-dblclick="showProcedure()" -->
+                    <div>
+                        {{currentNodeType}} {{currentNodeVersion}}
+                    </div>
+
+                    <!--<div ng-if="currentIsSubgraph">-->
+                        <!--<button class="button"-->
+                                <!--id="subgraphToggle"-->
+                                <!--ng-click="subgraphToggle()">-->
+                            <!--{{toggleTo}}-->
+                        <!--</button>-->
+                    <!--</div>-->
+
                     <!-- buttons -->
-                    <button class="button procedure-button"
-                            dropdown-toggle="dropdown">
-                        <i class="icon-function fa-lg" title="Add Function"></i>
-                        <ui-select ng-model="method.selected"
-                                   class="dropdown-menu"
-                                   on-select="newItem('Action',$select.selected)"
-                                   style="min-width: 130px!important;">
-                            <ui-select-match placeholder="Search" ></ui-select-match>
-                            <ui-select-choices
-                                    style="min-width: 130px!important;"
-                                    id="choices"
-                                    refresh="info($select.search)"
-                                    refresh-delay="0"
-                                    group-by="'category'"
-                                    repeat="method in methods | propsFilter: {name: $select.search, category: $select.search}">
-                                <span ng-bind-html="method.name| highlight: $select.search" ></span>
-                            </ui-select-choices>
-                        </ui-select>
+                    <div class='procedure-buttons' style='position: absolute; right: 0px; top: 0px;'>
+                            <button class="button procedure-button"
+                                    dropdown-toggle="dropdown">
+                                <i class="icon-function fa-lg" title="Add Function"></i>
+                                <ui-select ng-model="method.selected"
+                                           class="dropdown-menu"
+                                           on-select="newItem('Action',$select.selected)"
+                                           style="min-width: 130px!important;">
+                                    <ui-select-match placeholder="Search" ></ui-select-match>
+                                    <ui-select-choices
+                                            style="min-width: 130px!important;"
+                                            id="choices"
+                                            refresh="info($select.search)"
+                                            refresh-delay="0"
+                                            group-by="'category'"
+                                            repeat="method in methods | propsFilter: {name: $select.search, category: $select.search}">
+                                        <span ng-bind-html="method.name| highlight: $select.search" ></span>
+                                    </ui-select-choices>
+                                </ui-select>
 
-                        <ul class="dropdown-menu action-dropdown narrow-menu" ng-if="toggleDropdown"
-                            style="min-width: 130px!important;">
-                            <li class="dropdown-submenu" ng-repeat="cate in methodList">
-                                <a>{{cate.category}}</a>
-                                <ul class="dropdown-menu narrow-menu" style="min-width: 130px!important;">
-                                    <li ng-repeat="method in cate.methods">
+                                <ul class="dropdown-menu action-dropdown narrow-menu" ng-if="toggleDropdown"
+                                    style="min-width: 130px!important;">
+                                    <li class="dropdown-submenu" ng-repeat="cate in methodList">
+                                        <a>{{cate.category}}</a>
+                                        <ul class="dropdown-menu narrow-menu" style="min-width: 130px!important;">
+                                            <li ng-repeat="method in cate.methods">
 
-                                        <a ng-click="newItem('Action',{category:cate.category,
-                                                                       name:method.name,
-                                                                       return:method.return})">
-                                            <!--<md-tooltip md-direction="left" style="z-index:9999;">-->
-                                                <!--{{method.name}}-->
-                                            <!--</md-tooltip>-->
-                                            {{method.name}}
-                                        </a>
+                                                <a ng-click="newItem('Action',{category:cate.category,
+                                                                               name:method.name,
+                                                                               return:method.return})">
+                                                    <!--<md-tooltip md-direction="left" style="z-index:9999;">-->
+                                                        <!--{{method.name}}-->
+                                                    <!--</md-tooltip>-->
+                                                    {{method.name}}
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </li>
                                 </ul>
-                            </li>
-                        </ul>
-                    </button>
+                            </button>
 
 
-                    <button class="button procedure-button" dropdown-toggle="dropdown">
-                        <i class="fa fa-retweet fa-lg"  title="Add Control"></i>
+                            <button class="button procedure-button" dropdown-toggle="dropdown">
+                                <i class="fa fa-retweet fa-lg"  title="Add Control"></i>
 
-                        <ul class="dropdown-menu  narrow-menu" ng-if="toggleDropdown"
-                            style="min-width: 130px!important;margin-top:px !important;">
-                            <li  ng-repeat="controlType in controlTypes">
-                                <a ng-click="newItem('Control',controlType)">{{controlType}}</a>
-                            </li>
-                        </ul>
+                                <ul class="dropdown-menu  narrow-menu" ng-if="toggleDropdown"
+                                    style="min-width: 130px!important;margin-top:px !important;">
+                                    <li  ng-repeat="controlType in controlTypes">
+                                        <a ng-click="newItem('Control',controlType)">{{controlType}}</a>
+                                    </li>
+                                </ul>
 
-                    </button>
+                            </button>
 
-                    <button class="button procedure-button" ng-click="newItem('Data')">
-                        <i class="icon-variable fa-lg" title="Add Variable"></i>
-                    </button>
+                            <button class="button procedure-button" ng-click="newItem('Data')">
+                                <i class="icon-variable fa-lg" title="Add Variable"></i>
+                            </button>
+                    </div>
+
                 </div>
-
 
                 <!--<div id="argument-area">-->
                     <!--<div ui-tree id="tree-root-parameter">-->
@@ -101,7 +100,7 @@
                 <!--</div>-->
 
                 <!-- Main Procedure -->
-                <div class="tabArea" id="procedure-area">
+                <div class="tabArea" id="procedure-area" style='overflow-y: auto;'>
                     
                     <!-- <div style="height: 6px;position: relative;background-color:#eaeaea" >
                         <a class="fa fa-angle-up"

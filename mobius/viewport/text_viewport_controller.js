@@ -8,7 +8,7 @@ mobius.controller('textCtrl',
             $scope.nodeIndex = '';
 
             $scope.$watch(function () { return generateCode.getOutputGeom(); }, function () {
-                $scope.outputGeom = generateCode.getOutputGeom();
+                $scope.outputGeom = generateCode.getOutputGeom(); 
             });
 
             $scope.chartViewModel = generateCode.getChartViewModel();

@@ -22,7 +22,7 @@
 }
 
 
-#interface {
+.interface {
     position: absolute;
     display: block;
     background-color: #ffffff !important;

@@ -26,10 +26,9 @@ mobius.directive('paramDisplay', [ 'hotkeys', 'executeService', 'generateCode', 
                         setTimeout(function(){
                             executeService.execute($scope.javascriptCode+ '\n return dataConversion(geomList);')
                                 .then(function (data) {
-                                    console.log('running done');
                                     //document.getElementById('waiting').style.display='none';
                                     $scope.showSpinner = false;
-                                    $scope.outputs = data;
+                                    $scope.outputs = data; console.log(generateCode);
                                     generateCode.clearError();
                                     consoleMsg.runtimeMsg();
                                 }, function(msg){
@@ -41,8 +40,6 @@ mobius.directive('paramDisplay', [ 'hotkeys', 'executeService', 'generateCode', 
                                 })
                                 .then(function() {
                                     //display in the viewport according to node selection
-                                    console.log('display');
-
                                     var scope = angular.element(document.getElementById('threeViewport')).scope();
                                     // var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
 

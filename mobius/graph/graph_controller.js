@@ -206,50 +206,50 @@ mobius.controller(  'graphCtrl',
                  // todo input/output port configuration
              }
 
-             function displayGeometry(){
-                 var selectedNodes = $scope.chartViewModel.getSelectedNodes(); 
+            function displayGeometry(){
+                var selectedNodes = $scope.chartViewModel.getSelectedNodes(); 
 
-                 var scope = angular.element(document.getElementById('threeViewport')).scope();
-                 var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
+                var scope = angular.element(document.getElementById('threeViewport')).scope();
+                var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
 
-                 scope.viewportControl.refreshView();
-                 scopeTopo.topoViewportControl.refreshView();
+                scope.viewportControl.refreshView();
+                scopeTopo.topoViewportControl.refreshView();
 
-                 for(var i = 0; i < $scope.outputGeom.length; i++){
-                     for(var j =0; j < selectedNodes.length; j++){
-                         if($scope.outputGeom[i].name === selectedNodes[j].data.name){
-                             for(var i = 0; i < $scope.outputGeom.length; i++){
-                                 for(var j =0; j < selectedNodes.length; j++){
-                                     if($scope.outputGeom[i].name === selectedNodes[j].data.name){
-                                         scope.viewportControl.addGeometryToScene($scope.outputGeom[i].geom);
-                                         var p = 0;
-                                         scope.viewportControl.geometryData = {};
+                for(var i = 0; i < $scope.outputGeom.length; i++){
+                 for(var j =0; j < selectedNodes.length; j++){
+                     if($scope.outputGeom[i].name === selectedNodes[j].data.name){
+                         for(var i = 0; i < $scope.outputGeom.length; i++){
+                             for(var j =0; j < selectedNodes.length; j++){
+                                 if($scope.outputGeom[i].name === selectedNodes[j].data.name){
+                                     scope.viewportControl.addGeometryToScene($scope.outputGeom[i].geom);
+                                     var p = 0;
+                                     scope.viewportControl.geometryData = {};
 
-                                         for(var k in $scope.outputGeom[i].value){
-                                             // store selected node's output connector name for data table display
-                                             if(k !== 'geomList'){
-                                                 scope.viewportControl.geometryData[k] = [];
-                                             }
-
-                                             if($scope.outputGeom[i].value[k] !== undefined){
-                                                 scope.viewportControl.addDataToScene($scope.outputGeom[i].value[k],
-                                                     $scope.outputGeom[i].geom,
-                                                     $scope.outputGeom[i].geomData[p],k)
-
-                                                 scopeTopo.topoViewportControl.addGeometryToScene($scope.outputGeom[i].value[k],
-                                                     $scope.outputGeom[i].topo[p]);
-                                             }
-                                             p++;
+                                     for(var k in $scope.outputGeom[i].value){
+                                         // store selected node's output connector name for data table display
+                                         if(k !== 'geomList'){
+                                             scope.viewportControl.geometryData[k] = [];
                                          }
+
+                                         if($scope.outputGeom[i].value[k] !== undefined){
+                                             scope.viewportControl.addDataToScene($scope.outputGeom[i].value[k],
+                                                 $scope.outputGeom[i].geom,
+                                                 $scope.outputGeom[i].geomData[p],k)
+
+                                             scopeTopo.topoViewportControl.addGeometryToScene($scope.outputGeom[i].value[k],
+                                                 $scope.outputGeom[i].topo[p]);
+                                         }
+                                         p++;
                                      }
                                  }
                              }
                          }
                      }
                  }
-                 $rootScope.$broadcast('Update Datatable');
+                }
+                $rootScope.$broadcast('Update Datatable');
 
-             }
+            }
 
         });
 

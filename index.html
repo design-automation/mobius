@@ -708,7 +708,7 @@
 
                             
                                     <!-- pan & zoom field -->
-                                    <div class='view-holder' ui-layout-container size="{{3*graphHeight/4}}px" id="a" mouse-capture min-size="32px">
+                                    <div class='view-holder monitor' ui-layout-container size="{{3*graphHeight/4}}px" id="a" mouse-capture min-size="32px">
                                          <graph-display></graph-display>
                                     </div>
 
@@ -717,7 +717,7 @@
 
 
                         <!--console-->
-                        <div ui-layout-container size="{{consoleHeight}}px" class="view-holder" min-size="32px">
+                        <div ui-layout-container size="{{consoleHeight}}px" class="view-holder monitor" min-size="32px">
                             <console></console>
                         </div>
 
@@ -734,11 +734,11 @@
 
                         <div ui-layout="{ flow : 'row', dividerSize:'1',disableToggle:true}" style="padding-left: 16px;">
 
-                            <div ui-layout-container overflow-y: auto;"> 
+                            <div ui-layout-container min-size="32px" class='monitor'> 
                                  <input-designer id='interface'></input-designer>
                             </div>
 
-                            <div ui-layout-container style="padding-left: 16px; overflow-y: auto;">
+                            <div ui-layout-container min-size="32px" class='monitor'>
                                 <procedure-display></procedure-display>
                             </div>
 

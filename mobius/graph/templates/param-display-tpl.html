@@ -5,6 +5,7 @@
     <button class="button"
             ng-click="run()"
             style="outline: none!important; float:right;"
+            ng-hide='interface == undefined || interface.length == 0'
             title="Run program">
         <i class="fa fa-play"></i>
     </button>
@@ -30,3 +31,4 @@
 </div>
 
 </span>
+
