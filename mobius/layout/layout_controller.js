@@ -28,7 +28,6 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
 
 
         // templates not in use
-
         $scope.showGraph = function(){
             if($scope.graphHeight !== $scope.height - 150){
                 $scope.graphHeight = ($scope.height -  150);
@@ -38,8 +37,6 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
                 $scope.consoleHeight = 150;
             }
         };
-
-        //$scope.viewerHeight = $scope.height - 150;
 
         // console and graph are tied together
         $scope.showConsole = function(){

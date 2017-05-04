@@ -1202,6 +1202,8 @@ mobius.directive('viewport', function factory() {
                     onchange();
                 }
             };
+
+
         }
     }
 });

@@ -1,23 +1,27 @@
-<div class="doormat" ng-dblclick="showConsole()">
+<div class="doormat">
     <div style="display: inline-block;">Input Designer</div>
 
-    <button class="button pull-right button-output" ng-click="newInterface('Output')" ng-hide='interface == undefined || interface.length == 0'>
+    <!-- add input / output buttons -->
+    <button class="button pull-right button-output" ng-click="newInterface('Output')" ng-show='nodeIndex!=undefined'>
         <!--<i class="fa fa-sign-out fa-lg fa-rotate-90" title="Add Output"></i>-->
         <span style="font-weight: 900; font-size: large" title="Add Output"> O </span>
     </button>
 
-    <button class="button pull-right button-input" ng-click="newInterface('Input')" ng-hide='interface == undefined || interface.length == 0'>
+    <button class="button pull-right button-input" ng-click="newInterface('Input')" ng-show='nodeIndex!=undefined'>
         <!--<i class="fa fa-sign-in fa-lg fa-rotate-90" title="Add Input"></i>-->
         <span style="font-weight: 900; font-size: large" title="Add Input" >I</span>
     </button>
+ 
  </div>
 
 <!-- interface parameters -->
 <span id="interface" oncontextmenu="return false;" style='line-height: 32px; font-size: 12px;'>
     
-    <div ng-show='interface == undefined || interface.length == 0' style='line-height: 32px; font-size: 12px;'><center>&lt; node-input-designer &gt;</center></div>
+    <div ng-hide='nodeIndex != undefined' style='line-height: 32px; font-size: 12px;'>
+        <center>&lt; No Node Selected &gt;</center>
+    </div>
     
-    <div ng-hide='interface == undefined || interface.length == 0'  
+    <div ng-show='nodeIndex != undefined'  
             ui-tree id="tree-root-parameter" 
             data-nodrop-enabled="true" 
             oncontextmenu="return false;" 
@@ -25,7 +29,7 @@
         <div ui-tree-nodes="" ng-model="interface">
             <div ng-repeat="node in interface"
                  ui-tree-node
-                 ng-include="'mobius/procedure/template/parameter_template.html'">
+                 ng-include="'mobius/ui-components/parameter_designer/parameter_template.html'">
             </div>
         </div>
     </div>

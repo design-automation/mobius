@@ -31,6 +31,8 @@ mobius.controller(  'graphCtrl',
             description: 'Delete selected node in the graph',
             callback: function(event,hotkey) {
                 event.preventDefault();
+
+                // fixme : disable deleting node inputs/outputs
                 $scope.$broadcast("deleteSelected");
             }
         });

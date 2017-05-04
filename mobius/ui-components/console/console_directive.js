@@ -1,10 +1,10 @@
 //
 //  display the parameters of the selected node
 //
-mobius.directive('console', [ 'hotkeys', 'executeService', 'generateCode', 'consoleMsg', '$rootScope', function(hotkeys, executeService, generateCode, consoleMsg, $rootScope) {
-  return {
+mobius.directive('console', [ 'consoleMsg', function(consoleMsg) {
+    
+    return {
         restrict: 'E', 
-        controller: 'consoleCtrl',
         template: '<div class="doormat" ng-dblclick="showConsole()">\
                                     <div style="display: inline-block;">Console</div>\
                                     <button class="button"\
@@ -16,6 +16,12 @@ mobius.directive('console', [ 'hotkeys', 'executeService', 'generateCode', 'cons
                                     </button>\
                                  </div>\
                                  <div class="console" id ="log">\
-                        </div>'
+                        </div>',
+        link: function ($scope, element, attrs) {
+            $scope.clearConsole = function(){
+                document.getElementById('log').innerHTML = '';
+            }
+        }
     }
+
 }]);
