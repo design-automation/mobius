@@ -130,7 +130,7 @@ mobius.controller('newNodeCtrl',[
                         type = newTypeName;
                     }
 
-                    addNode(type,false);
+                    addNode(type,false); console.log("adding node");
                 });
             }
             else if(type === 'create new sub-graph'){

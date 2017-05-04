@@ -57,7 +57,6 @@ mobius.controller(  'graphCtrl',
         // watch chartViewModel.data instead of chartViewModel to prevent stack limit exceeded
         $scope.chartViewModel = generateCode.getChartViewModel();
 
-
         // fixme confirm socket usage
         $scope.$watch(function(){return generateCode.getChartViewModel()},function(){
             $scope.dataList = generateCode.getDataList();

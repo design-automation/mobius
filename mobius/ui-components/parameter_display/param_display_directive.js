@@ -4,7 +4,7 @@
 mobius.directive('paramDisplay', [ 'hotkeys', 'executeService', 'generateCode', 'consoleMsg', '$rootScope', function(hotkeys, executeService, generateCode, consoleMsg, $rootScope) {
   return {
         restrict: 'E', 
-        templateUrl: 'mobius/graph/templates/param-display-tpl.html',
+        templateUrl: 'mobius/ui-components/parameter_display/param-display-tpl.html',
         link: function ($scope, element, attrs) {
                     
                     // shortcut keys

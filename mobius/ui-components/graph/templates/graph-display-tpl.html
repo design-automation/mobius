@@ -1,7 +1,8 @@
-<!-- graph header & breadcrumbs-->
 <div class="doormat" ng-dblclick="showGraph()">
+        
         <div style="display: inline-block; cursor: zoom-out;" ng-click="goRoot()"> Graph </div>
 
+        <!-- incase subgraph - displays breadcrumbs -->
         <span ng-repeat="graph in graphList"
               style="padding: 0 5px;
                     cursor: default"
@@ -18,12 +19,6 @@
                 title="Extend Canvas">
             <i class="fa fa-arrows-alt" aria-hidden="true"></i>
         </button>
-</div>
-
-
-
-<div ng-show="chartViewModel.data.nodes.length==0" style="z-index: 10; margin: 10px 30px; z-index: 10;">
-        Oops... Looks like there is no file loaded. <br> Double click to create a node or load an example from the file menu.
 </div>
 
 <div ng-controller="znpController" class="znpController">

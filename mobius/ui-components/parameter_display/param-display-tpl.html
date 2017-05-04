@@ -24,7 +24,7 @@
     <div ui-tree-nodes="" ng-model="interface">
         <div ng-repeat="node in interface | filter: {connected: false} as inputs"
              ui-tree-node
-             ng-include="'mobius/procedure/template/interface_template.html'">
+             ng-include="'mobius/ui-components/parameter_display/interface_template.html'">
         </div>
         <div ng-if='inputs.length==0'><center>This node needs no inputs</center></div>
     </div>
