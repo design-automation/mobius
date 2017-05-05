@@ -93,7 +93,7 @@ mobius.directive('viziViewport', function factoryVizi() {
 
                 var world = VIZI.world('viziContainer', {
                     skybox: true,
-                    postProcessing: true
+                    postProcessing: false
                 }).setView(coords);
                 // Set position of sun in sky
                 world._environment._skybox.setInclination(0.3);
@@ -107,235 +107,381 @@ mobius.directive('viziViewport', function factoryVizi() {
                     console.log('Workers ready');
 
                 VIZI.imageTileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
-                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+                    attribution: ''//'&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
                 }).addTo(world);
 
                 var jsondata = JSON.parse(geomObject);
+                // //
+                // // //building layer
+                // VIZI.geoJSONLayer('http://localhost:63342/mobius/examples/Existing Buildings_3857.json', {
+                //     output: true,
+                //     interactive: false,
+                //     style: function (feature) {
                 //
-                // //building layer
-                VIZI.geoJSONLayer('http://localhost:63342/mobius/examples/Existing Buildings_3857.json', {
-                    output: true,
-                    interactive: false,
-                    style: function (feature) {
+                //
+                //         if (feature.properties.height) {
+                //             height = feature.properties.height;
+                //         } else {
+                //             height = 10 + Math.random() * 10;
+                //         }
+                //         if (feature.geometry.type === 'Polygon') {
+                //             for (var i = 0, l = feature.geometry.coordinates.length; i < l; i++) {
+                //                 for (var j = 0, m = feature.geometry.coordinates[i].length; j < m; j++) {
+                //
+                //                     var c = TransCoord(feature.geometry.coordinates[i][j][0], feature.geometry.coordinates[i][j][1]);
+                //                     feature.geometry.coordinates[i][j][0] = c.x * 57.29687;
+                //                     feature.geometry.coordinates[i][j][1] = c.y * 57.29687;
+                //                 }
+                //             }
+                //         } else if (feature.geometry.type === 'MultiPolygon') {
+                //             for (var i = 0, l = feature.geometry.coordinates.length; i < l; i++) {
+                //                 for (var j = 0, m = feature.geometry.coordinates[i].length; j < m; j++) {
+                //                     for (var k = 0, n = feature.geometry.coordinates[i][j].length; k < n; k++) {
+                //                         var c = TransCoord(feature.geometry.coordinates[i][j][k][0], feature.geometry.coordinates[i][j][k][1]);
+                //                         feature.geometry.coordinates[i][j][k][0] = c.x * 57.29687;
+                //                         feature.geometry.coordinates[i][j][k][1] = c.y * 57.29687;
+                //                     }
+                //                 }
+                //             }
+                //         }
+                //
+                //         return {
+                //             height: height
+                //
+                //         };
+                //
+                //     },
+                //     filter: function(feature) {
+                //         // Don't show points
+                //         return feature.geometry.type !== 'Point';
+                //     },
+                //     onEachFeature: function(feature, layer) {
+                //         layer.on('click', function(layer, point2d, point3d, intersects) {
+                //             var id = layer.feature.properties.HOUSE_BLK_;
+                //
+                //             console.log(id + ': ', layer, point2d, point3d, intersects);
+                //         });
+                //     }
+                //
+                // }).addTo(world);
+                //
+                // // openspace later
+                // VIZI.geoJSONLayer('http://localhost:63342/mobius/examples/Existing Open Space_3857.json', {
+                //     output: true,
+                //     interactive: false,
+                //     style: function (feature) {
+                //
+                //
+                //         if (feature.properties.height) {
+                //             height = feature.properties.height;
+                //         } else {
+                //             height = 10 + Math.random() * 10;
+                //         }
+                //         if (feature.geometry.type === 'Polygon') {
+                //             for (var i = 0, l = feature.geometry.coordinates.length; i < l; i++) {
+                //                 for (var j = 0, m = feature.geometry.coordinates[i].length; j < m; j++) {
+                //
+                //                     var c = TransCoord(feature.geometry.coordinates[i][j][0], feature.geometry.coordinates[i][j][1]);
+                //                     feature.geometry.coordinates[i][j][0] = c.x * 57.29687;
+                //                     feature.geometry.coordinates[i][j][1] = c.y * 57.29687;
+                //                 }
+                //             }
+                //         } else if (feature.geometry.type === 'MultiPolygon') {
+                //             for (var i = 0, l = feature.geometry.coordinates.length; i < l; i++) {
+                //                 for (var j = 0, m = feature.geometry.coordinates[i].length; j < m; j++) {
+                //                     for (var k = 0, n = feature.geometry.coordinates[i][j].length; k < n; k++) {
+                //                         var c = TransCoord(feature.geometry.coordinates[i][j][k][0], feature.geometry.coordinates[i][j][k][1]);
+                //                         feature.geometry.coordinates[i][j][k][0] = c.x * 57.29687;
+                //                         feature.geometry.coordinates[i][j][k][1] = c.y * 57.29687;
+                //                     }
+                //                 }
+                //             }
+                //         }
+                //
+                //         return {
+                //             height: height,
+                //             color: '#09f72e'
+                //         };
+                //
+                //     }
+                //
+                // }).addTo(world);
+                //
+                // //road layer
+                // VIZI.geoJSONLayer('http://localhost:63342/mobius/examples/Existing Roads_3857.json', {
+                //     output: true,
+                //     interactive: false,
+                //     style: function (feature) {
+                //
+                //         if (feature.geometry.type === 'LineString') {
+                //             for (var i = 0, l = feature.geometry.coordinates.length; i < l; i++) {
+                //                 var c = TransCoord(feature.geometry.coordinates[i][0], feature.geometry.coordinates[i][1]);
+                //                 feature.geometry.coordinates[i][0] = c.x * 57.29687;
+                //                 feature.geometry.coordinates[i][1] = c.y * 57.29687;
+                //
+                //             }
+                //         } else if (feature.geometry.type === 'MultiLineString') {
+                //             for (var i = 0, l = feature.geometry.coordinates.length; i < l; i++) {
+                //                 for (var j = 0, m = feature.geometry.coordinates[i].length; j < m; j++) {
+                //                     for (var k = 0, n = feature.geometry.coordinates[i][j].length; k < n; k++) {
+                //                         var c = TransCoord(feature.geometry.coordinates[i][j][k][0], feature.geometry.coordinates[i][j][k][1]);
+                //                         feature.geometry.coordinates[i][j][k][0] = c.x * 57.29687;
+                //                         feature.geometry.coordinates[i][j][k][1] = c.y * 57.29687;
+                //                     }
+                //                 }
+                //             }
+                //         }
+                //
+                //         return {
+                //             lineColor: '#f7c616',
+                //             lineWidth: 1,
+                //             lineTransparent: true,
+                //             lineOpacity: 0.2,
+                //             lineBlending: THREE.AdditiveBlending,
+                //             lineRenderOrder: 2
+                //         };
+                //
+                //     }
+                //
+                // }).addTo(world);
+                //
+                // // station later
+                // VIZI.geoJSONLayer('http://localhost:63342/mobius/examples/Existing MRT Station_3857.json', {
+                //     output: true,
+                //     interactive: false,
+                //     style: function (feature) {
+                //
+                //
+                //         if (feature.properties.height) {
+                //             height = feature.properties.height;
+                //         } else {
+                //             height = 10 + Math.random() * 10;
+                //         }
+                //         if (feature.geometry.type === 'Polygon') {
+                //             for (var i = 0, l = feature.geometry.coordinates.length; i < l; i++) {
+                //                 for (var j = 0, m = feature.geometry.coordinates[i].length; j < m; j++) {
+                //
+                //                     var c = TransCoord(feature.geometry.coordinates[i][j][0], feature.geometry.coordinates[i][j][1]);
+                //                     feature.geometry.coordinates[i][j][0] = c.x * 57.29687;
+                //                     feature.geometry.coordinates[i][j][1] = c.y * 57.29687;
+                //                 }
+                //             }
+                //         } else if (feature.geometry.type === 'MultiPolygon') {
+                //             for (var i = 0, l = feature.geometry.coordinates.length; i < l; i++) {
+                //                 for (var j = 0, m = feature.geometry.coordinates[i].length; j < m; j++) {
+                //                     for (var k = 0, n = feature.geometry.coordinates[i][j].length; k < n; k++) {
+                //                         var c = TransCoord(feature.geometry.coordinates[i][j][k][0], feature.geometry.coordinates[i][j][k][1]);
+                //                         feature.geometry.coordinates[i][j][k][0] = c.x * 57.29687;
+                //                         feature.geometry.coordinates[i][j][k][1] = c.y * 57.29687;
+                //                     }
+                //                 }
+                //             }
+                //         }
+                //
+                //         return {
+                //             height: height,
+                //             color: '#0412f7'
+                //         };
+                //
+                //     }
+                //
+                // }).addTo(world);
+                //
+                // //mrt line layer
+                // VIZI.geoJSONLayer('http://localhost:63342/mobius/examples/Existing MRT Line_3857.json', {
+                //     output: true,
+                //     interactive: false,
+                //     style: function (feature) {
+                //
+                //         if (feature.geometry.type === 'LineString') {
+                //             for (var i = 0, l = feature.geometry.coordinates.length; i < l; i++) {
+                //                 var c = TransCoord(feature.geometry.coordinates[i][0], feature.geometry.coordinates[i][1]);
+                //                 feature.geometry.coordinates[i][0] = c.x * 57.29687;
+                //                 feature.geometry.coordinates[i][1] = c.y * 57.29687;
+                //
+                //             }
+                //         } else if (feature.geometry.type === 'MultiLineString') {
+                //             for (var i = 0, l = feature.geometry.coordinates.length; i < l; i++) {
+                //                 for (var j = 0, m = feature.geometry.coordinates[i].length; j < m; j++) {
+                //                     for (var k = 0, n = feature.geometry.coordinates[i][j].length; k < n; k++) {
+                //                         var c = TransCoord(feature.geometry.coordinates[i][j][k][0], feature.geometry.coordinates[i][j][k][1]);
+                //                         feature.geometry.coordinates[i][j][k][0] = c.x * 57.29687;
+                //                         feature.geometry.coordinates[i][j][k][1] = c.y * 57.29687;
+                //                     }
+                //                 }
+                //             }
+                //         }
+                //
+                //         return {
+                //             lineColor: '#08f794',
+                //             lineWidth: 1,
+                //             lineTransparent: true,
+                //             lineOpacity: 0.2,
+                //             lineBlending: THREE.AdditiveBlending,
+                //             lineRenderOrder: 2
+                //         };
+                //
+                //     }
+                //
+                // }).addTo(world);
+                //
+                // //bus point layer
+                // VIZI.geoJSONLayer('http://localhost:63342/mobius/examples/Existing Bus Stops_3857.json', {
+                //     output: true,
+                //     interactive: false,
+                //     style: function (feature) {
+                //
+                //         if (feature.geometry.type === 'Point') {
+                //             var c = TransCoord(feature.geometry.coordinates[0], feature.geometry.coordinates[1]);
+                //             feature.geometry.coordinates[0] = c.x * 57.29687;
+                //             feature.geometry.coordinates[1] = c.y * 57.29687;
+                //
+                //         }
+                //         return {
+                //             pointColor: '#08f794',
+                //         };
+                //     },
+                //     pointGeometry: function (feature) {
+                //         var geometry = new THREE.SphereGeometry(4, 9, 9);
+                //         return geometry;
+                //     }
+                // }).addTo(world);
+                //
+                // //for whole singapore buildings
+                // VIZI.geoJSONLayer('http://localhost:63342/mobius/examples/Existing Buildings_3857.json', {
+                //         output: true,
+                //         interactive: false,
+                //         style: function (feature) {
+                //
+                //
+                //             if (feature.properties.height) {
+                //                 height = feature.properties.height;
+                //             } else {
+                //                 height = 10 + Math.random() * 10;
+                //             }
+                //             if (feature.geometry.type === 'rings') {
+                //                 for (var i = 0, l = feature.geometry.coordinates.length; i < l; i++) {
+                //                     for (var j = 0, m = feature.geometry.coordinates[i].length; j < m; j++) {
+                //
+                //                         var c = TransCoord(feature.geometry.coordinates[i][j][0], feature.geometry.coordinates[i][j][1]);
+                //                         feature.geometry.coordinates[i][j][0] = c.x * 57.29687;
+                //                         feature.geometry.coordinates[i][j][1] = c.y * 57.29687;
+                //                     }
+                //                 }
+                //             } else if (feature.geometry.type === 'MultiPolygon') {
+                //                 for (var i = 0, l = feature.geometry.coordinates.length; i < l; i++) {
+                //                     for (var j = 0, m = feature.geometry.coordinates[i].length; j < m; j++) {
+                //                         for (var k = 0, n = feature.geometry.coordinates[i][j].length; k < n; k++) {
+                //                             var c = TransCoord(feature.geometry.coordinates[i][j][k][0], feature.geometry.coordinates[i][j][k][1]);
+                //                             feature.geometry.coordinates[i][j][k][0] = c.x * 57.29687;
+                //                             feature.geometry.coordinates[i][j][k][1] = c.y * 57.29687;
+                //                         }
+                //                     }
+                //                 }
+                //             }
+                //
+                //             return {
+                //                 height: height
+                //
+                //             };
+                //
+                //         },
+                //         filter: function(feature) {
+                //             // Don't show points
+                //             return feature.geometry.type !== 'Point';
+                //         },
+                //         onEachFeature: function(feature, layer) {
+                //             layer.on('click', function(layer, point2d, point3d, intersects) {
+                //                 var id = layer.feature.properties.HOUSE_BLK_;
+                //
+                //                 console.log(id + ': ', layer, point2d, point3d, intersects);
+                //             });
+                //         }
+                //
+                //     }).addTo(world);
 
+                //for whole singapore roads
+                VIZI.geoJSONLayer('http://localhost:63342/mobius/examples/georoad-4326.json', {
+                        output: true,
+                        interactive: false,
+                        style: function (feature) {
 
-                        if (feature.properties.height) {
-                            height = feature.properties.height;
-                        } else {
-                            height = 10 + Math.random() * 10;
+                            // if (feature.geometry.type === 'LineString') {
+                            //     for (var i = 0, l = feature.geometry.coordinates.length; i < l; i++) {
+                            //         var c = TransCoord(feature.geometry.coordinates[i][0], feature.geometry.coordinates[i][1]);
+                            //         feature.geometry.coordinates[i][0] = c.x * 57.29687;
+                            //         feature.geometry.coordinates[i][1] = c.y * 57.29687;
+                            //
+                            //     }
+                            // } else if (feature.geometry.type === 'MultiLineString') {
+                            //     for (var i = 0, l = feature.geometry.coordinates.length; i < l; i++) {
+                            //         for (var j = 0, m = feature.geometry.coordinates[i].length; j < m; j++) {
+                            //             for (var k = 0, n = feature.geometry.coordinates[i][j].length; k < n; k++) {
+                            //                 var c = TransCoord(feature.geometry.coordinates[i][j][k][0], feature.geometry.coordinates[i][j][k][1]);
+                            //                 feature.geometry.coordinates[i][j][k][0] = c.x * 57.29687;
+                            //                 feature.geometry.coordinates[i][j][k][1] = c.y * 57.29687;
+                            //             }
+                            //         }
+                            //     }
+                            // }
+
+                            return {
+                                lineColor: '#f7c616',
+                                lineWidth: 1,
+                                lineTransparent: true,
+                                lineOpacity: 0.2,
+                                lineBlending: THREE.AdditiveBlending,
+                                lineRenderOrder: 2
+                            };
+
                         }
-                        if (feature.geometry.type === 'Polygon') {
-                            for (var i = 0, l = feature.geometry.coordinates.length; i < l; i++) {
-                                for (var j = 0, m = feature.geometry.coordinates[i].length; j < m; j++) {
 
-                                    var c = TransCoord(feature.geometry.coordinates[i][j][0], feature.geometry.coordinates[i][j][1]);
-                                    feature.geometry.coordinates[i][j][0] = c.x * 57.29687;
-                                    feature.geometry.coordinates[i][j][1] = c.y * 57.29687;
-                                }
+                    }).addTo(world);
+
+                //for whole singapore building layer
+                VIZI.geoJSONLayer('http://localhost:63342/mobius/examples/salbuildings.json', {
+                        output: true,
+                        interactive: false,
+                        style: function (feature) {
+
+
+                            if (feature.properties.height) {
+                                height = feature.properties.height;
+                            } else {
+                                height = 10 + Math.random() * 10;
                             }
-                        } else if (feature.geometry.type === 'MultiPolygon') {
-                            for (var i = 0, l = feature.geometry.coordinates.length; i < l; i++) {
-                                for (var j = 0, m = feature.geometry.coordinates[i].length; j < m; j++) {
-                                    for (var k = 0, n = feature.geometry.coordinates[i][j].length; k < n; k++) {
-                                        var c = TransCoord(feature.geometry.coordinates[i][j][k][0], feature.geometry.coordinates[i][j][k][1]);
-                                        feature.geometry.coordinates[i][j][k][0] = c.x * 57.29687;
-                                        feature.geometry.coordinates[i][j][k][1] = c.y * 57.29687;
-                                    }
-                                }
-                            }
+                            // if (feature.geometry.type === 'Polygon') {
+                            //     for (var i = 0, l = feature.geometry.coordinates.length; i < l; i++) {
+                            //         for (var j = 0, m = feature.geometry.coordinates[i].length; j < m; j++) {
+                            //
+                            //             var c = TransCoord(feature.geometry.coordinates[i][j][0], feature.geometry.coordinates[i][j][1]);
+                            //             feature.geometry.coordinates[i][j][0] = c.x * 57.29687;
+                            //             feature.geometry.coordinates[i][j][1] = c.y * 57.29687;
+                            //         }
+                            //     }
+                            // } else if (feature.geometry.type === 'MultiPolygon') {
+                            //     for (var i = 0, l = feature.geometry.coordinates.length; i < l; i++) {
+                            //         for (var j = 0, m = feature.geometry.coordinates[i].length; j < m; j++) {
+                            //             for (var k = 0, n = feature.geometry.coordinates[i][j].length; k < n; k++) {
+                            //                 var c = TransCoord(feature.geometry.coordinates[i][j][k][0], feature.geometry.coordinates[i][j][k][1]);
+                            //                 feature.geometry.coordinates[i][j][k][0] = c.x * 57.29687;
+                            //                 feature.geometry.coordinates[i][j][k][1] = c.y * 57.29687;
+                            //             }
+                            //         }
+                            //     }
+                            // }
+
+                            return {
+                                height: height
+
+                            };
+
+                        },
+                        filter: function(feature) {
+                            // Don't show points
+                            return feature.geometry.type !== 'Point';
                         }
-
-                        return {
-                            height: height
-
-                        };
-
-                    }
-
-                }).addTo(world);
-
-                // openspace later
-                VIZI.geoJSONLayer('http://localhost:63342/mobius/examples/Existing Open Space_3857.json', {
-                    output: true,
-                    interactive: false,
-                    style: function (feature) {
-
-
-                        if (feature.properties.height) {
-                            height = feature.properties.height;
-                        } else {
-                            height = 10 + Math.random() * 10;
-                        }
-                        if (feature.geometry.type === 'Polygon') {
-                            for (var i = 0, l = feature.geometry.coordinates.length; i < l; i++) {
-                                for (var j = 0, m = feature.geometry.coordinates[i].length; j < m; j++) {
-
-                                    var c = TransCoord(feature.geometry.coordinates[i][j][0], feature.geometry.coordinates[i][j][1]);
-                                    feature.geometry.coordinates[i][j][0] = c.x * 57.29687;
-                                    feature.geometry.coordinates[i][j][1] = c.y * 57.29687;
-                                }
-                            }
-                        } else if (feature.geometry.type === 'MultiPolygon') {
-                            for (var i = 0, l = feature.geometry.coordinates.length; i < l; i++) {
-                                for (var j = 0, m = feature.geometry.coordinates[i].length; j < m; j++) {
-                                    for (var k = 0, n = feature.geometry.coordinates[i][j].length; k < n; k++) {
-                                        var c = TransCoord(feature.geometry.coordinates[i][j][k][0], feature.geometry.coordinates[i][j][k][1]);
-                                        feature.geometry.coordinates[i][j][k][0] = c.x * 57.29687;
-                                        feature.geometry.coordinates[i][j][k][1] = c.y * 57.29687;
-                                    }
-                                }
-                            }
-                        }
-
-                        return {
-                            height: height,
-                            color: '#09f72e'
-                        };
-
-                    }
-
-                }).addTo(world);
-
-                //road layer
-                VIZI.geoJSONLayer('http://localhost:63342/mobius/examples/Existing Roads_3857.json', {
-                    output: true,
-                    interactive: false,
-                    style: function (feature) {
-
-                        if (feature.geometry.type === 'LineString') {
-                            for (var i = 0, l = feature.geometry.coordinates.length; i < l; i++) {
-                                var c = TransCoord(feature.geometry.coordinates[i][0], feature.geometry.coordinates[i][1]);
-                                feature.geometry.coordinates[i][0] = c.x * 57.29687;
-                                feature.geometry.coordinates[i][1] = c.y * 57.29687;
-
-                            }
-                        } else if (feature.geometry.type === 'MultiLineString') {
-                            for (var i = 0, l = feature.geometry.coordinates.length; i < l; i++) {
-                                for (var j = 0, m = feature.geometry.coordinates[i].length; j < m; j++) {
-                                    for (var k = 0, n = feature.geometry.coordinates[i][j].length; k < n; k++) {
-                                        var c = TransCoord(feature.geometry.coordinates[i][j][k][0], feature.geometry.coordinates[i][j][k][1]);
-                                        feature.geometry.coordinates[i][j][k][0] = c.x * 57.29687;
-                                        feature.geometry.coordinates[i][j][k][1] = c.y * 57.29687;
-                                    }
-                                }
-                            }
-                        }
-
-                        return {
-                            lineColor: '#f7c616',
-                            lineWidth: 1,
-                            lineTransparent: true,
-                            lineOpacity: 0.2,
-                            lineBlending: THREE.AdditiveBlending,
-                            lineRenderOrder: 2
-                        };
-
-                    }
-
-                }).addTo(world);
-
-                // station later
-                VIZI.geoJSONLayer('http://localhost:63342/mobius/examples/Existing MRT Station_3857.json', {
-                    output: true,
-                    interactive: false,
-                    style: function (feature) {
-
-
-                        if (feature.properties.height) {
-                            height = feature.properties.height;
-                        } else {
-                            height = 10 + Math.random() * 10;
-                        }
-                        if (feature.geometry.type === 'Polygon') {
-                            for (var i = 0, l = feature.geometry.coordinates.length; i < l; i++) {
-                                for (var j = 0, m = feature.geometry.coordinates[i].length; j < m; j++) {
-
-                                    var c = TransCoord(feature.geometry.coordinates[i][j][0], feature.geometry.coordinates[i][j][1]);
-                                    feature.geometry.coordinates[i][j][0] = c.x * 57.29687;
-                                    feature.geometry.coordinates[i][j][1] = c.y * 57.29687;
-                                }
-                            }
-                        } else if (feature.geometry.type === 'MultiPolygon') {
-                            for (var i = 0, l = feature.geometry.coordinates.length; i < l; i++) {
-                                for (var j = 0, m = feature.geometry.coordinates[i].length; j < m; j++) {
-                                    for (var k = 0, n = feature.geometry.coordinates[i][j].length; k < n; k++) {
-                                        var c = TransCoord(feature.geometry.coordinates[i][j][k][0], feature.geometry.coordinates[i][j][k][1]);
-                                        feature.geometry.coordinates[i][j][k][0] = c.x * 57.29687;
-                                        feature.geometry.coordinates[i][j][k][1] = c.y * 57.29687;
-                                    }
-                                }
-                            }
-                        }
-
-                        return {
-                            height: height,
-                            color: '#0412f7'
-                        };
-
-                    }
-
-                }).addTo(world);
-
-                //mrt line layer
-                VIZI.geoJSONLayer('http://localhost:63342/mobius/examples/Existing MRT Line_3857.json', {
-                    output: true,
-                    interactive: false,
-                    style: function (feature) {
-
-                        if (feature.geometry.type === 'LineString') {
-                            for (var i = 0, l = feature.geometry.coordinates.length; i < l; i++) {
-                                var c = TransCoord(feature.geometry.coordinates[i][0], feature.geometry.coordinates[i][1]);
-                                feature.geometry.coordinates[i][0] = c.x * 57.29687;
-                                feature.geometry.coordinates[i][1] = c.y * 57.29687;
-
-                            }
-                        } else if (feature.geometry.type === 'MultiLineString') {
-                            for (var i = 0, l = feature.geometry.coordinates.length; i < l; i++) {
-                                for (var j = 0, m = feature.geometry.coordinates[i].length; j < m; j++) {
-                                    for (var k = 0, n = feature.geometry.coordinates[i][j].length; k < n; k++) {
-                                        var c = TransCoord(feature.geometry.coordinates[i][j][k][0], feature.geometry.coordinates[i][j][k][1]);
-                                        feature.geometry.coordinates[i][j][k][0] = c.x * 57.29687;
-                                        feature.geometry.coordinates[i][j][k][1] = c.y * 57.29687;
-                                    }
-                                }
-                            }
-                        }
-
-                        return {
-                            lineColor: '#08f794',
-                            lineWidth: 1,
-                            lineTransparent: true,
-                            lineOpacity: 0.2,
-                            lineBlending: THREE.AdditiveBlending,
-                            lineRenderOrder: 2
-                        };
-
-                    }
-
-                }).addTo(world);
-
-                //bus point layer
-                VIZI.geoJSONLayer('http://localhost:63342/mobius/examples/Existing Bus Stops_3857.json', {
-                    output: true,
-                    interactive: false,
-                    style: function (feature) {
-
-                        if (feature.geometry.type === 'Point') {
-                            var c = TransCoord(feature.geometry.coordinates[0], feature.geometry.coordinates[1]);
-                            feature.geometry.coordinates[0] = c.x * 57.29687;
-                            feature.geometry.coordinates[1] = c.y * 57.29687;
-
-                        }
-                        return {
-                            pointColor: '#08f794',
-                        };
-                    },
-                    pointGeometry: function (feature) {
-                        var geometry = new THREE.SphereGeometry(4, 9, 9);
-                        return geometry;
-                    }
-                }).addTo(world);
-
+                    }).addTo(world);
                 });
             }
 
