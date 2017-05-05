@@ -9,7 +9,7 @@ angular.module('flowChart', ['dragging'] )
 .directive('flowChart', function() {
   return {
   	restrict: 'E',
-  	templateUrl: "mobius/graph/ui-flowchart/flowchart_template.html",
+  	templateUrl: "mobius/ui-components/graph/ui-flowchart/flowchart_template.html",
   	replace: true,
   	scope: {
   		chart: "=chart",
