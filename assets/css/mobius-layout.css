@@ -45,8 +45,8 @@ a:focus{
     padding-left:20px;
 }
 
-.tree-item:hover{
-    background-color: #ddd;
+.tree-item:hover, .tree-node-content:hover{
+    border-color: #55ADF9;
 }
 
 .procedure-delete-key{
@@ -54,6 +54,10 @@ a:focus{
 }
 
 .tree-item:hover .procedure-delete-key, .tree-item.hover .procedure-delete-key { 
+    display: block; 
+}
+
+.tree-node-content:hover .procedure-delete-key, .tree-node-content.hover .procedure-delete-key { 
     display: block; 
 }
 

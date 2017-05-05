@@ -205,6 +205,11 @@ mobius.directive('paramDesigner', ['$rootScope', 'generateCode', '$filter', 'con
 	            scope.remove();
 	        };
 
+	        $rootScope.$on("add-interface-item", function(event, message){
+	        	if(scope.nodeIndex != undefined) scope.newInterface(message);
+	        	else console.log("no node seletced");
+	        });
+
 			// listen to the graph, when a node is clicked, update the procedure/ interface tabs
 	        $rootScope.$on("nodeIndex", function(event, message) {
 
@@ -244,7 +249,7 @@ mobius.directive('paramDesigner', ['$rootScope', 'generateCode', '$filter', 'con
 
 	        scope.$watch(function(){return generateCode.getChartViewModel()},function(){
 	            scope.interfaceList= generateCode.getInterfaceList();
-	            scope.chartViewModel = generateCode.getChartViewModel();
+	            scope.chartViewModel = generateCode.getChartViewModel();  // needed for ability to add and remove inputs outputs
 	        });
 
     	}

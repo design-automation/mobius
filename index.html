@@ -177,7 +177,7 @@
                 <div class="layout-area" ui-layout="{flow : 'column', dividerSize:'1', disableToggle:true}">
 
                     <!-- left pane - 1 container -->
-                    <div class="view-area" ui-layout-container size={{viewportWidth}} id="viewport">
+                    <div class="view-area" ui-layout-container size={{viewportWidth}} id="viewport" min-size="16px">
                         <!-- threejs editor view port -->
                         <div id="viewportLayout">
                             <div ng-controller="viewportCtrl" id="eyeButton">
@@ -700,7 +700,7 @@
                     </div>
 
                     <!-- central pane with 3 containers -->
-                    <div class="graph-area" ui-layout-container size={{graphWidth}} id="graph">
+                    <div class="graph-area" ui-layout-container size={{graphWidth}} id="graph" min-size="16px">
                          
                         <!-- central split into 3 rows -->
                         <div ui-layout="{ flow : 'row', dividerSize:'1', disableToggle:true}" style="padding-left: 16px;"> 
@@ -724,20 +724,24 @@
                     </div>
 
                     <!-- right pane with 2 container-->
-                    <div class="procedure-area" ui-layout-container size={{procedureWidth}} id="c">
+                    <div class="procedure-area" ui-layout-container size={{procedureWidth}} id="c" min-size="16px">
 
                             <!-- split into 2 rows -->
                             <div ui-layout="{ flow : 'row', dividerSize:'1',disableToggle:true}" style="padding-left: 16px;">
 
-                                <div ui-layout-container min-size="32px" class='monitor'> 
+                                <div ui-layout-container min-size="32px" class='monitor' size = "{{graphHeight/4}}px"> 
                                     <param-designer id='interface'></param-designer>
                                 </div>
 
-                                <div ui-layout-container min-size="32px" class='monitor'>
+                                <div ui-layout-container min-size="32px" class='monitor' size = "{{3*graphHeight/4}}px">
                                     <procedure-display></procedure-display>
                                 </div>
 
                             </div>
+                    </div>
+
+                    <div class="toolkit-area" ui-layout-container size={{toolkitWidth}} id="d" min-size="16px">
+                        <toolkit></toolkit>
                     </div>
                 
                 </div>
@@ -860,6 +864,9 @@
 
     <!-- console -->
     <script src="mobius/ui-components/console/console_directive.js"></script>
+
+    <!-- toolkit directive -->
+    <script src="mobius/ui-components/toolkit/toolkit_directive.js"></script>
 
     <!-- viewport -->
     <script src="mobius/ui-components/viewport/viewport_controller.js"></script>

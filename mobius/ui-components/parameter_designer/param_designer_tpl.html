@@ -1,25 +1,23 @@
 <div class="doormat">
-    <div style="display: inline-block;">Input Designer</div>
+    <div style="display: inline-block;">Node Designer</div>
 
     <!-- add input / output buttons -->
-    <button class="button pull-right button-output" ng-click="newInterface('Output')" ng-show='nodeIndex!=undefined'>
-        <!--<i class="fa fa-sign-out fa-lg fa-rotate-90" title="Add Output"></i>-->
+    <!-- <button class="button pull-right button-output" ng-click="newInterface('Output')" ng-show='nodeIndex!=undefined'>
         <span style="font-weight: 900; font-size: large" title="Add Output"> O </span>
     </button>
 
     <button class="button pull-right button-input" ng-click="newInterface('Input')" ng-show='nodeIndex!=undefined'>
-        <!--<i class="fa fa-sign-in fa-lg fa-rotate-90" title="Add Input"></i>-->
         <span style="font-weight: 900; font-size: large" title="Add Input" >I</span>
-    </button>
+    </button> -->
  
  </div>
 
 <!-- interface parameters -->
 <span id="interface" oncontextmenu="return false;" style='line-height: 32px; font-size: 12px;'>
     
-    <div ng-hide='nodeIndex != undefined' style='line-height: 32px; font-size: 12px;'>
+    <!-- <div ng-hide='nodeIndex != undefined' style='line-height: 32px; font-size: 12px;'>
         <center>&lt; No Node Selected &gt;</center>
-    </div>
+    </div> -->
     
     <div ng-show='nodeIndex != undefined'  
             ui-tree id="tree-root-parameter" 

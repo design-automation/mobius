@@ -12,20 +12,21 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
         $scope.bodySize = document.getElementById('layout').offsetWidth;
 
         // initial layout
-        $scope.viewportSize = $scope.bodySize * 0.40;
-        $scope.graphSize = $scope.bodySize * 0.30;
-        $scope.procedureSize = $scope.bodySize * 0.30;
+        $scope.viewportSize = $scope.bodySize * 0.35;
+        $scope.graphSize = $scope.bodySize * 0.25;
+        $scope.procedureSize = $scope.bodySize * 0.25;
+        $scope.toolkitSize = $scope.bodySize * 0.20;
 
         $scope.viewportWidth = $scope.viewportSize +'px';
         $scope.procedureWidth = $scope.procedureSize +'px';
         $scope.graphWidth = $scope.graphSize +'px';
+        $scope.toolkitWidth = $scope.toolkitSize + 'px';
 
         $scope.consoleHeight = 150;
         $scope.height = document.getElementById('layout').offsetHeight;
         $scope.graphHeight = ($scope.height - $scope.consoleHeight);
         $scope.procedureHeight =  $scope.height;
         //$scope.interfaceHeight = 0;
-
 
         // templates not in use
         $scope.showGraph = function(){
@@ -117,7 +118,7 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
         //     document.getElementById("interface").style.bottom =  document.getElementById('c').offsetHeight + "px";
         // });
 
-        $scope.$on('showProcedure', function(){
+        /*$scope.$on('showProcedure', function(){
             if($scope.graphHeight !== 32 + $scope.interfaceHeight){
                 $scope.graphHeight = 32 + $scope.interfaceHeight ;
                 $scope.procedureHeight = $scope.height - 32-$scope.interfaceHeight;
@@ -125,9 +126,9 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
                 $scope.graphHeight = 33 + $scope.interfaceHeight;
                 $scope.procedureHeight = $scope.height - 33 -$scope.interfaceHeight;
             }
-        });
+        });*/
 
-        $scope.$watch(function(){
+        /*$scope.$watch(function(){
             return document.getElementById('a').offsetHeight;
         }, function(newSize,oldSize){
             if(newSize !== oldSize && oldSize === 32){
@@ -147,5 +148,5 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
             return document.getElementById('layout').offsetHeight;
         }, function(){
             $scope.height = document.getElementById('layout').offsetHeight;
-        })
+        })*/
     }]);

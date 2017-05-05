@@ -81,7 +81,7 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
         // currently selected node ID
         $scope.nodeIndex = '';
 
-        // control types
+/*        // control types
         $scope.controlTypes = ['for each',
                                 'if else'];
 
@@ -151,7 +151,7 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
 
         $scope.$on('moduleChanged', function(evt, args){
             updateModuleFn();
-        });
+        });*/
 
 
         // --- Procedure
@@ -645,7 +645,16 @@ mobius.controller('procedureCtrl',['$scope','$rootScope','$filter','consoleMsg',
                 procedureDiv.scrollTop = procedureDiv.scrollHeight;},0);
         };
 
+        $rootScope.$on("add-procedure-item", function(event, message){
 
+            if(message == undefined)
+                $scope.newItem('Data');
+            else if(message.category == 'Control')
+                $scope.newItem(message.category, message.name);
+            else
+                $scope.newItem('Action', message);
+
+        });
 
         $scope.menuOptions = function (menuOptionText) {
             if(menuOptionText){

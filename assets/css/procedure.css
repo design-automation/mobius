@@ -172,3 +172,37 @@
      top: auto  !important;
      right: auto  !important;
  }
+
+
+
+/// toolkit css
+
+.toolkit{
+    font-size: 12px;
+}
+
+.category-heading{
+    text-align: center;
+    border-top: 2px solid #ddd; 
+    border-bottom: 2px solid #ddd; 
+    padding: 5px 0px;
+}
+
+.main-heading{
+    background-color: #ddd; 
+}
+
+.category-container{
+    padding: 0px 10px;
+}
+
+.category-element{
+    padding: 5px 0px;
+    border-bottom: 1px solid #EAE6E6;
+}
+
+.category-element:hover{
+    background-color:  #EAE6E6;
+    cursor: pointer;
+}
+
