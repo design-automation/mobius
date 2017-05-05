@@ -79,7 +79,7 @@ mobius.directive('paramDisplay', [ 'hotkeys', 'executeService', 'generateCode', 
                                     // var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
 
                                     threescope.viewportControl.refreshView();
-                                    scope.viziViewportControl.refreshView();
+                                    scopeVizi.viziViewportControl.refreshView();
                                     // scopeTopo.topoViewportControl.refreshView();
 
                                     var selectedNodes = threescope.chartViewModel.getSelectedNodes();
@@ -89,8 +89,8 @@ mobius.directive('paramDisplay', [ 'hotkeys', 'executeService', 'generateCode', 
                                             if(scope.outputs[i].name === selectedNodes[j].data.name){
                                                 threescope.viewportControl.addGeometryToScene(scope.outputs[i].geom);
                                             }
-                                            else if($scope.outputs[i].name ==="saveGeoJSON0"){                                           
-                                                scope.viziViewportControl.addGeometryToScene($scope.outputs[i].geomData[0][0].Value);
+                                            else if(scope.outputs[i].name ==="saveGeoJSON0"){                                           
+                                                scopeVizi.viziViewportControl.addGeometryToScene($scope.outputs[i].geomData[0][0].Value);
                                             }
                                         }
                                     }
