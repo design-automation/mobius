@@ -761,8 +761,6 @@
 
     <!-- Overlay menu replacing foreign object for new node creation -->
     <div id="test"  style=" position: absolute" ng-style="{'left': nodeMenu.x, 'top': nodeMenu.y, 'display':nodeMenu.display}" ng-controller="newNodeCtrl as ctrl"  >
-
-
         <ui-select ng-model="test.selected"
                    id="test-dropdown"
                    theme="selectize"
@@ -938,6 +936,13 @@
 
     <!-- proj4.js coordinates converter -->
     <script src="assets/js/Proj4/proj4.js"></script>
+
+<!-- lokijs.js as in-memory db -->
+<script src="assets/js/lokijs/loki-indexed-adapter.min.js"></script>
+<script src="assets/js/lokijs/lokijs.min.js"></script>
+
+<!-- pouchdb.js as db -->
+<script src="assets/js/pouchdb/pouchdb-6.2.0.min.js"></script>
 
 </body>
 
