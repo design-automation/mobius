@@ -46,7 +46,6 @@ mobius.directive('paramDisplay', [ 'hotkeys', 'executeService', 'generateCode', 
                     scope.$watch(function(){return generateCode.getInterfaceList()},function(){
                         scope.interfaceList= generateCode.getInterfaceList();
                         scope.interface = scope.interfaceList[scope.nodeIndex];
-                        console.log("something changed");
                     });
 
                     // run button
@@ -89,11 +88,10 @@ mobius.directive('paramDisplay', [ 'hotkeys', 'executeService', 'generateCode', 
                                         for(var j =0; j < selectedNodes.length; j++){
                                             if(scope.outputs[i].name === selectedNodes[j].data.name){
                                                 threescope.viewportControl.addGeometryToScene(scope.outputs[i].geom);
-                                            else if($scope.outputs[i].name ==="saveGeoJSON0")
-                                            {
+                                            }
+                                            else if($scope.outputs[i].name ==="saveGeoJSON0"){                                           
                                                 scope.viziViewportControl.addGeometryToScene($scope.outputs[i].geomData[0][0].Value);
                                             }
-                                          }
                                         }
                                     }
 

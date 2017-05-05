@@ -55,6 +55,9 @@ mobius.controller('executeCtrl',['$scope','$rootScope','$q','executeService','co
         });
 
         $scope.run = function(){
+
+            console.log("running code");
+
             $scope.javascriptCode = generateCode.getJavascriptCode();
             $scope.outputs = [];
 
