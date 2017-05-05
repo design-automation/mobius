@@ -26,8 +26,8 @@ mobius.directive('toolkit', [ 'consoleMsg', '$rootScope', function(consoleMsg, $
 		                    <div class="category-container">\
 		                    	<input type="text" class="form-control" ng-model="searchTerm" style="margin: 5px;" placeholder="Search ...">\
 								<div ng-repeat="item in methodList">\
-									<div class="category-heading">{{item.category}}</div>\
-									<div class="category-element" ng-repeat="fn in item.methods | filter: searchTerm" ng-click="addProcedureItem(item.category, fn.name)">\
+									<div class="category-heading" ng-if="filtered.length>0">{{item.category}}</div>\
+									<div class="category-element" ng-repeat="fn in item.methods | filter: searchTerm as filtered" ng-click="addProcedureItem(item.category, fn.name)">\
 										{{fn.name}}\
 									</div>\
 								</div>\

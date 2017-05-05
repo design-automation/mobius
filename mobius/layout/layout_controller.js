@@ -10,6 +10,7 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
         //});
 
         $scope.bodySize = document.getElementById('layout').offsetWidth;
+        $scope.height = document.getElementById('layout').offsetHeight;
 
         // initial layout
         $scope.viewportSize = $scope.bodySize * 0.35;
@@ -23,9 +24,7 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
         $scope.toolkitWidth = $scope.toolkitSize + 'px';
 
         $scope.consoleHeight = 150;
-        $scope.height = document.getElementById('layout').offsetHeight;
         $scope.graphHeight = ($scope.height - $scope.consoleHeight);
-        $scope.procedureHeight =  $scope.height;
         //$scope.interfaceHeight = 0;
 
         // templates not in use
@@ -50,8 +49,7 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
             }
         };
 
-
-        $scope.interfaceHeight = document.getElementById("interface").offsetHeight;
+        /*$scope.interfaceHeight = document.getElementById("interface").offsetHeight;
 
         $scope.$watch(
             function () {
@@ -64,17 +62,41 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
             }
         );
 
-
-
         $scope.$watch(function(){
             return document.getElementById('layout').offsetWidth;
         }, function(newSize,oldSize){
             $scope.bodySize = document.getElementById('layout').offsetWidth;
             $scope.graphSize += newSize - oldSize;
             $scope.graphWidth = $scope.graphSize +'px';
+        });*/
+
+        var collapsedContainers = [];
+
+        /*setInterval(function(){
+                console.log("removing 10px");
+                $scope.graphSize = ($scope.graphSize - 10);
+                $scope.graphWidth = $scope.graphSize + 'px';
+                $scope.$apply();
+        }, 100)*/
+
+        $scope.$on('ui.layout.resize', function(e, beforeContainer, afterContainer){
+            
+            $scope[beforeContainer.id + "Size"] = beforeContainer.size; 
+            $scope[afterContainer.id + "Size"] = afterContainer.size; 
+
+            if(beforeContainer.minSize == beforeContainer.size){
+                console.log(beforeContainer.id);
+                $scope[beforeContainer.id + "Size"] += 50;
+                $scope[beforeContainer.id + "Width"] = $scope[beforeContainer.id + "Size"] + 'px';
+            }
+            
+
+            if(afterContainer.minSize == afterContainer.size)
+                console.log($scope[afterContainer.id + "Width"]);
+
         });
 
-        $rootScope.$on('ui.layout.resize', function(){
+        /*$rootScope.$on('ui.layout.resize', function(){
             $scope.viewportSize = document.getElementById('viewport').offsetWidth;
             if(document.getElementById('procedure') !== null){
                 $scope.procedureSize = document.getElementById('procedure').offsetWidth;
@@ -84,7 +106,7 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
             $scope.viewportWidth = $scope.viewportSize +'px';
             $scope.procedureWidth = $scope.procedureSize +'px';
             $scope.graphWidth = $scope.graphSize +'px';
-        });
+        });*/
 
         //$scope.$on('editProcedure', function(evt,message){
             //if(message === false || $scope.displayProcedure === true){
