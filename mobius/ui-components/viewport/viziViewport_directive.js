@@ -108,8 +108,8 @@ mobius.directive('viziViewport', function factoryVizi() {
 
 
                 // Leave a single CPU for the main browser thread
-                // world.createWorkers(7).then(() => {
-                //     console.log('Workers ready');
+                world.createWorkers(7).then(() => {
+                    console.log('Workers ready');
 
                 var jsondata = JSON.parse(geomObject);
                 //
@@ -167,7 +167,7 @@ mobius.directive('viziViewport', function factoryVizi() {
                 }).addTo(world);
 
                 // openspace later
-                VIZI.geoJSONLayer('http://localhost:63342/mobius/examples/Existing Open Space_3857.json', {
+                VIZI.geoJSONLayer('examples/Existing Open Space_3857.json', {
                     output: true,
                     interactive: false,
                     style: function (feature) {
@@ -209,7 +209,7 @@ mobius.directive('viziViewport', function factoryVizi() {
                 }).addTo(world);
 
                 //road layer
-                VIZI.geoJSONLayer('http://localhost:63342/mobius/examples/Existing Roads_3857.json', {
+                VIZI.geoJSONLayer('examples/Existing Roads_3857.json', {
                     output: true,
                     interactive: false,
                     style: function (feature) {
@@ -247,7 +247,7 @@ mobius.directive('viziViewport', function factoryVizi() {
                 }).addTo(world);
 
                 // station later
-                VIZI.geoJSONLayer('http://localhost:63342/mobius/examples/Existing MRT Station_3857.json', {
+                VIZI.geoJSONLayer('examples/Existing MRT Station_3857.json', {
                     output: true,
                     interactive: false,
                     style: function (feature) {
@@ -289,7 +289,7 @@ mobius.directive('viziViewport', function factoryVizi() {
                 }).addTo(world);
 
                 //mrt line layer
-                VIZI.geoJSONLayer('http://localhost:63342/mobius/examples/Existing MRT Line_3857.json', {
+                VIZI.geoJSONLayer('examples/Existing MRT Line_3857.json', {
                     output: true,
                     interactive: false,
                     style: function (feature) {
@@ -327,7 +327,7 @@ mobius.directive('viziViewport', function factoryVizi() {
                 }).addTo(world);
 
                 //bus point layer
-                VIZI.geoJSONLayer('http://localhost:63342/mobius/examples/Existing Bus Stops_3857.json', {
+                VIZI.geoJSONLayer('examples/Existing Bus Stops_3857.json', {
                     output: true,
                     interactive: false,
                     style: function (feature) {
@@ -431,7 +431,7 @@ mobius.directive('viziViewport', function factoryVizi() {
                             return feature.geometry.type !== 'Point';
                         }
                     }).addTo(world);*/
-                // });
+                });
             }
 
             function TransCoord(x, y) {
