@@ -108,8 +108,8 @@ mobius.directive('viziViewport', function factoryVizi() {
 
 
                 // Leave a single CPU for the main browser thread
-                world.createWorkers(7).then(() => {
-                    console.log('Workers ready');
+                // world.createWorkers(7).then(() => {
+                //     console.log('Workers ready');
 
                 var jsondata = JSON.parse(geomObject);
                 //
@@ -431,7 +431,7 @@ mobius.directive('viziViewport', function factoryVizi() {
                             return feature.geometry.type !== 'Point';
                         }
                     }).addTo(world);*/
-                });
+                // });
             }
 
             function TransCoord(x, y) {
