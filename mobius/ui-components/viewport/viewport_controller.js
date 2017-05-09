@@ -265,7 +265,7 @@ mobius.controller('viewportCtrl',[
             document.getElementById("topoContainer").style.display = "none";
         }
         if($scope.showVizicities === false){
-            document.getElementById("viziContainer").style.display = "none";
+            document.getElementById("viziViewport").style.display = "none";
         }
 
         $rootScope.$on('singleView', function(){
@@ -328,8 +328,10 @@ mobius.controller('viewportCtrl',[
                     $scope.showFullCode = true;
                     $scope.showData = false;
                     $scope.showTopology = false;
+                    $scope.showVizicities = false;
                     $scope.showText = false;
                     document.getElementById("viewSingle").style.display = "none";
+                    document.getElementById("viziViewport").style.display = "none";
                     break;
                 case 'LT':
                     $scope.viewportControl.LTcurrentCate = 'Code';
@@ -337,6 +339,7 @@ mobius.controller('viewportCtrl',[
                     $scope.showFullCodeLT = true;
                     $scope.showDataLT = false;
                     $scope.showTopologyLT = false;
+                    $scope.showVizicities = false;
                     document.getElementById("viewLT").style.display = "none";
                     $scope.topoViewportControl.LT = false;
                     document.getElementById("LT1").style.display = "none";
@@ -347,6 +350,7 @@ mobius.controller('viewportCtrl',[
                     $scope.showFullCodeLB = true;
                     $scope.showDataLB = false;
                     $scope.showTopologyLB = false;
+                    $scope.showVizicities = false;
                     document.getElementById("viewLB").style.display = "none";
                     $scope.topoViewportControl.LB = false;
                     document.getElementById("LB1").style.display = "none";
@@ -357,6 +361,7 @@ mobius.controller('viewportCtrl',[
                     $scope.showFullCodeRT = true;
                     $scope.showDataRT = false;
                     $scope.showTopologyRT = false;
+                    $scope.showVizicities = false;
                     document.getElementById("viewRT").style.display = "none";
                     $scope.topoViewportControl.RT = false;
                     document.getElementById("RT1").style.display = "none";
@@ -367,6 +372,7 @@ mobius.controller('viewportCtrl',[
                     $scope.showFullCodeRB = true;
                     $scope.showDataRB = false;
                     $scope.showTopologyRB = false;
+                    $scope.showVizicities = false;
                     document.getElementById("viewRB").style.display = "none";
                     $scope.topoViewportControl.RB = false;
                     document.getElementById("RB1").style.display = "none";
@@ -379,6 +385,7 @@ mobius.controller('viewportCtrl',[
                 case 'main':
                     $scope.viewportControl.currentCate = $scope.viewportControl.currentView;
                     $scope.viewportControl.showGeometry = true;
+                    $scope.viziViewportControl.showVizicities = false;
                     $scope.showVizicities = false;
                     $scope.showGeometry = true;
                     $scope.showFullCode = false;
@@ -387,7 +394,7 @@ mobius.controller('viewportCtrl',[
                     $scope.showText = false;
                     document.getElementById("viewSingle").style.display = "inline";
                     document.getElementById("topoContainer").style.display = "none";
-                    document.getElementById("viziContainer").style.display = "none";
+                    document.getElementById("viziViewport").style.display = "none";
 
                     break;
                 case 'LT':
@@ -446,7 +453,7 @@ mobius.controller('viewportCtrl',[
                     $scope.showText = false;
                     document.getElementById("viewSingle").style.display = "none";
                     document.getElementById("topoContainer").style.display = "none";
-                    document.getElementById("viziContainer").style.display = "none";
+                    document.getElementById("viziViewport").style.display = "none";
                     break;
                 case 'LT':
                     $scope.viewportControl.LTcurrentCate = 'Data';
@@ -497,14 +504,14 @@ mobius.controller('viewportCtrl',[
                     $scope.viewportControl.currentCate = 'Topology';
                     $scope.viewportControl.showGeometry = false;
                     $scope.topoViewportControl.showTopology = true;
+                    $scope.viziViewportControl.showVizicities = false;
                     $scope.showGeometry = false;
                     $scope.showFullCode = false;
                     $scope.showData = false;
                     $scope.showText = false;
                     $scope.showVizicities = false;
                     document.getElementById("viewSingle").style.display = "none";
-                    document.getElementById("topoContainer").style.display = "inline";
-                    document.getElementById("viziContainer").style.display = "none";
+                    document.getElementById("viziViewport").style.display = "none";
                     break;
                 case 'LT':
                     $scope.viewportControl.LTcurrentCate = 'Topology';
@@ -561,13 +568,6 @@ mobius.controller('viewportCtrl',[
             $scope.showText = true;
             document.getElementById("viewSingle").style.display = "none";
             document.getElementById("topoContainer").style.display = "none";
-            document.getElementById("viziContainer").style.display = "none";
-        }
-
-
-        function cleanvizicitiesdata(){
-
-            //document.getElementById("viziContainer").innerHTML = "";
             document.getElementById("viziViewport").style.display = "none";
         }
 
@@ -581,10 +581,11 @@ mobius.controller('viewportCtrl',[
                     $scope.showFullCode = false;
                     $scope.showData = false;
                     $scope.showTopology = false;
+                    $scope.showVizicities = true;
+                    $scope.showText = false;
                     $scope.viziViewportControl.showVizicities = true;
                     document.getElementById("viewSingle").style.display = "none";
                     document.getElementById("topoContainer").style.display = "none";
-                    document.getElementById("viziContainer").style.display = "inline";
                     document.getElementById("viziViewport").style.display = "inline";
                     break;
             }

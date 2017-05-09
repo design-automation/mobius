@@ -27,7 +27,7 @@ mobius.directive('topoViewport', function factoryTopo() {
                 controls1,controls1LT,controls1RT,controls1LB,controls1RB;
 
             initTopo();
-            animateTopo();
+            //animateTopo();
 
             // Initialization
             function initTopo(){
