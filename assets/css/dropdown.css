@@ -14,6 +14,9 @@
     background-color: #eaeaea !important;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
+
+    z-index: 9999999 !important;
+
 }
 
 .dropdown-submenu{

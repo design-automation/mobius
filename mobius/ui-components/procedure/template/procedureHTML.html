@@ -1,0 +1,168 @@
+<!-- in use -->
+<div class="code-area" style="height: 100%;overflow-y: hidden;">
+
+                <!--header -->
+
+                <!--<div ui-layout-container >-->
+                <!-- generic header incase nothing is selected / nothing is lodaed -->
+                <div ng-if = "!currentNodeName">
+                    <div class="doormat">
+                        <div>Node Procedure</div>
+                    </div>
+                </div>
+
+                <!-- header -->
+                <div ng-if = "currentNodeName" class="doormat"> <!--  ng-dblclick="showProcedure()" -->
+                    <div>
+                        {{currentNodeType}} {{currentNodeVersion}}
+                    </div>
+
+                    <!--<div ng-if="currentIsSubgraph">-->
+                        <!--<button class="button"-->
+                                <!--id="subgraphToggle"-->
+                                <!--ng-click="subgraphToggle()">-->
+                            <!--{{toggleTo}}-->
+                        <!--</button>-->
+                    <!--</div>-->
+
+                    <!-- buttons -->
+                    <!-- <div class='procedure-buttons' style='position: absolute; right: 0px; top: 0px;'>
+                            <button class="button procedure-button"
+                                    dropdown-toggle="dropdown">
+                                <i class="icon-function fa-lg" title="Add Function"></i>
+                                <ui-select ng-model="method.selected"
+                                           class="dropdown-menu"
+                                           on-select="newItem('Action',$select.selected)"
+                                           style="min-width: 130px!important;">
+                                    <ui-select-match placeholder="Search" ></ui-select-match>
+                                    <ui-select-choices
+                                            style="min-width: 130px!important;"
+                                            id="choices"
+                                            refresh="info($select.search)"
+                                            refresh-delay="0"
+                                            group-by="'category'"
+                                            repeat="method in methods | propsFilter: {name: $select.search, category: $select.search}">
+                                        <span ng-bind-html="method.name| highlight: $select.search" ></span>
+                                    </ui-select-choices>
+                                </ui-select>
+
+                                <ul class="dropdown-menu action-dropdown narrow-menu" ng-if="toggleDropdown"
+                                    style="min-width: 130px!important;">
+                                    <li class="dropdown-submenu" ng-repeat="cate in methodList">
+                                        <a>{{cate.category}}</a>
+                                        <ul class="dropdown-menu narrow-menu" style="min-width: 130px!important;">
+                                            <li ng-repeat="method in cate.methods">
+
+                                                <a ng-click="newItem('Action',{category:cate.category,
+                                                                               name:method.name,
+                                                                               return:method.return})">
+                                                    {{method.name}}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </button>
+
+
+                            <button class="button procedure-button" dropdown-toggle="dropdown">
+                                <i class="fa fa-retweet fa-lg"  title="Add Control"></i>
+
+                                <ul class="dropdown-menu  narrow-menu" ng-if="toggleDropdown"
+                                    style="min-width: 130px!important;margin-top:px !important;">
+                                    <li  ng-repeat="controlType in controlTypes">
+                                        <a ng-click="newItem('Control',controlType)">{{controlType}}</a>
+                                    </li>
+                                </ul>
+
+                            </button>
+
+                            <button class="button procedure-button" ng-click="newItem('Data')">
+                                <i class="icon-variable fa-lg" title="Add Variable"></i>
+                            </button>
+                    </div>
+ -->
+                </div>
+
+                <!--<div id="argument-area">-->
+                    <!--<div ui-tree id="tree-root-parameter">-->
+                        <!--<div ui-tree-nodes="" ng-model="interface">-->
+                            <!--<div ng-repeat="node in interface"-->
+                                 <!--ui-tree-node-->
+                                 <!--ng-include="'mobius/procedure/template/parameter_template.html'">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!-- Main Procedure -->
+                <div class="tabArea" id="procedure-area" style='overflow-y: auto; height: 100%;'>
+                    
+                    <!-- <div style="height: 6px;position: relative;background-color:#eaeaea" >
+                        <a class="fa fa-angle-up"
+                           id = "collapseParameter"
+                           ng-click="collapseParameter()"
+                           style="
+                                                text-decoration:none;
+                                                position: absolute;
+                                                top: -4px;
+                                                left: 50%;"
+                        ></a>
+
+                        <a class="fa fa-angle-down"
+                           ng-click="extendParameter()"
+                           id = "extendParameter"
+                           style="
+                                                display:none;
+                                                text-decoration:none;
+                                                position: absolute;
+                                                top: -4px;
+                                                left: 50%;"
+                        ></a>
+                    </div> -->
+
+
+                    <div ui-tree id="tree-root-procedure" >
+                        <div ui-tree-nodes="" ng-model="data">
+                            <div ng-repeat="node in data"
+                                 ui-tree-node
+                                 ng-include="'mobius/ui-components/procedure/template/procedure_template.html'"
+                                 context-menu = "onshow($event)"
+                                 data-target="menu-procedure">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--<div ng-controller="subgraphZnpController"-->
+                         <!--class="znpController"-->
+                         <!--style="display: none"-->
+                         <!--id="subgraph-flow-chart">-->
+                        <!--<panzoom config="panzoomConfig"-->
+                                 <!--model="panzoomModel"-->
+                                 <!--readonly="true"-->
+                                 <!--class="panzoom"-->
+                                 <!--id="subgraphPanZoom">-->
+                            <!--<div id="canvas">-->
+                                <!--<flow-chart chart="currentSubgraphChartViewModel"-->
+                                            <!--readonly="true"-->
+                                            <!--class = "flow-chart">-->
+                                <!--</flow-chart>-->
+                            <!--</div>-->
+                        <!--</panzoom>-->
+                    <!--</div>-->
+
+                </div>
+            <!--</div>-->
+
+            <!--<div ui-layout-container size = "32px" class="monitor" >-->
+                <!--<div class="doormat">-->
+                        <!--<div> Function Code</div>-->
+                <!--</div>-->
+
+                <!--<div class="codeEditor" ui-ace="{ mode: 'javascript', theme: 'tomorrow' }"-->
+                     <!--ng-model= "functionCodeList[nodeIndex]"-->
+                     <!--readonly="{{true}}">-->
+                <!--</div>-->
+            <!--</div>-->
+    <!--</div>-->
+</div>

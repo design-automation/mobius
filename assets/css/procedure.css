@@ -33,8 +33,6 @@
 #procedure-area{
     overflow: auto;
     height: 100%;
-    position:absolute !important;
-    padding-bottom: 32px;
 }
 
 #subgraphToggle{
@@ -48,10 +46,10 @@
 
 .button-action{
     display: inline-block;
-    position: absolute !important;
+    /*position: absolute !important;
     top: 0;
     right: 120px;
-    white-space: nowrap;
+    white-space: nowrap;*/
 }
 
 .button-action:hover>.dropdown-menu{
@@ -63,12 +61,10 @@
 }
 
 .button-control{
-
-
     display: inline-block;
-    position: absolute;
+    /*position: absolute;
     top:0;
-    right: 60px;
+    right: 60px;*/
 }
 
 
@@ -86,12 +82,17 @@
     top:0;
 }
 
-.button-variable{
+/*.button-variable{
     display: inline-block;
     position: absolute !important;
     top: 0;
     right:90px;
     white-space: nowrap;
+}*/
+
+
+.procedure-button{
+    display: inline-block;
 }
 
 .code-area .codeEditor {
@@ -171,3 +172,37 @@
      top: auto  !important;
      right: auto  !important;
  }
+
+
+
+/// toolkit css
+
+.toolkit{
+    font-size: 10px;
+}
+
+.category-heading{
+    text-align: center;
+    border-top: 2px solid #ddd; 
+    border-bottom: 2px solid #ddd; 
+    padding: 5px 0px;
+}
+
+.main-heading{
+    background-color: #ddd; 
+}
+
+.category-container{
+    padding: 0px 10px;
+}
+
+.category-element{
+    padding: 5px 0px;
+    border-bottom: 1px solid #EAE6E6;
+}
+
+.category-element:hover{
+    background-color:  #EAE6E6;
+    cursor: pointer;
+}
+

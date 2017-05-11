@@ -9,20 +9,47 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
         //    }
         //});
 
-        // templates not in use
-        $scope.procedureHTML = { name: 'procedureHTML.html', url: 'mobius/procedure/template/procedureHTML.html'} ;
+        $scope.bodySize = document.getElementById('layout').offsetWidth;
+        $scope.height = document.getElementById('layout').offsetHeight;
 
+        // initial layout
+        $scope.viewportSize = $scope.bodySize * 0.35;
+        $scope.graphSize = $scope.bodySize * 0.30;
+        $scope.procedureSize = $scope.bodySize * 0.20;
+        $scope.toolkitSize = $scope.bodySize * 0.20;
+
+        $scope.viewportWidth = $scope.viewportSize +'px';
+        $scope.procedureWidth = $scope.procedureSize +'px';
+        $scope.graphWidth = $scope.graphSize +'px';
+        $scope.toolkitWidth = $scope.toolkitSize + 'px';
+
+        $scope.consoleHeight = 150;
+        $scope.graphHeight = ($scope.height - $scope.consoleHeight);
+        //$scope.interfaceHeight = 0;
+
+        // templates not in use
         $scope.showGraph = function(){
-            if($scope.graphHeight !== $scope.height - 32){
-                $scope.graphHeight = ($scope.height - 32);
-                $scope.procedureHeight = 32;
+            if($scope.graphHeight !== $scope.height - 150){
+                $scope.graphHeight = ($scope.height -  150);
+                $scope.consoleHeight = 150;
             }else{
-                $scope.graphHeight = ($scope.height - 33);
-                $scope.procedureHeight = 33;
+                $scope.graphHeight = ($scope.height - 150);
+                $scope.consoleHeight = 150;
             }
         };
 
-        $scope.interfaceHeight = document.getElementById("interface").offsetHeight;
+        // console and graph are tied together
+        $scope.showConsole = function(){
+            if($scope.consoleHeight !== $scope.height - 32){
+                $scope.consoleHeight = $scope.height;
+                $scope.graphHeight = 0;
+            }else{
+                $scope.consoleHeight = $scope.height;
+                $scope.graphHeight = 0;
+            }
+        };
+
+        /*$scope.interfaceHeight = document.getElementById("interface").offsetHeight;
 
         $scope.$watch(
             function () {
@@ -35,31 +62,41 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
             }
         );
 
-
-        $scope.consoleHeight = 150;
-        $scope.viewerHeight = $scope.height - 150;
-
-        $scope.showConsole = function(){
-            if($scope.consoleHeight !== $scope.height - 32){
-                $scope.consoleHeight = $scope.height - 32;
-                $scope.viewerHeight = 32;
-            }else{
-                $scope.consoleHeight = $scope.height - 33;
-                $scope.viewerHeight = 33;
-            }
-        };
-
-        $scope.bodySize = document.getElementById('layout').offsetWidth;
-
         $scope.$watch(function(){
             return document.getElementById('layout').offsetWidth;
         }, function(newSize,oldSize){
             $scope.bodySize = document.getElementById('layout').offsetWidth;
             $scope.graphSize += newSize - oldSize;
             $scope.graphWidth = $scope.graphSize +'px';
+        });*/
+
+        var collapsedContainers = [];
+
+        /*setInterval(function(){
+                console.log("removing 10px");
+                $scope.graphSize = ($scope.graphSize - 10);
+                $scope.graphWidth = $scope.graphSize + 'px';
+                $scope.$apply();
+        }, 100)*/
+
+        $scope.$on('ui.layout.resize', function(e, beforeContainer, afterContainer){
+            
+            $scope[beforeContainer.id + "Size"] = beforeContainer.size; 
+            $scope[afterContainer.id + "Size"] = afterContainer.size; 
+
+            if(beforeContainer.minSize == beforeContainer.size){
+                console.log(beforeContainer.id);
+                $scope[beforeContainer.id + "Size"] += 50;
+                $scope[beforeContainer.id + "Width"] = $scope[beforeContainer.id + "Size"] + 'px';
+            }
+            
+
+            if(afterContainer.minSize == afterContainer.size)
+                console.log($scope[afterContainer.id + "Width"]);
+
         });
 
-        $rootScope.$on('ui.layout.resize', function(){
+        /*$rootScope.$on('ui.layout.resize', function(){
             $scope.viewportSize = document.getElementById('viewport').offsetWidth;
             if(document.getElementById('procedure') !== null){
                 $scope.procedureSize = document.getElementById('procedure').offsetWidth;
@@ -69,19 +106,7 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
             $scope.viewportWidth = $scope.viewportSize +'px';
             $scope.procedureWidth = $scope.procedureSize +'px';
             $scope.graphWidth = $scope.graphSize +'px';
-        });
-
-        // toggle procedure
-        $scope.displayProcedure = false;
-
-        // initial layout
-        $scope.viewportSize = $scope.bodySize * 0.70;
-        $scope.procedureSize = 0;
-        $scope.graphSize = $scope.bodySize * 0.30;
-
-        $scope.viewportWidth = $scope.viewportSize +'px';
-        $scope.procedureWidth = $scope.procedureSize +'px';
-        $scope.graphWidth = $scope.graphSize +'px';
+        });*/
 
         //$scope.$on('editProcedure', function(evt,message){
             //if(message === false || $scope.displayProcedure === true){
@@ -107,10 +132,7 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
             //$scope.graphWidth = $scope.graphSize +'px';
         //});
 
-        $scope.height = document.getElementById('layout').offsetHeight;
-        $scope.graphHeight = ($scope.height - 32);
-        $scope.procedureHeight =  32;
-        //$scope.interfaceHeight = 0;
+
 
         // $scope.$watch(function(){
         //     return document.getElementById('c').offsetHeight;
@@ -118,7 +140,7 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
         //     document.getElementById("interface").style.bottom =  document.getElementById('c').offsetHeight + "px";
         // });
 
-        $scope.$on('showProcedure', function(){
+        /*$scope.$on('showProcedure', function(){
             if($scope.graphHeight !== 32 + $scope.interfaceHeight){
                 $scope.graphHeight = 32 + $scope.interfaceHeight ;
                 $scope.procedureHeight = $scope.height - 32-$scope.interfaceHeight;
@@ -126,9 +148,9 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
                 $scope.graphHeight = 33 + $scope.interfaceHeight;
                 $scope.procedureHeight = $scope.height - 33 -$scope.interfaceHeight;
             }
-        });
+        });*/
 
-        $scope.$watch(function(){
+        /*$scope.$watch(function(){
             return document.getElementById('a').offsetHeight;
         }, function(newSize,oldSize){
             if(newSize !== oldSize && oldSize === 32){
@@ -148,5 +170,5 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
             return document.getElementById('layout').offsetHeight;
         }, function(){
             $scope.height = document.getElementById('layout').offsetHeight;
-        })
+        })*/
     }]);

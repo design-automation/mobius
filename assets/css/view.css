@@ -14,7 +14,7 @@
     position: absolute;
     top: -32px;
     right: 0px;
-    z-index: 99999999999 !important;
+    z-index: 10 !important;
 
 }
 
@@ -32,6 +32,11 @@
 .view-area #topoViewport {
     height:0;
     width:0;
+}
+
+.view-area #viziViewport {
+    height:100%;
+    width:100%;
 }
 
 .view-area .codeViewport{
@@ -75,11 +80,20 @@
 
 }
 
+.view-area #viziContainer{
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+
+}
+
 .tabArea{
     position: relative;
     /*left: 9px;*/
     height: 100%;
-    width: 100%;
+    //width: 100%;
 }
 
 
