@@ -1,0 +1,34 @@
+<!-- heading -->
+<div class="doormat">
+    <div style="display: inline-block;">Parameters</div>
+    <!-- run for graph -->
+    <button class="button"
+            ng-click="run()"
+            style="outline: none!important; float:right;"
+            ng-hide='interface == undefined || interface.length == 0'
+            title="Run program">
+        <i class="fa fa-play"></i>
+    </button>
+ </div>
+
+
+<!-- interface parameters --> 
+<span id="interface" oncontextmenu="return false;" style='line-height: 32px; font-size: 12px;'>
+
+<!-- <div ng-if='interface==undefined'><center> &lt; node-inputs &gt;                               
+</div> -->
+
+
+<div ui-tree id="tree-root-interface"
+     data-nodrop-enabled="true">
+    <div ui-tree-nodes="" ng-model="interface">
+        <div ng-repeat="node in interface | filter: {connected: false} as inputs"
+             ui-tree-node
+             ng-include="'mobius/ui-components/parameter_display/interface_template.html'">
+        </div>
+        <div ng-if='inputs.length==0'><center>This node needs no inputs</center></div>
+    </div>
+</div>
+
+</span>
+

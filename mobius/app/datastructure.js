@@ -316,6 +316,10 @@ var mObj_frame = function mObj_frame( origin, xaxis, yaxis, zaxis ){
         return null;
     }
 
+    this.extractGeojson = function(){
+        return 'geojson';
+    }
+
     this.extractData = function(){
         return 'frame';
     }
@@ -348,6 +352,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
 
     var data = undefined;
     var topology = undefined;
+    var geojson = undefined;
 
     var threeGeometry, threeTopology;
 
@@ -361,6 +366,7 @@ var mObj_geom = function mObj_geom( geometry, material ){
         threeTopology = undefined;
 
         topology = undefined;
+        geojson = undefined;
     }
 
     //
@@ -383,6 +389,16 @@ var mObj_geom = function mObj_geom( geometry, material ){
 
     this.setTopology = function(customTopo){
         topology = customTopo;
+    }
+
+    this.getGeojson = function(){
+        if(geojson == undefined)
+            geojson = MOBIUS._FN.computeGeojson( self, this.getGUID() );
+        return geojson;
+    }
+
+    this.setGeojson = function(customGeojson){
+        geojson = customGeojson;
     }
 
     this.getData = function(){
@@ -428,6 +444,20 @@ var mObj_geom = function mObj_geom( geometry, material ){
      */
     for(var property in MOBIUS.TOPOLOGY_DEF){
         var propFunc = new Function( 'return this.getTopology()["' + property + '"];' );
+
+        Object.defineProperty(this, property,  {
+            get: propFunc,
+            set: undefined
+        });
+    }
+
+    /*
+     * Generated from the Geojson_DEF present in the Module
+     * This attaches the geojson directly to the object
+     *
+     */
+    for(var property in MOBIUS.GEOJSON_DEF){
+        var propFunc = new Function( 'return this.getGeojson()["' + property + '"];' );
 
         Object.defineProperty(this, property,  {
             get: propFunc,
@@ -501,6 +531,22 @@ var mObj_geom = function mObj_geom( geometry, material ){
         //console.log(topology, threeTopology);
 
         return threeTopology;
+    }
+
+    /*
+     * Get the geojson from mobj
+     */
+    this.extractGeojson = function(){
+
+        // if threeGeometry hasn't been computed before or native geometry has been transformed so that new conversion is required
+        // the function defines it and caches it
+        if(geojson == undefined)
+            geojson = MOBIUS._FN.computeGeojson(self);
+        else{
+            //console.log("Topology already defined");
+        }
+
+        return geojson;
     }
 
     /*

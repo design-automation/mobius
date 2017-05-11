@@ -1607,8 +1607,20 @@ MOBIUS_MODULES[MODULE_NAME] = ( function (mod){
 			var data = JSON.stringify(json);
 			var url = 'data:text/json;charset=utf8,' + encodeURIComponent(data);
 			window.open(url, '_blank');
-			window.focus();			
-		}
+			//window.focus();
+			return data;
+		};
+
+        if(type == 'obj'){
+
+            //var material = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
+            //var mesh = new THREE.Mesh( json, material );
+            var exporter = new THREE.OBJExporter();
+            var data = exporter.parse( json );
+            var url = 'data:text/text;charset=utf8,' + encodeURIComponent(data);
+            window.open(url, '_blank');
+            //window.focus();
+        }
 
 	}
 

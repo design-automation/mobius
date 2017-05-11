@@ -1,5 +1,5 @@
 ﻿body {
-    font-family: Roboto,'Helvetica Neue',sans-serif;
+    font-family: "Open Sans" !important; // Roboto,'Helvetica Neue',sans-serif;
     font-size: 14px !important;
 }
 
@@ -45,6 +45,28 @@ a:focus{
     padding-left:20px;
 }
 
+.tree-item:hover, .tree-node-content:hover{
+    border-color: #55ADF9;
+}
+
+.procedure-delete-key{
+    display: none;
+}
+
+.tree-item:hover .procedure-delete-key, .tree-item.hover .procedure-delete-key { 
+    display: block; 
+}
+
+.tree-node-content:hover .procedure-delete-key, .tree-node-content.hover .procedure-delete-key { 
+    display: block; 
+}
+
+.monitor{
+    padding-left: 16px;
+    overflow-y: auto;
+}
+
+
  /*css fix for dropdown selects*/
 .form-control{
     margin: 2px;
@@ -89,4 +111,13 @@ a:focus{
 .doormat  div:nth-child(1){
     margin: 4px 10px;
     color: #333;
+}
+
+
+.range.params{
+    z-index: 10;
+    position: absolute;
+    top: 2px;
+    width: 49%;
+    left: 50%;
 }
