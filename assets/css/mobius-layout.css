@@ -112,3 +112,12 @@ a:focus{
     margin: 4px 10px;
     color: #333;
 }
+
+
+.range.params{
+    z-index: 10;
+    position: absolute;
+    top: 2px;
+    width: 49%;
+    left: 50%;
+}

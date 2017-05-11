@@ -14,8 +14,8 @@ mobius.controller('layoutCtrl',['$scope','$rootScope','hotkeys',
 
         // initial layout
         $scope.viewportSize = $scope.bodySize * 0.35;
-        $scope.graphSize = $scope.bodySize * 0.20;
-        $scope.procedureSize = $scope.bodySize * 0.25;
+        $scope.graphSize = $scope.bodySize * 0.30;
+        $scope.procedureSize = $scope.bodySize * 0.20;
         $scope.toolkitSize = $scope.bodySize * 0.20;
 
         $scope.viewportWidth = $scope.viewportSize +'px';
