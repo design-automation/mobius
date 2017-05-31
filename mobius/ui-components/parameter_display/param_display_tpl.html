@@ -13,13 +13,13 @@
 
 
 <!-- interface parameters --> 
-<span id="interface" oncontextmenu="return false;" style='line-height: 32px; font-size: 12px;'>
+<div class='section-container' id="interface" oncontextmenu="return false;" style='line-height: 32px; font-size: 12px;'>
 
 <!-- <div ng-if='interface==undefined'><center> &lt; node-inputs &gt;                               
 </div> -->
 
 
-<div ui-tree id="tree-root-interface"
+<div class='tree-container' ui-tree id="tree-root-interface"
      data-nodrop-enabled="true">
     <div ui-tree-nodes="" ng-model="interface">
         <div ng-repeat="node in interface | filter: {connected: false} as inputs"
@@ -30,5 +30,5 @@
     </div>
 </div>
 
-</span>
+</div>
 

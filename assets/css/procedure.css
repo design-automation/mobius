@@ -19,10 +19,10 @@
     border-bottom:0px solid #eaeaea;
 }
 
-.params {
+/*.params {
     left: 160px !important;
     position: absolute; !important;
-}
+}*/
 
 #argument-area{
     overflow: auto;

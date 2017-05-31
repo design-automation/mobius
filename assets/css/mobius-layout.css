@@ -116,8 +116,16 @@ a:focus{
 
 .range.params{
     z-index: 10;
-    position: absolute;
-    top: 2px;
-    width: 49%;
-    left: 50%;
+    width: auto;
+    height: 10px;
+    display: inline;
+}
+
+.section-container{
+    height: 100%;
+}
+
+.tree-container{
+    height: calc(100% - 32px); 
+    overflow-y: auto;
 }

@@ -15,7 +15,7 @@ mobius.directive('console', [ 'consoleMsg', function(consoleMsg) {
                                         <i class="fa fa-eraser"></i>\
                                     </button>\
                                  </div>\
-                                 <div class="console" id ="log">\
+                                 <div class="tree-container"><div class="console" id ="log">\
                         </div>',
         link: function ($scope, element, attrs) {
             $scope.clearConsole = function(){
