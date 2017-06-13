@@ -41,6 +41,7 @@ mobius.controller('viewportCtrl',[
 
         function generateTableStructure(){
             $scope.connectorNames = [];
+            // if node is selected and data is being displayed, push all connector names
             if($scope.viewportControl.geometryData.length !== 0){
                 for(var connectorName in $scope.viewportControl.geometryData){
                     $scope.connectorNames.push(connectorName);
@@ -63,9 +64,9 @@ mobius.controller('viewportCtrl',[
 
         $scope.generateDataTable = function(header,viewport){
             // fixme: is it necessary to check status of current selected connector
-            //if($scope.currentConnector === undefined){
-                //$scope.currentConnector = $scope.connectorNames[0];
-            //}
+            if($scope.currentConnector == undefined){
+                $scope.currentConnector = $scope.connectorNames[0];
+            }
 
             $scope.currentHeader = header;
             var propertyList = [];
@@ -195,6 +196,7 @@ mobius.controller('viewportCtrl',[
                     columnDefs: columnDefs,
                     enableHorizontalScrollbar: 0
                 };
+
             } else{
                 switch (viewport){
                     case 'LT':
@@ -240,7 +242,6 @@ mobius.controller('viewportCtrl',[
         $scope.topoViewportControl.RT = false;
         $scope.topoViewportControl.LB = false;
         $scope.topoViewportControl.RB = false;
-
 
         document.getElementById("LT1").style.display = "none";
         document.getElementById("RT1").style.display = "none";
@@ -305,7 +306,6 @@ mobius.controller('viewportCtrl',[
             if($scope.showTopologyRB){
                 document.getElementById("RB1").style.display = "inline";
             }
-
 
             $scope.viewportControl.showGeometry= false;
             document.getElementById("viewSingle").style.display = "none";

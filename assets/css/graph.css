@@ -12,6 +12,7 @@
     height: 100%;
     bottom: 0;
     position: absolute;
+    background-color: black;
 }
 
 .flow-chart{
