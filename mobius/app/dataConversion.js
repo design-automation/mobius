@@ -26,7 +26,6 @@ var dataConversion = (function(data){
                     data[i].geomData.push(tempData);
                     data[i].topo.push(tempTopo);
                 }else if(m === 'geomList' && data[i].value[m] !== undefined){
-
                     dataConversion(data[i].value[m]);
                 }
             }

@@ -1,8 +1,8 @@
 .vizicities-attribution {
   position: relative;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0);
   border-radius: 3px 0 0;
-  bottom: 0;
+  bottom: 30px;
   color: #666;
   font-family: Arial, Verdana, sans-serif;
   font-size: 11px;
@@ -18,19 +18,19 @@
 }
 
 .vizicities-attribution a:hover {
-color: #2bb2ed;
-text-decoration: underline;
+  color: #2bb2ed;
+  text-decoration: underline;
 }
 
 #attribution-container {
   position: absolute;
-  right: 0;
+  right: -121px;
   bottom: 0;
   z-index: -1;
-  width: 250px;
-  padding: 4px 7px;
+  width: 280px;
+  padding: 6px 7px;
   padding-right: 120px;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0);
   border-radius: 3px 0 0;
   opacity: 0;
   transition: opacity 100ms linear;

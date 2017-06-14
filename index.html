@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="assets/css/dropdown.css">
     <link rel="stylesheet" href="assets/css/graph.css">
     <link rel="stylesheet" href="assets/css/viewport.css">
+    <link rel="stylesheet" href="assets/css/vizicities.css">
     <link rel="stylesheet" href="assets/css/procedure.css">
     <link rel="stylesheet" href="assets/css/typeManager.css">
     <link rel="stylesheet" href="assets/css/ui-layout/ui-layout.css">
@@ -68,7 +69,7 @@
                         </a>
 
                         <ul class="dropdown-menu" style="top:-2px">
-                             <li><a ng-click="loadExample('SimpleGISExample_v0.1.json')"> GIS Example (simple) </a></li>
+                            <li><a ng-click="loadExample('SimpleGISExample_v0.1.json')"> GIS Example (simple) </a></li>
                             <li><a ng-click="loadExample('01_GIS.json')"> GIS Example </a></li>
                             <li><a ng-click="loadExample('03_SimpleTower.json')"> Simple Tower </a></li>
                             <li><a ng-click="loadExample('01_SpiralTowers.json')"> Spiral Towers </a></li>
@@ -251,6 +252,40 @@
                                                 <i class="fa fa-table" aria-hidden="true"></i>
                                         </button>
                                     </div>
+
+                                    <button ng-if="showVizicities"
+                                            class="button viewport-menu-button"
+                                            ng-click="extend3D('main')"
+                                            style="width: 28px !important;right:37px!important; top:0"
+                                            title="Base Map">
+                                            <i class="fa fa-globe" aria-hidden="true"></i>
+                                    </button>
+
+                                    <div   dropdown class="menu-left"  ng-if="showVizicities">
+                                        <button class="button viewport-menu-button" dropdown-toggle
+                                                style="width: 28px !important; right:127px !important;" title="Toggle Grid"
+                                                ng-click="viziViewportControl.togglevizisky('main')">
+                                                <i class="fa fa-sun-o" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+
+                                    <div dropdown on-toggle="toggled(open)"  class="menu-left"  ng-if="showVizicities">
+                                        <button class="button viewport-menu-button" dropdown-toggle
+                                                style="width: 28px !important; right:67px !important;"  title="Post Processing"
+                                                ng-click="viziViewportControl.togglevizipostprocess('main')">
+                                                <i class="fa fa-gears" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+
+                                    <div dropdown on-toggle="toggled(open)"  class="menu-left"  ng-if="showVizicities">
+                                        <button class="button viewport-menu-button" dropdown-toggle
+                                                style="width: 28px !important; right:97px !important;" title="Display Mode"
+                                                ng-click="viziViewportControl.toggleviziskybox('main')">
+                                                <i class="fa fa-cube" aria-hidden="true" ></i>
+                                        </button>
+                                    </div>
+
+
 
                                 </span>
 
@@ -652,7 +687,7 @@
                                 <div id="LB1" ></div>
                                 <div id="RB1" ></div>
 
-                                <div id = 'viziContainer'></div>
+                                <!--<div id = 'viziContainer'></div>-->
                                 <div id = 'topoContainer'></div>
 
                                 <!-- code view -->

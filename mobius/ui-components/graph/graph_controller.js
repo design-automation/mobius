@@ -212,9 +212,11 @@ mobius.controller(  'graphCtrl',
 
                 var scope = angular.element(document.getElementById('threeViewport')).scope();
                 var scopeTopo = angular.element(document.getElementById('topoViewport')).scope();
+                var scopeVizi = angular.element(document.getElementById('viziViewport')).scope();
 
                 scope.viewportControl.refreshView();
                 scopeTopo.topoViewportControl.refreshView();
+                scopeVizi.viziViewportControl.refreshView();
 
                 for(var i = 0; i < $scope.outputGeom.length; i++){
                  for(var j =0; j < selectedNodes.length; j++){
@@ -242,6 +244,9 @@ mobius.controller(  'graphCtrl',
                                          }
                                          p++;
                                      }
+                                 }else if($scope.outputGeom[i].name ==="saveGeoJSON0")
+                                 {
+                                     scope.viziViewportControl.addGeometryToScene($scope.outputs[i].geomData[0][0].Value);
                                  }
                              }
                          }

@@ -103,6 +103,8 @@ mobius.controller('newNodeCtrl',[
 
         // Add a new node to the chart.
         $scope.addNewNode = function (type) {
+
+            console.log("Adding new node");
 	        $scope.nodeMenu.display="none";
 
 
@@ -130,7 +132,7 @@ mobius.controller('newNodeCtrl',[
                         type = newTypeName;
                     }
 
-                    addNode(type,false); console.log("adding node");
+                    addNode(type,false);
                 });
             }
             else if(type === 'create new sub-graph'){
@@ -165,6 +167,7 @@ mobius.controller('newNodeCtrl',[
             }
 
             function addNode(type, ifSubgraph){
+
                 // add node to graph
                 var tempIndex = 0;
                 for(var i =0; i < $scope.chartViewModel.nodes.length; i++){
@@ -181,6 +184,7 @@ mobius.controller('newNodeCtrl',[
                 newNodeDataModel.id = $scope.chartViewModel.nodes.length;
                 newNodeDataModel.name = nodeName;
                 // fixme canvas reconfiguration requried
+                // doesnot affect the inital position of the node
                 newNodeDataModel.x = 1900;
                 newNodeDataModel.y = 2100;
 
@@ -223,6 +227,7 @@ mobius.controller('newNodeCtrl',[
                         newNodeDataModel.subGraphModel = undefined;
                     }
                 }
+
 
 
 
@@ -284,6 +289,8 @@ mobius.controller('newNodeCtrl',[
                 $scope.$emit('cleanGraph');
 
                 $scope.nextNodeId++;
+            
+
             }
 
         };

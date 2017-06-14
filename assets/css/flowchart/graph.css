@@ -254,7 +254,7 @@ Drag selection rectangle.
 .background{
 	stroke-width:px;
 	stroke:#000000;
-	fill:url(#dots-4-11);
+	fill: url(#dots-4-11);
 	overflow: hidden;
 }
 

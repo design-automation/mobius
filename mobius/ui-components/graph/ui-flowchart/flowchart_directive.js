@@ -57,7 +57,7 @@ angular.module('flowChart', ['dragging'] )
 		// @ mobius: fetching zoom scale factor for the controling the size of 'double click menu'
 		//
 		$rootScope.$on("Update", function(event, message) {
-			$scope.scaleFactor = message;
+			$scope.scaleFactor = 1;//message;
 			//
 			// @ mobius scale the new node dropxdown
 			// fixme
@@ -92,7 +92,7 @@ angular.module('flowChart', ['dragging'] )
 		$scope.$on('cleanGraph',function(){
 			document.getElementById("test").style.display = "none";
 			// document.getElementById("node-creator").style.display = "none";
-			console.log(" Iniside clean graph function");
+			console.log(" Inside clean graph function");
 		});
 
 		//
@@ -187,16 +187,15 @@ angular.module('flowChart', ['dragging'] )
 			// update zoom factor
 			if($scope.readonly !== true){
 				$rootScope.$on("Update", function(event, message) {
-					$scope.scaleFactor = message;
+					$scope.scaleFactor = 1;//message;
 				});
 
 
 				// update dropdown location
 				var dBclickPoint = controller.translateCoordinates(evt.clientX, evt.clientY);
 
-
-				$scope.dbClickMenu.x = dBclickPoint.x * (1/$scope.scaleFactor) 	- (90-90/$scope.scaleFactor);
-				$scope.dbClickMenu.y = dBclickPoint.y *(1/$scope.scaleFactor );
+				//$scope.dbClickMenu.x = dBclickPoint.x * (1/$scope.scaleFactor) 	- (90-90/$scope.scaleFactor);
+				//$scope.dbClickMenu.y = dBclickPoint.y *(1/$scope.scaleFactor );
 
 				// Broadcasting the co-ordinates of the node type drop down menu
 
@@ -207,8 +206,8 @@ angular.module('flowChart', ['dragging'] )
 
 
 				// node location
-				$scope.chart.newPos.x = dBclickPoint.x * (1/$scope.scaleFactor);
-				$scope.chart.newPos.y = $scope.dbClickMenu.y;
+				$scope.chart.newPos.x = dBclickPoint.x//dBclickPoint.x * (1/$scope.scaleFactor);
+				$scope.chart.newPos.y = dBclickPoint.y//$scope.dbClickMenu.y;
 
 				// enable dropdown
 				var ele = document.getElementById("node-dropdown");
@@ -259,7 +258,8 @@ angular.module('flowChart', ['dragging'] )
 
 							// msg from pan and zoom
 							$rootScope.$on("Update", function (event, message) {
-								$scope.scaleFactor = message;
+								//$scope.scaleFactor = message;
+								$scope.scaleFactor = 1;
 							});
 
 							$scope.dragSelecting = true;
@@ -278,7 +278,7 @@ angular.module('flowChart', ['dragging'] )
 						//
 						dragging: function (x, y) {
 							var startPoint = $scope.dragSelectionStartPoint;
-							var curPoint = controller.translateCoordinates(x, y, evt);
+							var curPoint = controller.translateCoordinates(x, y, evt); 
 
 							$scope.dragSelectionRect = {
 								x: curPoint.x > startPoint.x ? startPoint.x * (1 / $scope.scaleFactor ) : curPoint.x * (1 / $scope.scaleFactor ),
@@ -394,10 +394,12 @@ angular.module('flowChart', ['dragging'] )
 					dragging: function (x, y) {
 						var curCoords = controller.translateCoordinates(x, y);
 						$rootScope.$on("Update", function (event, message) {
-							$scope.scaleFactor = message;
+							$scope.scaleFactor = 1;//message;
 						});
-						var deltaX = curCoords.x * (1 / $scope.scaleFactor ) - lastMouseCoords.x * (1 / $scope.scaleFactor);
-						var deltaY = curCoords.y * (1 / $scope.scaleFactor) - lastMouseCoords.y * (1 / $scope.scaleFactor);
+
+						// removed the scale factor after refactoring- akm
+						var deltaX = curCoords.x /** (1 / $scope.scaleFactor )*/ - lastMouseCoords.x /** (1 / $scope.scaleFactor)*/; 
+						var deltaY = curCoords.y /** (1 / $scope.scaleFactor)*/ - lastMouseCoords.y/* * (1 / $scope.scaleFactor)*/;
 						chart.updateSelectedNodesLocation(deltaX, deltaY, isPort);
 
 						lastMouseCoords = curCoords;
@@ -486,7 +488,7 @@ angular.module('flowChart', ['dragging'] )
 						var curCoords = controller.translateCoordinates(x, y);
 
 						$rootScope.$on("Update", function (event, message) {
-							$scope.scaleFactor = message;
+							$scope.scaleFactor = 1;//message;
 						});
 
 						$scope.draggingConnection = true;
@@ -509,7 +511,7 @@ angular.module('flowChart', ['dragging'] )
 						// @ mobius communicate with pan&zoom controller to correct scale
 						//
 						$rootScope.$on("Update", function (event, message) {
-							$scope.scaleFactor = message;
+							$scope.scaleFactor = 1;//message;
 						});
 
 						$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector, isPort);
