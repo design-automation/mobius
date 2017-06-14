@@ -43,10 +43,17 @@ mobius.directive('paramDisplay', [ 'hotkeys', 'executeService', 'generateCode', 
                     // watch the chartViewModel to look for changes
                     scope.interfaceList= generateCode.getInterfaceList();
                     scope.interface = scope.interfaceList[scope.nodeIndex];
-                    scope.$watch(function(){return generateCode.getInterfaceList()},function(){
+                    scope.$watch(function(){return generateCode.getInterfaceList() },function(){
                         scope.interfaceList= generateCode.getInterfaceList();
                         scope.interface = scope.interfaceList[scope.nodeIndex];
                     });
+                    scope.$watch('interface', function(){
+                        console.log("interface chaged", scope.interface);
+                        setTimeout(function () {
+                                scope.$apply();
+                            }, 0);
+
+                    }, true);
 
                     // run button
                     scope.run = function(){
@@ -61,7 +68,7 @@ mobius.directive('paramDisplay', [ 'hotkeys', 'executeService', 'generateCode', 
                                 .then(function (data) {
                                     //document.getElementById('waiting').style.display='none';
                                     scope.showSpinner = false;
-                                    scope.outputs = data; 
+                                    scope.outputs = data; console.log(data);
                                     generateCode.setOutputGeom(data);
                                     generateCode.clearError();
                                     consoleMsg.runtimeMsg();
@@ -88,6 +95,7 @@ mobius.directive('paramDisplay', [ 'hotkeys', 'executeService', 'generateCode', 
                                         for(var j =0; j < selectedNodes.length; j++){
                                             if(scope.outputs[i].name === selectedNodes[j].data.name){
                                                 threescope.viewportControl.addGeometryToScene(scope.outputs[i].geom);
+                                                console.log(scope.outputs[i].geom)
                                             }
                                             else if(scope.outputs[i].name ==="saveGeoJSON0"){                                           
                                                 scopeVizi.viziViewportControl.addGeometryToScene($scope.outputs[i].geomData[0][0].Value);
