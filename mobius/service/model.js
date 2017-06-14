@@ -198,11 +198,14 @@ mobius.factory('generateCode', ['$rootScope',function ($rootScope) {
                                     if(destNodeId !== 'outputPort'&& destNodeId !== 'inputPort'){
                                         if((model.chartViewModel.nodes[destNodeId].disabled() === false) ||
                                             model.chartViewModel.nodes[destNodeId].disabled() === undefined){
-                                            model.javascriptCode +=  'var '
-                                                + connected_input_name +' = MOBIUS.obj.copy('
+                                            var substring = 'var ' + connected_input_name +' = ';
+                                            if(model.javascriptCode.indexOf(substring) == -1) {
+                                            model.javascriptCode += 'var '
+                                                + connected_input_name + ' = ' //' = MOBIUS.obj.copy('
                                                 + return_obj_name
                                                 + '.'
-                                                + output_port_name + ');';
+                                                + output_port_name + ';'; //');';
+                                            }
                                         }
                                     }
                                 }

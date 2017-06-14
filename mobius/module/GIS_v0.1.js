@@ -304,7 +304,8 @@ MOBIUS_MODULES[MODULE_NAME] = ( function (mod){
 	 * @returns { surface object }  - Surface object
 	 * @memberof srf
 	 */
-	mod.srf.polygonByPoints = function ( frame, points, holes ){
+	mod.srf.polygonByPoints = function (
+		frame, points, holes ){
 
 		// check each point and convert any vertex formats to point format
 		points = points.map(function(p){
@@ -1616,8 +1617,9 @@ MOBIUS_MODULES[MODULE_NAME] = ( function (mod){
             //var material = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
             //var mesh = new THREE.Mesh( json, material );
             var exporter = new THREE.OBJExporter();
-            var data = exporter.parse( json );
-            var url = 'data:text/text;charset=utf8,' + encodeURIComponent(data);
+            var data = JSON.stringify(json);
+            var result = exporter.parse( data );
+            var url = 'data:text/text;charset=utf8,' + encodeURIComponent(result);
             window.open(url, '_blank');
             //window.focus();
         }
