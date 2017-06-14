@@ -253,6 +253,40 @@
                                         </button>
                                     </div>
 
+                                    <button ng-if="showVizicities"
+                                            class="button viewport-menu-button"
+                                            ng-click="extend3D('main')"
+                                            style="width: 28px !important;right:37px!important; top:0"
+                                            title="Base Map">
+                                            <i class="fa fa-globe" aria-hidden="true"></i>
+                                    </button>
+
+                                    <div   dropdown class="menu-left"  ng-if="showVizicities">
+                                        <button class="button viewport-menu-button" dropdown-toggle
+                                                style="width: 28px !important; right:127px !important;" title="Toggle Grid"
+                                                ng-click="viziViewportControl.togglevizisky('main')">
+                                                <i class="fa fa-sun-o" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+
+                                    <div dropdown on-toggle="toggled(open)"  class="menu-left"  ng-if="showVizicities">
+                                        <button class="button viewport-menu-button" dropdown-toggle
+                                                style="width: 28px !important; right:67px !important;"  title="Post Processing"
+                                                ng-click="viziViewportControl.togglevizipostprocess('main')">
+                                                <i class="fa fa-gears" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+
+                                    <div dropdown on-toggle="toggled(open)"  class="menu-left"  ng-if="showVizicities">
+                                        <button class="button viewport-menu-button" dropdown-toggle
+                                                style="width: 28px !important; right:97px !important;" title="Display Mode"
+                                                ng-click="viziViewportControl.toggleviziskybox('main')">
+                                                <i class="fa fa-cube" aria-hidden="true" ></i>
+                                        </button>
+                                    </div>
+
+
+
                                 </span>
 
                                 <!--viewports-->
