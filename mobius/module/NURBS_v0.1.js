@@ -2110,6 +2110,13 @@ MOBIUS_MODULES[MODULE_NAME] = ( function (mod){
 	 * @memberof lst
 	 */
 	mod.lst.extend = function(list, extension_list){
+
+		console.log("ex", extension_list)
+		if(extension_list instanceof Array){
+			// do nothing
+		}
+		else
+			extension_list = [extension_list];
 		
 		extension_list.map( function(t){
 			list.push(t);
