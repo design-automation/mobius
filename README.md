@@ -4,4 +4,4 @@ The programming approach integrates imperative and associative programming style
 
 The imperative procedure performs operations by calling functions in one or more underlying function modules. These function modules consist of files that contain a set of standard Javascript functions. Currently, Möbius includes two function modules: a poly module and nurbs module. The poly module includes a set of polygon modelling functions, and makes use of the jsclipper library. The nurbs module includes a set of nurbs modelling functions, and makes use of verb library.
 
-http://mobius.design-automation.net/
+http://design-automation.github.io/mobius/
